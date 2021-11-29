@@ -301,7 +301,7 @@ I18n.translations.en = {
         information: {
             loginRequired: {
                 title: "Invalid action",
-                message: "The action you want to perform requires you to log in first by clicking the icon (<i class=\"icon icon-user\"></i>) above."
+                message: "The action you want to perform requires you to log in first. Do you want to log in?."
             }
         }
     },
