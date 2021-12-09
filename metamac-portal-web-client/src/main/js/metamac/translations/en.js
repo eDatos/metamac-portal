@@ -319,5 +319,10 @@ I18n.translations.en = {
         label: {
             text: "Write the value of the image shown above"
         }
+    },
+    languages: {
+        "en": "English",
+        "es": "Spanish",
+        "pt": "Portuguese"
     }
 };

@@ -328,5 +328,10 @@ I18n.translations.es = {
         label: {
             text: "Escriba el valor de la imagen mostrada encima"
         }
+    },
+    languages: {
+        "en": "Inglés",
+        "es": "Español",
+        "pt": "Portugués"
     }
 };

@@ -11,7 +11,8 @@
 
         events : {
             "click #button-user": "clickUser",
-            "click #button-logout": "clickLogout"
+            "click #button-logout": "clickLogout",
+            "change #dropdown-language": "clickLanguage"
         },
 
         initialize: function () {
@@ -35,9 +36,18 @@
         render: function () {
             var context = {
                 username : this.username || '',
-                isLogged: !!this.username
+                isLogged: !!this.username,
+                languages: App.config["translationOptions"].map(function (locale) {
+                    return { locale: locale, selected: (locale === I18n.locale), label: I18n.t("languages." + locale.toLowerCase()) };
+                })
             };
             this.$el.html(this.template(context));
+        },
+
+        clickLanguage: function () {
+            I18n.locale = this.$("#dropdown-language option:selected")[0].value;
+            Cookies.set("chosenLocale", I18n.locale);
+            window.location.reload();
         },
 
         clickUser: function (e) {

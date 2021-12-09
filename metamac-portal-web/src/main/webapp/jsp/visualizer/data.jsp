@@ -63,9 +63,6 @@
 						        }); 
 
 						    } else {
-			                    I18n.defaultLocale = "es";
-			                    I18n.locale = "${pageContext.request.locale.language}";
-								
 			                    // http://estadisticas.arte-consultores.com/statistical-resources
 			                    App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
 			                    
@@ -97,7 +94,13 @@
 			                    App.config["showRightsHolder"] = ${showRightsHolder};
 			                    App.config["organisationUrn"] = "${organisationUrn}";
 			                    App.config["geographicalGranularityUrn"] = "${geographicalGranularityUrn}";
-			                    App.config["installationType"] = "${installationType}";                                   
+			                    App.config["installationType"] = "${installationType}";
+
+								var availableTranslations = ["es", "en", "pt"];
+								// TODO: get these languages from metadata
+								App.config["translationOptions"] = ["es", "en", "ca", "pt"].filter(function (lang) {
+									return availableTranslations.indexOf(lang) > -1;
+								});
 			                    
 			                    App.queryParams["agency"] = '${param.agencyId}';
 			                    App.queryParams["identifier"] = '${param.resourceId}';		                    
@@ -106,6 +109,13 @@
                                 App.queryParams["indicatorSystem"] = '${param.indicatorSystem}';
                                 App.queryParams["geo"] = '${param.geo}';
 								App.queryParams["multidatasetId"] = '${param.multidatasetId}';
+
+								I18n.defaultLocale = "es";
+								// TODO: get enabled from metadata
+								I18n.locale = true ? Cookies.get("chosenLocale") : ${pageContext.request.locale.language};
+								if(App.config["translationOptions"].indexOf(I18n.locale) < 0) {
+									I18n.locale = App.config["translationOptions"][0];
+								}
 			
 			                    console.log("starting app");
 			
