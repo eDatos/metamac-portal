@@ -22,7 +22,7 @@
 	<!-- begin: #cabecera -->
     <c:choose>    	
         <c:when test="${!empty portalStyleHeaderUrl}">
-            <c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}" />
+			<div id="portal-style-header"></div>
         </c:when>
         <c:otherwise>
 			<!-- portalStyleHeaderUrl is empty -->
@@ -59,7 +59,34 @@
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
       ga('create', '${analyticsGoogleTrackingId}', 'auto');
-      ga('send', 'pageview');    
-    </script>	
+      ga('send', 'pageview');
+
+	  fetch("${portalStyleHeaderUrl}", {
+		  method: 'GET',
+		  credentials: 'include'
+	  })
+	  .then(response => response.text())
+	  .then(data => {
+		  document.getElementById("portal-style-header").innerHTML = data;
+		  const headerScriptList = document.getElementById("portal-style-header").getElementsByTagName('script');
+		  let scriptCurrentlyLoading = -1;
+		  const reloadNextScript = function () {
+			  scriptCurrentlyLoading++;
+			  if (scriptCurrentlyLoading < headerScriptList.length) {
+				  const currentScript = headerScriptList[scriptCurrentlyLoading];
+				  const scriptCopy = document.createElement('script');
+				  scriptCopy.onload = reloadNextScript;
+				  if (currentScript.innerHTML) {
+					  scriptCopy.innerHTML = currentScript.innerHTML;
+				  } else if (currentScript.src) {
+					  scriptCopy.src = currentScript.src;
+				  }
+				  scriptCopy.async = false;
+				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+			  }
+		  };
+		  reloadNextScript();
+	  });
+    </script>
 </body>
 </html>
