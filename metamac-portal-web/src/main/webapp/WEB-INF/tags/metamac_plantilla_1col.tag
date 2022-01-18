@@ -75,14 +75,16 @@
 			  if (scriptCurrentlyLoading < headerScriptList.length) {
 				  const currentScript = headerScriptList[scriptCurrentlyLoading];
 				  const scriptCopy = document.createElement('script');
-				  scriptCopy.onload = reloadNextScript;
 				  if (currentScript.innerHTML) {
 					  scriptCopy.innerHTML = currentScript.innerHTML;
+					  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+					  reloadNextScript();
 				  } else if (currentScript.src) {
+					  scriptCopy.addEventListener('load', reloadNextScript);
 					  scriptCopy.src = currentScript.src;
+					  scriptCopy.async = false;
+					  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
 				  }
-				  scriptCopy.async = false;
-				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
 			  }
 		  };
 		  reloadNextScript();
