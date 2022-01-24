@@ -200,9 +200,19 @@
                     var modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
                     modal.show();
                 }).catch(function() {
-                    var modalContentView = new App.components.modal.InformationModalView({ message: I18n.t("modal.information.loginRequired.message") });
+                    var modal;
+                    var modalContentView = new App.components.modal.ConfirmationModalView({
+                        question: I18n.t("modal.information.loginRequired.message"),
+                        onConfirm: function () {
+                            UserUtils.login();
+                            modal.close();
+                        },
+                        onReject: function () {
+                            modal.close();
+                        },
+                    });
                     var title = I18n.t("modal.information.loginRequired.title");
-                    var modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                    modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
                     modal.show();
                 });
             }

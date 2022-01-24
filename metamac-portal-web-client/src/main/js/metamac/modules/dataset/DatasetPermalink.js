@@ -76,17 +76,21 @@
                     });
                 });
             };
-            return requestWithCaptcha(
-                requestFunction,
-                this.baseUrl(),
-                {
-                    captchaEl: el,
-                    action: "portal_permalink",
-                    buttonText: I18n.t("captcha.button.text"),
-                    labelText: I18n.t("captcha.label.text"),
-                    withButton: true
-                }
-            );
+            if (typeof requestWithCaptcha !== 'undefined') {
+                return requestWithCaptcha(
+                    requestFunction,
+                    this.baseUrl(),
+                    {
+                        captchaEl: el,
+                        action: "portal_permalink",
+                        buttonText: I18n.t("captcha.button.text"),
+                        labelText: I18n.t("captcha.label.text"),
+                        withButton: true
+                    }
+                );
+            } else {
+                return requestFunction(this.baseUrl());
+            }            
         },
     }
 

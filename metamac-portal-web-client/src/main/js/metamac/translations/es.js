@@ -310,7 +310,7 @@ I18n.translations.es = {
         information: {
             loginRequired: {
                 title: "Operación no válida",
-                message: "La operación que quiere realizar requiere que inicie sesión primero pulsando en el icono (<i class=\"icon icon-user\"></i>) que aparece arriba."
+                message: "La operación que quiere realizar requiere que inicie sesión primero. ¿Desea iniciar sesión?"
             }
         }
     },

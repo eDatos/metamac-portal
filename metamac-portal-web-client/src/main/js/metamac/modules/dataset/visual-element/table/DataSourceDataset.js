@@ -76,7 +76,7 @@
             var cellAttributes = this.data.getAttributes({ cell: cell });
             return !_.isUndefined(cellAttributes)
                 && !_.isUndefined(cellAttributes.primaryMeasureAttributes)
-                && _.compact(cellAttributes.primaryMeasureAttributes).length > 0;
+                && _.compact(_.pluck(cellAttributes.primaryMeasureAttributes, 'value')).length > 0;
         },
 
         cellAttributesAtIndex: function (cell) {

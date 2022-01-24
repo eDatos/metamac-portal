@@ -24,7 +24,7 @@
                 return _.extend({}, attributesMetadataIndexed[attributeValue["id"]], attributeValue);
             });
 
-            this.primaryMeasureAttributes = this.getPrimaryMeasureAttributesValues();
+            this.primaryMeasureAttributesValues = this.getPrimaryMeasureAttributesValues();
             this.combinatedDimensionsAttributes = this.getCombinatedDimensionsAttributes();
             this.dimensionsAttributes = this.getDimensionsAttributes();
             this.datasetAttributes = this.getDatasetAttributes();
@@ -41,12 +41,13 @@
         },
 
         getPrimaryMeasureAttributesByPos: function (pos) {
-            var attributes = this.primaryMeasureAttributes ? (this.primaryMeasureAttributes[pos] ? this.primaryMeasureAttributes[pos] : []) : [];
+            var attributeValues = this.primaryMeasureAttributesValues ? (this.primaryMeasureAttributesValues[pos] ? this.primaryMeasureAttributesValues[pos] : []) : [];
+            var primaryMeasureAttributes = _.where(this.attributes, { attachmentLevel: ATTACHMENT_LEVELS.PRIMARY_MEASURE });
             var self = this;
-            return _.map(attributes, function(atributeValue, i) {
+            return _.map(attributeValues, function(atributeValue, i) {
                 return {
                     value: atributeValue,
-                    attribute: self.localizeLabel(self.attributes[i].name.text),
+                    attribute: self.localizeLabel(primaryMeasureAttributes[i].name.text),
                 };
             });
         },

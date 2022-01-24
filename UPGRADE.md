@@ -8,7 +8,18 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 6.8.1 a X.Y.Z
+## 7.0.0 a 7.0.1
+* La dependencia de edatos-external-users pasa de obligatoria a opcional. El modo de indicarlo es que las siguientes propiedades no estén inicializadas. 
+
+* Debido a que la funcionalidad del captcha se ha movido a external-users, dicha funcionalidad estará deshabilitada si edatos-external-users no está instalado.
+
+```
+    metamac.edatos_external_users.rest.external
+    metamac.edatos_external_users.web.external.url
+    metamac.portal.rest.external.authentication.captcha.url
+```
+
+## 6.8.1 a 7.0.0
 
 * A partir de esta versión portal se integra con edatos-external-users. Para aprovechar estas funcionalidades asegúrese de que dicho proyecto esta instalado. En caso contrario simplemente no aparecerán. 
 * A partir de esta versión portal se integra con el captcha edatos-external-users. Para aprovechar estas funcionalidades asegúrese de que dicho proyecto esta instalado.

@@ -30,26 +30,6 @@
         return Cookies._cache[key];
     };
 
-    Cookies.set = function (key, value, options) {
-        options = Cookies._getExtendedOptions(options);
-        options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
-
-        Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
-
-        return Cookies;
-    };
-
-    Cookies.expire = function (key, options) {
-        return Cookies.set(key, undefined, options);
-    };
-
-    Cookies._areEnabled = function () {
-        return Cookies._navigator.cookieEnabled ||
-            Cookies.set('cookies.js', 1).get('cookies.js') === '1';
-    };
-
-    Cookies.enabled = Cookies._areEnabled();
-
     Cookies._getExtendedOptions = function (options) {
         return {
             path: options && options.path || Cookies.defaults.path,
@@ -57,10 +37,6 @@
             expires: options && options.expires || Cookies.defaults.expires,
             secure: options && options.secure !== undefined ?  options.secure : Cookies.defaults.secure
         };
-    };
-
-    Cookies._isValidDate = function (date) {
-        return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
     };
 
     Cookies._getExpiresDate = function (expires, now) {
@@ -89,6 +65,11 @@
         cookieString += options.secure ? ';secure' : '';
 
         return cookieString;
+    };    
+    
+    Cookies._renewCache = function () {
+        Cookies._cache = Cookies._getCookieObjectFromString(Cookies._document.cookie);
+        Cookies._cachedDocumentCookie = Cookies._document.cookie;
     };
 
     Cookies._getCookieObjectFromString = function (documentCookie) {
@@ -108,10 +89,29 @@
         return cookieObject;
     };
 
-    Cookies._renewCache = function () {
-        Cookies._cache = Cookies._getCookieObjectFromString(Cookies._document.cookie);
-        Cookies._cachedDocumentCookie = Cookies._document.cookie;
+    Cookies.set = function (key, value, options) {
+        options = Cookies._getExtendedOptions(options);
+        options.expires = Cookies._getExpiresDate(value === undefined ? -1 : options.expires);
+
+        Cookies._document.cookie = Cookies._generateCookieString(key, value, options);
+
+        return Cookies;
     };
+
+    Cookies.expire = function (key, options) {
+        return Cookies.set(key, undefined, options);
+    };
+
+    Cookies._areEnabled = function () {
+        return Cookies._navigator.cookieEnabled ||
+            Cookies.set('cookies.js', 1).get('cookies.js') === '1';
+    };
+
+    Cookies.enabled = Cookies._areEnabled();
+
+    Cookies._isValidDate = function (date) {
+        return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
+    };    
 
     // AMD support
     if (typeof define === 'function' && define.amd) {

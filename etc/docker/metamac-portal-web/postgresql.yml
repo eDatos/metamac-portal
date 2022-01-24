@@ -1,0 +1,9 @@
+# docker-compose -f postgresql.yml up
+version: '3'
+services:
+  postgresql:
+    build: 
+      context: ../../ # Contexto "raro" porque desde el dockerfile se añaden los db que están en etc/db
+      dockerfile: docker/metamac-portal-web/postgresql.dockerfile
+    ports:
+        - 5433:5432

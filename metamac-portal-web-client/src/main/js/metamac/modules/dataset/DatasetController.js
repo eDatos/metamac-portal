@@ -130,7 +130,7 @@
                     deferred.resolve();
                 }
 
-                if(!$(".dataset-header-user")) {
+                if(!$(".dataset-header-user") || !(App.endpoints["external-users"] && App.endpoints["external-users-web"])) {
                     console.log("No se pudo cargar el header de usuarios");
                 } else {
                     new UserHeaderView({

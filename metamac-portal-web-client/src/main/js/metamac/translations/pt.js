@@ -302,7 +302,7 @@ I18n.translations.pt = {
         information: {
             loginRequired: {
                 title: "Ação inválida",
-                message: "A ação que você deseja realizar requer que você faça login primeiro clicando no ícone acima (<i class=\"icon icon-user\"></i>)."
+                message: "A ação que você deseja realizar requer que você faça login primeiro. Você quer fazer o login?"
             }
         }
     },

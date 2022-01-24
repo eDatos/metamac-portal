@@ -58,7 +58,7 @@ public class ExternalUserFilter implements RequestHandler {
                 request.getSession().setAttribute(AUTHENTICATED_SESSION_ATTRIBUTE, false);
             }
         } else {
-            LOG.info("No external user token.");
+            LOG.debug("No external user token.");
             request.getSession().setAttribute(AUTHENTICATED_SESSION_ATTRIBUTE, false);
         }
         return null;

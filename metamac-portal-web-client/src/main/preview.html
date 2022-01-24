@@ -41,6 +41,7 @@
         I18n.defaultLocale = "es";
         I18n.locale = "es";
 
+        
         App.endpoints["statistical-resources"] = "http://estadisticas.arte-consultores.com/statistical-resources/v1.0";
         App.endpoints["structural-resources"] = "http://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal/v1.0";
         App.endpoints["statistical-visualizer"] = "http://estadisticas.arte-consultores.com/statistical-visualizer";
@@ -50,6 +51,13 @@
         App.endpoints["export"] = "http://localhost:8080/statistical-visualizer-api-5.0.1-SNAPSHOT/apis/export/v1.0";
         //  App.endpoints["export"] = "http://localhost:8080/statistical-visualizer-3.0.1-SNAPSHOT/apis/export/v1.0";
         // App.endpoints["export"] = "http://localhost:8080/statistical-visualizer-api-4.1.2-SNAPSHOT/apis/export/v1.0";
+
+        // DEMOS - INTERNAL
+        // App.endpoints["statistical-resources"] =  "https://estadisticas.arte-consultores.com/statistical-resources-internal/apis/statistical-resources-internal/v1.0";
+
+        // GOBCAN
+        // App.endpoints["statistical-resources"] = "https://datos.canarias.es/api/estadisticas/statistical-resources/v1.0";
+        // App.endpoints["structural-resources"] = "https://datos.canarias.es/api/estadisticas/structural-resources/v1.0";        
 
         App.endpoints["indicators"] = "http://estadisticas.arte-consultores.com/indicators/v1.0";
         // App.endpoints["indicators"] = "http://localhost:8080/indicators-internal-6.0.1-SNAPSHOT/internal/api/indicators/v1.0";
@@ -100,6 +108,12 @@
         App.queryParams = { "agency": "ISTAC", "identifier": "C00010A_000004", "version": "001.000", "type": "dataset" };
         // METAMAC-2729 - Los permalinks fallan al cambiar de visualización
         App.queryParams = { "agency": "ISTAC", "identifier": "C00031A_000002", "version": "001.006", "type": "dataset", "permalinkId": "1cfqto8w12ekcxc0tmz6v35g0" };
+
+        // EDATOS-3489 - https://www3.gobiernodecanarias.org/istac/statistical-visualizer/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E30183A_000001&version=1.5#visualization/table
+        // App.queryParams = { "agency": "ISTAC", "identifier": "E30183A_000001", "version": "1.5", "type": "dataset" };
+
+        // EDATOS-3489 - https://estadisticas.arte-consultores.com/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=ISTAC&resourceId=E30103A_000026&version=1.0#visualization/table
+        // App.queryParams = { "agency": "ISTAC", "identifier": "E30103A_000026", "version": "1.0", "type": "dataset" };
 
         // Vista widget
         // App.config.widget = true;

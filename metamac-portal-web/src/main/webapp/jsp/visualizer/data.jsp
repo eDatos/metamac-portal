@@ -114,10 +114,12 @@
 			                    console.log("starting app");
 			
 			                    App.start();
-			                    
-			                    LazyLoad.js("${ApiUrlCaptcha}/authentication.js", function() {
-			                    	LazyLoad.js("//s7.addthis.com/js/300/addthis_widget.js${AddthisCode}");
-			                    });
+
+                                if(${ApiUrlCaptcha != "error"}) {
+                                    LazyLoad.js("${ApiUrlCaptcha}/authentication.js", function() {
+                                        LazyLoad.js("//s7.addthis.com/js/300/addthis_widget.js${AddthisCode}");
+                                    });
+                                }
 			                }		                    
 		                });
 		            });		            
