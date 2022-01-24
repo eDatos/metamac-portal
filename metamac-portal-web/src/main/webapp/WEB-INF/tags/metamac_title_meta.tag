@@ -53,7 +53,9 @@
         String EXTERNAL_CAPTCHA_URL_BASE = "";
 		Boolean internalPortal = null;
 		String ORGANISATION = "";
-				
+        String INTERNATIONALIZATION_COOKIE_ID = "";
+        String INTERNATIONALIZATION_COOKIE_UPDATE_URL = "";
+
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
 			   
@@ -75,7 +77,14 @@
 		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
-            EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();            
+            EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
+            try {
+                INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
+                INTERNATIONALIZATION_COOKIE_UPDATE_URL = configurationService.retrieveInternationalizationCookieUpdateUrl();
+            } catch (MetamacException ignored) {
+                INTERNATIONALIZATION_COOKIE_ID = "error";
+                INTERNATIONALIZATION_COOKIE_UPDATE_URL = "error";
+            }
             try {
                 // We group this try catch because all of them are served from external-users
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();
@@ -108,7 +117,9 @@
             request.setAttribute("ApiUrlCaptcha", EXTERNAL_CAPTCHA_URL_BASE);
             request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
-		
+            request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
+            request.setAttribute("internationalizationCookieUpdateUrl", INTERNATIONALIZATION_COOKIE_UPDATE_URL);
+
 		} catch (MetamacException e) {
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
 		 	request.setAttribute("StatisticalVisualizerBase", "error");
@@ -122,7 +133,9 @@
             request.setAttribute("ApiUrlCaptcha", "error");
 		 	request.setAttribute("organisationUrn", "error");
 		 	request.setAttribute("geographicalGranularityUrn", "error");
-            
+            request.setAttribute("internationalizationCookie", "error");
+            request.setAttribute("internationalizationCookieUpdateUrl", "error");
+
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
 		 	log.error("Error durante la inicialización de propiedades", e);

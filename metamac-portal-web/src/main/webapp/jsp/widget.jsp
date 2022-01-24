@@ -83,12 +83,16 @@
             request.setAttribute("analyticsGoogleTrackingId", "error");
 		}
 	%>
+	<%
+		String locale = request.getParameter("locale");
+		request.setAttribute("locale", locale);
+	%>
     <%
 		String permalinkId = request.getParameter("permalink");
 		String sharedVisualizerUrl = request.getParameter("sharedVisualizerUrl");
         if (permalinkId != null && !permalinkId.isEmpty()) {
             Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId);
-            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl));   
+            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, locale));
         }         
     %>
     <%
@@ -98,7 +102,7 @@
         if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
             Boolean internalPortal = false; // Widgets sólo externos
             Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
-            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));   
+            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale));
         }        
     %>
 </head>
@@ -122,7 +126,7 @@
 LazyLoad.js('client/metamac.js?d=${jsDate}', function () {
 
 	I18n.defaultLocale = "es";
-    I18n.locale = "es";
+    I18n.locale = "${locale}";
 
     App.queryParams["agency"] = getQueryParams("agencyId");
     App.queryParams["identifier"] = getQueryParams("resourceId");

@@ -63,10 +63,14 @@
 						        }); 
 
 						    } else {
-			                    I18n.defaultLocale = "es";
-			                    I18n.locale = "${pageContext.request.locale.language}";
-								
-			                    // http://estadisticas.arte-consultores.com/statistical-resources
+								fetch("${internationalizationCookieUpdateUrl}", {
+									method: 'GET',
+									credentials: 'include'
+								}).then(() => {
+									I18n.defaultLocale = "es";
+									I18n.locale = "${internationalizationCookie}" !== "error" ? Cookies.get("${internationalizationCookie}") : "${pageContext.request.locale.language}";
+								});
+								// http://estadisticas.arte-consultores.com/statistical-resources
 			                    App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
 			                    
 			                    // http://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal
@@ -97,8 +101,8 @@
 			                    App.config["showRightsHolder"] = ${showRightsHolder};
 			                    App.config["organisationUrn"] = "${organisationUrn}";
 			                    App.config["geographicalGranularityUrn"] = "${geographicalGranularityUrn}";
-			                    App.config["installationType"] = "${installationType}";                                   
-			                    
+			                    App.config["installationType"] = "${installationType}";
+
 			                    App.queryParams["agency"] = '${param.agencyId}';
 			                    App.queryParams["identifier"] = '${param.resourceId}';		                    
 			                    App.queryParams["version"] = '${param.version}';
@@ -106,7 +110,7 @@
                                 App.queryParams["indicatorSystem"] = '${param.indicatorSystem}';
                                 App.queryParams["geo"] = '${param.geo}';
 								App.queryParams["multidatasetId"] = '${param.multidatasetId}';
-			
+
 			                    console.log("starting app");
 			
 			                    App.start();
