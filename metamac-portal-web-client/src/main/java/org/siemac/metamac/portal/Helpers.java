@@ -206,6 +206,10 @@ public class Helpers {
         return objectMapper.readValue(content, PermalinkContent.class);
     }
 
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) {
+        return buildUrl(permalink, sharedVisualizerUrl, null);
+    }
+
     public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -219,6 +223,10 @@ public class Helpers {
         stringBuilder.append("/").append("permalink").append("/").append(permalink.getId());
 
         return stringBuilder.toString();
+    }
+
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl) {
+        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null);
     }
 
     public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale) {
@@ -245,7 +253,9 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_INDICATOR_SYSTEM, indicatorSystem);
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
-        appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
+        if(locale != null) {
+            appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
+        }
     }
 
     private static String resourceKindToResourceType(String kind) {
