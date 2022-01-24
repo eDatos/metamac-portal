@@ -63,9 +63,13 @@
 						        }); 
 
 						    } else {
-								I18n.defaultLocale = "es";
-								I18n.locale = Cookies.get("chosenLocale") || "${pageContext.request.locale.language}";
-
+								fetch("${internationalizationCookieUpdateUrl}", {
+									method: 'GET',
+									credentials: 'include'
+								}).then(() => {
+									I18n.defaultLocale = "es";
+									I18n.locale = "${internationalizationCookie}" !== "error" ? Cookies.get("${internationalizationCookie}") : "${pageContext.request.locale.language}";
+								});
 								// http://estadisticas.arte-consultores.com/statistical-resources
 			                    App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
 			                    

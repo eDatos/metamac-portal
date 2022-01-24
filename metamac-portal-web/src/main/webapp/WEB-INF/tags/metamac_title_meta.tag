@@ -53,6 +53,8 @@
         String EXTERNAL_CAPTCHA_URL_BASE = "";
 		Boolean internalPortal = null;
 		String ORGANISATION = "";
+        String INTERNATIONALIZATION_COOKIE_ID = "";
+        String INTERNATIONALIZATION_COOKIE_UPDATE_URL = "";
 				
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
@@ -77,6 +79,13 @@
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
             EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
             EXTERNAL_CAPTCHA_URL_BASE = configurationService.retrieveCaptchaExternalApiUrlBase();
+            try {
+                INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
+                INTERNATIONALIZATION_COOKIE_UPDATE_URL = configurationService.retrieveInternationalizationCookieUpdateUrl();
+            } catch (MetamacException ignored) {
+                INTERNATIONALIZATION_COOKIE_ID = "error";
+                INTERNATIONALIZATION_COOKIE_UPDATE_URL = "error";
+            }
             try {
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();
                 EXTERNAL_USERS_WEB_APPLICATION_BASE = configurationService.retrieveExternalUsersExternalWebApplicationUrlBase();
@@ -106,6 +115,8 @@
             request.setAttribute("ApiUrlCaptcha", EXTERNAL_CAPTCHA_URL_BASE);
             request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
+            request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
+            request.setAttribute("internationalizationCookieUpdateUrl", INTERNATIONALIZATION_COOKIE_UPDATE_URL);
 		
 		} catch (MetamacException e) {
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
@@ -120,7 +131,9 @@
             request.setAttribute("ApiUrlCaptcha", "error");
 		 	request.setAttribute("organisationUrn", "error");
 		 	request.setAttribute("geographicalGranularityUrn", "error");
-            
+            request.setAttribute("internationalizationCookie", "error");
+            request.setAttribute("internationalizationCookieUpdateUrl", "error");
+
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
 		 	log.error("Error durante la inicialización de propiedades", e);
@@ -142,7 +155,7 @@
         String multidatasetId = request.getParameter(Helpers.PARAMETER_MULTIDATASET_ID);
         if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
             Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
-            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));   
+            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));
         }        
     %>
 	<%               
