@@ -78,33 +78,33 @@
 		  }
 	  };
 
-	  fetch("${portalStyleHeaderUrl}", {
-		  method: 'GET',
-		  credentials: 'include'
-	  })
-	  .then(response => response.text())
-	  .then(data => {
-		  const headerEl = document.getElementById("portal-style-header");
-		  if(headerEl) {
+	  if(${!empty portalStyleHeaderUrl}) {
+		  fetch("${portalStyleHeaderUrl}", {
+			  method: 'GET',
+			  credentials: 'include'
+		  })
+		  .then(response => response.text())
+		  .then(data => {
+			  const headerEl = document.getElementById("portal-style-header");
 			  headerEl.innerHTML = data;
 			  const headerScriptList = headerEl.getElementsByTagName('script');
 			  reloadNextScript(headerScriptList, 0);
-		  }
-	  });
+		  });
+	  }
 
-	  fetch("${portalStyleFooterUrl}", {
-		  method: 'GET',
-		  credentials: 'include'
-	  })
-	  .then(response => response.text())
-	  .then(data => {
-		  const footerEl = document.getElementById("portal-style-footer");
-		  if(footerEl) {
+	  if(${!empty portalStyleFooterUrl}) {
+		  fetch("${portalStyleFooterUrl}", {
+			  method: 'GET',
+			  credentials: 'include'
+		  })
+		  .then(response => response.text())
+		  .then(data => {
+			  const footerEl = document.getElementById("portal-style-footer");
 			  footerEl.innerHTML = data;
 			  const footerScriptList = footerEl.getElementsByTagName('script');
 			  reloadNextScript(footerScriptList, 0);
-		  }
-	  });
+		  });
+	  }
     </script>
 </body>
 </html>
