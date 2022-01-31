@@ -44,7 +44,7 @@
 	<!-- begin: pie -->
     <c:choose>      
         <c:when test="${!empty portalStyleFooterUrl}">
-            <c:import charEncoding="UTF-8" url="${portalStyleFooterUrl}" />
+			<div id="portal-style-footer"></div>
         </c:when>
         <c:otherwise>			
 			<!-- portalStyleFooterUrl is empty -->
@@ -61,33 +61,49 @@
       ga('create', '${analyticsGoogleTrackingId}', 'auto');
       ga('send', 'pageview');
 
+	  const reloadNextScript = function (scriptsList, scriptIndex) {
+		  if (scriptIndex < scriptsList.length) {
+			  const currentScript = scriptsList[scriptIndex];
+			  const scriptCopy = document.createElement('script');
+			  if (currentScript.innerHTML) {
+				  scriptCopy.innerHTML = currentScript.innerHTML;
+				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+				  reloadNextScript(scriptsList, scriptIndex + 1);
+			  } else if (currentScript.src) {
+				  scriptCopy.addEventListener('load', function () { reloadNextScript(scriptsList, scriptIndex + 1) });
+				  scriptCopy.src = currentScript.src;
+				  scriptCopy.async = false;
+				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+			  }
+		  }
+	  };
+
 	  fetch("${portalStyleHeaderUrl}", {
 		  method: 'GET',
 		  credentials: 'include'
 	  })
 	  .then(response => response.text())
 	  .then(data => {
-		  document.getElementById("portal-style-header").innerHTML = data;
-		  const headerScriptList = document.getElementById("portal-style-header").getElementsByTagName('script');
-		  let scriptCurrentlyLoading = -1;
-		  const reloadNextScript = function () {
-			  scriptCurrentlyLoading++;
-			  if (scriptCurrentlyLoading < headerScriptList.length) {
-				  const currentScript = headerScriptList[scriptCurrentlyLoading];
-				  const scriptCopy = document.createElement('script');
-				  if (currentScript.innerHTML) {
-					  scriptCopy.innerHTML = currentScript.innerHTML;
-					  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
-					  reloadNextScript();
-				  } else if (currentScript.src) {
-					  scriptCopy.addEventListener('load', reloadNextScript);
-					  scriptCopy.src = currentScript.src;
-					  scriptCopy.async = false;
-					  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
-				  }
-			  }
-		  };
-		  reloadNextScript();
+		  const headerEl = document.getElementById("portal-style-header");
+		  if(headerEl) {
+			  headerEl.innerHTML = data;
+			  const headerScriptList = headerEl.getElementsByTagName('script');
+			  reloadNextScript(headerScriptList, 0);
+		  }
+	  });
+
+	  fetch("${portalStyleFooterUrl}", {
+		  method: 'GET',
+		  credentials: 'include'
+	  })
+	  .then(response => response.text())
+	  .then(data => {
+		  const footerEl = document.getElementById("portal-style-footer");
+		  if(footerEl) {
+			  footerEl.innerHTML = data;
+			  const footerScriptList = footerEl.getElementsByTagName('script');
+			  reloadNextScript(footerScriptList, 0);
+		  }
 	  });
     </script>
 </body>
