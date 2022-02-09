@@ -23,8 +23,6 @@
 <%@ tag import="java.util.Date" %>
 <%@ tag import="java.text.SimpleDateFormat" %>
 	<%
-	
-		Helpers helper = new Helpers(request.getLocale().getLanguage());
         Logger log = LoggerFactory.getLogger(getClass());
 		ServletContext context = request.getSession().getServletContext();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -155,7 +153,18 @@
             response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));   
         }        
     %>
-	<%               
+	<%
+        Cookie[] cookies = request.getCookies();
+        String locale = request.getLocale().getLanguage();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(INTERNATIONALIZATION_COOKIE_ID)) {
+                    locale = cookie.getValue();
+                }
+            }
+        }
+        Helpers helper = new Helpers(locale);
+
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);
         String resourceId = request.getParameter(Helpers.PARAMETER_RESOURCE_ID);
         String version = request.getParameter(Helpers.PARAMETER_VERSION);
@@ -243,7 +252,7 @@
 	   if (servletPath != null) {
 	       organizationService = servletPath.split("/")[2];
 	   }
-       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService));
+       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale));
        request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService));
        request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService));
        request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService));

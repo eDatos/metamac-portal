@@ -4,7 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
+import org.siemac.edatos.core.common.lang.LocaleUtil;
+import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,18 +55,18 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     /* Portal specific. See web.xml for matched patterns */
-    public static String getPortalStyleHeaderUrl(String organizationService) {
+    public static String getPortalStyleHeaderUrl(String organizationService, String lang) {
         switch (organizationService) {
             case "agricultura":
-                return portalAgricultureStyleHeaderUrl;
+                return portalAgricultureStyleHeaderUrl + getBreadcrumbsParams(lang);
             case "medioambiente":
-                return portalEnvironmentStyleHeaderUrl;
+                return portalEnvironmentStyleHeaderUrl + getBreadcrumbsParams(lang);
             case "turismo":
-                return portalTourismStyleHeaderUrl;
+                return portalTourismStyleHeaderUrl + getBreadcrumbsParams(lang);
             case "funcion-publica":
-                return portalPublicServiceStyleHeaderUrl;
+                return portalPublicServiceStyleHeaderUrl + getBreadcrumbsParams(lang);
             default:
-                return portalDefaultStyleHeaderUrl;
+                return portalDefaultStyleHeaderUrl + getBreadcrumbsParams(lang);
         }
     }
 
@@ -110,7 +113,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     public static void setPortalDefaultStyleHeaderUrl(String portalDefaultStyleHeaderUrl) {
-        WebUtils.portalDefaultStyleHeaderUrl = portalDefaultStyleHeaderUrl + getBreadcrumbsParams();
+        WebUtils.portalDefaultStyleHeaderUrl = portalDefaultStyleHeaderUrl;
     }
 
     public static void setPortalDefaultStyleCssUrl(String portalDefaultStyleCssUrl) {
@@ -122,7 +125,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     public static void setPortalAgricultureStyleHeaderUrl(String portalAgricultureStyleHeaderUrl) {
-        WebUtils.portalAgricultureStyleHeaderUrl = portalAgricultureStyleHeaderUrl + getBreadcrumbsParams();
+        WebUtils.portalAgricultureStyleHeaderUrl = portalAgricultureStyleHeaderUrl;
     }
 
     public static void setPortalAgricultureStyleCssUrl(String portalAgricultureStyleCssUrl) {
@@ -134,7 +137,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     public static void setPortalEnvironmentStyleHeaderUrl(String portalEnvironmentStyleHeaderUrl) {
-        WebUtils.portalEnvironmentStyleHeaderUrl = portalEnvironmentStyleHeaderUrl + getBreadcrumbsParams();
+        WebUtils.portalEnvironmentStyleHeaderUrl = portalEnvironmentStyleHeaderUrl;
     }
 
     public static void setPortalEnvironmentStyleCssUrl(String portalEnvironmentStyleCssUrl) {
@@ -146,7 +149,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     public static void setPortalTourismStyleHeaderUrl(String portalTourismStyleHeaderUrl) {
-        WebUtils.portalTourismStyleHeaderUrl = portalTourismStyleHeaderUrl + getBreadcrumbsParams();
+        WebUtils.portalTourismStyleHeaderUrl = portalTourismStyleHeaderUrl;
     }
 
     public static void setPortalTourismStyleCssUrl(String portalTourismStyleCssUrl) {
@@ -158,7 +161,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     public static void setPortalPublicServiceStyleHeaderUrl(String portalPublicServiceStyleHeaderUrl) {
-        WebUtils.portalPublicServiceStyleHeaderUrl = portalPublicServiceStyleHeaderUrl + getBreadcrumbsParams();
+        WebUtils.portalPublicServiceStyleHeaderUrl = portalPublicServiceStyleHeaderUrl;
     }
 
     public static void setPortalPublicServiceStyleCssUrl(String portalPublicServiceStyleCssUrl) {
@@ -169,10 +172,13 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         WebUtils.portalPublicServiceStyleFooterUrl = portalPublicServiceStyleFooterUrl;
     }
 
-    private static String getBreadcrumbsParams() {
+    private static String getBreadcrumbsParams(String lang) {
         try {
+            Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
+            String homeTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_HOME, locale);
+            String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
             // IDEA: EDATOS-3159 move http://www.gobiernodecanarias.org to property
-            return "?enlace=http://www.gobiernodecanarias.org/istac&miga=" + URLEncoder.encode("Inicio|Visualizador estadístico", StandardCharsets.UTF_8.toString());
+            return "?enlace=http://www.gobiernodecanarias.org/istac&miga=" + URLEncoder.encode(homeTranslation + "|" + visualizerTranslation, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             log.error("UnsupportedEncodingException encoding a constant. This is not supposed to EVER throw", e);
             return "";
