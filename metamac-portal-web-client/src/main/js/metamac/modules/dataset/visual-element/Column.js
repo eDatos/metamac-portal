@@ -90,6 +90,7 @@
         _bindEvents: function () {
             var debounceUpdate = _.debounce(this.update, 20);
             this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", debounceUpdate);
+            this.listenTo(this.filterDimensions, "change:valuesToIgnore", debounceUpdate);
 
             var resize = _.debounce(_.bind(this._updateSize, this), 200);
             this.$el.on("resize", function (e) {
@@ -109,7 +110,7 @@
 
             this.filterDimensions.zones.get('left').set('fixedSize', 1); // AxisX
             this.filterDimensions.zones.get('axisy').set('maxSize', 1);
-            this.filterDimensions.zones.get('top').set('maxSize', 1); // columns                                                  
+            this.filterDimensions.zones.get('top').set('maxSize', 1); // columns
         },
 
         _applyVisualizationRestrictions: function () {
@@ -193,7 +194,6 @@
                 var columnSeries = [];
                 _.each(columnsDimensionSelectedCategories, function (columnCategory, columnCategoryIndex) {
                     var serie = {};
-
                     var currentPermutation = {};
                     currentPermutation[horizontalDimension.id] = horizontalCategory.id;
                     currentPermutation[columnsDimension.id] = columnCategory.id;
@@ -209,7 +209,7 @@
                     serie.horizontalCategory = horizontalCategoryIndex;
                     serie.columnCategory = columnCategoryIndex;
 
-                    // Instead of checking if we are working with nested columns or not, we simply store the last order. 
+                    // Instead of checking if we are working with nested columns or not, we simply store the last order.
                     // In the case of not nested columns, the x axis will be sorted properly
                     horizontalAxisCategories[horizontalCategoryIndex] = { horizontalCategoryIndex: horizontalCategoryIndex, order: y };
 
@@ -260,7 +260,42 @@
             });
 
             result.xAxis = xaxis;
+
+            result = this.removeIgnoredValuesFromSeries(result);
+
             return result;
+        },
+
+        removeIgnoredValuesFromSeries: function (result) {
+            var toRemove = [];
+
+            if (this.filterDimensions.getValuesToIgnoreStatus().NULL) {
+                toRemove.push(null);
+            }
+            if (this.filterDimensions.getValuesToIgnoreStatus().ZERO) {
+                toRemove.push(0);
+            }
+
+            if (toRemove.length === 0) {
+                return result;
+            }
+
+            var filteredSeries = [];
+            var filteredXAxis = [];
+
+            for (var [i, xAxis] of result.xAxis.entries()) {
+                var serie = result.series.find(serie => serie.data[0].x === i);
+                if (!toRemove.includes(serie.data[0].y)) {
+                    serie.data[0].x = filteredXAxis.length;
+                    filteredSeries.push(serie);
+                    filteredXAxis.push(xAxis);
+                }
+            }
+
+            return {
+                series: filteredSeries.sort((a, b) => a.horizontalCategory > b.horizontalCategory ? 1 : -1),
+                xAxis: filteredXAxis
+            };
         },
 
         update: function () {
