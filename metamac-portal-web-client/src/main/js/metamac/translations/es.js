@@ -263,8 +263,6 @@ I18n.translations.es = {
         month_names: [null, "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
         abbr_month_names: [null, "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
         meridian: ["am", "pm"]
-
-
     },
     indicator: {
         dimension: {

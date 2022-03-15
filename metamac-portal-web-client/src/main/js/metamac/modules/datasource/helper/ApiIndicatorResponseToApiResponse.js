@@ -5,7 +5,6 @@
 
     var ATTRIBUTE_OBS_CONF = "OBS_CONF";
     var DEFAULT = "__default__";
-    var SPANISH_LOCALE = "es";
 
     App.datasource.helper.ApiIndicatorResponseToApiResponse = {
 
@@ -96,7 +95,7 @@
             var parsedDimensions = _.map(dimensions, function (dimension, index) {
                 return {
                     id: index,
-                    name: self._buildLocalizedSpanishText(I18n.t("indicator.dimension.name." + index)),
+                    name: self._buildLocalizedText(I18n.t("indicator.dimension.name." + index), I18n.locale),
                     type: self.indicatorDimensionTypeToDimensionType(dimension.code),
                     dimensionValues: {
                         value: self.indicatorMetadataRepresentationsToMetadataRepresentations(dimension),
@@ -143,7 +142,7 @@
         },
 
         getTranslatedString: function (localisedString) {
-            return localisedString[SPANISH_LOCALE] || localisedString[DEFAULT];
+            return localisedString[I18n.locale] || localisedString[I18n.defaultLocale] || localisedString[DEFAULT];
         },
 
         indicatorMetadataResponseToMetadataResponse: function (response) {
@@ -152,11 +151,8 @@
                 total: 0
             };
 
-            var title = response.title ? this.getTranslatedString(response.title) : null;
-            var description = response.conceptDescription ? this.getTranslatedString(response.conceptDescription) : null;
-
-            response.name = this._buildLocalizedSpanishText(title);
-            response.description = this._buildLocalizedSpanishText(description);
+            response.name = response.title;
+            response.description = response.conceptDescription;
 
             response.metadata = {
                 version: response.version,
@@ -236,12 +232,12 @@
             });
         },
 
-        _buildLocalizedSpanishText: function (value) {
+        _buildLocalizedText: function (value, lang) {
             if (value == null) { return value };
             return {
                 text: [{
                     value: value,
-                    lang: SPANISH_LOCALE
+                    lang: lang
                 }]
             };
         }
