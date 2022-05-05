@@ -4,11 +4,11 @@
     <comment>Configurations</comment>
    
     <!-- Database -->
-    <entry key="metamac.portal.db.url">jdbc:oracle:thin:@teide:1521:orcl</entry>
+    <entry key="metamac.portal.db.url">jdbc:postgresql://192.168.10.30:5432/ARTE</entry>
     <entry key="metamac.portal.db.username">JENKINS_METAMAC_PORTAL</entry>
     <entry key="metamac.portal.db.password">JENKINS_METAMAC_PORTAL</entry>
-    <entry key="metamac.portal.db.dialect">org.siemac.metamac.hibernate.dialect.Oracle10gDialectMetamac</entry>
-    <entry key="metamac.portal.db.driver_name">oracle.jdbc.OracleDriver</entry>
-    <entry key="metamac.portal.db.provider">ORACLE</entry>
+    <entry key="metamac.portal.db.dialect">org.hibernate.dialect.PostgreSQLDialect</entry>
+    <entry key="metamac.portal.db.driver_name">org.postgresql.Driver</entry>
+    <entry key="metamac.portal.db.provider">POSTGRESQL</entry>
   
 </properties>
