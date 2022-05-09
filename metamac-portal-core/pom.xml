@@ -537,7 +537,7 @@
                 <executions>
                     <!-- PostgreSQL -->
                     <execution>
-                        <id>postgresql</id>
+                        <id>default-test</id>
                         <phase>test</phase>
                         <goals>
                             <goal>test</goal>
