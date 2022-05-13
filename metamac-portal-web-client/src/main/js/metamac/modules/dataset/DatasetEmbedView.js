@@ -55,6 +55,7 @@
                 widgetUrl: this.getWidgetUrl(),
                 params: this.getSharedVisualizerParams(permalinkId),
                 sharedVisualizerUrl: this.filterDimensions.metadata.getSharedVisualizerUrl(),
+                locale: I18n.locale,
                 defaultId: 'dataset-widget',
                 defaultWidth: 500,
                 defaultHeight: 400,

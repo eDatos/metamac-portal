@@ -23,8 +23,6 @@
 <%@ tag import="java.util.Date" %>
 <%@ tag import="java.text.SimpleDateFormat" %>
 	<%
-	
-		Helpers helper = new Helpers(request.getLocale().getLanguage());
         Logger log = LoggerFactory.getLogger(getClass());
 		ServletContext context = request.getSession().getServletContext();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -53,7 +51,8 @@
         String EXTERNAL_CAPTCHA_URL_BASE = "";
 		Boolean internalPortal = null;
 		String ORGANISATION = "";
-				
+        String INTERNATIONALIZATION_COOKIE_ID = "";
+
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
 			   
@@ -75,7 +74,12 @@
 		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
-            EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();            
+            EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
+            try {
+                INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
+            } catch (MetamacException ignored) {
+                INTERNATIONALIZATION_COOKIE_ID = "error";
+            }
             try {
                 // We group this try catch because all of them are served from external-users
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();
@@ -108,7 +112,8 @@
             request.setAttribute("ApiUrlCaptcha", EXTERNAL_CAPTCHA_URL_BASE);
             request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
-		
+            request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
+
 		} catch (MetamacException e) {
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
 		 	request.setAttribute("StatisticalVisualizerBase", "error");
@@ -122,7 +127,8 @@
             request.setAttribute("ApiUrlCaptcha", "error");
 		 	request.setAttribute("organisationUrn", "error");
 		 	request.setAttribute("geographicalGranularityUrn", "error");
-            
+            request.setAttribute("internationalizationCookie", "error");
+
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
 		 	log.error("Error durante la inicialización de propiedades", e);
@@ -147,7 +153,18 @@
             response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));   
         }        
     %>
-	<%               
+	<%
+        Cookie[] cookies = request.getCookies();
+        String locale = request.getLocale().getLanguage();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(INTERNATIONALIZATION_COOKIE_ID)) {
+                    locale = cookie.getValue();
+                }
+            }
+        }
+        Helpers helper = new Helpers(locale);
+
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);
         String resourceId = request.getParameter(Helpers.PARAMETER_RESOURCE_ID);
         String version = request.getParameter(Helpers.PARAMETER_VERSION);
@@ -235,7 +252,7 @@
 	   if (servletPath != null) {
 	       organizationService = servletPath.split("/")[2];
 	   }
-       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService));
+       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale));
        request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService));
        request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService));
        request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService));

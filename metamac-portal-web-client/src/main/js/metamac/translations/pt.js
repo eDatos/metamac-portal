@@ -89,6 +89,10 @@ I18n.translations.pt = {
             "for": "Para"
         },
         sidebar: {
+            ignorable: {
+                null: 'Ver categorias com células em branco',
+                zero: 'Ver categorias com zero células'
+            },
             info: {
                 title: "Info"
             },
@@ -211,6 +215,7 @@ I18n.translations.pt = {
 
             apiDocumentationUrl: "Acesso à documentação API",
             apiUrl: "Acesso à API para desenvolvedores",
+            selectionApiUrl: "Acessar a seleção atual na API",
 
             nextVersion: {
                 title: "Próxima atualização",
@@ -223,7 +228,8 @@ I18n.translations.pt = {
         },
         observation: {
             measure: {
-                title: 'Dados de observação'
+                title: 'Dados de observação',
+                data: 'Dados'
             },
             attributes: {
                 title: 'Atributos de observação',
@@ -302,7 +308,7 @@ I18n.translations.pt = {
         information: {
             loginRequired: {
                 title: "Ação inválida",
-                message: "A ação que você deseja realizar requer que você faça login primeiro clicando no ícone acima (<i class=\"icon icon-user\"></i>)."
+                message: "A ação que você deseja realizar requer que você faça login primeiro. Você quer fazer o login?"
             }
         }
     },

@@ -1,4 +1,3 @@
-<%@ page import="org.siemac.metamac.rest.common.v1_0.domain.InternationalString" %>
 <%@ page import="org.siemac.metamac.portal.dto.Chapter" %>
 <%@ page import="org.siemac.metamac.portal.dto.CollectionNode" %>
 <%@ page import="org.siemac.metamac.portal.dto.Table" %>
@@ -8,7 +7,16 @@
 
 <ul class="capitulos">
     <%
-    	Helpers helper = new Helpers(request.getLocale().getLanguage());
+        Cookie[] cookies = request.getCookies();
+        String locale = request.getLocale().getLanguage();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(request.getAttribute("internationalizationCookie"))) {
+                    locale = cookie.getValue();
+                }
+            }
+        }
+    	Helpers helper = new Helpers(locale);
         Integer nodeDepth = (Integer)request.getAttribute("nodeDepth");
         if (nodeDepth == null) {
             nodeDepth = 1;

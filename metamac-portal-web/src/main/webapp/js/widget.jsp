@@ -53,6 +53,7 @@ function getWidgetUrl(options) {
 	var params = '';
 	params += options.chromeFrameObject ? 'chromeFrameObject=true&' : '';
 	params += options.sharedVisualizerUrl ? 'sharedVisualizerUrl=' + options.sharedVisualizerUrl + '&' : '';
+	params += options.locale ? 'locale=' + options.locale + '&' : '';
  	return endpoint + '?' + params + options.params;
 }
 

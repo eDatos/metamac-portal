@@ -52,6 +52,7 @@ public class Helpers {
     public static final String  PARAMETER_INDICATOR_SYSTEM         = "indicatorSystem";
     public static final String  PARAMETER_SHARED_VISUALIZER_URL    = "sharedVisualizerUrl";
     public static final String  PARAMETER_MULTIDATASET_ID          = "multidatasetId";
+    public static final String  PARAMETER_LOCALE                   = "locale";
 
     private static final String DEFAULT_LANGUAGE                   = "es";
     private static final String LATEST_VERSION                     = "~latest";
@@ -206,12 +207,16 @@ public class Helpers {
     }
 
     public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) {
+        return buildUrl(permalink, sharedVisualizerUrl, null);
+    }
+
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale) {
         StringBuilder stringBuilder = new StringBuilder();
 
         QueryParams queryParams = permalink.getContent().getQueryParams();
 
         buildUrl(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
-                queryParams.getMultidatasetId(), sharedVisualizerUrl);
+                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale);
 
         // Includes #
         stringBuilder.append(permalink.getContent().getHash());
@@ -221,6 +226,10 @@ public class Helpers {
     }
 
     public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl) {
+        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null);
+    }
+
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale) {
         StringBuilder stringBuilder = new StringBuilder();
         MultidatasetTable table = (MultidatasetTable) multidataset.getData().getNodes().getNodes().get(0);
         Resource resource = table.getDataset() != null ? table.getDataset() : table.getQuery();
@@ -230,13 +239,13 @@ public class Helpers {
 
         String[] tripleIdentifier = getTripleIdentifier(resource);
 
-        buildUrl(stringBuilder, resourceKindToResourceType(resource.getKind()), tripleIdentifier[0], tripleIdentifier[1], tripleIdentifier[2], null, multidatasetId, sharedVisualizerUrl);
+        buildUrl(stringBuilder, resourceKindToResourceType(resource.getKind()), tripleIdentifier[0], tripleIdentifier[1], tripleIdentifier[2], null, multidatasetId, sharedVisualizerUrl, locale);
 
         return stringBuilder.toString();
     }
 
     private static void buildUrl(StringBuilder stringBuilder, String resourceType, String agency, String identifier, String version, String indicatorSystem, String multidatasetId,
-            String sharedVisualizerUrl) {
+            String sharedVisualizerUrl, String locale) {
         appendParameter(stringBuilder, PARAMETER_RESOURCE_TYPE, resourceType);
         appendParameter(stringBuilder, PARAMETER_AGENCY_ID, agency);
         appendParameter(stringBuilder, PARAMETER_RESOURCE_ID, identifier);
@@ -244,6 +253,9 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_INDICATOR_SYSTEM, indicatorSystem);
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
+        if(locale != null) {
+            appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
+        }
     }
 
     private static String resourceKindToResourceType(String kind) {

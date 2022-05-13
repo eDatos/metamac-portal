@@ -263,8 +263,6 @@ I18n.translations.es = {
         month_names: [null, "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
         abbr_month_names: [null, "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
         meridian: ["am", "pm"]
-
-
     },
     indicator: {
         dimension: {
@@ -310,7 +308,7 @@ I18n.translations.es = {
         information: {
             loginRequired: {
                 title: "Operación no válida",
-                message: "La operación que quiere realizar requiere que inicie sesión primero pulsando en el icono (<i class=\"icon icon-user\"></i>) que aparece arriba."
+                message: "La operación que quiere realizar requiere que inicie sesión primero. ¿Desea iniciar sesión?"
             }
         }
     },

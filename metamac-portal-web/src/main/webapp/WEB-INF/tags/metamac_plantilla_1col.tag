@@ -18,11 +18,23 @@
 	</c:choose>
 </head>
 <body>
-
+	<%
+		String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
+		String locale = "";
+		for (Cookie cookie : request.getCookies()) {
+			if (internationalizationCookieName.equals(cookie.getName())) {
+				locale = cookie.getValue();
+				break;
+			}
+		}
+		request.setAttribute("locale", locale);
+	%>
 	<!-- begin: #cabecera -->
     <c:choose>    	
         <c:when test="${!empty portalStyleHeaderUrl}">
-            <c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}" />
+			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
+				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
+			</c:import>
         </c:when>
         <c:otherwise>
 			<!-- portalStyleHeaderUrl is empty -->
@@ -44,7 +56,9 @@
 	<!-- begin: pie -->
     <c:choose>      
         <c:when test="${!empty portalStyleFooterUrl}">
-            <c:import charEncoding="UTF-8" url="${portalStyleFooterUrl}" />
+			<c:import charEncoding="UTF-8" url="${portalStyleFooterUrl}">
+				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
+			</c:import>
         </c:when>
         <c:otherwise>			
 			<!-- portalStyleFooterUrl is empty -->
@@ -59,7 +73,8 @@
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
       ga('create', '${analyticsGoogleTrackingId}', 'auto');
-      ga('send', 'pageview');    
-    </script>	
+      ga('send', 'pageview');
+
+    </script>
 </body>
 </html>

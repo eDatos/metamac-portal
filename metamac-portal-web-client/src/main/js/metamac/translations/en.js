@@ -89,6 +89,10 @@ I18n.translations.en = {
             "for": "For"
         },
         sidebar: {
+            ignorable: {
+                null: 'See categories with blank cells',
+                zero: 'See categories with zero cells'
+            },
             info: {
                 title: "Info"
             },
@@ -157,6 +161,7 @@ I18n.translations.en = {
             validTo: "Valid to",
             dateStart: "Initial period",
             dateEnd: "End period",
+            version: "Version number",
             versionRationale: {
                 title: "Version rationale",
                 enum: {
@@ -210,6 +215,7 @@ I18n.translations.en = {
 
             apiDocumentationUrl: "API documentation access",
             apiUrl: "API access to the resource",
+            selectionApiUrl: "Access to the current selection in the API",
 
             nextVersion: {
                 title: "Next update",
@@ -222,7 +228,8 @@ I18n.translations.en = {
         },
         observation: {
             measure: {
-                title: 'Data identification'
+                title: 'Data identification',
+                data: 'Data'
             },
             attributes: {
                 title: 'Observation attributes',
@@ -301,7 +308,7 @@ I18n.translations.en = {
         information: {
             loginRequired: {
                 title: "Invalid action",
-                message: "The action you want to perform requires you to log in first by clicking the icon (<i class=\"icon icon-user\"></i>) above."
+                message: "The action you want to perform requires you to log in first. Do you want to log in?."
             }
         }
     },
