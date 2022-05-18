@@ -165,7 +165,7 @@ I18n.translations.es = {
             versionRationale: {
                 title: "Motiu del canvi",
                 enum: {
-                    MAJOR_CATEGORIES: Major: Categories,
+                    MAJOR_CATEGORIES: "Major: Categories",
                     MAJOR_ESTIMATORS: "Major: Estimadors",
                     MAJOR_NEW_RESOURCE: "Major: nou recurs",
                     MAJOR_OTHER: "Major: Altres",
