@@ -85,6 +85,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/translations/es.js"
                 paths.js + "/metamac/translations/en.js"
                 paths.js + "/metamac/translations/pt.js"
+                paths.js + "/metamac/translations/ca.js"
 
                 # DATASET MODULE
                 paths.modules + "/dataset/DatasetPermalink.js"
