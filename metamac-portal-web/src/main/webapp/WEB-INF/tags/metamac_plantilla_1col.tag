@@ -8,11 +8,11 @@
   <!-- Title y metas -->
 	<t:metamac_title_meta></t:metamac_title_meta>
 
-	<c:choose>    
+	<c:choose>
 		<c:when test="${!empty portalStyleCssUrl}">
 			<link href="<c:out value='${portalStyleCssUrl}'/>" rel='stylesheet' type='text/css' />
 		</c:when>
-		<c:otherwise>			
+		<c:otherwise>
 			<!-- portalStyleCssUrl is empty -->
 		</c:otherwise>
 	</c:choose>
@@ -20,7 +20,7 @@
 <body>
 	<%
 		String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
-		String locale = "";
+		String locale = request.getLocale().getLanguage();
 		if (request.getCookies() != null) {
 			for (Cookie cookie : request.getCookies()) {
 				if (internationalizationCookieName.equals(cookie.getName())) {
@@ -32,7 +32,7 @@
 		request.setAttribute("locale", locale);
 	%>
 	<!-- begin: #cabecera -->
-    <c:choose>    	
+    <c:choose>
         <c:when test="${!empty portalStyleHeaderUrl}">
 			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
 				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
@@ -40,40 +40,40 @@
         </c:when>
         <c:otherwise>
 			<!-- portalStyleHeaderUrl is empty -->
-        </c:otherwise>           
+        </c:otherwise>
 	</c:choose>
-        
+
 	<!-- end: #cabecera -->
 
-	<!-- begin: #bloq_interior -->	
-	<div id="bloq_interior">	
-		<!-- begin: CONTENIDO CENTRAL --> 
+	<!-- begin: #bloq_interior -->
+	<div id="bloq_interior">
+		<!-- begin: CONTENIDO CENTRAL -->
 		<div class="contenido">
 			<jsp:doBody/>
-		</div>	
+		</div>
 		<!-- end:COLUMNA CENTRAL -->
 	</div>
 	<!-- end: #bloq_interior -->
-		
+
 	<!-- begin: pie -->
-    <c:choose>      
+    <c:choose>
         <c:when test="${!empty portalStyleFooterUrl}">
 			<c:import charEncoding="UTF-8" url="${portalStyleFooterUrl}">
 				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
 			</c:import>
         </c:when>
-        <c:otherwise>			
+        <c:otherwise>
 			<!-- portalStyleFooterUrl is empty -->
         </c:otherwise>
-    </c:choose>    
-	<!-- end: pie -->       
-    
+    </c:choose>
+	<!-- end: pie -->
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    
+
       ga('create', '${analyticsGoogleTrackingId}', 'auto');
       ga('send', 'pageview');
 
