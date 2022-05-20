@@ -18,25 +18,10 @@
 	</c:choose>
 </head>
 <body>
-	<%
-		String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
-		String locale = request.getLocale().getLanguage();
-		if (request.getCookies() != null) {
-			for (Cookie cookie : request.getCookies()) {
-				if (internationalizationCookieName.equals(cookie.getName())) {
-					locale = cookie.getValue();
-					break;
-				}
-			}
-		}
-		request.setAttribute("locale", locale);
-	%>
 	<!-- begin: #cabecera -->
     <c:choose>
         <c:when test="${!empty portalStyleHeaderUrl}">
-			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
-				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
-			</c:import>
+			<div id="portal-style-header"></div>
         </c:when>
         <c:otherwise>
 			<!-- portalStyleHeaderUrl is empty -->
@@ -58,9 +43,7 @@
 	<!-- begin: pie -->
     <c:choose>
         <c:when test="${!empty portalStyleFooterUrl}">
-			<c:import charEncoding="UTF-8" url="${portalStyleFooterUrl}">
-				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
-			</c:import>
+			<div id="portal-style-footer"></div>
         </c:when>
         <c:otherwise>
 			<!-- portalStyleFooterUrl is empty -->
@@ -77,6 +60,50 @@
       ga('create', '${analyticsGoogleTrackingId}', 'auto');
       ga('send', 'pageview');
 
-    </script>
+	  const reloadNextScript = function (scriptsList, scriptIndex) {
+		  if (scriptIndex < scriptsList.length) {
+			  const currentScript = scriptsList[scriptIndex];
+			  const scriptCopy = document.createElement('script');
+			  if (currentScript.innerHTML) {
+				  scriptCopy.innerHTML = currentScript.innerHTML;
+				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+				  reloadNextScript(scriptsList, scriptIndex + 1);
+			  } else if (currentScript.src) {
+				  scriptCopy.addEventListener('load', function () { reloadNextScript(scriptsList, scriptIndex + 1) });
+				  scriptCopy.src = currentScript.src;
+				  scriptCopy.async = false;
+				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+			  }
+		  }
+	  };
+
+	  if(${!empty portalStyleHeaderUrl}) {
+		  fetch("${portalStyleHeaderUrl}", {
+			  method: 'GET',
+			  credentials: 'include'
+		  })
+		  .then(response => response.text())
+		  .then(data => {
+			  const headerEl = document.getElementById("portal-style-header");
+			  headerEl.innerHTML = data;
+			  const headerScriptList = headerEl.getElementsByTagName('script');
+			  reloadNextScript(headerScriptList, 0);
+		  });
+	  }
+
+	  if(${!empty portalStyleFooterUrl}) {
+		  fetch("${portalStyleFooterUrl}", {
+			  method: 'GET',
+			  credentials: 'include'
+		  })
+		  .then(response => response.text())
+		  .then(data => {
+			  const footerEl = document.getElementById("portal-style-footer");
+			  footerEl.innerHTML = data;
+			  const footerScriptList = footerEl.getElementsByTagName('script');
+			  reloadNextScript(footerScriptList, 0);
+		  });
+	  }
+	</script>
 </body>
 </html>
