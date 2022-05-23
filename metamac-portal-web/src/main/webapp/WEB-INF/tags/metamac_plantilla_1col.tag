@@ -8,75 +8,102 @@
   <!-- Title y metas -->
 	<t:metamac_title_meta></t:metamac_title_meta>
 
-	<c:choose>    
+	<c:choose>
 		<c:when test="${!empty portalStyleCssUrl}">
 			<link href="<c:out value='${portalStyleCssUrl}'/>" rel='stylesheet' type='text/css' />
 		</c:when>
-		<c:otherwise>			
+		<c:otherwise>
 			<!-- portalStyleCssUrl is empty -->
 		</c:otherwise>
 	</c:choose>
 </head>
 <body>
-	<%
-		String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
-		String locale = request.getLocale().getLanguage();
-		if (request.getCookies() != null) {
-			for (Cookie cookie : request.getCookies()) {
-				if (internationalizationCookieName.equals(cookie.getName())) {
-					locale = cookie.getValue();
-					break;
-				}
-			}
-		}
-		request.setAttribute("locale", locale);
-	%>
 	<!-- begin: #cabecera -->
-    <c:choose>    	
+    <c:choose>
         <c:when test="${!empty portalStyleHeaderUrl}">
-			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
-				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
-			</c:import>
+			<div id="portal-style-header"></div>
         </c:when>
         <c:otherwise>
 			<!-- portalStyleHeaderUrl is empty -->
-        </c:otherwise>           
+        </c:otherwise>
 	</c:choose>
-        
+
 	<!-- end: #cabecera -->
 
-	<!-- begin: #bloq_interior -->	
-	<div id="bloq_interior">	
-		<!-- begin: CONTENIDO CENTRAL --> 
+	<!-- begin: #bloq_interior -->
+	<div id="bloq_interior">
+		<!-- begin: CONTENIDO CENTRAL -->
 		<div class="contenido">
 			<jsp:doBody/>
-		</div>	
+		</div>
 		<!-- end:COLUMNA CENTRAL -->
 	</div>
 	<!-- end: #bloq_interior -->
-		
+
 	<!-- begin: pie -->
-    <c:choose>      
+    <c:choose>
         <c:when test="${!empty portalStyleFooterUrl}">
-			<c:import charEncoding="UTF-8" url="${portalStyleFooterUrl}">
-				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
-			</c:import>
+			<div id="portal-style-footer"></div>
         </c:when>
-        <c:otherwise>			
+        <c:otherwise>
 			<!-- portalStyleFooterUrl is empty -->
         </c:otherwise>
-    </c:choose>    
-	<!-- end: pie -->       
-    
+    </c:choose>
+	<!-- end: pie -->
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    
+
       ga('create', '${analyticsGoogleTrackingId}', 'auto');
       ga('send', 'pageview');
 
-    </script>
+	  const reloadNextScript = function (scriptsList, scriptIndex) {
+		  if (scriptIndex < scriptsList.length) {
+			  const currentScript = scriptsList[scriptIndex];
+			  const scriptCopy = document.createElement('script');
+			  if (currentScript.innerHTML) {
+				  scriptCopy.innerHTML = currentScript.innerHTML;
+				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+				  reloadNextScript(scriptsList, scriptIndex + 1);
+			  } else if (currentScript.src) {
+				  scriptCopy.addEventListener('load', function () { reloadNextScript(scriptsList, scriptIndex + 1) });
+				  scriptCopy.src = currentScript.src;
+				  scriptCopy.async = false;
+				  currentScript.parentNode.replaceChild(scriptCopy, currentScript);
+			  }
+		  }
+	  };
+
+	  if(${!empty portalStyleHeaderUrl}) {
+		  fetch("${portalStyleHeaderUrl}", {
+			  method: 'GET',
+			  credentials: 'include'
+		  })
+		  .then(response => response.text())
+		  .then(data => {
+			  const headerEl = document.getElementById("portal-style-header");
+			  headerEl.innerHTML = data;
+			  const headerScriptList = headerEl.getElementsByTagName('script');
+			  reloadNextScript(headerScriptList, 0);
+		  });
+	  }
+
+	  if(${!empty portalStyleFooterUrl}) {
+		  fetch("${portalStyleFooterUrl}", {
+			  method: 'GET',
+			  credentials: 'include'
+		  })
+		  .then(response => response.text())
+		  .then(data => {
+			  const footerEl = document.getElementById("portal-style-footer");
+			  footerEl.innerHTML = data;
+			  const footerScriptList = footerEl.getElementsByTagName('script');
+			  reloadNextScript(footerScriptList, 0);
+		  });
+	  }
+	</script>
 </body>
 </html>
