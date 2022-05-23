@@ -1,6 +1,6 @@
 I18n.translations || (I18n.translations = {});
 
-I18n.translations.es = {
+I18n.translations.ca = {
 
     number: {
         format: {
