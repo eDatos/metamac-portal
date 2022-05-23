@@ -1,3 +1,4 @@
+<%@ tag import="java.util.Objects" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%@ attribute name="baseURL" required="true" rtexprvalue="true" %>
 <%@ tag description="Simple Wrapper Tag" pageEncoding="UTF-8"%>
@@ -21,7 +22,7 @@
 	<%
 		String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
 		String locale = request.getLocale().getLanguage();
-		if (request.getCookies() != null) {
+		if (request.getCookies() != null && !"error".equals(internationalizationCookieName)) {
 			for (Cookie cookie : request.getCookies()) {
 				if (internationalizationCookieName.equals(cookie.getName())) {
 					locale = cookie.getValue();
