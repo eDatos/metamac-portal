@@ -156,7 +156,7 @@
 	<%
         Cookie[] cookies = request.getCookies();
         String locale = request.getLocale().getLanguage();
-        if (cookies != null) {
+        if (cookies != null && !"error".equals(INTERNATIONALIZATION_COOKIE_ID)) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(INTERNATIONALIZATION_COOKIE_ID)) {
                     locale = cookie.getValue();
