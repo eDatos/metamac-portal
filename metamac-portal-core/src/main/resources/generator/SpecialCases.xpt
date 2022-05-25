@@ -70,6 +70,14 @@ Attribute»
     «ENDIF»
 «ENDAROUND»
 
+
+«REM»Skip script database generation for hibernate_sequence«ENDREM»
+«REM»OracleDDL is used due to sculptor use OracleDDL file for Postgresql database. See fornax-cartridges-sculptor-generator/templates/db/DDL.xpt file «ENDREM»
+«AROUND templates::db::OracleDDL::dropSequence FOR Application»
+«ENDAROUND»
+«AROUND templates::db::OracleDDL::createSequence FOR Application»
+«ENDAROUND»
+
 «REM»Generate invocation validator for services «ENDREM»
 «AROUND templates::service::Service::service FOR Service»
 	«targetDef.proceed() -»
