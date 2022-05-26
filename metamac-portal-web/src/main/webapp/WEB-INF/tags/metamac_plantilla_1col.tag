@@ -21,7 +21,7 @@
 	<%
 		String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
 		String locale = request.getLocale().getLanguage();
-		if (request.getCookies() != null) {
+		if (request.getCookies() != null && !"error".equals(internationalizationCookieName)) {
 			for (Cookie cookie : request.getCookies()) {
 				if (internationalizationCookieName.equals(cookie.getName())) {
 					locale = cookie.getValue();
