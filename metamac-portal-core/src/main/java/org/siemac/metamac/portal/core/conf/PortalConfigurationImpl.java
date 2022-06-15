@@ -74,6 +74,11 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
     }
 
     @Override
+    public String retrievePortalCustomStyleBaseUrl() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_CUSTOM_STYLE_BASE_URL);
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
 

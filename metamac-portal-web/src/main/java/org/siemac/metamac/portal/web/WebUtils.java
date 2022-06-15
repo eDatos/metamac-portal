@@ -38,6 +38,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     portalPublicServiceStyleCssUrl    = null;
     protected static String     portalPublicServiceStyleFooterUrl = null;
 
+    protected static String     portalCustomStyleBaseUrl          = null;
+
     public static void setExportApiBaseURL(String exportApiBaseUrl) {
         WebUtils.exportApiBaseUrl = exportApiBaseUrl;
     }
@@ -65,6 +67,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
                 return portalTourismStyleHeaderUrl + getBreadcrumbsParams(lang);
             case "funcion-publica":
                 return portalPublicServiceStyleHeaderUrl + getBreadcrumbsParams(lang);
+            case "iqua":
+                return portalCustomStyleBaseUrl + "/" + organizationService + "/footer.html";
             default:
                 return portalDefaultStyleHeaderUrl + getBreadcrumbsParams(lang);
         }
@@ -80,6 +84,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
                 return portalTourismStyleFooterUrl;
             case "funcion-publica":
                 return portalPublicServiceStyleFooterUrl;
+            case "iqua":
+                return portalCustomStyleBaseUrl + "/" + organizationService + "/footer.html";
             default:
                 return portalDefaultStyleFooterUrl;
         }
@@ -95,6 +101,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
                 return portalTourismStyleCssUrl;
             case "funcion-publica":
                 return portalPublicServiceStyleCssUrl;
+            case "iqua":
+                return portalCustomStyleBaseUrl + "/" + organizationService + "/styles.css";
             default:
                 return portalDefaultStyleCssUrl;
         }
@@ -106,6 +114,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case "medioambiente":
             case "turismo":
             case "public-service":
+            case "iqua":
                 return true;
             default:
                 return false;
@@ -170,6 +179,10 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static void setPortalPublicServiceStyleFooterUrl(String portalPublicServiceStyleFooterUrl) {
         WebUtils.portalPublicServiceStyleFooterUrl = portalPublicServiceStyleFooterUrl;
+    }
+
+    public static void setPortalCustomStyleBaseUrl(String portalCustomStyleBaseUrl) {
+        WebUtils.portalCustomStyleBaseUrl = portalCustomStyleBaseUrl;
     }
 
     private static String getBreadcrumbsParams(String lang) {

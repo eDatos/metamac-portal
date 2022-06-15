@@ -55,6 +55,16 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalEnvironmentStyles();
         setPortalTourismStyles();
         setPortalPublicServiceStyles();
+        setPortalCustomStyles();
+    }
+
+    // IDEA we try do it more scalable without breaking the rest, but the idea is to use only this one in the future
+    private void setPortalCustomStyles() {
+        try {
+            WebUtils.setPortalCustomStyleBaseUrl(portalConfigurationService.retrievePortalCustomStyleBaseUrl());
+        } catch (MetamacException e) {
+            log.error("Error retrieving application Agriculture configuration", e);
+        }
     }
 
     private void setPortalAgricultureStyles() {

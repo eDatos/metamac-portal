@@ -27,4 +27,6 @@ public class PortalConfigurationConstants extends ConfigurationConstants {
     public static final String PORTAL_PUBLIC_SERVICE_STYLE_HEADER_URL = "metamac.portal.publicservice.style.header.url";
     public static final String PORTAL_PUBLIC_SERVICE_STYLE_CSS_URL    = "metamac.portal.publicservice.style.css.url";
     public static final String PORTAL_PUBLIC_SERVICE_STYLE_FOOTER_URL = "metamac.portal.publicservice.style.footer.url";
+
+    public static final String PORTAL_CUSTOM_STYLE_BASE_URL           = "metamac.portal.custom.style.base.url";
 }
