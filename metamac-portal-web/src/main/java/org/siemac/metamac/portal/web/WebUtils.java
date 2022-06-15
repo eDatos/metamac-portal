@@ -68,7 +68,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case "funcion-publica":
                 return portalPublicServiceStyleHeaderUrl + getBreadcrumbsParams(lang);
             case "iqua":
-                return portalCustomStyleBaseUrl + "/" + organizationService + "/footer.html";
+                return portalCustomStyleBaseUrl + "/" + organizationService + "/header.html";
             default:
                 return portalDefaultStyleHeaderUrl + getBreadcrumbsParams(lang);
         }
