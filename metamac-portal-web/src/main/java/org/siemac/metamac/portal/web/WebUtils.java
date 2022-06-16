@@ -13,6 +13,12 @@ import org.slf4j.LoggerFactory;
 
 public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
+    private static final String SERVICE_AGRICULTURA               = "agricultura";
+    private static final String SERVICE_MEDIOAMBIENTE             = "medioambiente";
+    private static final String SERVICE_TURISMO                   = "turismo";
+    private static final String SERVICE_FUNCION_PUBLICA           = "funcion-publica";
+    private static final String SERVICE_IQUA                      = "iqua";
+
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
     protected static String     exportApiBaseUrl                  = null;
@@ -59,15 +65,15 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     /* Portal specific. See web.xml for matched patterns */
     public static String getPortalStyleHeaderUrl(String organizationService, String lang) {
         switch (organizationService) {
-            case "agricultura":
+            case SERVICE_AGRICULTURA:
                 return portalAgricultureStyleHeaderUrl + getBreadcrumbsParams(lang);
-            case "medioambiente":
+            case SERVICE_MEDIOAMBIENTE:
                 return portalEnvironmentStyleHeaderUrl + getBreadcrumbsParams(lang);
-            case "turismo":
+            case SERVICE_TURISMO:
                 return portalTourismStyleHeaderUrl + getBreadcrumbsParams(lang);
-            case "funcion-publica":
+            case SERVICE_FUNCION_PUBLICA:
                 return portalPublicServiceStyleHeaderUrl + getBreadcrumbsParams(lang);
-            case "iqua":
+            case SERVICE_IQUA:
                 return portalCustomStyleBaseUrl + "/" + organizationService + "/header.html";
             default:
                 return portalDefaultStyleHeaderUrl + getBreadcrumbsParams(lang);
@@ -76,15 +82,15 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static String getPortalStyleFooterUrl(String organizationService) {
         switch (organizationService) {
-            case "agricultura":
+            case SERVICE_AGRICULTURA:
                 return portalAgricultureStyleFooterUrl;
-            case "medioambiente":
+            case SERVICE_MEDIOAMBIENTE:
                 return portalEnvironmentStyleFooterUrl;
-            case "turismo":
+            case SERVICE_TURISMO:
                 return portalTourismStyleFooterUrl;
-            case "funcion-publica":
+            case SERVICE_FUNCION_PUBLICA:
                 return portalPublicServiceStyleFooterUrl;
-            case "iqua":
+            case SERVICE_IQUA:
                 return portalCustomStyleBaseUrl + "/" + organizationService + "/footer.html";
             default:
                 return portalDefaultStyleFooterUrl;
@@ -93,15 +99,15 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static String getPortalStyleCssUrl(String organizationService) {
         switch (organizationService) {
-            case "agricultura":
+            case SERVICE_AGRICULTURA:
                 return portalAgricultureStyleCssUrl;
-            case "medioambiente":
+            case SERVICE_MEDIOAMBIENTE:
                 return portalEnvironmentStyleCssUrl;
-            case "turismo":
+            case SERVICE_TURISMO:
                 return portalTourismStyleCssUrl;
-            case "funcion-publica":
+            case SERVICE_FUNCION_PUBLICA:
                 return portalPublicServiceStyleCssUrl;
-            case "iqua":
+            case SERVICE_IQUA:
                 return portalCustomStyleBaseUrl + "/" + organizationService + "/styles.css";
             default:
                 return portalDefaultStyleCssUrl;
@@ -110,11 +116,11 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static boolean getShowRightsHolder(String organizationService) {
         switch (organizationService) {
-            case "agricultura":
-            case "medioambiente":
-            case "turismo":
-            case "public-service":
-            case "iqua":
+            case SERVICE_AGRICULTURA:
+            case SERVICE_MEDIOAMBIENTE:
+            case SERVICE_TURISMO:
+            case SERVICE_FUNCION_PUBLICA:
+            case SERVICE_IQUA:
                 return true;
             default:
                 return false;
