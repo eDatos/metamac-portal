@@ -1,5 +1,5 @@
 ﻿-- --------------------------------------------------------------------------------------------------
--- EDATOS-3215 - Refactorización del código para que la propiedad organización sea escalable
+-- EDATOS-3649 - Preparar el visualizador para mostrarlo bajo la cabecera de IQUA
 -- --------------------------------------------------------------------------------------------------
 
 -- Añadir propiedad con la URL correspondiente al path al que luego se le concatenará /<nombreservicio>/header.html, /<nombreservicio>/styles.css y /<nombreservicio>/footer.html

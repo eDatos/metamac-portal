@@ -10,6 +10,11 @@
 
 ## 7.1.3 a X.Y.Z
 * A partir de esta versión de la aplicación se elimina el soporte para bases de datos Oracle o Sql Server, siendo PostgreSQL la única base de datos con soporte.
+* Es necesario ejecutar los scripts SQL contenidos en la carpeta
+
+```
+etc/changes-from-release/7.1.3/db/common-metadata/postgresql/*.sql
+```
 
 ## 7.0.0 a 7.0.1
 * La dependencia de edatos-external-users pasa de obligatoria a opcional. El modo de indicarlo es que las siguientes propiedades no estén inicializadas. 
