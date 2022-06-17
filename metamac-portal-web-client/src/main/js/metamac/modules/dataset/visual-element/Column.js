@@ -178,6 +178,9 @@
             if (!columnsDimension) {
                 columnsDimension = this.filterDimensions.dimensionsAtZone('fixed').at(0);
             }
+            if (!columnsDimension) {
+                columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
+            }
             var horizontalDimensionSelectedCategories = this.getDrawableRepresentations(horizontalDimension);
             if (horizontalDimension.get('type') == "TIME_DIMENSION") {
                 horizontalDimensionSelectedCategories = _.sortBy(horizontalDimensionSelectedCategories, function (representation) {

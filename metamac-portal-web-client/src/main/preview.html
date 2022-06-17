@@ -121,6 +121,31 @@
         App.config["organisationUrn"] = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISTAC";
         App.config["installationType"] = "EXTERNAL";
 
+        var ENABLE_IBESTAT = true;
+        if (ENABLE_IBESTAT) {
+
+            // http://estadisticas.arte-consultores.com/statistical-resources
+            App.endpoints["statistical-resources"] = "https://ibestat.edatos.io/statistical-resources-internal/apis/statistical-resources-internal/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal
+            App.endpoints["structural-resources"] = "https://ibestat.edatos.io/structural-resources-internal/apis/structural-resources-internal/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/statistical-visualizer
+            App.endpoints["statistical-visualizer"] = "https://ibestat.edatos.io/statistical-visualizer";
+            
+            // http://estadisticas.arte-consultores.com/permalinks
+            App.endpoints["permalinks"] = "https://ibestat.edatos.io/permalinks/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/export
+            App.endpoints["export"] = "https://ibestat.edatos.io/export/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/indicators
+            App.endpoints["indicators"] = "https://ibestat.edatos.io/indicators-internal/internal/api/indicators/v1.0";
+
+            // https://ibestat.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IBESTAT&resourceId=000274A_000001&version=1.0#visualization/table
+            App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000001", "version": "1.0", "type": "dataset" };
+        }
+
         App.start();
     </script>
 
