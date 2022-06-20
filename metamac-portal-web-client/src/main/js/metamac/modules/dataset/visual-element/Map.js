@@ -67,11 +67,10 @@
                 var allNormCodes = this._getAllGeographicDimensionNormCodes();
                 actions["allShapes"] = _.bind(this.shapes.fetchShapes, this.shapes, allNormCodes);
             }
-            /* Ver comentarios de METAMAC-2824 
+            
             if (!this._container) {
                 actions["container"] = _.bind(this.shapes.fetchContainer, this.shapes);
-            }
-            */
+            }            
 
             var self = this;
             async.parallel(actions, function (err, result) {
