@@ -48,7 +48,9 @@
                 });
             };
 
-            open.onerror = function () {
+            open.onerror = function (error) {
+                // Beware DOMException: The user denied permission to access the database. error. If this happens, check your cookies are unblocked
+                console.error(error);
                 cb("Error");
             };
 
