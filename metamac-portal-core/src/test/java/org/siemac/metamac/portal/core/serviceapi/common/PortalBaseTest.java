@@ -20,9 +20,6 @@ public abstract class PortalBaseTest extends MetamacDBUnitBaseTests {
     // Other
     protected static final String NOT_EXISTS = "not-exists";
 
-    @Value("${metamac.portal.db.provider}")
-    private String                databaseProvider;
-
     @Value("${metamac.portal.db.default_schema}")
     private String                defaultSchema;
 
@@ -40,11 +37,6 @@ public abstract class PortalBaseTest extends MetamacDBUnitBaseTests {
     @Override
     protected Map<String, List<String>> getTablePrimaryKeys() {
         return new HashMap<String, List<String>>();
-    }
-
-    @Override
-    protected DataBaseProvider getDatabaseProvider() {
-        return DataBaseProvider.valueOf(databaseProvider);
     }
 
     @Override

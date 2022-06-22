@@ -24,4 +24,6 @@ public interface PortalConfiguration extends ConfigurationService {
     String retrievePortalPublicServiceStyleCssUrl() throws MetamacException;
     String retrievePortalPublicServiceStyleFooterUrl() throws MetamacException;
 
+    String retrievePortalCustomStyleBaseUrl() throws MetamacException;
+
 }

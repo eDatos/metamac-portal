@@ -334,6 +334,9 @@
             if (!columnsDimension) {
                 columnsDimension = this.filterDimensions.dimensionsAtZone('fixed').at(0);
             }
+            if (!columnsDimension) {
+                columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
+            }
 
             var selectedTemporalGranularity = horizontalDimension.get("representations").getSelectedTemporalGranularity();
             var horizontalDimensionCategories = horizontalDimension.get('representations').where({ temporalGranularity: selectedTemporalGranularity });

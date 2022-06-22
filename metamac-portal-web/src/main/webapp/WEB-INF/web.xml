@@ -29,6 +29,7 @@
         <url-pattern>/visualizer/agricultura/data.html</url-pattern>
         <url-pattern>/visualizer/medioambiente/data.html</url-pattern>
         <url-pattern>/visualizer/turismo/data.html</url-pattern>
+        <url-pattern>/visualizer/iqua/data.html</url-pattern>
         <url-pattern>/visualizer/funcion-publica/data.html</url-pattern>
 	</servlet-mapping>
 
@@ -42,6 +43,7 @@
         <url-pattern>/visualizer/agricultura/collection.html</url-pattern>
         <url-pattern>/visualizer/medioambiente/collection.html</url-pattern>
         <url-pattern>/visualizer/turismo/collection.html</url-pattern>
+        <url-pattern>/visualizer/iqua/collection.html</url-pattern>
         <url-pattern>/visualizer/funcion-publica/collection.html</url-pattern>
 	</servlet-mapping>
 

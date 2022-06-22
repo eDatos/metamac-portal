@@ -1,1 +1,0 @@
-Aunque la aplicación no tiene soporte para MSSQL, algunos tests del common-metadata dependen de que existan las mismas propiedades en ambas BD. Por tanto, cuando se añadan propiedades, se tendrán que añadir también en la BD de tests de MSSQl
