@@ -23,7 +23,7 @@
         onSubmit: function(e) {
             e.preventDefault();
             var filter = new App.modules.dataset.model.FilterModel({
-                resourceName: this.filterDimensions.metadata.getTitle(),
+                resourceName: this.getResourceTitle(),
                 name: this.$("#name").val() || null,
                 notes: this.$("#notes").val(),
                 permalink: this.permalink.id,
@@ -39,13 +39,17 @@
 
         render: function () {
             this.$el.html(this.template({
-                defaultCustomQueryName: this.filterDimensions.metadata.getTitle()
+                defaultCustomQueryName: this.getResourceTitle()
             }));
         },
 
         renderResult: function (succeeded) {
             this.$el.html(this.templateResult());
             this.$el.find("#message-container")[0].innerHTML = I18n.t(succeeded ? "filter.save.modal.success" : "filter.save.modal.failure");
+        },
+
+        getResourceTitle: function () {
+            return this.filterDimensions.metadata.getTitle() || App.datasource.helper.ApiIndicatorResponseToApiResponse.getTranslatedString(this.filterDimensions.metadata.metadataResponse.name);
         }
     });
 
