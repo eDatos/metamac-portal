@@ -11,11 +11,14 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
+            this.permalink = this.options.permalink;
         },
 
         render: function () {
             var self = this;
-            if (this.needsPermalink()) {
+            if (this.permalink) {
+                self.renderShare(this.permalink.id);
+            } else if (this.needsPermalink()) {
                 var savePermalinkRequest = this.savePermalink();
                 savePermalinkRequest.then(function (response) {
                     self.renderShare(response.id);

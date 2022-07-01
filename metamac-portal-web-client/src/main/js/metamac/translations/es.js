@@ -53,26 +53,12 @@ I18n.translations.es = {
             },
             label: {
                 name: "Nombre de la consulta personalizada",
-                notes: "Notas",
-                version: {
-                    group: "Versión",
-                    last: "Última versión",
-                    current: "Versión actual",
-                },
-                data: {
-                    group: "Datos",
-                    quantity: "Los últimos",
-                    date: "A partir de",
-                }
+                notes: "Notas"
             },
             modal: {
                 title: "Guardar consulta personalizada",
                 success: "La consulta personalizada se ha guardado correctamente",
                 failure: "Ha habido un problema guardando la consulta personalizada"
-            },
-            error: {
-                quantity: "El campo númerico del apartado 'Datos' debe ser un número entero positivo mayor o igual a uno.",
-                date: "La fecha del apartado 'Datos' es obligatoria."
             }
         },
         text: {
@@ -309,6 +295,26 @@ I18n.translations.es = {
             loginRequired: {
                 title: "Operación no válida",
                 message: "La operación que quiere realizar requiere que inicie sesión primero. ¿Desea iniciar sesión?"
+            }
+        },
+        permalinkConfig: {
+            button: {
+                submit: "Guardar",
+            },
+            label: {
+                version: {
+                    group: "Versión",
+                    last: "Última versión",
+                    current: "Versión actual",
+                },
+                data: {
+                    group: "Datos",
+                    quantity: "Los últimos",
+                    date: "A partir de",
+                }
+            },
+            error: {
+                quantity: "El campo númerico del apartado 'Datos' debe ser un número entero positivo mayor o igual a uno."
             }
         }
     },

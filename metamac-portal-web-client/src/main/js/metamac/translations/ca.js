@@ -53,26 +53,12 @@ I18n.translations.ca = {
             },
             label: {
                 name: "Nom de la consulta personalitzada",
-                notes: "Notes",
-                version: {
-                    group: "Versió",
-                    last: "Darrera versió",
-                    current: "Versió actual",
-                },
-                data: {
-                    group: "Dades",
-                    quantity: "Els darrers",
-                    date: "A partir de",
-                }
+                notes: "Notes"
             },
             modal: {
                 title: "Guardar consulta personalitzada",
                 success: "La consulta personalitzada s'ha guardat correctament",
                 failure: "Hi ha hagut un problema en guardar la consulta personalitzada"
-            },
-            error: {
-                quantity: "El camp númerico de l'apartat 'Dades' ha de ser un nombre enter positiu major o igual a un.",
-                date: "La data de l'apartat 'Dades' és obligatòria."
             }
         },
         text: {
@@ -311,6 +297,26 @@ I18n.translations.ca = {
             loginRequired: {
                 title: "Operació no vàlida",
                 message: "L'operació que vol realitzar requereix que inicie sessió primer"
+            }
+        },
+        permalinkConfig: {
+            button: {
+                submit: "Guardar",
+            },
+            label: {
+                version: {
+                    group: "Versió",
+                    last: "Darrera versió",
+                    current: "Versió actual",
+                },
+                data: {
+                    group: "Dades",
+                    quantity: "Els darrers",
+                    date: "A partir de",
+                }
+            },
+            error: {
+                quantity: "El camp númerico de l'apartat 'Dades' ha de ser un nombre enter positiu major o igual a un."
             }
         }
     },

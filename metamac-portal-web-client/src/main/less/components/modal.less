@@ -90,3 +90,63 @@
     width: 40%;
   }
 }
+
+.modal-permalink-config {
+  padding: 5px;
+  fieldset {
+    margin-bottom: 10px;
+  }
+  .form-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .horizontal-radio-group {
+    display: flex;
+    justify-content: space-evenly;
+    .radio-field {
+      width: 100%;
+      display: flex;
+      label {
+        margin: 0;
+        font-weight: normal;
+      }
+      input {
+        width: auto;
+        margin: 0 5px 0 0;
+      }
+    }
+  }
+  .vertical-radio-group {
+    .radio-field {
+      width: 100%;
+      display: flex;
+      margin-bottom: 5px;
+      label {
+        margin: 0 5px 0 0;
+        font-weight: normal;
+      }
+      input, select {
+        width: auto;
+        &[type="radio"] {
+          margin: 0 5px 0 0;
+        }
+        &:disabled {
+          background-color: #e6e6e6;
+        }
+      }
+      .radio-related-input {
+        width: 50%;
+        box-sizing: border-box;
+      }
+      .input-related-radio {
+        width: 50%;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .form-error {
+    margin: 0 0 10px 0;
+    color: red;
+  }
+}
