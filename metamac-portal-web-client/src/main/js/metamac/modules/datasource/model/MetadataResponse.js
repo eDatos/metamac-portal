@@ -338,6 +338,9 @@
 
         getApiUrl: function () {
             var apiUrl = this.datasourceHelper.getBaseUrl() + this.urlIdentifierPart();
+            if (App.DimensionsUtils.isIndicatorRequest()) {
+                apiUrl = apiUrl + "/data";
+            }
             return { href: apiUrl, name: apiUrl };
         },
 
