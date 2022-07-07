@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    var DatasetPermalink = App.modules.dataset.DatasetPermalink;
-
     App.namespace('App.modules.dataset.DatasetEmbedView');
 
     App.modules.dataset.DatasetEmbedView = Backbone.View.extend({
@@ -14,49 +12,22 @@
             this.permalink = this.options.permalink;
         },
 
-        render: function () {
-            var self = this;
-            if (this.permalink) {
-                self.renderEmbed(this.permalink.id);
-            } else if (this.needsPermalink()) {
-                var savePermalinkRequest = this.savePermalink();
-                savePermalinkRequest.then(function (response) {
-                    self.renderEmbed(response.id);
-                });
-            } else {
-                self.renderEmbed(this.getExistingPermalinkId());
-            }
-        },
-
-        needsPermalink: function () {
-            return !(App.config.widget && this.getExistingPermalinkId());
-        },
-
-        getExistingPermalinkId: function () {
-            return this.filterDimensions.metadata.identifier().permalinkId;
-        },
-
-        savePermalink: function () {
-            var permalinkContent = DatasetPermalink.buildPermalinkContent(this.filterDimensions);
-            return DatasetPermalink.savePermalink(permalinkContent, this.$el[0]);
-        },
-
         getWidgetUrl: function () {
             return App.endpoints["statistical-visualizer"] + '/js/widget.js';
         },
 
-        getSharedVisualizerParams: function (permalinkId) {
+        getSharedVisualizerParams: function () {
             return [
                 'permalink',
                 '=',
-                permalinkId
+                this.permalink.id
             ].join('')
         },
 
-        renderEmbed: function (permalinkId) {
+        render: function () {
             var context = {
                 widgetUrl: this.getWidgetUrl(),
-                params: this.getSharedVisualizerParams(permalinkId),
+                params: this.getSharedVisualizerParams(),
                 sharedVisualizerUrl: this.filterDimensions.metadata.getSharedVisualizerUrl(),
                 locale: I18n.locale,
                 defaultId: 'dataset-widget',

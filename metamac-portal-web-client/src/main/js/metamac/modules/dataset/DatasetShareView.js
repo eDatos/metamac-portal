@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    var DatasetPermalink = App.modules.dataset.DatasetPermalink;
-
     App.namespace('App.modules.dataset.DatasetShareView');
 
     App.modules.dataset.DatasetShareView = Backbone.View.extend({
@@ -14,52 +12,25 @@
             this.permalink = this.options.permalink;
         },
 
-        render: function () {
-            var self = this;
-            if (this.permalink) {
-                self.renderShare(this.permalink.id);
-            } else if (this.needsPermalink()) {
-                var savePermalinkRequest = this.savePermalink();
-                savePermalinkRequest.then(function (response) {
-                    self.renderShare(response.id);
-                });
-            } else {
-                self.renderShare(this.getExistingPermalinkId());
-            }
-        },
-
-        needsPermalink: function () {
-            return !(App.config.widget && this.getExistingPermalinkId());
-        },
-
-        getExistingPermalinkId: function () {
-            return this.filterDimensions.metadata.identifier().permalinkId;
-        },
-
-        savePermalink: function () {
-            var permalinkContent = DatasetPermalink.buildPermalinkContent(this.filterDimensions);
-            return DatasetPermalink.savePermalink(permalinkContent, this.$el[0]);
-        },
-
-        getSharedVisualizerParams: function (permalinkId) {
+        getSharedVisualizerParams: function () {
             return [
                 'permalink',
                 '=',
-                permalinkId
+                this.permalink.id
             ].join('')
         },
 
-        getSharedUrl: function (permalinkId) {
+        getSharedUrl: function () {
             return [
                 this.filterDimensions.metadata.getSharedVisualizerUrl(),
                 '?',
-                this.getSharedVisualizerParams(permalinkId)
+                this.getSharedVisualizerParams()
             ].join('');
         },
 
-        renderShare: function (permalinkId) {
+        render: function () {
             var context = {
-                url: this.getSharedUrl(permalinkId),
+                url: this.getSharedUrl(),
                 title: this.filterDimensions.metadata.getTitle(),
                 description: this.filterDimensions.metadata.getDescription()
             };
