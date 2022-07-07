@@ -46,11 +46,11 @@
 
         _getSelectionApiUrl: function () {
             var apiUrl = this.data.metadata.getApiUrl();
-            var dimParameter = App.DimensionsUtils.getDimensionsParameterForDatasetRequest(this._getDimensionsForApiUrl());
+            var dimensionParameter = App.DimensionsUtils.getDimensionsParameterForRequest(this._getDimensionsForApiUrl());
             this.selectionApiUrl = {
-                name: apiUrl.name + '?dim=' + dimParameter,
-                href: apiUrl.href + '?dim=' + dimParameter,
-                isVisible: !!dimParameter
+                name: apiUrl.name + '?' + App.DimensionsUtils.getDimensionsParameterNameForRequest() + '=' + dimensionParameter,
+                href: apiUrl.href + '?' + App.DimensionsUtils.getDimensionsParameterNameForRequest() + '=' + dimensionParameter,
+                isVisible: !!dimensionParameter
             }
         },
 
