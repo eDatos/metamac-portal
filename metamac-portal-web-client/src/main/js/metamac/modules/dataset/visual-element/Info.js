@@ -48,8 +48,8 @@
             var apiUrl = this.data.metadata.getApiUrl();
             var dimensionParameter = App.DimensionsUtils.getDimensionsParameterForRequest(this._getDimensionsForApiUrl());
             this.selectionApiUrl = {
-                name: apiUrl.name + '?' + App.DimensionsUtils.getDimensionsParameterNameForRequest() + '=' + dimensionParameter,
-                href: apiUrl.href + '?' + App.DimensionsUtils.getDimensionsParameterNameForRequest() + '=' + dimensionParameter,
+                name: apiUrl.name + '?' + dimensionParameter,
+                href: apiUrl.href + '?' + dimensionParameter,
                 isVisible: !!dimensionParameter
             }
         },

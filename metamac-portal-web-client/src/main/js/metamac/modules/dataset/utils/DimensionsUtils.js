@@ -14,7 +14,9 @@
         */
 
         getDimensionsParameterForRequest: function (dimensions) {
-            return this.isIndicatorRequest() ? this.getDimensionsParameterForIndicatorRequest(dimensions) : this.getDimensionsParameterForDatasetRequest(dimensions);
+            var parameterName = this.getDimensionsParameterNameForRequest();
+            var parameterValue = this.isIndicatorRequest() ? this.getDimensionsParameterForIndicatorRequest(dimensions) : this.getDimensionsParameterForDatasetRequest(dimensions);
+            return !!parameterValue ? (parameterName + "=" + parameterValue) : "";
         },
 
         getDimensionsParameterForDatasetRequest: function (dimensions) {
