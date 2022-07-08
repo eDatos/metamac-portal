@@ -144,7 +144,7 @@
             var startDateInterval = this.intervalDateParsers[startTemporal.temporalGranularity](startTemporal.id);
             var dateInterval = this.intervalDateParsers[temporal.temporalGranularity](temporal.id);
 
-            return startDateInterval.begin <= dateInterval.begin;
+            return this.compare(startDateInterval, dateInterval) <= 0;
         },
 
         getInterval: function (temporal) {
@@ -160,5 +160,20 @@
             return this.temporalGranularityPriorities[temporalGranularity] || null;
         },
 
+        compare: function (date1, date2) {
+            if (date1.end < date2.end) {
+                return -1;
+            } else if (date1.end > date2.end) {
+                return 1;
+            } else {
+                // Has equal endTime, calculate duration
+                if (date1.begin < date2.begin) {
+                    return 1;
+                } else if (date1.begin > date2.begin) {
+                    return -1;
+                }
+                return 0;
+            }
+        }
     };
 }());
