@@ -91,7 +91,7 @@
         },
 
         areThereVersions: function () {
-            return App.queryParams.type !== "indicator" && App.queryParams.type !== "indicatorInstance" && this.filterDimensions.metadata.metadata.keepAllData;
+            return App.queryParams.type === "dataset" && this.filterDimensions.metadata.metadata.keepAllData;
         },
 
         isDataFieldNecessary: function () {
