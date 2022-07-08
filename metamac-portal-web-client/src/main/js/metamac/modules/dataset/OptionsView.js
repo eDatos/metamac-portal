@@ -3,6 +3,7 @@
     App.namespace("App.modules.dataset");
 
     var UserUtils = App.modules.user.UserUtils;
+    var DatasetPermalink = App.modules.dataset.DatasetPermalink;
     var DisabledFeatureInternalPortalView = Backbone.View.extend({
         render: function () {
             this.$el.html('<b>' + I18n.t("filter.button.disabledFeature.internalPortal") + '</b>');
@@ -180,17 +181,21 @@
             if (this.isInternalPortal()) {
                 modalContentView = new DisabledFeatureInternalPortalView();
             } else {
-                var self = this;
-                modalContentView = new App.components.modal.PermalinkConfigModalView({
-                    filterDimensions: this.filterDimensions,
-                    onSubmit: function (permalink) {
-                        modal.close();
+                if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
+                    var self = this;
+                    modalContentView = new App.components.modal.PermalinkConfigModalView({
+                        filterDimensions: this.filterDimensions,
+                        onSubmit: function (permalink) {
+                            modal.close();
 
-                        modalContentView = new App.modules.dataset.DatasetShareView({ permalink: permalink, filterDimensions: self.filterDimensions });
-                        modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
-                        modal.show();
-                    },
-                });
+                            modalContentView = new App.modules.dataset.DatasetShareView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions });
+                            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                            modal.show();
+                        },
+                    });
+                } else {
+                    modalContentView = new App.modules.dataset.DatasetShareView({ permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions });
+                }
             }
             modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
             modal.show();
@@ -208,16 +213,20 @@
                 UserUtils.getAccount().then(function(val) {
                     var modal;
                     var title = I18n.t("filter.save.modal.title");
-                    var modalContentView = new App.components.modal.PermalinkConfigModalView({
-                        filterDimensions: self.filterDimensions,
-                        onSubmit: function (permalink) {
-                            modal.close();
+                    if (DatasetPermalink.needsPermalink(self.filterDimensions)) {
+                        var modalContentView = new App.components.modal.PermalinkConfigModalView({
+                            filterDimensions: self.filterDimensions,
+                            onSubmit: function (permalink) {
+                                modal.close();
 
-                            modalContentView = new App.modules.dataset.DatasetSaveView({ permalink: permalink, filterDimensions: self.filterDimensions, user: val });
-                            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
-                            modal.show();
-                        },
-                    });
+                                modalContentView = new App.modules.dataset.DatasetSaveView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val });
+                                modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                                modal.show();
+                            },
+                        });
+                    } else {
+                        modalContentView = new App.modules.dataset.DatasetSaveView({ permalinkId: DatasetPermalink.getExistingPermalinkId(self.filterDimensions), filterDimensions: self.filterDimensions, user: val });
+                    }
                     modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
                     modal.show();
                 }).catch(function() {
@@ -247,17 +256,21 @@
             if (this.isInternalPortal()) {
                 modalContentView = new DisabledFeatureInternalPortalView();
             } else {
-                var self = this;
-                modalContentView = new App.components.modal.PermalinkConfigModalView({
-                    filterDimensions: this.filterDimensions,
-                    onSubmit: function (permalink) {
-                        modal.close();
+                if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
+                    var self = this;
+                    modalContentView = new App.components.modal.PermalinkConfigModalView({
+                        filterDimensions: this.filterDimensions,
+                        onSubmit: function (permalink) {
+                            modal.close();
 
-                        modalContentView = new App.modules.dataset.DatasetEmbedView({ permalink: permalink, filterDimensions: self.filterDimensions });
-                        modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
-                        modal.show();
-                    },
-                });
+                            modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions });
+                            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                            modal.show();
+                        },
+                    });
+                } else {
+                    modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions });
+                }
             }
             modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
             modal.show();

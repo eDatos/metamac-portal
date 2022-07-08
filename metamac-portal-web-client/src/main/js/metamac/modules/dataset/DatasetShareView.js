@@ -9,14 +9,14 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
-            this.permalink = this.options.permalink;
+            this.permalinkId = this.options.permalinkId;
         },
 
         getSharedVisualizerParams: function () {
             return [
                 'permalink',
                 '=',
-                this.permalink.id
+                this.permalinkId
             ].join('')
         },
 

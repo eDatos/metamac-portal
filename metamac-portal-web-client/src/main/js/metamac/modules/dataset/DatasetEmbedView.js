@@ -9,7 +9,7 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
-            this.permalink = this.options.permalink;
+            this.permalinkId = this.options.permalinkId;
         },
 
         getWidgetUrl: function () {
@@ -20,7 +20,7 @@
             return [
                 'permalink',
                 '=',
-                this.permalink.id
+                this.permalinkId
             ].join('')
         },
 

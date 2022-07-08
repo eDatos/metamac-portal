@@ -17,7 +17,7 @@
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
             this.user = this.options.user;
-            this.permalink = this.options.permalink;
+            this.permalinkId = this.options.permalinkId;
         },
 
         onSubmit: function(e) {
@@ -26,7 +26,7 @@
                 resourceName: this.getResourceTitle(),
                 name: this.$("#name").val() || null,
                 notes: this.$("#notes").val(),
-                permalink: this.permalink.id,
+                permalink: this.permalinkId,
                 userId: this.user.id
             });
             var self = this;

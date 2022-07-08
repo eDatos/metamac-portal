@@ -92,6 +92,14 @@
                 return requestFunction(this.baseUrl());
             }            
         },
+
+        needsPermalink: function (filterDimensions) {
+            return !(App.config.widget && this.getExistingPermalinkId(filterDimensions));
+        },
+
+        getExistingPermalinkId: function (filterDimensions) {
+            return filterDimensions.metadata.identifier().permalinkId;
+        },
     }
 
 }());
