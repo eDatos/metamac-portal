@@ -53,26 +53,12 @@ I18n.translations.en = {
             },
             label: {
                 name: "Custom query name",
-                notes: "Notes",
-                version: {
-                    group: "Version",
-                    last: "Last version",
-                    current: "Current version",
-                },
-                data: {
-                    group: "Data",
-                    quantity: "The last",
-                    date: "Starting from",
-                }
+                notes: "Notes"
             },
             modal: {
                 title: "Save custom query",
                 success: "The custom query has been saved successfully",
                 failure: "There was a problem saving the custom query"
-            },
-            error: {
-                quantity: "The numeric field in the 'Data' section must be a positive integer greater than or equal to one.",
-                date: "The date in the 'Data' section is mandatory."
             }
         },
         text: {
@@ -309,6 +295,26 @@ I18n.translations.en = {
             loginRequired: {
                 title: "Invalid action",
                 message: "The action you want to perform requires you to log in first. Do you want to log in?."
+            }
+        },
+        permalinkConfig: {
+            button: {
+                submit: "Save",
+            },
+            label: {
+                version: {
+                    group: "Version",
+                    last: "Last version",
+                    current: "Current version",
+                },
+                data: {
+                    group: "Data",
+                    quantity: "The last",
+                    date: "Starting from",
+                }
+            },
+            error: {
+                quantity: "The numeric field in the 'Data' section must be a positive integer greater than or equal to one."
             }
         }
     },

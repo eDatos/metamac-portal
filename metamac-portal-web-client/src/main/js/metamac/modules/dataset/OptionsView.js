@@ -3,6 +3,7 @@
     App.namespace("App.modules.dataset");
 
     var UserUtils = App.modules.user.UserUtils;
+    var DatasetPermalink = App.modules.dataset.DatasetPermalink;
     var DisabledFeatureInternalPortalView = Backbone.View.extend({
         render: function () {
             this.$el.html('<b>' + I18n.t("filter.button.disabledFeature.internalPortal") + '</b>');
@@ -175,13 +176,28 @@
         clickShare: function (e) {
             e.preventDefault();
             var modalContentView = null;
+            var modal = null;
+            var title = I18n.t("filter.button.share");
             if (this.isInternalPortal()) {
                 modalContentView = new DisabledFeatureInternalPortalView();
             } else {
-                modalContentView = new App.modules.dataset.DatasetShareView({ filterDimensions: this.filterDimensions });
+                if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
+                    var self = this;
+                    modalContentView = new App.components.modal.PermalinkConfigModalView({
+                        filterDimensions: this.filterDimensions,
+                        onSubmit: function (permalink) {
+                            modal.close();
+
+                            modalContentView = new App.modules.dataset.DatasetShareView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions });
+                            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                            modal.show();
+                        },
+                    });
+                } else {
+                    modalContentView = new App.modules.dataset.DatasetShareView({ permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions });
+                }
             }
-            var title = I18n.t("filter.button.share");
-            var modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
             modal.show();
         },
 
@@ -195,9 +211,23 @@
             } else {
                 var self = this;
                 UserUtils.getAccount().then(function(val) {
-                    var modalContentView = new App.modules.dataset.DatasetSaveView({ filterDimensions: self.filterDimensions, user: val });
+                    var modal;
                     var title = I18n.t("filter.save.modal.title");
-                    var modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                    if (DatasetPermalink.needsPermalink(self.filterDimensions)) {
+                        var modalContentView = new App.components.modal.PermalinkConfigModalView({
+                            filterDimensions: self.filterDimensions,
+                            onSubmit: function (permalink) {
+                                modal.close();
+
+                                modalContentView = new App.modules.dataset.DatasetSaveView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val });
+                                modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                                modal.show();
+                            },
+                        });
+                    } else {
+                        modalContentView = new App.modules.dataset.DatasetSaveView({ permalinkId: DatasetPermalink.getExistingPermalinkId(self.filterDimensions), filterDimensions: self.filterDimensions, user: val });
+                    }
+                    modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
                     modal.show();
                 }).catch(function() {
                     var modal;
@@ -221,13 +251,28 @@
         clickEmbed: function (e) {
             e.preventDefault();
             var modalContentView = null;
+            var modal = null;
+            var title = I18n.t("filter.button.embed");
             if (this.isInternalPortal()) {
                 modalContentView = new DisabledFeatureInternalPortalView();
             } else {
-                modalContentView = new App.modules.dataset.DatasetEmbedView({ filterDimensions: this.filterDimensions });
+                if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
+                    var self = this;
+                    modalContentView = new App.components.modal.PermalinkConfigModalView({
+                        filterDimensions: this.filterDimensions,
+                        onSubmit: function (permalink) {
+                            modal.close();
+
+                            modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions });
+                            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                            modal.show();
+                        },
+                    });
+                } else {
+                    modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions });
+                }
             }
-            var title = I18n.t("filter.button.embed");
-            var modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
             modal.show();
         },
 
