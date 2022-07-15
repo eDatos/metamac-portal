@@ -223,6 +223,14 @@ I18n.translations.pt = {
                 combinatedDimensions: 'Atributos no nível de dimensões',
             }
         },
+        category: {
+            measure: {
+                unit: 'Unidade de medida'
+            },
+            attributes: {
+                title: 'Atributos da categoria'
+            }
+        },
         granularity: {
             temporal: {
                 enum: {
