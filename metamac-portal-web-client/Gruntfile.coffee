@@ -357,7 +357,8 @@ module.exports = (grunt) ->
                     syntax: "bootstrap",
                     htmlDemo : true,
                     autoHint : false,
-                    types: 'eot,woff,ttf,svg'
+                    types: 'eot,woff,ttf,svg',
+                    styles: 'icon'
                 }
 
 
