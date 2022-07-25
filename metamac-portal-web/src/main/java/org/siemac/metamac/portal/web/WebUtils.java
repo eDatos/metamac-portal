@@ -194,10 +194,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static String getBreadcrumbsParams(String lang) {
         try {
             Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
-            String homeTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_HOME, locale);
             String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
-            // IDEA: EDATOS-3159 move http://www.gobiernodecanarias.org to property
-            return "?enlace=http://www.gobiernodecanarias.org/istac&miga=" + URLEncoder.encode(homeTranslation + "|" + visualizerTranslation, StandardCharsets.UTF_8.toString());
+            return "?migas=" + URLEncoder.encode(visualizerTranslation, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             log.error("UnsupportedEncodingException encoding a constant. This is not supposed to EVER throw", e);
             return "";
