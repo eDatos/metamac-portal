@@ -212,6 +212,10 @@
                     serie.horizontalCategory = horizontalCategoryIndex;
                     serie.columnCategory = columnCategoryIndex;
 
+                    // We cheat Highcharts, stacking columns with the same columnCategory with themselves, so we get the proper width
+                    serie.stack = columnCategory.get('id');
+                    serie.stacking = true;
+
                     // Instead of checking if we are working with nested columns or not, we simply store the last order.
                     // In the case of not nested columns, the x axis will be sorted properly
                     horizontalAxisCategories[horizontalCategoryIndex] = { horizontalCategoryIndex: horizontalCategoryIndex, order: y };
@@ -223,10 +227,6 @@
                 // We cheat Highcharts, stacking columns with the same columnCategory with themselves, so we get the proper width. We also sort them
                 columnSeries = _.sortBy(columnSeries, function (serie) {
                     return -serie.data[0].y;
-                }).map(function (serie, index) {
-                    serie.stack = index;
-                    serie.stacking = true;
-                    return serie;
                 });
 
                 listSeries = [].concat(listSeries, columnSeries);
