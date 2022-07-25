@@ -250,7 +250,8 @@
             result.series = _.map(listSeries, function (serie, index) {
                 // We decide the colors the first time we get the value, because that will be the same value they will use on the legend
                 if (!columnAxisCategories[serie.columnCategory]) {
-                    columnAxisCategories[serie.columnCategory] = Highcharts.getOptions().colors[index];
+                    var totalColors = Highcharts.getOptions().colors.length;
+                    columnAxisCategories[serie.columnCategory] = Highcharts.getOptions().colors[index % totalColors];
                 } else { // Else, we don´t have to show the label on the legend
                     serie.showInLegend = false;
                     serie.dataLabels = {
