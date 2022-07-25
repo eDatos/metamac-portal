@@ -55,7 +55,14 @@
             }
         },
 
-        maxUrlQueryLength: 1700
+        maxUrlQueryLength: 1700,
+
+        dimension: {
+            sortBy: {
+                OBSERVATION: "OBSERVATION",
+                REPRESENTATION: "REPRESENTATION"
+            }
+        }
     };
 
 }());

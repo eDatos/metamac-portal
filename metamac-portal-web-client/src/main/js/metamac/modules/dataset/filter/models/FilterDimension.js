@@ -18,6 +18,7 @@
 
         initialize: function () {
             this._bindEvents();
+            this.set('sortBy', this.isTimeDimension() ? App.Constants.dimension.sortBy.REPRESENTATION : App.Constants.dimension.sortBy.OBSERVATION);
         },
 
         isFixedDimension: function () {
