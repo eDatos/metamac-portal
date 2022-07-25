@@ -150,6 +150,32 @@
             App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000001", "version": "1.0", "type": "dataset" };
         }
 
+        var ENABLE_IESTADIS = true;
+        if (ENABLE_IESTADIS) {
+
+            // http://estadisticas.arte-consultores.com/statistical-resources
+            App.endpoints["statistical-resources"] = "https://iestadis.edatos.io/statistical-resources-internal/apis/statistical-resources-internal/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal
+            App.endpoints["structural-resources"] = "https://iestadis.edatos.io/structural-resources-internal/apis/structural-resources-internal/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/statistical-visualizer
+            App.endpoints["statistical-visualizer"] = "https://iestadis.edatos.io/statistical-visualizer";
+            
+            // http://estadisticas.arte-consultores.com/permalinks
+            App.endpoints["permalinks"] = "https://iestadis.edatos.io/permalinks/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/export
+            App.endpoints["export"] = "https://iestadis.edatos.io/export/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/indicators
+            App.endpoints["indicators"] = "https://iestadis.edatos.io/indicators-internal/internal/api/indicators/v1.0";
+
+            // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000007&version=1.0#visualization/column
+            // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000018&version=1.0#visualization/column
+            App.queryParams = { "agency": "IECM", "identifier": "003_000007", "version": "1.0", "type": "dataset" };
+        }
+
         App.start();
     </script>
 
