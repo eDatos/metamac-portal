@@ -57,14 +57,16 @@
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "225px"
+                        width: "225px",
+                        sortable: true
                     },
                     top: {
                         icon: "column",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "calc(100% - 225px)"
+                        width: "calc(100% - 225px)",
+                        sortable: true
                     },
                     fixed: {
                         icon: "lock",
@@ -155,6 +157,7 @@
             "change .fixed-dimension-select-category": "_onChangeCategory",
             "change .dimension-select-level": "_onChangeLevel",
             "change .dimension-select-granularity": "_onChangeGranularity",
+            "change .dimension-select-sortby": "_onChangeSortBy",
 
             "focusin .order-sidebar-dimension": "_onFocusin",
             "focusout .order-sidebar-dimension": "_onFocusout"
@@ -218,6 +221,13 @@
                 this.filterDimensions.get(dimensionId).get('representations').setSelectedTemporalGranularity(selectedGranularity);
                 this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedGranularity();
             }
+        },
+
+        _onChangeSortBy: function(e) {
+            var currentTarget = $(e.currentTarget);
+            var sortBy = currentTarget.val();
+            var dimensionId = currentTarget.data("dimension-id");
+            this.filterDimensions.get(dimensionId).set('sortBy', sortBy);
         },
 
         _onFocusin: function (e) {
@@ -315,8 +325,14 @@
 
             return {
                 leftColumns: this._getLeftColumns(zones),
+                sortByOptions: this._getSortByOptions(),
                 zones: zones
             };
+        },
+        _getSortByOptions: function() {
+            return _.map(App.Constants.dimension.sortBy, function(value, key) {
+                return { id: key, label : I18n.t('filter.sort.options.' + value) }
+            });
         },
 
         _getLeftColumns: function (zones) {
@@ -338,13 +354,18 @@
             return currentChartType ? this.configuration[currentChartType].zones[zone].showHeader : true;
         },
 
+        _getSortable: function (zone) {
+            var currentChartType = this._getCurrentChartType();
+            return currentChartType ? this.configuration[currentChartType].zones[zone].sortable : false;
+        },
+
         _getLocationForZone: function (zone) {
             var currentChartType = this._getCurrentChartType();
             return currentChartType ? this.configuration[currentChartType].zones[zone].location : "right";
         },
 
         _hasSelector: function (zoneId) {
-            return this._isFixedZone(zoneId) || this._hasHierarchySelector(zoneId);
+            return this._isFixedZone(zoneId) || this._hasHierarchySelector(zoneId) || this._getSortable(zoneId);
         },
 
         _isFixedZone: function (zoneId) {
@@ -397,6 +418,7 @@
                 var dimension = dimensionModel.toJSON();
                 var isGeographicDimension = dimensionModel.get('type') === "GEOGRAPHIC_DIMENSION";
                 dimension.draggable = isMap ? isGeographicDimension : true;
+                dimension.sortable = self._getSortable(zoneId);
 
                 if (self._needsGeographicLevelSelector(dimensionModel)) {
                     dimension.selectedLevel = dimensionModel.get('representations').getSelectedGeographicLevel();

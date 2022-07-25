@@ -89,7 +89,7 @@
 
         _bindEvents: function () {
             var debounceUpdate = _.debounce(this.update, 20);
-            this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", debounceUpdate);
+            this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse change:sortBy", debounceUpdate);
             this.listenTo(this.filterDimensions, "change:valuesToIgnore", debounceUpdate);
 
             var resize = _.debounce(_.bind(this._updateSize, this), 200);
@@ -182,11 +182,7 @@
                 columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
             }
             var horizontalDimensionSelectedCategories = this.getDrawableRepresentations(horizontalDimension);
-            if (horizontalDimension.get('type') == "TIME_DIMENSION") {
-                horizontalDimensionSelectedCategories = _.sortBy(horizontalDimensionSelectedCategories, function (representation) {
-                    return representation.normCode;
-                }).reverse();
-            }
+            var horizontalDimensionIsTemporal = horizontalDimension.get('type') == "TIME_DIMENSION";
             var columnsDimensionSelectedCategories = this.getDrawableRepresentations(columnsDimension);
 
             var listSeries = [];
@@ -211,22 +207,57 @@
                     // We keep track on the categories assigned to each serie, so later we can assign the proper x (order) and column color
                     serie.horizontalCategory = horizontalCategoryIndex;
                     serie.columnCategory = columnCategoryIndex;
+                    
+                    // Used for sorting later
+                    serie.id = columnCategory.get('id');
 
                     // We cheat Highcharts, stacking columns with the same columnCategory with themselves, so we get the proper width
                     serie.stack = columnCategory.get('id');
                     serie.stacking = true;
 
+                    var order = null;
+                    switch (horizontalDimension.get('sortBy')) {
+                        case App.Constants.dimension.sortBy.OBSERVATION:
+                            order = y;
+                            break;
+                        case App.Constants.dimension.sortBy.REPRESENTATION:
+                            if (horizontalDimensionIsTemporal) {
+                                order = horizontalCategoryIndex;
+                            } else {
+                                order = -horizontalCategoryIndex;
+                            }
+                            break;
+                        default:
+                            console.error("sortBy unsupported ", horizontalDimension.get('sortBy'));
+                            order = y;
+                            break;
+                    }
+
                     // Instead of checking if we are working with nested columns or not, we simply store the last order.
                     // In the case of not nested columns, the x axis will be sorted properly
-                    horizontalAxisCategories[horizontalCategoryIndex] = { horizontalCategoryIndex: horizontalCategoryIndex, order: y };
+                    horizontalAxisCategories[horizontalCategoryIndex] = { horizontalCategoryIndex: horizontalCategoryIndex, order: order };                    
 
                     columnSeries.push(serie);
                 });
 
 
-                // We cheat Highcharts, stacking columns with the same columnCategory with themselves, so we get the proper width. We also sort them
+                var columnSortBy = columnsDimension.get('sortBy');
+                var columnDimensionIsTemporal = columnsDimension.get('type') == "TIME_DIMENSION";
                 columnSeries = _.sortBy(columnSeries, function (serie) {
-                    return -serie.data[0].y;
+                    switch (columnSortBy) {
+                        case App.Constants.dimension.sortBy.OBSERVATION:
+                            return -serie.data[0].y;
+                        case App.Constants.dimension.sortBy.REPRESENTATION:
+                            if (columnDimensionIsTemporal) {
+                                return serie.id;
+                            } else {
+                                return -serie.id;
+                            }
+                        default:
+                            console.error("sortBy unsupported ", columnSortBy);
+                            return -serie.data[0].y;
+                    }
+
                 });
 
                 listSeries = [].concat(listSeries, columnSeries);
