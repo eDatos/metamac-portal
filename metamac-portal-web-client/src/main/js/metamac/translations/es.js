@@ -123,6 +123,12 @@ I18n.translations.es = {
         },
         selector: {
             level: "Nivel {{level}}"
+        },
+        sort: {
+            options: {
+                OBSERVATION: "Por valor",
+                REPRESENTATION: "Por categoría"
+            }
         }
     },
     ve: {
