@@ -121,7 +121,8 @@
                     position: dimension.position,
                     dimensionValues: {
                         dimensionValue: self.getSelectedDimensionCategoriesIds(dimension.categories)
-                    }
+                    },
+                    sortBy: dimension.sortBy
                 })
             });
 
