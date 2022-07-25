@@ -183,6 +183,7 @@
 
                 // visibleLabelType
                 dimension.set('visibleLabelType', dimensionToImport.visibleLabelType);
+                if (dimensionToImport.sortBy) { dimension.set('sortBy', dimensionToImport.sortBy); }
 
                 //zone
                 var zoneId = this._zoneIdFromPosition(dimensionToImport.position);
@@ -249,7 +250,8 @@
                 exportResult[dimension.id] = {
                     position: position,
                     visibleLabelType: dimension.get('visibleLabelType'),
-                    categories: categories
+                    categories: categories,
+                    sortBy: dimension.get('sortBy')
                 }
             });
             return exportResult;
