@@ -52,7 +52,7 @@
                 }
             };
 
-            addthis.toolbox(".addthis_toolbox", config, share);
+            addthis.toolbox(this.$el.find('.addthis_toolbox')[0], config, share);
         }
 
     });
