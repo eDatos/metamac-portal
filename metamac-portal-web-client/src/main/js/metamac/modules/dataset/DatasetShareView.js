@@ -46,11 +46,14 @@
                 description: context.description,
                 passthrough: {
                     twitter: {
-                        via: 'istac_es',
                         text: context.title
                     }
                 }
-            };
+            };   
+            
+            if (App.config.socialTwitterVia) { 
+                share.passthrough.twitter.via = App.config.socialTwitterVia;
+            }
 
             addthis.toolbox(this.$el.find('.addthis_toolbox')[0], config, share);
         }

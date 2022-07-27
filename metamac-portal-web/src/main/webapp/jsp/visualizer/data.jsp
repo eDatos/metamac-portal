@@ -102,6 +102,7 @@
 			                    App.config["organisationUrn"] = "${organisationUrn}";
 			                    App.config["geographicalGranularityUrn"] = "${geographicalGranularityUrn}";
 			                    App.config["installationType"] = "${installationType}";
+                                App.config["socialTwitterVia"] = "${socialTwitterVia}";
 
 			                    App.queryParams["agency"] = '${param.agencyId}';
 			                    App.queryParams["identifier"] = '${param.resourceId}';		                    
