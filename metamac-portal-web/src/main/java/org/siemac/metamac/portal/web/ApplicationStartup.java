@@ -2,6 +2,7 @@ package org.siemac.metamac.portal.web;
 
 import javax.servlet.ServletContextEvent;
 
+import org.siemac.edatos.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.listener.ApplicationStartupListener;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
@@ -56,6 +57,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalTourismStyles();
         setPortalPublicServiceStyles();
         setPortalCustomStyles();
+
+        setSocialTwitterVia();
     }
 
     // IDEA we try do it more scalable without breaking the rest, but the idea is to use only this one in the future
@@ -107,6 +110,14 @@ public class ApplicationStartup extends ApplicationStartupListener {
         }
     }
 
+    private void setSocialTwitterVia() {
+        try {
+            WebUtils.setSocialTwitterVia(configurationService.retrieveSharedSocialTwitterVia());
+        } catch (MetamacException e) {
+            log.info("Error retrieving application Social Twitter Via", e);
+        }
+    }
+
     @Override
     public void checkApplicationProperties() throws MetamacException {
         // Datasource
@@ -137,5 +148,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Google analytics
         checkRequiredProperty(PortalConfigurationConstants.ANALYTICS_GOOGLE_TRACKING_ID);
+
+        // Social
+        checkOptionalProperty(ConfigurationConstants.SHARED_SOCIAL_TWITTER_VIA);
     }
 }

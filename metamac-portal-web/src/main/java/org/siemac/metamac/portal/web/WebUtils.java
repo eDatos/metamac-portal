@@ -45,6 +45,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     portalPublicServiceStyleFooterUrl = null;
 
     protected static String     portalCustomStyleBaseUrl          = null;
+    protected static String     socialTwitterVia                  = null;
 
     public static void setExportApiBaseURL(String exportApiBaseUrl) {
         WebUtils.exportApiBaseUrl = exportApiBaseUrl;
@@ -127,6 +128,10 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         }
     }
 
+    public static String getSocialTwitterVia() {
+        return socialTwitterVia;
+    }
+
     public static void setPortalDefaultStyleHeaderUrl(String portalDefaultStyleHeaderUrl) {
         WebUtils.portalDefaultStyleHeaderUrl = portalDefaultStyleHeaderUrl;
     }
@@ -189,6 +194,10 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static void setPortalCustomStyleBaseUrl(String portalCustomStyleBaseUrl) {
         WebUtils.portalCustomStyleBaseUrl = portalCustomStyleBaseUrl;
+    }
+
+    public static void setSocialTwitterVia(String socialTwitterVia) {
+        WebUtils.socialTwitterVia = socialTwitterVia;
     }
 
     private static String getBreadcrumbsParams(String lang) {
