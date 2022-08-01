@@ -83,47 +83,48 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     private JacksonJsonProvider                    jacksonJsonProvider;
 
     @Override
-    public Response exportDatasetToTsv(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename) {
-        return exportDatasetToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename);
+    public Response exportDatasetToTsv(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
+        return exportDatasetToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+    }
     }
 
     @Override
-    public Response exportDatasetToTsv(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename) {
+    public Response exportDatasetToTsv(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportDatasetToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename);
+        return exportDatasetToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename, fields);
     }
 
     @Override
-    public Response exportQueryToTsv(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename) {
-        return exportQueryToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename);
+    public Response exportQueryToTsv(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields) {
+        return exportQueryToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename, fields);
     }
 
     @Override
-    public Response exportQueryToTsv(String jsonBody, String agencyID, String resourceID, String lang, String filename) {
+    public Response exportQueryToTsv(String jsonBody, String agencyID, String resourceID, String lang, String filename, String fields) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportQueryToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename);
+        return exportQueryToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename, fields);
     }
 
     @Override
-    public Response exportIndicatorToTsv(Exportation exportationBody, String resourceID, String filename) {
-        return exportIndicatorToPlainText(PlainTextTypeEnum.TSV, exportationBody, resourceID, filename);
+    public Response exportIndicatorToTsv(Exportation exportationBody, String resourceID, String filename, String fields) {
+        return exportIndicatorToPlainText(PlainTextTypeEnum.TSV, exportationBody, resourceID, filename, fields);
     }
 
     @Override
-    public Response exportIndicatorToTsv(String jsonBody, String resourceID, String filename) {
+    public Response exportIndicatorToTsv(String jsonBody, String resourceID, String filename, String fields) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportIndicatorToPlainText(PlainTextTypeEnum.TSV, exportationBody, resourceID, filename);
+        return exportIndicatorToPlainText(PlainTextTypeEnum.TSV, exportationBody, resourceID, filename, fields);
     }
 
     @Override
-    public Response exportIndicatorInstanceToTsv(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename) {
-        return exportIndicatorInstanceToPlainText(PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename);
+    public Response exportIndicatorInstanceToTsv(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename, String fields) {
+        return exportIndicatorInstanceToPlainText(PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename, fields);
     }
 
     @Override
-    public Response exportIndicatorInstanceToTsv(String jsonBody, String indicatorSystemCode, String resourceID, String filename) {
+    public Response exportIndicatorInstanceToTsv(String jsonBody, String indicatorSystemCode, String resourceID, String filename, String fields) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportIndicatorInstanceToPlainText(PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename);
+        return exportIndicatorInstanceToPlainText(PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename, fields);
     }
 
     @Override
@@ -139,16 +140,16 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     @Override
-    public Response exportDatasetToCsvComma(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename) {
-        return exportDatasetToPlainText(PlainTextTypeEnum.CSV_COMMA, exportationBody, agencyID, resourceID, version, lang, filename);
+    public Response exportDatasetToCsvComma(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
+        return exportDatasetToPlainText(PlainTextTypeEnum.CSV_COMMA, exportationBody, agencyID, resourceID, version, lang, filename, fields);
     }
 
     @Override
-    public Response exportDatasetToCsvComma(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename) {
+    public Response exportDatasetToCsvComma(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
         ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(Exportation.class, MediaType.APPLICATION_JSON_TYPE);
         try {
             Exportation tsvExportation = objectMapper.readValue(jsonBody, Exportation.class);
-            return exportDatasetToPlainText(PlainTextTypeEnum.CSV_COMMA, tsvExportation, agencyID, resourceID, version, lang, filename);
+            return exportDatasetToPlainText(PlainTextTypeEnum.CSV_COMMA, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
         } catch (IOException e) {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, RestExternalConstants.PARAMETER_SELECTION);
             throw new RestException(exception, Status.BAD_REQUEST);
@@ -156,16 +157,16 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     @Override
-    public Response exportDatasetToCsvSemicolon(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename) {
-        return exportDatasetToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, exportationBody, agencyID, resourceID, version, lang, filename);
+    public Response exportDatasetToCsvSemicolon(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
+        return exportDatasetToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, exportationBody, agencyID, resourceID, version, lang, filename, fields);
     }
 
     @Override
-    public Response exportDatasetToCsvSemicolon(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename) {
+    public Response exportDatasetToCsvSemicolon(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
         ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(Exportation.class, MediaType.APPLICATION_JSON_TYPE);
         try {
             Exportation tsvExportation = objectMapper.readValue(jsonBody, Exportation.class);
-            return exportDatasetToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, tsvExportation, agencyID, resourceID, version, lang, filename);
+            return exportDatasetToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
         } catch (IOException e) {
             org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, RestExternalConstants.PARAMETER_SELECTION);
             throw new RestException(exception, Status.BAD_REQUEST);
