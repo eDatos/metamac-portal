@@ -114,7 +114,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
         try {
             WebUtils.setSocialTwitterVia(configurationService.retrieveSharedSocialTwitterVia());
         } catch (MetamacException e) {
-            log.info("Error retrieving application Social Twitter Via", e);
+            log.debug("Error retrieving application OPTIONAL Social Twitter Via", e);
         }
     }
 
