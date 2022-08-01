@@ -17,6 +17,8 @@ public class ServiceExceptionParameters extends CommonServiceExceptionParameters
     public static final String  STREAM                  = createCode("stream");
     public static final String  LANG                    = createCode("lang");
     public static final String  SVG                     = createCode("svg");
+    public static final String  RESOURCE_ACCESS         = createCode("resource_access");
+    public static final String  PLAIN_TEXT_TYPE_ENUM    = createCode("plain_text_type_enum");
 
     private static String createCode(String fieldCode) {
         return PREFIX_PARAMETER_PORTAL + "." + fieldCode;
