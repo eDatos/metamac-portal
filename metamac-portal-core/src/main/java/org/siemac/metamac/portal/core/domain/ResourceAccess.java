@@ -39,6 +39,8 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 
 public class ResourceAccess {
 
+    private DatasetSelection                              datasetSelection;
+
     private String                                        lang;
     private String                                        langAlternative;
 
@@ -76,22 +78,23 @@ public class ResourceAccess {
     private Map<String, String[]>                         attributesValuesByAttributeId;
     private List<String>                                  dimensionsOrderedForData;
     private Map<String, List<String>>                     dimensionValuesOrderedForDataByDimensionId;
-    
-    private Dataset dataset;
-    
-    private final Map<String, Integer>           multipliers         = new HashMap<String, Integer>();
-    private final Map<String, Map<String, Long>> representationIndex = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
+
+    private Dataset                                       dataset;
+
+    private final Map<String, Integer>                    multipliers         = new HashMap<String, Integer>();
+    private final Map<String, Map<String, Long>>          representationIndex = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
 
     public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = dataset.getData();
         dimensions = dataset.getMetadata().getDimensions();
         attributes = dataset.getMetadata().getAttributes();
+        this.datasetSelection = datasetSelection;
 
         uniqueId = dataset.getId();
         if (datasetSelection != null && datasetSelection.isUserSelection()) {
             uniqueId = PxExporter.generateMatrixFromString(dataset.getId());
         }
-        
+
         name = dataset.getName();
         id = dataset.getId();
         urn = dataset.getUrn();
@@ -108,10 +111,11 @@ public class ResourceAccess {
         data = query.getData();
         dimensions = query.getMetadata().getDimensions();
         attributes = query.getMetadata().getAttributes();
+        this.datasetSelection = datasetSelection;
 
         // Query id can be too long for PX Matrix
         uniqueId = PxExporter.generateMatrixFromString(query.getId());
-        
+
         name = query.getName();
         id = query.getId();
         urn = query.getUrn();
@@ -138,6 +142,10 @@ public class ResourceAccess {
         initializeIndex();
     }
 
+    public DatasetSelection getDataSelection() {
+        return datasetSelection;
+    }
+
     public Data getData() {
         return data;
     }
@@ -153,7 +161,7 @@ public class ResourceAccess {
     public InternationalString getName() {
         return name;
     }
-    
+
     public Dataset getDataset() {
         return dataset;
     }
@@ -165,7 +173,7 @@ public class ResourceAccess {
     public DataStructureDefinition getRelatedDsd() {
         return relatedDsd;
     }
-    
+
     public String getUniqueId() {
         return uniqueId;
     }
@@ -413,179 +421,179 @@ public class ResourceAccess {
         }
         return attributeValue;
     }
-    
+
     /**
      * Retrieve the observation for a specific key <param>permutation</param>
-    *
-    * @param observation at permutation key
-    * @return
-    */
-   public String observationAtPermutation(Map<String, String> permutation) {
-       int offset = calculateOffsetAtPermutation(permutation);
+     *
+     * @param observation at permutation key
+     * @return
+     */
+    public String observationAtPermutation(Map<String, String> permutation) {
+        int offset = calculateOffsetAtPermutation(permutation);
 
-       String observation = getObservations()[offset];
-       if (!observation.trim().isEmpty()) {
-           return observation;
-       } else {
-           return null;
-       }
-   }
-   
-   public String measureAttributeValueAtPermutation(String attributeId, Map<String, String> permutation) {
-       int offset = calculateOffsetAtPermutation(permutation);
-       String[] attributeValues = getAttributeValues(attributeId);
-       String attributeValue = null;
-       if (attributeValues != null) {
-           attributeValue = attributeValues[offset];
-       }
-       return attributeValue;
-   }
+        String observation = getObservations()[offset];
+        if (!observation.trim().isEmpty()) {
+            return observation;
+        } else {
+            return null;
+        }
+    }
 
-   public CellCommentDetails observationAttributesAtPermutation(Map<String, String> permutation) {
-       CellCommentDetails cellCommentDetails = new CellCommentDetails();
-       for (Attribute attribute : getAttributesMetadata()) {
-           if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
-               continue; // only observation attachment level
-           }
-           String attributeId = attribute.getId();
-           int offset = calculateOffsetAtPermutation(permutation);
+    public String measureAttributeValueAtPermutation(String attributeId, Map<String, String> permutation) {
+        int offset = calculateOffsetAtPermutation(permutation);
+        String[] attributeValues = getAttributeValues(attributeId);
+        String attributeValue = null;
+        if (attributeValues != null) {
+            attributeValue = attributeValues[offset];
+        }
+        return attributeValue;
+    }
 
-           String attributeValue = obtainAttributeValue(attributeId, offset);
-           cellCommentDetails.addCommentLine(attributeValue);
-       }
+    public CellCommentDetails observationAttributesAtPermutation(Map<String, String> permutation) {
+        CellCommentDetails cellCommentDetails = new CellCommentDetails();
+        for (Attribute attribute : getAttributesMetadata()) {
+            if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
+                continue; // only observation attachment level
+            }
+            String attributeId = attribute.getId();
+            int offset = calculateOffsetAtPermutation(permutation);
 
-       return cellCommentDetails;
-   }
+            String attributeValue = obtainAttributeValue(attributeId, offset);
+            cellCommentDetails.addCommentLine(attributeValue);
+        }
 
-   public String obtainAttributeValue(String attributeId, int offset) {
-       String[] attributeValues = getAttributeValues(attributeId);
-       String attributeValue = null;
-       if (attributeValues != null) {
-           attributeValue = attributeValues[offset];
-           attributeValue = applyLabelVisualizationModeForAttributeValue(attributeId, attributeValue);
-       }
-       return attributeValue;
-   }
+        return cellCommentDetails;
+    }
 
-   public String applyLabelVisualizationModeForAttribute(String attributeId) {
-       // Visualisation mode
-       LabelVisualisationModeEnum labelVisualisation = getAttributeLabelVisualisationMode(attributeId);
-       String resultText = null;
-       switch (labelVisualisation) {
-           case CODE:
-               resultText = attributeId;
-               break;
-           case LABEL: {
-               String attributeLabel = getAttributeLabel(attributeId);
-               if (attributeLabel != null) {
-                   resultText = attributeLabel;
-               }
-           }
-               break;
-           case CODE_AND_LABEL: {
-               String attributeLabel = getAttributeLabel(attributeId);
-               if (attributeLabel != null) {
-                   resultText = attributeLabel + " (" + attributeId + ")";
-               }
-           }
-               break;
-           default:
-               break;
-       }
-       return resultText;
-   }
+    public String obtainAttributeValue(String attributeId, int offset) {
+        String[] attributeValues = getAttributeValues(attributeId);
+        String attributeValue = null;
+        if (attributeValues != null) {
+            attributeValue = attributeValues[offset];
+            attributeValue = applyLabelVisualizationModeForAttributeValue(attributeId, attributeValue);
+        }
+        return attributeValue;
+    }
 
-   public String applyLabelVisualizationModeForDimension(String dimensionId) {
-       LabelVisualisationModeEnum labelVisualisation = getDimensionLabelVisualisationMode(dimensionId);
-       String resultText = null;
-       switch (labelVisualisation) {
-           case CODE:
-               resultText = dimensionId;
-               break;
-           case LABEL: {
-               String dimensionValueLabel = getDimensionLabel(dimensionId);
-               if (dimensionValueLabel != null) {
-                   resultText = dimensionValueLabel;
-               }
-           }
-               break;
-           case CODE_AND_LABEL: {
-               String dimensionValueLabel = getDimensionLabel(dimensionId);
-               if (dimensionValueLabel != null) {
-                   resultText = dimensionValueLabel + " (" + dimensionId + ")";
-               }
-           }
-               break;
-           default:
-               break;
-       }
-       return resultText;
-   }
+    public String applyLabelVisualizationModeForAttribute(String attributeId) {
+        // Visualisation mode
+        LabelVisualisationModeEnum labelVisualisation = getAttributeLabelVisualisationMode(attributeId);
+        String resultText = null;
+        switch (labelVisualisation) {
+            case CODE:
+                resultText = attributeId;
+                break;
+            case LABEL: {
+                String attributeLabel = getAttributeLabel(attributeId);
+                if (attributeLabel != null) {
+                    resultText = attributeLabel;
+                }
+            }
+                break;
+            case CODE_AND_LABEL: {
+                String attributeLabel = getAttributeLabel(attributeId);
+                if (attributeLabel != null) {
+                    resultText = attributeLabel + " (" + attributeId + ")";
+                }
+            }
+                break;
+            default:
+                break;
+        }
+        return resultText;
+    }
 
-   public String applyLabelVisualizationModeForDimensionValue(String dimensionId, String dimensionValueId) {
-       LabelVisualisationModeEnum labelVisualisation = getDimensionLabelVisualisationMode(dimensionId);
-       switch (labelVisualisation) {
-           case CODE:
-               // no extra action
-               break;
-           case LABEL: {
-               String dimensionValueLabel = getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
-               if (dimensionValueLabel != null) {
-                   dimensionValueId = dimensionValueLabel;
-               }
-           }
-               break;
-           case CODE_AND_LABEL: {
-               String dimensionValueLabel = getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
-               if (dimensionValueLabel != null) {
-                   dimensionValueId = dimensionValueLabel + " (" + dimensionValueId + ")";
-               }
-           }
-               break;
-           default:
-               break;
-       }
-       return dimensionValueId;
-   }
+    public String applyLabelVisualizationModeForDimension(String dimensionId) {
+        LabelVisualisationModeEnum labelVisualisation = getDimensionLabelVisualisationMode(dimensionId);
+        String resultText = null;
+        switch (labelVisualisation) {
+            case CODE:
+                resultText = dimensionId;
+                break;
+            case LABEL: {
+                String dimensionValueLabel = getDimensionLabel(dimensionId);
+                if (dimensionValueLabel != null) {
+                    resultText = dimensionValueLabel;
+                }
+            }
+                break;
+            case CODE_AND_LABEL: {
+                String dimensionValueLabel = getDimensionLabel(dimensionId);
+                if (dimensionValueLabel != null) {
+                    resultText = dimensionValueLabel + " (" + dimensionId + ")";
+                }
+            }
+                break;
+            default:
+                break;
+        }
+        return resultText;
+    }
 
-   private void initializeMultipliers() {
-       List<DimensionRepresentation> dimensions = getData().getDimensions().getDimensions();
-       ListIterator<DimensionRepresentation> dimensionsListIterator = dimensions.listIterator(dimensions.size());
-       int incrementCounter = 1;
+    public String applyLabelVisualizationModeForDimensionValue(String dimensionId, String dimensionValueId) {
+        LabelVisualisationModeEnum labelVisualisation = getDimensionLabelVisualisationMode(dimensionId);
+        switch (labelVisualisation) {
+            case CODE:
+                // no extra action
+                break;
+            case LABEL: {
+                String dimensionValueLabel = getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
+                if (dimensionValueLabel != null) {
+                    dimensionValueId = dimensionValueLabel;
+                }
+            }
+                break;
+            case CODE_AND_LABEL: {
+                String dimensionValueLabel = getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
+                if (dimensionValueLabel != null) {
+                    dimensionValueId = dimensionValueLabel + " (" + dimensionValueId + ")";
+                }
+            }
+                break;
+            default:
+                break;
+        }
+        return dimensionValueId;
+    }
 
-       // Iterate the list in reverse order: right to left or down to up in the display table for calculate cell spacing
-       while (dimensionsListIterator.hasPrevious()) {
-           DimensionRepresentation dimension = dimensionsListIterator.previous();
-           multipliers.put(dimension.getDimensionId(), incrementCounter);
-           incrementCounter *= dimension.getRepresentations().getRepresentations().size();
-       }
-   }
+    private void initializeMultipliers() {
+        List<DimensionRepresentation> dimensions = getData().getDimensions().getDimensions();
+        ListIterator<DimensionRepresentation> dimensionsListIterator = dimensions.listIterator(dimensions.size());
+        int incrementCounter = 1;
 
-   /**
-    * Calculate a map indexed by dimension with map as value. The value map is indexed by code and its value is a index.
-    */
-   private void initializeIndex() {
-       List<DimensionRepresentation> dimensions = getData().getDimensions().getDimensions();
-       for (DimensionRepresentation dimension : dimensions) {
-           Map<String, Long> representationIndexMap = new HashMap<String, Long>();
-           List<CodeRepresentation> representations = dimension.getRepresentations().getRepresentations();
-           for (CodeRepresentation representation : representations) {
-               representationIndexMap.put(representation.getCode(), representation.getIndex());
-           }
-           representationIndex.put(dimension.getDimensionId(), representationIndexMap);
-       }
-   }
+        // Iterate the list in reverse order: right to left or down to up in the display table for calculate cell spacing
+        while (dimensionsListIterator.hasPrevious()) {
+            DimensionRepresentation dimension = dimensionsListIterator.previous();
+            multipliers.put(dimension.getDimensionId(), incrementCounter);
+            incrementCounter *= dimension.getRepresentations().getRepresentations().size();
+        }
+    }
 
-   private int calculateOffsetAtPermutation(Map<String, String> permutation) {
-       int offset = 0;
-       for (Map.Entry<String, String> permutationEntry : permutation.entrySet()) {
-           String dimensionId = permutationEntry.getKey();
-           String representationId = permutationEntry.getValue();
+    /**
+     * Calculate a map indexed by dimension with map as value. The value map is indexed by code and its value is a index.
+     */
+    private void initializeIndex() {
+        List<DimensionRepresentation> dimensions = getData().getDimensions().getDimensions();
+        for (DimensionRepresentation dimension : dimensions) {
+            Map<String, Long> representationIndexMap = new HashMap<String, Long>();
+            List<CodeRepresentation> representations = dimension.getRepresentations().getRepresentations();
+            for (CodeRepresentation representation : representations) {
+                representationIndexMap.put(representation.getCode(), representation.getIndex());
+            }
+            representationIndex.put(dimension.getDimensionId(), representationIndexMap);
+        }
+    }
 
-           long index = representationIndex.get(dimensionId).get(representationId);
-           int multiplier = multipliers.get(dimensionId);
-           offset += index * multiplier;
-       }
-       return offset;
-   }
+    private int calculateOffsetAtPermutation(Map<String, String> permutation) {
+        int offset = 0;
+        for (Map.Entry<String, String> permutationEntry : permutation.entrySet()) {
+            String dimensionId = permutationEntry.getKey();
+            String representationId = permutationEntry.getValue();
+
+            long index = representationIndex.get(dimensionId).get(representationId);
+            int multiplier = multipliers.get(dimensionId);
+            offset += index * multiplier;
+        }
+        return offset;
+    }
 }

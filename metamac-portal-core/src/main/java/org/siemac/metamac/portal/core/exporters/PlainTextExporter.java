@@ -23,18 +23,27 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 
 public class PlainTextExporter {
 
-    private final ResourceAccess datasetAccess;
+    private final ResourceAccess   datasetAccess;
     private final DatasetSelection datasetSelection;
 
-    private final String                     ESCAPE_DOUBLE_QUOTES                = "\"";
-    private final String                     HEADER_OBSERVATION                  = "OBS_VALUE";
-    private final String                     HEADER_ATTRIBUTE_ID                 = "ATTRIBUTE";
-    private final String                     HEADER_ATTRIBUTE_VALUE              = "ATTRIBUTE_VALUE";
-    private final String                     HEADER_ATTRIBUTE_VALUE_CODE         = "ATTRIBUTE_VALUE_CODE";
-    private final String                     HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE = "_CODE";
-    private static final boolean             ESCAPE_IF_NECESSARY                 = true;
+    private final String           ESCAPE_DOUBLE_QUOTES                = "\"";
+    private final String           HEADER_OBSERVATION                  = "OBS_VALUE";
+    private final String           HEADER_ATTRIBUTE_ID                 = "ATTRIBUTE";
+    private final String           HEADER_ATTRIBUTE_VALUE              = "ATTRIBUTE_VALUE";
+    private final String           HEADER_ATTRIBUTE_VALUE_CODE         = "ATTRIBUTE_VALUE_CODE";
+    private final String           HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE = "_CODE";
+    private static final boolean   ESCAPE_IF_NECESSARY                 = true;
 
-    private PlainTextTypeEnum                plainTextTypeEnum                   = null;
+    private PlainTextTypeEnum      plainTextTypeEnum                   = null;
+
+    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess) throws MetamacException {
+        datasetAccess = resourceAccess;
+        datasetSelection = resourceAccess.getDataSelection();
+        this.plainTextTypeEnum = plainTextTypeEnum;
+        if (this.plainTextTypeEnum == null) {
+            throw new MetamacException(ServiceExceptionType.UNKNOWN, "Plain Text format is required ");
+        }
+    }
 
     public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
@@ -120,7 +129,7 @@ public class PlainTextExporter {
         for (int i = 0; i < datasetSelection.getRows(); i++) {
             for (int j = 0; j < datasetSelection.getColumns(); j++) {
                 Map<String, String> permutationAtCell = datasetSelection.permutationAtCell(i, j);
-                
+
                 // The observation is complete
                 StringBuilder line = new StringBuilder();
 
@@ -149,7 +158,7 @@ public class PlainTextExporter {
                     if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
                         continue; // only observation attachment level
                     }
-                    
+
                     String attributeId = attribute.getId();
                     String attributeValue = datasetAccess.measureAttributeValueAtPermutation(attributeId, permutationAtCell);
                     if (attributeValue == null) {
@@ -296,7 +305,7 @@ public class PlainTextExporter {
             }
         }
     }
-    
+
     private boolean allDimensionValuesAreSelected(List<String> dimensionsOrderedForData, Map<String, String> dimensionValuesForAttributeValue) {
         for (String dimensionId : dimensionsOrderedForData) {
             if (dimensionValuesForAttributeValue.containsKey(dimensionId)) {
