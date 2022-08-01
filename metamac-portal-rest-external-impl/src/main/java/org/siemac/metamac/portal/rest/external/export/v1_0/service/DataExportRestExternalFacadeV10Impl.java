@@ -1,7 +1,9 @@
 package org.siemac.metamac.portal.rest.external.export.v1_0.service;
 
 import static org.siemac.metamac.portal.rest.external.RestExternalConstantsPrivate.SERVICE_CONTEXT;
+import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.containsField;
 import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.manageException;
+import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.parseFieldsParameter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -28,8 +31,8 @@ import org.siemac.metamac.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.siemac.metamac.portal.core.constants.PortalConstants.ResourceType;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
+import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
-import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.portal.core.exporters.SvgExportSupportedMimeType;
 import org.siemac.metamac.portal.core.invocation.IndicatorsRestExternalFacade;
 import org.siemac.metamac.portal.core.invocation.IndicatorsSystemsRestExternalFacade;
@@ -57,9 +60,7 @@ import es.gobcan.istac.indicators.rest.types.IndicatorsSystemType;
 @Service("dataExportRestExternalFacadeV10")
 public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
-    private String                                 MEDIA_TYPE_TEXT_TAB_SEPARATED_VALUES = "text/tab-separated-values";
-    private String                                 MEDIA_TYPE_TEXT_CSV                  = "text/csv";
-    private String                                 MEDIA_TYPE_APPLICATION_XLSX          = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    private String                                 MEDIA_TYPE_APPLICATION_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     @Autowired
     private ExportService                          exportService;
@@ -85,7 +86,6 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     @Override
     public Response exportDatasetToTsv(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
         return exportDatasetToPlainText(PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename, fields);
-    }
     }
 
     @Override
@@ -215,8 +215,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             Dataset relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
             if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(),
-                        query.getMetadata().getRelatedDsd());
+                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
             }
 
             if (filename == null) {
@@ -327,6 +326,11 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     private String buildFilename(String extension, String... parts) {
         StringBuilder filename = new StringBuilder();
         return filename.append(StringUtils.join(parts, "-")).append(extension).toString();
+    }
+
+    private String buildFilenameWithoutExtension(String... parts) {
+        StringBuilder filename = new StringBuilder();
+        return filename.append(StringUtils.join(parts, "-")).toString();
     }
 
     @Override
@@ -614,8 +618,95 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         in.close();
     }
 
-    private Response exportDatasetToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String agencyID, String resourceID, String version, String lang,
-            String filename) {
+    private Response exportIndicatorToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String resourceID, String filename, String fields) {
+
+        ResourceAccess resourceAccess = buildResourceAccessForIndicator(exportationBody, resourceID);
+
+        if (filename == null) {
+            filename = buildFilenameWithoutExtension(ResourceType.INDICATOR.getName(), resourceID);
+        }
+
+        return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
+    }
+
+    private Response exportIndicatorInstanceToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename,
+            String fields) {
+        ResourceAccess resourceAccess = buildResourceAccessForIndicatorInsance(exportationBody, indicatorSystemCode, resourceID);
+
+        if (filename == null) {
+            filename = buildFilenameWithoutExtension(ResourceType.INDICATOR_INSTANCE.getName(), resourceID);
+        }
+
+        return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
+    }
+
+    private Response exportDatasetToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename,
+            String fields) {
+
+        ResourceAccess resourceAccess = buildResourceAccessForDataset(exportationBody, agencyID, resourceID, version, lang);
+
+        if (filename == null) {
+            filename = buildFilenameWithoutExtension(ResourceType.DATASET.getName(), agencyID, resourceID, version);
+        }
+
+        return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
+    }
+
+    private Response exportQueryToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields) {
+
+        ResourceAccess resourceAccess = buildResourceAccessForQuery(exportationBody, agencyID, resourceID, lang);
+
+        if (filename == null) {
+            filename = buildFilenameWithoutExtension(ResourceType.QUERY.getName(), agencyID, resourceID);
+        }
+
+        return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
+    }
+
+    private Response exportResourceAccessToPlainText(ResourceAccess resourceAccess, String filename, PlainTextTypeEnum plainTextTypeEnum, String fields) {
+
+        try {
+            final File tmpFileObservations = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
+            FileOutputStream outputStreamObservations = new FileOutputStream(tmpFileObservations);
+
+            String filenamePrefix = FilenameUtils.getBaseName(filename);
+            String extension = FilenameUtils.getExtension(filename);
+
+            Set<String> parsedFields = parseFieldsParameter(fields);
+
+            boolean excludeAttributes = containsField(parsedFields, RestExternalConstants.FIELD_EXCLUDE_ATTRIBUTES);
+            if (excludeAttributes) {
+                // Not zip
+                exportService.exportResourceToPlainTextWithoutAttributes(SERVICE_CONTEXT, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations);
+                outputStreamObservations.close();
+
+                if (StringUtils.isEmpty(extension)) {
+                    extension = plainTextTypeEnum.getExtension();
+                }
+                return buildResponseOkWithFile(tmpFileObservations, buildFilename(extension, filenamePrefix), plainTextTypeEnum.getMimeType());
+            } else {
+                // Zip
+                final File tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
+                FileOutputStream outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
+                exportService.exportResourceToPlainText(SERVICE_CONTEXT, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, outputStreamAttributes);
+                outputStreamAttributes.close();
+                outputStreamObservations.close();
+
+                File zipFile = generatePlainTextZip(plainTextTypeEnum, tmpFileObservations, tmpFileAttributes, filenamePrefix);
+
+                if (StringUtils.isEmpty(extension)) {
+                    extension = "zip";
+                }
+                return buildResponseOkWithFile(zipFile, buildFilename(extension, filenamePrefix), "application/octet-stream");
+            }
+        } catch (Exception e) {
+            throw manageException(e);
+        }
+
+    }
+
+    private ResourceAccess buildResourceAccessForDataset(Exportation exportationBody, String agencyID, String resourceID, String version, String lang) {
+
         try {
             // Transform possible selection (not required)
             DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
@@ -631,18 +722,14 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                 datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                         dataset.getMetadata().getRelatedDsd());
             }
-
-            if (filename == null) {
-                filename = buildFilename(".zip", ResourceType.DATASET.getName(), agencyID, resourceID, version);
-            }
-
-            return exportDatasetToPlainText(plainTextTypeEnum, dataset, datasetSelection, lang, filename);
+            String langAlternative = null;
+            return new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
         } catch (Exception e) {
             throw manageException(e);
         }
     }
 
-    private Response exportQueryToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String agencyID, String resourceID, String lang, String filename) {
+    private ResourceAccess buildResourceAccessForQuery(Exportation exportationBody, String agencyID, String resourceID, String lang) {
         try {
             // Transform possible selection (not required)
             DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
@@ -653,23 +740,19 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             // Retrieve dataset
             Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
-            
+
             if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(),
-                        query.getMetadata().getRelatedDsd());
+                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
             }
 
-            if (filename == null) {
-                filename = buildFilename(".zip", ResourceType.QUERY.getName(), agencyID, resourceID);
-            }
-
-            return exportQueryToPlainText(plainTextTypeEnum, query, datasetSelection, lang, filename);
+            return new ResourceAccess(query, null, datasetSelection, lang);
         } catch (Exception e) {
             throw manageException(e);
         }
     }
 
-    private Response exportIndicatorToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String resourceID, String filename) {
+    private ResourceAccess buildResourceAccessForIndicator(Exportation exportationBody, String resourceID) {
+
         try {
             // Transform possible selection (not required)
             DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
@@ -685,18 +768,14 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                 datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                         dataset.getMetadata().getRelatedDsd());
             }
-            
-            if (filename == null) {
-                filename = buildFilename(".zip", ResourceType.INDICATOR.getName(), resourceID);
-            }
 
-            return exportDatasetToPlainText(plainTextTypeEnum, dataset, datasetSelection, null, filename);
+            return new ResourceAccess(dataset, datasetSelection);
         } catch (Exception e) {
             throw manageException(e);
         }
     }
 
-    private Response exportIndicatorInstanceToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename) {
+    private ResourceAccess buildResourceAccessForIndicatorInsance(Exportation exportationBody, String indicatorSystemCode, String resourceID) {
         try {
             // Transform possible selection (not required)
             DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
@@ -713,87 +792,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                         dataset.getMetadata().getRelatedDsd());
             }
 
-            if (filename == null) {
-                filename = buildFilename(".zip", ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
-            }
-
-            return exportDatasetToPlainText(plainTextTypeEnum, dataset, datasetSelection, null, filename);
-        } catch (Exception e) {
-            throw manageException(e);
-        }
-    }
-
-    private Response exportDatasetToPlainText(PlainTextTypeEnum plainTextTypeEnum, Dataset dataset, DatasetSelection datasetSelectionForPlainText, String lang, String filename) {
-        try {
-            // Export
-            final File tmpFileObservations = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
-            final File tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
-            FileOutputStream outputStreamObservations = new FileOutputStream(tmpFileObservations);
-            FileOutputStream outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
-
-            String mimeType = MediaType.TEXT_PLAIN;
-
-            switch (plainTextTypeEnum) {
-                case TSV:
-                    exportService.exportDatasetToTsv(SERVICE_CONTEXT, dataset, datasetSelectionForPlainText, lang, outputStreamObservations, outputStreamAttributes);
-                    mimeType = MEDIA_TYPE_TEXT_TAB_SEPARATED_VALUES;
-                    break;
-                case CSV_COMMA:
-                    exportService.exportDatasetToCsvCommaSeparated(SERVICE_CONTEXT, dataset, datasetSelectionForPlainText, lang, outputStreamObservations, outputStreamAttributes);
-                    mimeType = MEDIA_TYPE_TEXT_CSV;
-                    break;
-                case CSV_SEMICOLON:
-                    exportService.exportDatasetToCsvSemicolonSeparated(SERVICE_CONTEXT, dataset, datasetSelectionForPlainText, lang, outputStreamObservations, outputStreamAttributes);
-                    mimeType = MEDIA_TYPE_TEXT_CSV;
-                    break;
-                default:
-                    break;
-            }
-
-            outputStreamObservations.close();
-            outputStreamAttributes.close();
-            String filenamePrefix = FilenameUtils.getBaseName(filename);
-            File plainTextZip = generatePlainTextZip(plainTextTypeEnum, tmpFileObservations, tmpFileAttributes, filenamePrefix);
-            return buildResponseOkWithFile(plainTextZip, filename, mimeType);
-
-        } catch (Exception e) {
-            throw manageException(e);
-        }
-    }
-
-    private Response exportQueryToPlainText(PlainTextTypeEnum plainTextTypeEnum, Query query, DatasetSelection datasetSelectionForPlainText, String lang, String filename) {
-        try {
-            // Export
-            final File tmpFileObservations = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
-            final File tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
-            FileOutputStream outputStreamObservations = new FileOutputStream(tmpFileObservations);
-            FileOutputStream outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
-
-            String mimeType = MediaType.TEXT_PLAIN;
-
-            switch (plainTextTypeEnum) {
-                case TSV:
-                    exportService.exportQueryToTsv(SERVICE_CONTEXT, query, datasetSelectionForPlainText, lang, outputStreamObservations, outputStreamAttributes);
-                    mimeType = MEDIA_TYPE_TEXT_TAB_SEPARATED_VALUES;
-                    break;
-                case CSV_COMMA:
-                    exportService.exportQueryToCsvCommaSeparated(SERVICE_CONTEXT, query, datasetSelectionForPlainText, lang, outputStreamObservations, outputStreamAttributes);
-                    mimeType = MEDIA_TYPE_TEXT_CSV;
-                    break;
-                case CSV_SEMICOLON:
-                    exportService.exportQueryToCsvSemicolonSeparated(SERVICE_CONTEXT, query, datasetSelectionForPlainText, lang, outputStreamObservations, outputStreamAttributes);
-                    mimeType = MEDIA_TYPE_TEXT_CSV;
-                    break;
-                default:
-                    break;
-            }
-
-            outputStreamObservations.close();
-            outputStreamAttributes.close();
-            String filenamePrefix = FilenameUtils.getBaseName(filename);
-            File plainTextZip = generatePlainTextZip(plainTextTypeEnum, tmpFileObservations, tmpFileAttributes, filenamePrefix);
-            return buildResponseOkWithFile(plainTextZip, filename, mimeType);
-
+            return new ResourceAccess(dataset, datasetSelection);
         } catch (Exception e) {
             throw manageException(e);
         }
