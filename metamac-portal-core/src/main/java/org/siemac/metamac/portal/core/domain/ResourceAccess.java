@@ -84,6 +84,10 @@ public class ResourceAccess {
     private final Map<String, Integer>                    multipliers         = new HashMap<String, Integer>();
     private final Map<String, Map<String, Long>>          representationIndex = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
 
+    public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection) throws MetamacException {
+        this(dataset, datasetSelection, null, null);
+    }
+
     public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = dataset.getData();
         dimensions = dataset.getMetadata().getDimensions();
@@ -105,6 +109,10 @@ public class ResourceAccess {
         metadata = dataset.getMetadata();
 
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
+    }
+
+    public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang) throws MetamacException {
+        this(query, relatedDataset, datasetSelection, lang, null);
     }
 
     public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
