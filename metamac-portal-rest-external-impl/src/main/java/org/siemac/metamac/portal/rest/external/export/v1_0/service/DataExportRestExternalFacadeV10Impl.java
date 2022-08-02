@@ -1,6 +1,9 @@
 package org.siemac.metamac.portal.rest.external.export.v1_0.service;
 
 import static org.siemac.metamac.portal.rest.external.RestExternalConstantsPrivate.SERVICE_CONTEXT;
+import static org.siemac.metamac.portal.rest.external.service.utils.ExportUtils.buildFilename;
+import static org.siemac.metamac.portal.rest.external.service.utils.ExportUtils.buildFilenameWithProposedExtension;
+import static org.siemac.metamac.portal.rest.external.service.utils.ExportUtils.buildSafeFilenameWithoutExtension;
 import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.containsField;
 import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.manageException;
 import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.parseFieldsParameter;
@@ -22,7 +25,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -323,16 +325,6 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         return datasetSelection;
     }
 
-    private String buildFilename(String extension, String... parts) {
-        StringBuilder filename = new StringBuilder();
-        return filename.append(StringUtils.join(parts, "-")).append(extension).toString();
-    }
-
-    private String buildFilenameWithoutExtension(String... parts) {
-        StringBuilder filename = new StringBuilder();
-        return filename.append(StringUtils.join(parts, "-")).toString();
-    }
-
     @Override
     public Response exportDatasetToExcelForm(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename) {
         Exportation excelExportation = getExportation(jsonBody);
@@ -623,7 +615,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         ResourceAccess resourceAccess = buildResourceAccessForIndicator(exportationBody, resourceID);
 
         if (filename == null) {
-            filename = buildFilenameWithoutExtension(ResourceType.INDICATOR.getName(), resourceID);
+            filename = buildSafeFilenameWithoutExtension(ResourceType.INDICATOR.getName(), resourceID);
         }
 
         return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
@@ -634,7 +626,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         ResourceAccess resourceAccess = buildResourceAccessForIndicatorInstance(exportationBody, indicatorSystemCode, resourceID);
 
         if (filename == null) {
-            filename = buildFilenameWithoutExtension(ResourceType.INDICATOR_INSTANCE.getName(), resourceID);
+            filename = buildSafeFilenameWithoutExtension(ResourceType.INDICATOR_INSTANCE.getName(), resourceID);
         }
 
         return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
@@ -646,7 +638,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         ResourceAccess resourceAccess = buildResourceAccessForDataset(exportationBody, agencyID, resourceID, version, lang);
 
         if (filename == null) {
-            filename = buildFilenameWithoutExtension(ResourceType.DATASET.getName(), agencyID, resourceID, version);
+            filename = buildSafeFilenameWithoutExtension(ResourceType.DATASET.getName(), agencyID, resourceID, version);
         }
 
         return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
@@ -657,20 +649,17 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         ResourceAccess resourceAccess = buildResourceAccessForQuery(exportationBody, agencyID, resourceID, lang);
 
         if (filename == null) {
-            filename = buildFilenameWithoutExtension(ResourceType.QUERY.getName(), agencyID, resourceID);
+            filename = buildSafeFilenameWithoutExtension(ResourceType.QUERY.getName(), agencyID, resourceID);
         }
 
         return exportResourceAccessToPlainText(resourceAccess, filename, plainTextTypeEnum, fields);
     }
 
-    private Response exportResourceAccessToPlainText(ResourceAccess resourceAccess, String filename, PlainTextTypeEnum plainTextTypeEnum, String fields) {
+    private Response exportResourceAccessToPlainText(ResourceAccess resourceAccess, String proposedFilename, PlainTextTypeEnum plainTextTypeEnum, String fields) {
 
         try {
             final File tmpFileObservations = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
             FileOutputStream outputStreamObservations = new FileOutputStream(tmpFileObservations);
-
-            String filenamePrefix = FilenameUtils.getBaseName(filename);
-            String extension = FilenameUtils.getExtension(filename);
 
             Set<String> parsedFields = parseFieldsParameter(fields);
 
@@ -680,10 +669,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                 exportService.exportResourceToPlainTextWithoutAttributes(SERVICE_CONTEXT, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations);
                 outputStreamObservations.close();
 
-                if (StringUtils.isEmpty(extension)) {
-                    extension = plainTextTypeEnum.getExtension();
-                }
-                return buildResponseOkWithFile(tmpFileObservations, buildFilename(extension, filenamePrefix), plainTextTypeEnum.getMimeType());
+                String filename = buildFilenameWithProposedExtension(plainTextTypeEnum.getExtension(), proposedFilename);
+                return buildResponseOkWithFile(tmpFileObservations, filename, plainTextTypeEnum.getMimeType());
             } else {
                 // Zip
                 final File tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
@@ -692,12 +679,10 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                 outputStreamAttributes.close();
                 outputStreamObservations.close();
 
+                String filename = buildFilenameWithProposedExtension("zip", proposedFilename);
+                String filenamePrefix = FilenameUtils.getBaseName(filename);
                 File zipFile = generatePlainTextZip(plainTextTypeEnum, tmpFileObservations, tmpFileAttributes, filenamePrefix);
-
-                if (StringUtils.isEmpty(extension)) {
-                    extension = "zip";
-                }
-                return buildResponseOkWithFile(zipFile, buildFilename(extension, filenamePrefix), "application/octet-stream");
+                return buildResponseOkWithFile(zipFile, filename, "application/octet-stream");
             }
         } catch (Exception e) {
             throw manageException(e);
