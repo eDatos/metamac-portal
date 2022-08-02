@@ -29,6 +29,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
+import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
 import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacadeImpl;
@@ -1236,6 +1237,240 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
             // Validate attributes with dataset and dimension attachment
             validateAttributesWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileAttributes, PlainTextTypeEnum.CSV_SEMICOLON.getSeparator());
+        }
+    }
+
+    @Override
+    @Test
+    public void testExportResourceToPlainText() throws Exception {
+        {
+            Query query = buildQueryToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection1();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.TSV.getSeparator());
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileAttributes, PlainTextTypeEnum.TSV.getSeparator());
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_COMMA.getSeparator());
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileAttributes, PlainTextTypeEnum.CSV_COMMA.getSeparator());
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_SEMICOLON.getSeparator());
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileAttributes, PlainTextTypeEnum.CSV_SEMICOLON.getSeparator());
+            }
+        }
+        {
+
+            Dataset dataset = buildDatasetToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection2();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.TSV.getSeparator(), tmpFileObservations);
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.TSV.getSeparator(), tmpFileAttributes);
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileObservations);
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileAttributes);
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileObservations);
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileAttributes);
+            }
+        }
+    }
+
+    @Override
+    @Test
+    public void testExportResourceToPlainTextWithoutAttributes() throws Exception {
+        {
+            Query query = buildQueryToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection1();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.TSV.getSeparator());
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_COMMA.getSeparator());
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_SEMICOLON.getSeparator());
+            }
+        }
+        {
+
+            Dataset dataset = buildDatasetToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection2();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.TSV.getSeparator(), tmpFileObservations);
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
+                outObservations.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileObservations);
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileObservations);
+            }
         }
     }
 
