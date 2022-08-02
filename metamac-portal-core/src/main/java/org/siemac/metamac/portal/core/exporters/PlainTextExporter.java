@@ -26,12 +26,12 @@ public class PlainTextExporter {
     private final ResourceAccess   datasetAccess;
     private final DatasetSelection datasetSelection;
 
-    private final String           ESCAPE_DOUBLE_QUOTES                = "\"";
-    private final String           HEADER_OBSERVATION                  = "OBS_VALUE";
-    private final String           HEADER_ATTRIBUTE_ID                 = "ATTRIBUTE";
-    private final String           HEADER_ATTRIBUTE_VALUE              = "ATTRIBUTE_VALUE";
-    private final String           HEADER_ATTRIBUTE_VALUE_CODE         = "ATTRIBUTE_VALUE_CODE";
-    private final String           HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE = "_CODE";
+    private static final String    ESCAPE_DOUBLE_QUOTES                = "\"";
+    private static final String    HEADER_OBSERVATION                  = "OBS_VALUE";
+    private static final String    HEADER_ATTRIBUTE_ID                 = "ATTRIBUTE";
+    private static final String    HEADER_ATTRIBUTE_VALUE              = "ATTRIBUTE_VALUE";
+    private static final String    HEADER_ATTRIBUTE_VALUE_CODE         = "ATTRIBUTE_VALUE_CODE";
+    private static final String    HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE = "_CODE";
     private static final boolean   ESCAPE_IF_NECESSARY                 = true;
 
     private PlainTextTypeEnum      plainTextTypeEnum                   = null;
