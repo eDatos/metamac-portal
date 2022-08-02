@@ -631,7 +631,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
     private Response exportIndicatorInstanceToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename,
             String fields) {
-        ResourceAccess resourceAccess = buildResourceAccessForIndicatorInsance(exportationBody, indicatorSystemCode, resourceID);
+        ResourceAccess resourceAccess = buildResourceAccessForIndicatorInstance(exportationBody, indicatorSystemCode, resourceID);
 
         if (filename == null) {
             filename = buildFilenameWithoutExtension(ResourceType.INDICATOR_INSTANCE.getName(), resourceID);
@@ -775,7 +775,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         }
     }
 
-    private ResourceAccess buildResourceAccessForIndicatorInsance(Exportation exportationBody, String indicatorSystemCode, String resourceID) {
+    private ResourceAccess buildResourceAccessForIndicatorInstance(Exportation exportationBody, String indicatorSystemCode, String resourceID) {
         try {
             // Transform possible selection (not required)
             DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
