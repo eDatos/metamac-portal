@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -284,30 +285,32 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Response exportDatasetToExcel(Dataset dataset, DatasetSelection datasetSelection, String lang, String filename) {
+        FileOutputStream outputStream = null;
         try {
-            // Export
             final File tmpFile = File.createTempFile("metamac", "xlsx");
-            FileOutputStream outputStream = new FileOutputStream(tmpFile);
+            outputStream = new FileOutputStream(tmpFile);
             exportService.exportDatasetToExcel(SERVICE_CONTEXT, dataset, datasetSelection, lang, outputStream);
-            outputStream.close();
 
             return buildResponseOkWithFile(tmpFile, filename, MEDIA_TYPE_APPLICATION_XLSX);
         } catch (Exception e) {
             throw manageException(e);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
         }
     }
 
     private Response exportQueryToExcel(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String filename) {
+        FileOutputStream outputStream = null;
         try {
-            // Export
             final File tmpFile = File.createTempFile("metamac", "xlsx");
-            FileOutputStream outputStream = new FileOutputStream(tmpFile);
+            outputStream = new FileOutputStream(tmpFile);
             exportService.exportQueryToExcel(SERVICE_CONTEXT, query, relatedDataset, datasetSelection, lang, outputStream);
-            outputStream.close();
 
             return buildResponseOkWithFile(tmpFile, filename, MEDIA_TYPE_APPLICATION_XLSX);
         } catch (Exception e) {
             throw manageException(e);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
         }
     }
 
@@ -437,16 +440,18 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Response exportDatasetToPx(Dataset dataset, DatasetSelection datasetSelection, String lang, String filename) {
+        FileOutputStream outputStream = null;
         try {
             // Export
             final File tmpFile = File.createTempFile("metamac", "px");
-            FileOutputStream outputStream = new FileOutputStream(tmpFile);
+            outputStream = new FileOutputStream(tmpFile);
             exportService.exportDatasetToPx(SERVICE_CONTEXT, dataset, datasetSelection, lang, outputStream); // In PX file, all provided langs are sending
-            outputStream.close();
 
             return buildResponseOkWithFile(tmpFile, filename, MediaType.TEXT_PLAIN);
         } catch (Exception e) {
             throw manageException(e);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
         }
     }
 
@@ -478,16 +483,18 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Response exportQueryToPx(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String filename) {
+        FileOutputStream outputStream = null;
         try {
             // Export
             final File tmpFile = File.createTempFile("metamac", "px");
-            FileOutputStream outputStream = new FileOutputStream(tmpFile);
+            outputStream = new FileOutputStream(tmpFile);
             exportService.exportQueryToPx(SERVICE_CONTEXT, query, relatedDataset, datasetSelection, null, outputStream); // In PX file, all provided langs are sending
-            outputStream.close();
 
             return buildResponseOkWithFile(tmpFile, filename, MediaType.TEXT_PLAIN);
         } catch (Exception e) {
             throw manageException(e);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
         }
     }
 
@@ -505,12 +512,12 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
     @Override
     public Response exportSvgToImage(String svg, String filename, Float width, String mimeType) {
+        FileOutputStream outputStream = null;
         try {
             // Export
             final File tmpFile = File.createTempFile("metamac", "image");
-            FileOutputStream outputStream = new FileOutputStream(tmpFile);
+            outputStream = new FileOutputStream(tmpFile);
             exportService.exportSvgToImage(SERVICE_CONTEXT, svg, width, mimeType, outputStream);
-            outputStream.close();
 
             if (filename == null) {
                 filename = "chart";
@@ -521,6 +528,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             return buildResponseOkWithFile(tmpFile, filename, mimeType);
         } catch (Exception e) {
             throw manageException(e);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
         }
     }
 
@@ -583,31 +592,31 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private File generatePlainTextZip(PlainTextTypeEnum plainTextTypeEnum, File fileObservations, File fileAttributes, String filenamePrefix) throws Exception {
-
         File zipFile = File.createTempFile("metamac", "zip");
-        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+        try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));) {
 
-        addToZip(out, fileObservations, filenamePrefix + "-observations." + plainTextTypeEnum.getExtension());
-        addToZip(out, fileAttributes, filenamePrefix + "-attributes." + plainTextTypeEnum.getExtension());
-        out.close();
+            addToZip(out, fileObservations, filenamePrefix + "-observations." + plainTextTypeEnum.getExtension());
+            addToZip(out, fileAttributes, filenamePrefix + "-attributes." + plainTextTypeEnum.getExtension());
 
-        return zipFile;
+            return zipFile;
+        }
     }
 
     private void addToZip(ZipOutputStream zip, File fileToZip, String filenameToZip) throws Exception {
-        InputStream in = new FileInputStream(fileToZip);
-        zip.putNextEntry(new ZipEntry(filenameToZip));
+        try (InputStream in = new FileInputStream(fileToZip)) {
 
-        // Transfer bytes from the file to the ZIP file
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            zip.write(buf, 0, len);
+            zip.putNextEntry(new ZipEntry(filenameToZip));
+
+            // Transfer bytes from the file to the ZIP file
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                zip.write(buf, 0, len);
+            }
+
+            // Complete the entry
+            zip.closeEntry();
         }
-
-        // Complete the entry
-        zip.closeEntry();
-        in.close();
     }
 
     private Response exportIndicatorToPlainText(PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String resourceID, String filename, String fields) {
@@ -657,9 +666,11 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
     private Response exportResourceAccessToPlainText(ResourceAccess resourceAccess, String proposedFilename, PlainTextTypeEnum plainTextTypeEnum, String fields) {
 
+        FileOutputStream outputStreamObservations = null;
+        FileOutputStream outputStreamAttributes = null;
         try {
             final File tmpFileObservations = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
-            FileOutputStream outputStreamObservations = new FileOutputStream(tmpFileObservations);
+            outputStreamObservations = new FileOutputStream(tmpFileObservations);
 
             Set<String> parsedFields = parseFieldsParameter(fields);
 
@@ -667,17 +678,14 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             if (excludeAttributes) {
                 // Not zip
                 exportService.exportResourceToPlainTextWithoutAttributes(SERVICE_CONTEXT, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations);
-                outputStreamObservations.close();
 
                 String filename = buildFilenameWithProposedExtension(plainTextTypeEnum.getExtension(), proposedFilename);
                 return buildResponseOkWithFile(tmpFileObservations, filename, plainTextTypeEnum.getMimeType());
             } else {
                 // Zip
                 final File tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
-                FileOutputStream outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
+                outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
                 exportService.exportResourceToPlainText(SERVICE_CONTEXT, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, outputStreamAttributes);
-                outputStreamAttributes.close();
-                outputStreamObservations.close();
 
                 String filename = buildFilenameWithProposedExtension("zip", proposedFilename);
                 String filenamePrefix = FilenameUtils.getBaseName(filename);
@@ -686,6 +694,9 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             }
         } catch (Exception e) {
             throw manageException(e);
+        } finally {
+            IOUtils.closeQuietly(outputStreamObservations);
+            IOUtils.closeQuietly(outputStreamAttributes);
         }
 
     }
