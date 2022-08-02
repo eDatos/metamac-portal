@@ -718,8 +718,12 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                 datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                         dataset.getMetadata().getRelatedDsd());
             }
-            String langAlternative = null;
-            return new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
+
+            String langDefault = portalConfiguration.retrieveLanguageDefault();
+            if (lang == null) {
+                lang = langDefault;
+            }
+            return new ResourceAccess(dataset, datasetSelection, lang, langDefault);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -741,7 +745,11 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                 datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
             }
 
-            return new ResourceAccess(query, null, datasetSelection, lang);
+            String langDefault = portalConfiguration.retrieveLanguageDefault();
+            if (lang == null) {
+                lang = langDefault;
+            }
+            return new ResourceAccess(query, null, datasetSelection, lang, langDefault);
         } catch (Exception e) {
             throw manageException(e);
         }

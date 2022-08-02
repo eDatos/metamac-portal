@@ -1255,7 +1255,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1275,7 +1275,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1295,7 +1295,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1388,7 +1388,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1402,7 +1402,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1416,7 +1416,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
 
                 outObservations.close();

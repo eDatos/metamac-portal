@@ -111,10 +111,6 @@ public class ResourceAccess {
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
     }
 
-    public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang) throws MetamacException {
-        this(query, relatedDataset, datasetSelection, lang, null);
-    }
-
     public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = query.getData();
         dimensions = query.getMetadata().getDimensions();
