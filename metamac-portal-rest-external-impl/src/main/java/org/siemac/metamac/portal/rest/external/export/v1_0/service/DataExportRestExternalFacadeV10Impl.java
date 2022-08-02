@@ -62,7 +62,7 @@ import es.gobcan.istac.indicators.rest.types.IndicatorsSystemType;
 @Service("dataExportRestExternalFacadeV10")
 public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
-    private String                                 MEDIA_TYPE_APPLICATION_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    private static final String                    MEDIA_TYPE_APPLICATION_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     @Autowired
     private ExportService                          exportService;
