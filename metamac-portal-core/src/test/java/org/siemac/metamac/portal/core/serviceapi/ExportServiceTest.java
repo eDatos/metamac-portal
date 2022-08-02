@@ -308,30 +308,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Dataset dataset = buildDatasetToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection2();
 
         {
             // TSV
@@ -981,31 +958,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Dataset dataset = buildDatasetToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.LABEL).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21).dimensionValues("INDICE_OCUPACION_PLAZAS")         // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.LABEL)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_C", null)                  // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_D", null)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection1();
 
         {
             // TSV
@@ -1082,30 +1035,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Query query = buildQueryToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection2();
 
         {
             // TSV
@@ -1252,31 +1182,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Query query = buildQueryToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.LABEL).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21).dimensionValues("INDICE_OCUPACION_PLAZAS")         // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.LABEL)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_C", null)                  // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_D", null)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection1();
 
         {
             // TSV
@@ -1760,6 +1666,62 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 .attributeData("ATTRIBUTE_E", "e1 | e2 | e3 | e4 | e5 | e6 | e7 | e8")
                 .build();
         //@formatter:on
+    }
+
+    private DatasetSelection buildDatasetSelection1() {
+        //@formatter:off
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
+                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("ANDALUCIA", "ARAGON")
+                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
+                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.LABEL).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
+                .dimension("INDICADORES", 21).dimensionValues("INDICE_OCUPACION_PLAZAS")         // do not specify visualisation mode (apply default)
+                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
+                .attribute("NOTEX", LabelVisualisationModeEnum.LABEL)
+                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.LABEL)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
+                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("CELLNOTE_C", null)                  // do not specify visualisation mode (apply default)
+                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_D", null)
+                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
+                .build();
+        //@formatter:on
+        return datasetSelection;
+    }
+
+    private DatasetSelection buildDatasetSelection2() {
+        //@formatter:off
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
+                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
+                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
+                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
+                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
+                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
+                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
+                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
+                .build();
+        //@formatter:on
+        return datasetSelection;
     }
 
     private BufferedReader createBufferedReader(File file) throws Exception {
