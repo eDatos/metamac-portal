@@ -39,6 +39,12 @@ I18n.translations.pt = {
             all: "Download de tudo",
             modal: {
                 title: "Baixar informações"
+            },
+            attributes: {
+                modal: {
+                    title: "Incluir atributos",
+                    question: "Deseja incluir os atributos no download?"
+                }
             }
         },
         share: {

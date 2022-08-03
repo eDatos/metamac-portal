@@ -39,6 +39,12 @@ I18n.translations.en = {
             all: "Download All",
             modal: {
                 title: "Download info"
+            },
+            attributes: {
+                modal: {
+                    title: "Attributes inclusion",
+                    question: "Would you like to include the attributes on the download?"
+                }
             }
         },
         share: {

@@ -22,15 +22,14 @@
 
         render: function () {
             var datasetSelection = this.getDatasetSelection();
-            var identifierUrlPart = this.filterDimensions.metadata.urlIdentifierPart();
 
             var context = {
                 selection: JSON.stringify(datasetSelection),
                 emptySelection: JSON.stringify(this.getEmptyDatasetSelection()),
                 url: {
-                    tsv: App.endpoints["export"] + "/tsv" + identifierUrlPart,
-                    excel: App.endpoints["export"] + "/excel" + identifierUrlPart,
-                    px: App.endpoints["export"] + "/px" + identifierUrlPart
+                    tsv: this._buildExportEndpoint('tsv'),
+                    excel: this._buildExportEndpoint('excel'),
+                    px: this._buildExportEndpoint('px')
                 },
                 buttonConfig: this._getButtonConfiguration()
             };
@@ -48,9 +47,11 @@
                     };
                     _.extend(context, svgContext);
                     self.$el.html(self.template(context));
+                    this._setupTsvExportAttributes();
                 });
             } else {
                 this.$el.html(this.template(context));
+                this._setupTsvExportAttributes();
             }
         },
 
@@ -177,6 +178,41 @@
             //return App.config["widget"] && !!window.externalHost;
         },
 
+        _setupTsvExportAttributes: function() {
+            var self = this;
+            this.$el.find('.download-tsv').closest('form').submit(function(e) {
+                e.preventDefault();    
+                self._showExportTsvAttributesConfig(this);
+            });
+        },
+
+        _showExportTsvAttributesConfig: function (form) {
+            var self = this;
+            var modalContentView = new App.components.modal.ConfirmationModalView({
+                question: I18n.t("filter.download.attributes.modal.question"),
+                onConfirm: function() { 
+                    form.action = self._buildExportEndpoint('tsv');
+                    form.submit(); 
+                    self.modal.close();
+                },
+                onReject: function() { 
+                    form.action = self._buildExportEndpoint('tsv', {fields: '-attributes'});                  
+                    form.submit(); 
+                    self.modal.close();
+                }
+            });
+            var title = I18n.t("filter.download.attributes.modal.title");
+            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            this.modal.show();
+        },
+
+        _buildExportEndpoint: function(type, attributes) {
+            var exportEndpoint = new URL(App.endpoints["export"] + "/" + type + this.filterDimensions.metadata.urlIdentifierPart());
+            _.each(attributes, function(value,key) { 
+                exportEndpoint.searchParams.append(key, value);
+            });
+            return exportEndpoint;
+        }
     });
 
 }());
