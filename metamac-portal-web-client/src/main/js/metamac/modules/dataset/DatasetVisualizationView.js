@@ -95,34 +95,27 @@
 
         enterFullScreen: function () {
             this.trigger("enterFullScreen");
-            //this.fullScreen.enterFullScreen();
         },
 
         exitFullScreen: function () {
             this.trigger("exitFullScreen");
-            //this.fullScreen.exitFullScreen();
         },
 
         _willEnterFullScreen: function () {
-            //$(this._options.container.vecontainer).hide();
             this.trigger('willEnterFullScreen');
         },
 
         _didEnterFullScreen: function () {
-            //$(this._options.container.vecontainer).show();
-
             var currentVe = this._getCurrentVe();
             currentVe.resizeFullScreen();
             this.trigger('didEnterFullScreen');
         },
 
         _willExitFullScreen: function () {
-            //$(this._options.container.vecontainer).hide();
             this.trigger('willExitFullScreen');
         },
 
         _didExitFullScreen: function () {
-            //$(this._options.container.vecontainer).show();
             var currentVe = this._getCurrentVe();
             currentVe.resizeFullScreen();
             this.trigger('didExitFullScreen');
