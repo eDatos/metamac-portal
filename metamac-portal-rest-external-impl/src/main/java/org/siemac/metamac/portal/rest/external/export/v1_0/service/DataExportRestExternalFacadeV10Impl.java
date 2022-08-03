@@ -469,8 +469,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             Dataset relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
             if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(),
-                        query.getMetadata().getRelatedDsd());
+                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
             }
 
             if (filename == null) {
