@@ -177,45 +177,6 @@
             //return App.config["widget"] && !!window.externalHost;
         },
 
-        onClickDownloadXlsx: function (e) {
-            e.preventDefault();
-            this.exportApiCall("excel");
-        },
-
-        onClickDownloadTsv: function () {
-            this.exportApiCall("tsv");
-        },
-
-        onClickDownloadPng: function () {
-
-        },
-
-        onClickDownloadPdf: function () {
-
-        },
-
-        onClickDownloadSvg: function () {
-
-        },
-
-        exportApiCall: function (exportType) {
-            var identifier = this.filterDimensions.metadata.identifier();
-            var url = App.endpoints["export"] + "/" + exportType + "/" + identifier.agency + "/" + identifier.identifier + "/" + identifier.version;
-            var selection = this.getDatasetSelection();
-
-            var downloadRequest = $.ajax({
-                url: url,
-                method: "POST",
-                data: JSON.stringify(selection),
-                contentType: "application/json; charset=utf-8"
-            });
-
-            downloadRequest.done(function (response) {
-                console.log(response);
-            });
-        }
-
-
     });
 
 }());
