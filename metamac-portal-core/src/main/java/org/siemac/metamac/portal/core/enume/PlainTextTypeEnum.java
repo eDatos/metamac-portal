@@ -3,20 +3,23 @@ package org.siemac.metamac.portal.core.enume;
 import java.io.Serializable;
 
 public enum PlainTextTypeEnum implements Serializable {
+
     //@formatter:off
-    TSV("tsv", "\t"), 
-    CSV_COMMA("csv", ","), 
-    CSV_SEMICOLON("csv", ";");
+    TSV("tsv", "\t", "text/tab-separated-values"),
+    CSV_COMMA("csv", ",", "text/csv"),
+    CSV_SEMICOLON("csv", ";", "text/csv");
     //@formatter:on
 
     private String extension;
     private String separator;
+    private String mimeType;
 
     /**
      */
-    private PlainTextTypeEnum(String value, String separator) {
-        this.extension = value;
+    private PlainTextTypeEnum(String extension, String separator, String mimeType) {
+        this.extension = extension;
         this.separator = separator;
+        this.mimeType = mimeType;
     }
 
     public String getExtension() {
@@ -25,6 +28,10 @@ public enum PlainTextTypeEnum implements Serializable {
 
     public String getSeparator() {
         return separator;
+    }
+
+    public String getMimeType() {
+        return mimeType;
     }
 
     public String getName() {
