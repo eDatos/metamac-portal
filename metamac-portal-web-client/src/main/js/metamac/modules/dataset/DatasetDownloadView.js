@@ -121,11 +121,11 @@
                     position: dimension.position,
                     dimensionValues: {
                         dimensionValue: self.getSelectedDimensionCategoriesIds(dimension.categories)
-                    },
-                    sortBy: dimension.sortBy
+                    }
                 })
             });
-
+            
+            // Remember to propagate changes made here to org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection
             return { datasetSelection: result };
         },
 
