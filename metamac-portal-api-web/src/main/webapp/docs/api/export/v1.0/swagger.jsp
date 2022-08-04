@@ -364,7 +364,7 @@
         "description": "Permite realizar la exportación de un dataset en fichero CSV separado por comas.",
         "operationId": "resource__v1.0_csv_comma__datasets__agencyID__resourceID__version__exportDatasetToCsvComma_POST",
         "produces": [
-          "application/xml"
+          "text/csv"
         ],
         "parameters": [
           {
@@ -395,14 +395,20 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada.""
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
             "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
-          }
+          },
+          {
+            "name":"fields",
+            "in":"query",
+            "type":"string",
+            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+         }
         ],
         "responses": {
           "201": {
@@ -427,7 +433,7 @@
         "description": "Permite realizar la exportación de un dataset en fichero CSV separado por puntos y comas.",
         "operationId": "resource__v1.0_csv_semicolon__datasets__agencyID__resourceID__version__exportDatasetToCsvSemicolon_POST",
         "produces": [
-          "application/xml"
+          "text/csv"
         ],
         "parameters": [
           {
@@ -458,14 +464,20 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
             "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
-          }
+          },
+          {
+            "name":"fields",
+            "in":"query",
+            "type":"string",
+            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+         }
         ],
         "responses": {
           "201": {
@@ -602,7 +614,7 @@
         }
       }
     },
-     "/v1.0/excel/indicators/{resourceID}": {
+    "/v1.0/excel/indicators/{resourceID}": {
       "post": {
         "tags": [
           "Exportaciones a ficheros Excel"
@@ -998,7 +1010,8 @@
         "description": "Permite realizar la exportación de un dataset en fichero separado por tabuladores.",
         "operationId": "resource__v1.0_tsv__datasets__agencyID__resourceID__version__exportDatasetToTsv_POST",
         "produces": [
-          "application/xml"
+          "application/octet-stream",
+          "text/tab-separated-values"
         ],
         "parameters": [
           {
@@ -1029,14 +1042,20 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
             "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
-          }
+          },
+          {
+            "name":"fields",
+            "in":"query",
+            "type":"string",
+            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+         }
         ],
         "responses": {
           "201": {
@@ -1061,7 +1080,8 @@
         "description": "Permite realizar la exportación de una consulta en fichero separado por tabuladores.",
         "operationId": "resource__v1.0_tsv__queries__agencyID__resourceID__exportQueryToTsv_POST",
         "produces": [
-          "application/xml"
+          "application/octet-stream",
+          "text/tab-separated-values"
         ],
         "parameters": [
           {
@@ -1086,14 +1106,20 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
             "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
-          }
+          },
+          {
+            "name":"fields",
+            "in":"query",
+            "type":"string",
+            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+         }
         ],
         "responses": {
           "201": {
@@ -1118,7 +1144,8 @@
         "description": "Permite realizar la exportación de un indicador en fichero separado por tabuladores.",
         "operationId": "resource__v1.0_tsv__indicators__resourceId__exportIndicatorsToTsv_POST",
         "produces": [
-          "application/xml"
+          "application/octet-stream",
+          "text/tab-separated-values"
         ],
         "parameters": [
           {
@@ -1137,14 +1164,20 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
             "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
-          }
+          },
+          {
+            "name":"fields",
+            "in":"query",
+            "type":"string",
+            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+         }
         ],
         "responses": {
           "201": {
@@ -1169,7 +1202,8 @@
         "description": "Permite realizar la exportación de una instancia de indicador en fichero separado por tabuladores.",
         "operationId": "resource__v1.0_tsv__indicatorsSystems__indicatorSystemCode__indicatorsInstances__resourceId__exportDatasetToTsv_POST",
         "produces": [
-          "application/xml"
+          "application/octet-stream",
+          "text/tab-separated-values"
         ],
         "parameters": [
           {
@@ -1194,14 +1228,20 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
             "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
-          }
+          },
+          {
+            "name":"fields",
+            "in":"query",
+            "type":"string",
+            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+         }
         ],
         "responses": {
           "201": {
