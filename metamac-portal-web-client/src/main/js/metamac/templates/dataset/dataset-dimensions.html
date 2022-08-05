@@ -8,11 +8,6 @@
             {{/if}}
 
             <div class="order-sidebar-dimensions {{#compare dimensions.length '>' '1'}}scrollable{{/compare}}">
-                {{#if measureAttribute}}
-                <a href="#" class="order-sidebar-measure-attribute" title="{{measureAttribute.label}}">
-                    <div class="order-sidebar-measure-attribute-inner">{{measureAttribute.label}}</div>
-                </a>
-                {{/if}} {{#each dimensions }}
                 <a href="#" class="order-sidebar-dimension {{#if ../draggable}}draggable dimension-pill{{/if}}" {{#if ../draggable}}draggable="true"
                     {{/if}} data-dimension-id="{{id}}" title="{{label}}{{#if selectedCategory }} - {{ selectedCategory.label }} {{/if}}">
                             {{ label }}

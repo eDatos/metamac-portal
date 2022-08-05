@@ -21,6 +21,8 @@
 
             this.accordion = true; //accordion behaviour
             this.valuesToIgnoreStatus = {};
+
+            this.attributesLikeDimensions = this.metadata.getAttributesLikeDimensions();
         },
 
         _bindEvents: function () {
@@ -78,6 +80,10 @@
                 this.tableInfo = new App.modules.dataset.filter.models.FilterTableInfo({ filterDimensions: this });
             }
             return this.tableInfo;
+        },
+        
+        getAttributesLikeDimensions: function() {
+            return this.attributesLikeDimensions;
         },
 
         _invalidateTableInfo: function () {

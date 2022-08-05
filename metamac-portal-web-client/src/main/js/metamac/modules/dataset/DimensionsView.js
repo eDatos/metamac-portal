@@ -13,14 +13,6 @@
         initialize: function (options) {
             this.filterDimensions = options.filterDimensions;
             this.optionsModel = options.optionsModel;
-            this.measureAttribute = null;
-            
-            var measureAttribute = _.findWhere(options.data.getDatasetAttributes(), { type: "MEASURE" });
-            if (measureAttribute) {
-                this.measureAttribute = {
-                    label: measureAttribute.name
-                }
-            }
         },
 
         configuration: {
@@ -50,7 +42,6 @@
                         draggable: false,
                         location: "left",
                         showHeader: true,
-                        showMeasureAttribute: true
                     },
                     left: {
                         icon: "axis-x",
@@ -83,7 +74,6 @@
                         draggable: false,
                         location: "left",
                         showHeader: true,
-                        showMeasureAttribute: true
                     },
                     left: {
                         icon: "axis-x",
@@ -315,7 +305,6 @@
                     icon: this._getIconFromZone(zone),
                     draggable: this._zoneIsDraggableByChartType(zone),
                     dimensions: this._dimensionsForZone(zone),
-                    measureAttribute: this._measureAttributesForZone(zone),
                     hasSelector: this._hasSelector(zone),
                     location: this._getLocationForZone(zone),
                     showHeader: this._getShowHeader(zone),
@@ -340,9 +329,6 @@
             var leftColumns = _.reduce(zones, function (memo, zone) {
                 if (zone.location == "left") {
                     memo += zone.dimensions.length;
-                    if (zone.measureAttribute) {
-                        memo += 1;
-                    }
                 }
                 return memo;
             }, 0)
@@ -400,14 +386,6 @@
             this.$el.find('select').select2({
                 dropdownParent: $('.metamac-container')
             });
-        },
-
-        _measureAttributesForZone: function (zoneId) {
-            var currentChartType = this._getCurrentChartType();
-            var showMeasureAttribute = this.configuration[currentChartType].zones[zoneId].showMeasureAttribute;
-            if (showMeasureAttribute) {
-                return this.getMeasureAttribute();
-            }
         },
 
         _dimensionsForZone: function (zoneId) {
