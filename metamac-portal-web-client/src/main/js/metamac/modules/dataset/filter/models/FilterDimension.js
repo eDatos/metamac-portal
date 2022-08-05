@@ -13,7 +13,8 @@
             filterLevel: undefined,
             open: false,
             visibleLabelType: FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL,
-            reversed: false
+            reversed: false,
+            representations: undefined,
         },
 
         initialize: function () {
