@@ -390,7 +390,7 @@
             var marginIndexStop = Math.min(total, indexStop + 1);
 
             var tickInterval = 1;
-            if (this.filterDimensions.dimensionsAtZone('left').at(0).get('type') === "TIME_DIMENSION") {
+            if (this.filterDimensions.dimensionsAtZone('left').at(0).isTimeDimension()) {
                 var filteredTotal = marginIndexStop - marginIndexStart;
                 tickInterval = Math.ceil(filteredTotal / this.config.xAxisTicks);
             }

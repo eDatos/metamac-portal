@@ -182,7 +182,7 @@
                 columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
             }
             var horizontalDimensionSelectedCategories = this.getDrawableRepresentations(horizontalDimension);
-            var horizontalDimensionIsTemporal = horizontalDimension.get('type') == "TIME_DIMENSION";
+            var horizontalDimensionIsTemporal = horizontalDimension.isTimeDimension();
             var columnsDimensionSelectedCategories = this.getDrawableRepresentations(columnsDimension);
 
             var listSeries = [];

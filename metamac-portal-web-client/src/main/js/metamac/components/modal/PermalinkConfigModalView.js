@@ -105,7 +105,7 @@
 
         getTemporalDimension: function () {
             return this.filterDimensions.models.find(function(dimension) {
-                return dimension.get("type") === "TIME_DIMENSION"
+                return dimension.isTimeDimension();
             });
         },
 

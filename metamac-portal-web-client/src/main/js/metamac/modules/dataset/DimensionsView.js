@@ -452,7 +452,7 @@
         },
 
         _needsTemporalGranularitySelector: function (dimension) {
-            return this._getCurrentChartType() == 'line' && dimension.get('type') == "TIME_DIMENSION";
+            return this._getCurrentChartType() == 'line' && dimension.isTimeDimension();
         },
 
         _getGranularityList: function (dimension) {
