@@ -83,22 +83,11 @@
             this._updateMustApplyVisualizationRestrictions();
         },
 
-        updateTitle: function () {
-            if (this.$title) {
-                this.$title.remove();
-            }
-            var title = this.getTitle();
-
-            this.$title = $("<h3>" + title + "</h3>");
-            this.$el.prepend(this.$title);
-        },
-
         render: function () {
             this.dataSource = new App.DataSourceDataset({ data: this.data, filterDimensions: this.filterDimensions });
             this.delegate = new App.Table.Delegate();
 
             this.$el.empty();
-            this.updateTitle();
 
             var containerDimensions = this.containerDimensions();
 
@@ -130,17 +119,15 @@
             if (!this.view) {
                 this.load();
             } else {
-                this.updateTitle();
                 this.view.update();
                 this._updateSize();
             }
         },
 
         containerDimensions: function () {
-            var titleHeight = this.$title.height();
             return {
                 width: this.$el.width(),
-                height: this.$el.height() - titleHeight
+                height: this.$el.height()
             };
         },
 
