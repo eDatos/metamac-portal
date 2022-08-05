@@ -47,7 +47,7 @@
                     };
                     _.extend(context, svgContext);
                     self.$el.html(self.template(context));
-                    this._setupTsvExportAttributes();
+                    self._setupTsvExportAttributes();
                 });
             } else {
                 this.$el.html(this.template(context));
