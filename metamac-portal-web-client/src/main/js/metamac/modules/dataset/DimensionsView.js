@@ -42,6 +42,7 @@
                         draggable: false,
                         location: "left",
                         showHeader: true,
+                        showSingleValue: true,
                     },
                     left: {
                         icon: "axis-x",
@@ -74,6 +75,7 @@
                         draggable: false,
                         location: "left",
                         showHeader: true,
+                        showSingleValue: true,
                     },
                     left: {
                         icon: "axis-x",
@@ -101,7 +103,8 @@
                         icon: "map",
                         draggable: false,
                         location: "left",
-                        showHeader: false
+                        showHeader: false,
+                        showSingleValue: true,
                     },
                     fixed: {
                         icon: "lock",
@@ -117,7 +120,8 @@
                         icon: "map",
                         draggable: false,
                         location: "left",
-                        showHeader: false
+                        showHeader: false,
+                        showSingleValue: true
                     },
                     fixed: {
                         icon: "lock",
@@ -388,6 +392,11 @@
             });
         },
 
+        _showSingleValueInZone: function (zoneId) {
+            var currentChartType = this._getCurrentChartType();
+            return !!this.configuration[currentChartType].zones[zoneId].showSingleValue;
+        },
+
         _dimensionsForZone: function (zoneId) {
             var dimensionCollection = this.filterDimensions.dimensionsAtZone(zoneId);
             var isMap = this._isMap();
@@ -396,8 +405,11 @@
                 var dimension = dimensionModel.toJSON();
                 var isGeographicDimension = dimensionModel.get('type') === "GEOGRAPHIC_DIMENSION";
                 dimension.draggable = isMap ? isGeographicDimension : true;
+                dimension.visible = !dimension.singleValue || (dimension.singleValue && self._showSingleValueInZone(zoneId));
 
-                if (self._needsGeographicLevelSelector(dimensionModel)) {
+                if (dimension.singleValue) {
+                    // Single values don´t have any kind of selector in the pill
+                } else if (self._needsGeographicLevelSelector(dimensionModel)) {
                     dimension.selectedLevel = dimensionModel.get('representations').getSelectedGeographicLevel();
                     dimension.levelList = self._getGeographicLevelCollection(dimensionModel);
                 } else if (self._needsTemporalGranularitySelector(dimensionModel)) {
