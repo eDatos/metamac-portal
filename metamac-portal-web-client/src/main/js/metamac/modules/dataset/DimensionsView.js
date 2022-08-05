@@ -418,7 +418,6 @@
                 var dimension = dimensionModel.toJSON();
                 var isGeographicDimension = dimensionModel.get('type') === "GEOGRAPHIC_DIMENSION";
                 dimension.draggable = isMap ? isGeographicDimension : true;
-                dimension.sortable = self._getSortable(zoneId);
 
                 if (self._needsGeographicLevelSelector(dimensionModel)) {
                     dimension.selectedLevel = dimensionModel.get('representations').getSelectedGeographicLevel();
@@ -430,6 +429,8 @@
                     var selectedCategory = dimensionModel.get('representations').findWhere({ drawable: true });
                     dimension.selectedCategory = selectedCategory ? selectedCategory.toJSON() : null;
                     dimension.representationsList = dimensionModel.get('representations').where({ 'selected': true }).map(function (model) { return model.toJSON(); });
+                } else if (self._getSortable(zoneId)) {
+                    dimension.sortable = true;
                 }
                 return dimension;
             });
