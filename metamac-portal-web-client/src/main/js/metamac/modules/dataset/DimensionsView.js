@@ -43,6 +43,7 @@
                         location: "left",
                         showHeader: true,
                         showSingleValue: true,
+                        assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
                         icon: "axis-x",
@@ -76,6 +77,7 @@
                         location: "left",
                         showHeader: true,
                         showSingleValue: true,
+                        assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
                         icon: "axis-x",
@@ -105,6 +107,7 @@
                         location: "left",
                         showHeader: false,
                         showSingleValue: true,
+                        assignedAttributeTypes: ["SPATIAL"]
                     },
                     fixed: {
                         icon: "lock",
@@ -424,7 +427,32 @@
                 }
                 return dimension;
             });
-            return dimensionsForZone;
+            return dimensionsForZone.concat(this._attributesLikeDimensionsForZone(zoneId));
+        },
+
+        _attributesLikeDimensionsForZone: function(zoneId) {
+            var self = this;
+
+            var currentChartType = self._getCurrentChartType();
+            if (!currentChartType) { return [] };
+
+            var showSingleValue = self._showSingleValueInZone(zoneId);
+            if (!showSingleValue) { return [] };
+
+            return _.chain(this.filterDimensions.getAttributesLikeDimensions())
+                .filter(function(attribute) {
+                    var thisAttributedTypeIsAssignedToThisZone = _.include(self.configuration[currentChartType].zones[zoneId].assignedAttributeTypes, attribute.type);
+                    return thisAttributedTypeIsAssignedToThisZone;                    
+                })
+                .map(function(attribute) {
+                    return {
+                        id : attribute.id,
+                        label: attribute.label,
+                        singleValue: true,
+                        visible: showSingleValue
+                    };
+                })
+                .value();
         },
 
         _needsGeographicLevelSelector: function (dimension) {
