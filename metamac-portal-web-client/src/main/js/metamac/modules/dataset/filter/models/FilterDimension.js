@@ -15,11 +15,13 @@
             visibleLabelType: FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL,
             reversed: false,
             representations: undefined,
+            singleValue: false
         },
 
         initialize: function () {
             this._bindEvents();
             this.set('sortBy', this.isTimeDimension() ? App.Constants.dimension.sortBy.REPRESENTATION : App.Constants.dimension.sortBy.OBSERVATION);
+            this.set('singleValue', this.get('representations').length == 1);
         },
 
         isFixedDimension: function () {
