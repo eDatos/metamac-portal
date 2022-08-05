@@ -134,7 +134,7 @@
         },
 
         canDrawLineVisualizations: function () {
-            var timeDimensions = this.where({ type: "TIME_DIMENSION" });
+            var timeDimensions = this.where({ type: "TIME_DIMENSION", singleValue: false });
             return timeDimensions && timeDimensions.length > 0;
         },
 
