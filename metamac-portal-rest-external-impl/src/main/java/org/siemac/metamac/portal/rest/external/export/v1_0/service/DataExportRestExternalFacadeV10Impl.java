@@ -398,12 +398,12 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             }
 
             Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
-            
+
             if (datasetSelection == null) {
                 datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                         dataset.getMetadata().getRelatedDsd());
             }
-            
+
             if (filename == null) {
                 filename = buildFilename(".px", ResourceType.INDICATOR.getName(), resourceID);
             }
@@ -424,12 +424,12 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             }
 
             Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
-            
+
             if (datasetSelection == null) {
                 datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                         dataset.getMetadata().getRelatedDsd());
             }
-            
+
             if (filename == null) {
                 filename = buildFilename(".px", ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
             }
@@ -469,8 +469,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             Dataset relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
             if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(),
-                        query.getMetadata().getRelatedDsd());
+                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
             }
 
             if (filename == null) {
@@ -679,7 +678,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                 // Not zip
                 exportService.exportResourceToPlainTextWithoutAttributes(SERVICE_CONTEXT, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations);
 
-                String filename = buildFilenameWithProposedExtension(plainTextTypeEnum.getExtension(), proposedFilename);
+                String filename = buildFilenameWithProposedExtension(plainTextTypeEnum.getExtension(), proposedFilename + "-observations");
                 return buildResponseOkWithFile(tmpFileObservations, filename, plainTextTypeEnum.getMimeType());
             } else {
                 // Zip

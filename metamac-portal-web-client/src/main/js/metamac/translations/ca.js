@@ -39,6 +39,12 @@ I18n.translations.ca = {
             all: "Descarregar tot",
             modal: {
                 title: "Informació de descàrrega"
+            },
+            attributes: {
+                modal: {
+                    title: "Incloure atributs",
+                    question: "Voleu incloure els atributs a la descàrrega?"
+                }
             }
         },
         share: {
