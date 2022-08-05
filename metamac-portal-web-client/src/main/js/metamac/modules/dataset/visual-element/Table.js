@@ -72,13 +72,12 @@
         updatingDimensionPositions: function () {
             this._applyVisualizationRestrictions();
             this.resetDimensionsLimits();
-
-            this.filterDimensions.zones.get('fixed').set('fixedSize', 0);
         },
 
         _applyVisualizationRestrictions: function () {
             if (this._mustApplyVisualizationRestrictions()) {
-                this._forceDimensionsByMetadataInfo();
+                this._forceDimensionsByMetadataInfo();                
+                this._moveAllSingleValueDimensionsToZone('fixed');
             }
 
             this._updateMustApplyVisualizationRestrictions();

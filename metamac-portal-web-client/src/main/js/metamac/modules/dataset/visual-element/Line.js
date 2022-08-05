@@ -194,7 +194,8 @@
         _applyVisualizationRestrictions: function () {
             if (this._mustApplyVisualizationRestrictions()) {
                 this._moveAllDimensionsToZone('top');
-
+                this._moveAllSingleValueDimensionsToZone('fixed');
+                                
                 this._forceMeasureDimensionInZone('axisy');
                 this._forceTimeDimensionInZone('left');
                 this._forceGeographicDimensionInZone('fixed');

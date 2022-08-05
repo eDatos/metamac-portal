@@ -215,6 +215,8 @@
         _applyVisualizationRestrictions: function () {
             if (this._mustApplyVisualizationRestrictions()) {
                 this._moveAllDimensionsToZone('fixed');
+                // Here we would normally do a this._moveAllSingleValueDimensionsToZone('fixed'); but as we have already move them all
+
                 this._forceGeographicDimensionInZone('left');
 
                 this._applyVisualizationPreselections();
