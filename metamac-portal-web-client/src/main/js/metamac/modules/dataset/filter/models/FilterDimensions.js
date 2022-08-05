@@ -16,7 +16,7 @@
             this.reset(this.metadata.getDimensionsAndRepresentations(), _.extend({ silent: true }, options));
             this._initializeZones();
 
-            this.at(0).set('open', true); //open the first dimension
+            this.where({ singleValue: false }).at(0).set('open', true); //open the first dimension
             this._bindEvents();
 
             this.accordion = true; //accordion behaviour
