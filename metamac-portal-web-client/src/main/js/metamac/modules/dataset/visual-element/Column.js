@@ -116,7 +116,8 @@
         _applyVisualizationRestrictions: function () {
             if (this._mustApplyVisualizationRestrictions()) {
                 this._moveAllDimensionsToZone('left');
-
+                this._moveAllSingleValueDimensionsToZone('fixed');
+                
                 this._forceMeasureDimensionInZone('axisy');
                 this._forceGeographicDimensionInZone('fixed');
                 this._forceTimeDimensionInZone('fixed');
@@ -182,7 +183,7 @@
                 columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
             }
             var horizontalDimensionSelectedCategories = this.getDrawableRepresentations(horizontalDimension);
-            var horizontalDimensionIsTemporal = horizontalDimension.get('type') == "TIME_DIMENSION";
+            var horizontalDimensionIsTemporal = horizontalDimension.isTimeDimension();
             var columnsDimensionSelectedCategories = this.getDrawableRepresentations(columnsDimension);
 
             var listSeries = [];

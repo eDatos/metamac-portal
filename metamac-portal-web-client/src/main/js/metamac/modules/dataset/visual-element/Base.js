@@ -163,6 +163,14 @@
             });
         },
 
+        _moveAllSingleValueDimensionsToZone: function (zone) {
+            var self = this;
+            var dimensions = this.filterDimensions.where({ singleValue: true });
+            dimensions.forEach(function(dimension) {                
+                self.filterDimensions.zones.setDimensionZone(zone, dimension, { force: true });
+            });
+        },
+
         _forceMeasureDimensionInZone: function (zone) {
             this._forceDimensionTypeInZone("MEASURE_DIMENSION", zone);
         },

@@ -36,15 +36,6 @@
             </ul>
         </div>
     </div>
-    {{/if}} {{#if metadata.measureDimension.representation }}
-    <div class="field">
-        <div class="metadata-title">
-            <div>{{ message "entity.dataset.measureDimension" }}</div>
-        </div>
-        <div class="metadata-value">
-            {{#join metadata.measureDimension.representation }} {{ label }} {{/join}}
-        </div>
-    </div>
     {{/if}} {{#if measureConcepts }}
     <div class="field metadata-accordion">
         <div class="metadata-title">

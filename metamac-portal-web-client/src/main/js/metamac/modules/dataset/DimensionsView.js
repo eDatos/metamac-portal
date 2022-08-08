@@ -13,14 +13,6 @@
         initialize: function (options) {
             this.filterDimensions = options.filterDimensions;
             this.optionsModel = options.optionsModel;
-            this.measureAttribute = null;
-            
-            var measureAttribute = _.findWhere(options.data.getDatasetAttributes(), { type: "MEASURE" });
-            if (measureAttribute) {
-                this.measureAttribute = {
-                    label: measureAttribute.name
-                }
-            }
         },
 
         configuration: {
@@ -50,7 +42,8 @@
                         draggable: false,
                         location: "left",
                         showHeader: true,
-                        showMeasureAttribute: true
+                        showSingleValue: true,
+                        assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
                         icon: "axis-x",
@@ -83,7 +76,8 @@
                         draggable: false,
                         location: "left",
                         showHeader: true,
-                        showMeasureAttribute: true
+                        showSingleValue: true,
+                        assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
                         icon: "axis-x",
@@ -111,7 +105,9 @@
                         icon: "map",
                         draggable: false,
                         location: "left",
-                        showHeader: false
+                        showHeader: false,
+                        showSingleValue: true,
+                        assignedAttributeTypes: ["SPATIAL"]
                     },
                     fixed: {
                         icon: "lock",
@@ -127,7 +123,8 @@
                         icon: "map",
                         draggable: false,
                         location: "left",
-                        showHeader: false
+                        showHeader: false,
+                        showSingleValue: true
                     },
                     fixed: {
                         icon: "lock",
@@ -315,7 +312,6 @@
                     icon: this._getIconFromZone(zone),
                     draggable: this._zoneIsDraggableByChartType(zone),
                     dimensions: this._dimensionsForZone(zone),
-                    measureAttribute: this._measureAttributesForZone(zone),
                     hasSelector: this._hasSelector(zone),
                     location: this._getLocationForZone(zone),
                     showHeader: this._getShowHeader(zone),
@@ -340,9 +336,6 @@
             var leftColumns = _.reduce(zones, function (memo, zone) {
                 if (zone.location == "left") {
                     memo += zone.dimensions.length;
-                    if (zone.measureAttribute) {
-                        memo += 1;
-                    }
                 }
                 return memo;
             }, 0)
@@ -402,12 +395,9 @@
             });
         },
 
-        _measureAttributesForZone: function (zoneId) {
+        _showSingleValueInZone: function (zoneId) {
             var currentChartType = this._getCurrentChartType();
-            var showMeasureAttribute = this.configuration[currentChartType].zones[zoneId].showMeasureAttribute;
-            if (showMeasureAttribute) {
-                return this.getMeasureAttribute();
-            }
+            return !!this.configuration[currentChartType].zones[zoneId].showSingleValue;
         },
 
         _dimensionsForZone: function (zoneId) {
@@ -418,9 +408,11 @@
                 var dimension = dimensionModel.toJSON();
                 var isGeographicDimension = dimensionModel.get('type') === "GEOGRAPHIC_DIMENSION";
                 dimension.draggable = isMap ? isGeographicDimension : true;
-                dimension.sortable = self._getSortable(zoneId);
+                dimension.visible = !dimension.singleValue || (dimension.singleValue && self._showSingleValueInZone(zoneId));
 
-                if (self._needsGeographicLevelSelector(dimensionModel)) {
+                if (dimension.singleValue) {
+                    // Single values don´t have any kind of selector in the pill
+                } else if (self._needsGeographicLevelSelector(dimensionModel)) {
                     dimension.selectedLevel = dimensionModel.get('representations').getSelectedGeographicLevel();
                     dimension.levelList = self._getGeographicLevelCollection(dimensionModel);
                 } else if (self._needsTemporalGranularitySelector(dimensionModel)) {
@@ -430,10 +422,37 @@
                     var selectedCategory = dimensionModel.get('representations').findWhere({ drawable: true });
                     dimension.selectedCategory = selectedCategory ? selectedCategory.toJSON() : null;
                     dimension.representationsList = dimensionModel.get('representations').where({ 'selected': true }).map(function (model) { return model.toJSON(); });
+                } else if (self._getSortable(zoneId)) {
+                    dimension.sortable = true;
                 }
                 return dimension;
             });
-            return dimensionsForZone;
+            return dimensionsForZone.concat(this._attributesLikeDimensionsForZone(zoneId));
+        },
+
+        _attributesLikeDimensionsForZone: function(zoneId) {
+            var self = this;
+
+            var currentChartType = self._getCurrentChartType();
+            if (!currentChartType) { return [] };
+
+            var showSingleValue = self._showSingleValueInZone(zoneId);
+            if (!showSingleValue) { return [] };
+
+            return _.chain(this.filterDimensions.getAttributesLikeDimensions())
+                .filter(function(attribute) {
+                    var thisAttributedTypeIsAssignedToThisZone = _.include(self.configuration[currentChartType].zones[zoneId].assignedAttributeTypes, attribute.type);
+                    return thisAttributedTypeIsAssignedToThisZone;                    
+                })
+                .map(function(attribute) {
+                    return {
+                        id : attribute.id,
+                        label: attribute.label,
+                        singleValue: true,
+                        visible: showSingleValue
+                    };
+                })
+                .value();
         },
 
         _needsGeographicLevelSelector: function (dimension) {
@@ -452,7 +471,7 @@
         },
 
         _needsTemporalGranularitySelector: function (dimension) {
-            return this._getCurrentChartType() == 'line' && dimension.get('type') == "TIME_DIMENSION";
+            return this._getCurrentChartType() == 'line' && dimension.isTimeDimension();
         },
 
         _getGranularityList: function (dimension) {
