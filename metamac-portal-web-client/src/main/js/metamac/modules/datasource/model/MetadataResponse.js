@@ -295,7 +295,7 @@
                     return {
                         id : attribute.id,
                         label: self.localizeLabel(attribute.name.text),
-                        type: attribute.type, // App.Constants.attributes.typeCorrespondence[attribute.type],
+                        type: attribute.type,
                         hierarchy: false,
                         isAttribute: true,
                         representations: self.getRepresentationsForAttributeDimension(attribute.id)
