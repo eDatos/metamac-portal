@@ -395,7 +395,7 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada.""
+            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada."
           },
           {
             "name": "lang",
