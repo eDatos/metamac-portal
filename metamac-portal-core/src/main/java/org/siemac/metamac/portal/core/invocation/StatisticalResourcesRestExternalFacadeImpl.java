@@ -35,7 +35,7 @@ public class StatisticalResourcesRestExternalFacadeImpl implements StatisticalRe
     public Query retrieveQuery(String agencyID, String resourceID, List<String> lang, String fields, String dimensionSelection) { // TODO METAMAC-2709 dimensionSelection is not available on
                                                                                                                                   // retrieveQuery api
         try {
-            return restApiLocator.getStatisticalResourcesV1_0().retrieveQuery(agencyID, resourceID, lang, fields);
+            return restApiLocator.getStatisticalResourcesV1_0().retrieveQuery(agencyID, resourceID, lang, fields, dimensionSelection);
         } catch (Exception e) {
             throw toRestException(e);
         }
