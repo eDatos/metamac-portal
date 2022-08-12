@@ -461,6 +461,33 @@ public class ExportServiceTest implements ExportServiceTestBase {
         bufferedReaderObservations.close();
     }
 
+    private void validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(String separator, File tmpFileAttributes) throws Exception, IOException {
+        BufferedReader bufferedReaderAttributes = createBufferedReader(tmpFileAttributes);
+        assertEquals("DESTINO_ALOJAMIENTO" + separator + "TIME_PERIOD" + separator + "CATEGORIA_ALOJAMIENTO" + separator + "INDICADORES" + separator + "ATTRIBUTE" + separator + "ATTRIBUTE_VALUE",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_A" + separator + "a1",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_A2" + separator + "a2",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "NOTEX" + separator + "a3",
+                bufferedReaderAttributes.readLine());
+        assertEquals("ARAGON" + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "VALUENOTEX" + separator + "vn2",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "1_2_3_ESTRELLAS" + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01" + separator
+                + "ca1", bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "1_2_3_ESTRELLAS" + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02" + separator
+                + "ca3", bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "INDICE_OCUPACION_PLAZAS" + separator + "INDICADORES_A" + separator + "ioA_1",
+                bufferedReaderAttributes.readLine());
+        assertEquals("ARAGON" + separator + "2013" + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "CELLNOTE_A" + separator + "cnA_4",
+                bufferedReaderAttributes.readLine());
+        assertEquals("ARAGON" + separator + "2013" + separator + "1_2_3_ESTRELLAS" + separator + StringUtils.EMPTY + separator + "CELLNOTE_B" + separator + "cnB_7",
+                bufferedReaderAttributes.readLine());
+        assertEquals(null, bufferedReaderAttributes.readLine());
+
+        bufferedReaderAttributes.close();
+    }
+
     @Test
     public void testExportDatasetToPlainTextWithLabels() throws Exception {
 
@@ -1125,7 +1152,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             validateObservationsWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.TSV.getSeparator(), tmpFileObservations);
 
             // Validate attributes with dataset and dimension attachment
-            // FIXME validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.TSV.getSeparator(), tmpFileAttributes);
+            validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.TSV.getSeparator(), tmpFileAttributes);
         }
 
         {
@@ -1143,7 +1170,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             validateObservationsWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileObservations);
 
             // Validate attributes with dataset and dimension attachment
-            // FIXME validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileAttributes);
+            validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileAttributes);
         }
 
         {
@@ -1161,7 +1188,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             validateObservationsWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileObservations);
 
             // Validate attributes with dataset and dimension attachment
-            // FIXME validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileAttributes);
+            validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileAttributes);
         }
     }
 
