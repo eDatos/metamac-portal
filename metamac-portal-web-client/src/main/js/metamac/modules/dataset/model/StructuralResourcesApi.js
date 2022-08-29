@@ -8,6 +8,40 @@
 
     App.dataset.StructuralResourcesApi.prototype = {
 
+        _getAjaxRequest: function(url) {
+            return function(callback) {
+                return $.ajax({
+                    url: url,
+                    dataType: 'jsonp',
+                    jsonp: "_callback"
+                }).success(function (response) {
+                    callback(null, response);
+                });
+            }
+        },
+
+        getVariableElements: function(urls, callback) {
+            var self = this;
+            var loads = _.map(urls, function(url) {
+               return self._getAjaxRequest(url);
+            });
+
+            async.parallel(loads, function (err, result) {
+                callback(result);
+            });
+        },
+
+        getCodelists: function (callback) {
+            var self = this;
+            var loads = _.map(this.metadata.codelistUrls, function (url) {
+                return self._getAjaxRequest(url);
+            });
+
+            async.parallel(loads, function (err, result) {
+                callback(result);
+            });
+        },
+
         getOrganisation: function (callback) {
             var requestParams = {
                 url: this.buildOrganisationUrl() + "?_type=json",

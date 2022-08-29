@@ -20,10 +20,22 @@
             this.metadataResponse = _.extend(this.identifier(), metadataResponse);
             this.selectedLanguages = this.metadataResponse.selectedLanguages.language;
             this.metadata = this.metadataResponse.metadata;
+            this.codelistUrls = [];
+            if (this.metadata.type === 'DATASET') {
+                var stubDimensionIds = this.metadata.relatedDsd.stub.dimensionId;
+                var stubDimensions = _.filter(this.metadata.dimensions.dimension, (dim) => {
+                    return stubDimensionIds.includes(dim.id);
+                }) || [];
+                for (var dimension of stubDimensions) {
+                    var dimensionValues = dimension.dimensionValues;
+                    if (dimensionValues.total > 0) {
+                        this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
+                    }
+                }
+            }
             this.initializeLocalesIndex();
             this.initializeCache();
         },
-
         identifier: function () {
             return this.datasourceIdentifier.getIdentifier();
         },
@@ -206,7 +218,7 @@
                 var isTemporal = dimension.type === 'TIME_DIMENSION';
                 var dimensionValues = dimension.dimensionValues.value;
                 representations = _.map(dimensionValues, function(dimensionValue, index) {
-                    var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity');
+                    var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
                     representation.label = self.localizeLabel(dimensionValue.name.text);
 
                     if (dimensionValue.measureQuantity && dimensionValue.measureQuantity.unitCode) {

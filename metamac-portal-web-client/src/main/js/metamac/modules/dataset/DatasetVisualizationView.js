@@ -10,6 +10,7 @@
         initialize: function (options) {
             this.container = options.container;
             this.data = options.data;
+            this.data.colors = {};
 
             this.filterDimensions = options.filterDimensions;
 
@@ -17,6 +18,41 @@
             this.veElements = options.veElements;
             options.optionsView.on("enterFullScreen", this.enterFullScreen, this);
             options.optionsView.on("exitFullScreen", this.exitFullScreen, this);
+
+            this.colors = {};
+            if (options.data) {
+                this.api = new App.dataset.StructuralResourcesApi(options.data);
+
+                var self = this;
+
+                this.api.getCodelists(function (codelists) {
+                    var filteredCodelistsWithVariableElements = [];
+                    for (var codelist of codelists) {
+                        var filteredCodelist = codelist.code.filter((item) => item.hasOwnProperty("variableElement"))
+                        if (filteredCodelist) {
+                            filteredCodelistsWithVariableElements.push(filteredCodelist);
+                        }
+                    }
+
+                    if (filteredCodelistsWithVariableElements.length > 0) {
+                        var variableUrls = _.map(filteredCodelistsWithVariableElements, function (codelist) {
+                            return codelist[0].variableElement.selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+renderingColor");
+                        });
+                        self.api.getVariableElements(variableUrls, function (variableElements) {
+                            var flattenedCodelists = _.flatten(filteredCodelistsWithVariableElements);
+                            var flattenedVariableElements = _.flatten(_.map(variableElements, function(variab) {
+								return variab.variableElement;
+							}));
+
+                            for (var code of flattenedCodelists) {
+                                self.data.colors[code.urn] = flattenedVariableElements.find(elem => elem.urn === code.variableElement.urn).renderingColor;
+                            }
+
+                            self.ve[self.currentElement].update();
+                        });
+                    }
+                });
+            }
 
             this._initializeVisualElements();
         },
@@ -33,8 +69,8 @@
                 column: new App.VisualElement.ColumnChart(options),
                 line: new App.VisualElement.LineChart(options),
                 table: new App.VisualElement.Table(options),
-                map: new App.VisualElement.Map(_.extend(options, { mapType: 'map' })),
-                mapbubble: new App.VisualElement.Map(_.extend(options, { mapType: 'mapbubble' }))
+                map: new App.VisualElement.Map(_.extend(options, {mapType: 'map'})),
+                mapbubble: new App.VisualElement.Map(_.extend(options, {mapType: 'mapbubble'}))
             };
             this.ve.map.on('didLoadVe', this._hideSpinner, this);
             this.ve.mapbubble.on('didLoadVe', this._hideSpinner, this);
@@ -51,7 +87,7 @@
             var top = $container.height() / 2 - this.$dataSpinner.height() / 2;
             var left = $container.width() / 2 - this.$dataSpinner.width() / 2;
 
-            this.$dataSpinner.css({ top: top, left: left });
+            this.$dataSpinner.css({top: top, left: left});
             $container.prepend(this.$dataSpinner);
         },
 
