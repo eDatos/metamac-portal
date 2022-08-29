@@ -257,6 +257,7 @@
        request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService));
        request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService));
        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
+       request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
 
 	%>	
    	<title>${titlePrefix}${resourceName}</title>
