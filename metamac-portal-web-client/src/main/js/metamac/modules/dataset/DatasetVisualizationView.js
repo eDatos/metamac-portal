@@ -20,7 +20,7 @@
             options.optionsView.on("exitFullScreen", this.exitFullScreen, this);
 
             this.colors = {};
-            if (options.data) {
+            if (options.data && App.config["enableGraphColors"]) {
                 this.api = new App.dataset.StructuralResourcesApi(options.data);
 
                 var self = this;
