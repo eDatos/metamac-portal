@@ -104,6 +104,7 @@
 			                    App.config["installationType"] = "${installationType}";
                                 App.config["socialTwitterVia"] = "${socialTwitterVia}";
                                 App.config["enableGraphColors"] = "${enableGraphColors}";
+								App.config["helpUrl"] = "${helpUrl}";
 
 			                    App.queryParams["agency"] = '${param.agencyId}';
 			                    App.queryParams["identifier"] = '${param.resourceId}';		                    

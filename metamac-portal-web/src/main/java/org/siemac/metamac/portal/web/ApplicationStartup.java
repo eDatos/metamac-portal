@@ -59,6 +59,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalCustomStyles();
         setPortalGraphColorsEnabled();
         setSocialTwitterVia();
+        setHelpUrl();
     }
 
     // IDEA we try do it more scalable without breaking the rest, but the idea is to use only this one in the future
@@ -113,6 +114,14 @@ public class ApplicationStartup extends ApplicationStartupListener {
     private void setSocialTwitterVia() {
         try {
             WebUtils.setSocialTwitterVia(configurationService.retrieveSharedSocialTwitterVia());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application OPTIONAL Social Twitter Via", e);
+        }
+    }
+
+    private void setHelpUrl() {
+        try {
+            WebUtils.setHelpUrl(configurationService.retrievePortalVisualizerHelpUrl());
         } catch (MetamacException e) {
             log.debug("Error retrieving application OPTIONAL Social Twitter Via", e);
         }
