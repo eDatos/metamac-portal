@@ -19,6 +19,7 @@ I18n.translations.en = {
             map: "Map",
             mapbubble: "Bubble map",
             fullscreen: "Fullscreen",
+            helpUrl: "Help",
             share: "Share",
             download: "Download",
             save: "Save",

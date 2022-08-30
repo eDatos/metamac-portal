@@ -19,6 +19,7 @@ I18n.translations.es = {
             map: "Mapa",
             mapbubble: "Mapa de símbolos",
             fullscreen: "Pantalla completa",
+            helpUrl: "Ayuda",
             share: "Compartir",
             download: "Descarga",
             save: "Guardar",
