@@ -1,4 +1,4 @@
-(function () {
+(function (v) {
     "use strict";
 
     App.namespace("App.modules.dataset");
@@ -29,7 +29,7 @@
                     var filteredCodelistsWithVariableElements = [];
                     for (var codelist of codelists) {
                         var filteredCodelist = codelist.code.filter((item) => item.hasOwnProperty("variableElement"))
-                        if (filteredCodelist) {
+                        if (filteredCodelist.length > 0) {
                             filteredCodelistsWithVariableElements.push(filteredCodelist);
                         }
                     }
