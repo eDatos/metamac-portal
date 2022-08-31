@@ -48,7 +48,9 @@
                                 self.data.colors[code.urn] = flattenedVariableElements.find(elem => elem.urn === code.variableElement.urn).renderingColor;
                             }
 
-                            self.ve[self.currentElement].update();
+                            if (self.ve[self.currentElement]) {
+                                self.ve[self.currentElement].update();
+                            }
                         });
                     }
                 });
