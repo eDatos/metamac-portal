@@ -111,6 +111,7 @@
                         active: fullScreenActive,
                         btnClass: fullScreenActive ? 'active' : ''
                     },
+                    helpUrl: App.config[helpUrl],
                     usersAreAvailable: !!(App.endpoints["external-users"] && App.endpoints["external-users-web"]),
                     visualize: this.optionsModel.get('visualize'),
                     widget: this.optionsModel.get('widget'),

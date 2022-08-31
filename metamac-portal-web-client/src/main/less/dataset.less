@@ -249,8 +249,24 @@
         .btn {
             .options-bar-btn;
 
+            &.visual-element-options-help-url {
+                .options-bar-btn-side-right;
+                margin-right: -9px;
+
+                .dataset-options-help-url-container {
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                }
+                i {
+                    width: auto;
+                    height: auto;
+                    line-height: inherit;
+                    font-size: @mIconHeight;
+                }
+            }
             &.visual-element-options-fs {
-                .options-bar-btn-side-right;  
+                .options-bar-btn-side-right;
                 &.active {
                     .options-bar-btn-side-active;
                 }
@@ -471,6 +487,11 @@
 .dataset-options-type-map {
     .dataset-options-type-icon;
     .icon-map;
+}
+
+.dataset-options-help-url {
+    .dataset-options-type-icon;
+    .icon-question;
 }
 
 .dataset-options-full-screen {
