@@ -57,7 +57,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalTourismStyles();
         setPortalPublicServiceStyles();
         setPortalCustomStyles();
-
+        setPortalGraphColorsEnabled();
         setSocialTwitterVia();
     }
 
@@ -115,6 +115,14 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setSocialTwitterVia(configurationService.retrieveSharedSocialTwitterVia());
         } catch (MetamacException e) {
             log.debug("Error retrieving application OPTIONAL Social Twitter Via", e);
+        }
+    }
+
+    private void setPortalGraphColorsEnabled() {
+        try {
+            WebUtils.setPortalGraphColorsEnabled(configurationService.retrievePortalGraphColorsEnabled());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application graph colors configuration", e);
         }
     }
 

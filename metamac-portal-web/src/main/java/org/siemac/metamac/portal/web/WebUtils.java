@@ -46,6 +46,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     protected static String     portalCustomStyleBaseUrl          = null;
     protected static String     socialTwitterVia                  = null;
+    protected static String     portalGraphColorsEnabled          = null;
 
     public static void setExportApiBaseURL(String exportApiBaseUrl) {
         WebUtils.exportApiBaseUrl = exportApiBaseUrl;
@@ -130,6 +131,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static String getSocialTwitterVia() {
         return socialTwitterVia;
+    }
+
+    public static String getPortalGraphColorsEnabled() {
+        return portalGraphColorsEnabled;
+    }
+
+    public static void setPortalGraphColorsEnabled(String portalGraphColorsEnabled) {
+        WebUtils.portalGraphColorsEnabled = portalGraphColorsEnabled;
     }
 
     public static void setPortalDefaultStyleHeaderUrl(String portalDefaultStyleHeaderUrl) {
