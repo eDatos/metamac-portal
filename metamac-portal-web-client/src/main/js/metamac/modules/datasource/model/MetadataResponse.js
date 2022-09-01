@@ -22,13 +22,10 @@
             this.metadata = this.metadataResponse.metadata;
             this.codelistUrls = [];
             if (this.metadata.type === 'DATASET') {
-                var stubDimensionIds = this.metadata.relatedDsd.stub.dimensionId;
-                var stubDimensions = _.filter(this.metadata.dimensions.dimension, (dim) => {
-                    return stubDimensionIds.includes(dim.id);
-                }) || [];
-                for (var dimension of stubDimensions) {
+                for (var dimension of this.metadata.dimensions.dimension) {
                     var dimensionValues = dimension.dimensionValues;
-                    if (dimensionValues.total > 0) {
+                    var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
+                    if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type)) {
                         this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
                     }
                 }
