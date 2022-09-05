@@ -19,43 +19,6 @@
             options.optionsView.on("enterFullScreen", this.enterFullScreen, this);
             options.optionsView.on("exitFullScreen", this.exitFullScreen, this);
 
-            this.colors = {};
-            if (options.data && App.config["enableGraphColors"] === "true") {
-                this.api = new App.dataset.StructuralResourcesApi(options.data);
-
-                var self = this;
-
-                this.api.getCodelists(function (codelists) {
-                    var filteredCodelistsWithVariableElements = [];
-                    for (var codelist of codelists) {
-                        var filteredCodelist = codelist.code.filter((item) => item.hasOwnProperty("variableElement"))
-                        if (filteredCodelist.length > 0) {
-                            filteredCodelistsWithVariableElements.push(filteredCodelist);
-                        }
-                    }
-
-                    if (filteredCodelistsWithVariableElements.length > 0) {
-                        var variableUrls = _.map(filteredCodelistsWithVariableElements, function (codelist) {
-                            return codelist[0].variableElement.selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+renderingColor");
-                        });
-                        self.api.getVariableElements(variableUrls, function (variableElements) {
-                            var flattenedCodelists = _.flatten(filteredCodelistsWithVariableElements);
-                            var flattenedVariableElements = _.flatten(_.map(variableElements, function(variab) {
-								return variab.variableElement;
-							}));
-
-                            for (var code of flattenedCodelists) {
-                                self.data.colors[code.urn] = flattenedVariableElements.find(elem => elem.urn === code.variableElement.urn).renderingColor;
-                            }
-
-                            if (self.ve[self.currentElement]) {
-                                self.ve[self.currentElement].update();
-                            }
-                        });
-                    }
-                });
-            }
-
             this._initializeVisualElements();
         },
 
@@ -114,6 +77,12 @@
         showLoading: function () {
             if (this._getCurrentVe()) {
                 this._getCurrentVe().showLoading();
+            }
+        },
+
+        hideLoading: function () {
+            if (this._getCurrentVe()) {
+                this._getCurrentVe().hideLoading();
             }
         },
 

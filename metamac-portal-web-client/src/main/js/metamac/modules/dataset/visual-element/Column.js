@@ -76,6 +76,9 @@
                 return;
             }
             this.render();
+            if (!this.colorsLoaded()) {
+                this.loadColors();
+            }
         },
 
         destroy: function () {
