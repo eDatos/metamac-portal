@@ -6,7 +6,6 @@
 
     App.VisualElement.Base = function (options) {
         this.initialize(options);
-        this.colors = {};
     };
 
     App.VisualElement.Base.prototype = {
