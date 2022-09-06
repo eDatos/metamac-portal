@@ -48,6 +48,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setPortalDefaultStyleHeaderUrl(portalConfigurationService.retrievePortalDefaultStyleHeaderUrl());
             WebUtils.setPortalDefaultStyleCssUrl(portalConfigurationService.retrievePortalDefaultStyleCssUrl());
             WebUtils.setPortalDefaultStyleFooterUrl(portalConfigurationService.retrievePortalDefaultStyleFooterUrl());
+            WebUtils.setPortalGraphColorsEnabled(configurationService.retrievePortalGraphColorsEnabled());
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }
@@ -57,7 +58,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalTourismStyles();
         setPortalPublicServiceStyles();
         setPortalCustomStyles();
-        setPortalGraphColorsEnabled();
         setSocialTwitterVia();
         setHelpUrl();
     }
@@ -123,15 +123,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
         try {
             WebUtils.setHelpUrl(configurationService.retrievePortalVisualizerHelpUrl());
         } catch (MetamacException e) {
-            log.debug("Error retrieving application OPTIONAL Social Twitter Via", e);
-        }
-    }
-
-    private void setPortalGraphColorsEnabled() {
-        try {
-            WebUtils.setPortalGraphColorsEnabled(configurationService.retrievePortalGraphColorsEnabled());
-        } catch (MetamacException e) {
-            log.debug("Error retrieving application graph colors configuration", e);
+            log.debug("Error retrieving application visualizer help url", e);
         }
     }
 
@@ -150,6 +142,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Visualizer (also the api ones)
         checkRequiredProperty(PortalConfigurationConstants.METAMAC_ORGANISATION);
+        checkRequiredProperty(PortalConfigurationConstants.PORTAL_GRAPH_COLORS_ENABLED);
         String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
 
         if (INSTALLATION_TYPE.equals("EXTERNAL")) {
@@ -168,5 +161,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Social
         checkOptionalProperty(ConfigurationConstants.SHARED_SOCIAL_TWITTER_VIA);
+
+        // Visualizer
+        checkOptionalProperty(ConfigurationConstants.PORTAL_VISUALIZER_HELP_URL);
     }
 }
