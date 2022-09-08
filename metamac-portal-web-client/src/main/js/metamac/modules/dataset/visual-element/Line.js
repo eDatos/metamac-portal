@@ -355,6 +355,7 @@
                 var serie = {};
                 serie.data = [];
                 serie.name = "";
+                // `undefined` is returned in case colors object is empty, so default values are used instead
                 serie.color = self.data.colors[columnCategory.get('urn')];
 
                 _.each(horizontalDimensionCategories, function (horizontalCategory) {
