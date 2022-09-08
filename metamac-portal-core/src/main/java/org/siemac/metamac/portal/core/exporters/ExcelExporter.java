@@ -11,10 +11,12 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,8 +26,8 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.siemac.edatos.core.common.lang.LocaleUtil;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.lang.LocaleUtil;
 import org.siemac.metamac.portal.core.domain.CellCommentDetails;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
@@ -182,7 +184,7 @@ public class ExcelExporter {
 
                     Cell cell = initializeCell(row, headerColumn);
                     cell.setCellValue(dimensionValueLabel);
-                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                    cell.setCellType(CellType.STRING);
                     cell.setCellStyle(headerCellStyle);
                     headerColumn += multiplier;
                 }
@@ -209,7 +211,7 @@ public class ExcelExporter {
     private void addStringCell(Row row, int column, String cellValue, CellStyle cellStyle) {
         Cell cell = initializeCell(row, column);
         cell.setCellValue(cellValue);
-        cell.setCellType(Cell.CELL_TYPE_STRING);
+        cell.setCellType(CellType.STRING);
         cell.setCellStyle(cellStyle);
     }
 
@@ -225,12 +227,12 @@ public class ExcelExporter {
 
                 Cell cell = initializeCell(row, leftDimensionIndex);
                 cell.setCellValue(dimensionValueLabel);
-                cell.setCellType(Cell.CELL_TYPE_STRING);
+                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             } else {
                 // Empty Cells
                 Cell cell = initializeCell(row, leftDimensionIndex);
-                cell.setCellType(Cell.CELL_TYPE_STRING);
+                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             }
         }
@@ -247,10 +249,10 @@ public class ExcelExporter {
             if (observation != null) {
                 if (NumberUtils.isNumber(observation)) {
                     cell.setCellValue(NumberUtils.createDouble(observation));
-                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                    cell.setCellType(CellType.NUMERIC);
                 } else {
                     cell.setCellValue(observation);
-                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                    cell.setCellType(CellType.STRING);
                 }
             }
             cell.setCellStyle(dataCellStyle);
@@ -342,7 +344,7 @@ public class ExcelExporter {
         XSSFCellStyle styleXSSF = (XSSFCellStyle) style;
 
         if (foregroundColor != null) {
-            styleXSSF.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+            styleXSSF.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             styleXSSF.setFillForegroundColor(foregroundColor);
         }
 
