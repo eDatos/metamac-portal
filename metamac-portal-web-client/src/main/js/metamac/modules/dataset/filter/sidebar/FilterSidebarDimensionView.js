@@ -43,6 +43,8 @@
         },
 
         render: function () {
+            if (this.filterDimension.get('singleValue')) { return; }
+            
             this.delegateEvents();
             this._unbindEvents();
             this._bindEvents();

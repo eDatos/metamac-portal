@@ -19,6 +19,7 @@ I18n.translations.pt = {
             map: "Mapa",
             mapbubble: "Mapa de símbolos",
             fullscreen: "Ecrã inteiro",
+            helpUrl: "Ajuda",
             share: "Partilhar",
             download: "Download",
             save: "Salvar",
@@ -39,6 +40,12 @@ I18n.translations.pt = {
             all: "Download de tudo",
             modal: {
                 title: "Baixar informações"
+            },
+            attributes: {
+                modal: {
+                    title: "Incluir atributos",
+                    question: "Deseja incluir os atributos no download?"
+                }
             }
         },
         share: {
@@ -53,26 +60,12 @@ I18n.translations.pt = {
             },
             label: {
                 name: "Nome da consulta personalizada",
-                notes: "Notas",
-                version: {
-                    group: "Versão",
-                    last: "Última versão",
-                    current: "Versão atual",
-                },
-                data: {
-                    group: "Dados",
-                    quantity: "Os últimos",
-                    date: "A partir de",
-                }
+                notes: "Notas"
             },
             modal: {
                 title: "Salvar consulta personalizada",
                 success: "A consulta personalizada foi salva com sucesso",
                 failure: "Ocorreu um problema ao salvar a consulta personalizada"
-            },
-            error: {
-                quantity: "O campo numérico na seção 'Dados' deve ser um número inteiro positivo maior ou igual a um.",
-                date: "A data na seção 'Dados' é obrigatória."
             }
         },
         text: {
@@ -137,6 +130,12 @@ I18n.translations.pt = {
         },
         selector: {
             level: "Nível {{level}}"
+        },
+        sort: {
+            options: {
+                OBSERVATION: "Por valor",
+                REPRESENTATION: "Por categoria"
+            }
         }
     },
     ve: {
@@ -237,6 +236,14 @@ I18n.translations.pt = {
                 combinatedDimensions: 'Atributos no nível de dimensões',
             }
         },
+        category: {
+            measure: {
+                unit: 'Unidade de medida'
+            },
+            attributes: {
+                title: 'Atributos da categoria'
+            }
+        },
         granularity: {
             temporal: {
                 enum: {
@@ -309,6 +316,26 @@ I18n.translations.pt = {
             loginRequired: {
                 title: "Ação inválida",
                 message: "A ação que você deseja realizar requer que você faça login primeiro. Você quer fazer o login?"
+            }
+        },
+        permalinkConfig: {
+            button: {
+                submit: "Salvar",
+            },
+            label: {
+                version: {
+                    group: "Versão",
+                    last: "Última versão",
+                    current: "Versão atual",
+                },
+                data: {
+                    group: "Dados",
+                    quantity: "Os últimos",
+                    date: "A partir de",
+                }
+            },
+            error: {
+                quantity: "O campo numérico na seção 'Dados' deve ser um número inteiro positivo maior ou igual a um."
             }
         }
     },

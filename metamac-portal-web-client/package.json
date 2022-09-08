@@ -23,6 +23,7 @@
     "grunt-webfont": "1.6.0"
   },
   "scripts": {
-    "start": "grunt serve"
+    "start": "grunt serve",
+    "setup": "nvm use 6.11.1"
   }
 }

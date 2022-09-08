@@ -16,11 +16,13 @@
             this.reset(this.metadata.getDimensionsAndRepresentations(), _.extend({ silent: true }, options));
             this._initializeZones();
 
-            this.at(0).set('open', true); //open the first dimension
+            this.where({ singleValue: false }).at(0).set('open', true); //open the first dimension
             this._bindEvents();
 
             this.accordion = true; //accordion behaviour
             this.valuesToIgnoreStatus = {};
+
+            this.attributesLikeDimensions = this.metadata.getAttributesLikeDimensions();
         },
 
         _bindEvents: function () {
@@ -79,6 +81,10 @@
             }
             return this.tableInfo;
         },
+        
+        getAttributesLikeDimensions: function() {
+            return this.attributesLikeDimensions;
+        },
 
         _invalidateTableInfo: function () {
             this.tableInfo = undefined;
@@ -134,7 +140,7 @@
         },
 
         canDrawLineVisualizations: function () {
-            var timeDimensions = this.where({ type: "TIME_DIMENSION" });
+            var timeDimensions = this.where({ type: "TIME_DIMENSION", singleValue: false });
             return timeDimensions && timeDimensions.length > 0;
         },
 
@@ -183,6 +189,7 @@
 
                 // visibleLabelType
                 dimension.set('visibleLabelType', dimensionToImport.visibleLabelType);
+                if (dimensionToImport.sortBy) { dimension.set('sortBy', dimensionToImport.sortBy); }
 
                 //zone
                 var zoneId = this._zoneIdFromPosition(dimensionToImport.position);
@@ -249,7 +256,8 @@
                 exportResult[dimension.id] = {
                     position: position,
                     visibleLabelType: dimension.get('visibleLabelType'),
-                    categories: categories
+                    categories: categories,
+                    sortBy: dimension.get('sortBy')
                 }
             });
             return exportResult;

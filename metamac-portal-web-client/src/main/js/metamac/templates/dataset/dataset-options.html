@@ -11,7 +11,12 @@
     </button> {{/if}} {{#if widgetButton}}
     <button class="btn visual-element-options-embed" title='{{message "filter.button.embed"}}'>
         <i class="dataset-options-embed"></i>
-    </button> {{/if}} {{#if fullScreen.visible}}
+    </button> {{/if}} {{#if helpUrl}}
+    <a href="{{ helpUrl }}" target="_blank" rel="noopener noreferrer" class="btn fs visual-element-options-help-url" title='{{message "filter.button.helpUrl"}}'>
+        <div class="dataset-options-help-url-container">
+            <i class="dataset-options-help-url"></i>
+        </div>
+    </a> {{/if}} {{#if fullScreen.visible}}
     <button class="btn fs {{fullScreen.btnClass}} visual-element-options-fs" title='{{message "filter.button.fullscreen"}}'>
         <i class="dataset-options-full-screen"></i>
     </button>

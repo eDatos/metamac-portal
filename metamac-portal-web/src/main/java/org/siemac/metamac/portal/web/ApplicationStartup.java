@@ -2,6 +2,7 @@ package org.siemac.metamac.portal.web;
 
 import javax.servlet.ServletContextEvent;
 
+import org.siemac.edatos.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.listener.ApplicationStartupListener;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
@@ -47,6 +48,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setPortalDefaultStyleHeaderUrl(portalConfigurationService.retrievePortalDefaultStyleHeaderUrl());
             WebUtils.setPortalDefaultStyleCssUrl(portalConfigurationService.retrievePortalDefaultStyleCssUrl());
             WebUtils.setPortalDefaultStyleFooterUrl(portalConfigurationService.retrievePortalDefaultStyleFooterUrl());
+            WebUtils.setPortalGraphColorsEnabled(configurationService.retrievePortalGraphColorsEnabled());
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }
@@ -56,6 +58,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalTourismStyles();
         setPortalPublicServiceStyles();
         setPortalCustomStyles();
+        setSocialTwitterVia();
+        setHelpUrl();
     }
 
     // IDEA we try do it more scalable without breaking the rest, but the idea is to use only this one in the future
@@ -107,6 +111,22 @@ public class ApplicationStartup extends ApplicationStartupListener {
         }
     }
 
+    private void setSocialTwitterVia() {
+        try {
+            WebUtils.setSocialTwitterVia(configurationService.retrieveSharedSocialTwitterVia());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application OPTIONAL Social Twitter Via", e);
+        }
+    }
+
+    private void setHelpUrl() {
+        try {
+            WebUtils.setHelpUrl(configurationService.retrievePortalVisualizerHelpUrl());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application visualizer help url", e);
+        }
+    }
+
     @Override
     public void checkApplicationProperties() throws MetamacException {
         // Datasource
@@ -122,6 +142,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Visualizer (also the api ones)
         checkRequiredProperty(PortalConfigurationConstants.METAMAC_ORGANISATION);
+        checkRequiredProperty(PortalConfigurationConstants.PORTAL_GRAPH_COLORS_ENABLED);
         String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
 
         if (INSTALLATION_TYPE.equals("EXTERNAL")) {
@@ -137,5 +158,11 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Google analytics
         checkRequiredProperty(PortalConfigurationConstants.ANALYTICS_GOOGLE_TRACKING_ID);
+
+        // Social
+        checkOptionalProperty(ConfigurationConstants.SHARED_SOCIAL_TWITTER_VIA);
+
+        // Visualizer
+        checkOptionalProperty(ConfigurationConstants.PORTAL_VISUALIZER_HELP_URL);
     }
 }

@@ -22,15 +22,14 @@
 
         render: function () {
             var datasetSelection = this.getDatasetSelection();
-            var identifierUrlPart = this.filterDimensions.metadata.urlIdentifierPart();
 
             var context = {
                 selection: JSON.stringify(datasetSelection),
                 emptySelection: JSON.stringify(this.getEmptyDatasetSelection()),
                 url: {
-                    tsv: App.endpoints["export"] + "/tsv" + identifierUrlPart,
-                    excel: App.endpoints["export"] + "/excel" + identifierUrlPart,
-                    px: App.endpoints["export"] + "/px" + identifierUrlPart
+                    tsv: this._buildExportEndpoint('tsv'),
+                    excel: this._buildExportEndpoint('excel'),
+                    px: this._buildExportEndpoint('px')
                 },
                 buttonConfig: this._getButtonConfiguration()
             };
@@ -48,9 +47,11 @@
                     };
                     _.extend(context, svgContext);
                     self.$el.html(self.template(context));
+                    self._setupTsvExportAttributes();
                 });
             } else {
                 this.$el.html(this.template(context));
+                this._setupTsvExportAttributes();
             }
         },
 
@@ -124,7 +125,8 @@
                     }
                 })
             });
-
+            
+            // Remember to propagate changes made here to org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection
             return { datasetSelection: result };
         },
 
@@ -176,45 +178,41 @@
             //return App.config["widget"] && !!window.externalHost;
         },
 
-        onClickDownloadXlsx: function (e) {
-            e.preventDefault();
-            this.exportApiCall("excel");
-        },
-
-        onClickDownloadTsv: function () {
-            this.exportApiCall("tsv");
-        },
-
-        onClickDownloadPng: function () {
-
-        },
-
-        onClickDownloadPdf: function () {
-
-        },
-
-        onClickDownloadSvg: function () {
-
-        },
-
-        exportApiCall: function (exportType) {
-            var identifier = this.filterDimensions.metadata.identifier();
-            var url = App.endpoints["export"] + "/" + exportType + "/" + identifier.agency + "/" + identifier.identifier + "/" + identifier.version;
-            var selection = this.getDatasetSelection();
-
-            var downloadRequest = $.ajax({
-                url: url,
-                method: "POST",
-                data: JSON.stringify(selection),
-                contentType: "application/json; charset=utf-8"
+        _setupTsvExportAttributes: function() {
+            var self = this;
+            this.$el.find('.download-tsv').closest('form').submit(function(e) {
+                e.preventDefault();    
+                self._showExportTsvAttributesConfig(this);
             });
+        },
 
-            downloadRequest.done(function (response) {
-                console.log(response);
+        _showExportTsvAttributesConfig: function (form) {
+            var self = this;
+            var modalContentView = new App.components.modal.ConfirmationModalView({
+                question: I18n.t("filter.download.attributes.modal.question"),
+                onConfirm: function() { 
+                    form.action = self._buildExportEndpoint('tsv');
+                    form.submit(); 
+                    self.modal.close();
+                },
+                onReject: function() { 
+                    form.action = self._buildExportEndpoint('tsv', {fields: '-attributes'});                  
+                    form.submit(); 
+                    self.modal.close();
+                }
             });
+            var title = I18n.t("filter.download.attributes.modal.title");
+            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            this.modal.show();
+        },
+
+        _buildExportEndpoint: function(type, attributes) {
+            var exportEndpoint = new URL(App.endpoints["export"] + "/" + type + this.filterDimensions.metadata.urlIdentifierPart());
+            _.each(attributes, function(value,key) { 
+                exportEndpoint.searchParams.append(key, value);
+            });
+            return exportEndpoint;
         }
-
-
     });
 
 }());

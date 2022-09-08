@@ -19,6 +19,7 @@ I18n.translations.en = {
             map: "Map",
             mapbubble: "Bubble map",
             fullscreen: "Fullscreen",
+            helpUrl: "Help",
             share: "Share",
             download: "Download",
             save: "Save",
@@ -39,6 +40,12 @@ I18n.translations.en = {
             all: "Download All",
             modal: {
                 title: "Download info"
+            },
+            attributes: {
+                modal: {
+                    title: "Attributes inclusion",
+                    question: "Would you like to include the attributes on the download?"
+                }
             }
         },
         share: {
@@ -53,26 +60,12 @@ I18n.translations.en = {
             },
             label: {
                 name: "Custom query name",
-                notes: "Notes",
-                version: {
-                    group: "Version",
-                    last: "Last version",
-                    current: "Current version",
-                },
-                data: {
-                    group: "Data",
-                    quantity: "The last",
-                    date: "Starting from",
-                }
+                notes: "Notes"
             },
             modal: {
                 title: "Save custom query",
                 success: "The custom query has been saved successfully",
                 failure: "There was a problem saving the custom query"
-            },
-            error: {
-                quantity: "The numeric field in the 'Data' section must be a positive integer greater than or equal to one.",
-                date: "The date in the 'Data' section is mandatory."
             }
         },
         text: {
@@ -137,6 +130,12 @@ I18n.translations.en = {
         },
         selector: {
             level: "Level {{level}}"
+        },
+        sort: {
+            options: {
+                OBSERVATION: "By value",
+                REPRESENTATION: "By category"
+            }
         }
     },
     ve: {
@@ -237,6 +236,14 @@ I18n.translations.en = {
                 combinatedDimensions: 'Attributes dimensions level',
             }
         },
+        category: {
+            measure: {
+                unit: 'Measure unit'
+            },
+            attributes: {
+                title: 'Category attributes'
+            }
+        },
         granularity: {
             temporal: {
                 enum: {
@@ -309,6 +316,26 @@ I18n.translations.en = {
             loginRequired: {
                 title: "Invalid action",
                 message: "The action you want to perform requires you to log in first. Do you want to log in?."
+            }
+        },
+        permalinkConfig: {
+            button: {
+                submit: "Save",
+            },
+            label: {
+                version: {
+                    group: "Version",
+                    last: "Last version",
+                    current: "Current version",
+                },
+                data: {
+                    group: "Data",
+                    quantity: "The last",
+                    date: "Starting from",
+                }
+            },
+            error: {
+                quantity: "The numeric field in the 'Data' section must be a positive integer greater than or equal to one."
             }
         }
     },

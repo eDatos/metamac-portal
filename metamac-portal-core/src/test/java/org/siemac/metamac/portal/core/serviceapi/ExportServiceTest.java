@@ -29,6 +29,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
+import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
 import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacadeImpl;
@@ -308,30 +309,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Dataset dataset = buildDatasetToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection2();
 
         {
             // TSV
@@ -662,7 +640,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         assertEquals("Andalucía" + separator + "Año 2013" + separator + "4 y 5 estrellas" + separator + "Índice de ocupación de plazas" + separator + "4" + separator + "" + separator + "" + separator
                 + "d4 Label" + separator + "e4", bufferedReader.readLine());
-        
+
         if (PlainTextTypeEnum.CSV_COMMA.getSeparator().equals(separator)) {
             assertEquals("Andalucía" + separator + "Año 2012" + separator + "\"1, 2 y 3 estrellas\"" + separator + "Índice de ocupación de plazas" + separator + "1.1" + separator + "b1 Label"
                     + separator + "" + separator + "d1 Label" + separator + "e1", bufferedReader.readLine());
@@ -684,7 +662,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         assertEquals("Aragón" + separator + "Año 2013" + separator + "4 y 5 estrellas" + separator + "Índice de ocupación de plazas" + separator + "8" + separator + "b8 Label" + separator + ""
                 + separator + "d8 Label" + separator + "e8", bufferedReader.readLine());
-        
+
         if (PlainTextTypeEnum.CSV_COMMA.getSeparator().equals(separator)) {
             assertEquals("Aragón" + separator + "Año 2012" + separator + "\"1, 2 y 3 estrellas\"" + separator + "Índice de ocupación de plazas" + separator + "5" + separator + "b5 Label" + separator
                     + "" + separator + "d5 Label" + separator + "e5", bufferedReader.readLine());
@@ -695,7 +673,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         assertEquals("Aragón" + separator + "Año 2012" + separator + "4 y 5 estrellas" + separator + "Índice de ocupación de plazas" + separator + "6" + separator + "b6 Label" + separator + ""
                 + separator + "d6 Label" + separator + "e6", bufferedReader.readLine());
-        
+
         assertEquals(null, bufferedReader.readLine());
         bufferedReader.close();
     }
@@ -930,7 +908,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         assertEquals("Andalucía" + separator + "ANDALUCIA" + separator + "Año 2013" + separator + "2013" + separator + "4 y 5 estrellas" + separator + "4_5_ESTRELLAS" + separator
                 + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS" + separator + "4" + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator
                 + StringUtils.EMPTY + separator + "d4 Label" + separator + "d4" + separator + "e4" + separator + "e4", bufferedReader.readLine());
-        
+
         if (PlainTextTypeEnum.CSV_COMMA.getSeparator().equals(separator)) {
             assertEquals("Andalucía" + separator + "ANDALUCIA" + separator + "Año 2012" + separator + "2012" + separator + "\"1, 2 y 3 estrellas\"" + separator + "1_2_3_ESTRELLAS" + separator
                     + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS" + separator + "1.1" + separator + "b1 Label" + separator + "b1" + separator + StringUtils.EMPTY
@@ -943,7 +921,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         assertEquals("Andalucía" + separator + "ANDALUCIA" + separator + "Año 2012" + separator + "2012" + separator + "4 y 5 estrellas" + separator + "4_5_ESTRELLAS" + separator
                 + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS" + separator + "2" + separator + "b2 Label" + separator + "b2" + separator + StringUtils.EMPTY + separator
                 + "d2 Label" + separator + "d2" + separator + "e2" + separator + "e2", bufferedReader.readLine());
-        
+
         if (PlainTextTypeEnum.CSV_COMMA.getSeparator().equals(separator)) {
             assertEquals("Aragón" + separator + "ARAGON" + separator + "Año 2013" + separator + "2013" + separator + "\"1, 2 y 3 estrellas\"" + separator + "1_2_3_ESTRELLAS" + separator
                     + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS" + separator + StringUtils.EMPTY + separator + "b7 Label" + separator + "b7" + separator
@@ -981,31 +959,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Dataset dataset = buildDatasetToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.LABEL).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21).dimensionValues("INDICE_OCUPACION_PLAZAS")         // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.LABEL)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_C", null)                  // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_D", null)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection1();
 
         {
             // TSV
@@ -1082,30 +1036,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Query query = buildQueryToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection2();
 
         {
             // TSV
@@ -1252,31 +1183,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         Query query = buildQueryToExport();
 
-        //@formatter:off
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("ANDALUCIA", "ARAGON")
-                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
-                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.LABEL).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("INDICADORES", 21).dimensionValues("INDICE_OCUPACION_PLAZAS")         // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
-                .attribute("NOTEX", LabelVisualisationModeEnum.LABEL)
-                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
-                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("CELLNOTE_C", null)                  // do not specify visualisation mode (apply default)
-                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
-                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE_AND_LABEL)
-                .attribute("ATTRIBUTE_D", null)
-                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
-
-                .build();
-        //@formatter:on
+        DatasetSelection datasetSelection = buildDatasetSelection1();
 
         {
             // TSV
@@ -1333,15 +1240,247 @@ public class ExportServiceTest implements ExportServiceTestBase {
         }
     }
 
+    @Override
+    @Test
+    public void testExportResourceToPlainText() throws Exception {
+        {
+            Query query = buildQueryToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection1();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.TSV.getSeparator());
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileAttributes, PlainTextTypeEnum.TSV.getSeparator());
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_COMMA.getSeparator());
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileAttributes, PlainTextTypeEnum.CSV_COMMA.getSeparator());
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_SEMICOLON.getSeparator());
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileAttributes, PlainTextTypeEnum.CSV_SEMICOLON.getSeparator());
+            }
+        }
+        {
+
+            Dataset dataset = buildDatasetToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection2();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.TSV.getSeparator(), tmpFileObservations);
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.TSV.getSeparator(), tmpFileAttributes);
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileObservations);
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileAttributes);
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                File tmpFileAttributes = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+                FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
+
+                outObservations.close();
+                outAttributes.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileObservations);
+
+                // Validate attributes with dataset and dimension attachment
+                validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileAttributes);
+            }
+        }
+    }
+
+    @Override
+    @Test
+    public void testExportResourceToPlainTextWithoutAttributes() throws Exception {
+        {
+            Query query = buildQueryToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection1();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.TSV.getSeparator());
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_COMMA.getSeparator());
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate attributes with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodesAndSomeLabels(tmpFileObservations, PlainTextTypeEnum.CSV_SEMICOLON.getSeparator());
+            }
+        }
+        {
+
+            Dataset dataset = buildDatasetToExport();
+
+            DatasetSelection datasetSelection = buildDatasetSelection2();
+
+            {
+                // TSV
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.TSV.getSeparator(), tmpFileObservations);
+            }
+
+            {
+                // CSV comma separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
+                outObservations.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileObservations);
+            }
+
+            {
+                // CSV semicolon separated
+                File tmpFileObservations = tempFolder.newFile();
+                FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
+
+                outObservations.close();
+
+                // Validate observations with dataset and dimension attachment
+                validateObservationsWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileObservations);
+            }
+        }
+    }
+
     @Test
     @Override
     public void testExportQueryToPx() throws Exception {
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 1, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("FUERTEVENTURA", "GRAN_CANARIA", "LANZAROTE", "EL_HIERRO", "LA_GOMERA", "LA_PALMA", "TENERIFE")
-                .dimension("CATEGORIA_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("TOTAL")
-                .dimension("TIME_PERIOD", 21,LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("2013", "2012")
-                .dimension("INDICADORES", 20, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("INDICE_OCUPACION_PLAZAS")
-                .build();
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create().dimension("DESTINO_ALOJAMIENTO", 1, LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .dimensionValues("FUERTEVENTURA", "GRAN_CANARIA", "LANZAROTE", "EL_HIERRO", "LA_GOMERA", "LA_PALMA", "TENERIFE")
+                .dimension("CATEGORIA_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("TOTAL").dimension("TIME_PERIOD", 21, LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .dimensionValues("2013", "2012").dimension("INDICADORES", 20, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("INDICE_OCUPACION_PLAZAS").build();
         {
             Query query = XMLUtils.getQuery(XMLUtils.class.getResourceAsStream("/resources/INDICADORES_OCUPACION.xml"));
             Dataset relatedDataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000001.xml"));
@@ -1470,18 +1609,18 @@ public class ExportServiceTest implements ExportServiceTestBase {
         assertEquals("DESTINO_ALOJAMIENTO" + separator + "DESTINO_ALOJAMIENTO_CODE" + separator + "TIME_PERIOD" + separator + "CATEGORIA_ALOJAMIENTO" + separator + "INDICADORES" + separator
                 + "INDICADORES_CODE" + separator + "OBS_VALUE" + separator + "ATTRIBUTE_B" + separator + "ATTRIBUTE_C" + separator + "ATTRIBUTE_C_CODE" + separator + "ATTRIBUTE_D" + separator
                 + "ATTRIBUTE_D_CODE" + separator + "ATTRIBUTE_E", bufferedReader.readLine());
-        
+
         if (PlainTextTypeEnum.CSV_COMMA.getSeparator().equals(separator)) {
             assertEquals(
                     "Andalucía" + separator + "ANDALUCIA" + separator + "2013" + separator + "\"1, 2 y 3 estrellas\"" + separator + "Índice de ocupación de plazas" + separator
-                    + "INDICE_OCUPACION_PLAZAS" + separator + "3" + separator + "b3" + separator + StringUtils.EMPTY + separator + "d3 Label" + separator + "d3" + separator + "e3",
+                            + "INDICE_OCUPACION_PLAZAS" + separator + "3" + separator + "b3" + separator + StringUtils.EMPTY + separator + "d3 Label" + separator + "d3" + separator + "e3",
                     bufferedReader.readLine());
         } else {
             assertEquals("Andalucía" + separator + "ANDALUCIA" + separator + "2013" + separator + "1, 2 y 3 estrellas" + separator + "Índice de ocupación de plazas" + separator
                     + "INDICE_OCUPACION_PLAZAS" + separator + "3" + separator + "b3" + separator + StringUtils.EMPTY + separator + "d3 Label" + separator + "d3" + separator + "e3",
                     bufferedReader.readLine());
         }
-        
+
         assertEquals("Andalucía" + separator + "ANDALUCIA" + separator + "2013" + separator + "4 y 5 estrellas" + separator + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS"
                 + separator + "4" + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "d4 Label" + separator + "d4" + separator + "e4", bufferedReader.readLine());
 
@@ -1498,17 +1637,17 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         assertEquals("Andalucía" + separator + "ANDALUCIA" + separator + "2012" + separator + "4 y 5 estrellas" + separator + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS"
                 + separator + "2" + separator + "b2" + separator + StringUtils.EMPTY + separator + "d2 Label" + separator + "d2" + separator + "e2", bufferedReader.readLine());
-        
+
         if (PlainTextTypeEnum.CSV_COMMA.getSeparator().equals(separator)) {
             assertEquals(
                     "Aragón" + separator + "ARAGON" + separator + "2013" + separator + "\"1, 2 y 3 estrellas\"" + separator + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS"
                             + separator + StringUtils.EMPTY + separator + "b7" + separator + StringUtils.EMPTY + separator + "d7 Label" + separator + "d7" + separator + "e7",
-                            bufferedReader.readLine());
+                    bufferedReader.readLine());
         } else {
             assertEquals(
                     "Aragón" + separator + "ARAGON" + separator + "2013" + separator + "1, 2 y 3 estrellas" + separator + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS"
                             + separator + StringUtils.EMPTY + separator + "b7" + separator + StringUtils.EMPTY + separator + "d7 Label" + separator + "d7" + separator + "e7",
-                            bufferedReader.readLine());
+                    bufferedReader.readLine());
         }
         assertEquals("Aragón" + separator + "ARAGON" + separator + "2013" + separator + "4 y 5 estrellas" + separator + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS"
                 + separator + "8" + separator + "b8" + separator + StringUtils.EMPTY + separator + "d8 Label" + separator + "d8" + separator + "e8", bufferedReader.readLine());
@@ -1524,7 +1663,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         assertEquals("Aragón" + separator + "ARAGON" + separator + "2012" + separator + "4 y 5 estrellas" + separator + "Índice de ocupación de plazas" + separator + "INDICE_OCUPACION_PLAZAS"
                 + separator + "6" + separator + "b6" + separator + StringUtils.EMPTY + separator + "d6 Label" + separator + "d6" + separator + "e6", bufferedReader.readLine());
-        
+
         assertEquals(null, bufferedReader.readLine());
         bufferedReader.close();
     }
@@ -1532,12 +1671,11 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Override
     @Test
     public void testExportDatasetToPx() throws Exception {
-        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
-                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("CANARIAS", "LAS_PALMAS", "FUERTEVENTURA", "GRAN_CANARIA", "LANZAROTE", "SANTA_CRUZ_TNF", "EL_HIERRO", "LA_GOMERA", "LA_PALMA", "TENERIFE")
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create().dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .dimensionValues("CANARIAS", "LAS_PALMAS", "FUERTEVENTURA", "GRAN_CANARIA", "LANZAROTE", "SANTA_CRUZ_TNF", "EL_HIERRO", "LA_GOMERA", "LA_PALMA", "TENERIFE")
                 .dimension("CATEGORIA_ALOJAMIENTO", 1, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
-                .dimension("TIME_PERIOD", 20,LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("2013", "2012")
-                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("INDICE_OCUPACION_PLAZAS")
-                .build();
+                .dimension("TIME_PERIOD", 20, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("2013", "2012").dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .dimensionValues("INDICE_OCUPACION_PLAZAS").build();
         {
             Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002.xml"));
 
@@ -1553,7 +1691,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         {
             Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002_ATTR_MEASURE.xml"));
-            
+
             File tmpFile = tempFolder.newFile();
             FileOutputStream out = new FileOutputStream(tmpFile);
             exportService.exportDatasetToPx(ctx, dataset, datasetSelection, null, out);
@@ -1564,7 +1702,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             assertEqualsResponseIdentical(responseExpected, new FileInputStream(tmpFile));
         }
     }
-    
+
     private static void assertEqualsResponseIdentical(InputStream responseExpected, InputStream responseActual) {
         try {
             String actual = IOUtils.toString(responseActual);
@@ -1760,6 +1898,62 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 .attributeData("ATTRIBUTE_E", "e1 | e2 | e3 | e4 | e5 | e6 | e7 | e8")
                 .build();
         //@formatter:on
+    }
+
+    private DatasetSelection buildDatasetSelection1() {
+        //@formatter:off
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
+                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("ANDALUCIA", "ARAGON")
+                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
+                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.LABEL).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
+                .dimension("INDICADORES", 21).dimensionValues("INDICE_OCUPACION_PLAZAS")         // do not specify visualisation mode (apply default)
+                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
+                .attribute("NOTEX", LabelVisualisationModeEnum.LABEL)
+                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.LABEL)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
+                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("CELLNOTE_C", null)                  // do not specify visualisation mode (apply default)
+                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_D", null)
+                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
+                .build();
+        //@formatter:on
+        return datasetSelection;
+    }
+
+    private DatasetSelection buildDatasetSelection2() {
+        //@formatter:off
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
+                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
+                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
+                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
+                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
+                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
+                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
+                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
+                .build();
+        //@formatter:on
+        return datasetSelection;
     }
 
     private BufferedReader createBufferedReader(File file) throws Exception {

@@ -20,7 +20,9 @@
 
             //Initialize subviews here to keep state
 
-            this.subviews = this.filterDimensions.map(function (dimension) {
+            this.subviews = this.filterDimensions
+                .where({singleValue: false})                
+                .map(function (dimension) {
                 return new FilterSidebarDimensionView({
                     filterDimensions: this.filterDimensions,
                     filterDimension: dimension

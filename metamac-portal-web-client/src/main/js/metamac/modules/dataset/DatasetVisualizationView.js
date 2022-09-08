@@ -1,4 +1,4 @@
-(function () {
+(function (v) {
     "use strict";
 
     App.namespace("App.modules.dataset");
@@ -10,6 +10,7 @@
         initialize: function (options) {
             this.container = options.container;
             this.data = options.data;
+            this.data.colors = {};
 
             this.filterDimensions = options.filterDimensions;
 
@@ -33,8 +34,8 @@
                 column: new App.VisualElement.ColumnChart(options),
                 line: new App.VisualElement.LineChart(options),
                 table: new App.VisualElement.Table(options),
-                map: new App.VisualElement.Map(_.extend(options, { mapType: 'map' })),
-                mapbubble: new App.VisualElement.Map(_.extend(options, { mapType: 'mapbubble' }))
+                map: new App.VisualElement.Map(_.extend(options, {mapType: 'map'})),
+                mapbubble: new App.VisualElement.Map(_.extend(options, {mapType: 'mapbubble'}))
             };
             this.ve.map.on('didLoadVe', this._hideSpinner, this);
             this.ve.mapbubble.on('didLoadVe', this._hideSpinner, this);
@@ -51,7 +52,7 @@
             var top = $container.height() / 2 - this.$dataSpinner.height() / 2;
             var left = $container.width() / 2 - this.$dataSpinner.width() / 2;
 
-            this.$dataSpinner.css({ top: top, left: left });
+            this.$dataSpinner.css({top: top, left: left});
             $container.prepend(this.$dataSpinner);
         },
 
@@ -79,6 +80,12 @@
             }
         },
 
+        hideLoading: function () {
+            if (this._getCurrentVe()) {
+                this._getCurrentVe().hideLoading();
+            }
+        },
+
         _removeCurrentElement: function () {
             var currentVe = this._getCurrentVe();
             if (currentVe) {
@@ -95,34 +102,27 @@
 
         enterFullScreen: function () {
             this.trigger("enterFullScreen");
-            //this.fullScreen.enterFullScreen();
         },
 
         exitFullScreen: function () {
             this.trigger("exitFullScreen");
-            //this.fullScreen.exitFullScreen();
         },
 
         _willEnterFullScreen: function () {
-            //$(this._options.container.vecontainer).hide();
             this.trigger('willEnterFullScreen');
         },
 
         _didEnterFullScreen: function () {
-            //$(this._options.container.vecontainer).show();
-
             var currentVe = this._getCurrentVe();
             currentVe.resizeFullScreen();
             this.trigger('didEnterFullScreen');
         },
 
         _willExitFullScreen: function () {
-            //$(this._options.container.vecontainer).hide();
             this.trigger('willExitFullScreen');
         },
 
         _didExitFullScreen: function () {
-            //$(this._options.container.vecontainer).show();
             var currentVe = this._getCurrentVe();
             currentVe.resizeFullScreen();
             this.trigger('didExitFullScreen');

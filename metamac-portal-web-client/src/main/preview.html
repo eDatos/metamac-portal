@@ -42,10 +42,10 @@
         I18n.locale = "es";
 
         
-        App.endpoints["statistical-resources"] = "http://estadisticas.arte-consultores.com/statistical-resources/v1.0";
-        App.endpoints["structural-resources"] = "http://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal/v1.0";
-        App.endpoints["statistical-visualizer"] = "http://estadisticas.arte-consultores.com/statistical-visualizer";
-        App.endpoints["permalinks"] = "http://estadisticas.arte-consultores.com/permalinks/v1.0";
+        App.endpoints["statistical-resources"] = "https://estadisticas.arte-consultores.com/statistical-resources-internal/apis/statistical-resources-internal/v1.0";
+        App.endpoints["structural-resources"] = "https://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal/v1.0";
+        App.endpoints["statistical-visualizer"] = "https://estadisticas.arte-consultores.com/statistical-visualizer";
+        App.endpoints["permalinks"] = "https://estadisticas.arte-consultores.com/permalinks/v1.0";
         App.endpoints["external-users"] = "http://localhost:8010/proxy/api";
         App.endpoints["external-users-web"] = "http://localhost:4200/#/signup";
         App.endpoints["export"] = "http://localhost:8080/statistical-visualizer-api-5.0.1-SNAPSHOT/apis/export/v1.0";
@@ -124,6 +124,9 @@
         App.config["geographicalGranularityUrn"] = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISTAC:CL_GEO_GRANULARITIES(01.006)";
         App.config["organisationUrn"] = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISTAC";
         App.config["installationType"] = "EXTERNAL";
+        App.config["socialTwitterVia"] = "mi_twitter_handle";
+        App.config["enableGraphColors"] = "true";
+        App.config["helpUrl"] = "http://www.gobiernodecanarias.org/istac/galerias/documentos/pec-2018-2022.pdf";
 
         var ENABLE_IBESTAT = true;
         if (ENABLE_IBESTAT) {
@@ -148,6 +151,32 @@
 
             // https://ibestat.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IBESTAT&resourceId=000274A_000001&version=1.0#visualization/table
             App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000001", "version": "1.0", "type": "dataset" };
+        }
+
+        var ENABLE_IESTADIS = true;
+        if (ENABLE_IESTADIS) {
+
+            // http://estadisticas.arte-consultores.com/statistical-resources
+            App.endpoints["statistical-resources"] = "https://iestadis.edatos.io/statistical-resources-internal/apis/statistical-resources-internal/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal
+            App.endpoints["structural-resources"] = "https://iestadis.edatos.io/structural-resources-internal/apis/structural-resources-internal/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/statistical-visualizer
+            App.endpoints["statistical-visualizer"] = "https://iestadis.edatos.io/statistical-visualizer";
+            
+            // http://estadisticas.arte-consultores.com/permalinks
+            App.endpoints["permalinks"] = "https://iestadis.edatos.io/permalinks/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/export
+            App.endpoints["export"] = "https://iestadis.edatos.io/export/v1.0";
+            
+            // http://estadisticas.arte-consultores.com/indicators
+            App.endpoints["indicators"] = "https://iestadis.edatos.io/indicators-internal/internal/api/indicators/v1.0";
+
+            // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000007&version=1.0#visualization/column
+            // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000018&version=1.0#visualization/column
+            App.queryParams = { "agency": "IECM", "identifier": "003_000007", "version": "1.0", "type": "dataset" };
         }
 
         App.start();

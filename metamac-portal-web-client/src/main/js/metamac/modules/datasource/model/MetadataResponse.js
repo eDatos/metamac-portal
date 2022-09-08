@@ -20,10 +20,19 @@
             this.metadataResponse = _.extend(this.identifier(), metadataResponse);
             this.selectedLanguages = this.metadataResponse.selectedLanguages.language;
             this.metadata = this.metadataResponse.metadata;
+            this.codelistUrls = [];
+            if (this.metadata.type === 'DATASET') {
+                for (var dimension of this.metadata.dimensions.dimension) {
+                    var dimensionValues = dimension.dimensionValues;
+                    var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
+                    if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type)) {
+                        this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
+                    }
+                }
+            }
             this.initializeLocalesIndex();
             this.initializeCache();
         },
-
         identifier: function () {
             return this.datasourceIdentifier.getIdentifier();
         },
@@ -206,7 +215,7 @@
                 var isTemporal = dimension.type === 'TIME_DIMENSION';
                 var dimensionValues = dimension.dimensionValues.value;
                 representations = _.map(dimensionValues, function(dimensionValue, index) {
-                    var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity');
+                    var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
                     representation.label = self.localizeLabel(dimensionValue.name.text);
 
                     if (dimensionValue.measureQuantity && dimensionValue.measureQuantity.unitCode) {
@@ -257,6 +266,23 @@
             return representations;
         },
 
+        
+        getRepresentationsForAttributeDimension: function (attributeId) {
+            var attribute = _.findWhere(this.metadata.attributes.attribute, { id: attributeId });
+            var self = this;
+            var representations = [];
+
+            if (attribute && attribute.attributeValues) {
+                representations = _.map(attribute.attributeValues.value, function(dimensionValue, index) {
+                    var representation = {};
+                    representation.id = dimensionValue.id;
+                    representation.label = self.localizeLabel(dimensionValue.name.text);                    
+                    return representation;
+                });
+            }
+            return representations;
+        },
+
         getDimensionsAndRepresentations: function () {
             var self = this;
             var dimensions = this.getDimensions();
@@ -265,6 +291,27 @@
             });
             return dimensions;
         },
+
+        getAttributesLikeDimensions: function() {
+            if (!this.metadata.attributes) { return []; }
+
+            var self = this;
+            return _.chain(this.metadata.attributes.attribute)
+                .filter(function(attribute) {
+                    return attribute.attachmentLevel == "DATASET" && _.include(["MEASURE", "TEMPORAL", "SPATIAL"], attribute.type);
+                })
+                .map(function(attribute) {
+                    return {
+                        id : attribute.id,
+                        label: self.localizeLabel(attribute.name.text),
+                        type: attribute.type,
+                        hierarchy: false,
+                        isAttribute: true,
+                        representations: self.getRepresentationsForAttributeDimension(attribute.id)
+                    }
+                })
+                .value();
+        },        
 
         getMeasureDimension: function () {
             var dimensions = this.getDimensionsAndRepresentations();
@@ -338,6 +385,9 @@
 
         getApiUrl: function () {
             var apiUrl = this.datasourceHelper.getBaseUrl() + this.urlIdentifierPart();
+            if (App.DimensionsUtils.isIndicatorRequest()) {
+                apiUrl = apiUrl + "/data";
+            }
             return { href: apiUrl, name: apiUrl };
         },
 

@@ -45,6 +45,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     portalPublicServiceStyleFooterUrl = null;
 
     protected static String     portalCustomStyleBaseUrl          = null;
+    protected static String     socialTwitterVia                  = null;
+    protected static String     portalGraphColorsEnabled          = null;
+    protected static String     helpUrl                           = null;
 
     public static void setExportApiBaseURL(String exportApiBaseUrl) {
         WebUtils.exportApiBaseUrl = exportApiBaseUrl;
@@ -127,6 +130,22 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         }
     }
 
+    public static String getHelpUrl() {
+        return helpUrl;
+    }
+
+    public static String getSocialTwitterVia() {
+        return socialTwitterVia;
+    }
+
+    public static String getPortalGraphColorsEnabled() {
+        return portalGraphColorsEnabled;
+    }
+
+    public static void setPortalGraphColorsEnabled(String portalGraphColorsEnabled) {
+        WebUtils.portalGraphColorsEnabled = portalGraphColorsEnabled;
+    }
+
     public static void setPortalDefaultStyleHeaderUrl(String portalDefaultStyleHeaderUrl) {
         WebUtils.portalDefaultStyleHeaderUrl = portalDefaultStyleHeaderUrl;
     }
@@ -191,13 +210,19 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         WebUtils.portalCustomStyleBaseUrl = portalCustomStyleBaseUrl;
     }
 
+    public static void setSocialTwitterVia(String socialTwitterVia) {
+        WebUtils.socialTwitterVia = socialTwitterVia;
+    }
+
+    public static void setHelpUrl(String helpUrl) {
+        WebUtils.helpUrl = helpUrl;
+    }
+
     private static String getBreadcrumbsParams(String lang) {
         try {
             Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
-            String homeTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_HOME, locale);
             String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
-            // IDEA: EDATOS-3159 move http://www.gobiernodecanarias.org to property
-            return "?enlace=http://www.gobiernodecanarias.org/istac&miga=" + URLEncoder.encode(homeTranslation + "|" + visualizerTranslation, StandardCharsets.UTF_8.toString());
+            return "?migas=" + URLEncoder.encode(visualizerTranslation, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             log.error("UnsupportedEncodingException encoding a constant. This is not supposed to EVER throw", e);
             return "";

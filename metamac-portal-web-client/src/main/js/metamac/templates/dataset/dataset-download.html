@@ -7,7 +7,7 @@
     {{#if buttonConfig.dataFormats}}       
     <form method="POST" action="{{url.excel}}" target="_parent">
         <input type="hidden" name="jsonBody" value="{{selection}}">
-        <a href="#" class="download-xls"><i class="icon-data-xls"></i></a>
+        <a href="#" class="download-xlsx"><i class="icon-data-xlsx"></i></a>
     </form>
 
     <form method="POST" action="{{url.tsv}}" target="_parent">
@@ -54,7 +54,7 @@
     <h3>{{ message "filter.download.all" }}</h3>
     <form method="POST" action="{{url.excel}}" target="_parent">
         <input type="hidden" name="jsonBody" value="{{emptySelection}}">
-        <a href="#" class="download-xls"><i class="icon-data-xls"></i></a>
+        <a href="#" class="download-xlsx"><i class="icon-data-xlsx"></i></a>
     </form>
 
     <form method="POST" action="{{url.tsv}}" target="_parent">

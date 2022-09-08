@@ -7,46 +7,6 @@
         <label for="notes">{{ message "filter.save.label.notes" }}</label>
         <textarea id="notes" rows="5" maxlength="4000"></textarea>
     </fieldset>
-    {{#if isDataset}}
-        <fieldset {{#unless versionFieldIsNecessary }} disabled="disabled" {{/unless}}>
-            <label>{{ message "filter.save.label.version.group" }}</label>
-            <div class="horizontal-radio-group">
-                <div class="radio-field">
-                    <input type="radio" id="version-current" name="version" value="current" checked="checked">
-                    <label for="version-current">{{ message "filter.save.label.version.current" }}</label>
-                </div>
-                <div class="radio-field">
-                    <input type="radio" id="version-last" name="version" value="last">
-                    <label for="version-last">{{ message "filter.save.label.version.last" }}</label>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset id="field-data" hidden>
-            <label>{{ message "filter.save.label.data.group" }}</label>
-            <div class="vertical-radio-group">
-                <div class="radio-field">
-                    <div class="input-related-radio">
-                        <input type="radio" id="data-quantity" name="data" value="quantity" checked="checked">
-                        <label for="data-quantity">{{ message "filter.save.label.data.quantity" }}</label>
-                    </div>
-                    <input id="data-quantity-related-input" class="radio-related-input" type="number" min="1">
-                </div>
-                <div class="radio-field">
-                    <div class="input-related-radio">
-                        <input type="radio" id="data-date" name="data" value="date">
-                        <label for="data-date">{{ message "filter.save.label.data.date" }}</label>
-                    </div>
-                    <select id="data-date-related-input" class="radio-related-input" disabled>
-                        {{#each dimensionCategories}}
-                        <option value='{{this.id}}'>{{this.label}}</option>
-                        {{/each}}
-                    </select>
-                </div>
-            </div>
-        </fieldset>
-    {{/if}}
-
-    <p id="save-error" class="form-error"></p>
 
     <div class="form-buttons">
         <button type="submit">{{ message "filter.save.button.submit" }}</button>

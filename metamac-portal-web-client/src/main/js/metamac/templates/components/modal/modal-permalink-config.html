@@ -1,0 +1,44 @@
+<form class="modal-permalink-config" novalidate>
+    <fieldset {{#unless thereAreVersions }} disabled="disabled" {{/unless}}>
+        <label>{{ message "modal.permalinkConfig.label.version.group" }}</label>
+        <div class="horizontal-radio-group">
+            <div class="radio-field">
+                <input type="radio" id="version-current" name="version" value="current" {{#if thereAreVersions }} checked="checked" {{/if}}>
+                <label for="version-current">{{ message "modal.permalinkConfig.label.version.current" }}</label>
+            </div>
+            <div class="radio-field">
+                <input type="radio" id="version-last" name="version" value="last" {{#unless thereAreVersions }} checked="checked" {{/unless}}>
+                <label for="version-last">{{ message "modal.permalinkConfig.label.version.last" }}</label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="field-data" {{#unless dataFieldIsNecessary }} hidden {{/unless}}>
+        <label>{{ message "modal.permalinkConfig.label.data.group" }}</label>
+        <div class="vertical-radio-group">
+            <div class="radio-field">
+                <div class="input-related-radio">
+                    <input type="radio" id="data-quantity" name="data" value="quantity" checked="checked">
+                    <label for="data-quantity">{{ message "modal.permalinkConfig.label.data.quantity" }}</label>
+                </div>
+                <input id="data-quantity-related-input" class="radio-related-input" type="number" min="1">
+            </div>
+            <div class="radio-field">
+                <div class="input-related-radio">
+                    <input type="radio" id="data-date" name="data" value="date">
+                    <label for="data-date">{{ message "modal.permalinkConfig.label.data.date" }}</label>
+                </div>
+                <select id="data-date-related-input" class="radio-related-input" disabled>
+                    {{#each dimensionCategories}}
+                    <option value='{{this.id}}'>{{this.label}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <p id="permalink-config-error" class="form-error"></p>
+
+    <div class="form-buttons">
+        <button type="submit">{{ message "modal.permalinkConfig.button.submit" }}</button>
+    </div>
+</form>

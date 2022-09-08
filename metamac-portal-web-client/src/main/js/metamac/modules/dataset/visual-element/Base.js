@@ -163,6 +163,14 @@
             });
         },
 
+        _moveAllSingleValueDimensionsToZone: function (zone) {
+            var self = this;
+            var dimensions = this.filterDimensions.where({ singleValue: true });
+            dimensions.forEach(function(dimension) {                
+                self.filterDimensions.zones.setDimensionZone(zone, dimension, { force: true });
+            });
+        },
+
         _forceMeasureDimensionInZone: function (zone) {
             this._forceDimensionTypeInZone("MEASURE_DIMENSION", zone);
         },
@@ -314,7 +322,54 @@
                 this.$loading.hide();
                 this.showTitle();
             }
-        }
+        },
+
+        loadColors: function () {
+            if (this.graphColorsEnabled()) {
+                var self = this;
+
+                self.showLoading();
+                self.api = new App.dataset.StructuralResourcesApi(self.data);
+                self.api.getCodelists(function (codelists) {
+                    var filteredCodelistsWithVariableElements = [];
+                    for (var codelist of codelists) {
+                        var filteredCodelist = codelist.code.filter((item) => item.hasOwnProperty("variableElement"))
+                        if (filteredCodelist.length > 0) {
+                            filteredCodelistsWithVariableElements.push(filteredCodelist);
+                        }
+                    }
+
+                    if (filteredCodelistsWithVariableElements.length > 0) {
+                        var variableUrls = _.map(filteredCodelistsWithVariableElements, function (codelist) {
+                            return codelist[0].variableElement.selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+renderingColor");
+                        });
+                        self.api.getVariableElements(variableUrls, function (variableElements) {
+                            var flattenedCodelists = _.flatten(filteredCodelistsWithVariableElements);
+                            var flattenedVariableElements = _.flatten(_.map(variableElements, function (variab) {
+                                return variab.variableElement;
+                            }));
+
+                            for (var code of flattenedCodelists) {
+                                self.data.colors[code.urn] = flattenedVariableElements.find(elem => elem.urn === code.variableElement.urn).renderingColor;
+                            }
+
+                            self.update();
+                            self.hideLoading();
+                        });
+                    } else {
+                        self.hideLoading();
+                    }
+                });
+            }
+        },
+
+        colorsLoaded: function() {
+            return this.data && this.data.colors && !_.isEmpty(this.data.colors);
+        },
+
+        graphColorsEnabled: function () {
+            return this.data && App.config["enableGraphColors"] === "true";
+        },
 
     };
 

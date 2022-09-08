@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    var DatasetPermalink = App.modules.dataset.DatasetPermalink;
-
     App.namespace('App.modules.dataset.DatasetShareView');
 
     App.modules.dataset.DatasetShareView = Backbone.View.extend({
@@ -11,52 +9,28 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
+            this.permalinkId = this.options.permalinkId;
         },
 
-        render: function () {
-            var self = this;
-            if (this.needsPermalink()) {
-                var savePermalinkRequest = this.savePermalink();
-                savePermalinkRequest.then(function (response) {
-                    self.renderShare(response.id);
-                });
-            } else {
-                self.renderShare(this.getExistingPermalinkId());
-            }
-        },
-
-        needsPermalink: function () {
-            return !(App.config.widget && this.getExistingPermalinkId());
-        },
-
-        getExistingPermalinkId: function () {
-            return this.filterDimensions.metadata.identifier().permalinkId;
-        },
-
-        savePermalink: function () {
-            var permalinkContent = DatasetPermalink.buildPermalinkContent(this.filterDimensions);
-            return DatasetPermalink.savePermalink(permalinkContent, this.$el[0]);
-        },
-
-        getSharedVisualizerParams: function (permalinkId) {
+        getSharedVisualizerParams: function () {
             return [
                 'permalink',
                 '=',
-                permalinkId
+                this.permalinkId
             ].join('')
         },
 
-        getSharedUrl: function (permalinkId) {
+        getSharedUrl: function () {
             return [
                 this.filterDimensions.metadata.getSharedVisualizerUrl(),
                 '?',
-                this.getSharedVisualizerParams(permalinkId)
+                this.getSharedVisualizerParams()
             ].join('');
         },
 
-        renderShare: function (permalinkId) {
+        render: function () {
             var context = {
-                url: this.getSharedUrl(permalinkId),
+                url: this.getSharedUrl(),
                 title: this.filterDimensions.metadata.getTitle(),
                 description: this.filterDimensions.metadata.getDescription()
             };
@@ -72,13 +46,16 @@
                 description: context.description,
                 passthrough: {
                     twitter: {
-                        via: 'istac_es',
                         text: context.title
                     }
                 }
-            };
+            };   
+            
+            if (App.config.socialTwitterVia) { 
+                share.passthrough.twitter.via = App.config.socialTwitterVia;
+            }
 
-            addthis.toolbox(".addthis_toolbox", config, share);
+            addthis.toolbox(this.$el.find('.addthis_toolbox')[0], config, share);
         }
 
     });

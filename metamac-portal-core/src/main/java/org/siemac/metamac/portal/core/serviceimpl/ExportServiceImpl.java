@@ -6,6 +6,7 @@ import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
+import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
 import org.siemac.metamac.portal.core.exporters.ExcelExporter;
 import org.siemac.metamac.portal.core.exporters.ImageExporter;
@@ -74,6 +75,21 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, dataset, datasetSelection, lang, langDefault);
         exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
         exporter.writeAttributesWithDatasetAndDimensionAttachmentLevel(resultAttributesOutputStream);
+    }
+
+    @Override
+    public void exportResourceToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream,
+            OutputStream resultAttributesOutputStream) throws MetamacException {
+        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, resourceAccess);
+        exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
+        exporter.writeAttributesWithDatasetAndDimensionAttachmentLevel(resultAttributesOutputStream);
+    }
+
+    @Override
+    public void exportResourceToPlainTextWithoutAttributes(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream)
+            throws MetamacException {
+        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, resourceAccess);
+        exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
     }
 
     @Override

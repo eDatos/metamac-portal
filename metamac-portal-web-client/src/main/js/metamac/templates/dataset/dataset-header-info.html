@@ -6,17 +6,15 @@
 {{#if measureUnit}}
 <br>
 <div>
-    <ul>
-        <!-- FIXME internacionalizame -->
-        <li><b>Unidad de medida:</b> {{ measureUnit }}</li>
+    <ul>  
+        <li><b>{{message 'entity.category.measure.unit'}}:</b> {{ measureUnit }}</li>
     </ul>
 </div>
 {{/if}}
 {{#if attributes}}
 <br>
 <div>
-    <!-- FIXME internacionalizame -->
-    Notas de la categoría
+    {{message 'entity.category.attributes.title'}}
     <ul>
         {{#each attributes}}
         <li>

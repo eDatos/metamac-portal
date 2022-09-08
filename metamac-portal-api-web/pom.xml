@@ -50,4 +50,9 @@
             <version>${jaxws-rt.version}</version>
         </dependency>
     </dependencies>
+    
+    <build>
+        <finalName>statistical-visualizer-api-${project.version}</finalName>
+    </build>
+
 </project>

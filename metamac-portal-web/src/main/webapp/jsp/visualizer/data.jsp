@@ -102,6 +102,9 @@
 			                    App.config["organisationUrn"] = "${organisationUrn}";
 			                    App.config["geographicalGranularityUrn"] = "${geographicalGranularityUrn}";
 			                    App.config["installationType"] = "${installationType}";
+                                App.config["socialTwitterVia"] = "${socialTwitterVia}";
+                                App.config["enableGraphColors"] = "${enableGraphColors}";
+								App.config["helpUrl"] = "${helpUrl}";
 
 			                    App.queryParams["agency"] = '${param.agencyId}';
 			                    App.queryParams["identifier"] = '${param.resourceId}';		                    
@@ -116,10 +119,9 @@
 			                    App.start();
 
                                 if(${ApiUrlCaptcha != "error"}) {
-                                    LazyLoad.js("${ApiUrlCaptcha}/authentication.js", function() {
-                                        LazyLoad.js("//s7.addthis.com/js/300/addthis_widget.js${AddthisCode}");
-                                    });
+                                    LazyLoad.js("${ApiUrlCaptcha}/authentication.js");
                                 }
+                                LazyLoad.js("//s7.addthis.com/js/300/addthis_widget.js${AddthisCode}");
 			                }		                    
 		                });
 		            });		            
