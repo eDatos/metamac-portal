@@ -45,28 +45,28 @@ import org.slf4j.LoggerFactory;
 
 public class ExcelExporter {
 
-    private static final int               ROW_ACCESS_WINDOW_SIZE              = 100;
+    private static final int       ROW_ACCESS_WINDOW_SIZE         = 100;
 
-    private static final XSSFColor         COLOR_WHITE                         = getXSSFColor("FFFFFF");
-    private static final XSSFColor         COLOR_BLACK                         = getXSSFColor("000000");
+    private static final XSSFColor COLOR_WHITE                    = getXSSFColor("FFFFFF");
+    private static final XSSFColor COLOR_BLACK                    = getXSSFColor("000000");
 
     private final ResourceAccess   resourceAccess;
     private final DatasetSelection datasetSelection;
-    private Sheet                          sheet;
+    private Sheet                  sheet;
 
-    private int                            rowsOfData;
-    private int                            columnsOfData;
-    private int                            leftHeaderSizeOfData;
+    private int                    rowsOfData;
+    private int                    columnsOfData;
+    private int                    leftHeaderSizeOfData;
 
-    private int                            currentRowCount                     = 0;
-    private SXSSFWorkbook                  workbook;
-    private CreationHelper                 creationHelper;
-    private int                            maxRightColumnIndexWithContent      = 0;
+    private int                    currentRowCount                = 0;
+    private SXSSFWorkbook          workbook;
+    private CreationHelper         creationHelper;
+    private int                    maxRightColumnIndexWithContent = 0;
 
-    private static Logger                  log                                 = LoggerFactory.getLogger(ExcelExporter.class);
-    
-    private CellStyle dataCellStyle;
-    private CellStyle headerCellStyle;
+    private static Logger          log                            = LoggerFactory.getLogger(ExcelExporter.class);
+
+    private CellStyle              dataCellStyle;
+    private CellStyle              headerCellStyle;
 
     public ExcelExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         resourceAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
@@ -85,7 +85,7 @@ public class ExcelExporter {
         columnsOfData = datasetSelection.getColumns();
         leftHeaderSizeOfData = datasetSelection.getLeftDimensions().size();
         creationHelper = workbook.getCreationHelper();
-        
+
         headerCellStyle = createStyleSolid(COLOR_BLACK, COLOR_WHITE, true);
         dataCellStyle = createStyleSolid(COLOR_BLACK, null, null);
         addBorderToCellStyle(dataCellStyle);
@@ -207,7 +207,7 @@ public class ExcelExporter {
     private void footer() {
         currentRowCount += 2;
     }
-    
+
     private void addStringCell(Row row, int column, String cellValue, CellStyle cellStyle) {
         Cell cell = initializeCell(row, column);
         cell.setCellValue(cellValue);
