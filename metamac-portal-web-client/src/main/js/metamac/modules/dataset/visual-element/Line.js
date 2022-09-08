@@ -355,6 +355,7 @@
                 var serie = {};
                 serie.data = [];
                 serie.name = "";
+                serie.color = self.data.colors[columnCategory.get('urn')];
 
                 _.each(horizontalDimensionCategories, function (horizontalCategory) {
                     var currentPermutation = {};
