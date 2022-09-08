@@ -356,6 +356,8 @@
                             self.update();
                             self.hideLoading();
                         });
+                    } else {
+                        self.hideLoading();
                     }
                 });
             }
