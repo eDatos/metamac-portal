@@ -205,6 +205,7 @@
                     var y = self.data.getNumberData({ ids: currentPermutation });
                     var name = self.data.getStringData({ ids: currentPermutation });
                     // Instead of saving the data as an array on the same serie, we create as many series as needed so we can sort them independtly
+                    // `undefined` is returned in case colors object is empty, so default values are used instead
                     serie.data = [{ y: y, name: name, x: horizontalCategoryIndex, color: self.data.colors[horizontalCategory.get('urn')] }];
                     serie.name = columnCategory.get('visibleLabel');
 
