@@ -11,10 +11,12 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,8 +26,8 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.siemac.edatos.core.common.lang.LocaleUtil;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.lang.LocaleUtil;
 import org.siemac.metamac.portal.core.domain.CellCommentDetails;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
@@ -43,28 +45,28 @@ import org.slf4j.LoggerFactory;
 
 public class ExcelExporter {
 
-    private static final int               ROW_ACCESS_WINDOW_SIZE              = 100;
+    private static final int       ROW_ACCESS_WINDOW_SIZE         = 100;
 
-    private static final XSSFColor         COLOR_WHITE                         = getXSSFColor("FFFFFF");
-    private static final XSSFColor         COLOR_BLACK                         = getXSSFColor("000000");
+    private static final XSSFColor COLOR_WHITE                    = getXSSFColor("FFFFFF");
+    private static final XSSFColor COLOR_BLACK                    = getXSSFColor("000000");
 
     private final ResourceAccess   resourceAccess;
     private final DatasetSelection datasetSelection;
-    private Sheet                          sheet;
+    private Sheet                  sheet;
 
-    private int                            rowsOfData;
-    private int                            columnsOfData;
-    private int                            leftHeaderSizeOfData;
+    private int                    rowsOfData;
+    private int                    columnsOfData;
+    private int                    leftHeaderSizeOfData;
 
-    private int                            currentRowCount                     = 0;
-    private SXSSFWorkbook                  workbook;
-    private CreationHelper                 creationHelper;
-    private int                            maxRightColumnIndexWithContent      = 0;
+    private int                    currentRowCount                = 0;
+    private SXSSFWorkbook          workbook;
+    private CreationHelper         creationHelper;
+    private int                    maxRightColumnIndexWithContent = 0;
 
-    private static Logger                  log                                 = LoggerFactory.getLogger(ExcelExporter.class);
-    
-    private CellStyle dataCellStyle;
-    private CellStyle headerCellStyle;
+    private static Logger          log                            = LoggerFactory.getLogger(ExcelExporter.class);
+
+    private CellStyle              dataCellStyle;
+    private CellStyle              headerCellStyle;
 
     public ExcelExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         resourceAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
@@ -83,7 +85,7 @@ public class ExcelExporter {
         columnsOfData = datasetSelection.getColumns();
         leftHeaderSizeOfData = datasetSelection.getLeftDimensions().size();
         creationHelper = workbook.getCreationHelper();
-        
+
         headerCellStyle = createStyleSolid(COLOR_BLACK, COLOR_WHITE, true);
         dataCellStyle = createStyleSolid(COLOR_BLACK, null, null);
         addBorderToCellStyle(dataCellStyle);
@@ -182,7 +184,7 @@ public class ExcelExporter {
 
                     Cell cell = initializeCell(row, headerColumn);
                     cell.setCellValue(dimensionValueLabel);
-                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                    cell.setCellType(CellType.STRING);
                     cell.setCellStyle(headerCellStyle);
                     headerColumn += multiplier;
                 }
@@ -205,11 +207,11 @@ public class ExcelExporter {
     private void footer() {
         currentRowCount += 2;
     }
-    
+
     private void addStringCell(Row row, int column, String cellValue, CellStyle cellStyle) {
         Cell cell = initializeCell(row, column);
         cell.setCellValue(cellValue);
-        cell.setCellType(Cell.CELL_TYPE_STRING);
+        cell.setCellType(CellType.STRING);
         cell.setCellStyle(cellStyle);
     }
 
@@ -225,12 +227,12 @@ public class ExcelExporter {
 
                 Cell cell = initializeCell(row, leftDimensionIndex);
                 cell.setCellValue(dimensionValueLabel);
-                cell.setCellType(Cell.CELL_TYPE_STRING);
+                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             } else {
                 // Empty Cells
                 Cell cell = initializeCell(row, leftDimensionIndex);
-                cell.setCellType(Cell.CELL_TYPE_STRING);
+                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             }
         }
@@ -247,10 +249,10 @@ public class ExcelExporter {
             if (observation != null) {
                 if (NumberUtils.isNumber(observation)) {
                     cell.setCellValue(NumberUtils.createDouble(observation));
-                    cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+                    cell.setCellType(CellType.NUMERIC);
                 } else {
                     cell.setCellValue(observation);
-                    cell.setCellType(Cell.CELL_TYPE_STRING);
+                    cell.setCellType(CellType.STRING);
                 }
             }
             cell.setCellStyle(dataCellStyle);
@@ -342,7 +344,7 @@ public class ExcelExporter {
         XSSFCellStyle styleXSSF = (XSSFCellStyle) style;
 
         if (foregroundColor != null) {
-            styleXSSF.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+            styleXSSF.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             styleXSSF.setFillForegroundColor(foregroundColor);
         }
 
