@@ -461,7 +461,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeTitle(PrintWriter printWriter) throws MetamacException {
-        writeLocalisedLine(printWriter, PxKeysEnum.TITLE, Collections.emptyList(), datasetAccess.getDescription() != null ? datasetAccess.getDescription() : datasetAccess.getName());
+        writeLocalisedLine(printWriter, PxKeysEnum.TITLE, Collections.emptyList(), datasetAccess.getName());
     }
 
     /**
