@@ -12,7 +12,9 @@ SUBJECT-AREA="Turismo";
 SUBJECT-CODE="5";
 COPYRIGHT=YES;
 DESCRIPTION="�ndice censal de ocupaci�n seg�n indicadores por islas, provincias y comunidades";
-TITLE="�ndice censal de ocupaci�n seg�n indicadores por islas, provincias y comunidades";
+TITLE="�ndice censal de ocupaci�n seg�n indicadores por islas, provincias y comunidades. Lorem ipsum dolor sit amet, consectetur adipis"
+"cing elit. Nam tincidunt vitae eros at imperdiet. Suspendisse at velit ultrices, pellentesque purus non, maximus mauris. Aliquam"
+" erat volutpat. Aenean et.";
 DESCRIPTIONDEFAULT=YES;
 CONTENTS="Indicadores";
 STUB="Destino del alojamiento","Categor�a del alojamiento";
