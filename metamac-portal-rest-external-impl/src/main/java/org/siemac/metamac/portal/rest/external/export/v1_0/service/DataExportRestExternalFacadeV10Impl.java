@@ -2,7 +2,7 @@ package org.siemac.metamac.portal.rest.external.export.v1_0.service;
 
 import static org.siemac.metamac.portal.rest.external.RestExternalConstantsPrivate.SERVICE_CONTEXT;
 import static org.siemac.metamac.portal.rest.external.service.utils.ExportUtils.addExtensionToFilenameIfNeeded;
-import static org.siemac.metamac.portal.rest.external.service.utils.ExportUtils.buildExportFilenameWithoutExtension;
+import static org.siemac.metamac.portal.rest.external.service.utils.ExportUtils.buildExportFilename;
 import static org.siemac.metamac.portal.rest.external.service.utils.ExportUtils.buildExportFilenameWithoutExtension;
 import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.containsField;
 import static org.siemac.metamac.portal.rest.external.service.utils.PortalRestExternalUtils.manageException;
