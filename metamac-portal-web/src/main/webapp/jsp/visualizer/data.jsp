@@ -103,7 +103,7 @@
 			                    App.config["geographicalGranularityUrn"] = "${geographicalGranularityUrn}";
 			                    App.config["installationType"] = "${installationType}";
                                 App.config["socialTwitterVia"] = "${socialTwitterVia}";
-                                App.config["enableGraphColors"] = "${enableGraphColors}";
+                                App.config["enableGraphColors"] = ${enableGraphColors};
 								App.config["helpUrl"] = "${helpUrl}";
 
 			                    App.queryParams["agency"] = '${param.agencyId}';
