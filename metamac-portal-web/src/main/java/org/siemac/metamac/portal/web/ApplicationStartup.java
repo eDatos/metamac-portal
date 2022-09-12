@@ -48,7 +48,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setPortalDefaultStyleHeaderUrl(portalConfigurationService.retrievePortalDefaultStyleHeaderUrl());
             WebUtils.setPortalDefaultStyleCssUrl(portalConfigurationService.retrievePortalDefaultStyleCssUrl());
             WebUtils.setPortalDefaultStyleFooterUrl(portalConfigurationService.retrievePortalDefaultStyleFooterUrl());
-            WebUtils.setPortalGraphColorsEnabled(configurationService.retrievePortalGraphColorsEnabled());
+            WebUtils.setPortalGraphColorsEnabled(Boolean.parseBoolean(configurationService.retrievePortalGraphColorsEnabled()));
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }
