@@ -63,14 +63,14 @@ import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 
 public class PxExporter {
 
-    private final ResourceAccess datasetAccess;
-    private final String              ATTRIBUTE_LINE_SEPARATOR = "#";
-    private Set<String>               languages                = new HashSet<String>();
-    private Map<String, Integer>      languageOrder            = new HashMap<String, Integer>();
+    private final ResourceAccess   datasetAccess;
+    private final String           ATTRIBUTE_LINE_SEPARATOR = "#";
+    private Set<String>            languages                = new HashSet<String>();
+    private Map<String, Integer>   languageOrder            = new HashMap<String, Integer>();
     private final DatasetSelection datasetSelection;
-    private SrmRestExternalFacade     srmRestExternalFacade;
-    private Integer                   showDecimals             = null;
-    private final static int          MAX_PX_MATRIX_LENGTH     = 8;
+    private SrmRestExternalFacade  srmRestExternalFacade;
+    private Integer                showDecimals             = null;
+    private final static int       MAX_PX_MATRIX_LENGTH     = 8;
 
     public PxExporter(Dataset dataset, SrmRestExternalFacade srmRestExternalFacade, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
@@ -78,7 +78,8 @@ public class PxExporter {
         this.srmRestExternalFacade = srmRestExternalFacade;
     }
 
-    public PxExporter(Query query, Dataset relatedDataset, SrmRestExternalFacade srmRestExternalFacade, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+    public PxExporter(Query query, Dataset relatedDataset, SrmRestExternalFacade srmRestExternalFacade, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
         datasetAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.srmRestExternalFacade = srmRestExternalFacade;
@@ -461,7 +462,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeTitle(PrintWriter printWriter) throws MetamacException {
-        writeLocalisedLine(printWriter, PxKeysEnum.TITLE, Collections.emptyList(), datasetAccess.getDescription() != null ? datasetAccess.getDescription() : datasetAccess.getName());
+        writeLocalisedLine(printWriter, PxKeysEnum.TITLE, Collections.emptyList(), datasetAccess.getName());
     }
 
     /**
@@ -790,15 +791,15 @@ public class PxExporter {
             return; // Nothing
         }
     }
-    
+
     private List<EnumeratedDimensionValue> getSelectedValuesForMeasureDimension() {
         List<EnumeratedDimensionValue> result = new ArrayList<>();
-        
+
         Dimension measureDimension = datasetAccess.getMeasureDimension();
         if (!(measureDimension.getDimensionValues() instanceof EnumeratedDimensionValues)) {
             return result;
         }
-        
+
         List<String> selectedDimensionValues = datasetSelection.getDimension(measureDimension.getId()).getSelectedDimensionValues();
         for (EnumeratedDimensionValue dimensionValue : ((EnumeratedDimensionValues) measureDimension.getDimensionValues()).getValues()) {
             if (selectedDimensionValues.contains(dimensionValue.getId())) {
@@ -970,7 +971,7 @@ public class PxExporter {
                     StringBuilder key = new StringBuilder();
                     key.append(QUOTE);
                     Iterator<String> iterator = dimensionsDatasetOrderedForPx.iterator();
-                    while(iterator.hasNext()) {
+                    while (iterator.hasNext()) {
                         String dimensionId = iterator.next();
                         if (dimensionValuesForAttributeValue.containsKey(dimensionId)) {
                             String dimensionValueId = dimensionValuesForAttributeValue.get(dimensionId);
@@ -1002,7 +1003,7 @@ public class PxExporter {
             }
         }
     }
-    
+
     private boolean allDimensionValuesAreSelected(List<String> dimensionsDatasetOrderedForPx, Map<String, String> dimensionValuesForAttributeValue) {
         for (String dimensionId : dimensionsDatasetOrderedForPx) {
             if (dimensionValuesForAttributeValue.containsKey(dimensionId)) {
@@ -1181,11 +1182,23 @@ public class PxExporter {
 
     }
 
+    // We never have string lines above 256
     private String formatValue(String value) {
         if (value == null) {
             return null;
         }
-        return value.replace("\"", "'");
+
+        return StringUtils.join(splitInto128LengthSubstrings(value.replace("\"", "'")), QUOTE + NEW_LINE + QUOTE);
+    }
+
+    // Split into 256 character strings is mostly simple: https://stackoverflow.com/a/3761521
+    // But the limits of PCAxis 2008 are not 256 characters. They are 256 bytes. Things
+    // like accents are not stored on one byte, but two. We could split a string by byte size
+    // without breaking https://stackoverflow.com/questions/48868721/splitting-a-string-with-byte-length-limits-in-java
+    // but the code will be slower and convoluted. Allow at max half characters per line, 128, is a much faster approach
+    // and works for most cases
+    private String[] splitInto128LengthSubstrings(String value) {
+        return value.split("(?<=\\G.{128})");
     }
 
     private void checkIfKeywordIsMandatory(PxLineContainer pxLineContainer) throws MetamacException {

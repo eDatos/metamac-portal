@@ -2,6 +2,8 @@ package org.siemac.metamac.portal.core.exporters;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -145,6 +147,16 @@ public class ExcelExporter {
             addStringCell(row, 1, copyrightDate.toString(), null);
         }
 
+
+        // Last update date
+        Date lastUpdateDate = resourceAccess.getMetadata().getLastUpdate();
+        if (lastUpdateDate != null) {
+            Row row = sheet.createRow(headerRow++);
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            addStringCell(row, 0, messageForCode, null);
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            addStringCell(row, 1, dateFormat.format(lastUpdateDate), null);
+        }
         headerRow++; // Blank row
 
         // Fixed Dimensions
