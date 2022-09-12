@@ -1191,7 +1191,7 @@ public class PxExporter {
         return StringUtils.join(splitInto128LengthSubstrings(value.replace("\"", "'")), QUOTE + NEW_LINE + QUOTE);
     }
 
-    // Split into 256 strings is mostly simple: https://stackoverflow.com/a/3761521
+    // Split into 256 character strings is mostly simple: https://stackoverflow.com/a/3761521
     // But the limits of PCAxis 2008 are not 256 characters. They are 256 bytes. Things
     // like accents are not stored on one byte, but two. We could split a string by byte size
     // without breaking https://stackoverflow.com/questions/48868721/splitting-a-string-with-byte-length-limits-in-java
