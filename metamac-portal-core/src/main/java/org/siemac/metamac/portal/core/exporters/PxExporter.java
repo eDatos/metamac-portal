@@ -363,7 +363,7 @@ public class PxExporter {
 
         if (showDecimals != null) {
             // Check if correction for Precisions is needed: If precision is more less than showdecimals, then showdecimals is changed to precission value
-            if (existsContVariable()) {
+            if (datasetAccess.existsContVariable()) {
                 // Measure dimension Has an enumerated representation
                 for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
                     if (dimensionValue.getShowDecimalsPrecision() != null && showDecimals > dimensionValue.getShowDecimalsPrecision()) {
@@ -476,7 +476,7 @@ public class PxExporter {
      */
     private void writeContents(PrintWriter printWriter) throws MetamacException {
         InternationalString value = null;
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Exists the CONTVARIABLE in the PX
             Dimension measureDimension = datasetAccess.getMeasureDimension();
             value = measureDimension.getName(); // Concept associated to measure
@@ -501,7 +501,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeUnits(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // The general UNITS (not indexed) is mandatory
             writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
 
@@ -565,7 +565,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeContVariable(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             writeLocalisedLine(printWriter, PxKeysEnum.CONTVARIABLE, Collections.emptyList(), datasetAccess.getMeasureDimension().getName());
         }
     }
@@ -633,7 +633,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeLastUpdated(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
                 // Metamac doesn't support languages in Last Updated
@@ -658,7 +658,7 @@ public class PxExporter {
             value = PortalUtils.concatenateInternationalString(value, publisher.getName());
         }
 
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
                 writeLocalisedLine(printWriter, PxKeysEnum.CONTACT, dimensionValue.getName(), value);
@@ -737,7 +737,7 @@ public class PxExporter {
     }
 
     private void writePrecision(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Measure dimension Has an enumerated representation
             for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
                 String variableLabel = PortalUtils.getLabel(datasetAccess.getMeasureDimension().getName(), datasetAccess.getLangEffective());
@@ -1250,10 +1250,6 @@ public class PxExporter {
         }
 
         return null;
-    }
-
-    private boolean existsContVariable() {
-        return (datasetAccess.getMeasureDimension() != null) ? true : false;
     }
 
     private InternationalString createInternationalStringWithDefaultValue(String value) {

@@ -637,6 +637,10 @@ public class ResourceAccess {
         return name;
     }
 
+    public boolean existsContVariable() {
+        return getMeasureDimension() != null;
+    }
+
     private static InternationalString prepareQuantityInternationalString(InternationalString current, String prependString) {
         if (current == null) {
             return null;
