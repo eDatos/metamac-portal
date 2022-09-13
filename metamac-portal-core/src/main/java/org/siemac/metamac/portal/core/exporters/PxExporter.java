@@ -57,6 +57,7 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttri
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NextVersionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
@@ -539,27 +540,18 @@ public class PxExporter {
     }
 
     private InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue) {
-        if (dimensionValue.getMeasureQuantity() != null) {
-            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(dimensionValue.getUrn());
-            if (conceptDetail.getQuantity() != null) {
-                InternationalString value = prepareQuantityInternationalString(dimensionValue.getMeasureQuantity().getUnitCode().getName(),
-                        String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
-                if (value != null) {
-                    return value;
-                }
-            }
-        }
-
-        // Default case
-        return dimensionValue.getName();
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getName(), dimensionValue.getUrn());
     }
 
     private InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue) {
-        if (attributeValue.getMeasureQuantity() != null) {
-            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(attributeValue.getUrn());
+        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getName(), attributeValue.getUrn());
+    }
+
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, InternationalString name, String urn) {
+        if (measureQuantity != null) {
+            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
             if (conceptDetail.getQuantity() != null) {
-                InternationalString value = prepareQuantityInternationalString(attributeValue.getMeasureQuantity().getUnitCode().getName(),
-                        String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
+                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
                 if (value != null) {
                     return value;
                 }
@@ -567,7 +559,7 @@ public class PxExporter {
         }
 
         // Default case
-        return attributeValue.getName();
+        return name;
     }
 
     /**
