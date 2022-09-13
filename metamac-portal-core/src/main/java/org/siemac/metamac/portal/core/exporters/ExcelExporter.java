@@ -95,6 +95,7 @@ public class ExcelExporter {
 
     private void header() {
         int headerRow = 0;
+        Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
 
         // Title
         String title = PortalUtils.getLabel(resourceAccess.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
@@ -133,7 +134,7 @@ public class ExcelExporter {
             String rightsHolder = PortalUtils.getLabel(resource.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
 
             Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);
             addStringCell(row, 0, messageForCode, null);
             addStringCell(row, 1, rightsHolder, null);
         }
@@ -142,7 +143,7 @@ public class ExcelExporter {
         Integer copyrightDate = resourceAccess.getMetadata().getCopyrightDate();
         if (copyrightDate != null) {
             Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, locale);
             addStringCell(row, 0, messageForCode, null);
             addStringCell(row, 1, copyrightDate.toString(), null);
         }
@@ -152,9 +153,9 @@ public class ExcelExporter {
         Date lastUpdateDate = resourceAccess.getMetadata().getLastUpdate();
         if (lastUpdateDate != null) {
             Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, locale);
             addStringCell(row, 0, messageForCode, null);
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
             addStringCell(row, 1, dateFormat.format(lastUpdateDate), null);
         }
         headerRow++; // Blank row
@@ -170,7 +171,7 @@ public class ExcelExporter {
 
         if (fixedDimensionsText.length() > 0) {
             fixedDimensionsText.delete(fixedDimensionsText.length() - 3, fixedDimensionsText.length()); // delete last comma and space
-            String by = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LABEL_PARA, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String by = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LABEL_PARA, locale);
             Row rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, by + " " + fixedDimensionsText.toString(), null);
             sheet.addMergedRegion(new CellRangeAddress(headerRow - 1, headerRow - 1, 0, 4));
