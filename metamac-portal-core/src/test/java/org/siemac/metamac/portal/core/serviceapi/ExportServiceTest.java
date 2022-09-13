@@ -1255,7 +1255,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1275,7 +1275,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1295,7 +1295,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1321,7 +1321,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1341,7 +1341,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
                 outObservations.close();
                 outAttributes.close();
@@ -1360,7 +1360,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1388,7 +1388,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1402,7 +1402,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1416,7 +1416,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1436,7 +1436,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1450,7 +1450,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
                 outObservations.close();
 
@@ -1463,7 +1463,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
 
                 outObservations.close();

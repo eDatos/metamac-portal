@@ -36,6 +36,7 @@ import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
 import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
+import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
@@ -70,13 +71,14 @@ public class ExcelExporter {
     private CellStyle              dataCellStyle;
     private CellStyle              headerCellStyle;
 
-    public ExcelExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        resourceAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
+    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+        resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
     }
 
-    public ExcelExporter(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        resourceAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langAlternative);
+    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
+        resourceAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
     }
 
