@@ -42,7 +42,7 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimen
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisation;
-import org.siemac.metamac.statistical_resources.rest.external.service.utils.StatisticalResourcesRestApiExternalUtils;
+import org.siemac.metamac.statistical_resources.rest.common.service.utils.StatisticalResourcesRestApiCommonUtils;
 
 import es.gobcan.istac.indicators.rest.types.AttributeAttachmentLevelEnumType;
 import es.gobcan.istac.indicators.rest.types.AttributeType;
@@ -372,7 +372,7 @@ public class IndicatorsRestExternalMapper {
     }
 
     public static String dimensionSelectionToSelectedRepresentations(String dimensionsSelections) {
-        Map<String, List<String>> dimensionsSelectionsMap = StatisticalResourcesRestApiExternalUtils.parseDimensionExpression(dimensionsSelections);
+        Map<String, List<String>> dimensionsSelectionsMap = StatisticalResourcesRestApiCommonUtils.parseDimensionExpression(dimensionsSelections);
 
         List<String> selectedRepresentations = new ArrayList<String>();
         for (Map.Entry<String, List<String>> dimensionSelection : dimensionsSelectionsMap.entrySet()) {
