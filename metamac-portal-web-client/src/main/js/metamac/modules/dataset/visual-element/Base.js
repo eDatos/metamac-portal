@@ -368,7 +368,7 @@
         },
 
         graphColorsEnabled: function () {
-            return this.data && App.config["enableGraphColors"] === "true";
+            return this.data && App.config["enableGraphColors"];
         },
 
     };

@@ -451,6 +451,43 @@ public class ExportServiceTest implements ExportServiceTestBase {
         bufferedReaderObservations.close();
     }
 
+    private void validateObservationsWithDatasetAndDimensionAttachmentCodesForSubselection(String separator, File tmpFileObservations) throws Exception, IOException {
+        BufferedReader bufferedReaderObservations = createBufferedReader(tmpFileObservations);
+        assertEquals("DESTINO_ALOJAMIENTO" + separator + "TIME_PERIOD" + separator + "CATEGORIA_ALOJAMIENTO" + separator + "INDICADORES" + separator + "OBS_VALUE" + separator + "ATTRIBUTE_B"
+                + separator + "ATTRIBUTE_C" + separator + "ATTRIBUTE_D" + separator + "ATTRIBUTE_E", bufferedReaderObservations.readLine());
+        assertEquals("ARAGON" + separator + "2013" + separator + "1_2_3_ESTRELLAS" + separator + "INDICE_OCUPACION_PLAZAS" + separator + StringUtils.EMPTY + separator + "b7" + separator
+                + StringUtils.EMPTY + separator + "d7" + separator + "e7", bufferedReaderObservations.readLine());
+        assertEquals(null, bufferedReaderObservations.readLine());
+        bufferedReaderObservations.close();
+    }
+
+    private void validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(String separator, File tmpFileAttributes) throws Exception, IOException {
+        BufferedReader bufferedReaderAttributes = createBufferedReader(tmpFileAttributes);
+        assertEquals("DESTINO_ALOJAMIENTO" + separator + "TIME_PERIOD" + separator + "CATEGORIA_ALOJAMIENTO" + separator + "INDICADORES" + separator + "ATTRIBUTE" + separator + "ATTRIBUTE_VALUE",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_A" + separator + "a1",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_A2" + separator + "a2",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "NOTEX" + separator + "a3",
+                bufferedReaderAttributes.readLine());
+        assertEquals("ARAGON" + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "VALUENOTEX" + separator + "vn2",
+                bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "1_2_3_ESTRELLAS" + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01" + separator
+                + "ca1", bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "1_2_3_ESTRELLAS" + separator + StringUtils.EMPTY + separator + "ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02" + separator
+                + "ca3", bufferedReaderAttributes.readLine());
+        assertEquals(StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "INDICE_OCUPACION_PLAZAS" + separator + "INDICADORES_A" + separator + "ioA_1",
+                bufferedReaderAttributes.readLine());
+        assertEquals("ARAGON" + separator + "2013" + separator + StringUtils.EMPTY + separator + StringUtils.EMPTY + separator + "CELLNOTE_A" + separator + "cnA_4",
+                bufferedReaderAttributes.readLine());
+        assertEquals("ARAGON" + separator + "2013" + separator + "1_2_3_ESTRELLAS" + separator + StringUtils.EMPTY + separator + "CELLNOTE_B" + separator + "cnB_7",
+                bufferedReaderAttributes.readLine());
+        assertEquals(null, bufferedReaderAttributes.readLine());
+
+        bufferedReaderAttributes.close();
+    }
+
     @Test
     public void testExportDatasetToPlainTextWithLabels() throws Exception {
 
@@ -1090,6 +1127,68 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
             // Validate attributes with dataset and dimension attachment
             validateAttributesWithDatasetAndDimensionAttachmentCodes(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileAttributes);
+        }
+    }
+
+    @Test
+    public void testExportQueryWithSelectionToPlainTextWithCodes() throws Exception {
+
+        Query query = buildQueryToExport();
+
+        DatasetSelection datasetSelection = buildDatasetSelection3();
+
+        {
+            // TSV
+            File tmpFileObservations = tempFolder.newFile();
+            File tmpFileAttributes = tempFolder.newFile();
+            FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+            FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+            exportService.exportQueryToTsv(ctx, query, datasetSelection, "es", outObservations, outAttributes);
+            outObservations.close();
+            outAttributes.close();
+
+            // Validate observations with dataset and dimension attachment
+            validateObservationsWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.TSV.getSeparator(), tmpFileObservations);
+
+            // Validate attributes with dataset and dimension attachment
+            validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.TSV.getSeparator(), tmpFileAttributes);
+        }
+
+        {
+            // CSV comma separated
+            File tmpFileObservations = tempFolder.newFile();
+            File tmpFileAttributes = tempFolder.newFile();
+            FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+            FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+            exportService.exportQueryToCsvCommaSeparated(ctx, query, datasetSelection, "es", outObservations, outAttributes);
+            outObservations.close();
+            outAttributes.close();
+
+            // Validate observations with dataset and dimension attachment
+            validateObservationsWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileObservations);
+
+            // Validate attributes with dataset and dimension attachment
+            validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_COMMA.getSeparator(), tmpFileAttributes);
+        }
+
+        {
+            // CSV semicolon separated
+            File tmpFileObservations = tempFolder.newFile();
+            File tmpFileAttributes = tempFolder.newFile();
+            FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
+            FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
+
+            exportService.exportQueryToCsvSemicolonSeparated(ctx, query, datasetSelection, "es", outObservations, outAttributes);
+            outObservations.close();
+            outAttributes.close();
+
+            // Validate observations with dataset and dimension attachment
+            validateObservationsWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileObservations);
+
+            // Validate attributes with dataset and dimension attachment
+            validateAttributesWithDatasetAndDimensionAttachmentCodesForSubselection(PlainTextTypeEnum.CSV_SEMICOLON.getSeparator(), tmpFileAttributes);
         }
     }
 
@@ -1934,6 +2033,34 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
                 .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013", "2012")
                 .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
+                .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
+                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
+                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
+                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
+                .build();
+        //@formatter:on
+        return datasetSelection;
+    }
+
+    private DatasetSelection buildDatasetSelection3() {
+        //@formatter:off
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
+                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ARAGON")
+                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2013")
+                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS")
                 .dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
                 .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
                 .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
