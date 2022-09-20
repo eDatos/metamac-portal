@@ -334,6 +334,7 @@ I18n.translations.ca = {
                     group: "Dades",
                     quantity: "Els darrers",
                     date: "A partir de",
+                    all: "Tots",
                 }
             },
             error: {

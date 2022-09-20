@@ -16,6 +16,7 @@
             "change #version-last": "showFieldData",
             "change #data-quantity": "onDataQuantityChosen",
             "change #data-date": "onDataDateChosen",
+            "change #data-all": "onDataAllChosen",
             "focus input, textarea, select": "hideError"
         },
 
@@ -44,6 +45,8 @@
             if(this.isDataFieldNecessary()) {
                 if(this.$("#data-quantity")[0].checked) {
                     dynamicSelectionBuilder.selectNLastTemporalDimensionCategories(this.$("#data-quantity-related-input")[0].valueAsNumber);
+                } else if(this.$("#data-all")[0].checked) {
+                    dynamicSelectionBuilder.selectAllTemporalDimensionCategories();
                 } else {
                     var chosenCategoryAttributes = this.getTemporalDimensionCategories().find(function(val) {
                         return val.get("id") === self.$("#data-date-related-input")[0].value
@@ -81,6 +84,11 @@
         onDataDateChosen: function () {
             this.$("#data-quantity-related-input")[0].disabled = true;
             this.$("#data-date-related-input")[0].disabled = false;
+        },
+
+        onDataAllChosen: function () {
+            this.$("#data-date-related-input")[0].disabled = true;
+            this.$("#data-quantity-related-input")[0].disabled = true;
         },
 
         hideError: function () {

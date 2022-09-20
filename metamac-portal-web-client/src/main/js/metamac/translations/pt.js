@@ -332,6 +332,7 @@ I18n.translations.pt = {
                     group: "Dados",
                     quantity: "Os últimos",
                     date: "A partir de",
+                    all: "Todos",
                 }
             },
             error: {

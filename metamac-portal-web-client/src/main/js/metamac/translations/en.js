@@ -332,6 +332,7 @@ I18n.translations.en = {
                     group: "Data",
                     quantity: "The last",
                     date: "Starting from",
+                    all: "All",
                 }
             },
             error: {

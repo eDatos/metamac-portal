@@ -17,10 +17,16 @@
         <div class="vertical-radio-group">
             <div class="radio-field">
                 <div class="input-related-radio">
-                    <input type="radio" id="data-quantity" name="data" value="quantity" checked="checked">
+                    <input type="radio" id="data-all" name="data" value="all" checked="checked">
+                    <label for="data-all">{{ message "modal.permalinkConfig.label.data.all" }}</label>
+                </div>
+            </div>
+            <div class="radio-field">
+                <div class="input-related-radio">
+                    <input type="radio" id="data-quantity" name="data" value="quantity">
                     <label for="data-quantity">{{ message "modal.permalinkConfig.label.data.quantity" }}</label>
                 </div>
-                <input id="data-quantity-related-input" class="radio-related-input" type="number" min="1">
+                <input id="data-quantity-related-input" class="radio-related-input" type="number" min="1" disabled>
             </div>
             <div class="radio-field">
                 <div class="input-related-radio">
