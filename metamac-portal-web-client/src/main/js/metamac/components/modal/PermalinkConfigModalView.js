@@ -116,6 +116,8 @@
                 defaultCustomQueryName: this.filterDimensions.metadata.getTitle(),
                 dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes })
             }));
+
+            this.$el.find("#data-quantity-related-input").mouseup(e => e.stopPropagation());
         },
     });
 
