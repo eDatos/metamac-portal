@@ -56,7 +56,6 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NextVersionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 
@@ -365,7 +364,7 @@ public class PxExporter {
             // Check if correction for Precisions is needed: If precision is more less than showdecimals, then showdecimals is changed to precission value
             if (datasetAccess.existsContVariable()) {
                 // Measure dimension Has an enumerated representation
-                for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+                for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                     if (dimensionValue.getShowDecimalsPrecision() != null && showDecimals > dimensionValue.getShowDecimalsPrecision()) {
                         showDecimals = dimensionValue.getShowDecimalsPrecision();
                     }
@@ -506,7 +505,7 @@ public class PxExporter {
             writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
 
             // Indexed to ContVariable Values
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 writeLocalisedLine(printWriter, PxKeysEnum.UNITS, dimensionValue.getName(), datasetAccess.extractUnitCode(dimensionValue));
             }
         } else {
@@ -635,7 +634,7 @@ public class PxExporter {
     private void writeLastUpdated(PrintWriter printWriter) throws MetamacException {
         if (datasetAccess.existsContVariable()) {
             // Indexed to ContVariable Values
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 // Metamac doesn't support languages in Last Updated
                 InternationalString value = createInternationalStringWithDefaultValue(dateToString(datasetAccess.getMetadata().getLastUpdate()));
                 writeLocalisedLine(printWriter, PxKeysEnum.LAST_UPDATED, dimensionValue.getName(), value);
@@ -660,7 +659,7 @@ public class PxExporter {
 
         if (datasetAccess.existsContVariable()) {
             // Indexed to ContVariable Values
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 writeLocalisedLine(printWriter, PxKeysEnum.CONTACT, dimensionValue.getName(), value);
             }
         } else {
@@ -739,7 +738,7 @@ public class PxExporter {
     private void writePrecision(PrintWriter printWriter) throws MetamacException {
         if (datasetAccess.existsContVariable()) {
             // Measure dimension Has an enumerated representation
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 String variableLabel = PortalUtils.getLabel(datasetAccess.getMeasureDimension().getName(), datasetAccess.getLangEffective());
                 String valueLabel = PortalUtils.getLabel(dimensionValue.getName(), datasetAccess.getLangEffective());
                 // @formatter:off
@@ -754,23 +753,6 @@ public class PxExporter {
         } else {
             return; // Nothing
         }
-    }
-
-    private List<EnumeratedDimensionValue> getSelectedValuesForMeasureDimension() {
-        List<EnumeratedDimensionValue> result = new ArrayList<>();
-
-        Dimension measureDimension = datasetAccess.getMeasureDimension();
-        if (!(measureDimension.getDimensionValues() instanceof EnumeratedDimensionValues)) {
-            return result;
-        }
-
-        List<String> selectedDimensionValues = datasetSelection.getDimension(measureDimension.getId()).getSelectedDimensionValues();
-        for (EnumeratedDimensionValue dimensionValue : ((EnumeratedDimensionValues) measureDimension.getDimensionValues()).getValues()) {
-            if (selectedDimensionValues.contains(dimensionValue.getId())) {
-                result.add(dimensionValue);
-            }
-        }
-        return result;
     }
 
     /**

@@ -39,6 +39,7 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimensions;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
@@ -641,6 +642,22 @@ public class ResourceAccess {
         return getMeasureDimension() != null;
     }
 
+    public List<EnumeratedDimensionValue> getSelectedValuesForMeasureDimension() {
+        List<EnumeratedDimensionValue> result = new ArrayList<>();
+
+        Dimension measureDimension = getMeasureDimension();
+        if (!(measureDimension.getDimensionValues() instanceof EnumeratedDimensionValues)) {
+            return result;
+        }
+
+        List<String> selectedDimensionValues = datasetSelection.getDimension(measureDimension.getId()).getSelectedDimensionValues();
+        for (EnumeratedDimensionValue dimensionValue : ((EnumeratedDimensionValues) measureDimension.getDimensionValues()).getValues()) {
+            if (selectedDimensionValues.contains(dimensionValue.getId())) {
+                result.add(dimensionValue);
+            }
+        }
+        return result;
+    }
     private static InternationalString prepareQuantityInternationalString(InternationalString current, String prependString) {
         if (current == null) {
             return null;
