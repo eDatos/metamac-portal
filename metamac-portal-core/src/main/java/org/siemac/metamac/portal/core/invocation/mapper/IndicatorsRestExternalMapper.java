@@ -160,15 +160,15 @@ public class IndicatorsRestExternalMapper {
         return publishers;
     }
 
-    private static Resource organisationToResource(Organisation organisation) {
-        Resource resource = new Resource();
-        resource.setName(organisation.getName()); // The only one currently used on the export
-        resource.setId(organisation.getId());
-        resource.setKind(organisation.getKind());
-        resource.setNestedId(organisation.getNestedId());
-        resource.setSelfLink(organisation.getSelfLink());
-        resource.setUrn(organisation.getUrn());
-        return resource;
+    private static org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation organisationToResource(Organisation organisation) {
+        org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation organization = new org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation();
+        organization.setName(organisation.getName()); // The only one currently used on the export
+        organization.setId(organisation.getId());
+        organization.setKind(organisation.getKind());
+        organization.setNestedId(organisation.getNestedId());
+        organization.setSelfLink(organisation.getSelfLink());
+        organization.setUrn(organisation.getUrn());
+        return organization;
     }
 
     private static DataStructureDefinition buildRelatedDsd(Integer decimalPlaces) {
