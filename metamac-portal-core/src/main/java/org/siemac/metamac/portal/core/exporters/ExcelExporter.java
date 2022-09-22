@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -36,11 +37,14 @@ import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
 import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
+import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Contact;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,13 +74,14 @@ public class ExcelExporter {
     private CellStyle              dataCellStyle;
     private CellStyle              headerCellStyle;
 
-    public ExcelExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        resourceAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
+    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+        resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
     }
 
-    public ExcelExporter(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        resourceAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langAlternative);
+    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
+        resourceAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
     }
 
@@ -95,6 +100,7 @@ public class ExcelExporter {
 
     private void header() {
         int headerRow = 0;
+        Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
 
         // Title
         String title = PortalUtils.getLabel(resourceAccess.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
@@ -128,33 +134,43 @@ public class ExcelExporter {
 
         // Other
         // Rights Holder
-        Resource resource = resourceAccess.getMetadata().getRightsHolder();
-        if (resource != null) {
-            String rightsHolder = PortalUtils.getLabel(resource.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
+        Organisation rightsHolder = resourceAccess.getMetadata().getRightsHolder();
+        if (rightsHolder != null) {
+            String rightsHolderLabel = PortalUtils.getLabel(rightsHolder.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
 
             Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);
             addStringCell(row, 0, messageForCode, null);
-            addStringCell(row, 1, rightsHolder, null);
+            addStringCell(row, 1, rightsHolderLabel, null);
         }
 
         // Copyright date
         Integer copyrightDate = resourceAccess.getMetadata().getCopyrightDate();
         if (copyrightDate != null) {
             Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, locale);
             addStringCell(row, 0, messageForCode, null);
             addStringCell(row, 1, copyrightDate.toString(), null);
         }
 
+        // Contacto del IBESTAT
+        if (rightsHolder != null && rightsHolder.getContacts().getTotal().longValue() > 0) {
+            Row rowHeader = sheet.createRow(headerRow++);
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS, locale);
+            addStringCell(rowHeader, 0, messageForCode, null);
+            for (Contact contact : rightsHolder.getContacts().getContacts()) {
+                Row row = sheet.createRow(headerRow++);
+                addStringCell(row, 1, buildContactText(contact), null);
+            }
+        }
 
         // Last update date
         Date lastUpdateDate = resourceAccess.getMetadata().getLastUpdate();
         if (lastUpdateDate != null) {
             Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, locale);
             addStringCell(row, 0, messageForCode, null);
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
             addStringCell(row, 1, dateFormat.format(lastUpdateDate), null);
         }
         headerRow++; // Blank row
@@ -170,7 +186,7 @@ public class ExcelExporter {
 
         if (fixedDimensionsText.length() > 0) {
             fixedDimensionsText.delete(fixedDimensionsText.length() - 3, fixedDimensionsText.length()); // delete last comma and space
-            String by = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LABEL_PARA, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+            String by = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LABEL_PARA, locale);
             Row rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, by + " " + fixedDimensionsText.toString(), null);
             sheet.addMergedRegion(new CellRangeAddress(headerRow - 1, headerRow - 1, 0, 4));
@@ -180,6 +196,64 @@ public class ExcelExporter {
         headerRow++;
 
         currentRowCount = headerRow;
+    }
+
+    private String buildContactText(Contact contact) {
+        StringBuilder contactBuilder = new StringBuilder();
+        Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
+        final String SEPARATOR_FIELD = ". ";
+        final String SEPARATOR_LABEL = ": ";
+        final String SEPARATOR_ITEM_LIST = ", ";
+
+        // @formatter:off
+        if (contact.getName() != null) {
+            contactBuilder
+                .append(PortalUtils.getLabel(contact.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative()))
+                .append(SEPARATOR_FIELD);
+        }
+
+        if (contact.getResponsibility() != null) {
+            contactBuilder
+                .append(PortalUtils.getLabel(contact.getResponsibility(), resourceAccess.getLang(), resourceAccess.getLangAlternative()))
+                .append(SEPARATOR_FIELD);
+        }
+
+        if (contact.getOrganisationUnit() != null) {
+            contactBuilder
+                .append(PortalUtils.getLabel(contact.getOrganisationUnit(), resourceAccess.getLang(), resourceAccess.getLangAlternative()))
+                .append(SEPARATOR_FIELD);
+        }
+
+        if (contact.getEmails().size() > 0) {
+            contactBuilder
+                .append(LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS_EMAILS, locale))
+                .append(SEPARATOR_LABEL).append(StringUtils.join(contact.getEmails(), SEPARATOR_ITEM_LIST))
+                .append(SEPARATOR_FIELD);
+        }
+
+        if (contact.getTelephones().size() > 0) {
+            contactBuilder
+                .append(LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS_TELEPHONES, locale))
+                .append(SEPARATOR_LABEL).append(StringUtils.join(contact.getTelephones(), SEPARATOR_ITEM_LIST))
+                .append(SEPARATOR_FIELD);
+        }
+
+        if (contact.getFaxes().size() > 0) {
+            contactBuilder
+                .append(LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS_FAXES, locale))
+                .append(SEPARATOR_LABEL).append(StringUtils.join(contact.getFaxes(), SEPARATOR_ITEM_LIST))
+                .append(SEPARATOR_FIELD);
+        }
+
+        if (contact.getUrls().size() > 0) {
+            contactBuilder
+                .append(StringUtils.join(contact.getUrls(), SEPARATOR_ITEM_LIST))
+                .append(SEPARATOR_FIELD);
+        }
+
+        // @formatter:on
+
+        return contactBuilder.toString();
     }
 
     private void contentHeader() {

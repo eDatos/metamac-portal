@@ -16,6 +16,7 @@ import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
+import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
@@ -45,8 +46,9 @@ public class PlainTextExporter {
         }
     }
 
-    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
+    public PlainTextExporter(SrmRestExternalFacade srmRestExternalFacade, PlainTextTypeEnum plainTextTypeEnum, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
+        datasetAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.plainTextTypeEnum = plainTextTypeEnum;
         if (this.plainTextTypeEnum == null) {
@@ -54,8 +56,9 @@ public class PlainTextExporter {
         }
     }
 
-    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, Query query, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        datasetAccess = new ResourceAccess(query, null, datasetSelection, lang, langAlternative);
+    public PlainTextExporter(SrmRestExternalFacade srmRestExternalFacade, PlainTextTypeEnum plainTextTypeEnum, Query query, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
+        datasetAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.plainTextTypeEnum = plainTextTypeEnum;
         if (this.plainTextTypeEnum == null) {

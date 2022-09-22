@@ -19,7 +19,9 @@ import java.util.Map;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
+import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
+import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeDimension;
@@ -35,7 +37,12 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimensions;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 
 public class ResourceAccess {
 
@@ -84,11 +91,15 @@ public class ResourceAccess {
     private final Map<String, Integer>                    multipliers         = new HashMap<String, Integer>();
     private final Map<String, Map<String, Long>>          representationIndex = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
 
-    public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection) throws MetamacException {
-        this(dataset, datasetSelection, null, null);
+    private SrmRestExternalFacade                         srmRestExternalFacade;
+
+    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection) throws MetamacException {
+        this(srmRestExternalFacade, dataset, datasetSelection, null, null);
     }
 
-    public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+        this.srmRestExternalFacade = srmRestExternalFacade;
+
         data = dataset.getData();
         dimensions = dataset.getMetadata().getDimensions();
         attributes = dataset.getMetadata().getAttributes();
@@ -111,7 +122,10 @@ public class ResourceAccess {
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
     }
 
-    public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
+        this.srmRestExternalFacade = srmRestExternalFacade;
+
         data = query.getData();
         dimensions = query.getMetadata().getDimensions();
         attributes = query.getMetadata().getAttributes();
@@ -599,5 +613,66 @@ public class ResourceAccess {
             offset += index * multiplier;
         }
         return offset;
+    }
+
+    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue) {
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getName(), dimensionValue.getUrn());
+    }
+
+    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue) {
+        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getName(), attributeValue.getUrn());
+    }
+
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, InternationalString name, String urn) {
+        if (measureQuantity != null) {
+            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
+            if (conceptDetail.getQuantity() != null) {
+                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
+                if (value != null) {
+                    return value;
+                }
+            }
+        }
+
+        // Default case
+        return name;
+    }
+
+    public boolean existsContVariable() {
+        return getMeasureDimension() != null;
+    }
+
+    public List<EnumeratedDimensionValue> getSelectedValuesForMeasureDimension() {
+        List<EnumeratedDimensionValue> result = new ArrayList<>();
+
+        Dimension measureDimension = getMeasureDimension();
+        if (!(measureDimension.getDimensionValues() instanceof EnumeratedDimensionValues)) {
+            return result;
+        }
+
+        List<String> selectedDimensionValues = datasetSelection.getDimension(measureDimension.getId()).getSelectedDimensionValues();
+        for (EnumeratedDimensionValue dimensionValue : ((EnumeratedDimensionValues) measureDimension.getDimensionValues()).getValues()) {
+            if (selectedDimensionValues.contains(dimensionValue.getId())) {
+                result.add(dimensionValue);
+            }
+        }
+        return result;
+    }
+    private static InternationalString prepareQuantityInternationalString(InternationalString current, String prependString) {
+        if (current == null) {
+            return null;
+        }
+
+        InternationalString result = new InternationalString();
+
+        for (LocalisedString localisedString : current.getTexts()) {
+            String label = localisedString.getValue() + " (x" + prependString + ")";
+            LocalisedString localisedStringResult = new LocalisedString();
+            localisedStringResult.setLang(localisedString.getLang());
+            localisedStringResult.setValue(label);
+            result.getTexts().add(localisedStringResult);
+        }
+
+        return result;
     }
 }

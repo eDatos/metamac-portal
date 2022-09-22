@@ -41,7 +41,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         if (lang == null) {
             lang = langDefault;
         }
-        ExcelExporter exporter = new ExcelExporter(dataset, datasetSelection, lang, langDefault);
+        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault);
         exporter.write(resultOutputStream);
     }
 
@@ -72,7 +72,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         if (lang == null) {
             lang = langDefault;
         }
-        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, dataset, datasetSelection, lang, langDefault);
+        PlainTextExporter exporter = new PlainTextExporter(srmRestExternalFacade, plainTextTypeEnum, dataset, datasetSelection, lang, langDefault);
         exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
         exporter.writeAttributesWithDatasetAndDimensionAttachmentLevel(resultAttributesOutputStream);
     }
@@ -101,22 +101,21 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        PxExporter exporter = new PxExporter(dataset, srmRestExternalFacade, datasetSelection, lang, langDefault);
+        PxExporter exporter = new PxExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault);
         exporter.write(resultOutputStream);
     }
 
     /* Queries */
 
     @Override
-    public void exportQueryToExcel(ServiceContext ctx, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream)
-            throws MetamacException {
+    public void exportQueryToExcel(ServiceContext ctx, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportQueryToExcel(ctx, query, relatedDataset, datasetSelection, lang, resultOutputStream);
 
         String langDefault = portalConfiguration.retrieveLanguageDefault();
         if (lang == null) {
             lang = langDefault;
         }
-        ExcelExporter exporter = new ExcelExporter(query, relatedDataset, datasetSelection, lang, langDefault);
+        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault);
         exporter.write(resultOutputStream);
     }
 
@@ -147,7 +146,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         if (lang == null) {
             lang = langDefault;
         }
-        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, query, datasetSelection, lang, langDefault);
+        PlainTextExporter exporter = new PlainTextExporter(srmRestExternalFacade, plainTextTypeEnum, query, datasetSelection, lang, langDefault);
         exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
         exporter.writeAttributesWithDatasetAndDimensionAttachmentLevel(resultAttributesOutputStream);
     }
@@ -161,7 +160,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        PxExporter exporter = new PxExporter(query, relatedDataset, srmRestExternalFacade, datasetSelection, lang, langDefault);
+        PxExporter exporter = new PxExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault);
         exporter.write(resultOutputStream);
     }
 
