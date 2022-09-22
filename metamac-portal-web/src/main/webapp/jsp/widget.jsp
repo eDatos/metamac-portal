@@ -66,7 +66,8 @@
 			request.setAttribute("ApiUrlIndicators", INDICATORS_API_URL_BASE);
 			request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
-            
+            request.setAttribute("enableGraphColors", configurationService.retrievePortalGraphColorsEnabled());
+
 			request.setAttribute("analyticsGoogleTrackingId", configurationService.retrieveAnalyticsGoogleTrackingId());
             
 		} catch (MetamacException e) { 
