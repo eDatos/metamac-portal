@@ -142,7 +142,7 @@ LazyLoad.js('client/metamac.js?d=${jsDate}', function () {
 	App.config["geographicalGranularityUrn"] = "${geographicalGranularityUrn}";
 	App.config["installationType"] = "${installationType}";
 	App.config["socialTwitterVia"] = "${socialTwitterVia}";
-	App.config["enableGraphColors"] = "${enableGraphColors}";
+	App.config["enableGraphColors"] = ${enableGraphColors};
 
 	App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
     App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";
