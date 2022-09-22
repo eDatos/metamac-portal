@@ -59,14 +59,15 @@
 		    request.setAttribute("installationType", INSTALLATION_TYPE);
 		    request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
             request.setAttribute("StatisticalVisualizerBase", PORTAL_URL_BASE);
-			request.setAttribute("ApiUrlStatisticalResources", STATISTICAL_RESOURCES_API_URL_BASE);	
+			request.setAttribute("ApiUrlStatisticalResources", STATISTICAL_RESOURCES_API_URL_BASE);
 			request.setAttribute("ApiUrlStructuralResources", SRM_API_URL_BASE);
 			request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
 			request.setAttribute("ApiUrlExport", EXPORT_API_URL_BASE);
 			request.setAttribute("ApiUrlIndicators", INDICATORS_API_URL_BASE);
 			request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
-            request.setAttribute("enableGraphColors", configurationService.retrievePortalGraphColorsEnabled());
+			request.setAttribute("socialTwitterVia", configurationService.retrieveSharedSocialTwitterVia());
+			request.setAttribute("enableGraphColors", configurationService.retrievePortalGraphColorsEnabled());
 
 			request.setAttribute("analyticsGoogleTrackingId", configurationService.retrieveAnalyticsGoogleTrackingId());
             
