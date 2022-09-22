@@ -40,10 +40,16 @@ import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
+import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Contact;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.slf4j.Logger;
@@ -153,6 +159,46 @@ public class ExcelExporter {
             addStringCell(row, 1, copyrightDate.toString(), null);
         }
 
+
+        Row titleRowForUnits = sheet.createRow(headerRow++);
+        boolean hasAnyUnits = false;
+        if (resourceAccess.existsContVariable()) { // Measure dimension
+            // Indexed to ContVariable Values
+            for (EnumeratedDimensionValue dimensionValue : resourceAccess.getSelectedValuesForMeasureDimension()) {
+                Row row = sheet.createRow(headerRow++);
+                addStringCell(row, 1, buildUnitText(dimensionValue), null);
+                hasAnyUnits = true;
+            }
+        } else { // Measure attribute
+            Attribute measureAttribute = resourceAccess.getMeasureAttribute();
+            if (measureAttribute != null) {
+                // By Metamac Constraints, the measure attribute has dataset attachment and enumerated representation.
+                // Quantity
+                String[] attributeValuesFromData = resourceAccess.getAttributeValues(measureAttribute.getId()); // Enumerated representation
+                if (attributeValuesFromData == null || attributeValuesFromData.length != 1) {
+                    throw new RuntimeException("No instances of measure attribute type in the dataset. This is a Metamac error.");
+                }
+                AttributeValues attributeValuesFromMetadata = measureAttribute.getAttributeValues();
+                if (attributeValuesFromMetadata instanceof EnumeratedAttributeValues) {
+                    // En este caso sólo debería de tener un único Valor la representación ENUMERADA
+                    List<EnumeratedAttributeValue> metadataAttributeValues = ((EnumeratedAttributeValues) attributeValuesFromMetadata).getValues();
+                    for (EnumeratedAttributeValue attributeValue : metadataAttributeValues) {
+                        if (attributeValue.getId().equals(attributeValuesFromData[0])) {
+                            Row row = sheet.createRow(headerRow++);
+                            addStringCell(row, 1, buildUnitText(attributeValue), null);
+                            hasAnyUnits = true;
+                        }
+                    }
+                }
+            } else {
+                throw new RuntimeException("No attribute of type Measure or Measure Dimension found in the dataset. This is a Metamac error.");
+            }
+        }
+        if (hasAnyUnits) {
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_UNITS, locale);
+            addStringCell(titleRowForUnits, 0, messageForCode, null);
+        }
+
         // Contacto del IBESTAT
         if (rightsHolder != null && rightsHolder.getContacts().getTotal().longValue() > 0) {
             Row rowHeader = sheet.createRow(headerRow++);
@@ -196,6 +242,28 @@ public class ExcelExporter {
         headerRow++;
 
         currentRowCount = headerRow;
+    }
+
+    // Samples:
+    // - Unidad de medida (Índice de palomas): Índice de palomas
+    // - Unidad de medida (Variacion): Porcentaje (x10)
+    private String buildUnitText(Resource value) {
+        StringBuilder unitBuilder = new StringBuilder();
+        Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
+        InternationalString unitCode = null;
+        // Ugly, but...
+        if (value instanceof EnumeratedDimensionValue) {
+            unitCode = resourceAccess.extractUnitCode((EnumeratedDimensionValue) value);
+        } else if (value instanceof EnumeratedAttributeValue) {
+            unitCode = resourceAccess.extractUnitCode((EnumeratedAttributeValue) value);
+        }
+        // @formatter:off
+        unitBuilder
+            .append(LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_UNITS_UNIT, locale))
+            .append(" (").append(PortalUtils.getLabel(value.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative())).append("): ")
+            .append(PortalUtils.getLabel(unitCode, resourceAccess.getLang(), resourceAccess.getLangAlternative()));
+        // @formatter:on
+        return unitBuilder.toString();
     }
 
     private String buildContactText(Contact contact) {
