@@ -725,7 +725,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             if (lang == null) {
                 lang = langDefault;
             }
-            return new ResourceAccess(dataset, datasetSelection, lang, langDefault);
+            return new ResourceAccess(srmRestExternal, dataset, datasetSelection, lang, langDefault);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -751,7 +751,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             if (lang == null) {
                 lang = langDefault;
             }
-            return new ResourceAccess(query, null, datasetSelection, lang, langDefault);
+            return new ResourceAccess(srmRestExternal, query, null, datasetSelection, lang, langDefault);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -775,7 +775,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                         dataset.getMetadata().getRelatedDsd());
             }
 
-            return new ResourceAccess(dataset, datasetSelection);
+            return new ResourceAccess(srmRestExternal, dataset, datasetSelection);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -798,7 +798,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                         dataset.getMetadata().getRelatedDsd());
             }
 
-            return new ResourceAccess(dataset, datasetSelection);
+            return new ResourceAccess(srmRestExternal, dataset, datasetSelection);
         } catch (Exception e) {
             throw manageException(e);
         }
