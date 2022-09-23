@@ -130,9 +130,9 @@ public class Helpers {
             List<String> lang = new ArrayList<String>();
             String fields = FIELDS_EXCLUDE_DATA_AND_METADATA;
             if (internalPortal) {
-                query = query2DtoMapper.queryInternalToDto(Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields));
+                query = query2DtoMapper.queryInternalToDto(Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields, null));
             } else {
-                query = query2DtoMapper.queryExternalToDto(Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields));
+                query = query2DtoMapper.queryExternalToDto(Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields, null));
             }
 
         } catch (Exception e) {
@@ -253,7 +253,7 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_INDICATOR_SYSTEM, indicatorSystem);
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
-        if(locale != null) {
+        if (locale != null) {
             appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
         }
     }
