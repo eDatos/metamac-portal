@@ -141,17 +141,6 @@ public class ExcelExporter {
         headerRow++; // Blank row
 
         // Other
-        // Rights Holder
-        Organisation rightsHolder = resourceAccess.getMetadata().getRightsHolder();
-        if (rightsHolder != null) {
-            String rightsHolderLabel = PortalUtils.getLabel(rightsHolder.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
-
-            Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);
-            addStringCell(row, 0, messageForCode, null);
-            addStringCell(row, 1, rightsHolderLabel, null);
-        }
-
         // Copyright date
         Integer copyrightDate = resourceAccess.getMetadata().getCopyrightDate();
         if (copyrightDate != null) {
@@ -197,18 +186,7 @@ public class ExcelExporter {
         }
         if (hasAnyUnits) {
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_UNITS, locale);
-            addStringCell(titleRowForUnits, 0, messageForCode, null);
-        }
-
-        // Contacto del IBESTAT
-        if (rightsHolder != null && rightsHolder.getContacts().getTotal().longValue() > 0) {
-            Row rowHeader = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS, locale);
-            addStringCell(rowHeader, 0, messageForCode, null);
-            for (Contact contact : rightsHolder.getContacts().getContacts()) {
-                Row row = sheet.createRow(headerRow++);
-                addStringCell(row, 1, buildContactText(contact), null);
-            }
+            addStringCell(titleRowForUnits, 0, messageForCode, listTitleCellStyle);
         }
 
         // Last update date
@@ -360,7 +338,30 @@ public class ExcelExporter {
     }
 
     private void footer() {
+        Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
         currentRowCount += 2;
+
+        // Rights Holder
+        Organisation rightsHolder = resourceAccess.getMetadata().getRightsHolder();
+        if (rightsHolder != null) {
+            String rightsHolderLabel = PortalUtils.getLabel(rightsHolder.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
+
+            Row row = sheet.createRow(currentRowCount++);
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);
+            addStringCell(row, 0, messageForCode, listTitleCellStyle);
+            addStringCell(row, 1, rightsHolderLabel, null);
+        }
+
+        // Contacts
+        if (rightsHolder != null && rightsHolder.getContacts().getTotal().longValue() > 0) {
+            Row rowHeader = sheet.createRow(currentRowCount++);
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS, locale);
+            addStringCell(rowHeader, 0, messageForCode, listTitleCellStyle);
+            for (Contact contact : rightsHolder.getContacts().getContacts()) {
+                Row row = sheet.createRow(currentRowCount++);
+                addStringCell(row, 1, buildContactText(contact), null);
+            }
+        }
     }
 
     private void addStringCell(Row row, int column, String cellValue, CellStyle cellStyle) {
