@@ -12,11 +12,11 @@
 
         events: {
             "submit": "createPermalinkAndSubmit",
-            "change #version-current": "hideFieldData",
-            "change #version-last": "showFieldData",
-            "change #data-quantity": "onDataQuantityChosen",
-            "change #data-date": "onDataDateChosen",
-            "change #data-all": "onDataAllChosen",
+            "change #update-periods": "showUpdatePeriodsOptions",
+            "change #selected-periods": "showSelectedPeriodsOptions",
+            "change #periods-quantity": "onDataQuantityChosen",
+            "change #periods-date": "onDataDateChosen",
+            "change #periods-all": "onDataAllChosen",
             "focus input, textarea, select": "hideError"
         },
 
@@ -42,14 +42,14 @@
 
         createPermalink: function () {
             var dynamicSelectionBuilder = DynamicSelectionBuilder();
-            if(this.isDataFieldNecessary()) {
-                if(this.$("#data-quantity")[0].checked) {
-                    dynamicSelectionBuilder.selectNLastTemporalDimensionCategories(this.$("#data-quantity-related-input")[0].valueAsNumber);
-                } else if(this.$("#data-all")[0].checked) {
+            if(this.areUpdatePeriodsOptionsNecessary()) {
+                if(this.$("#periods-quantity")[0].checked) {
+                    dynamicSelectionBuilder.selectNLastTemporalDimensionCategories(this.$("#periods-quantity-related-input")[0].valueAsNumber);
+                } else if(this.$("#periods-all")[0].checked) {
                     dynamicSelectionBuilder.selectAllTemporalDimensionCategories();
                 } else {
                     var chosenCategoryAttributes = this.getTemporalDimensionCategories().find(function(val) {
-                        return val.get("id") === self.$("#data-date-related-input")[0].value
+                        return val.get("id") === self.$("#periods-date-related-input")[0].value
                     }).attributes;
                     dynamicSelectionBuilder.selectTemporalDimensionCategoriesAfterDate(chosenCategoryAttributes);
                 }
@@ -57,38 +57,58 @@
             var permalinkContent = DatasetPermalink.buildPermalinkContent(
                 this.filterDimensions,
                 dynamicSelectionBuilder.build(),
-                this.areThereVersions() ? this.$("#version-last")[0].checked : true);
+                this.isLastVersionSelected());
             return DatasetPermalink.savePermalink(permalinkContent);
         },
 
-        validateFilter: function () {
-            if(this.isDataFieldNecessary() && !this.$("#data-quantity-related-input")[0].disabled) {
-                var value = this.$("#data-quantity-related-input")[0].valueAsNumber;
-                return Number.isInteger(value) && value >= 1 ? undefined : I18n.t("modal.permalinkConfig.error.quantity");
+        isLastVersionSelected: function () {
+            if (this.areThereVersions()) {
+                if (this.isThereTemporalDimension()) {
+                    return !this.$("#selected-periods")[0].checked || this.$("#data-review-checkbox")[0].checked;
+                } else {
+                    return this.$("#version-last")[0].disabled || this.$("#version-last")[0].checked;
+                }
+            } else {
+                return true;
             }
         },
 
-        hideFieldData: function () {
-            this.$("#field-data")[0].hidden = true;
+        validateFilter: function () {
+            if(this.isThereTemporalDimension() && this.areUpdatePeriodsOptionsNecessary()) {
+                if (!this.$("#periods-all")[0].checked && !this.$("#periods-quantity")[0].checked && !this.$("#periods-date")[0].checked) {
+                    return I18n.t("modal.permalinkConfig.error.periods");
+                } else if (!this.$("#periods-quantity-related-input")[0].disabled) {
+                    var value = this.$("#periods-quantity-related-input")[0].valueAsNumber;
+                    if (!Number.isInteger(value) || value < 1) {
+                        return I18n.t("modal.permalinkConfig.error.quantity");
+                    }
+                }
+            }
         },
 
-        showFieldData: function () {
-            this.$("#field-data")[0].hidden = !this.isDataFieldNecessary();
+        showUpdatePeriodsOptions: function () {
+            this.$("#update-periods-options")[0].hidden = false;
+            this.$("#selected-periods-options")[0].hidden = true;
+        },
+
+        showSelectedPeriodsOptions: function () {
+            this.$("#update-periods-options")[0].hidden = true;
+            this.$("#selected-periods-options")[0].hidden = false;
         },
 
         onDataQuantityChosen: function () {
-            this.$("#data-quantity-related-input")[0].disabled = false;
-            this.$("#data-date-related-input")[0].disabled = true;
+            this.$("#periods-quantity-related-input")[0].disabled = false;
+            this.$("#periods-date-related-input")[0].disabled = true;
         },
 
         onDataDateChosen: function () {
-            this.$("#data-quantity-related-input")[0].disabled = true;
-            this.$("#data-date-related-input")[0].disabled = false;
+            this.$("#periods-quantity-related-input")[0].disabled = true;
+            this.$("#periods-date-related-input")[0].disabled = false;
         },
 
         onDataAllChosen: function () {
-            this.$("#data-date-related-input")[0].disabled = true;
-            this.$("#data-quantity-related-input")[0].disabled = true;
+            this.$("#periods-date-related-input")[0].disabled = true;
+            this.$("#periods-quantity-related-input")[0].disabled = true;
         },
 
         hideError: function () {
@@ -102,8 +122,12 @@
             return App.queryParams.type === "dataset" && this.filterDimensions.metadata.metadata.keepAllData;
         },
 
-        isDataFieldNecessary: function () {
-            return !_.isUndefined(this.getTemporalDimension()) && (!this.areThereVersions() || (this.$("#version-last").length > 0 && this.$("#version-last")[0].checked));
+        isThereTemporalDimension: function () {
+            return !_.isUndefined(this.getTemporalDimension());
+        },
+
+        areUpdatePeriodsOptionsNecessary: function () {
+            return this.isThereTemporalDimension() && (this.$("#update-periods").length > 0 && this.$("#update-periods")[0].checked);
         },
 
         getTemporalDimensionCategories: function () {
@@ -120,12 +144,12 @@
         render: function () {
             this.$el.html(this.template({
                 thereAreVersions: this.areThereVersions(),
-                dataFieldIsNecessary: this.isDataFieldNecessary(),
+                thereIsTemporalDimension: this.isThereTemporalDimension(),
                 defaultCustomQueryName: this.filterDimensions.metadata.getTitle(),
                 dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes })
             }));
 
-            this.$el.find("#data-quantity-related-input").mouseup(e => e.stopPropagation());
+            this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
         },
     });
 

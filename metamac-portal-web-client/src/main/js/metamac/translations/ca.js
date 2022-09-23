@@ -326,19 +326,33 @@ I18n.translations.ca = {
             },
             label: {
                 version: {
-                    group: "Versió",
-                    last: "Darrera versió",
-                    current: "Versió actual",
+                    group: "Dades",
+                    last: "Actualitzar les dades amb possibles correccions o modificacions",
+                    current: "Mostrar sempre les dades actuals",
                 },
                 data: {
                     group: "Dades",
-                    quantity: "Els darrers",
-                    date: "A partir de",
-                    all: "Tots",
+                    update: "Actualitzar les dades amb nous períodes",
+                    selected: "Fixar les dades al període seleccionat",
+                },
+                dataReview: {
+                    group: "Revisions de dades",
+                    update: "Actualitzar amb les revisions de dades"
+                },
+                periods: {
+                    group: "Períodes",
+                    quantity: "Actualitzar amb els darrers n períodes:",
+                    date: "Actualitzar a partir del període següent:",
+                    all: "Actualitzar amb tots els períodes",
                 }
             },
             error: {
-                quantity: "El camp númerico de l'apartat 'Dades' ha de ser un nombre enter positiu major o igual a un."
+                quantity: "El camp númeric de l'apartat 'Actualitzar amb els darrers n períodes' ha de ser un nombre enter positiu més gran o igual a un.",
+                periods: "Heu de seleccionar una de les opcions de l'apartat 'Períodes'."
+            },
+            info: {
+                noTemporalDimension: "Aquest recurs no permet triar el període perquè no té una dimensió temporal.",
+                noVersionUpdate: "Aquest recurs no permet consultar versions anteriors."
             }
         }
     },

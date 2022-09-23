@@ -324,19 +324,33 @@ I18n.translations.pt = {
             },
             label: {
                 version: {
-                    group: "Versão",
-                    last: "Última versão",
-                    current: "Versão atual",
+                    group: "Dados",
+                    last: "Atualizar os dados com possíveis correções ou modificações dos mesmos",
+                    current: "Sempre mostrar dados atuais",
                 },
                 data: {
-                    group: "Dados",
-                    quantity: "Os últimos",
-                    date: "A partir de",
-                    all: "Todos",
+                    grupo: "Dados",
+                    update: "Atualizar os dados com novos períodos",
+                    selected: "Corrigir os dados para o período selecionado",
+                },
+                dataReview: {
+                    group: "Revisões de dados",
+                    update: "Atualização com revisões de dados"
+                },
+                periods: {
+                    group: "Períodos",
+                    quantity: "Atualizar com os últimos n períodos:",
+                    date: "Atualização do seguinte período:",
+                    all: "Atualizar com todos os períodos",
                 }
             },
             error: {
-                quantity: "O campo numérico na seção 'Dados' deve ser um número inteiro positivo maior ou igual a um."
+                quantity: "O campo numérico na seção 'Atualizar com os últimos n períodos' deve ser um número inteiro positivo maior ou igual a um.",
+                periods: "Você deve selecionar uma das opções na seção 'Períodos'."
+            },
+            info: {
+                noTemporalDimension: "Este recurso não permite a escolha do período porque não possui uma dimensão temporal.",
+                noVersionUpdate: "Este recurso não permite verificar versões anteriores."
             }
         }
     },

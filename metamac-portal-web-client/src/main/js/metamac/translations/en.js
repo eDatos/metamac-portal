@@ -324,19 +324,33 @@ I18n.translations.en = {
             },
             label: {
                 version: {
-                    group: "Version",
-                    last: "Last version",
-                    current: "Current version",
+                    group: "Data",
+                    last: "Update the data with possible corrections or modifications",
+                    current: "Always show current data",
                 },
                 data: {
                     group: "Data",
-                    quantity: "The last",
-                    date: "Starting from",
-                    all: "All",
+                    update: "Update data with new periods",
+                    selected: "Fix the data to the selected period",
+                },
+                dataReview: {
+                    group: "Data reviews",
+                    update: "Update with data reviews"
+                },
+                periods: {
+                    group: "Periods",
+                    quantity: "Update with the last n periods:",
+                    date: "Update from the following period:",
+                    all: "Update with all periods",
                 }
             },
             error: {
-                quantity: "The numeric field in the 'Data' section must be a positive integer greater than or equal to one."
+                quantity: "The numeric field in the 'Update with the last n periods' section must be a positive integer greater than or equal to one.",
+                periods: "You must select one of the options in the 'Periods' section."
+            },
+            info: {
+                noTemporalDimension: "This resource does not allow choosing the period because it does not have a temporal dimension.",
+                noVersionUpdate: "This resource does not allow checking previous versions."
             }
         }
     },
