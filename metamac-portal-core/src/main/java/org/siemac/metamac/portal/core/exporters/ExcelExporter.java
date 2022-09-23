@@ -79,6 +79,7 @@ public class ExcelExporter {
 
     private CellStyle              dataCellStyle;
     private CellStyle              headerCellStyle;
+    private CellStyle              listTitleCellStyle;
 
     public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
@@ -101,6 +102,7 @@ public class ExcelExporter {
 
         headerCellStyle = createStyleSolid(COLOR_BLACK, COLOR_WHITE, true);
         dataCellStyle = createStyleSolid(COLOR_BLACK, null, null);
+        listTitleCellStyle = createStyleSolid(COLOR_BLACK, null, true);
         addBorderToCellStyle(dataCellStyle);
     }
 
@@ -155,10 +157,9 @@ public class ExcelExporter {
         if (copyrightDate != null) {
             Row row = sheet.createRow(headerRow++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, locale);
-            addStringCell(row, 0, messageForCode, null);
+            addStringCell(row, 0, messageForCode, listTitleCellStyle);
             addStringCell(row, 1, copyrightDate.toString(), null);
         }
-
 
         Row titleRowForUnits = sheet.createRow(headerRow++);
         boolean hasAnyUnits = false;
@@ -215,7 +216,7 @@ public class ExcelExporter {
         if (lastUpdateDate != null) {
             Row row = sheet.createRow(headerRow++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, locale);
-            addStringCell(row, 0, messageForCode, null);
+            addStringCell(row, 0, messageForCode, listTitleCellStyle);
             DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
             addStringCell(row, 1, dateFormat.format(lastUpdateDate), null);
         }
