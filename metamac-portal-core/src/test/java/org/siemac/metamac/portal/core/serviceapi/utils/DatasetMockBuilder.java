@@ -22,11 +22,13 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentations;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimensions;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedDimensionValue;
@@ -102,11 +104,16 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
     }
 
     public DatasetMockBuilder dimension(String dimensionId, String dimensionLabel) {
+        return dimension(dimensionId, dimensionLabel, DimensionType.DIMENSION);
+    }
+
+    public DatasetMockBuilder dimension(String dimensionId, String dimensionLabel, DimensionType type) {
         // Metadata
         Dimension dimension = new Dimension();
         dimension.setId(dimensionId);
         dimension.setName(internationalString(dimensionLabel));
-        dimension.setDimensionValues(new NonEnumeratedDimensionValues());
+        dimension.setType(type);
+        dimension.setDimensionValues(new EnumeratedDimensionValues());
         dataset.getMetadata().getDimensions().getDimensions().add(dimension);
         lastDimensionMetadata = dimension;
 
@@ -154,6 +161,12 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
             EnumeratedDimensionValue dimensionValue = new EnumeratedDimensionValue();
             dimensionValue.setId(dimensionValueId);
             dimensionValue.setName(internationalString(dimensionValueLabel));
+            if (DimensionType.MEASURE_DIMENSION.equals(lastDimensionMetadata.getType())) {
+                MeasureQuantity measureQuantity = new MeasureQuantity();
+                measureQuantity.setUnitCode(mockItemResource("Cientos de euros"));
+                dimensionValue.setMeasureQuantity(measureQuantity);
+                dimensionValue.setUrn("URN:" + dimensionValueId);
+            }
             ((EnumeratedDimensionValues) lastDimensionMetadata.getDimensionValues()).getValues().add(dimensionValue);
         } else if (lastDimensionMetadata.getDimensionValues() instanceof NonEnumeratedDimensionValues) {
             NonEnumeratedDimensionValue dimensionValue = new NonEnumeratedDimensionValue();
@@ -182,7 +195,21 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
         attribute.setId(attributeId);
         attribute.setName(internationalString(attributeLabel));
         attribute.setAttachmentLevel(attachementLevel);
-        attribute.setAttributeValues(new NonEnumeratedAttributeValues());
+        if (ComponentType.MEASURE.equals(componentType)) {
+            EnumeratedAttributeValues values = new EnumeratedAttributeValues();
+            EnumeratedAttributeValue value = new EnumeratedAttributeValue();
+            value.setId(attributeId);
+            MeasureQuantity measureQuantity = new MeasureQuantity();
+            measureQuantity.setUnitCode(mockItemResource("Cientos de euros"));
+            value.setMeasureQuantity(measureQuantity);
+            value.setUrn("URN:" + attributeId);
+
+            values.getValues().add(value);
+            attribute.setAttributeValues(values);
+        } else {
+            attribute.setAttributeValues(new NonEnumeratedAttributeValues());
+        }
+
         attribute.setType(componentType);
         dataset.getMetadata().getAttributes().getAttributes().add(attribute);
         lastAttributeMetadata = attribute;
