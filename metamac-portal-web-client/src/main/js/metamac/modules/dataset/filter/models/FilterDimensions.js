@@ -163,10 +163,11 @@
 
                         var selectedLeft = dynamicSelection.dimension.type.TIME_DIMENSION.lastNValues;
                         var afterDate = dynamicSelection.dimension.type.TIME_DIMENSION.afterDate;
+                        var selectAll = dynamicSelection.dimension.type.TIME_DIMENSION.all;
                         _.each(this.get(temporalDimensionId).get("representations").models, function (category) {
                             selectionCopy[temporalDimensionId].categories.push({
                                 id: category.id,
-                                selected: isNaN(selectedLeft) ? App.TemporalUtils.isAfter(afterDate, category.attributes) : Boolean(Math.max(0,selectedLeft--))
+                                selected: selectAll || (isNaN(selectedLeft) ? App.TemporalUtils.isAfter(afterDate, category.attributes) : Boolean(Math.max(0, selectedLeft--)))
                             });
                         });
                         return selectionCopy;

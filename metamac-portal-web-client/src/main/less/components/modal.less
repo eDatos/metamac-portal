@@ -139,14 +139,34 @@
         box-sizing: border-box;
       }
       .input-related-radio {
+        min-height: 16px;
         width: 50%;
         display: flex;
         align-items: center;
       }
     }
   }
+
+  .checkbox-field {
+    display: flex;
+    input {
+      margin: 0 5px 0 0;
+    }
+    label {
+      margin-bottom: 0;
+      font-weight: normal;
+    }
+  }
+
   .form-error {
     margin: 0 0 10px 0;
     color: red;
+  }
+
+  .form-info {
+    font-size: 13px;
+    padding: 10px;
+    color: @istacGreyDark;
+    margin: 0;
   }
 }
