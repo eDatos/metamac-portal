@@ -6,13 +6,14 @@ public class Dataset {
 
     protected InternationalString name;
     protected InternationalString description;
+    protected InternationalString keywords;
 
     public InternationalString getName() {
         return name;
     }
 
     public void setName(InternationalString value) {
-        this.name = value;
+        name = value;
     }
 
     public InternationalString getDescription() {
@@ -20,7 +21,15 @@ public class Dataset {
     }
 
     public void setDescription(InternationalString value) {
-        this.description = value;
+        description = value;
+    }
+
+    public InternationalString getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(InternationalString keywords) {
+        this.keywords = keywords;
     }
 
 }
