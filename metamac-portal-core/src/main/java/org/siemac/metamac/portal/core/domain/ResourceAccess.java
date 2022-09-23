@@ -627,6 +627,7 @@ public class ResourceAccess {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
             if (conceptDetail.getQuantity() != null) {
+                // TODO EDATOS-2944 - Mostrar la información de "Medida" en el visualizador. Cuando cambie el modo de devolver el multiplicador, tambien ha de cambiar aqui
                 InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
                 if (value != null) {
                     return value;
