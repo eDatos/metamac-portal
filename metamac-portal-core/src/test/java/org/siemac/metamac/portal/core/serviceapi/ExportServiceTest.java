@@ -44,8 +44,10 @@ import org.siemac.metamac.portal.core.serviceimpl.ExportServiceImpl;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.ComponentType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -130,6 +132,48 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
         // Check excel checksum
         InputStream resourceAsStream = ExportServiceTest.class.getResourceAsStream("/resources/export/DatasetWithCodes.xlsx");
+        Asserts.assertBytesArray(AssertsUtils.createExcelContentHash(resourceAsStream), AssertsUtils.createExcelContentHash(tmpFile));
+    }
+
+    @Test
+    public void testExportDatasetWithMeasureDimensionToExcelWithCodes() throws Exception {
+        //@formatter:off
+        DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
+                .dimension("DESTINO_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE).dimensionValues("ANDALUCIA", "ARAGON")
+                .dimension("TIME_PERIOD", 1, LabelVisualisationModeEnum.CODE).dimensionValues("2012", "2013")
+                .dimension("CATEGORIA_ALOJAMIENTO", 20, LabelVisualisationModeEnum.CODE).dimensionValues("1_2_3_ESTRELLAS", "4_5_ESTRELLAS")
+                .dimension("INDICADORES", 40, LabelVisualisationModeEnum.CODE).dimensionValues("INDICE_OCUPACION_PLAZAS")
+                .attribute("ATTRIBUTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_A2", LabelVisualisationModeEnum.CODE)
+                .attribute("NOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("VALUENOTEX", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", LabelVisualisationModeEnum.CODE)
+                .attribute("INDICADORES_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_A", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_B", LabelVisualisationModeEnum.CODE)
+                .attribute("CELLNOTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_B", LabelVisualisationModeEnum.LABEL)
+                .attribute("ATTRIBUTE_C", LabelVisualisationModeEnum.CODE)
+                .attribute("ATTRIBUTE_D", LabelVisualisationModeEnum.CODE_AND_LABEL)
+                .attribute("ATTRIBUTE_E", LabelVisualisationModeEnum.CODE)
+                .build();
+
+         //@formatter:on
+
+        File tmpFile = tempFolder.newFile();
+        // tmpFile = new File("W:/temp/Excel_TEST/testExportDatasetWithMeasureDimensionToExcelWithCodes.xlsx");
+        FileOutputStream out = new FileOutputStream(tmpFile);
+
+        Dataset dataset = buildDatasetWithMeasureDimensionToExport();
+        exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
+
+        out.close();
+
+        // Check excel checksum
+        InputStream resourceAsStream = ExportServiceTest.class.getResourceAsStream("/resources/export/DatasetWithMeasureDimensionWithCodes.xlsx");
         Asserts.assertBytesArray(AssertsUtils.createExcelContentHash(resourceAsStream), AssertsUtils.createExcelContentHash(tmpFile));
     }
 
@@ -1851,14 +1895,22 @@ public class ExportServiceTest implements ExportServiceTestBase {
         return new ServiceContext("junit", "junit", "app");
     }
 
+    private Dataset buildDatasetWithMeasureDimensionToExport() {
+        return buildDatasetToExport(DimensionType.MEASURE_DIMENSION);
+    }
+
     private Dataset buildDatasetToExport() {
+        return buildDatasetToExport(DimensionType.DIMENSION);
+    }
+
+    private Dataset buildDatasetToExport(DimensionType dimensionType) {
         //@formatter:off
         return DatasetMockBuilder.create()
                 // DIMENSIONS DEFINITIONS
                 .dimension("DESTINO_ALOJAMIENTO", "Destino de alojamiento").heading().dimensionValue("ANDALUCIA", "Andalucía").dimensionValue("ARAGON", "Aragón")
                 .dimension("TIME_PERIOD", "Periodo de tiempo").heading().dimensionValue("2012", "Año 2012").dimensionValue("2013", "Año 2013")
                 .dimension("CATEGORIA_ALOJAMIENTO", "Categoría del alojamiento").stub().dimensionValue("1_2_3_ESTRELLAS", "1, 2 y 3 estrellas").dimensionValue("4_5_ESTRELLAS", "4 y 5 estrellas")
-                .dimension("INDICADORES", "Indicadores").stub().dimensionValue("INDICE_OCUPACION_PLAZAS", "Índice de ocupación de plazas")
+                .dimension("INDICADORES", "Indicadores", dimensionType).stub().dimensionValue("INDICE_OCUPACION_PLAZAS", "Índice de ocupación de plazas")
 
                 // DATASET ATTRIBUTES DEFINITIONS
                 .attribute("ATTRIBUTE_A", "Attribute A", AttributeAttachmentLevelType.DATASET, ComponentType.OTHER)
@@ -2102,6 +2154,9 @@ public class ExportServiceTest implements ExportServiceTestBase {
             public Concept answer(InvocationOnMock invocation) throws Throwable {
                 Concept concept = new Concept();
                 concept.setUrn((String) invocation.getArguments()[0]);
+                Quantity a = new Quantity();
+                a.setUnitMultiplier(100);
+                concept.setQuantity(a);
                 return concept;
             };
         });

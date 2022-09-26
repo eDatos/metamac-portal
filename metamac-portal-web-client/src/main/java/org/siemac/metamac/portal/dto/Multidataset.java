@@ -6,6 +6,7 @@ public class Multidataset {
 
     protected InternationalString name;
     protected InternationalString description;
+    protected InternationalString keywords;
     protected MultidatasetData    data;
 
     public InternationalString getName() {
@@ -29,5 +30,13 @@ public class Multidataset {
     }
     public void setData(MultidatasetData value) {
         data = value;
+    }
+
+    public InternationalString getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(InternationalString keywords) {
+        this.keywords = keywords;
     }
 }

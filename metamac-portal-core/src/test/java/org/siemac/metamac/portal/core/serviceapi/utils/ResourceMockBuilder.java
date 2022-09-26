@@ -5,6 +5,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionsId;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.ItemResource;
 
 public abstract class ResourceMockBuilder {
 
@@ -36,6 +37,13 @@ public abstract class ResourceMockBuilder {
 
     protected Resource mockResource(String id) {
         Resource resource = new Resource();
+        resource.setId(id);
+        resource.setName(internationalString("Label " + id));
+        return resource;
+    }
+
+    protected ItemResource mockItemResource(String id) {
+        ItemResource resource = new ItemResource();
         resource.setId(id);
         resource.setName(internationalString("Label " + id));
         return resource;

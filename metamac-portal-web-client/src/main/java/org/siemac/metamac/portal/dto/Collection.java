@@ -6,14 +6,15 @@ public class Collection {
 
     protected InternationalString name;
     protected InternationalString description;
-    protected CollectionData data;
+    protected InternationalString keywords;
+    protected CollectionData      data;
 
     public InternationalString getName() {
         return name;
     }
 
     public void setName(InternationalString value) {
-        this.name = value;
+        name = value;
     }
 
     public InternationalString getDescription() {
@@ -21,13 +22,21 @@ public class Collection {
     }
 
     public void setDescription(InternationalString value) {
-        this.description = value;
+        description = value;
+    }
+
+    public InternationalString getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(InternationalString keywords) {
+        this.keywords = keywords;
     }
 
     public CollectionData getData() {
         return data;
     }
     public void setData(CollectionData value) {
-        this.data = value;
+        data = value;
     }
 }

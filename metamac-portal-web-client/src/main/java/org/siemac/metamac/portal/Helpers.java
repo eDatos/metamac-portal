@@ -15,6 +15,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.siemac.edatos.core.common.util.shared.UrnUtils;
 import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
 import org.siemac.metamac.portal.core.constants.PortalConstants.ResourceType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
@@ -130,9 +131,25 @@ public class Helpers {
             List<String> lang = new ArrayList<String>();
             String fields = FIELDS_EXCLUDE_DATA_AND_METADATA;
             if (internalPortal) {
-                query = query2DtoMapper.queryInternalToDto(Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields));
+                org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Query statisticalResourcesQuery = Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint)
+                        .retrieveQuery(agencyId, resourceId, lang, fields, null);
+                String[] urnSplited = UrnUtils.splitUrnStructure(statisticalResourcesQuery.getMetadata().getRelatedDataset().getUrn());
+                String datasetAgency = urnSplited[0];
+                String datasetResource = urnSplited[1];
+                String datasetVersion = urnSplited[2];
+                org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Dataset relatedDataset = Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint).retrieveDataset(datasetAgency,
+                        datasetResource, datasetVersion, lang, fields, null);
+                query = query2DtoMapper.queryInternalToDto(statisticalResourcesQuery, relatedDataset);
             } else {
-                query = query2DtoMapper.queryExternalToDto(Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields));
+                org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query statisticalResourcesQuery = Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId,
+                        resourceId, lang, fields, null);
+                String[] urnSplited = UrnUtils.splitUrnStructure(statisticalResourcesQuery.getMetadata().getRelatedDataset().getUrn());
+                String datasetAgency = urnSplited[0];
+                String datasetResource = urnSplited[1];
+                String datasetVersion = urnSplited[2];
+                org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Dataset relatedDataset = Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint).retrieveDataset(datasetAgency,
+                        datasetResource, datasetVersion, lang, fields, null);
+                query = query2DtoMapper.queryExternalToDto(statisticalResourcesQuery, relatedDataset);
             }
 
         } catch (Exception e) {
@@ -253,7 +270,7 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_INDICATOR_SYSTEM, indicatorSystem);
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
-        if(locale != null) {
+        if (locale != null) {
             appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
         }
     }
