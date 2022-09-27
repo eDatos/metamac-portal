@@ -264,7 +264,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
          //@formatter:on
 
         File tmpFile = tempFolder.newFile();
-        // tmpFile = new File("K:/temp/Excel_TEST/testExportQueryToExcelWithCodes.xlsx");
+        // tmpFile = new File("W:/temp/Excel_TEST/testExportQueryToExcelWithCodes.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
         Query query = buildQueryToExport();
@@ -291,7 +291,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
          //@formatter:on
 
         File tmpFile = tempFolder.newFile();
-        // tmpFile = new File("K:/temp/Excel_TEST/testExportQueryToExcelWithLabels.xlsx");
+        // tmpFile = new File("W:/temp/Excel_TEST/testExportQueryToExcelWithLabels.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
         Query query = buildQueryToExport();
@@ -318,7 +318,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
          //@formatter:on
 
         File tmpFile = tempFolder.newFile();
-        // tmpFile = new File("K:/temp/Excel_TEST/testExportQueryToExcelWithLabelsAndCodes.xlsx");
+        // tmpFile = new File("W:/temp/Excel_TEST/testExportQueryToExcelWithLabelsAndCodes.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
         Query query = buildQueryToExport();
