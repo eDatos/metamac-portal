@@ -137,16 +137,17 @@ public class ExcelExporter {
 
         headerRow++; // Blank row
 
-        // Other
-        // Copyright date
-        Integer copyrightDate = resourceAccess.getMetadata().getCopyrightDate();
-        if (copyrightDate != null) {
+        // Last update date
+        Date lastUpdateDate = resourceAccess.getMetadata().getLastUpdate();
+        if (lastUpdateDate != null) {
             Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, locale);
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, locale);
             addStringCell(row, 0, messageForCode, listTitleCellStyle);
-            addStringCell(row, 1, copyrightDate.toString(), null);
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
+            addStringCell(row, 1, dateFormat.format(lastUpdateDate), null);
         }
 
+        // Other
         Row titleRowForUnits = sheet.createRow(headerRow++);
         boolean hasAnyUnits = false;
         if (resourceAccess.existsContVariable()) { // Measure dimension
@@ -186,15 +187,6 @@ public class ExcelExporter {
             addStringCell(titleRowForUnits, 0, messageForCode, listTitleCellStyle);
         }
 
-        // Last update date
-        Date lastUpdateDate = resourceAccess.getMetadata().getLastUpdate();
-        if (lastUpdateDate != null) {
-            Row row = sheet.createRow(headerRow++);
-            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, locale);
-            addStringCell(row, 0, messageForCode, listTitleCellStyle);
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
-            addStringCell(row, 1, dateFormat.format(lastUpdateDate), null);
-        }
         headerRow++; // Blank row
 
         // Fixed Dimensions
@@ -346,6 +338,15 @@ public class ExcelExporter {
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);
             addStringCell(row, 0, messageForCode, listTitleCellStyle);
             addStringCell(row, 1, rightsHolderLabel, null);
+        }
+
+        // Copyright date
+        Integer copyrightDate = resourceAccess.getMetadata().getCopyrightDate();
+        if (copyrightDate != null) {
+            Row row = sheet.createRow(currentRowCount++);
+            String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, locale);
+            addStringCell(row, 0, messageForCode, listTitleCellStyle);
+            addStringCell(row, 1, copyrightDate.toString(), null);
         }
 
         // Contacts
