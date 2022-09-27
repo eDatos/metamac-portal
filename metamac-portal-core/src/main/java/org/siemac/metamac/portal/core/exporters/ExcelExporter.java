@@ -24,7 +24,6 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -115,7 +114,6 @@ public class ExcelExporter {
         if (!StringUtils.isEmpty(title)) {
             Row rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, title, headerCellStyle);
-            sheet.addMergedRegion(new CellRangeAddress(headerRow - 1, headerRow - 1, 0, 4));
         }
 
         // Subject area
@@ -135,7 +133,6 @@ public class ExcelExporter {
         if (valueName.length() > 0) {
             Row rowSubjectArea = sheet.createRow(headerRow++);
             addStringCell(rowSubjectArea, 0, valueName.toString(), headerCellStyle);
-            sheet.addMergedRegion(new CellRangeAddress(headerRow - 1, headerRow - 1, 0, 4));
         }
 
         headerRow++; // Blank row
@@ -214,7 +211,6 @@ public class ExcelExporter {
             String by = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LABEL_PARA, locale);
             Row rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, by + " " + fixedDimensionsText.toString(), null);
-            sheet.addMergedRegion(new CellRangeAddress(headerRow - 1, headerRow - 1, 0, 4));
             headerRow += 1;
         }
 
