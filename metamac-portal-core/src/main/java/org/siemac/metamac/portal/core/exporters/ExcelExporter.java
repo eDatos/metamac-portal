@@ -175,9 +175,9 @@ public class ExcelExporter {
                     List<EnumeratedAttributeValue> metadataAttributeValues = ((EnumeratedAttributeValues) attributeValuesFromMetadata).getValues();
                     for (EnumeratedAttributeValue attributeValue : metadataAttributeValues) {
                         if (attributeValue.getId().equals(attributeValuesFromData[0])) {
-                            Row row = sheet.createRow(headerRow++);
                             final String unit = buildUnitText(attributeValue);
                             if (unit != null) {
+                                Row row = sheet.createRow(headerRow++);
                                 addStringCell(row, 1, unit, null);
                                 hasAnyUnits = true;
                             }
