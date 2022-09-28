@@ -501,7 +501,7 @@ public class PxExporter {
      */
     private void writeUnits(PrintWriter printWriter) throws MetamacException {
         if (datasetAccess.existsContVariable()) {
-            // The general UNITS (not indexed) is mandatory
+            // The general UNITS (not indexed) is mandatory or will launch a "missing units" on pc axis 2008
             writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
 
             // Indexed to ContVariable Values
