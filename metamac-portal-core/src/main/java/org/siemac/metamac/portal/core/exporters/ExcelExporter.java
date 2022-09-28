@@ -147,7 +147,7 @@ public class ExcelExporter {
             addStringCell(row, 1, dateFormat.format(lastUpdateDate), null);
         }
 
-        // Other
+        // Units
         Row titleRowForUnits = sheet.createRow(headerRow++);
         boolean hasAnyUnits = false;
         if (resourceAccess.existsContVariable()) { // Measure dimension
