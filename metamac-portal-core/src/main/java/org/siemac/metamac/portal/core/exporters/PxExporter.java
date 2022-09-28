@@ -506,7 +506,10 @@ public class PxExporter {
 
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
-                writeLocalisedLine(printWriter, PxKeysEnum.UNITS, dimensionValue.getName(), datasetAccess.extractUnitCode(dimensionValue));
+                final InternationalString unit = datasetAccess.extractUnitCode(dimensionValue);
+                if (unit != null) {
+                    writeLocalisedLine(printWriter, PxKeysEnum.UNITS, dimensionValue.getName(), unit);
+                }
             }
         } else {
             Attribute measureAttribute = datasetAccess.getMeasureAttribute();
@@ -518,14 +521,22 @@ public class PxExporter {
                     throw new RuntimeException("No instances of measure attribute type in the dataset. This is a Metamac error.");
                 }
                 AttributeValues attributeValuesFromMetadata = measureAttribute.getAttributeValues();
+                boolean writeEmptyUnit = true;
                 if (attributeValuesFromMetadata instanceof EnumeratedAttributeValues) {
                     // En este caso sólo debería de tener un único Valor la representación ENUMERADA
                     List<EnumeratedAttributeValue> metadataAttributeValues = ((EnumeratedAttributeValues) attributeValuesFromMetadata).getValues();
                     for (EnumeratedAttributeValue attributeValue : metadataAttributeValues) {
                         if (attributeValue.getId().equals(attributeValuesFromData[0])) {
-                            writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), datasetAccess.extractUnitCode(attributeValue));
+                            final InternationalString unit = datasetAccess.extractUnitCode(attributeValue);
+                            if (unit != null) {
+                                writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), unit);
+                                writeEmptyUnit = false;
+                            }
                         }
                     }
+                }
+                if (writeEmptyUnit) {
+                    writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
                 }
             } else {
                 throw new RuntimeException("No attribute of type Measure or Measure Dimension found in the dataset. This is a Metamac error.");

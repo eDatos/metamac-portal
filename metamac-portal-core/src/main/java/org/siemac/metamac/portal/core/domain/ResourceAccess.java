@@ -616,14 +616,14 @@ public class ResourceAccess {
     }
 
     public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue) {
-        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getName(), dimensionValue.getUrn());
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn());
     }
 
     public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue) {
-        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getName(), attributeValue.getUrn());
+        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn());
     }
 
-    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, InternationalString name, String urn) {
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn) {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
             if (conceptDetail.getQuantity() != null) {
@@ -634,9 +634,7 @@ public class ResourceAccess {
                 }
             }
         }
-
-        // Default case
-        return name;
+        return null;
     }
 
     public boolean existsContVariable() {

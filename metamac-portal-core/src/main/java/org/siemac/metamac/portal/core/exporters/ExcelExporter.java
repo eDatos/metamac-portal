@@ -154,8 +154,11 @@ public class ExcelExporter {
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : resourceAccess.getSelectedValuesForMeasureDimension()) {
                 Row row = sheet.createRow(headerRow++);
-                addStringCell(row, 1, buildUnitText(dimensionValue), null);
-                hasAnyUnits = true;
+                final String unit = buildUnitText(dimensionValue);
+                if (unit != null) {
+                    addStringCell(row, 1, unit, null);
+                    hasAnyUnits = true;
+                }
             }
         } else { // Measure attribute
             Attribute measureAttribute = resourceAccess.getMeasureAttribute();
@@ -173,8 +176,11 @@ public class ExcelExporter {
                     for (EnumeratedAttributeValue attributeValue : metadataAttributeValues) {
                         if (attributeValue.getId().equals(attributeValuesFromData[0])) {
                             Row row = sheet.createRow(headerRow++);
-                            addStringCell(row, 1, buildUnitText(attributeValue), null);
-                            hasAnyUnits = true;
+                            final String unit = buildUnitText(attributeValue);
+                            if (unit != null) {
+                                addStringCell(row, 1, unit, null);
+                                hasAnyUnits = true;
+                            }
                         }
                     }
                 }
@@ -223,6 +229,9 @@ public class ExcelExporter {
             unitCode = resourceAccess.extractUnitCode((EnumeratedDimensionValue) value);
         } else if (value instanceof EnumeratedAttributeValue) {
             unitCode = resourceAccess.extractUnitCode((EnumeratedAttributeValue) value);
+        }
+        if (unitCode == null) {
+            return null;
         }
         // @formatter:off
         unitBuilder
