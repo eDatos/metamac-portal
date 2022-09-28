@@ -153,9 +153,9 @@ public class ExcelExporter {
         if (resourceAccess.existsContVariable()) { // Measure dimension
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : resourceAccess.getSelectedValuesForMeasureDimension()) {
-                Row row = sheet.createRow(headerRow++);
                 final String unit = buildUnitText(dimensionValue);
                 if (unit != null) {
+                    Row row = sheet.createRow(headerRow++);
                     addStringCell(row, 1, unit, null);
                     hasAnyUnits = true;
                 }
