@@ -13,7 +13,7 @@ public class Dataset2DtoMapper {
         Dataset target = new Dataset();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setKeywords(source.getMetadata().getKeywords());
+        target.setKeywords(source.getKeywords());
 
         return target;
     }
@@ -27,7 +27,7 @@ public class Dataset2DtoMapper {
         Dataset target = new Dataset();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setKeywords(source.getMetadata().getKeywords());
+        target.setKeywords(source.getKeywords());
 
         return target;
     }

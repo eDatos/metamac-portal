@@ -17,7 +17,7 @@ public class Multidataset2DtoMapper {
         Multidataset target = new Multidataset();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setKeywords(source.getMetadata().getKeywords());
+        target.setKeywords(source.getKeywords());
         target.setData(multidatasetDataExternalToDto(source.getData()));
 
         return target;
@@ -70,7 +70,7 @@ public class Multidataset2DtoMapper {
         Multidataset target = new Multidataset();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setKeywords(source.getMetadata().getKeywords());
+        target.setKeywords(source.getKeywords());
         target.setData(multidatasetDataInternalToDto(source.getData()));
 
         return target;
