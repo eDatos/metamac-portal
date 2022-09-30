@@ -1145,17 +1145,36 @@ public class PxExporter {
             return null;
         }
 
-        return StringUtils.join(splitInto128LengthSubstrings(value.replace("\"", "'")), QUOTE + NEW_LINE + QUOTE);
+        return StringUtils.join(splitInto256LengthSubstrings(value.replace("\"", "'")), QUOTE + NEW_LINE + QUOTE);
     }
 
     // Split into 256 character strings is mostly simple: https://stackoverflow.com/a/3761521
     // But the limits of PCAxis 2008 are not 256 characters. They are 256 bytes. Things
-    // like accents are not stored on one byte, but two. We could split a string by byte size
-    // without breaking https://stackoverflow.com/questions/48868721/splitting-a-string-with-byte-length-limits-in-java
-    // but the code will be slower and convoluted. Allow at max half characters per line, 128, is a much faster approach
-    // and works for most cases
-    private String[] splitInto128LengthSubstrings(String value) {
-        return value.split("(?<=\\G.{128})");
+    // like accents are not stored on one byte, but two.
+    private String[] splitInto256LengthSubstrings(String value) {
+        return splitStringByByteLength(value, "UTF-8", 256);
+    }
+
+    // https://stackoverflow.com/a/48870243
+    public static String[] splitStringByByteLength(String src, String encoding, int maxsize) {
+        Charset cs = Charset.forName(encoding);
+        CharsetEncoder coder = cs.newEncoder();
+        ByteBuffer out = ByteBuffer.allocate(maxsize); // output buffer of required size
+        CharBuffer in = CharBuffer.wrap(src);
+        List<String> ss = new ArrayList<>(); // a list to store the chunks
+        int pos = 0;
+        while (true) {
+            CoderResult cr = coder.encode(in, out, true); // try to encode as much as possible
+            int newpos = src.length() - in.length();
+            String s = src.substring(pos, newpos);
+            ss.add(s); // add what has been encoded to the list
+            pos = newpos; // store new input position
+            out.rewind(); // and rewind output buffer
+            if (!cr.isOverflow()) {
+                break; // everything has been encoded
+            }
+        }
+        return ss.toArray(new String[0]);
     }
 
     private void checkIfKeywordIsMandatory(PxLineContainer pxLineContainer) throws MetamacException {
