@@ -1,19 +1,24 @@
 <form class="modal-permalink-config" novalidate>
-    <p class="form-info" {{#if thereIsTemporalDimension }} hidden {{/if}}>{{ message "modal.permalinkConfig.info.noTemporalDimension" }}</p>
-    <fieldset {{#if thereIsTemporalDimension }} hidden {{/if}} {{#unless thereAreVersions }} disabled="disabled" {{/unless}}>
-        <label>{{ message "modal.permalinkConfig.label.version.group" }}</label>
-        <div class="vertical-radio-group">
-            <div class="radio-field">
-                <input type="radio" id="version-current" name="version" value="current">
-                <label for="version-current">{{ message "modal.permalinkConfig.label.version.current" }}</label>
+    <div {{#if thereIsTemporalDimension }} hidden {{/if}}>
+        <fieldset>
+            <label>{{ message "modal.permalinkConfig.label.version.group" }}</label>
+            <p class="form-info" {{#if thereAreVersions }} hidden {{/if}}>{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
+            <div class="vertical-radio-group" {{#unless thereAreVersions }} hidden {{/unless}}>
+                <div class="radio-field">
+                    <input type="radio" id="version-last" name="version" value="last" checked="checked">
+                    <label for="version-last">{{ message "modal.permalinkConfig.label.version.last" }}</label>
+                </div>
+                <div class="radio-field">
+                    <input type="radio" id="version-current" name="version" value="current">
+                    <label for="version-current">{{ message "modal.permalinkConfig.label.version.current" }}</label>
+                </div>
             </div>
-            <div class="radio-field">
-                <input type="radio" id="version-last" name="version" value="last" checked="checked">
-                <label for="version-last">{{ message "modal.permalinkConfig.label.version.last" }}</label>
-            </div>
+        </fieldset>
+        <div>
+            <label>{{ message "modal.permalinkConfig.label.periods.group" }}</label>
+            <p class="form-info" >{{ message "modal.permalinkConfig.info.noTemporalDimension" }}</p>
         </div>
-        <p class="form-info" {{#if thereAreVersions }} hidden {{/if}}>{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
-    </fieldset>
+    </div>
     <div {{#unless thereIsTemporalDimension }} hidden {{/unless}}>
         <fieldset>
             <label>{{ message "modal.permalinkConfig.label.data.group" }}</label>
@@ -60,8 +65,8 @@
         <fieldset id="selected-periods-options" hidden>
             <label>{{ message "modal.permalinkConfig.label.dataReview.group" }}</label>
             <div class="checkbox-field">
-                <input type="checkbox" id="data-review-checkbox" {{#unless thereAreVersions }} disabled {{/unless}}>
-                <label for="data-review-checkbox">{{ message "modal.permalinkConfig.label.dataReview.update" }}</label>
+                <input type="checkbox" id="data-review-checkbox" {{#unless thereAreVersions }} hidden {{/unless}}>
+                <label for="data-review-checkbox" {{#unless thereAreVersions }} hidden {{/unless}}>{{ message "modal.permalinkConfig.label.dataReview.update" }}</label>
             </div>
             <p class="form-info" {{#if thereAreVersions }} hidden {{/if}}>{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
         </fieldset>

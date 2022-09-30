@@ -335,7 +335,7 @@ I18n.translations.es = {
                 },
                 dataReview: {
                     group: "Revisiones de datos",
-                    update: "Actualizar con la revisiones de datos"
+                    update: "Actualizar con las revisiones de datos"
                 },
                 periods: {
                     group: "Periodos",
