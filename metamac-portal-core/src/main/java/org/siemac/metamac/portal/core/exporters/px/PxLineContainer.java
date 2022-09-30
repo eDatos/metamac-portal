@@ -8,6 +8,7 @@ public class PxLineContainer {
     private List<String> indexedValue;
     private String       lang;
     private Object       value;
+    private Boolean      multiline = true;
 
     public PxKeysEnum getPxKey() {
         return pxKey;
@@ -39,6 +40,14 @@ public class PxLineContainer {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public Boolean isMultiline() {
+        return multiline;
+    }
+
+    public void setIsMultiline(Boolean isMultiline) {
+        this.multiline = isMultiline;
     }
 
 }

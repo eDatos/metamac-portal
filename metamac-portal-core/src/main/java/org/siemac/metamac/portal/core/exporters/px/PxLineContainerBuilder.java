@@ -105,4 +105,11 @@ class PxLineContainerBuilderBase<GeneratorT extends PxLineContainerBuilderBase<G
         return (GeneratorT) this;
     }
 
+    @SuppressWarnings("unchecked")
+    public GeneratorT isMultiline(Boolean isMultiline) {
+        instance.setIsMultiline(isMultiline);
+
+        return (GeneratorT) this;
+    }
+
 }
