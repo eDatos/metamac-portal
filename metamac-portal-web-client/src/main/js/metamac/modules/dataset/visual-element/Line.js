@@ -215,7 +215,11 @@
         },
 
         tooltipFormatter: function () {
-            return '<strong>' + this.series.name + ', ' + this.x + '</strong>:<br/>' + this.point.name;
+            var seriesName = "";
+            if (this.series.name != "") {
+                seriesName = this.series.name + ', ';
+            }
+            return '<strong>' + seriesName + this.x + '</strong>:<br/>' + this.point.name;
         },
 
         render: function () {
@@ -374,7 +378,10 @@
                 });
 
                 serie.name = columnCategory.get('visibleLabel');
-                serie.showInLegend = !columnsDimension.get('singleValue');
+                if (columnsDimension.get('singleValue')) {
+                    serie.showInLegend = false;
+                    serie.name = "";
+                }
                 listSeries.push(serie);
             });
 
