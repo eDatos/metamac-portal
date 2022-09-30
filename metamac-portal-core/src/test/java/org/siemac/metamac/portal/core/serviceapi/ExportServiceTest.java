@@ -2,7 +2,6 @@ package org.siemac.metamac.portal.core.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.siemac.metamac.portal.core.exporters.PxExporter.splitStringByByteLength;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -1890,16 +1889,6 @@ public class ExportServiceTest implements ExportServiceTestBase {
         assertTrue(tmpFile.length() > 0);
         BufferedReader bufferedReader = createBufferedReader(tmpFile);
         assertTrue(bufferedReader.readLine().contains("PNG"));
-    }
-
-    @Test
-    public void testSplitStringByByteLength() {
-        String value = "àaèeeìòù";
-        final String[] splittedList = splitStringByByteLength(value.replace("\"", "'"), "UTF-8", 4);
-        assertEquals("àa", splittedList[0]);
-        assertEquals("èee", splittedList[1]);
-        assertEquals("ìò", splittedList[2]);
-        assertEquals("ù", splittedList[3]);
     }
 
     private ServiceContext getServiceContext() {

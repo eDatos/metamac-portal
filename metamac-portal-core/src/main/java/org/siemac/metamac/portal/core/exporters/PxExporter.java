@@ -14,11 +14,7 @@ import static org.siemac.metamac.portal.core.constants.PortalConstants.SPACE;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CoderResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -37,6 +33,7 @@ import java.util.TreeMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.jsoup.Jsoup;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
@@ -66,6 +63,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PxExporter {
+
+    private static final int       MAX_LINE_LENGTH          = 252;
 
     private final Logger           logger                   = LoggerFactory.getLogger(PxExporter.class);
 
@@ -1151,15 +1150,14 @@ public class PxExporter {
 
     }
 
-    // We never have string lines above 256
     private String formatMultilineValue(String value) {
         if (value == null) {
             return null;
         }
-
-        final String[] splittedValue = splitInto256LengthSubstrings(value.replace("\"", "'"));
-        if (splittedValue.length >= 4) {
-            logger.warn("This attribute will be splitted on 4 or more lines. This has been problematic on PcAxis-2008", value);
+        final String cleanValue = Jsoup.parse(value.replace("\"", "'")).text();
+        final String[] splittedValue = splitIntoPcAxisMaxLengthSubstrings(cleanValue);
+        if (cleanValue.length() >= MAX_LINE_LENGTH * 2) {
+            logger.warn("This attribute is longer than " + MAX_LINE_LENGTH * 2 + " characters. This has been problematic on PcAxis-2008.", value);
         }
         return StringUtils.join(splittedValue, QUOTE + NEW_LINE + QUOTE);
     }
@@ -1168,36 +1166,14 @@ public class PxExporter {
         if (value == null) {
             return null;
         }
-        return splitInto256LengthSubstrings(value.replace("\"", "'"))[0];
+        return splitIntoPcAxisMaxLengthSubstrings(value.replace("\"", "'"))[0];
     }
 
     // Split into 256 character strings is mostly simple: https://stackoverflow.com/a/3761521
-    // But the limits of PCAxis 2008 are not 256 characters. They are 256 bytes. Things
-    // like accents are not stored on one byte, but two.
-    private String[] splitInto256LengthSubstrings(String value) {
-        return splitStringByByteLength(value, "UTF-8", 256);
-    }
-
-    // https://stackoverflow.com/a/48870243
-    public static String[] splitStringByByteLength(String src, String encoding, int maxsize) {
-        Charset cs = Charset.forName(encoding);
-        CharsetEncoder coder = cs.newEncoder();
-        ByteBuffer out = ByteBuffer.allocate(maxsize); // output buffer of required size
-        CharBuffer in = CharBuffer.wrap(src);
-        List<String> ss = new ArrayList<>(); // a list to store the chunks
-        int pos = 0;
-        while (true) {
-            CoderResult cr = coder.encode(in, out, true); // try to encode as much as possible
-            int newpos = src.length() - in.length();
-            String s = src.substring(pos, newpos);
-            ss.add(s); // add what has been encoded to the list
-            pos = newpos; // store new input position
-            out.rewind(); // and rewind output buffer
-            if (!cr.isOverflow()) {
-                break; // everything has been encoded
-            }
-        }
-        return ss.toArray(new String[0]);
+    // But the limits of PCAxis 2008 are not 256 characters, testing shows that it´s not exactly 256 characters but looks like it takes into account quotes, semicolon and line breaks.
+    // We split into 252 characters for taking this into account
+    private String[] splitIntoPcAxisMaxLengthSubstrings(String value) {
+        return value.split("(?<=\\G.{252})");
     }
 
     private void checkIfKeywordIsMandatory(PxLineContainer pxLineContainer) throws MetamacException {
@@ -1238,7 +1214,7 @@ public class PxExporter {
         boolean multilineAvalaible = initialOffset != -1;
         for (Iterator<String> iterator = sources.iterator(); iterator.hasNext();) {
             String source = iterator.next();
-            StringBuilder valueBuilder = new StringBuilder(256);
+            StringBuilder valueBuilder = new StringBuilder(MAX_LINE_LENGTH);
             valueBuilder.append(QUOTE);
             valueBuilder.append(formatMultilineValue(source));
             valueBuilder.append(QUOTE);
@@ -1246,7 +1222,7 @@ public class PxExporter {
                 valueBuilder.append(COMMA);
             }
 
-            if (multilineAvalaible && (currentLineCharactersLength + valueBuilder.length() + lastOffset > 256)) {
+            if (multilineAvalaible && (currentLineCharactersLength + valueBuilder.length() + lastOffset > MAX_LINE_LENGTH)) {
                 target.append(NEW_LINE);
                 currentLineCharactersLength = valueBuilder.length();
             } else {
