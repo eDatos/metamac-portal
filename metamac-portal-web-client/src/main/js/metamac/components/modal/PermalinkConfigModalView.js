@@ -34,9 +34,8 @@
                     self.onSubmit(permalink);
                 });
             } else {
-                var loginEl = this.$("#permalink-config-error")[0];
-                loginEl.hidden = false;
-                loginEl.innerText = errorMessage;
+                var errorEl = this.$("#permalink-config-error")[0];
+                errorEl.innerText = errorMessage;
             }
         },
 
@@ -114,7 +113,7 @@
         hideError: function () {
             var saveErrorElement = this.$("#permalink-config-error")[0];
             if (saveErrorElement) {
-                saveErrorElement.hidden = true;
+                saveErrorElement.innerText = "";
             }
         },
 
