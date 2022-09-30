@@ -14,7 +14,11 @@ import static org.siemac.metamac.portal.core.constants.PortalConstants.SPACE;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CoderResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -413,7 +417,7 @@ public class PxExporter {
 
         if (subjectAreas == null) {
             writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), datasetAccess.getDataset().getName());
-            PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(datasetAccess.getDataset().getId()).build();
+            PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(datasetAccess.getDataset().getId()).isMultiline(false).build();
             writeLine(printWriter, subjectCodeLine);
             return;
         }
@@ -431,7 +435,7 @@ public class PxExporter {
 
         writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), valueNameInternationalString);
 
-        PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(valueCode.toString()).build();
+        PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(valueCode.toString()).isMultiline(false).build();
         writeLine(printWriter, subjectCodeLine);
     }
 
@@ -1051,7 +1055,11 @@ public class PxExporter {
 
         // Right side
         if (pxLineContainer.getValue() instanceof String) {
-            line.append(QUOTE).append(formatValue((String) pxLineContainer.getValue())).append(QUOTE);
+            if (pxLineContainer.isMultiline()) {
+                line.append(QUOTE).append(formatMultilineValue((String) pxLineContainer.getValue())).append(QUOTE);
+            } else {
+                line.append(QUOTE).append(formatValue((String) pxLineContainer.getValue())).append(QUOTE);
+            }
         } else if (pxLineContainer.getValue() instanceof Integer) {
             line.append(String.valueOf(pxLineContainer.getValue()));
         } else if (pxLineContainer.getValue() instanceof Boolean) {
@@ -1140,12 +1148,19 @@ public class PxExporter {
     }
 
     // We never have string lines above 256
-    private String formatValue(String value) {
+    private String formatMultilineValue(String value) {
         if (value == null) {
             return null;
         }
 
         return StringUtils.join(splitInto256LengthSubstrings(value.replace("\"", "'")), QUOTE + NEW_LINE + QUOTE);
+    }
+
+    private String formatValue(String value) {
+        if (value == null) {
+            return null;
+        }
+        return splitInto256LengthSubstrings(value.replace("\"", "'"))[0];
     }
 
     // Split into 256 character strings is mostly simple: https://stackoverflow.com/a/3761521
@@ -1217,7 +1232,7 @@ public class PxExporter {
             String source = iterator.next();
             StringBuilder valueBuilder = new StringBuilder(256);
             valueBuilder.append(QUOTE);
-            valueBuilder.append(formatValue(source));
+            valueBuilder.append(formatMultilineValue(source));
             valueBuilder.append(QUOTE);
             if (iterator.hasNext()) {
                 valueBuilder.append(COMMA);
@@ -1249,7 +1264,7 @@ public class PxExporter {
         if (attributeGlobalValue.length() != 0) {
             attributeGlobalValue.append(ATTRIBUTE_LINE_SEPARATOR);
         }
-        attributeValue = formatValue(attributeValue);
+        attributeValue = formatMultilineValue(attributeValue);
         attributeGlobalValue.append(attributeValue);
     }
 
