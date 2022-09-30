@@ -44,6 +44,9 @@
                     // Put measure dimensions at the beginning of the array
                     return dimension.get('type') == "MEASURE_DIMENSION" ? -1 : 1;
                 })
+                .filter(function(dimension) {
+                    return !dimension.get('singleValue')
+                })
                 .map(function (dimension) {
                     var selectedRepresentations = self.getDrawableRepresentations(dimension);
                     return selectedRepresentations[0].get('visibleLabel') + ".";
@@ -269,7 +272,7 @@
         },
 
         getRightsHolderHeight: function () {
-            return 20;
+            return 30;
         },
 
         allDimensionsHaveSelections: function () {
