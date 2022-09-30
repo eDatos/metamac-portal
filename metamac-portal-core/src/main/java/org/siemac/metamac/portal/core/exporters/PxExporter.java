@@ -62,8 +62,12 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttri
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NextVersionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PxExporter {
+
+    private final Logger           logger                   = LoggerFactory.getLogger(PxExporter.class);
 
     private final ResourceAccess   datasetAccess;
     private final String           ATTRIBUTE_LINE_SEPARATOR = "#";
@@ -1153,7 +1157,11 @@ public class PxExporter {
             return null;
         }
 
-        return StringUtils.join(splitInto256LengthSubstrings(value.replace("\"", "'")), QUOTE + NEW_LINE + QUOTE);
+        final String[] splittedValue = splitInto256LengthSubstrings(value.replace("\"", "'"));
+        if (splittedValue.length >= 4) {
+            logger.warn("This attribute will be splitted on 4 or more lines. This has been problematic on PcAxis-2008", value);
+        }
+        return StringUtils.join(splittedValue, QUOTE + NEW_LINE + QUOTE);
     }
 
     private String formatValue(String value) {
