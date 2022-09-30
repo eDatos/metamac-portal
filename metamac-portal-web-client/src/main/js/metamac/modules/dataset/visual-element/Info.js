@@ -30,9 +30,12 @@
         },
 
         updateDimensions: function (dimensions) {
-            this.dimensions = dimensions;
-            this.nonMeasureDimensions = _.filter(this.dimensions, function (dimension) { return dimension.type !== "MEASURE_DIMENSION"; });
-            this.render();
+            var self = this;
+            self.dimensions = dimensions;
+            self.nonMeasureDimensions = _.filter(self.dimensions, function (dimension) { 
+                return dimension.type !== "MEASURE_DIMENSION"  && !self.filterDimensions.get(dimension.id).get('singleValue'); 
+            });
+            self.render();
         },
 
         getDatasetAttributes: function () {
