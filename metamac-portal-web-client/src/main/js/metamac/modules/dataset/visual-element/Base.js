@@ -272,7 +272,7 @@
         },
 
         getRightsHolderHeight: function () {
-            return 20;
+            return 30;
         },
 
         allDimensionsHaveSelections: function () {

@@ -266,6 +266,7 @@
             this._chartOptions.xAxis.tickInterval = detailData.tickInterval;
 
             this._chartOptions.credits.text = this.getRightsHolderText();
+            this._chartOptions.credits.position.y = 0;
             if (!this.showRightsHolderText()) {
                 this._chartOptions.credits.style = {
                     color: App.Constants.colors.hiddenText
@@ -373,6 +374,7 @@
                 });
 
                 serie.name = columnCategory.get('visibleLabel');
+                serie.showInLegend = !columnsDimension.get('singleValue');
                 listSeries.push(serie);
             });
 
