@@ -33,6 +33,7 @@ import java.util.TreeMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.jsoup.Jsoup;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
@@ -56,32 +57,34 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NextVersionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PxExporter {
 
-    private final ResourceAccess datasetAccess;
-    private final String              ATTRIBUTE_LINE_SEPARATOR = "#";
-    private Set<String>               languages                = new HashSet<String>();
-    private Map<String, Integer>      languageOrder            = new HashMap<String, Integer>();
-    private final DatasetSelection datasetSelection;
-    private SrmRestExternalFacade     srmRestExternalFacade;
-    private Integer                   showDecimals             = null;
-    private final static int          MAX_PX_MATRIX_LENGTH     = 8;
+    private static final int       MAX_LINE_LENGTH          = 252;
 
-    public PxExporter(Dataset dataset, SrmRestExternalFacade srmRestExternalFacade, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
+    private final Logger           logger                   = LoggerFactory.getLogger(PxExporter.class);
+
+    private final ResourceAccess   datasetAccess;
+    private final String           ATTRIBUTE_LINE_SEPARATOR = "#";
+    private Set<String>            languages                = new HashSet<String>();
+    private Map<String, Integer>   languageOrder            = new HashMap<String, Integer>();
+    private final DatasetSelection datasetSelection;
+    private Integer                showDecimals             = null;
+    private final static int       MAX_PX_MATRIX_LENGTH     = 8;
+
+    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+        datasetAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
-        this.srmRestExternalFacade = srmRestExternalFacade;
     }
 
-    public PxExporter(Query query, Dataset relatedDataset, SrmRestExternalFacade srmRestExternalFacade, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        datasetAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langAlternative);
+    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
+        datasetAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
-        this.srmRestExternalFacade = srmRestExternalFacade;
     }
 
     public void write(OutputStream os) throws MetamacException {
@@ -366,9 +369,9 @@ public class PxExporter {
 
         if (showDecimals != null) {
             // Check if correction for Precisions is needed: If precision is more less than showdecimals, then showdecimals is changed to precission value
-            if (existsContVariable()) {
+            if (datasetAccess.existsContVariable()) {
                 // Measure dimension Has an enumerated representation
-                for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+                for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                     if (dimensionValue.getShowDecimalsPrecision() != null && showDecimals > dimensionValue.getShowDecimalsPrecision()) {
                         showDecimals = dimensionValue.getShowDecimalsPrecision();
                     }
@@ -417,7 +420,7 @@ public class PxExporter {
 
         if (subjectAreas == null) {
             writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), datasetAccess.getDataset().getName());
-            PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(datasetAccess.getDataset().getId()).build();
+            PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(datasetAccess.getDataset().getId()).isMultiline(false).build();
             writeLine(printWriter, subjectCodeLine);
             return;
         }
@@ -435,7 +438,7 @@ public class PxExporter {
 
         writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), valueNameInternationalString);
 
-        PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(valueCode.toString()).build();
+        PxLineContainer subjectCodeLine = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SUBJECT_CODE).withValue(valueCode.toString()).isMultiline(false).build();
         writeLine(printWriter, subjectCodeLine);
     }
 
@@ -461,7 +464,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeTitle(PrintWriter printWriter) throws MetamacException {
-        writeLocalisedLine(printWriter, PxKeysEnum.TITLE, Collections.emptyList(), datasetAccess.getDescription() != null ? datasetAccess.getDescription() : datasetAccess.getName());
+        writeLocalisedLine(printWriter, PxKeysEnum.TITLE, Collections.emptyList(), datasetAccess.getName());
     }
 
     /**
@@ -479,7 +482,7 @@ public class PxExporter {
      */
     private void writeContents(PrintWriter printWriter) throws MetamacException {
         InternationalString value = null;
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Exists the CONTVARIABLE in the PX
             Dimension measureDimension = datasetAccess.getMeasureDimension();
             value = measureDimension.getName(); // Concept associated to measure
@@ -504,13 +507,16 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeUnits(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
-            // The general UNITS (not indexed) is mandatory
+        if (datasetAccess.existsContVariable()) {
+            // The general UNITS (not indexed) is mandatory or will launch a "missing units" on pc axis 2008
             writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
 
             // Indexed to ContVariable Values
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
-                writeLocalisedLine(printWriter, PxKeysEnum.UNITS, dimensionValue.getName(), extractUnitCode(dimensionValue));
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
+                final InternationalString unit = datasetAccess.extractUnitCode(dimensionValue);
+                if (unit != null) {
+                    writeLocalisedLine(printWriter, PxKeysEnum.UNITS, dimensionValue.getName(), unit);
+                }
             }
         } else {
             Attribute measureAttribute = datasetAccess.getMeasureAttribute();
@@ -522,51 +528,27 @@ public class PxExporter {
                     throw new RuntimeException("No instances of measure attribute type in the dataset. This is a Metamac error.");
                 }
                 AttributeValues attributeValuesFromMetadata = measureAttribute.getAttributeValues();
+                boolean writeEmptyUnit = true;
                 if (attributeValuesFromMetadata instanceof EnumeratedAttributeValues) {
                     // En este caso sólo debería de tener un único Valor la representación ENUMERADA
                     List<EnumeratedAttributeValue> metadataAttributeValues = ((EnumeratedAttributeValues) attributeValuesFromMetadata).getValues();
                     for (EnumeratedAttributeValue attributeValue : metadataAttributeValues) {
                         if (attributeValue.getId().equals(attributeValuesFromData[0])) {
-                            writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), extractUnitCode(attributeValue));
+                            final InternationalString unit = datasetAccess.extractUnitCode(attributeValue);
+                            if (unit != null) {
+                                writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), unit);
+                                writeEmptyUnit = false;
+                            }
                         }
                     }
+                }
+                if (writeEmptyUnit) {
+                    writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
                 }
             } else {
                 throw new RuntimeException("No attribute of type Measure or Measure Dimension found in the dataset. This is a Metamac error.");
             }
         }
-    }
-
-    private InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue) {
-        if (dimensionValue.getMeasureQuantity() != null) {
-            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(dimensionValue.getUrn());
-            if (conceptDetail.getQuantity() != null) {
-                InternationalString value = prepareQuantityInternationalString(dimensionValue.getMeasureQuantity().getUnitCode().getName(),
-                        String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
-                if (value != null) {
-                    return value;
-                }
-            }
-        }
-
-        // Default case
-        return dimensionValue.getName();
-    }
-
-    private InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue) {
-        if (attributeValue.getMeasureQuantity() != null) {
-            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(attributeValue.getUrn());
-            if (conceptDetail.getQuantity() != null) {
-                InternationalString value = prepareQuantityInternationalString(attributeValue.getMeasureQuantity().getUnitCode().getName(),
-                        String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
-                if (value != null) {
-                    return value;
-                }
-            }
-        }
-
-        // Default case
-        return attributeValue.getName();
     }
 
     /**
@@ -600,7 +582,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeContVariable(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             writeLocalisedLine(printWriter, PxKeysEnum.CONTVARIABLE, Collections.emptyList(), datasetAccess.getMeasureDimension().getName());
         }
     }
@@ -668,9 +650,9 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeLastUpdated(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Indexed to ContVariable Values
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 // Metamac doesn't support languages in Last Updated
                 InternationalString value = createInternationalStringWithDefaultValue(dateToString(datasetAccess.getMetadata().getLastUpdate()));
                 writeLocalisedLine(printWriter, PxKeysEnum.LAST_UPDATED, dimensionValue.getName(), value);
@@ -693,9 +675,9 @@ public class PxExporter {
             value = PortalUtils.concatenateInternationalString(value, publisher.getName());
         }
 
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Indexed to ContVariable Values
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 writeLocalisedLine(printWriter, PxKeysEnum.CONTACT, dimensionValue.getName(), value);
             }
         } else {
@@ -772,9 +754,9 @@ public class PxExporter {
     }
 
     private void writePrecision(PrintWriter printWriter) throws MetamacException {
-        if (existsContVariable()) {
+        if (datasetAccess.existsContVariable()) {
             // Measure dimension Has an enumerated representation
-            for (EnumeratedDimensionValue dimensionValue : getSelectedValuesForMeasureDimension()) {
+            for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 String variableLabel = PortalUtils.getLabel(datasetAccess.getMeasureDimension().getName(), datasetAccess.getLangEffective());
                 String valueLabel = PortalUtils.getLabel(dimensionValue.getName(), datasetAccess.getLangEffective());
                 // @formatter:off
@@ -789,23 +771,6 @@ public class PxExporter {
         } else {
             return; // Nothing
         }
-    }
-    
-    private List<EnumeratedDimensionValue> getSelectedValuesForMeasureDimension() {
-        List<EnumeratedDimensionValue> result = new ArrayList<>();
-        
-        Dimension measureDimension = datasetAccess.getMeasureDimension();
-        if (!(measureDimension.getDimensionValues() instanceof EnumeratedDimensionValues)) {
-            return result;
-        }
-        
-        List<String> selectedDimensionValues = datasetSelection.getDimension(measureDimension.getId()).getSelectedDimensionValues();
-        for (EnumeratedDimensionValue dimensionValue : ((EnumeratedDimensionValues) measureDimension.getDimensionValues()).getValues()) {
-            if (selectedDimensionValues.contains(dimensionValue.getId())) {
-                result.add(dimensionValue);
-            }
-        }
-        return result;
     }
 
     /**
@@ -970,7 +935,7 @@ public class PxExporter {
                     StringBuilder key = new StringBuilder();
                     key.append(QUOTE);
                     Iterator<String> iterator = dimensionsDatasetOrderedForPx.iterator();
-                    while(iterator.hasNext()) {
+                    while (iterator.hasNext()) {
                         String dimensionId = iterator.next();
                         if (dimensionValuesForAttributeValue.containsKey(dimensionId)) {
                             String dimensionValueId = dimensionValuesForAttributeValue.get(dimensionId);
@@ -1002,7 +967,7 @@ public class PxExporter {
             }
         }
     }
-    
+
     private boolean allDimensionValuesAreSelected(List<String> dimensionsDatasetOrderedForPx, Map<String, String> dimensionValuesForAttributeValue) {
         for (String dimensionId : dimensionsDatasetOrderedForPx) {
             if (dimensionValuesForAttributeValue.containsKey(dimensionId)) {
@@ -1093,7 +1058,11 @@ public class PxExporter {
 
         // Right side
         if (pxLineContainer.getValue() instanceof String) {
-            line.append(QUOTE).append(formatValue((String) pxLineContainer.getValue())).append(QUOTE);
+            if (pxLineContainer.isMultiline()) {
+                line.append(QUOTE).append(formatMultilineValue((String) pxLineContainer.getValue())).append(QUOTE);
+            } else {
+                line.append(QUOTE).append(formatValue((String) pxLineContainer.getValue())).append(QUOTE);
+            }
         } else if (pxLineContainer.getValue() instanceof Integer) {
             line.append(String.valueOf(pxLineContainer.getValue()));
         } else if (pxLineContainer.getValue() instanceof Boolean) {
@@ -1181,11 +1150,30 @@ public class PxExporter {
 
     }
 
+    private String formatMultilineValue(String value) {
+        if (value == null) {
+            return null;
+        }
+        final String cleanValue = Jsoup.parse(value.replace("\"", "'")).text();
+        final String[] splittedValue = splitIntoPcAxisMaxLengthSubstrings(cleanValue);
+        if (cleanValue.length() >= MAX_LINE_LENGTH * 2) {
+            logger.warn("This attribute is longer than " + MAX_LINE_LENGTH * 2 + " characters. This has been problematic on PcAxis-2008.", value);
+        }
+        return StringUtils.join(splittedValue, QUOTE + NEW_LINE + QUOTE);
+    }
+
     private String formatValue(String value) {
         if (value == null) {
             return null;
         }
-        return value.replace("\"", "'");
+        return splitIntoPcAxisMaxLengthSubstrings(value.replace("\"", "'"))[0];
+    }
+
+    // Split into 256 character strings is mostly simple: https://stackoverflow.com/a/3761521
+    // But the limits of PCAxis 2008 are not 256 characters, testing shows that it´s not exactly 256 characters but looks like it takes into account quotes, semicolon and line breaks.
+    // We split into 252 characters for taking this into account
+    private String[] splitIntoPcAxisMaxLengthSubstrings(String value) {
+        return value.split("(?<=\\G.{252})");
     }
 
     private void checkIfKeywordIsMandatory(PxLineContainer pxLineContainer) throws MetamacException {
@@ -1226,15 +1214,15 @@ public class PxExporter {
         boolean multilineAvalaible = initialOffset != -1;
         for (Iterator<String> iterator = sources.iterator(); iterator.hasNext();) {
             String source = iterator.next();
-            StringBuilder valueBuilder = new StringBuilder(256);
+            StringBuilder valueBuilder = new StringBuilder(MAX_LINE_LENGTH);
             valueBuilder.append(QUOTE);
-            valueBuilder.append(formatValue(source));
+            valueBuilder.append(formatMultilineValue(source));
             valueBuilder.append(QUOTE);
             if (iterator.hasNext()) {
                 valueBuilder.append(COMMA);
             }
 
-            if (multilineAvalaible && (currentLineCharactersLength + valueBuilder.length() + lastOffset > 256)) {
+            if (multilineAvalaible && (currentLineCharactersLength + valueBuilder.length() + lastOffset > MAX_LINE_LENGTH)) {
                 target.append(NEW_LINE);
                 currentLineCharactersLength = valueBuilder.length();
             } else {
@@ -1260,7 +1248,7 @@ public class PxExporter {
         if (attributeGlobalValue.length() != 0) {
             attributeGlobalValue.append(ATTRIBUTE_LINE_SEPARATOR);
         }
-        attributeValue = formatValue(attributeValue);
+        attributeValue = formatMultilineValue(attributeValue);
         attributeGlobalValue.append(attributeValue);
     }
 
@@ -1275,10 +1263,6 @@ public class PxExporter {
         return null;
     }
 
-    private boolean existsContVariable() {
-        return (datasetAccess.getMeasureDimension() != null) ? true : false;
-    }
-
     private InternationalString createInternationalStringWithDefaultValue(String value) {
         InternationalString internationalString = new InternationalString();
         LocalisedString localisedString = new LocalisedString();
@@ -1290,24 +1274,6 @@ public class PxExporter {
 
     private String dateToString(Date value) {
         return new DateTime(value).toString("yyyyMMdd HH:mm");
-    }
-
-    public static InternationalString prepareQuantityInternationalString(InternationalString current, String prependString) {
-        if (current == null) {
-            return null;
-        }
-
-        InternationalString result = new InternationalString();
-
-        for (LocalisedString localisedString : current.getTexts()) {
-            String label = localisedString.getValue() + " (x" + prependString + ")";
-            LocalisedString localisedStringResult = new LocalisedString();
-            localisedStringResult.setLang(localisedString.getLang());
-            localisedStringResult.setValue(label);
-            result.getTexts().add(localisedStringResult);
-        }
-
-        return result;
     }
 
     public static String generateMatrixFromString(String string) {

@@ -91,6 +91,18 @@
   }
 }
 
+@media only screen and (min-width: 550px) {
+  .modal-permalink-config {
+    width: 335px;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .modal-permalink-config {
+    width: 230px;
+  }
+}
+
 .modal-permalink-config {
   padding: 5px;
   fieldset {
@@ -139,14 +151,32 @@
         box-sizing: border-box;
       }
       .input-related-radio {
+        min-height: 16px;
         width: 50%;
         display: flex;
         align-items: center;
       }
     }
   }
+
+  .checkbox-field {
+    display: flex;
+    input {
+      margin: 0 5px 0 0;
+    }
+    label {
+      margin-bottom: 0;
+      font-weight: normal;
+    }
+  }
+
   .form-error {
     margin: 0 0 10px 0;
     color: red;
+  }
+
+  .form-info {
+    color: @istacGreyDark;
+    margin: 0;
   }
 }

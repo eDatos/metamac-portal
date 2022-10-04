@@ -25,6 +25,13 @@
                 return this;
             },
 
+            selectAllTemporalDimensionCategories: function () {
+                this.dynamicSelection.dimension.type.TIME_DIMENSION = {
+                    all: true
+                };
+                return this;
+            },
+
             build: function () {
                 return this.dynamicSelection;
             }

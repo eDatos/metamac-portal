@@ -1,5 +1,7 @@
 package org.siemac.metamac.portal.core.serviceapi.utils;
 
+import java.math.BigInteger;
+
 import org.joda.time.DateTime;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
@@ -10,6 +12,8 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attributes;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentation;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentations;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.ComponentType;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Contact;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Contacts;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Data;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataAttribute;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataAttributes;
@@ -18,15 +22,18 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentations;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimensions;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedDimensionValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedDimensionValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation;
 
 public class DatasetMockBuilder extends ResourceMockBuilder {
 
@@ -56,8 +63,40 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
         dataset.getMetadata().setUpdateFrequency(mockResource("updateFrequency"));
         dataset.getMetadata().setRelatedDsd(mockDataStructureDefinition());
         dataset.getMetadata().setDimensions(new Dimensions());
+        dataset.getMetadata().setRightsHolder(organisation());
         dataset.setData(new Data());
         dataset.getData().setDimensions(new DimensionRepresentations());
+    }
+
+    private Organisation organisation() {
+        Organisation organisation = new Organisation();
+        organisation.setId("rightsHolder");
+        organisation.setName(internationalString("Label rightsHolder"));
+        organisation.setContacts(contacts());
+        return organisation;
+    }
+
+    private Contacts contacts() {
+        Contacts contacts = new Contacts();
+        contacts.getContacts().add(contact(1));
+        contacts.getContacts().add(contact(2));
+        contacts.getContacts().add(contact(3));
+        contacts.setTotal(BigInteger.valueOf(contacts.getContacts().size()));
+        return contacts;
+    }
+
+    private Contact contact(int i) {
+        Contact contact = new Contact();
+        String index = Integer.valueOf(i).toString();
+        contact.setId(index);
+        contact.setName(internationalString("nombre " + index));
+        contact.setOrganisationUnit(internationalString("unidad organizativa " + index));
+        contact.setResponsibility(internationalString("responsabilidad " + index));
+        contact.getEmails().add(index + "@organizacion.com");
+        contact.getFaxes().add("900 000 000");
+        contact.getTelephones().add("600 000 00" + index);
+        contact.getUrls().add("organizacion.com");
+        return contact;
     }
 
     public DatasetMockBuilder dimension(String dimensionId) {
@@ -65,11 +104,16 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
     }
 
     public DatasetMockBuilder dimension(String dimensionId, String dimensionLabel) {
+        return dimension(dimensionId, dimensionLabel, DimensionType.DIMENSION);
+    }
+
+    public DatasetMockBuilder dimension(String dimensionId, String dimensionLabel, DimensionType type) {
         // Metadata
         Dimension dimension = new Dimension();
         dimension.setId(dimensionId);
         dimension.setName(internationalString(dimensionLabel));
-        dimension.setDimensionValues(new NonEnumeratedDimensionValues());
+        dimension.setType(type);
+        dimension.setDimensionValues(new EnumeratedDimensionValues());
         dataset.getMetadata().getDimensions().getDimensions().add(dimension);
         lastDimensionMetadata = dimension;
 
@@ -117,6 +161,12 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
             EnumeratedDimensionValue dimensionValue = new EnumeratedDimensionValue();
             dimensionValue.setId(dimensionValueId);
             dimensionValue.setName(internationalString(dimensionValueLabel));
+            if (DimensionType.MEASURE_DIMENSION.equals(lastDimensionMetadata.getType())) {
+                MeasureQuantity measureQuantity = new MeasureQuantity();
+                measureQuantity.setUnitCode(mockItemResource("Cientos de euros"));
+                dimensionValue.setMeasureQuantity(measureQuantity);
+                dimensionValue.setUrn("URN:" + dimensionValueId);
+            }
             ((EnumeratedDimensionValues) lastDimensionMetadata.getDimensionValues()).getValues().add(dimensionValue);
         } else if (lastDimensionMetadata.getDimensionValues() instanceof NonEnumeratedDimensionValues) {
             NonEnumeratedDimensionValue dimensionValue = new NonEnumeratedDimensionValue();
@@ -145,7 +195,21 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
         attribute.setId(attributeId);
         attribute.setName(internationalString(attributeLabel));
         attribute.setAttachmentLevel(attachementLevel);
-        attribute.setAttributeValues(new NonEnumeratedAttributeValues());
+        if (ComponentType.MEASURE.equals(componentType)) {
+            EnumeratedAttributeValues values = new EnumeratedAttributeValues();
+            EnumeratedAttributeValue value = new EnumeratedAttributeValue();
+            value.setId(attributeId);
+            MeasureQuantity measureQuantity = new MeasureQuantity();
+            measureQuantity.setUnitCode(mockItemResource("Cientos de euros"));
+            value.setMeasureQuantity(measureQuantity);
+            value.setUrn("URN:" + attributeId);
+
+            values.getValues().add(value);
+            attribute.setAttributeValues(values);
+        } else {
+            attribute.setAttributeValues(new NonEnumeratedAttributeValues());
+        }
+
         attribute.setType(componentType);
         dataset.getMetadata().getAttributes().getAttributes().add(attribute);
         lastAttributeMetadata = attribute;

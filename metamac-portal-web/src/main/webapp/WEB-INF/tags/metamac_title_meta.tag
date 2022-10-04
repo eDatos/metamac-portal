@@ -180,7 +180,8 @@
                 request.setAttribute("resourceEmpty", false);
                 request.setAttribute("resourceName", helper.localizeText(multidataset.getName()));
                 request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(multidataset.getDescription())));
-                request.setAttribute("resourceDescription", helper.localizeText(multidataset.getDescription()));                
+                request.setAttribute("resourceDescription", helper.localizeText(multidataset.getDescription()));
+                request.setAttribute("keywords", helper.localizeText(multidataset.getKeywords()));   
             }
         } else {
             if (resourceType != null) {
@@ -192,6 +193,7 @@
                             request.setAttribute("resourceName", helper.localizeText(collection.getName()));
                             request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(collection.getDescription())));
                             request.setAttribute("resourceDescription", helper.localizeText(collection.getDescription()));
+                            request.setAttribute("keywords", helper.localizeText(collection.getKeywords()));
                             
                             request.setAttribute("collection", collection);
                             request.setAttribute("numberOfFixedDigitsInNumeration", Helpers.numberOfFixedDigitsInNumeration(collection));
@@ -206,6 +208,7 @@
                             request.setAttribute("resourceName", helper.localizeText(dataset.getName()));
                             request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(dataset.getDescription())));
                             request.setAttribute("resourceDescription", helper.localizeText(dataset.getDescription()));
+                            request.setAttribute("keywords", helper.localizeText(dataset.getKeywords()));
                         }
                         break;
                     case QUERY:
@@ -216,6 +219,7 @@
                             request.setAttribute("resourceName", helper.localizeText(query.getName()));
                             request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(query.getDescription())));
                             request.setAttribute("resourceDescription", helper.localizeText(query.getDescription()));  
+                            request.setAttribute("keywords", helper.localizeText(query.getKeywords()));
                         }
                         break;
                     case INDICATOR:
@@ -225,6 +229,7 @@
                             request.setAttribute("resourceName", helper.localizeText(indicator.getTitle()));
                             request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(indicator.getConceptDescription())));
                             request.setAttribute("resourceDescription", helper.localizeText(indicator.getConceptDescription()));  
+                            request.setAttribute("keywords", "");
                         }
                         break;
                     case INDICATOR_INSTANCE:
@@ -233,13 +238,15 @@
                             request.setAttribute("resourceEmpty", false);
                             request.setAttribute("resourceName", helper.localizeText(indicatorInstance.getTitle()));
                             request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(indicatorInstance.getConceptDescription())));
-                            request.setAttribute("resourceDescription", helper.localizeText(indicatorInstance.getConceptDescription()));  
+                            request.setAttribute("resourceDescription", helper.localizeText(indicatorInstance.getConceptDescription())); 
+                            request.setAttribute("keywords", "");
                         } 
                         break;
                    default:
                        request.setAttribute("resourceName", "Visualizador estadístico");
                        request.setAttribute("resourceDescription", "Visualizador estadístico");
                        request.setAttribute("resourceDescriptionOnlyText", "Visualizador estadístico");
+                       request.setAttribute("keywords", "");
                        break;
                 }
             }
@@ -274,7 +281,7 @@
     <meta itemprop="name" content="${titlePrefix}${resourceName}" />
 	<meta itemprop="description" content="${resourceDescriptionOnlyText}" />
 	
-  	<meta name="keywords" content="" />
+  	<meta name="keywords" content="${keywords}" />
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   	<meta name="robots" content="index, follow" />
   	<meta name="revisit-after" content="7 days" />

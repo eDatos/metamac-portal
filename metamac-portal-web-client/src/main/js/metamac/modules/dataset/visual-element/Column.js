@@ -154,6 +154,7 @@
             this._chartOptions.chart.renderTo = this.$chartContainer[0];
 
             this._chartOptions.credits.text = this.getRightsHolderText();
+            this._chartOptions.credits.position.y = 0;
             if (!this.showRightsHolderText()) {
                 this._chartOptions.credits.style = {
                     color: App.Constants.colors.hiddenText
@@ -168,7 +169,11 @@
         resizeFullScreen: function () { },
 
         tooltipFormatter: function () {
-            return '<strong>' + this.series.name + ', ' + this.x + '</strong>:<br/>' + this.point.name;
+            var seriesName = "";
+            if (this.series.name != "") {
+                seriesName = this.series.name + ', ';
+            }
+            return '<strong>' + seriesName + this.x + '</strong>:<br/>' + this.point.name;
         },
 
         getData: function () {
@@ -248,22 +253,31 @@
 
                 var columnSortBy = columnsDimension.get('sortBy');
                 var columnDimensionIsTemporal = columnsDimension.get('type') == "TIME_DIMENSION";
-                columnSeries = _.sortBy(columnSeries, function (serie) {
-                    switch (columnSortBy) {
-                        case App.Constants.dimension.sortBy.OBSERVATION:
-                            return -serie.data[0].y;
-                        case App.Constants.dimension.sortBy.REPRESENTATION:
-                            if (columnDimensionIsTemporal) {
-                                return serie.id;
-                            } else {
-                                return -serie.id;
-                            }
-                        default:
-                            console.error("sortBy unsupported ", columnSortBy);
-                            return -serie.data[0].y;
-                    }
+                columnSeries = _.chain(columnSeries)
+                    .map(function(serie) {
+                        if (columnsDimension.get('singleValue')) {
+                            serie.showInLegend = false;
+                            serie.name = "";
+                        }
+                        return serie;
+                    })
+                    .sortBy(function (serie) {
+                        switch (columnSortBy) {
+                            case App.Constants.dimension.sortBy.OBSERVATION:
+                                return -serie.data[0].y;
+                            case App.Constants.dimension.sortBy.REPRESENTATION:
+                                if (columnDimensionIsTemporal) {
+                                    return serie.id;
+                                } else {
+                                    return -serie.id;
+                                }
+                            default:
+                                console.error("sortBy unsupported ", columnSortBy);
+                                return -serie.data[0].y;
+                        }
 
-                });
+                    })
+                    .value();
 
                 listSeries = [].concat(listSeries, columnSeries);
             });

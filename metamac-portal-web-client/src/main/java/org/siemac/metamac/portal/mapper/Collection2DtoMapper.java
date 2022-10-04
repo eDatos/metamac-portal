@@ -18,6 +18,7 @@ public class Collection2DtoMapper {
         Collection target = new Collection();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
+        target.setKeywords(source.getKeywords());
         target.setData(collectionDataExternalToDto(source.getData()));
 
         return target;
@@ -85,6 +86,7 @@ public class Collection2DtoMapper {
         Collection target = new Collection();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
+        target.setKeywords(source.getKeywords());
         target.setData(collectionDataInternalToDto(source.getData()));
 
         return target;

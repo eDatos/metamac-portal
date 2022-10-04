@@ -125,7 +125,7 @@
         App.config["organisationUrn"] = "urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISTAC";
         App.config["installationType"] = "EXTERNAL";
         App.config["socialTwitterVia"] = "mi_twitter_handle";
-        App.config["enableGraphColors"] = "true";
+        App.config["enableGraphColors"] = true;
         App.config["helpUrl"] = "http://www.gobiernodecanarias.org/istac/galerias/documentos/pec-2018-2022.pdf";
 
         var ENABLE_IBESTAT = true;
@@ -151,6 +151,12 @@
 
             // https://ibestat.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IBESTAT&resourceId=000274A_000001&version=1.0#visualization/table
             App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000001", "version": "1.0", "type": "dataset" };
+
+            // https://pre-ibestat.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IBESTAT&resourceId=000274A_000009&version=1.0#visualization/line
+            // App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000009", "version": "1.0", "type": "dataset" };
+
+            // https://pre-ibestat.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IBESTAT&resourceId=000274A_000008&version=1.0#visualization/column
+            // App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000008", "version": "1.0", "type": "dataset" };
         }
 
         var ENABLE_IESTADIS = true;

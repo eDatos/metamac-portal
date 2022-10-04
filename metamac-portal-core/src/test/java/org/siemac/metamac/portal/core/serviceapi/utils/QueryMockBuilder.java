@@ -19,6 +19,7 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttri
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedAttributeValue;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedAttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedDimensionValue;
@@ -136,7 +137,21 @@ public class QueryMockBuilder extends ResourceMockBuilder {
         attribute.setId(attributeId);
         attribute.setName(internationalString(attributeLabel));
         attribute.setAttachmentLevel(attachementLevel);
-        attribute.setAttributeValues(new NonEnumeratedAttributeValues());
+        if (ComponentType.MEASURE.equals(componentType)) {
+            EnumeratedAttributeValues values = new EnumeratedAttributeValues();
+            EnumeratedAttributeValue value = new EnumeratedAttributeValue();
+            value.setId(attributeId);
+            MeasureQuantity measureQuantity = new MeasureQuantity();
+            measureQuantity.setUnitCode(mockItemResource("Cientos de euros"));
+            value.setMeasureQuantity(measureQuantity);
+            value.setUrn("URN:" + attributeId);
+
+            values.getValues().add(value);
+            attribute.setAttributeValues(values);
+        } else {
+            attribute.setAttributeValues(new NonEnumeratedAttributeValues());
+        }
+
         attribute.setType(componentType);
         query.getMetadata().getAttributes().getAttributes().add(attribute);
         lastAttributeMetadata = attribute;

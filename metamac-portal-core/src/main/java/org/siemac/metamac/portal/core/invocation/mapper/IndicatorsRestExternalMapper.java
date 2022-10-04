@@ -42,7 +42,7 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimen
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisation;
-import org.siemac.metamac.statistical_resources.rest.external.service.utils.StatisticalResourcesRestApiExternalUtils;
+import org.siemac.metamac.statistical_resources.rest.common.service.utils.StatisticalResourcesRestApiCommonUtils;
 
 import es.gobcan.istac.indicators.rest.types.AttributeAttachmentLevelEnumType;
 import es.gobcan.istac.indicators.rest.types.AttributeType;
@@ -160,15 +160,15 @@ public class IndicatorsRestExternalMapper {
         return publishers;
     }
 
-    private static Resource organisationToResource(Organisation organisation) {
-        Resource resource = new Resource();
-        resource.setName(organisation.getName()); // The only one currently used on the export
-        resource.setId(organisation.getId());
-        resource.setKind(organisation.getKind());
-        resource.setNestedId(organisation.getNestedId());
-        resource.setSelfLink(organisation.getSelfLink());
-        resource.setUrn(organisation.getUrn());
-        return resource;
+    private static org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation organisationToResource(Organisation organisation) {
+        org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation organization = new org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation();
+        organization.setName(organisation.getName()); // The only one currently used on the export
+        organization.setId(organisation.getId());
+        organization.setKind(organisation.getKind());
+        organization.setNestedId(organisation.getNestedId());
+        organization.setSelfLink(organisation.getSelfLink());
+        organization.setUrn(organisation.getUrn());
+        return organization;
     }
 
     private static DataStructureDefinition buildRelatedDsd(Integer decimalPlaces) {
@@ -372,7 +372,7 @@ public class IndicatorsRestExternalMapper {
     }
 
     public static String dimensionSelectionToSelectedRepresentations(String dimensionsSelections) {
-        Map<String, List<String>> dimensionsSelectionsMap = StatisticalResourcesRestApiExternalUtils.parseDimensionExpression(dimensionsSelections);
+        Map<String, List<String>> dimensionsSelectionsMap = StatisticalResourcesRestApiCommonUtils.parseDimensionExpression(dimensionsSelections);
 
         List<String> selectedRepresentations = new ArrayList<String>();
         for (Map.Entry<String, List<String>> dimensionSelection : dimensionsSelectionsMap.entrySet()) {

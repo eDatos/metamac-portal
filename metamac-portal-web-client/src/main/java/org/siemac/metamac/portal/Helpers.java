@@ -44,25 +44,26 @@ import org.springframework.web.client.RestTemplate;
 
 public class Helpers {
 
-    private static final String PATH_RELATIVE_DATA_PAGE            = "data.html";
-    public static final String  PARAMETER_RESOURCE_TYPE            = "resourceType";
-    public static final String  PARAMETER_RESOURCE_ID              = "resourceId";
-    public static final String  PARAMETER_AGENCY_ID                = "agencyId";
-    public static final String  PARAMETER_VERSION                  = "version";
-    public static final String  PARAMETER_INDICATOR_SYSTEM         = "indicatorSystem";
-    public static final String  PARAMETER_SHARED_VISUALIZER_URL    = "sharedVisualizerUrl";
-    public static final String  PARAMETER_MULTIDATASET_ID          = "multidatasetId";
-    public static final String  PARAMETER_LOCALE                   = "locale";
+    private static final String PATH_RELATIVE_DATA_PAGE                           = "data.html";
+    public static final String  PARAMETER_RESOURCE_TYPE                           = "resourceType";
+    public static final String  PARAMETER_RESOURCE_ID                             = "resourceId";
+    public static final String  PARAMETER_AGENCY_ID                               = "agencyId";
+    public static final String  PARAMETER_VERSION                                 = "version";
+    public static final String  PARAMETER_INDICATOR_SYSTEM                        = "indicatorSystem";
+    public static final String  PARAMETER_SHARED_VISUALIZER_URL                   = "sharedVisualizerUrl";
+    public static final String  PARAMETER_MULTIDATASET_ID                         = "multidatasetId";
+    public static final String  PARAMETER_LOCALE                                  = "locale";
 
-    private static final String DEFAULT_LANGUAGE                   = "es";
-    private static final String LATEST_VERSION                     = "~latest";
-    private static final int    MINIMAL_FIXED_DIGITS_IN_NUMERATION = 2;
+    private static final String DEFAULT_LANGUAGE                                  = "es";
+    private static final String LATEST_VERSION                                    = "~latest";
+    private static final int    MINIMAL_FIXED_DIGITS_IN_NUMERATION                = 2;
 
-    private static final Logger LOGGGER                            = LoggerFactory.getLogger(Helpers.class);
+    private static final Logger LOGGGER                                           = LoggerFactory.getLogger(Helpers.class);
 
     private String              language;
-    private String              DEFAULT_KEY                        = "__default__";
-    private static final String FIELDS_EXCLUDE_DATA_AND_METADATA   = "-data,-metadata";
+    private String              DEFAULT_KEY                                       = "__default__";
+    private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
+    private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS              = "-metadata,+keywords";
 
     public Helpers(String language) {
         if (language.isEmpty()) {
@@ -83,7 +84,7 @@ public class Helpers {
         try {
             // Ex: "http://HOST/statistical-resources/apis/statistical-resources";
             List<String> lang = new ArrayList<String>();
-            String fields = StringUtils.EMPTY;
+            String fields = FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS;
 
             if (internalPortal) {
                 collection = collection2DtoMapper.collectionInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));
@@ -107,7 +108,7 @@ public class Helpers {
                 version = LATEST_VERSION;
             }
 
-            String fields = FIELDS_EXCLUDE_DATA_AND_METADATA;
+            String fields = FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS;
             if (internalPortal) {
                 dataset = dataset2DtoMapper.datasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null));
             } else {
@@ -128,11 +129,15 @@ public class Helpers {
             String statisticalResourcesEndpoint = apiUrlStatisticalResources;
 
             List<String> lang = new ArrayList<String>();
-            String fields = FIELDS_EXCLUDE_DATA_AND_METADATA;
+            String fieldsForQuery = FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS;
             if (internalPortal) {
-                query = query2DtoMapper.queryInternalToDto(Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields));
+                org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Query statisticalResourcesQuery = Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint)
+                        .retrieveQuery(agencyId, resourceId, lang, fieldsForQuery, null);
+                query = query2DtoMapper.queryInternalToDto(statisticalResourcesQuery);
             } else {
-                query = query2DtoMapper.queryExternalToDto(Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId, resourceId, lang, fields));
+                org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query statisticalResourcesQuery = Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId,
+                        resourceId, lang, fieldsForQuery, null);
+                query = query2DtoMapper.queryExternalToDto(statisticalResourcesQuery);
             }
 
         } catch (Exception e) {
@@ -147,7 +152,7 @@ public class Helpers {
         try {
             // Ex: "http://HOST/statistical-resources/apis/statistical-resources";
             List<String> lang = new ArrayList<String>();
-            String fields = "";
+            String fields = FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS;
             String agencyId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[0];
             String resourceId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[1];
 
@@ -253,7 +258,7 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_INDICATOR_SYSTEM, indicatorSystem);
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
-        if(locale != null) {
+        if (locale != null) {
             appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
         }
     }

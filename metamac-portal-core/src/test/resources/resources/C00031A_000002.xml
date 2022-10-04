@@ -5,7 +5,7 @@
     <stat:selfLink kind="statisticalResources#dataset" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/datasets/ISTAC/C00031A_000002/001.006"/>
     <stat:parentLink kind="statisticalResources#datasets" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/datasets"/>
     <stat:name>
-        <cdomain:text xml:lang="es">Índice censal de ocupación según indicadores por islas, provincias y comunidades</cdomain:text>
+        <cdomain:text xml:lang="es">Índice censal de ocupación según indicadores por islas, provincias y comunidades. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt vitae eros at imperdiet. Suspendisse at velit ultrices, pellentesque purus non, maximus mauris. Aliquam erat volutpat. Aenean et.</cdomain:text>
     </stat:name>
     <stat:description>
         <cdomain:text xml:lang="en">Índice censal de ocupación según indicadores por islas, provincias y comunidades&lt;br&gt;</cdomain:text>

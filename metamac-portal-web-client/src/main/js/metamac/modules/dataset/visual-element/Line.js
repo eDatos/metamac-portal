@@ -215,7 +215,11 @@
         },
 
         tooltipFormatter: function () {
-            return '<strong>' + this.series.name + ', ' + this.x + '</strong>:<br/>' + this.point.name;
+            var seriesName = "";
+            if (this.series.name != "") {
+                seriesName = this.series.name + ', ';
+            }
+            return '<strong>' + seriesName + this.x + '</strong>:<br/>' + this.point.name;
         },
 
         render: function () {
@@ -266,6 +270,7 @@
             this._chartOptions.xAxis.tickInterval = detailData.tickInterval;
 
             this._chartOptions.credits.text = this.getRightsHolderText();
+            this._chartOptions.credits.position.y = 0;
             if (!this.showRightsHolderText()) {
                 this._chartOptions.credits.style = {
                     color: App.Constants.colors.hiddenText
@@ -373,6 +378,10 @@
                 });
 
                 serie.name = columnCategory.get('visibleLabel');
+                if (columnsDimension.get('singleValue')) {
+                    serie.showInLegend = false;
+                    serie.name = "";
+                }
                 listSeries.push(serie);
             });
 
