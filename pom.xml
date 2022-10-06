@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-portal</groupId>
         <artifactId>metamac-portal-parent</artifactId>
-        <version>8.1.2-SNAPSHOT</version>
+        <version>8.2.0</version>
         <relativePath>metamac-portal-parent/pom.xml</relativePath>
     </parent>
 
@@ -26,7 +26,7 @@
         <connection>scm:git:http://git.arte-consultores.com/istac/metamac-portal</connection>
         <developerConnection>scm:git:http://git.arte-consultores.com/istac/metamac-portal</developerConnection>
         <url>http://git.arte-consultores.com/istac/metamac-portal</url>
-        <tag>HEAD</tag>
+        <tag>20221006-1151-v8.2.0</tag>
     </scm>
 
     <build>
