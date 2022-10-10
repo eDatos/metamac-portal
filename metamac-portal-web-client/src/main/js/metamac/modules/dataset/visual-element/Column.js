@@ -340,16 +340,25 @@
             var filteredXAxis = [];
 
             for (var [i, xAxis] of result.xAxis.entries()) {
-                var serie = result.series.find(serie => serie.data[0].x === i);
-                if (!toRemove.includes(serie.data[0].y)) {
-                    serie.data[0].x = filteredXAxis.length;
-                    filteredSeries.push(serie);
-                    filteredXAxis.push(xAxis);
+                var series = result.series.filter(serie => serie.data[0].x === i);
+
+                if (series.some(serie => toRemove.includes(serie.data[0].y))) {
+                    // if some value of the serie contains is to be removed
+                    // then the entire category must be removed too from the graph
+                    continue;
                 }
+
+                for (const serie of series) {
+                    // update the category of the serie in case other before has been deleted
+                    serie.data[0].x = filteredXAxis.length;
+                }
+
+                filteredSeries.push(...series);
+                filteredXAxis.push(xAxis);
             }
 
             return {
-                series: filteredSeries.sort((a, b) => a.horizontalCategory > b.horizontalCategory ? 1 : -1),
+                series: filteredSeries,
                 xAxis: filteredXAxis
             };
         },
