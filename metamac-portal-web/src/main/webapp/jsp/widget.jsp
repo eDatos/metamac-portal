@@ -81,7 +81,8 @@
             request.setAttribute("ApiUrlIndicators", "error");
             request.setAttribute("organisationUrn", "error");
             request.setAttribute("geographicalGranularityUrn", "error");
-            
+            request.setAttribute("socialTwitterVia", "");
+            request.setAttribute("enableGraphColors", false);
             request.setAttribute("analyticsGoogleTrackingId", "error");
 		}
 	%>
