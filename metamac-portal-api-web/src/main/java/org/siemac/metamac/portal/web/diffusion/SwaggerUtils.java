@@ -15,4 +15,9 @@ public class SwaggerUtils extends org.siemac.metamac.core.common.util.swagger.Sw
         return normalizeUrlForSwagger(WebUtils.permalinksApiBaseUrl);
     }
 
+    public static String formatJSONInsideDescription(String json) {
+
+        return "<pre>" + json.replace("\"", "\\\"").replace("\n", "</br>").replace(" ", "&nbsp;") + "</pre>";
+    }
+
 }
