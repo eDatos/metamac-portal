@@ -33,13 +33,12 @@ public class ApplicationStartup extends ApplicationStartupListener {
         super.contextInitialized(sce);
         try {
             String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
+            WebUtils.setInstallationType(INSTALLATION_TYPE);
             if (INSTALLATION_TYPE.equals("EXTERNAL")) {
                 WebUtils.setAppsBaseUrl(configurationService.retrieveAppsExternalWebApplicationUrlBase());
             } else if (INSTALLATION_TYPE.equals("INTERNAL")) {
                 WebUtils.setAppsBaseUrl(configurationService.retrieveAppsInternalWebApplicationUrlBase());
             }
-            WebUtils.setExportApiBaseURL(configurationService.retrievePortalExternalApisExportUrlBase());
-            WebUtils.setPermalinksApiBaseURL(configurationService.retrievePortalExternalApisPermalinksUrlBase());
 
             WebUtils.setApiStyleHeaderUrl(configurationService.retrieveApiStyleHeaderUrl());
             WebUtils.setApiStyleCssUrl(configurationService.retrieveApiStyleCssUrl());
@@ -48,7 +47,17 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setPortalDefaultStyleHeaderUrl(portalConfigurationService.retrievePortalDefaultStyleHeaderUrl());
             WebUtils.setPortalDefaultStyleCssUrl(portalConfigurationService.retrievePortalDefaultStyleCssUrl());
             WebUtils.setPortalDefaultStyleFooterUrl(portalConfigurationService.retrievePortalDefaultStyleFooterUrl());
-            WebUtils.setPortalGraphColorsEnabled(Boolean.parseBoolean(configurationService.retrievePortalGraphColorsEnabled()));
+
+            WebUtils.setPortalBaseUrl(configurationService.retrievePortalExternalWebApplicationUrlBase());
+            WebUtils.setStatisticalVisualizerBaseUrl(configurationService.retrievePortalExternalUrlBase());
+            WebUtils.setStatisticalResourcesApiBaseUrl(configurationService.retrieveStatisticalResourcesExternalApiUrlBase());
+            WebUtils.setSrmApiBaseUrl(configurationService.retrieveSrmExternalApiUrlBase());
+            WebUtils.setPermalinksApiBaseUrl(configurationService.retrievePortalExternalApisPermalinksUrlBase());
+            WebUtils.setExportApiBaseUrl(configurationService.retrievePortalExternalApisExportUrlBase());
+            WebUtils.setIndicatorsApiBaseUrl(configurationService.retrieveIndicatorsExternalApiUrlBase());
+            WebUtils.setOrganisationUrn(configurationService.retrieveOrganisationUrn());
+            WebUtils.setGeographicalGranularityUrn(configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
+            WebUtils.setAnalyticsGoogleTrackingId(configurationService.retrieveAnalyticsGoogleTrackingId());
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }
@@ -59,7 +68,16 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalPublicServiceStyles();
         setPortalCustomStyles();
         setSocialTwitterVia();
+        setPortalGraphColorsEnabled();
         setHelpUrl();
+    }
+
+    private void setPortalGraphColorsEnabled() {
+        try {
+            WebUtils.setPortalGraphColorsEnabled(Boolean.parseBoolean(configurationService.retrievePortalGraphColorsEnabled()));
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application portal colors enabled configuration", e);
+        }
     }
 
     // IDEA we try do it more scalable without breaking the rest, but the idea is to use only this one in the future
@@ -137,12 +155,10 @@ public class ApplicationStartup extends ApplicationStartupListener {
         checkRequiredProperty(PortalConfigurationConstants.DB_DIALECT);
 
         // Api
-        checkRequiredProperty(PortalConfigurationConstants.ENDPOINT_STATISTICAL_RESOURCES_EXTERNAL_API);
         checkRequiredProperty(PortalConfigurationConstants.ENDPOINT_PORTAL_EXTERNAL_BASE);
 
         // Visualizer (also the api ones)
         checkRequiredProperty(PortalConfigurationConstants.METAMAC_ORGANISATION);
-        checkRequiredProperty(PortalConfigurationConstants.PORTAL_GRAPH_COLORS_ENABLED);
         String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
 
         if (INSTALLATION_TYPE.equals("EXTERNAL")) {
@@ -155,6 +171,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Misc
         checkRequiredProperty(PortalConfigurationConstants.METAMAC_EDITION_LANGUAGES);
+        checkRequiredProperty(PortalConfigurationConstants.METAMAC_ORGANISATION_URN);
+        checkRequiredProperty(PortalConfigurationConstants.DEFAULT_CODELIST_GEOGRAPHICAL_GRANULARITY_URN);
 
         // Google analytics
         checkRequiredProperty(PortalConfigurationConstants.ANALYTICS_GOOGLE_TRACKING_ID);
@@ -163,6 +181,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
         checkOptionalProperty(ConfigurationConstants.SHARED_SOCIAL_TWITTER_VIA);
 
         // Visualizer
+        checkOptionalProperty(ConfigurationConstants.PORTAL_GRAPH_COLORS_ENABLED);
         checkOptionalProperty(ConfigurationConstants.PORTAL_VISUALIZER_HELP_URL);
     }
 }

@@ -10,6 +10,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.siemac.metamac.portal.web.WebUtils" %>
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -36,59 +37,32 @@
     <style>
         html, body { margin : 0; height: 99%;}
     </style>
-    <%
-        PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
-        String INSTALLATION_TYPE = "";           
-	    String PORTAL_URL_BASE = "";
-        String STATISTICAL_VISUALIZER_URL_BASE = "";
-		String STATISTICAL_RESOURCES_API_URL_BASE = "";
-		String SRM_API_URL_BASE = "";
-        String PERMALINKS_API_URL_BASE = "";
-        String EXPORT_API_URL_BASE = "";
-        String INDICATORS_API_URL_BASE = "";
-		try {
-            INSTALLATION_TYPE = configurationService.retrieveInstallationType();
-		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
-            STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
-			STATISTICAL_RESOURCES_API_URL_BASE = configurationService.retrieveStatisticalResourcesExternalApiUrlBase();
-		    SRM_API_URL_BASE = configurationService.retrieveSrmExternalApiUrlBase();
-		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
-		    EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
-		    INDICATORS_API_URL_BASE = configurationService.retrieveIndicatorsExternalApiUrlBase();
-			
-		    request.setAttribute("installationType", INSTALLATION_TYPE);
-		    request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
-            request.setAttribute("StatisticalVisualizerBase", PORTAL_URL_BASE);
-			request.setAttribute("ApiUrlStatisticalResources", STATISTICAL_RESOURCES_API_URL_BASE);
-			request.setAttribute("ApiUrlStructuralResources", SRM_API_URL_BASE);
-			request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
-			request.setAttribute("ApiUrlExport", EXPORT_API_URL_BASE);
-			request.setAttribute("ApiUrlIndicators", INDICATORS_API_URL_BASE);
-			request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
-            request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
-			request.setAttribute("socialTwitterVia", configurationService.retrieveSharedSocialTwitterVia());
-			request.setAttribute("enableGraphColors", configurationService.retrievePortalGraphColorsEnabled());
-
-			request.setAttribute("analyticsGoogleTrackingId", configurationService.retrieveAnalyticsGoogleTrackingId());
-            
-		} catch (MetamacException e) { 
-		    request.setAttribute("ApiUrlStatisticalVisualizer","error");
-            request.setAttribute("StatisticalVisualizerBase", "error");
-		 	request.setAttribute("ApiUrlStatisticalResources", "error");
-		 	request.setAttribute("ApiUrlStructuralResources", "error");
-		 	request.setAttribute("ApiUrlPermalinks", "error");
-            request.setAttribute("ApiUrlExport", "error");
-            request.setAttribute("ApiUrlIndicators", "error");
-            request.setAttribute("organisationUrn", "error");
-            request.setAttribute("geographicalGranularityUrn", "error");
-            request.setAttribute("socialTwitterVia", "");
-            request.setAttribute("enableGraphColors", false);
-            request.setAttribute("analyticsGoogleTrackingId", "error");
-		}
-	%>
 	<%
 		String locale = request.getParameter("locale");
 		request.setAttribute("locale", locale);
+	%>
+    <%
+        String INSTALLATION_TYPE = WebUtils.getInstallationType();
+	    String PORTAL_URL_BASE = WebUtils.getPortalBaseUrl();
+        String STATISTICAL_VISUALIZER_URL_BASE = WebUtils.getStatisticalVisualizerBaseUrl();
+		String STATISTICAL_RESOURCES_API_URL_BASE = WebUtils.getStatisticalResourcesApiBaseUrl();
+		String SRM_API_URL_BASE = WebUtils.getSrmApiBaseUrl();
+        String PERMALINKS_API_URL_BASE = WebUtils.getPermalinksApiBaseUrl();
+        String EXPORT_API_URL_BASE = WebUtils.getExportApiBaseUrl();
+        String INDICATORS_API_URL_BASE = WebUtils.getIndicatorsApiBaseUrl();
+        request.setAttribute("installationType", INSTALLATION_TYPE);
+        request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
+        request.setAttribute("StatisticalVisualizerBase", PORTAL_URL_BASE);
+        request.setAttribute("ApiUrlStatisticalResources", STATISTICAL_RESOURCES_API_URL_BASE);
+        request.setAttribute("ApiUrlStructuralResources", SRM_API_URL_BASE);
+        request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
+        request.setAttribute("ApiUrlExport", EXPORT_API_URL_BASE);
+        request.setAttribute("ApiUrlIndicators", INDICATORS_API_URL_BASE);
+        request.setAttribute("organisationUrn", WebUtils.getOrganisationUrn());
+        request.setAttribute("geographicalGranularityUrn", WebUtils.getGeographicalGranularityUrn());
+        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
+        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
+        request.setAttribute("analyticsGoogleTrackingId", WebUtils.getAnalyticsGoogleTrackingId());
 	%>
     <%
 		String permalinkId = request.getParameter("permalink");
