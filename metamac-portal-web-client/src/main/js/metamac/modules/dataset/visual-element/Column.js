@@ -342,8 +342,8 @@
             for (var [i, xAxis] of result.xAxis.entries()) {
                 var series = result.series.filter(serie => serie.data[0].x === i);
 
-                if (series.some(serie => toRemove.includes(serie.data[0].y))) {
-                    // if some value of the serie contains is to be removed
+                if (series.every(serie => toRemove.includes(serie.data[0].y))) {
+                    // if all the values of the serie are to be removed
                     // then the entire category must be removed too from the graph
                     continue;
                 }
