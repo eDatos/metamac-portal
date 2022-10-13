@@ -357,6 +357,10 @@
                 filteredXAxis.push(xAxis);
             }
 
+            filteredSeries = filteredSeries.sort((a, b) => {
+                return result.series.indexOf(a) - result.series.indexOf(b);
+            });
+
             return {
                 series: filteredSeries,
                 xAxis: filteredXAxis
