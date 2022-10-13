@@ -345,9 +345,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(dataset, datasetSelection, lang, filename);
-        } catch (
-
-        Exception e) {
+        } catch (Exception e) {
             throw manageException(e);
         }
     }
@@ -368,9 +366,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(dataset, datasetSelection, null, filename);
-        } catch (
-
-        Exception e) {
+        } catch (Exception e) {
             throw manageException(e);
         }
     }
@@ -391,9 +387,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(dataset, datasetSelection, null, filename);
-        } catch (
-
-        Exception e) {
+        } catch (Exception e) {
             throw manageException(e);
         }
     }
