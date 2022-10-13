@@ -42,22 +42,16 @@
 		request.setAttribute("locale", locale);
 	%>
     <%
-        String INSTALLATION_TYPE = WebUtils.getInstallationType();
-	    String PORTAL_URL_BASE = WebUtils.getPortalBaseUrl();
-        String STATISTICAL_VISUALIZER_URL_BASE = WebUtils.getStatisticalVisualizerBaseUrl();
 		String STATISTICAL_RESOURCES_API_URL_BASE = WebUtils.getStatisticalResourcesApiBaseUrl();
-		String SRM_API_URL_BASE = WebUtils.getSrmApiBaseUrl();
         String PERMALINKS_API_URL_BASE = WebUtils.getPermalinksApiBaseUrl();
-        String EXPORT_API_URL_BASE = WebUtils.getExportApiBaseUrl();
-        String INDICATORS_API_URL_BASE = WebUtils.getIndicatorsApiBaseUrl();
-        request.setAttribute("installationType", INSTALLATION_TYPE);
-        request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
-        request.setAttribute("StatisticalVisualizerBase", PORTAL_URL_BASE);
+        request.setAttribute("installationType", WebUtils.getInstallationType());
+        request.setAttribute("ApiUrlStatisticalVisualizer", WebUtils.getStatisticalVisualizerBaseUrl());
+        request.setAttribute("StatisticalVisualizerBase", WebUtils.getPortalBaseUrl());
         request.setAttribute("ApiUrlStatisticalResources", STATISTICAL_RESOURCES_API_URL_BASE);
-        request.setAttribute("ApiUrlStructuralResources", SRM_API_URL_BASE);
+        request.setAttribute("ApiUrlStructuralResources", WebUtils.getSrmApiBaseUrl());
         request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
-        request.setAttribute("ApiUrlExport", EXPORT_API_URL_BASE);
-        request.setAttribute("ApiUrlIndicators", INDICATORS_API_URL_BASE);
+        request.setAttribute("ApiUrlExport", WebUtils.getExportApiBaseUrl());
+        request.setAttribute("ApiUrlIndicators", WebUtils.getIndicatorsApiBaseUrl());
         request.setAttribute("organisationUrn", WebUtils.getOrganisationUrn());
         request.setAttribute("geographicalGranularityUrn", WebUtils.getGeographicalGranularityUrn());
         request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
