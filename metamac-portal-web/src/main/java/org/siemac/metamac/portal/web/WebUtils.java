@@ -21,8 +21,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
-    protected static String     exportApiBaseUrl                  = null;
+    protected static String     installationType                  = null;
+    protected static String     portalBaseUrl                     = null;
+    protected static String     statisticalVisualizerBaseUrl      = null;
+    protected static String     statisticalResourcesApiBaseUrl    = null;
+    protected static String     srmApiBaseUrl                     = null;
     protected static String     permalinksApiBaseUrl              = null;
+    protected static String     exportApiBaseUrl                  = null;
+    protected static String     indicatorsApiBaseUrl              = null;
 
     protected static String     portalDefaultStyleHeaderUrl       = null;
     protected static String     portalDefaultStyleCssUrl          = null;
@@ -44,28 +50,102 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     portalPublicServiceStyleCssUrl    = null;
     protected static String     portalPublicServiceStyleFooterUrl = null;
 
+    protected static String     organisationUrn                   = null;
+    protected static String     geographicalGranularityUrn        = null;
     protected static String     portalCustomStyleBaseUrl          = null;
     protected static String     socialTwitterVia                  = null;
     protected static Boolean    portalGraphColorsEnabled          = null;
+    protected static String     analyticsGoogleTrackingId         = null;
     protected static String     helpUrl                           = null;
 
-    public static void setExportApiBaseURL(String exportApiBaseUrl) {
-        WebUtils.exportApiBaseUrl = exportApiBaseUrl;
+    public static String getInstallationType() {
+        return installationType;
     }
 
-    public static String getExportApiBaseURL() throws MalformedURLException {
-        return normalizeUrl(exportApiBaseUrl);
+    public static void setInstallationType(String installationType) {
+        WebUtils.installationType = installationType;
     }
 
-    public static void setPermalinksApiBaseURL(String permalinksApiBaseUrl) {
+    public static String getPortalBaseUrl() {
+        return portalBaseUrl;
+    }
+
+    public static void setPortalBaseUrl(String portalBaseUrl) {
+        WebUtils.portalBaseUrl = portalBaseUrl;
+    }
+
+    public static String getStatisticalVisualizerBaseUrl() {
+        return statisticalVisualizerBaseUrl;
+    }
+
+    public static void setStatisticalVisualizerBaseUrl(String statisticalVisualizerBaseUrl) {
+        WebUtils.statisticalVisualizerBaseUrl = statisticalVisualizerBaseUrl;
+    }
+
+    public static String getStatisticalResourcesApiBaseUrl() {
+        return statisticalResourcesApiBaseUrl;
+    }
+
+    public static void setStatisticalResourcesApiBaseUrl(String statisticalResourcesApiBaseUrl) {
+        WebUtils.statisticalResourcesApiBaseUrl = statisticalResourcesApiBaseUrl;
+    }
+
+    public static String getSrmApiBaseUrl() {
+        return srmApiBaseUrl;
+    }
+
+    public static void setSrmApiBaseUrl(String srmApiBaseUrl) {
+        WebUtils.srmApiBaseUrl = srmApiBaseUrl;
+    }
+
+    public static String getPermalinksApiBaseUrl() {
+        return permalinksApiBaseUrl;
+    }
+
+    public static void setPermalinksApiBaseUrl(String permalinksApiBaseUrl) {
         WebUtils.permalinksApiBaseUrl = permalinksApiBaseUrl;
     }
 
-    public static String getPermalinksApiBaseURL() throws MalformedURLException {
-        return normalizeUrl(permalinksApiBaseUrl);
+    public static String getExportApiBaseUrl() {
+        return exportApiBaseUrl;
     }
 
-    /* Portal specific. See web.xml for matched patterns */
+    public static void setExportApiBaseUrl(String exportApiBaseUrl) {
+        WebUtils.exportApiBaseUrl = exportApiBaseUrl;
+    }
+
+    public static String getIndicatorsApiBaseUrl() {
+        return indicatorsApiBaseUrl;
+    }
+
+    public static void setIndicatorsApiBaseUrl(String indicatorsApiBaseUrl) {
+        WebUtils.indicatorsApiBaseUrl = indicatorsApiBaseUrl;
+    }
+
+    public static String getOrganisationUrn() {
+        return organisationUrn;
+    }
+
+    public static void setOrganisationUrn(String organisationUrn) {
+        WebUtils.organisationUrn = organisationUrn;
+    }
+
+    public static String getGeographicalGranularityUrn() {
+        return geographicalGranularityUrn;
+    }
+
+    public static void setGeographicalGranularityUrn(String geographicalGranularityUrn) {
+        WebUtils.geographicalGranularityUrn = geographicalGranularityUrn;
+    }
+
+    public static String getAnalyticsGoogleTrackingId() {
+        return analyticsGoogleTrackingId;
+    }
+
+    public static void setAnalyticsGoogleTrackingId(String analyticsGoogleTrackingId) {
+        WebUtils.analyticsGoogleTrackingId = analyticsGoogleTrackingId;
+    }
+/* Portal specific. See web.xml for matched patterns */
     public static String getPortalStyleHeaderUrl(String organizationService, String lang) {
         switch (organizationService) {
             case SERVICE_AGRICULTURA:
