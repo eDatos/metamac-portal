@@ -33,7 +33,7 @@
 		                    <p class="justificado">Lo sentimos, el Documento al que está intentado acceder no está disponible.
 		                        Esto puede ocurrir por varios  motivos:</p>
 		                    <ul>
-		                        <li>El documento no existe en el Servidor del Gobierno de Canarias.</li>
+		                        <li>El documento no existe.</li>
 		                        <li>El documento puede no estar disponible "Temporalmente".</li>
 		                        <li>Ha introducido un URL incorrecto. Compruebe y asegúrese de que está bien escrito.</li>
 		                    </ul>
