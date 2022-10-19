@@ -6,12 +6,14 @@ import static org.siemac.metamac.portal.core.domain.DatasetSelection.TOP_DIMENSI
 import static org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum.CODE_AND_LABEL;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.domain.DatasetSelectionAttribute;
@@ -20,20 +22,19 @@ import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.rest.external.exception.RestServiceExceptionType;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
+import org.siemac.metamac.rest.export.v1_0.domain.DimensionFilters;
+import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
 import org.siemac.metamac.rest.export.v1_0.domain.LabelVisualisationMode;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attributes;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentation;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentations;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataStructureDefinition;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimensions;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NonEnumeratedDimensionValues;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentation;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentations;
 
 public class DatasetSelectionMapper {
-    
+
     private static final int MAX_SIZE_URL = 2000;
 
     public static DatasetSelection toDatasetSelection(org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection source) throws Exception {
@@ -42,27 +43,52 @@ public class DatasetSelectionMapper {
         return new DatasetSelection(dimensions, attributes);
     }
 
-    public static String toStatisticalResourcesApiDimsParameter(List<DatasetSelectionDimension> dimensions) {
-        if (CollectionUtils.isEmpty(dimensions)) {
+    public static String toStatisticalResourcesApiDimsParameter(Exportation exportationBody) {
+        if (exportationBody == null) {
             return null;
         }
+        org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection datasetSelection = exportationBody.getDatasetSelection();
+        if (datasetSelection == null || datasetSelection.getDimensions() == null || datasetSelection.getDimensions().getDimensions() == null) {
+            return null;
+        }
+        List<org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension> dimensions = datasetSelection.getDimensions().getDimensions();
+
         StringBuilder sb = new StringBuilder();
-        for (DatasetSelectionDimension dimension : dimensions) {
-            sb.append(dimension.getId());
+        for (org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension dimension : dimensions) {
+            sb.append(dimension.getDimensionId());
             sb.append(":");
-            sb.append(StringUtils.join(dimension.getSelectedDimensionValues(), "|"));
+
+            if (dimension.getDimensionFilters() != null) {
+                DimensionFilters dimensionFilters = dimension.getDimensionFilters();
+                if (dimensionFilters.getAfter() != null) {
+                    sb.append("~after=").append(dimensionFilters.getAfter()).append("|");
+                }
+                if (dimensionFilters.getLast() != null) {
+                    sb.append("~last=").append(dimensionFilters.getLast()).append("|");
+                }
+                if (dimensionFilters.getRange() != null) {
+                    sb.append("~range=").append(dimensionFilters.getRange().getStart()).append(";").append(dimensionFilters.getRange().getEnd()).append("|");
+                }
+            }
+            if (dimension.getDimensionValues() != null && dimension.getDimensionValues().getDimensionValues() != null && dimension.getDimensionValues().getDimensionValues().size() > 0) {
+                sb.append(StringUtils.join(dimension.getDimensionValues().getDimensionValues(), "|"));
+            }
+            if ('|' == sb.charAt(sb.length() - 1)) {
+                sb.deleteCharAt(sb.length() - 1); // delete last |
+            }
+
             sb.append(":");
         }
         sb.deleteCharAt(sb.length() - 1); // delete last :
-        
+
         if (sb.length() > MAX_SIZE_URL) {
             return null;
         }
-        
+
         return sb.toString();
     }
 
-   private static List<DatasetSelectionDimension> toDatasetSelectionDimensions(org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection source) throws Exception {
+    private static List<DatasetSelectionDimension> toDatasetSelectionDimensions(org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection source) throws Exception {
         if (source == null || source.getDimensions() == null) {
             return null;
         }
@@ -119,42 +145,116 @@ public class DatasetSelectionMapper {
         }
     }
 
-    public static DatasetSelection datasetToDatasetSelection(Dimensions datasetDimensions, Attributes datasetAttributes, DataStructureDefinition relatedDsd) {
-        List<DatasetSelectionDimension> dimensions = dimensionsToDatasetSelectionDimensions(datasetDimensions, relatedDsd);
-        List<DatasetSelectionAttribute> attributes = attributesToDatasetSelectionAttributes(datasetAttributes);
+    /**
+     * @param dimensionRepresentations
+     * @param datasetAttributes
+     * @param relatedDsd
+     * @param exportationBody
+     *            We generate the dimensions and attributes object with the one that compose the dataset, where it´s data has been previously
+     *            filtered previously when it was retrieved. We enrich the object with the exportationBody, to take into account the user input
+     */
+    public static DatasetSelection datasetToDatasetSelection(DimensionRepresentations dimensionRepresentations, Attributes datasetAttributes, DataStructureDefinition relatedDsd,
+            Exportation exportationBody) {
+        Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension> selectionDimensionsMap = null;
+        Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute> selectionAttributesMap = null;
+        if (exportationBody != null && exportationBody.getDatasetSelection() != null) {
+            if (exportationBody.getDatasetSelection().getDimensions() != null) {
+                selectionDimensionsMap = indexDimensionsById(exportationBody.getDatasetSelection().getDimensions().getDimensions());
+            }
+            if (exportationBody.getDatasetSelection().getAttributes() != null) {
+                selectionAttributesMap = indexAttributesById(exportationBody.getDatasetSelection().getAttributes().getAttributes());
+            }
+        }
+        List<DatasetSelectionDimension> dimensions = dimensionsToDatasetSelectionDimensions(dimensionRepresentations, selectionDimensionsMap, relatedDsd);
+        List<DatasetSelectionAttribute> attributes = attributesToDatasetSelectionAttributes(datasetAttributes, selectionAttributesMap);
         return new DatasetSelection(dimensions, attributes, false);
     }
 
-    private static List<DatasetSelectionAttribute> attributesToDatasetSelectionAttributes(Attributes attributes) {
+    @SuppressWarnings("unchecked")
+    private static Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension> indexDimensionsById(
+            List<org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension> dimensions) {
+        if (dimensions == null) {
+            return MapUtils.EMPTY_MAP;
+        }
+        Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension> a = new HashMap<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension>();
+        for (org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension dimension : dimensions) {
+            a.put(dimension.getDimensionId(), dimension);
+        }
+        return a;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute> indexAttributesById(
+            List<org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute> attributes) {
+        if (attributes == null) {
+            return MapUtils.EMPTY_MAP;
+        }
+        Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute> a = new HashMap<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute>();
+        for (org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute attribute : attributes) {
+            a.put(attribute.getAttributeId(), attribute);
+        }
+        return a;
+    }
+
+    private static List<DatasetSelectionAttribute> attributesToDatasetSelectionAttributes(Attributes attributes,
+            Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute> selectionAttributesMap) {
         if (attributes == null) {
             return null;
         }
         List<DatasetSelectionAttribute> datasetSelectionAttributes = new ArrayList<DatasetSelectionAttribute>();
         for (Attribute attribute : attributes.getAttributes()) {
-            datasetSelectionAttributes.add(attributeToDatasetSelectionAttribute(attribute));
+            datasetSelectionAttributes.add(attributeToDatasetSelectionAttribute(attribute, selectionAttributesMap.get(attribute.getId())));
         }
         return datasetSelectionAttributes;
     }
 
-    private static DatasetSelectionAttribute attributeToDatasetSelectionAttribute(Attribute attribute) {
+    private static DatasetSelectionAttribute attributeToDatasetSelectionAttribute(Attribute attribute, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute selectionAttribute) {
         DatasetSelectionAttribute datasetSelectionAttribute = new DatasetSelectionAttribute(attribute.getId());
-        datasetSelectionAttribute.setLabelVisualisationMode(CODE_AND_LABEL); // By default
+
+        // Default values
+        LabelVisualisationModeEnum labelVisualizationMode = CODE_AND_LABEL;
+
+        // If we have data sent via api, use that instead
+        if (selectionAttribute != null) {
+            if (selectionAttribute.getLabelVisualisationMode() != null) {
+                labelVisualizationMode = toLabelVisualisationMode(selectionAttribute.getLabelVisualisationMode());
+            }
+        }
+
+        datasetSelectionAttribute.setLabelVisualisationMode(labelVisualizationMode);
         return datasetSelectionAttribute;
     }
 
-    private static List<DatasetSelectionDimension> dimensionsToDatasetSelectionDimensions(Dimensions dimensions, DataStructureDefinition dataStructureDefinition) {
+    private static List<DatasetSelectionDimension> dimensionsToDatasetSelectionDimensions(DimensionRepresentations dimensionRepresentations,
+            Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension> selectionDimensionsMap, DataStructureDefinition dataStructureDefinition) {
         List<DatasetSelectionDimension> datasetSelectionDimensions = new ArrayList<DatasetSelectionDimension>();
-        for (Dimension dimension : dimensions.getDimensions()) {
-            datasetSelectionDimensions.add(dimensionToDatasetSelectionDimension(dimension, dataStructureDefinition));
+        for (DimensionRepresentation dimension : dimensionRepresentations.getDimensions()) {
+            datasetSelectionDimensions.add(dimensionToDatasetSelectionDimension(dimension, dataStructureDefinition, selectionDimensionsMap.get(dimension.getDimensionId())));
         }
         return datasetSelectionDimensions;
     }
 
-    private static DatasetSelectionDimension dimensionToDatasetSelectionDimension(Dimension dimension, DataStructureDefinition dataStructureDefinition) {
-        DatasetSelectionDimension datasetSelectionDimension = new DatasetSelectionDimension(dimension.getId());
-        datasetSelectionDimension.setLabelVisualisationMode(CODE_AND_LABEL); // By default
-        datasetSelectionDimension.setPosition(dataStructureDefinitionToPosition(dimension.getId(), dataStructureDefinition));
-        datasetSelectionDimension.setSelectedDimensionValues(dimensionValuesToSelectedDimensionValues(dimension.getDimensionValues()));
+    private static DatasetSelectionDimension dimensionToDatasetSelectionDimension(DimensionRepresentation dimension, DataStructureDefinition dataStructureDefinition,
+            org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension selectionDimension) {
+        DatasetSelectionDimension datasetSelectionDimension = new DatasetSelectionDimension(dimension.getDimensionId());
+
+        // Default values
+        LabelVisualisationModeEnum labelVisualizationMode = CODE_AND_LABEL;
+        Integer position = dataStructureDefinitionToPosition(dimension.getDimensionId(), dataStructureDefinition);
+
+        // If we have data sent via api, use that instead
+        if (selectionDimension != null) {
+            if (selectionDimension.getLabelVisualisationMode() != null) {
+                labelVisualizationMode = toLabelVisualisationMode(selectionDimension.getLabelVisualisationMode());
+            }
+            if (selectionDimension.getPosition() != null) {
+                position = selectionDimension.getPosition();
+            }
+        }
+
+        datasetSelectionDimension.setLabelVisualisationMode(labelVisualizationMode);
+        datasetSelectionDimension.setPosition(position);
+        datasetSelectionDimension.setSelectedDimensionValues(codeRepresentationsToSelectedDimensionValues(dimension.getRepresentations()));
         return datasetSelectionDimension;
     }
 
@@ -168,30 +268,12 @@ public class DatasetSelectionMapper {
         }
     }
 
-    private static List<String> dimensionValuesToSelectedDimensionValues(DimensionValues dimensionValues) {
-        if (dimensionValues instanceof EnumeratedDimensionValues) {
-            return enumeratedDimensionValuesToSelectedDimensionValues((EnumeratedDimensionValues) dimensionValues);
-        } else if (dimensionValues instanceof NonEnumeratedDimensionValues) {
-            return nonEnumeratedDimensionValuesToSelectedDimensionValues((NonEnumeratedDimensionValues) dimensionValues);
-        } else {
-            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.UNKNOWN);
-            throw new RestException(exception, Status.INTERNAL_SERVER_ERROR);
+    private static List<String> codeRepresentationsToSelectedDimensionValues(CodeRepresentations codeRepresentations) {
+        List<String> selectedDimensionValues = new ArrayList<String>();
+        for (CodeRepresentation dimensionValue : codeRepresentations.getRepresentations()) {
+            selectedDimensionValues.add(dimensionValue.getCode());
         }
+        return selectedDimensionValues;
     }
 
-    private static List<String> nonEnumeratedDimensionValuesToSelectedDimensionValues(NonEnumeratedDimensionValues dimensionValues) {
-        List<String> nonEnumeratedDimensionValues = new ArrayList<String>();
-        for (NonEnumeratedDimensionValue dimensionValue : dimensionValues.getValues()) {
-            nonEnumeratedDimensionValues.add(dimensionValue.getId());
-        }
-        return nonEnumeratedDimensionValues;
-    }
-
-    private static List<String> enumeratedDimensionValuesToSelectedDimensionValues(EnumeratedDimensionValues dimensionValues) {
-        List<String> enumeratedDimensionValues = new ArrayList<String>();
-        for (EnumeratedDimensionValue dimensionValue : dimensionValues.getValues()) {
-            enumeratedDimensionValues.add(dimensionValue.getId());
-        }
-        return enumeratedDimensionValues;
-    }
 }

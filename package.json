@@ -3,12 +3,15 @@
   "description": "Metamac Portal",
   "author": "Arte Consultores",
   "version": "0.0.1",
-  "dependencies": {
-  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-hub": "~0.5.0",
-    "grunt-cli": "~0.1.9"
+    "grunt-cli": "~0.1.9",
+    "comment-json": "^4.2.3"
+  },
+  "scripts": {
+    "json-to-swagger": "node etc/swagger/main.js",
+    "setup": "nvm use 8.17.0"
   }
 }
