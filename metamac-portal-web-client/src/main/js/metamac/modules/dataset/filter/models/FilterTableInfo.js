@@ -35,19 +35,9 @@
         },
 
         _initializeTableInfo: function () {
-            var fixedPermutations = {};
-            var fixedDimensions = this.filterDimensions.getAllFixedDimensionsCopy();
-
-            fixedDimensions.forEach(function (dimension) {
-                var drawableModels = dimension.get('representations').where({ drawable: true });
-                if (drawableModels.length) {
-                    fixedPermutations[dimension.id] = drawableModels[0].id; // Fixed dimensions has limit 1
-                }
-            });
-
             this.top = this._initializeTableInfoForDimensions(this.filterDimensions.dimensionsAtZone('top'));
             this.left = this._initializeTableInfoForDimensions(this.filterDimensions.dimensionsAtZone('left'));
-            this.fixed = fixedPermutations;
+            this.fixed = this._initializeTableInfoForDimensions(this.filterDimensions.dimensionsAtZone('fixed'));
         },
 
         _initializeTableInfoForDimensions: function (dimensions) {
@@ -160,7 +150,14 @@
                 }
             }
 
-            _.extend(permutation, this.fixed);
+            // Fixed dimensions has one single value by definition
+            for (i = 0; i < this.fixed.ids.length; i++) {
+                representation = this.fixed[representationType][i][0];
+                dimensionId = this.fixed.ids[i];
+                if (dimensionId) {
+                    permutation[dimensionId] = representation;
+                }
+            }
 
             return permutation;
         },
