@@ -110,7 +110,6 @@ public class Helpers {
 
             String fields = FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS;
             if (internalPortal) {
-                // FIXME cambiar en api interna tb!
                 dataset = dataset2DtoMapper.datasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null));
             } else {
                 dataset = dataset2DtoMapper.datasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null));
