@@ -7,7 +7,7 @@
 
         /*
         La petición tiene el siguiente aspecto:
-          ?representation=MOTIVOS_ESTANCIA[000|001|002],ISLAS_DESTINO_PRINCIPAL[005|006]
+          ?representation=MOTIVOS_ESTANCIA[000|001|002]:ISLAS_DESTINO_PRINCIPAL[005|006]
         */
 
         getDimensionsParameterForRequest: function (dimensions) {
@@ -19,7 +19,7 @@
             return _.map(dimensions,
                 function (dimension) {
                     return dimension.id + "[" + dimension.representations.join("|") + "]";
-                }).join(",");
+                }).join(":");
         },
 
         isIndicatorRequest: function () {
