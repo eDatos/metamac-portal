@@ -78,6 +78,10 @@ public class DatasetSelectionMapper {
             }
 
             sb.append("]");
+            sb.append(":");
+        }
+        if (':' == sb.charAt(sb.length() - 1)) {
+            sb.deleteCharAt(sb.length() - 1); // delete last :
         }
 
         if (sb.length() > MAX_SIZE_URL) {
