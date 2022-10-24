@@ -43,7 +43,7 @@ public class DatasetSelectionMapper {
         return new DatasetSelection(dimensions, attributes);
     }
 
-    public static String toStatisticalResourcesApiDimsParameter(Exportation exportationBody) {
+    public static String toStatisticalResourcesApiRepresentationParameter(Exportation exportationBody) {
         if (exportationBody == null) {
             return null;
         }
@@ -56,7 +56,7 @@ public class DatasetSelectionMapper {
         StringBuilder sb = new StringBuilder();
         for (org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension dimension : dimensions) {
             sb.append(dimension.getDimensionId());
-            sb.append(":");
+            sb.append("[");
 
             if (dimension.getDimensionFilters() != null) {
                 DimensionFilters dimensionFilters = dimension.getDimensionFilters();
@@ -77,9 +77,12 @@ public class DatasetSelectionMapper {
                 sb.deleteCharAt(sb.length() - 1); // delete last |
             }
 
+            sb.append("]");
             sb.append(":");
         }
-        sb.deleteCharAt(sb.length() - 1); // delete last :
+        if (':' == sb.charAt(sb.length() - 1)) {
+            sb.deleteCharAt(sb.length() - 1); // delete last :
+        }
 
         if (sb.length() > MAX_SIZE_URL) {
             return null;

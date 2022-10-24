@@ -181,7 +181,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.DATASET.getName(), agencyID, resourceID, version);
@@ -202,7 +202,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportQueryToExcel(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename) {
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.QUERY.getName(), agencyID, resourceID);
@@ -227,7 +227,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.INDICATOR.getName(), resourceID);
@@ -248,7 +248,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportIndicatorInstanceToExcel(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename) {
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
@@ -333,7 +333,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportDatasetToPx(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename) {
         try {
 
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.DATASET.getName(), agencyID, resourceID, version);
@@ -354,7 +354,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportIndicatorToPx(Exportation exportationBody, String resourceID, String filename) {
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.INDICATOR.getName(), resourceID);
@@ -375,7 +375,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportIndicatorInstanceToPx(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename) {
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
@@ -412,7 +412,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportQueryToPx(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename) {
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.QUERY.getName(), agencyID, resourceID);
@@ -511,8 +511,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Dataset retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection) {
-        String selectedRepresentations = IndicatorsRestExternalMapper.dimensionSelectionToSelectedRepresentations(dimensionSelection);
-        DataType indicatorInstanceData = indicatorsSystemsRestExternal.retrieveIndicatorInstanceDataByCode(indicatorSystemCode, resourceID, selectedRepresentations);
+        DataType indicatorInstanceData = indicatorsSystemsRestExternal.retrieveIndicatorInstanceDataByCode(indicatorSystemCode, resourceID, dimensionSelection);
         IndicatorInstanceType indicatorInstance = indicatorsSystemsRestExternal.retrieveIndicatorInstanceByCode(indicatorSystemCode, resourceID);
         IndicatorsSystemType indicatorSystem = indicatorsSystemsRestExternal.retrieveIndicatorsSystem(indicatorSystemCode);
         Agency organisation = srmRestExternal.retrieveOrganization();
@@ -520,8 +519,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Dataset retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) {
-        String selectedRepresentations = IndicatorsRestExternalMapper.dimensionSelectionToSelectedRepresentations(dimensionSelection);
-        DataType indicatorData = indicatorsRestExternal.retrieveIndicatorData(resourceID, selectedRepresentations);
+        DataType indicatorData = indicatorsRestExternal.retrieveIndicatorData(resourceID, dimensionSelection);
         IndicatorType indicator = indicatorsRestExternal.retrieveIndicator(resourceID);
         Agency organisation = srmRestExternal.retrieveOrganization();
         return IndicatorsRestExternalMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
@@ -653,7 +651,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Dataset dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
@@ -674,7 +672,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     private ResourceAccess buildResourceAccessForQuery(Exportation exportationBody, String agencyID, String resourceID, String lang) {
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
@@ -696,7 +694,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
@@ -713,7 +711,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     private ResourceAccess buildResourceAccessForIndicatorInstance(Exportation exportationBody, String indicatorSystemCode, String resourceID) {
         try {
             // Transform possible selection (not required)
-            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(exportationBody);
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);

@@ -63,7 +63,7 @@ public class Helpers {
     private String              language;
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
-    private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS              = "-metadata,+keywords";
+    private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
 
     public Helpers(String language) {
         if (language.isEmpty()) {
@@ -110,9 +110,9 @@ public class Helpers {
 
             String fields = FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS;
             if (internalPortal) {
-                dataset = dataset2DtoMapper.datasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null));
+                dataset = dataset2DtoMapper.datasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null));
             } else {
-                dataset = dataset2DtoMapper.datasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null));
+                dataset = dataset2DtoMapper.datasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null));
             }
 
         } catch (Exception e) {
@@ -132,11 +132,11 @@ public class Helpers {
             String fieldsForQuery = FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS;
             if (internalPortal) {
                 org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Query statisticalResourcesQuery = Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint)
-                        .retrieveQuery(agencyId, resourceId, lang, fieldsForQuery, null);
+                        .retrieveQuery(agencyId, resourceId, lang, fieldsForQuery, null, null);
                 query = query2DtoMapper.queryInternalToDto(statisticalResourcesQuery);
             } else {
                 org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query statisticalResourcesQuery = Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId,
-                        resourceId, lang, fieldsForQuery, null);
+                        resourceId, lang, fieldsForQuery, null, null);
                 query = query2DtoMapper.queryExternalToDto(statisticalResourcesQuery);
             }
 
