@@ -34,6 +34,15 @@
     <link href="<c:out value='${apiStyleCssUrl}'/>" media='screen' rel='stylesheet' type='text/css' />
   </c:if>
   
+  <style>
+    .swagger-section .swagger-ui-wrap table.fullwidth {
+        table-layout: fixed;
+    }
+    .swagger-section .swagger-ui-wrap table.fullwidth pre {
+        overflow: auto;
+    }
+  </style>
+  
   <script type="text/javascript">
     $(function () {
       var url = window.location.search.match(/url=([^&]+)/);
