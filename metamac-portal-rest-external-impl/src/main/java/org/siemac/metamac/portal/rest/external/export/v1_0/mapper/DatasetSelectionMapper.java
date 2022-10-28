@@ -206,7 +206,8 @@ public class DatasetSelectionMapper {
         }
         List<DatasetSelectionAttribute> datasetSelectionAttributes = new ArrayList<DatasetSelectionAttribute>();
         for (Attribute attribute : attributes.getAttributes()) {
-            datasetSelectionAttributes.add(attributeToDatasetSelectionAttribute(attribute, selectionAttributesMap.get(attribute.getId())));
+            final org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute selectionAttribute = selectionAttributesMap != null ? selectionAttributesMap.get(attribute.getId()) : null;
+            datasetSelectionAttributes.add(attributeToDatasetSelectionAttribute(attribute, selectionAttribute));
         }
         return datasetSelectionAttributes;
     }
@@ -232,7 +233,10 @@ public class DatasetSelectionMapper {
             Map<String, org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension> selectionDimensionsMap, DataStructureDefinition dataStructureDefinition) {
         List<DatasetSelectionDimension> datasetSelectionDimensions = new ArrayList<DatasetSelectionDimension>();
         for (DimensionRepresentation dimension : dimensionRepresentations.getDimensions()) {
-            datasetSelectionDimensions.add(dimensionToDatasetSelectionDimension(dimension, dataStructureDefinition, selectionDimensionsMap.get(dimension.getDimensionId())));
+            final org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension selectionDimension = selectionDimensionsMap != null
+                    ? selectionDimensionsMap.get(dimension.getDimensionId())
+                    : null;
+            datasetSelectionDimensions.add(dimensionToDatasetSelectionDimension(dimension, dataStructureDefinition, selectionDimension));
         }
         return datasetSelectionDimensions;
     }
