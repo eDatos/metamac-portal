@@ -631,7 +631,7 @@
         },
 
         getDateNextUpdate: function () {
-            return this.metadata.dateNextUpdate;
+            return this.getLocalizedLabel(this.metadata.dateNextUpdate);
         },
 
         getUpdateFrequency: function () {
