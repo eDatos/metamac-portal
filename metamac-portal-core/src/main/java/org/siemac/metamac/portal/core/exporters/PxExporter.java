@@ -315,7 +315,8 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeNextUpdate(PrintWriter printWriter) throws MetamacException {
-        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.NEXT_UPDATE).withValue(datasetAccess.getMetadata().getDateNextUpdate()).build();
+        String label = PortalUtils.getLabel(datasetAccess.getMetadata().getDateNextUpdate(), datasetAccess.getLang(), datasetAccess.getLangAlternative());
+        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.NEXT_UPDATE).withValue(label).build();
         writeLine(printWriter, line);
     }
 
