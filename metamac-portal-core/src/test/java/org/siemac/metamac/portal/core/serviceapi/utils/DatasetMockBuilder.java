@@ -59,7 +59,7 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
         dataset.getMetadata().getLanguages().getResources().add(mockResource("en"));
         dataset.getMetadata().setCreatedDate(new DateTime(2013, 1, 2, 13, 15, 12, 0).toDate());
         dataset.getMetadata().setLastUpdate(new DateTime(2013, 1, 2, 9, 0, 0, 0).toDate());
-        dataset.getMetadata().setDateNextUpdate(new DateTime(2013, 1, 3, 9, 0, 0, 0).toDate());
+        dataset.getMetadata().setDateNextUpdate(internationalString("03/01/2013"));
         dataset.getMetadata().setUpdateFrequency(mockResource("updateFrequency"));
         dataset.getMetadata().setRelatedDsd(mockDataStructureDefinition());
         dataset.getMetadata().setDimensions(new Dimensions());
