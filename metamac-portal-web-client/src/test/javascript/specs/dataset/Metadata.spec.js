@@ -208,7 +208,26 @@ describe("Dataset Metadata", function () {
                 "version": "001.000",
                 "versionRationale": "Major: New resource",
                 "nextVersion": "Non scheduled update",
-                "dateNextUpdate": "2013-07-30T12:00:00+01:00",
+                "dateNextUpdate": {
+                    text: [
+                        {
+                            value: "30/07/2013",
+                            lang: "en"
+                        },
+                        {
+                            value: "30/07/2013",
+                            lang: "pt"
+                        },
+                        {
+                            value: "30/07/2013",
+                            lang: "es"
+                        },
+                        {
+                            value: "30/07/2013",
+                            lang: "ca"
+                        }
+                    ]
+                },
                 "updateFrequency": {
                     "href": "http://estadisticas.arte-consultores.com/metamac-srm-web/apis/structural-resources-internal/latest/codelists/SDMX/CL_FREQ/1.0/codes/M",
                     "name": "Mensual"
