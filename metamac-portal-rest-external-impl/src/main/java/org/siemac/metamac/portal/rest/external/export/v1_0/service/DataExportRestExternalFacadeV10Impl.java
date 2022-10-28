@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -320,6 +321,9 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Exportation getExportation(String jsonBody) {
+        if (StringUtils.isEmpty(jsonBody)) {
+            return null;
+        }
         try {
             ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(Exportation.class, MediaType.APPLICATION_JSON_TYPE);
             return objectMapper.readValue(jsonBody, Exportation.class);
