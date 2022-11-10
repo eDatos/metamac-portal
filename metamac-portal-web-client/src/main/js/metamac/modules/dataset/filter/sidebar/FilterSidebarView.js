@@ -17,6 +17,7 @@
         initialize: function (options) {
             this.filterDimensions = options.filterDimensions;
             this.optionsModel = options.optionsModel;
+            this.metadata = options.metadata;
 
             //Initialize subviews here to keep state
 
@@ -72,7 +73,9 @@
             this._bindEvents();
 
             this.$el.html(this.template({
-                valuesToIgnore: this.filterDimensions.getValuesToIgnoreStatus()
+                valuesToIgnore: this.filterDimensions.getValuesToIgnoreStatus(),
+                showNullValuesByDefault: this.metadata.metadata.relatedDsd.showNullValuesByDefault,
+                showZeroValuesByDefault: this.metadata.metadata.relatedDsd.showZeroValuesByDefault
             }));
 
             var $dimensions = this.$('.filter-sidebar-dimensions');

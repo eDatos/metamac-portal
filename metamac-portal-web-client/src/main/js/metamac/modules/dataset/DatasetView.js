@@ -72,7 +72,8 @@
                 // sidebar - filter
                 this.filterSidebarView = new App.widget.filter.sidebar.FilterSidebarView({
                     filterDimensions: this.filterDimensions,
-                    optionsModel: this.optionsModel
+                    optionsModel: this.optionsModel,
+                    metadata: this.metadata
                 });
 
                 this.orderSidebarView = new App.widget.filter.sidebar.OrderSidebarView({

@@ -463,6 +463,14 @@
             return this.metadata.relatedDsd.autoOpen || false;
         },
 
+        getShowNullValuesByDefault: function () {
+            return this.metadata.relatedDsd.showNullValuesByDefault || false;
+        },
+
+        getShowZeroValuesByDefault: function () {
+            return this.metadata.relatedDsd.showZeroValuesByDefault || false;
+        },
+
         getMantainer: function () {
             return this.getLocalizedLabel(this.metadata.maintainer.name);
         },
