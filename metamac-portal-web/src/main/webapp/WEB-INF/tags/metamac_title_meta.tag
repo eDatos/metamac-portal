@@ -259,9 +259,10 @@
 	   if (servletPath != null) {
 	       organizationService = servletPath.split("/")[2];
 	   }
-       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale));
-       request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService));
-       request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService));
+       String theme = request.getParameter(Helpers.PARAMETER_THEME); /* Must be something like organisation/service */
+       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale, theme));
+       request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService, theme));
+       request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService, theme));
        request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService));
        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());

@@ -1,7 +1,6 @@
 package org.siemac.metamac.portal.web;
 
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -18,6 +17,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static final String SERVICE_TURISMO                   = "turismo";
     private static final String SERVICE_FUNCION_PUBLICA           = "funcion-publica";
     private static final String SERVICE_IQUA                      = "iqua";
+    private static final String SERVICE_CUSTOM                    = "custom";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -54,7 +54,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     geographicalGranularityUrn        = null;
     protected static String     portalCustomStyleBaseUrl          = null;
     protected static String     socialTwitterVia                  = null;
-    protected static Boolean    portalGraphColorsEnabled          = null;
+    protected static Boolean    portalGraphColorsEnabled          = false;
     protected static String     analyticsGoogleTrackingId         = null;
     protected static String     helpUrl                           = null;
 
@@ -145,8 +145,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     public static void setAnalyticsGoogleTrackingId(String analyticsGoogleTrackingId) {
         WebUtils.analyticsGoogleTrackingId = analyticsGoogleTrackingId;
     }
-/* Portal specific. See web.xml for matched patterns */
-    public static String getPortalStyleHeaderUrl(String organizationService, String lang) {
+    /* Portal specific. See web.xml for matched patterns */
+    public static String getPortalStyleHeaderUrl(String organizationService, String lang, String theme) {
         switch (organizationService) {
             case SERVICE_AGRICULTURA:
                 return portalAgricultureStyleHeaderUrl + getBreadcrumbsParams(lang);
@@ -157,13 +157,15 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_FUNCION_PUBLICA:
                 return portalPublicServiceStyleHeaderUrl + getBreadcrumbsParams(lang);
             case SERVICE_IQUA:
-                return portalCustomStyleBaseUrl + "/" + organizationService + "/header.html";
+                return portalCustomStyleBaseUrl + "/" + organizationService + "/header.html" + getBreadcrumbsParams(lang);
+            case SERVICE_CUSTOM:
+                return getPortalCustomBaseUrlForTheme(theme) + "/header.html" + getBreadcrumbsParams(lang);
             default:
                 return portalDefaultStyleHeaderUrl + getBreadcrumbsParams(lang);
         }
     }
 
-    public static String getPortalStyleFooterUrl(String organizationService) {
+    public static String getPortalStyleFooterUrl(String organizationService, String theme) {
         switch (organizationService) {
             case SERVICE_AGRICULTURA:
                 return portalAgricultureStyleFooterUrl;
@@ -175,12 +177,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
                 return portalPublicServiceStyleFooterUrl;
             case SERVICE_IQUA:
                 return portalCustomStyleBaseUrl + "/" + organizationService + "/footer.html";
+            case SERVICE_CUSTOM:
+                return getPortalCustomBaseUrlForTheme(theme) + "/footer.html";
             default:
                 return portalDefaultStyleFooterUrl;
         }
     }
 
-    public static String getPortalStyleCssUrl(String organizationService) {
+    public static String getPortalStyleCssUrl(String organizationService, String theme) {
         switch (organizationService) {
             case SERVICE_AGRICULTURA:
                 return portalAgricultureStyleCssUrl;
@@ -192,6 +196,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
                 return portalPublicServiceStyleCssUrl;
             case SERVICE_IQUA:
                 return portalCustomStyleBaseUrl + "/" + organizationService + "/styles.css";
+            case SERVICE_CUSTOM:
+                return getPortalCustomBaseUrlForTheme(theme) + "/styles.css";
             default:
                 return portalDefaultStyleCssUrl;
         }
@@ -199,6 +205,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static boolean getShowRightsHolder(String organizationService) {
         switch (organizationService) {
+            case SERVICE_CUSTOM:
             case SERVICE_AGRICULTURA:
             case SERVICE_MEDIOAMBIENTE:
             case SERVICE_TURISMO:
@@ -208,6 +215,10 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             default:
                 return false;
         }
+    }
+
+    private static String getPortalCustomBaseUrlForTheme(String theme) {
+        return portalCustomStyleBaseUrl + "/../../" + theme.split("/")[0] + "/portal/" + theme.split("/")[1];
     }
 
     public static String getHelpUrl() {
