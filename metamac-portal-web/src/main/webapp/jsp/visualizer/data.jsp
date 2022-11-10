@@ -11,7 +11,7 @@
 <% /* IDEA : Must ApiUrlStatisticalVisualizer and baseUrl be the same at all times? */ %>
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${pageContext.request.locale.language}" />
-    <div>
+    <div class="dataset-wrapper">
 	    <c:choose>
 		    <c:when test="${ApiUrlStatisticalResources == ''
 		    	|| ApiUrlStructuralResources == ''
