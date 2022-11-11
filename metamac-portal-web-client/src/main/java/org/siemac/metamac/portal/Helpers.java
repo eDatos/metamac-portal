@@ -54,6 +54,9 @@ public class Helpers {
     public static final String  PARAMETER_MULTIDATASET_ID                         = "multidatasetId";
     public static final String  PARAMETER_LOCALE                                  = "locale";
 
+    // Mainly intended for debug
+    public static final String  PARAMETER_THEME                                   = "theme";
+
     private static final String DEFAULT_LANGUAGE                                  = "es";
     private static final String LATEST_VERSION                                    = "~latest";
     private static final int    MINIMAL_FIXED_DIGITS_IN_NUMERATION                = 2;
