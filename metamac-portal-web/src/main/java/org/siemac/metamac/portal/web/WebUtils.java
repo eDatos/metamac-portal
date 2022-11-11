@@ -222,7 +222,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String getPortalCustomBaseUrlForTheme(String theme) {
-        return portalCustomStyleBaseUrl + "/../../" + theme.split("/")[0] + "/portal/" + theme.split("/")[1];
+        final String organisation = theme.split("/")[0];
+        final String service = theme.split("/")[1];
+        return portalCustomStyleBaseUrl + "/../../" + organisation + "/portal/" + service;
     }
 
     public static String getHelpUrl() {
