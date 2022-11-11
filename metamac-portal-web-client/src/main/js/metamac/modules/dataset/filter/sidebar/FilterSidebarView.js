@@ -70,6 +70,7 @@
         render: function () {
             this._unbindEvents();
             this._bindEvents();
+
             this.$el.html(this.template({
                 valuesToIgnore: this.filterDimensions.getValuesToIgnoreStatus()
             }));

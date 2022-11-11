@@ -411,6 +411,7 @@ public class PxExporter {
         PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.AUTOPEN).withValue(datasetAccess.getRelatedDsd().getAutoOpen()).build();
         writeLine(printWriter, line);
     }
+
     /**
      * @param printWriter
      * @throws MetamacException
