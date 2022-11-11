@@ -91,7 +91,9 @@ public enum PxKeysEnum implements Serializable {
     VALUENOTE("VALUENOTE", false, 67, true, null),
     VALUENOTEX("VALUENOTEX", false, 68, true, null),
     VALUES("VALUES", false, 32, true, null),
-    VARIABLE_TYPE("VARIABLE-TYPE", false, 38, true, null);
+    VARIABLE_TYPE("VARIABLE-TYPE", false, 38, true, null),
+    SHOW_NULL_VALUES_BY_DEFAULT("SHOW_NULL_VALUES_BY_DEFAULT", false, 88, true, "YES"),
+    SHOW_ZERO_VALUES_BY_DEFAULT("SHOW_ZERO_VALUES_BY_DEFAULT", false, 89, true, "YES");
 
     // @formatter:on
 

@@ -421,7 +421,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeShowNullValuesByDefault(PrintWriter printWriter) throws MetamacException {
-        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.AUTOPEN).withValue(datasetAccess.getRelatedDsd().getShowNullValuesByDefault()).build();
+        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SHOW_NULL_VALUES_BY_DEFAULT).withValue(datasetAccess.getRelatedDsd().getShowNullValuesByDefault()).build();
         writeLine(printWriter, line);
     }
 
@@ -430,7 +430,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeShowZeroValuesByDefault(PrintWriter printWriter) throws MetamacException {
-        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.AUTOPEN).withValue(datasetAccess.getRelatedDsd().getShowZeroValuesByDefault()).build();
+        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SHOW_ZERO_VALUES_BY_DEFAULT).withValue(datasetAccess.getRelatedDsd().getShowZeroValuesByDefault()).build();
         writeLine(printWriter, line);
     }
 
