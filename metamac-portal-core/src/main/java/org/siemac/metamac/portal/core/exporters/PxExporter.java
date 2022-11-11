@@ -146,10 +146,6 @@ public class PxExporter {
 
         writeAutopen(printWriter);
 
-        writeShowNullValuesByDefault(printWriter);
-
-        writeShowZeroValuesByDefault(printWriter);
-
         writeSubjectAreaAndSubjectCode(printWriter);
 
         // CONFIDENTIAL: NOT SUPPORT
@@ -415,25 +411,6 @@ public class PxExporter {
         PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.AUTOPEN).withValue(datasetAccess.getRelatedDsd().getAutoOpen()).build();
         writeLine(printWriter, line);
     }
-
-    /**
-     * @param printWriter
-     * @throws MetamacException
-     */
-    private void writeShowNullValuesByDefault(PrintWriter printWriter) throws MetamacException {
-        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SHOW_NULL_VALUES_BY_DEFAULT).withValue(datasetAccess.getRelatedDsd().getShowNullValuesByDefault()).build();
-        writeLine(printWriter, line);
-    }
-
-    /**
-     * @param printWriter
-     * @throws MetamacException
-     */
-    private void writeShowZeroValuesByDefault(PrintWriter printWriter) throws MetamacException {
-        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.SHOW_ZERO_VALUES_BY_DEFAULT).withValue(datasetAccess.getRelatedDsd().getShowZeroValuesByDefault()).build();
-        writeLine(printWriter, line);
-    }
-
     /**
      * @param printWriter
      * @throws MetamacException
