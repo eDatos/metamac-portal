@@ -297,3 +297,14 @@
             margin: 0 !important;
         }
     </style>
+    
+    <!-- Default styles with low precedece that can be easily overwritten by custom headers -->
+    <style>                
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .dataset-wrapper {
+            padding: 8px;        
+        }
+    </style>
