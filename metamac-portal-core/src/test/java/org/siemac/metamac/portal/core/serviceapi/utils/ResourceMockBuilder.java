@@ -13,6 +13,8 @@ public abstract class ResourceMockBuilder {
         DataStructureDefinition dataStructureDefinition = new DataStructureDefinition();
         dataStructureDefinition.setShowDecimals(Integer.valueOf(2));
         dataStructureDefinition.setAutoOpen(Boolean.FALSE);
+        dataStructureDefinition.setShowNullValuesByDefault(Boolean.FALSE);
+        dataStructureDefinition.setShowZeroValuesByDefault(Boolean.FALSE);
         dataStructureDefinition.setStub(new DimensionsId());
         dataStructureDefinition.setHeading(new DimensionsId());
         return dataStructureDefinition;

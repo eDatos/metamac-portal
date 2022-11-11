@@ -20,7 +20,7 @@
             this._bindEvents();
 
             this.accordion = true; //accordion behaviour
-            this.valuesToIgnoreStatus = {};
+            this.valuesToIgnoreStatus = { ZERO: !this.metadata.metadata.relatedDsd.showZeroValuesByDefault, NULL: !this.metadata.metadata.relatedDsd.showNullValuesByDefault }; 
 
             this.attributesLikeDimensions = this.metadata.getAttributesLikeDimensions();
         },
