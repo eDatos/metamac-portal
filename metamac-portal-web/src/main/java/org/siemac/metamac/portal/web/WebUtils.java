@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.StringJoiner;
 
 import org.siemac.edatos.core.common.lang.LocaleUtil;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
@@ -18,6 +19,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static final String SERVICE_FUNCION_PUBLICA           = "funcion-publica";
     private static final String SERVICE_IQUA                      = "iqua";
     private static final String SERVICE_CUSTOM                    = "custom";
+
+    private static final String PARAM_BREADCRUMBS                 = "migas";
+    private static final String PARAM_APP_NAME                    = "appName";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -149,19 +153,19 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     public static String getPortalStyleHeaderUrl(String organizationService, String lang, String theme) {
         switch (organizationService) {
             case SERVICE_AGRICULTURA:
-                return portalAgricultureStyleHeaderUrl + getBreadcrumbsParams(lang);
+                return portalAgricultureStyleHeaderUrl + buildHeaderQuery(lang);
             case SERVICE_MEDIOAMBIENTE:
-                return portalEnvironmentStyleHeaderUrl + getBreadcrumbsParams(lang);
+                return portalEnvironmentStyleHeaderUrl + buildHeaderQuery(lang);
             case SERVICE_TURISMO:
-                return portalTourismStyleHeaderUrl + getBreadcrumbsParams(lang);
+                return portalTourismStyleHeaderUrl + buildHeaderQuery(lang);
             case SERVICE_FUNCION_PUBLICA:
-                return portalPublicServiceStyleHeaderUrl + getBreadcrumbsParams(lang);
+                return portalPublicServiceStyleHeaderUrl + buildHeaderQuery(lang);
             case SERVICE_IQUA:
-                return portalCustomStyleBaseUrl + "/" + organizationService + "/header.html" + getBreadcrumbsParams(lang);
+                return portalCustomStyleBaseUrl + "/" + organizationService + "/header.html" + buildHeaderQuery(lang);
             case SERVICE_CUSTOM:
-                return getPortalCustomBaseUrlForTheme(theme) + "/header.html" + getBreadcrumbsParams(lang);
+                return getPortalCustomBaseUrlForTheme(theme) + "/header.html" + buildHeaderQuery(lang);
             default:
-                return portalDefaultStyleHeaderUrl + getBreadcrumbsParams(lang);
+                return portalDefaultStyleHeaderUrl + buildHeaderQuery(lang);
         }
     }
 
@@ -309,15 +313,37 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         WebUtils.helpUrl = helpUrl;
     }
 
-    private static String getBreadcrumbsParams(String lang) {
+    private static String getParam(String param, String value) {
         try {
-            Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
-            String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
-            return "?migas=" + URLEncoder.encode(visualizerTranslation, StandardCharsets.UTF_8.toString());
+            return param + "=" + URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             log.error("UnsupportedEncodingException encoding a constant. This is not supposed to EVER throw", e);
             return "";
         }
+    }
+
+    private static String buildQuery(String... params) {
+        StringJoiner joiner = new StringJoiner("&");
+        for (String param : params) {
+            joiner.add(param);
+        }
+        return joiner.length() > 0 ? "?" + joiner.toString() : "";
+    }
+
+    private static String buildHeaderQuery(String lang) {
+        return buildQuery(getBreadcrumbsParams(lang), getAppNameParam(lang));
+    }
+
+    private static String getAppNameParam(String lang) {
+        Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
+        String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
+        return getParam(PARAM_APP_NAME, visualizerTranslation);
+    }
+
+    private static String getBreadcrumbsParams(String lang) {
+        Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
+        String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
+        return getParam(PARAM_BREADCRUMBS, visualizerTranslation);
     }
 
 }
