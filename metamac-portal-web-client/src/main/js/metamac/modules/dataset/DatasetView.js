@@ -7,6 +7,8 @@
 
         template: "dataset/dataset-page",
 
+        className: "dataset-view",
+
         regions: {
             content: ".dataset-sidebar-visualization-container",
             optionsBar: ".dataset-visualization-options-bar",
@@ -29,7 +31,7 @@
             this._initializeVisualElements();
             this._initializeSidebarView();
             this._initializeFullScreen();
-            this._initializeHighChartsOptions();
+            this._initializeHighChartsOptions();            
         },
 
         _initializeVisualElements: function () {
