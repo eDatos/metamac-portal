@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "grunt serve",
-    "setup": "nvm use 6.11.1"
+    "setup": "nvm use 6.11.1",
+    "build": "grunt build"
   }
 }
