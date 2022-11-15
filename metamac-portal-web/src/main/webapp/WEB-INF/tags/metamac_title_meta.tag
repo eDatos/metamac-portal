@@ -302,9 +302,10 @@
     <style>                
         body {
             font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
         }
         
-        .dataset-wrapper {
+        .visualizer-wrapper {
             padding: 8px;        
         }
     </style>

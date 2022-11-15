@@ -1,13 +1,13 @@
 {{#if showHeader}}
-<div class="dataset-header">
+<div class="visualizer-header">
     <div>
 
-        <div class="dataset-header-actions"></div>
+        <div class="visualizer-header-actions"></div>
 
-        <div class="dataset-header-info">
-            <h1 class="dataset-header-title" title="{{ metadata.title }}">{{ metadata.title }}</h1>
+        <div class="visualizer-header-info">
+            <h1 class="visualizer-header-title" title="{{ metadata.title }}">{{ metadata.title }}</h1>
 
-            <p class="dataset-header-categories">
+            <p class="visualizer-header-categories">
                 {{#join metadata.categories }} {{ label }} {{/join}}
             </p>
         </div>

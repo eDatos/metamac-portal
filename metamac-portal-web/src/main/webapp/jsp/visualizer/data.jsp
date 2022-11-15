@@ -11,7 +11,7 @@
 <% /* IDEA : Must ApiUrlStatisticalVisualizer and baseUrl be the same at all times? */ %>
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${pageContext.request.locale.language}" />
-    <div class="dataset-wrapper">
+    <div class="visualizer-wrapper dataset-wrapper">
 	    <c:choose>
 		    <c:when test="${ApiUrlStatisticalResources == ''
 		    	|| ApiUrlStructuralResources == ''
@@ -24,15 +24,15 @@
 	       	</c:when>
 			<c:otherwise>
 				<c:if test="${ApiUrlExternalUsers != 'error' && WebApplicationExternalUsers != 'error'}">
-					<div class="dataset-header-user"></div>
+					<div class="visualizer-header-user"></div>
 				</c:if>
 			    <c:choose>
 					<c:when test="${!resourceEmpty}">
-						<div class="dataset-header-info">
-			            	<h1 class="dataset-header-title">${resourceName}</h1>
+						<div class="visualizer-header-info">
+			            	<h1 class="visualizer-header-title">${resourceName}</h1>
 			            	<c:choose>
 			            		<c:when test="${resourceDescription != ''}">
-			            			<div><p>${resourceDescription}<p></div>
+			            			<div class="visualizer-description">${resourceDescription}</div>
 			            		</c:when>
 			            	</c:choose>
 			            </div>                	
