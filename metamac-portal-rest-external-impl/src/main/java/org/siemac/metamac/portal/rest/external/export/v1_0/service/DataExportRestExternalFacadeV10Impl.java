@@ -694,7 +694,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
-            return new ResourceAccess(srmRestExternal, dataset, datasetSelection);
+            String langDefault = portalConfiguration.retrieveLanguageDefault();
+            return new ResourceAccess(srmRestExternal, dataset, datasetSelection, langDefault, null);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -711,7 +712,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
-            return new ResourceAccess(srmRestExternal, dataset, datasetSelection);
+            String langDefault = portalConfiguration.retrieveLanguageDefault();
+            return new ResourceAccess(srmRestExternal, dataset, datasetSelection, langDefault, null);
         } catch (Exception e) {
             throw manageException(e);
         }
