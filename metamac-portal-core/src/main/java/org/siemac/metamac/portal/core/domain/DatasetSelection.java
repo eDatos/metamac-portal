@@ -13,25 +13,25 @@ import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 public class DatasetSelection {
 
     // We only support a max of 20 dimensions each type
-    public static final int            LEFT_DIMENSIONS_START_POSITION  = 0;
-    public static final int            TOP_DIMENSIONS_START_POSITION   = 20;
-    public static final int            FIXED_DIMENSIONS_START_POSITION = 40;
-    
-    private boolean userSelection = true;
-    
-    private List<DatasetSelectionDimension>              dimensions    = new ArrayList<DatasetSelectionDimension>();
-    private final Map<String, DatasetSelectionDimension> dimensionsMap = new HashMap<String, DatasetSelectionDimension>();
+    public static final int                              LEFT_DIMENSIONS_START_POSITION  = 0;
+    public static final int                              TOP_DIMENSIONS_START_POSITION   = 20;
+    public static final int                              FIXED_DIMENSIONS_START_POSITION = 40;
 
-    private List<DatasetSelectionAttribute>              attributes    = new ArrayList<DatasetSelectionAttribute>();
-    private final Map<String, DatasetSelectionAttribute> attributesMap = new HashMap<String, DatasetSelectionAttribute>();
-    
-    private final Map<String, Integer> multipliers                     = new HashMap<String, Integer>();
+    private boolean                                      userSelection                   = true;
+
+    private List<DatasetSelectionDimension>              dimensions                      = new ArrayList<DatasetSelectionDimension>();
+    private final Map<String, DatasetSelectionDimension> dimensionsMap                   = new HashMap<String, DatasetSelectionDimension>();
+
+    private List<DatasetSelectionAttribute>              attributes                      = new ArrayList<DatasetSelectionAttribute>();
+    private final Map<String, DatasetSelectionAttribute> attributesMap                   = new HashMap<String, DatasetSelectionAttribute>();
+
+    private final Map<String, Integer>                   multipliers                     = new HashMap<String, Integer>();
 
     public DatasetSelection(List<DatasetSelectionDimension> dimensions, List<DatasetSelectionAttribute> attributes, boolean userSelection) {
         this(dimensions, attributes);
         this.userSelection = userSelection;
     }
-    
+
     public DatasetSelection(List<DatasetSelectionDimension> dimensions, List<DatasetSelectionAttribute> attributes) {
         if (dimensions != null) {
             this.dimensions = new ArrayList<DatasetSelectionDimension>(dimensions);
@@ -45,12 +45,12 @@ public class DatasetSelection {
                 attributesMap.put(attribute.getId(), attribute);
             }
         }
-        
+
         initializeMultipliers(getLeftDimensions());
         initializeMultipliers(getTopDimensions());
         initializedFixedMultipliers();
     }
-    
+
     public boolean isUserSelection() {
         return userSelection;
     }
@@ -82,7 +82,7 @@ public class DatasetSelection {
         LabelVisualisationModeEnum labelVisualisationMode = attribute != null ? attribute.getLabelVisualisationMode() : null;
         return labelVisualisationMode;
     }
-    
+
     private void initializeMultipliers(List<DatasetSelectionDimension> dimensions) {
         ListIterator<DatasetSelectionDimension> dimensionsListInterator = dimensions.listIterator(dimensions.size());
         int incrementCounter = 1;
@@ -104,7 +104,7 @@ public class DatasetSelection {
 
     /**
      * Calculate rows
-     * 
+     *
      * @return the number of total rows in the displayed data table
      */
     public int getRows() {
@@ -119,7 +119,7 @@ public class DatasetSelection {
 
     /**
      * Calculate columns
-     * 
+     *
      * @return the number of total columns in the displayed data table
      */
     public int getColumns() {
@@ -167,7 +167,7 @@ public class DatasetSelection {
 
     /**
      * Calculate the key permutation for a cell of data
-     * 
+     *
      * @param row
      * @param column
      * @return
@@ -188,7 +188,9 @@ public class DatasetSelection {
         }
 
         for (DatasetSelectionDimension dimension : getFixedDimensions()) {
-            permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(0));
+            if (dimension.getSelectedDimensionValues().size() > 0) {
+                permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(0));
+            }
         }
 
         return permutation;
