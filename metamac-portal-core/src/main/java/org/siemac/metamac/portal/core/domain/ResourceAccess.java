@@ -93,10 +93,6 @@ public class ResourceAccess {
 
     private SrmRestExternalFacade                         srmRestExternalFacade;
 
-    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection) throws MetamacException {
-        this(srmRestExternalFacade, dataset, datasetSelection, null, null);
-    }
-
     public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         this.srmRestExternalFacade = srmRestExternalFacade;
 
