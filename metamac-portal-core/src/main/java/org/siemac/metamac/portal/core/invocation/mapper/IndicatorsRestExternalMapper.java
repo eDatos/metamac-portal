@@ -317,6 +317,9 @@ public class IndicatorsRestExternalMapper {
     }
 
     private static DataAttributes indicatorAttributesToDatasetAttributes(List<Map<String, AttributeType>> attributes) {
+        if (attributes == null) {
+            return null;
+        }
         DataAttributes dataAttributes = new DataAttributes();
         dataAttributes.getAttributes().add(indicatorAttributeToDatasetAttribute(attributes));
         dataAttributes.setTotal(BigInteger.valueOf(attributes.size()));
@@ -343,6 +346,9 @@ public class IndicatorsRestExternalMapper {
     }
 
     private static DimensionRepresentations indicatorDimensionsToDatasetDimensions(Map<String, DataDimensionType> dataDimensions) {
+        if (dataDimensions == null) {
+            return null;
+        }
         DimensionRepresentations dimensionRepresentations = new DimensionRepresentations();
 
         for (Map.Entry<String, DataDimensionType> entry : dataDimensions.entrySet()) {

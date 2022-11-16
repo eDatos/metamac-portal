@@ -359,7 +359,7 @@ public class ExcelExporter {
         }
 
         // Contacts
-        if (rightsHolder != null && rightsHolder.getContacts().getTotal().longValue() > 0) {
+        if (rightsHolder != null && rightsHolder.getContacts() != null && rightsHolder.getContacts().getTotal().longValue() > 0) {
             Row rowHeader = sheet.createRow(currentRowCount++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS, locale);
             addStringCell(rowHeader, 0, messageForCode, listTitleCellStyle);
