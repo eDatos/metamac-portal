@@ -10,6 +10,7 @@ import static org.siemac.metamac.portal.core.constants.PortalConstants.RIGHT_BRA
 import static org.siemac.metamac.portal.core.constants.PortalConstants.RIGHT_PARENTHESES;
 import static org.siemac.metamac.portal.core.constants.PortalConstants.SEMICOLON;
 import static org.siemac.metamac.portal.core.constants.PortalConstants.SPACE;
+import static org.siemac.metamac.portal.core.utils.PortalUtils.buildInternationalStringFromSingleCode;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -510,7 +511,8 @@ public class PxExporter {
     private void writeUnits(PrintWriter printWriter) throws MetamacException {
         if (datasetAccess.existsContVariable()) {
             // The general UNITS (not indexed) is mandatory or will launch a "missing units" on pc axis 2008
-            writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
+            final boolean allowEmptyValues = true;
+            writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), buildInternationalStringFromSingleCode(StringUtils.EMPTY, languages), allowEmptyValues);
 
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
@@ -544,7 +546,8 @@ public class PxExporter {
                     }
                 }
                 if (writeEmptyUnit) {
-                    writeLine(printWriter, PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.UNITS).withValue(StringUtils.EMPTY).build());
+                    final boolean allowEmptyValues = true;
+                    writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), buildInternationalStringFromSingleCode(StringUtils.EMPTY, languages), allowEmptyValues);
                 }
             } else {
                 throw new RuntimeException("No attribute of type Measure or Measure Dimension found in the dataset. This is a Metamac error.");
@@ -1086,7 +1089,12 @@ public class PxExporter {
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value) throws MetamacException {
-        writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value));
+        final boolean allowEmptyValues = false;
+        writeLocalisedLine(printWriter, pxKey, indexValues, value, allowEmptyValues);
+    }
+
+    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value, boolean allowEmptyValues) throws MetamacException {
+        writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value), allowEmptyValues);
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, InternationalString indexValue, List<InternationalString> values) throws MetamacException {
@@ -1094,6 +1102,12 @@ public class PxExporter {
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values) throws MetamacException {
+        final boolean allowEmptyValues = false;
+        writeLocalisedLine(printWriter, pxKey, indexValues, values, allowEmptyValues);
+    }
+
+    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values, boolean allowEmptyValues)
+            throws MetamacException {
         if (values == null) {
             return;
         }
@@ -1129,7 +1143,7 @@ public class PxExporter {
 
                     // If there is some missing translation in de values array, the current lang for the metadata is skipped
                     List<String> computedValues = computeLabelValuesForLang(lang, values);
-                    if (computedValues.isEmpty()) {
+                    if (!allowEmptyValues && computedValues.isEmpty()) {
                         continue;
                     }
 
