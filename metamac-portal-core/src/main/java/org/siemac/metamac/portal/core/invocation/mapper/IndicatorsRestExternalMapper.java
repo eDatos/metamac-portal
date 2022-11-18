@@ -258,10 +258,18 @@ public class IndicatorsRestExternalMapper {
         EnumeratedDimensionValue datasetDimensionValue = new EnumeratedDimensionValue();
         datasetDimensionValue.setId(metadataRepresentation.getCode());
         datasetDimensionValue.setName(localisedStringsToInternationalString(metadataRepresentation.getTitle()));
+        datasetDimensionValue.setShowDecimalsPrecision(indicatorQuantityToDatasetShowDecimalsPrecision(metadataRepresentation.getQuantity()));
         return datasetDimensionValue;
     }
 
-    private static InternationalString localisedStringsToInternationalString(Map<String, String> localisedStrings) {
+    private static Integer indicatorQuantityToDatasetShowDecimalsPrecision(QuantityType quantityType) {
+        if (quantityType == null) {
+            return null;
+        }
+        return quantityType.getDecimalPlaces();
+    }
+
+    public static InternationalString localisedStringsToInternationalString(Map<String, String> localisedStrings) {
         InternationalString internationalString = new InternationalString();
         for (Map.Entry<String, String> entry : localisedStrings.entrySet()) {
             if (!DEFAULT.equals(entry.getKey())) {
