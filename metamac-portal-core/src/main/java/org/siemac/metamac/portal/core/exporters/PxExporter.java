@@ -1085,7 +1085,12 @@ public class PxExporter {
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value) throws MetamacException {
-        writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value));
+        final boolean allowEmptyValues = false;
+        writeLocalisedLine(printWriter, pxKey, indexValues, value, allowEmptyValues);
+    }
+
+    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value, boolean allowEmptyValues) throws MetamacException {
+        writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value), allowEmptyValues);
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, InternationalString indexValue, List<InternationalString> values) throws MetamacException {
@@ -1093,6 +1098,12 @@ public class PxExporter {
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values) throws MetamacException {
+        final boolean allowEmptyValues = false;
+        writeLocalisedLine(printWriter, pxKey, indexValues, values, allowEmptyValues);
+    }
+
+    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values, boolean allowEmptyValues)
+            throws MetamacException {
         if (values == null) {
             return;
         }
@@ -1128,7 +1139,7 @@ public class PxExporter {
 
                     // If there is some missing translation in de values array, the current lang for the metadata is skipped
                     List<String> computedValues = computeLabelValuesForLang(lang, values);
-                    if (computedValues.isEmpty()) {
+                    if (!allowEmptyValues && computedValues.isEmpty()) {
                         continue;
                     }
 
