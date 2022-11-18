@@ -53,6 +53,7 @@ import es.gobcan.istac.indicators.rest.types.LinkType;
 import es.gobcan.istac.indicators.rest.types.MetadataAttributeType;
 import es.gobcan.istac.indicators.rest.types.MetadataDimensionType;
 import es.gobcan.istac.indicators.rest.types.MetadataRepresentationType;
+import es.gobcan.istac.indicators.rest.types.QuantityType;
 
 /**
  * Don't map all the fields, only the ones needed to export
