@@ -1,21 +1,18 @@
 package org.siemac.metamac.portal.core.invocation.mapper;
 
 import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.DEFAULT;
-import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.DEFAULT_LANGUAGE;
 import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.PROP_ATTRIBUTE_OBS_CONF;
+import static org.siemac.metamac.portal.core.utils.PortalUtils.localisedStringsToInternationalString;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
-import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
-import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
@@ -103,10 +100,11 @@ public class IndicatorsRestExternalMapper {
     private static DatasetMetadata indicatorBaseMetadataToDatasetMetadata(String version, Map<String, MetadataDimensionType> dimension, Integer decimalPlaces, Map<String, String> title,
             Agency organisation, IndicatorsSystemType indicatorSystem, Map<String, MetadataAttributeType> attributes) {
         DatasetMetadata datasetMetadata = new DatasetMetadata();
+        List<String> languages = calculateLanguagesFromIndicatorLocalisedString(title);
         datasetMetadata.setVersion(version);
-        datasetMetadata.setDimensions(indicatorMetadataDimensionsToDatasetMetadataDimensions(dimension));
+        datasetMetadata.setDimensions(indicatorMetadataDimensionsToDatasetMetadataDimensions(dimension, languages));
         datasetMetadata.setRightsHolder(organisationToResource(organisation));
-        datasetMetadata.setLanguages(buildPartialDatasetLanguageResourceFromIndicatorLanguages(calculateLanguagesFromIndicatorLocalisedString(title)));
+        datasetMetadata.setLanguages(buildPartialDatasetLanguageResourceFromIndicatorLanguages(languages));
         datasetMetadata.setRelatedDsd(buildRelatedDsd(decimalPlaces));
         datasetMetadata.setPublishers(organisationToResources(organisation));
         datasetMetadata.setStatisticalOperation(indicatorSystemToStatisticalOperation(indicatorSystem));
@@ -227,19 +225,19 @@ public class IndicatorsRestExternalMapper {
         return languages;
     }
 
-    private static Dimensions indicatorMetadataDimensionsToDatasetMetadataDimensions(Map<String, MetadataDimensionType> metadataDimensions) {
+    private static Dimensions indicatorMetadataDimensionsToDatasetMetadataDimensions(Map<String, MetadataDimensionType> metadataDimensions, List<String> languages) {
         Dimensions datasetMetadataDimensions = new Dimensions();
         for (Map.Entry<String, MetadataDimensionType> entry : metadataDimensions.entrySet()) {
-            datasetMetadataDimensions.getDimensions().add(indicatorMetadataDimensionToDatasetMetadataDimension(entry.getKey(), entry.getValue()));
+            datasetMetadataDimensions.getDimensions().add(indicatorMetadataDimensionToDatasetMetadataDimension(entry.getKey(), entry.getValue(), languages));
         }
         datasetMetadataDimensions.setTotal(BigInteger.valueOf(metadataDimensions.size()));
         return datasetMetadataDimensions;
     }
 
-    private static Dimension indicatorMetadataDimensionToDatasetMetadataDimension(String index, MetadataDimensionType metadataDimension) {
+    private static Dimension indicatorMetadataDimensionToDatasetMetadataDimension(String index, MetadataDimensionType metadataDimension, List<String> languages) {
         Dimension datasetMetadataDimension = new Dimension();
         datasetMetadataDimension.setId(index);
-        datasetMetadataDimension.setName(buildLocalizedSpanishText(metadataDimension.getCode()));
+        datasetMetadataDimension.setName(buildInternationalStringFromSingleCode(metadataDimension.getCode(), languages));
         datasetMetadataDimension.setType(buildDimensionFromIndicatorDimensionCode(metadataDimension.getCode()));
         datasetMetadataDimension.setDimensionValues(indicatorMetadataDimensionRepresentationsToDatasetMetadataDimensionValues(metadataDimension.getRepresentation()));
         return datasetMetadataDimension;
@@ -269,19 +267,6 @@ public class IndicatorsRestExternalMapper {
         return quantityType.getDecimalPlaces();
     }
 
-    public static InternationalString localisedStringsToInternationalString(Map<String, String> localisedStrings) {
-        InternationalString internationalString = new InternationalString();
-        for (Map.Entry<String, String> entry : localisedStrings.entrySet()) {
-            if (!DEFAULT.equals(entry.getKey())) {
-                LocalisedString localisedString = new LocalisedString();
-                localisedString.setLang(entry.getKey());
-                localisedString.setValue(entry.getValue());
-                internationalString.getTexts().add(localisedString);
-            }
-        }
-        return internationalString;
-    }
-
     private static String localisedStringsToDefaultString(Map<String, String> localisedStrings) {
         return localisedStrings.get(DEFAULT);
     }
@@ -297,15 +282,6 @@ public class IndicatorsRestExternalMapper {
             default:
                 return null;
         }
-    }
-
-    private static InternationalString buildLocalizedSpanishText(String code) {
-        if (code == null) {
-            return null;
-        }
-        Map<String, String> spanishLocalisedStrings = new HashMap<String, String>();
-        spanishLocalisedStrings.put(DEFAULT_LANGUAGE, code);
-        return localisedStringsToInternationalString(spanishLocalisedStrings);
     }
 
     private static Data indicatorDataToDatasetData(DataType data) {
