@@ -2,6 +2,7 @@ package org.siemac.metamac.portal.core.invocation.mapper;
 
 import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.DEFAULT;
 import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.PROP_ATTRIBUTE_OBS_CONF;
+import static org.siemac.metamac.portal.core.utils.PortalUtils.buildInternationalStringFromSingleCode;
 import static org.siemac.metamac.portal.core.utils.PortalUtils.localisedStringsToInternationalString;
 
 import java.math.BigInteger;
