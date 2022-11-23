@@ -374,6 +374,7 @@ module.exports = (grunt) ->
     grunt.registerTask 'serve', ['connect', 'open:preview', 'watch' ]
     grunt.registerTask 'default', 'build'
 
+    # notes: webfonts don't play well with text in svg, if possible convert to paths
     grunt.registerTask 'font', ['webfont', "dev"]
 
     grunt.initConfig(config)

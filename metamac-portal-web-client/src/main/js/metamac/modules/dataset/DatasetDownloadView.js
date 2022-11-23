@@ -15,6 +15,8 @@
             "click a": "clickDownloadButton"
         },
 
+        ADMITED_RESOURCES_FOR_JSON_STAT_DOWNLOAD: ["dataset", "query"],
+
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
             this.visualizationType = this.options.visualizationType;
@@ -29,7 +31,8 @@
                 url: {
                     tsv: this._buildExportEndpoint('tsv'),
                     excel: this._buildExportEndpoint('excel'),
-                    px: this._buildExportEndpoint('px')
+                    px: this._buildExportEndpoint('px'),
+                    jsonstat: this._getJsonStatUrl(),
                 },
                 buttonConfig: this._getButtonConfiguration()
             };
@@ -210,6 +213,15 @@
                 exportEndpoint.searchParams.append(key, value);
             });
             return exportEndpoint;
+        },
+
+        _getJsonStatUrl() {
+            var datasourceIdentifer = this.filterDimensions.metadata.datasourceIdentifier.identifier;
+            if (this.ADMITED_RESOURCES_FOR_JSON_STAT_DOWNLOAD.includes(datasourceIdentifer.type.toLowerCase())) {
+                return datasourceIdentifer.selfLink.href + ".jsonstat";
+            } else {
+                return null;
+            }
         }
     });
 
