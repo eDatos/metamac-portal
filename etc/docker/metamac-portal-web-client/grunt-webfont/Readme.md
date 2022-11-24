@@ -5,3 +5,12 @@
 - En este punto, ejecutamos *bash grunt-webfont.sh* desde git bash por ejemplo. Contiene simplemente los parámetros para lanzar el contenedor de docker y ejecutar la tarea grunt webfont
 - Si hubiera fallos, probar con un único svg e ir avanzando, hay ocasiones en las que un único archivo svg con errores paraliza todo el proceso
 - A la hora de generar, añadirá un // Bootstrap overrides dentro de icons.less. El mismo no hemos de añadirlo, pues ya está dentro de fontface.less, encapsulado en una clase css más especifica
+
+### Notas
+
+- Las webfonts no se llevan bien con el texto en el SVG, con lo que se debe evitar su uso.
+- Algunos recomiendan, entre otras cosas, un tamaño de 1000 x 1000 para el lienzo. https://web.archive.org/web/20171021024323/http://understandinglimited.com/2007/10/29/inscape2fontforge/
+- Parece que grunt-webfont se comporta mejor con las figuras sólidas que con los trazos a la hora de representar la misma figura, pero esto no se ha probado en profundidad.
+- A la hora de realizar los iconos en svg, al combinar figuras, es mejor que la figura que se sustrae sea blanca en vez de negra, o en IE dara problemas.
+- Causa probable de error: una figura con path interior en vez de dos objetos uno la resta del otro.
+- Los SVG que en realidad son imágenes incrustadas no son un formato válido. Ha de ser un vector.
