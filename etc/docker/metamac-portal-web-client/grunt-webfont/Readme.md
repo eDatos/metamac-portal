@@ -8,7 +8,7 @@
 
 ### Notas
 
-- Las webfonts no se llevan bien con el texto en el SVG, con lo que se debe evitar su uso.
+- - Las webfonts no se llevan bien con el texto en el SVG. No use textos, en su lugar, conviertalo a trazos _(paths)_.
 - Algunos recomiendan, entre otras cosas, un tamaño de 1000 x 1000 para el lienzo. https://web.archive.org/web/20171021024323/http://understandinglimited.com/2007/10/29/inscape2fontforge/
 - Parece que grunt-webfont se comporta mejor con las figuras sólidas que con los trazos a la hora de representar la misma figura, pero esto no se ha probado en profundidad.
 - A la hora de realizar los iconos en svg, al combinar figuras, es mejor que la figura que se sustrae sea blanca en vez de negra, o en IE dara problemas.
