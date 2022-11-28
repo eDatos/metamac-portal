@@ -15,8 +15,6 @@
             "click a": "clickDownloadButton"
         },
 
-        ADMITED_RESOURCES_FOR_JSON_STAT_DOWNLOAD: ["dataset", "query"],
-
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
             this.visualizationType = this.options.visualizationType;
@@ -216,9 +214,11 @@
         },
 
         _getJsonStatUrl() {
-            var datasourceIdentifer = this.filterDimensions.metadata.datasourceIdentifier.identifier;
-            if (this.ADMITED_RESOURCES_FOR_JSON_STAT_DOWNLOAD.includes(datasourceIdentifer.type.toLowerCase())) {
-                return datasourceIdentifer.selfLink.href + ".jsonstat";
+            var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+            if (link.hasOwnProperty("href")) {
+                return link.href + ".jsonstat";
+            } else if (typeof link === 'string') {
+                return link + ".jsonstat";
             } else {
                 return null;
             }
