@@ -120,7 +120,7 @@
 
         return _.reduce(values, function (memo, value) {
             var href = Handlebars.Utils.escapeExpression(value.href);
-            var name = Handlebars.Utils.escapeExpression(value.name);
+            var name = value.name;
             result = href ? '<a href=' + href + '>' : '';
             result += name;
             result += href ? '</a>' : '';
