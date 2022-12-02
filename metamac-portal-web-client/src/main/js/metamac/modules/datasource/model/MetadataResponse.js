@@ -499,8 +499,8 @@
             return {
                 validFrom: this.metadata.validFrom,
                 validTo: this.metadata.validTo,
-                dateStart: this.metadata.dateStart,
-                dateEnd: this.metadata.dateEnd
+                dateStart: this.getLocalizedLabel(this.metadata.dateStart),
+                dateEnd: this.getLocalizedLabel(this.metadata.dateEnd)
             };
         },
 
