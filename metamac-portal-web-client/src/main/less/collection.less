@@ -1,11 +1,14 @@
-.collection-description {
-	line-height: 1.6;
-	list-style-type: none;
-	text-align: justify;
+.contenido .collection-wrapper {
+    height: auto;
+    & > ul.capitulos {
+        padding-left: 0;
+    }
 }
+
 .contenido ul.capitulos {
     list-style: none;
     margin: 0;
+    padding-left: 1rem;
 
     li {
         background: none;
@@ -21,7 +24,8 @@
     }
 
     .dimension-title {
-        font: bold 1em @istacFontSerifFamily;
+        font-weight: bold;
+        font-size: 1em;
         display: block;
         margin: 10px 0;
     }
@@ -29,10 +33,12 @@
     .dimension-description {
 		font-weight: normal;
 		margin-bottom: 10px;
+        line-height: 1.6;
     }
 
     .dimension-depth-1 > .dimension-title {
-        font: bold 1em @istacFontSerifFamily;
+        font-weight: bold;
+        font-size: 1em;
         padding: 0 0 3px 10px;
         border-bottom: 1px dotted @istacGreyMedium;
         background: url(data:image/gif;base64,R0lGODlhBAAKAIABADp7vv///yH5BAEAAAEALAAAAAAEAAoAAAIKjI+ZAMYd3ouwAAA7) no-repeat left top;
@@ -50,7 +56,7 @@
         }
 
         .dimension-title {
-            margin: 2px 0 3px 0;
+            margin: 10px 0 3px 0;
         }
     }
 

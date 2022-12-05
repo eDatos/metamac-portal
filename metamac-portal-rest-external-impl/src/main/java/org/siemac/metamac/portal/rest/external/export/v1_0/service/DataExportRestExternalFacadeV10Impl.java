@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -149,14 +150,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
     @Override
     public Response exportDatasetToCsvComma(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(Exportation.class, MediaType.APPLICATION_JSON_TYPE);
-        try {
-            Exportation tsvExportation = objectMapper.readValue(jsonBody, Exportation.class);
-            return exportDatasetToPlainText(PlainTextTypeEnum.CSV_COMMA, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
-        } catch (IOException e) {
-            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, RestExternalConstants.PARAMETER_SELECTION);
-            throw new RestException(exception, Status.BAD_REQUEST);
-        }
+        Exportation tsvExportation = getExportation(jsonBody);
+        return exportDatasetToPlainText(PlainTextTypeEnum.CSV_COMMA, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
     }
 
     @Override
@@ -166,14 +161,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
     @Override
     public Response exportDatasetToCsvSemicolon(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(Exportation.class, MediaType.APPLICATION_JSON_TYPE);
-        try {
-            Exportation tsvExportation = objectMapper.readValue(jsonBody, Exportation.class);
-            return exportDatasetToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
-        } catch (IOException e) {
-            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT, RestExternalConstants.PARAMETER_SELECTION);
-            throw new RestException(exception, Status.BAD_REQUEST);
-        }
+        Exportation tsvExportation = getExportation(jsonBody);
+        return exportDatasetToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
     }
 
     @Override
@@ -181,11 +170,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.DATASET.getName(), agencyID, resourceID, version);
@@ -193,10 +178,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             Dataset dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToExcel(dataset, datasetSelection, lang, filename);
         } catch (Exception e) {
@@ -208,11 +191,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportQueryToExcel(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename) {
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.QUERY.getName(), agencyID, resourceID);
@@ -221,12 +200,13 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
             Dataset relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
+                    query.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportQueryToExcel(query, relatedDataset, datasetSelection, lang, filename);
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             throw manageException(e);
         }
     }
@@ -236,11 +216,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.INDICATOR.getName(), resourceID);
@@ -248,10 +224,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToExcel(dataset, datasetSelection, null, filename);
         } catch (Exception e) {
@@ -263,11 +237,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportIndicatorInstanceToExcel(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename) {
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".xlsx", exportationBody, ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
@@ -275,10 +245,9 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
+
             return exportDatasetToExcel(dataset, datasetSelection, null, filename);
         } catch (Exception e) {
             throw manageException(e);
@@ -315,20 +284,6 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
         }
     }
 
-    private DatasetSelection checkAndTransformSelection(Exportation exportationBody) throws Exception {
-        DatasetSelection datasetSelection = null;
-        if (exportationBody != null && exportationBody.getDatasetSelection() != null) {
-            try {
-                datasetSelection = DatasetSelectionMapper.toDatasetSelection(exportationBody.getDatasetSelection());
-            } catch (Exception e) {
-                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.PARAMETER_INCORRECT,
-                        RestExternalConstants.PARAMETER_SELECTION);
-                throw new RestException(exception, Status.BAD_REQUEST);
-            }
-        }
-        return datasetSelection;
-    }
-
     @Override
     public Response exportDatasetToExcelForm(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename) {
         Exportation excelExportation = getExportation(jsonBody);
@@ -354,6 +309,9 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Exportation getExportation(String jsonBody) {
+        if (StringUtils.isEmpty(jsonBody)) {
+            return null;
+        }
         try {
             ObjectMapper objectMapper = jacksonJsonProvider.locateMapper(Exportation.class, MediaType.APPLICATION_JSON_TYPE);
             return objectMapper.readValue(jsonBody, Exportation.class);
@@ -366,11 +324,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     @Override
     public Response exportDatasetToPx(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename) {
         try {
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.DATASET.getName(), agencyID, resourceID, version);
@@ -378,10 +333,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             Dataset dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(dataset, datasetSelection, lang, filename);
         } catch (Exception e) {
@@ -393,11 +346,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportIndicatorToPx(Exportation exportationBody, String resourceID, String filename) {
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.INDICATOR.getName(), resourceID);
@@ -405,10 +354,8 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(dataset, datasetSelection, null, filename);
         } catch (Exception e) {
@@ -420,11 +367,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportIndicatorInstanceToPx(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename) {
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
@@ -432,10 +375,9 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
+
             return exportDatasetToPx(dataset, datasetSelection, null, filename);
         } catch (Exception e) {
             throw manageException(e);
@@ -462,11 +404,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     public Response exportQueryToPx(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename) {
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             if (filename == null) {
                 filename = buildExportFilename(".px", exportationBody, ResourceType.QUERY.getName(), agencyID, resourceID);
@@ -475,9 +413,9 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
             Dataset relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
+                    query.getMetadata().getRelatedDsd(), exportationBody);
+
             return exportQueryToPx(query, relatedDataset, datasetSelection, filename);
         } catch (Exception e) {
             throw manageException(e);
@@ -565,8 +503,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Dataset retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection) {
-        String selectedRepresentations = IndicatorsRestExternalMapper.dimensionSelectionToSelectedRepresentations(dimensionSelection);
-        DataType indicatorInstanceData = indicatorsSystemsRestExternal.retrieveIndicatorInstanceDataByCode(indicatorSystemCode, resourceID, selectedRepresentations);
+        DataType indicatorInstanceData = indicatorsSystemsRestExternal.retrieveIndicatorInstanceDataByCode(indicatorSystemCode, resourceID, dimensionSelection);
         IndicatorInstanceType indicatorInstance = indicatorsSystemsRestExternal.retrieveIndicatorInstanceByCode(indicatorSystemCode, resourceID);
         IndicatorsSystemType indicatorSystem = indicatorsSystemsRestExternal.retrieveIndicatorsSystem(indicatorSystemCode);
         Agency organisation = srmRestExternal.retrieveOrganization();
@@ -574,8 +511,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     }
 
     private Dataset retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) {
-        String selectedRepresentations = IndicatorsRestExternalMapper.dimensionSelectionToSelectedRepresentations(dimensionSelection);
-        DataType indicatorData = indicatorsRestExternal.retrieveIndicatorData(resourceID, selectedRepresentations);
+        DataType indicatorData = indicatorsRestExternal.retrieveIndicatorData(resourceID, dimensionSelection);
         IndicatorType indicator = indicatorsRestExternal.retrieveIndicator(resourceID);
         Agency organisation = srmRestExternal.retrieveOrganization();
         return IndicatorsRestExternalMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
@@ -707,19 +643,13 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Dataset dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
             if (lang == null) {
@@ -734,18 +664,13 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     private ResourceAccess buildResourceAccessForQuery(Exportation exportationBody, String agencyID, String resourceID, String lang) {
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(), query.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
+                    query.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
             if (lang == null) {
@@ -761,19 +686,14 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
+
             String langDefault = portalConfiguration.retrieveLanguageDefault();
             return new ResourceAccess(srmRestExternal, dataset, datasetSelection, langDefault, null);
         } catch (Exception e) {
@@ -784,19 +704,14 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     private ResourceAccess buildResourceAccessForIndicatorInstance(Exportation exportationBody, String indicatorSystemCode, String resourceID) {
         try {
             // Transform possible selection (not required)
-            DatasetSelection datasetSelection = checkAndTransformSelection(exportationBody);
-            String dimensionSelection = null;
-            if (datasetSelection != null) {
-                dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiDimsParameter(datasetSelection.getDimensions());
-            }
+            String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
             Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
-            if (datasetSelection == null) {
-                datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
-                        dataset.getMetadata().getRelatedDsd());
-            }
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+                    dataset.getMetadata().getRelatedDsd(), exportationBody);
+
             String langDefault = portalConfiguration.retrieveLanguageDefault();
             return new ResourceAccess(srmRestExternal, dataset, datasetSelection, langDefault, null);
         } catch (Exception e) {

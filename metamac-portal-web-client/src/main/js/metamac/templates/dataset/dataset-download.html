@@ -64,5 +64,11 @@
         <input type="hidden" name="jsonBody" value="{{emptySelection}}">
          <a href="#" class="download-csv"><i class="icon-px"></i></a>
     </form>
+
+    {{#if url.jsonstat}}
+    <form method="GET" action="{{url.jsonstat}}" target="_parent">
+         <a href="#" class="download-jsonstat"><i class="icon-data-jsonstat"></i></a>
+    </form>
+    {{/if}}
 </div>
 {{/if}}

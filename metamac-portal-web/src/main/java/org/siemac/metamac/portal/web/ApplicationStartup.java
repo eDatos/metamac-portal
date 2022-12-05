@@ -45,7 +45,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setApiStyleFooterUrl(configurationService.retrieveApiStyleFooterUrl());
 
             WebUtils.setPortalDefaultStyleHeaderUrl(portalConfigurationService.retrievePortalDefaultStyleHeaderUrl());
-            WebUtils.setPortalDefaultStyleCssUrl(portalConfigurationService.retrievePortalDefaultStyleCssUrl());
             WebUtils.setPortalDefaultStyleFooterUrl(portalConfigurationService.retrievePortalDefaultStyleFooterUrl());
 
             WebUtils.setPortalBaseUrl(configurationService.retrievePortalExternalWebApplicationUrlBase());
@@ -62,6 +61,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
             log.error("Error retrieving application configuration", e);
         }
 
+        setPortalDefaultStyleCss();
         setPortalAgricultureStyles();
         setPortalEnvironmentStyles();
         setPortalTourismStyles();
@@ -70,6 +70,14 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setSocialTwitterVia();
         setPortalGraphColorsEnabled();
         setHelpUrl();
+    }
+
+    private void setPortalDefaultStyleCss() {
+        try {
+            WebUtils.setPortalDefaultStyleCssUrl(portalConfigurationService.retrievePortalDefaultStyleCssUrl());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application portal default style css url", e);
+        }
     }
 
     private void setPortalGraphColorsEnabled() {
@@ -183,5 +191,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
         // Visualizer
         checkOptionalProperty(ConfigurationConstants.PORTAL_GRAPH_COLORS_ENABLED);
         checkOptionalProperty(ConfigurationConstants.PORTAL_VISUALIZER_HELP_URL);
+
+        // Styles
+        checkOptionalProperty(ConfigurationConstants.PORTAL_DEFAULT_STYLE_CSS_URL);
     }
 }

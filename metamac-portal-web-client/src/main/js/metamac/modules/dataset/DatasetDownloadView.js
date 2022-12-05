@@ -29,7 +29,8 @@
                 url: {
                     tsv: this._buildExportEndpoint('tsv'),
                     excel: this._buildExportEndpoint('excel'),
-                    px: this._buildExportEndpoint('px')
+                    px: this._buildExportEndpoint('px'),
+                    jsonstat: this._getJsonStatUrl(),
                 },
                 buttonConfig: this._getButtonConfiguration()
             };
@@ -210,6 +211,17 @@
                 exportEndpoint.searchParams.append(key, value);
             });
             return exportEndpoint;
+        },
+
+        _getJsonStatUrl() {
+            var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+            if (link.hasOwnProperty("href")) {
+                return link.href + ".jsonstat";
+            } else if (typeof link === 'string') {
+                return link + ".jsonstat";
+            } else {
+                return null;
+            }
         }
     });
 

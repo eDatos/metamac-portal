@@ -259,9 +259,10 @@
 	   if (servletPath != null) {
 	       organizationService = servletPath.split("/")[2];
 	   }
-       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale));
-       request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService));
-       request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService));
+       String theme = request.getParameter(Helpers.PARAMETER_THEME); /* Must be something like organisation/service */
+       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale, theme));
+       request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService, theme));
+       request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService, theme));
        request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService));
        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
@@ -294,5 +295,17 @@
             left: 0 !important;
             top: 0 !important;
             margin: 0 !important;
+        }
+    </style>
+    
+    <!-- Default styles with low precedece that can be easily overwritten by custom headers -->
+    <style>                
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        
+        .visualizer-wrapper {
+            padding: 8px;        
         }
     </style>

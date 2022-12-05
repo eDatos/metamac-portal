@@ -25,7 +25,7 @@ public class StatisticalResourcesRestExternalFacadeImpl implements StatisticalRe
     @Override
     public Dataset retrieveDataset(String agencyID, String resourceID, String version, List<String> lang, String fields, String dimensionSelection) {
         try {
-            return restApiLocator.getStatisticalResourcesV1_0().retrieveDataset(agencyID, resourceID, version, lang, fields, dimensionSelection);
+            return restApiLocator.getStatisticalResourcesV1_0().retrieveDataset(agencyID, resourceID, version, lang, fields, null, dimensionSelection);
         } catch (Exception e) {
             throw toRestException(e);
         }
@@ -34,7 +34,7 @@ public class StatisticalResourcesRestExternalFacadeImpl implements StatisticalRe
     @Override
     public Query retrieveQuery(String agencyID, String resourceID, List<String> lang, String fields, String dimensionSelection) {
         try {
-            return restApiLocator.getStatisticalResourcesV1_0().retrieveQuery(agencyID, resourceID, lang, fields, dimensionSelection);
+            return restApiLocator.getStatisticalResourcesV1_0().retrieveQuery(agencyID, resourceID, lang, fields, null, dimensionSelection);
         } catch (Exception e) {
             throw toRestException(e);
         }

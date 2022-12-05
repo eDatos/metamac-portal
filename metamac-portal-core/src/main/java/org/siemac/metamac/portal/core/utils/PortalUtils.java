@@ -1,8 +1,12 @@
 package org.siemac.metamac.portal.core.utils;
 
+import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.DEFAULT;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -366,5 +370,33 @@ public class PortalUtils {
         }
 
         return new String[]{agencyID, resourceID, version};
+    }
+
+    public static InternationalString buildInternationalStringFromSingleCode(String code, List<String> languages) {
+        if (code == null) {
+            return null;
+        }
+        Map<String, String> localisedStrings = new HashMap<String, String>();
+        for (String language : languages) {
+            localisedStrings.put(language, code);
+        }
+        return localisedStringsToInternationalString(localisedStrings);
+    }
+
+    public static InternationalString buildInternationalStringFromSingleCode(String code, Set<String> languages) {
+        return buildInternationalStringFromSingleCode(code, new ArrayList<String>(languages));
+    }
+
+    public static InternationalString localisedStringsToInternationalString(Map<String, String> localisedStrings) {
+        InternationalString internationalString = new InternationalString();
+        for (Map.Entry<String, String> entry : localisedStrings.entrySet()) {
+            if (!DEFAULT.equals(entry.getKey())) {
+                LocalisedString localisedString = new LocalisedString();
+                localisedString.setLang(entry.getKey());
+                localisedString.setValue(entry.getValue());
+                internationalString.getTexts().add(localisedString);
+            }
+        }
+        return internationalString;
     }
 }

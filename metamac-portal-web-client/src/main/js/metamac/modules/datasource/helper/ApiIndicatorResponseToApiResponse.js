@@ -163,7 +163,9 @@
                     stub: {
                         dimensionId: ["TIME"] // Always this ones
                     },
-                    autoOpen: true
+                    autoOpen: true,
+                    showNullValuesByDefault: true,
+                    showZeroValuesByDefault: true
                 },
                 dimensions: {
                     dimension: this.indicatorMetadataDimensionsToMetadataDimensions(response.dimension),

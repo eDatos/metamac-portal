@@ -88,12 +88,12 @@
             this.delegate = new App.Table.Delegate();
 
             this.$el.empty();
-
+            
+            this.$canvasWrapper = $('<div class="canvas-wrapper"></div>');
+            this.$el.append(this.$canvasWrapper);
             var containerDimensions = this.containerDimensions();
-
             this.$canvas = $('<canvas width="' + containerDimensions.width + '" height="' + containerDimensions.height + '"></canvas>');
-
-            this.$el.append(this.$canvas);
+            this.$canvasWrapper.append(this.$canvas);
 
             this.view = new App.Table.View({
                 canvas: this.$canvas[0],
@@ -126,8 +126,8 @@
 
         containerDimensions: function () {
             return {
-                width: this.$el.width(),
-                height: this.$el.height()
+                width: this.$canvasWrapper.innerWidth(),
+                height: this.$canvasWrapper.innerHeight()
             };
         },
 

@@ -499,8 +499,8 @@
             return {
                 validFrom: this.metadata.validFrom,
                 validTo: this.metadata.validTo,
-                dateStart: this.metadata.dateStart,
-                dateEnd: this.metadata.dateEnd
+                dateStart: this.getLocalizedLabel(this.metadata.dateStart),
+                dateEnd: this.getLocalizedLabel(this.metadata.dateEnd)
             };
         },
 
@@ -631,7 +631,7 @@
         },
 
         getDateNextUpdate: function () {
-            return this.metadata.dateNextUpdate;
+            return this.getLocalizedLabel(this.metadata.dateNextUpdate);
         },
 
         getUpdateFrequency: function () {

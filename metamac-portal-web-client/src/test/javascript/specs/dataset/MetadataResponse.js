@@ -593,7 +593,26 @@ App.test.response.metadata = {
             "total": 4
         },
         "formatExtentDimensions": 4,
-        "dateNextUpdate": "2013-07-30T12:00:00+01:00",
+        "dateNextUpdate": {
+            text: [
+                {
+                    value: "30/07/2013",
+                    lang: "en"
+                },
+                {
+                    value: "30/07/2013",
+                    lang: "pt"
+                },
+                {
+                    value: "30/07/2013",
+                    lang: "es"
+                },
+                {
+                    value: "30/07/2013",
+                    lang: "ca"
+                }
+            ]
+        },
         "updateFrequency": {
             "id": "M",
             "urn": "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_FREQ(1.0).M",

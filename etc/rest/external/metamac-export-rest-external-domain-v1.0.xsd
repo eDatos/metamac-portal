@@ -31,10 +31,11 @@
 
     <xs:complexType name="DatasetSelectionDimension">
         <xs:sequence>
-            <xs:element name="dimensionId" type="xs:string" minOccurs="1" />
-            <xs:element name="dimensionValues" type="tns:DimensionValues" minOccurs="0" />
-            <xs:element name="labelVisualisationMode" type="tns:LabelVisualisationMode" minOccurs="0" />
-            <xs:element name="position" type="xs:int" minOccurs="0" />
+            <xs:element name="dimensionId" type="xs:string" minOccurs="1" />            
+            <xs:element name="dimensionValues" type="tns:DimensionValues" minOccurs="0" /> <!--  opcional, devuelve todo si no se especifica -->            
+            <xs:element name="dimensionFilters" type="tns:DimensionFilters" minOccurs="0" /> <!-- opcional -->
+            <xs:element name="labelVisualisationMode" type="tns:LabelVisualisationMode" minOccurs="0" /> <!--  opcional, se rellena como LABEL_CODE si no se especifica -->
+            <xs:element name="position" type="xs:int" minOccurs="0" /> <!--  opcional, se rellena desde el dsd si no se especifica -->
         </xs:sequence>
     </xs:complexType> 
     
@@ -47,6 +48,21 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>    
+    
+    <xs:complexType name="DimensionFilters">
+        <xs:sequence>
+            <xs:element name="range" type="tns:Range" minOccurs="0" />
+            <xs:element name="last" type="xs:int" minOccurs="0" />
+            <xs:element name="after" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType> 
+    
+   <xs:complexType name="Range">
+        <xs:sequence>
+            <xs:element name="start" type="xs:string" minOccurs="0" />
+            <xs:element name="end" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType> 
     
     <xs:complexType name="DatasetSelectionAttributes">
         <xs:complexContent>

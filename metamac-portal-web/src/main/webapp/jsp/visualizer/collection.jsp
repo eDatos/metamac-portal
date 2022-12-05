@@ -13,15 +13,19 @@
 
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${pageContext.request.locale.language}" />
-    <div>    
+    <div class="visualizer-wrapper collection-wrapper"> 
         <c:choose>
             <c:when test="${collection != null}">
-            	<h2 class="tit_conten_1_col">${resourceName}</h2>
-            	<div class="collection-description">${resourceDescription}</div>                	
+                <div class="visualizer-header-info">
+            	   <h1 class="visualizer-header-title">${resourceName}</h1>
+            	   <div class="visualizer-description">${resourceDescription}</div>
+                </div>                	
                 <jsp:include page="/jsp/visualizer/collection-node.jsp" />
             </c:when>
 			<c:otherwise>
-            	<h2 class="tit_conten_1_col">Control de Errores</h2>
+                <div class="visualizer-header-info">
+            	   <h2 class="visualizer-header-title">Control de Errores</h2>
+                </div>
             	<div class="contenido">
             		<c:choose>
 	            		<c:when test="${ApiUrlStatisticalResources == ''}">	                	                    

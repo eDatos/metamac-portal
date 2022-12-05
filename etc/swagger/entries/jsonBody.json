@@ -1,0 +1,61 @@
+{
+    "datasetSelection": {
+        "dimensions": {
+            "dimension": [
+                {
+                    "dimensionId": "INDICADORES",
+                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */
+                    "labelVisualisationMode": "LABEL",
+                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */ 
+                    "position": 20, 
+                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */
+                    "dimensionValues": {
+                        "dimensionValue": [
+                            "INDICE_OCUPACION_PLAZAS"
+                        ]
+                    }
+                },
+                {
+                    "dimensionId": "TIME_PERIOD",
+                    "labelVisualisationMode": "LABEL",
+                    "position": 21,
+                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */
+                    "dimensionFilters": {
+                        "range": { /* range incluirá el listado de valores entre start y end, ambos incluidos */
+                            "start": "2010-M01",
+                            "end": "2011-M02" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */
+                        },
+                        "last": 4, /* range incluirá los últimos n valores de entre los disponibles */
+                        "after": "2009" /* after incluirá las fechas posteriores a la definida, incluida ella misma */
+                    }
+                },
+                {
+                    "dimensionId": "CATEGORIA_ALOJAMIENTO",
+                    "labelVisualisationMode": "LABEL",
+                    "position": 0,
+                    "dimensionValues": {
+                        "dimensionValue": [
+                            "TOTAL"
+                        ]
+                    }
+                },
+                {
+                    "dimensionId": "DESTINO_ALOJAMIENTO",
+                    "labelVisualisationMode": "LABEL",
+                    "position": 1,
+                    "dimensionValues": {
+                        "dimensionValue": [
+                            "EL_HIERRO",
+                            "LA_PALMA",
+                            "LA_GOMERA",
+                            "TENERIFE",
+                            "GRAN_CANARIA",
+                            "FUERTEVENTURA",
+                            "LANZAROTE"
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

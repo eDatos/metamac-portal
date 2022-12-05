@@ -276,6 +276,11 @@
     };
 
     App.Table.View.prototype.resize = function (size) {
+        var DELTA = 5;
+        var sizeChangeIsSignificative = Math.abs(this.canvas.width - size.width) > DELTA || Math.abs(this.canvas.height - size.height) > DELTA;
+        if (!sizeChangeIsSignificative) {
+            return;
+        }
         this.canvas.width = size.width;
         this.canvas.height = size.height;
         this.update();

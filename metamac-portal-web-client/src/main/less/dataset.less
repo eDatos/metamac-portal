@@ -1,51 +1,12 @@
-.dataset-header {
-    .clearfix();
-    margin-bottom: 20px;
-
-    .dataset-header-title, p {
-        margin-bottom: 5px;
-    }
-
-    .full-screen & { 
-        display: none;
-    }
+.metamac-container {
+    height: 100%;
+    width: 100%;
 }
 
-.dataset-header-logo {
-    display: block;
-}
-
-.dataset-header-info {
-
-    p {
-        margin: 0 0 10px 0;
-    }
-
-    .dataset-header-title {
-        font-size: 20px;
-        line-height: 25px;
-        color: @istacBlueDark;
-        margin-top: 0;
-    }
-    .dataset-header-categories {
-        font-style: italic;
-        color: @istacBlueLight;
-    }
-}
-
-.dataset-header-actions {
-    width: 250px;
-    float: right;
-
-    .dataset-headers-actions-buttons {
-        text-align: right;
-    }
-
-    a {
-        margin-bottom: 5px;
-        font-weight: bold;
-        font-size: 13px;
-    }
+.dataset-view {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .datasets-visualization {
@@ -171,19 +132,16 @@
     }
 }
 
-.dataset-export {
-    margin-bottom: 17px;
-
-    .dropdown-menu li > a:hover {
-        #gradient > .vertical(@istacBlueLight, @istacBlueDark);
-    }
-}
-
 .btn-group.open .btn-primary.dropdown-toggle {
     background-color: @istacBlueDark;
 }
 
 .dataset-visualization {
+
+    .canvas-wrapper {
+        width: 100%;
+        height: 100%;
+    }
     position: relative;
     height: 100%;
     .clearfix;
@@ -204,7 +162,7 @@
 }
 .dataset-visualization-container {
     position: relative;
-    height: 100%;
+    flex: auto;
     .box-sizing(border-box);
 
     border: 1px solid @istacGreyMedium;
@@ -305,17 +263,16 @@
 
 
 .dataset-sidebar-visualization-container {
+    height: 100%;
     &.dataset-widget {
-        margin-bottom: 0;
 
         .sidebar-container {
-            display: block;
+            height: 100%; 
         }
 
         padding-top: @datasetVisualizationWidgetTitleHeight;
     }
 
-    height: 600px;
     padding-bottom: @datasetVisualizationOptionsBarHeight;
     .box-sizing(border-box);
 
@@ -421,18 +378,6 @@
             text-align: center;
         }
     }
-}
-
-
-.metamac-container.full-screen {        
-    height: 100%;
-    width: 100%;
-    .dataset-sidebar-visualization-container {
-        height: 100%;
-        .sidebar-container {
-            height: 100%;         
-        }
-    }    
 }
 
 .dataset-options-type-icon {
