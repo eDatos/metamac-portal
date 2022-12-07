@@ -8,11 +8,11 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 8.2.2 a 8.2.3-SNAPSHOT
+## 8.2.3 a 8.3.0
 * Es necesario ejecutar los scripts SQL contenidos en la carpeta
 
 ```
-etc/changes-from-release/8.2.2/db/common-metadata/postgresql/*.sql
+etc/changes-from-release/8.2.3/db/common-metadata/postgresql/*.sql
 ```
 * Importante: Esta versión depende de la versión complementos-apps - 5.0.3-SNAPSHOT para ajustar del todo ciertos estilos.
 
