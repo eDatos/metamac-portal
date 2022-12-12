@@ -139,7 +139,7 @@
         },
 
         _isExportableImage: function () {
-            return _.contains(['line', 'column', 'map', 'mapbubble'], this.optionsModel.get('type'));
+            return _.contains(['line', 'column', 'bar', 'map', 'mapbubble'], this.optionsModel.get('type'));
         },
 
         clickFilter: function (e) {

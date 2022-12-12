@@ -69,6 +69,40 @@
                     }
                 }
             },
+            bar: {
+                zones: {
+                    axisy: {
+                        icon: "axis-x",
+                        draggable: false,
+                        location: "left",
+                        showHeader: true,
+                        showSingleValue: true,
+                        assignedAttributeTypes: ["MEASURE"]
+                    },
+                    left: {
+                        icon: "axis-y",
+                        draggable: true,
+                        location: "right",
+                        showHeader: true,
+                        width: "225px",
+                        sortable: true
+                    },
+                    top: {
+                        icon: "bar",
+                        draggable: true,
+                        location: "right",
+                        showHeader: true,
+                        width: "calc(100% - 225px)",
+                        sortable: true
+                    },
+                    fixed: {
+                        icon: "lock",
+                        draggable: true,
+                        location: "right",
+                        showHeader: true
+                    }
+                }
+            },
             line: {
                 zones: {
                     axisy: {
