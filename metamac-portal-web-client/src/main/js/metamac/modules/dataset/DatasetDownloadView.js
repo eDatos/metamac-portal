@@ -4,6 +4,7 @@
     App.namespace('App.modules.dataset.DatasetDownloadView');
 
     var svgExporter = new App.svg.Exporter();
+    var SVG_SELECTOR = '.dataset-visualization-visual-element svg';
 
     App.modules.dataset.DatasetDownloadView = Backbone.View.extend({
 
@@ -37,7 +38,7 @@
 
             if (this._exportableImage()) {
                 var self = this;
-                svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($('svg'))).done(function (svg) {
+                svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($(SVG_SELECTOR))).done(function (svg) {
                     var svgContext = {
                         svg: svg,
                         url: {
@@ -56,11 +57,7 @@
             }
         },
 
-        _exportableImage: function () {
-            return $('svg').exists();
-        },
-
-        _getButtonConfiguration: function () {
+        _getVisualizationType: function () {
             var visualizationSupertype = '';
             switch (this.visualizationType) {
                 case '': // On selection mode
@@ -76,10 +73,23 @@
                     visualizationSupertype = 'graph';
                     break;
             }
+            return visualizationSupertype;
+        },
 
+        _hasExportableImage: function (visualizationSupertype) {
+            return _.contains(['graph', 'map'], visualizationSupertype) && $(SVG_SELECTOR).exists();
+        },
+
+        _exportableImage: function () {
+            var visualizationSupertype = this._getVisualizationType();
+            return this._hasExportableImage(visualizationSupertype);
+        },
+
+        _getButtonConfiguration: function () {
+            var visualizationSupertype = this._getVisualizationType();
             var haveDataFormats = visualizationSupertype == 'data';
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
-            var haveImageFormats = _.contains(['graph', 'map'], visualizationSupertype) && this._exportableImage();
+            var haveImageFormats = this._hasExportableImage(visualizationSupertype);
             var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length == 0;
 
             return {
@@ -99,7 +109,7 @@
             var params = '?';
             params += 'filename=' + encodeURIComponent(filename);
             params += '&type=' + encodeURIComponent(mime);
-            params += '&width=' + $('svg').width();
+            params += '&width=' + $(SVG_SELECTOR).width();
             params += '&scale=2';
 
             return params;
