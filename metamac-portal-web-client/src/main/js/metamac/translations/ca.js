@@ -75,6 +75,7 @@ I18n.translations.ca = {
             fixedDimensionX: "Dimensió fixa",
             horizontalAxis: "Eix horitzontal",
             columns: "Columnes",
+            bars: "Barres",
             lines: "Lineas",
             sectors: "Sectors",
             map: "Territoris",
@@ -110,6 +111,12 @@ I18n.translations.ca = {
                     left: "Eix X",
                     axisy: "Eix I",
                     top: "Columnes"
+                },
+                bar: {
+                    fixed: "Fixades",
+                    left: "Eix Y",
+                    axisy: "Eix X",
+                    top: "Barres"
                 },
                 line: {
                     fixed: "Fixades",

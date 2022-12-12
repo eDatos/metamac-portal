@@ -75,6 +75,7 @@ I18n.translations.es = {
             fixedDimensionX: "Dimensión fija",
             horizontalAxis: "Eje horizontal",
             columns: "Columnas",
+            bars: "Barras",
             lines: "Lineas",
             sectors: "Sectores",
             map: "Territorios",
@@ -110,6 +111,12 @@ I18n.translations.es = {
                     left: "Eje X",
                     axisy: "Eje Y",
                     top: "Columnas"
+                },
+                bar: {
+                    fixed: "Fijadas",
+                    left: "Eje Y",
+                    axisy: "Eje X",
+                    top: "Barras"
                 },
                 line: {
                     fixed: "Fijadas",

@@ -32,6 +32,7 @@
             this.ve = {
                 info: new App.VisualElement.Info(options),
                 column: new App.VisualElement.ColumnChart(options),
+                bar: new App.VisualElement.BarChart(options),
                 line: new App.VisualElement.LineChart(options),
                 table: new App.VisualElement.Table(options),
                 map: new App.VisualElement.Map(_.extend(options, {mapType: 'map'})),

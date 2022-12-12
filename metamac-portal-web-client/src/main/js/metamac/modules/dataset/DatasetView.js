@@ -35,7 +35,7 @@
         },
 
         _initializeVisualElements: function () {
-            var visualElements = ["info", "table", "column", "line"];
+            var visualElements = ["info", "table", "column", "bar", "line"];
             if (_.findWhere(this.metadata.getDimensions(), { type: 'GEOGRAPHIC_DIMENSION' })) {
                 visualElements.push("map");
                 visualElements.push("mapbubble");
