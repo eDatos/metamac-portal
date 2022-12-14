@@ -15,6 +15,7 @@ I18n.translations.en = {
             info: "Info",
             table: "Datatable",
             column: "Columns chart",
+            bar: "Bars chart",
             line: "Lines chart",
             map: "Map",
             mapbubble: "Bubble map",
