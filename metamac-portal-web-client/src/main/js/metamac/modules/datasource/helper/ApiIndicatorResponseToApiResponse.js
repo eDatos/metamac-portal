@@ -59,6 +59,9 @@
                 parsedRepresentation.name = {
                     text: self.indicatorInternationalTextToInternationalText(representation.title)
                 };
+                if (dimension.code === "MEASURE" && _.has(representation, 'quantity') && _.has(representation.quantity, 'decimalPlaces')) {
+                    parsedRepresentation.showDecimalsPrecision = representation.quantity.decimalPlaces;
+                }
                 self.setGranularityType(parsedRepresentation, representation, dimension.code)
                 return parsedRepresentation;
             });

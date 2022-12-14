@@ -254,13 +254,7 @@
                     }
 
                     if (isMeasureDimension) {
-                        if (_.has(dimensionValue, 'showDecimalsPrecision')) {
-                            representation.decimals = dimensionValue.showDecimalsPrecision
-                        } else if (_.has(dimensionValue, 'quantity') && _.has(dimensionValue.quantity, 'decimalPlaces')) {
-                            representation.decimals = dimensionValue.quantity.decimalPlaces;
-                        } else {
-                            representation.decimals = self.getDefaultDecimals();
-                        }
+                        representation.decimals = _.has(dimensionValue, 'showDecimalsPrecision') ? dimensionValue.showDecimalsPrecision : self.getDefaultDecimals();
                     }
                     return representation;
                 });
