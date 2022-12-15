@@ -15,6 +15,7 @@ I18n.translations.pt = {
             info: "Informação",
             table: "Tabela de dados",
             column: "Gráfico de colunas",
+            bar: "Gráfico de bares",
             line: "Gráfico de linhas",
             map: "Mapa",
             mapbubble: "Mapa de símbolos",
