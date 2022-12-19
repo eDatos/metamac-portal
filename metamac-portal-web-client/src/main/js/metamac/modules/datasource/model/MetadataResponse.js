@@ -476,6 +476,9 @@
         },
 
         getTitle: function () {
+            if (this.datasourceIdentifier.identifier.widgetTitle && this.datasourceIdentifier.identifier.widgetTitle[this.localesIndex.primary]) {
+                return this.datasourceIdentifier.identifier.widgetTitle[this.localesIndex.primary];
+            }
             return this.getLocalizedLabel(this.metadataResponse.name);
         },
 

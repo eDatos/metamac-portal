@@ -360,6 +360,11 @@ I18n.translations.pt = {
                 noTemporalDimension: "Este recurso não permite a escolha do período porque não possui uma dimensão temporal.",
                 noVersionUpdate: "Este recurso não permite verificar versões anteriores."
             }
+        },
+        embedConfig: {
+            label: {
+                title: "Título"
+            }
         }
     },
     user: {
