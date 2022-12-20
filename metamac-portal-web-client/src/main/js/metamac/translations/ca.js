@@ -362,6 +362,11 @@ I18n.translations.ca = {
                 noTemporalDimension: "Aquest recurs no permet triar el període perquè no té una dimensió temporal.",
                 noVersionUpdate: "Aquest recurs no permet consultar versions anteriors."
             }
+        },
+        embedConfig: {
+            label: {
+                title: "Títol"
+            }
         }
     },
     user: {

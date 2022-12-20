@@ -360,6 +360,11 @@ I18n.translations.en = {
                 noTemporalDimension: "This resource does not allow choosing the period because it does not have a temporal dimension.",
                 noVersionUpdate: "This resource does not allow checking previous versions."
             }
+        },
+        embedConfig: {
+            label: {
+                title: "Title"
+            }
         }
     },
     user: {

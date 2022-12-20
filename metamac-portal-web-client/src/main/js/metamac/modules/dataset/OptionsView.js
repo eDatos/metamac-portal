@@ -259,12 +259,12 @@
             } else {
                 if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
                     var self = this;
-                    modalContentView = new App.components.modal.PermalinkConfigModalView({
+                    modalContentView = new App.components.modal.EmbedConfigModalView({
                         filterDimensions: this.filterDimensions,
-                        onSubmit: function (permalink) {
+                        onSubmit: function (permalink, embedConfigExtraData) {
                             modal.close();
 
-                            modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions });
+                            modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title });
                             modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
                             modal.show();
                         },

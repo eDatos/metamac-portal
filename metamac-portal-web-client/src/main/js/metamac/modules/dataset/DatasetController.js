@@ -43,7 +43,7 @@
             this.router.navigate(link);
 
             var self = this;
-            var datasetIdentifier = _.pick(options, "type", "agency", "identifier", "version", "permalinkId", "indicatorSystem", "geo", "multidatasetId");
+            var datasetIdentifier = _.pick(options, "type", "agency", "identifier", "version", "permalinkId", "indicatorSystem", "geo", "multidatasetId", "widgetTitle");
             if (this.visualizationView) {
                 this.visualizationView.showLoading();
             }

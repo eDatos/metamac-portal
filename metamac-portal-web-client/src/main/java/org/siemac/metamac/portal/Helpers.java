@@ -2,6 +2,8 @@ package org.siemac.metamac.portal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriUtils;
 
 public class Helpers {
 
@@ -53,6 +56,7 @@ public class Helpers {
     public static final String  PARAMETER_SHARED_VISUALIZER_URL                   = "sharedVisualizerUrl";
     public static final String  PARAMETER_MULTIDATASET_ID                         = "multidatasetId";
     public static final String  PARAMETER_LOCALE                                  = "locale";
+    public static final String  PARAMETER_TITLE                                   = "title";
 
     // Mainly intended for debug
     public static final String  PARAMETER_THEME                                   = "theme";
@@ -214,17 +218,17 @@ public class Helpers {
         return objectMapper.readValue(content, PermalinkContent.class);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) {
-        return buildUrl(permalink, sharedVisualizerUrl, null);
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) throws UnsupportedEncodingException {
+        return buildUrl(permalink, sharedVisualizerUrl, null, null);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale) {
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
 
         QueryParams queryParams = permalink.getContent().getQueryParams();
 
         buildUrl(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
-                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale);
+                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title);
 
         // Includes #
         stringBuilder.append(permalink.getContent().getHash());
@@ -233,11 +237,11 @@ public class Helpers {
         return stringBuilder.toString();
     }
 
-    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl) {
-        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null);
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl) throws UnsupportedEncodingException {
+        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null, null);
     }
 
-    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale) {
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
         MultidatasetTable table = (MultidatasetTable) multidataset.getData().getNodes().getNodes().get(0);
         Resource resource = table.getDataset() != null ? table.getDataset() : table.getQuery();
@@ -247,13 +251,13 @@ public class Helpers {
 
         String[] tripleIdentifier = getTripleIdentifier(resource);
 
-        buildUrl(stringBuilder, resourceKindToResourceType(resource.getKind()), tripleIdentifier[0], tripleIdentifier[1], tripleIdentifier[2], null, multidatasetId, sharedVisualizerUrl, locale);
+        buildUrl(stringBuilder, resourceKindToResourceType(resource.getKind()), tripleIdentifier[0], tripleIdentifier[1], tripleIdentifier[2], null, multidatasetId, sharedVisualizerUrl, locale, title);
 
         return stringBuilder.toString();
     }
 
     private static void buildUrl(StringBuilder stringBuilder, String resourceType, String agency, String identifier, String version, String indicatorSystem, String multidatasetId,
-            String sharedVisualizerUrl, String locale) {
+            String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         appendParameter(stringBuilder, PARAMETER_RESOURCE_TYPE, resourceType);
         appendParameter(stringBuilder, PARAMETER_AGENCY_ID, agency);
         appendParameter(stringBuilder, PARAMETER_RESOURCE_ID, identifier);
@@ -261,6 +265,7 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_INDICATOR_SYSTEM, indicatorSystem);
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
+        appendParameter(stringBuilder, PARAMETER_TITLE, UriUtils.encodeQueryParam(title, StandardCharsets.UTF_8.toString()));
         if (locale != null) {
             appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
         }

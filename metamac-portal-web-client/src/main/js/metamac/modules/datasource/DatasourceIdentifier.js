@@ -9,7 +9,7 @@
 
     App.datasource.DatasourceIdentifier.prototype = {
         
-        idAttributes: ["type", "agency", "identifier", "version", "indicatorSystem", "permalinkId", "multidatasetId"],
+        idAttributes: ["type", "agency", "identifier", "version", "indicatorSystem", "permalinkId", "multidatasetId", "widgetTitle"],
         
         initialize: function (identifier) {
             this.identifier = _.pick(identifier, this.idAttributes) || {};

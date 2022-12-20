@@ -33,6 +33,7 @@ function getWidgetUrl(options) {
 	endpoint += options.chromeFrameObject ? '?chromeFrameObject=true&' : '?';
 	endpoint += options.sharedVisualizerUrl ? 'sharedVisualizerUrl=' + options.sharedVisualizerUrl + '&' : '';
 	endpoint += options.locale ? 'locale=' + options.locale + '&' : '';
+	endpoint += options.title ? 'title=' + encodeURIComponent(JSON.stringify(options.title)) + '&' : '';
 	return endpoint + options.params;
 }
 

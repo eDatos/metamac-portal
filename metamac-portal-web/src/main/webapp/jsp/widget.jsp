@@ -64,9 +64,10 @@
     <%
         String permalinkId = request.getParameter("permalink");
         String sharedVisualizerUrl = request.getParameter("sharedVisualizerUrl");
+		String title = request.getParameter("title");
         if (permalinkId != null && !permalinkId.isEmpty()) {
             Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId);
-            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, locale));
+            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, locale, title));
         }
     %>
     <%
@@ -76,7 +77,7 @@
         if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
             Boolean internalPortal = false; // Widgets sólo externos
             Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
-            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale));
+            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale, title));
         }
     %>
 </head>
@@ -90,8 +91,17 @@
 	function getQueryParams(params) {
 		var reg = new RegExp("(^|&)" + params + "=([^&]*)(&|$)");
 		var r = window.location.search.substr(1).match(reg);
-		if (r != null) return unescape(r[2]);
-		return null;
+		return (r != null) ? r[2] : null;
+	}
+
+	function getQueryParamsAndUnescape(params) {
+		var paramValue = getQueryParams(params);
+		return (paramValue != null) ? unescape(paramValue) : null;
+	}
+
+	function getQueryParamsAndDecode(params) {
+		var paramValue = getQueryParams(params);
+		return (paramValue != null) ? decodeURIComponent(paramValue) :null;
 	}
 </script>                
 
@@ -102,14 +112,15 @@
         I18n.defaultLocale = "es";
         I18n.locale = "${locale}";
 
-        App.queryParams["agency"] = getQueryParams("agencyId");
-        App.queryParams["identifier"] = getQueryParams("resourceId");
-        App.queryParams["version"] = getQueryParams("version");
-        App.queryParams["type"] = getQueryParams("resourceType");
-        App.queryParams["indicatorSystem"] = getQueryParams("indicatorSystem");
-        App.queryParams["geo"] = getQueryParams("geo");
-        App.queryParams["multidatasetId"] = getQueryParams("multidatasetId");
-        App.config["chromeFrameObject"] = getQueryParams("chromeFrameObject");
+        App.queryParams["agency"] = getQueryParamsAndUnescape("agencyId");
+        App.queryParams["identifier"] = getQueryParamsAndUnescape("resourceId");
+        App.queryParams["version"] = getQueryParamsAndUnescape("version");
+        App.queryParams["type"] = getQueryParamsAndUnescape("resourceType");
+        App.queryParams["indicatorSystem"] = getQueryParamsAndUnescape("indicatorSystem");
+        App.queryParams["geo"] = getQueryParamsAndUnescape("geo");
+        App.queryParams["multidatasetId"] = getQueryParamsAndUnescape("multidatasetId");
+        App.queryParams["widgetTitle"] = JSON.parse(getQueryParamsAndDecode("title"));
+        App.config["chromeFrameObject"] = getQueryParamsAndUnescape("chromeFrameObject");
         App.config["widget"] = true;
 
         App.config["organisationUrn"] = "${organisationUrn}";
@@ -123,9 +134,8 @@
         App.endpoints["permalinks"] = "${ApiUrlPermalinks}/v1.0";
         App.endpoints["export"] = "${ApiUrlExport}/v1.0";
         App.endpoints["statistical-visualizer"] = "${StatisticalVisualizerBase}";
-        App.endpoints["sharedVisualizerUrl"] = getQueryParams("sharedVisualizerUrl");
+        App.endpoints["sharedVisualizerUrl"] = getQueryParamsAndUnescape("sharedVisualizerUrl");
         App.endpoints["indicators"] = "${ApiUrlIndicators}/v1.0";
-
 
         App.start();
 
