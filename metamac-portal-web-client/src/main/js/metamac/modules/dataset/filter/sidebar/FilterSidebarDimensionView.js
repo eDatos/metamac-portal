@@ -92,6 +92,7 @@
                 var levelsModels = _(hierarchyLevel).times(function (n) {
                     return { id: n, title: 'Nivel ' + (n + 1) };
                 });
+                levelsModels.unshift({ id: -1, title: I18n.t('filter.selector.level.all') });
                 this.levelsCollection = new Backbone.Collection(levelsModels);
 
                 this.levelView = new App.components.select.views.SelectView({
