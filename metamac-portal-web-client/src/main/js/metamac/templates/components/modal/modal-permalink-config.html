@@ -1,4 +1,5 @@
 <form class="modal-permalink-config" novalidate>
+    <div id="permalink-config-additional-fields"></div>
     <div {{#if thereIsTemporalDimension }} hidden {{/if}}>
         <fieldset>
             <label>{{ message "modal.permalinkConfig.label.version.group" }}</label>
@@ -70,7 +71,6 @@
             </div>
             <p class="form-info" {{#if thereAreVersions }} hidden {{/if}}>{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
         </fieldset>
-        <div id="permalink-config-additional-fields"></div>
     </div>
 
     <p id="permalink-config-error" class="form-error"></p>
