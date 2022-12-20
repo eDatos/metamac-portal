@@ -137,7 +137,10 @@ I18n.translations.ca = {
             }
         },
         selector: {
-            level: "Nivell {{level}}"
+            level: {
+                template: "Nivell {{level}}",
+                all: "Tots"
+            }
         },
         sort: {
             options: {

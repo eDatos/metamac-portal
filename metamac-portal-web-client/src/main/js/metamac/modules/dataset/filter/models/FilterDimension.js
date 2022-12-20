@@ -125,7 +125,7 @@
             } else {
                 representations.each(function (model) {
                     var level = model.get('level');
-                    var visible = level === filterLevel;
+                    var visible = filterLevel === -1 || filterLevel === level;
                     if (visible) {
                         model.set({ visible: true, open: false, matchIndexBegin: undefined, matchIndexEnd: undefined });
                     } else {

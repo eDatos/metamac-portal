@@ -137,7 +137,10 @@ I18n.translations.pt = {
             }
         },
         selector: {
-            level: "Nível {{level}}"
+            level: {
+                template: "Nível {{level}}",
+                all: "Todos"
+            }
         },
         sort: {
             options: {
