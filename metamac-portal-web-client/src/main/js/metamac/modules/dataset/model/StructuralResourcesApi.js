@@ -114,7 +114,7 @@
             }
 
             if (measureConcept) {
-                this.getConcepts(measureConcept, callback);
+                this.getConceptsAllAtOnce(measureConcept, callback);
             }
         },
 
@@ -144,6 +144,29 @@
                 .apply($, promises)
                 .done(function () {
                     callback(null, results);
+                });
+        },
+
+        getConceptsAllAtOnce: function (conceptItems, callback) {
+            if (!conceptItems || conceptItems.length <= 0) {
+                return [];
+            }
+
+            var conceptsUrl = new URL(conceptItems[0].selfLink.href);
+            conceptsUrl.pathname = conceptsUrl.pathname.replace(/\/[^\/]+\/*$/, '');
+            var requestParams = {
+                url: conceptsUrl.toString() + "?_type=json&fields=+description,+annotations",
+                method: "GET",
+                dataType: 'jsonp',
+                jsonp: '_callback'
+            };
+
+            $.ajax(requestParams)
+                .done(function (response) {
+                    callback(null, response.concept);
+                })
+                .fail(function () {
+                    callback("Error fetching concepts");
                 });
         }
     };
