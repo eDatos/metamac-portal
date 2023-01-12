@@ -307,7 +307,8 @@
             font-size: 14px;
         }
         
-        .visualizer-wrapper {
-            padding: 8px;        
+        .visualizer-wrapper,
+        .contenido .loader {
+            padding: 8px;
         }
     </style>
