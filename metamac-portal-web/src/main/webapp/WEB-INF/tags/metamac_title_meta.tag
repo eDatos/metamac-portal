@@ -163,6 +163,8 @@
                 }
             }
         }
+        request.setAttribute("currentLocale", locale);
+        
         Helpers helper = new Helpers(locale);
 
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);

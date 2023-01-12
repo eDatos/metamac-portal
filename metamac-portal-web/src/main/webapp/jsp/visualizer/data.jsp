@@ -10,7 +10,7 @@
 <c:set var="baseURL">${fn:replace(requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}</c:set>
 <% /* IDEA : Must ApiUrlStatisticalVisualizer and baseUrl be the same at all times? */ %>
 <t:metamac_plantilla_1col baseURL="${baseURL}">
-<fmt:setLocale value="${pageContext.request.locale.language}" />
+<fmt:setLocale value="${currentLocale}" />
     <div class="visualizer-wrapper dataset-wrapper">
 	    <c:choose>
 		    <c:when test="${ApiUrlStatisticalResources == ''
@@ -64,11 +64,7 @@
 
 						    } else {
 								I18n.defaultLocale = "es";
-								if("${internationalizationCookie}" !== "error") {
-									I18n.locale = Cookies.get("${internationalizationCookie}") || "${pageContext.request.locale.language}";
-								} else {
-									I18n.locale = "${pageContext.request.locale.language}";
-								}
+								I18n.locale = "${currentLocale}";
 
 								// http://estadisticas.arte-consultores.com/statistical-resources
 			                    App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
