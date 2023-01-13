@@ -102,22 +102,6 @@
             this.getConcepts(conceptItems, callback);
         },
 
-        getMeasureConcepts: function (callback) {
-            var measureConcept;
-            if (this.metadata.metadata.measureCoverages) {
-                measureConcept = this.metadata.metadata.measureCoverages.resource;
-            } else if (this.metadata.metadata.attributes) {
-                var measureAttribute = _.findWhere(this.metadata.metadata.attributes.attribute, { type: "MEASURE", attachmentLevel: "DATASET" });
-                if (measureAttribute) {
-                    measureConcept = measureAttribute.attributeValues.value;
-                }
-            }
-
-            if (measureConcept) {
-                this.getConceptsAllAtOnce(measureConcept, callback);
-            }
-        },
-
         getConcepts: function (conceptItems, callback) {
             var results = [];
             var promises = [];
@@ -147,15 +131,29 @@
                 });
         },
 
-        getConceptsAllAtOnce: function (conceptItems, callback) {
-            if (!conceptItems || conceptItems.length <= 0) {
-                return [];
+        getMeasureConcepts: function (callback) {
+            var measureConcept;
+            if (this.metadata.metadata.measureCoverages) {
+                measureConcept = this.metadata.metadata.measureCoverages.resource;
+            } else if (this.metadata.metadata.attributes) {
+                var measureAttribute = _.findWhere(this.metadata.metadata.attributes.attribute, { type: "MEASURE", attachmentLevel: "DATASET" });
+                if (measureAttribute) {
+                    measureConcept = measureAttribute.attributeValues.value;
+                }
             }
 
-            var conceptsUrl = new URL(conceptItems[0].selfLink.href);
-            conceptsUrl.pathname = conceptsUrl.pathname.replace(/\/[^\/]+\/*$/, '');
+            if (measureConcept) {
+                if (measureConcept.length === 0) {
+                    callback(null, []);
+                } else {
+                    this.getConceptsFromConceptSchemeUrl(this.getConceptSchemeUrlFromListOfConcepts(measureConcept), callback);
+                }
+            }
+        },
+
+        getConceptsFromConceptSchemeUrl: function (conceptSchemeUrl, callback) {
             var requestParams = {
-                url: conceptsUrl.toString() + "?_type=json&fields=+description,+annotations",
+                url: conceptSchemeUrl + "/concepts?_type=json&fields=+description,+annotations",
                 method: "GET",
                 dataType: 'jsonp',
                 jsonp: '_callback'
@@ -168,6 +166,12 @@
                 .fail(function () {
                     callback("Error fetching concepts");
                 });
+        },
+
+        getConceptSchemeUrlFromListOfConcepts: function (conceptItems) {
+            var conceptsUrl = new URL(conceptItems[0].selfLink.href);
+            conceptsUrl.pathname = conceptsUrl.pathname.replace(/\/concepts\/[^\/]+\/*$/, '');
+            return conceptsUrl.toString();
         }
     };
 
