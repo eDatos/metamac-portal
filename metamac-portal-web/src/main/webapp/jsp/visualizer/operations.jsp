@@ -15,8 +15,8 @@
     var locale = "${currentLocale}";
 </script>
 <script>
-    function parseCollectionsIntoOperationsTree(collection) {
-        return _.chain(collection)
+    function parseCollectionsIntoOperationsTree(collections) {
+        return _.chain(collections)
             .groupBy((collection) => collection.statisticalOperation.id)
             .map((operation) => { 
                 if (!(operation[0] && operation[0].statisticalOperation)) {
