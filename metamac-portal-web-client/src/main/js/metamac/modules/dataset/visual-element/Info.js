@@ -35,6 +35,17 @@
             self.nonMeasureDimensions = _.filter(self.dimensions, function (dimension) { 
                 return dimension.type !== "MEASURE_DIMENSION"  && !self.filterDimensions.get(dimension.id).get('singleValue'); 
             });
+            self.dimensionLikeAttributes = _.chain(self.dimensions)
+                .filter(function (dimension) { 
+                    return self.filterDimensions.get(dimension.id).get('singleValue'); 
+                })
+                .map(function(dimension) {
+                    return {
+                        name: self.filterDimensions.get(dimension.id).get('label'),
+                        value: self.filterDimensions.get(dimension.id).get('representations').getSingleValue().get('label')
+                    }
+                })
+                .value();
             self.render();
         },
 
@@ -111,6 +122,8 @@
             var context = {
                 metadata: this.data.metadata.toJSON(),
                 datasetAttributes: this.datasetAttributes,
+                dimensionLikeAttributes: this.dimensionLikeAttributes,
+                hasAttributesOrLikeAttributes: this.datasetAttributes || this.dimensionLikeAttributes,
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,

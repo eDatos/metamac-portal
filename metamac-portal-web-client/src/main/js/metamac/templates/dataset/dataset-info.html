@@ -15,13 +15,14 @@
             </ul>
         </div>
     </div>
-    {{/if}} {{#if datasetAttributes }}
+    {{/if}} {{#if hasAttributesOrLikeAttributes }}
     <div class="field metadata-accordion">
         <div class="metadata-title">
             <div>{{message "entity.dataset.section.datasetAttributes"}}</div>
         </div>
         <div class="metadata-value">
             {{#ulList datasetAttributes }} {{ fieldOutput name value "resourceNoLink" false}} {{/ulList}}
+            {{#ulList dimensionLikeAttributes }} {{ fieldOutput name value "text" false}} {{/ulList}}            
         </div>
     </div>
     {{/if}} {{#if metadata.hasPeriods}}
