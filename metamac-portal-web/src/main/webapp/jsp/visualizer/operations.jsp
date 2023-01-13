@@ -104,8 +104,9 @@
         .then(response => response.json())
         .then(data => {
             var operations = parseCollectionsIntoOperationsTree(data.collection);
-            document.getElementById("operations").innerHTML = null;
-            document.getElementById("operations").append(buildOperationsList(operations));
+            var operationsElement = document.getElementById("operations");
+            operationsElement.innerHTML = null;
+            operationsElement.append(buildOperationsList(operations));
 
             // Tree behaviour
             $(".tree-icon").click(function (e) {
