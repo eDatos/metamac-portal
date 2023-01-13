@@ -102,22 +102,6 @@
             this.getConcepts(conceptItems, callback);
         },
 
-        getMeasureConcepts: function (callback) {
-            var measureConcept;
-            if (this.metadata.metadata.measureCoverages) {
-                measureConcept = this.metadata.metadata.measureCoverages.resource;
-            } else if (this.metadata.metadata.attributes) {
-                var measureAttribute = _.findWhere(this.metadata.metadata.attributes.attribute, { type: "MEASURE", attachmentLevel: "DATASET" });
-                if (measureAttribute) {
-                    measureConcept = measureAttribute.attributeValues.value;
-                }
-            }
-
-            if (measureConcept) {
-                this.getConcepts(measureConcept, callback);
-            }
-        },
-
         getConcepts: function (conceptItems, callback) {
             var results = [];
             var promises = [];
@@ -145,6 +129,49 @@
                 .done(function () {
                     callback(null, results);
                 });
+        },
+
+        getMeasureConcepts: function (callback) {
+            var measureConcept;
+            if (this.metadata.metadata.measureCoverages) {
+                measureConcept = this.metadata.metadata.measureCoverages.resource;
+            } else if (this.metadata.metadata.attributes) {
+                var measureAttribute = _.findWhere(this.metadata.metadata.attributes.attribute, { type: "MEASURE", attachmentLevel: "DATASET" });
+                if (measureAttribute) {
+                    measureConcept = measureAttribute.attributeValues.value;
+                }
+            }
+
+            if (measureConcept) {
+                if (measureConcept.length === 0) {
+                    callback(null, []);
+                } else {
+                    this.getConceptsFromConceptSchemeUrl(this.getConceptSchemeUrlFromListOfConcepts(measureConcept), callback);
+                }
+            }
+        },
+
+        getConceptsFromConceptSchemeUrl: function (conceptSchemeUrl, callback) {
+            var requestParams = {
+                url: conceptSchemeUrl + "/concepts?_type=json&fields=+description,+annotations",
+                method: "GET",
+                dataType: 'jsonp',
+                jsonp: '_callback'
+            };
+
+            $.ajax(requestParams)
+                .done(function (response) {
+                    callback(null, response.concept);
+                })
+                .fail(function () {
+                    callback("Error fetching concepts");
+                });
+        },
+
+        getConceptSchemeUrlFromListOfConcepts: function (conceptItems) {
+            var conceptsUrl = new URL(conceptItems[0].selfLink.href);
+            conceptsUrl.pathname = conceptsUrl.pathname.replace(/\/concepts\/[^\/]+\/*$/, '');
+            return conceptsUrl.toString();
         }
     };
 
