@@ -217,6 +217,7 @@
 
         _buildExportEndpoint: function(type, additionalParams) {
             var exportEndpoint = new URL(App.endpoints["export"] + "/" + type + this.filterDimensions.metadata.urlIdentifierPart());
+            additionalParams = _.extend({}, additionalParams, { lang: I18n.locale });
             _.each(additionalParams, function(value,key) { 
                 exportEndpoint.searchParams.append(key, value);
             });
