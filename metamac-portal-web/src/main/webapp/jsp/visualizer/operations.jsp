@@ -54,6 +54,7 @@
         var agencyId = tripletIdentifier.substring(0, tripletIdentifier.indexOf(":"));
         var hasVersion = tripletIdentifier.indexOf("(") != -1;
         var resourceId = tripletIdentifier.substring(tripletIdentifier.indexOf(":") + 1, hasVersion ? tripletIdentifier.indexOf("(") : tripletIdentifier.length);
+        // if no match, version will be empty string
         var version = tripletIdentifier.substring(tripletIdentifier.indexOf("(") + 1, tripletIdentifier.indexOf(")"));
         return {
             "agencyId": agencyId,
