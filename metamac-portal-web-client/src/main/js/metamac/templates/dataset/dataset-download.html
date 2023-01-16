@@ -66,7 +66,12 @@
     </form>
 
     {{#if url.jsonstat}}
-    <form method="GET" action="{{url.jsonstat}}" target="_parent">
+    <form method="GET" action="{{url.jsonstat.href}}" target="_parent">
+        <!--GET on form actions requires hidden input elements for query parameters-->
+        <!--https://stackoverflow.com/questions/1116019/when-submitting-a-get-form-the-query-string-is-removed-from-the-action-url-->
+        {{#each url.jsonstat.searchParams}}
+        <input type="hidden" name="{{this.[0]}}" value="{{this.[1]}}" />
+        {{/each}}
          <a href="#" class="download-jsonstat"><i class="icon-data-jsonstat"></i></a>
     </form>
     {{/if}}
