@@ -78,7 +78,7 @@
         operationsList.classList.add('capitulos', 'deep-tree');
         operations.forEach(operation => {
             var listItem = document.createElement('li');
-            listItem.classList.add('dimension','dimension-depth-1', 'closed');
+            listItem.classList.add('dimension','dimension-depth-1', 'close');
             listItem.innerHTML = '<a href="#" class="tree-icon"></a><span class="dimension-title">'+ getText(operation.statisticalOperation.name) + '</span>';
             listItem.append(buildCollectionsList(operation.collections));
             operationsList.append(listItem);
