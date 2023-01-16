@@ -12,7 +12,7 @@
 <c:set var="baseURL">${fn:replace(requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}</c:set>
 
 <t:metamac_plantilla_1col baseURL="${baseURL}">
-<fmt:setLocale value="${pageContext.request.locale.language}" />
+<fmt:setLocale value="${currentLocale}" />
     <div class="visualizer-wrapper collection-wrapper"> 
         <c:choose>
             <c:when test="${collection != null}">

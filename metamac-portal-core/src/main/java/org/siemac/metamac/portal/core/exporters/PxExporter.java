@@ -565,7 +565,12 @@ public class PxExporter {
             stubInternationalString.add(datasetAccess.getDimensionsMetadataMap().get(dimension.getId()).getName());
         }
 
-        writeLocalisedLine(printWriter, PxKeysEnum.STUB, Collections.emptyList(), stubInternationalString);
+        if (stubInternationalString.isEmpty()) {
+            logger.debug("STUB is NOT present. At least one of the keywords STUB or HEADING must be included");
+        } else {
+            logger.debug("STUB is present");
+            writeLocalisedLine(printWriter, PxKeysEnum.STUB, Collections.emptyList(), stubInternationalString);
+        }
     }
 
     /**
@@ -578,7 +583,12 @@ public class PxExporter {
             headingInternationalString.add(datasetAccess.getDimensionsMetadataMap().get(dimension.getId()).getName());
         }
 
-        writeLocalisedLine(printWriter, PxKeysEnum.HEADING, Collections.emptyList(), headingInternationalString);
+        if (headingInternationalString.isEmpty()) {
+            logger.debug("HEADING is NOT present. At least one of the keywords STUB or HEADING must be included");
+        } else {
+            logger.debug("HEADING is present");
+            writeLocalisedLine(printWriter, PxKeysEnum.HEADING, Collections.emptyList(), headingInternationalString);
+        }
     }
 
     /**

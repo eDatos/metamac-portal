@@ -74,6 +74,7 @@
             this.resetDimensionsLimits();
         },
 
+        // Changes on this method must be propagated to Info.js
         _applyVisualizationRestrictions: function () {
             if (this._mustApplyVisualizationRestrictions()) {
                 this._forceDimensionsByMetadataInfo();                

@@ -5,7 +5,7 @@
 
     var DRAGOVER_CLASS = "drag-over";
 
-    // TODO: Can we have a common View for for this and OrderSidebarView?
+    // IDEA: Can we have a common View for for this and OrderSidebarView?
     App.modules.dataset.DimensionsView = Backbone.View.extend({
 
         template: App.templateManager.get('dataset/dataset-dimensions'),

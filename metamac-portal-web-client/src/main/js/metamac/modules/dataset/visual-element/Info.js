@@ -35,6 +35,17 @@
             self.nonMeasureDimensions = _.filter(self.dimensions, function (dimension) { 
                 return dimension.type !== "MEASURE_DIMENSION"  && !self.filterDimensions.get(dimension.id).get('singleValue'); 
             });
+            self.dimensionLikeAttributes = _.chain(self.dimensions)
+                .filter(function (dimension) { 
+                    return self.filterDimensions.get(dimension.id).get('singleValue'); 
+                })
+                .map(function(dimension) {
+                    return {
+                        name: self.filterDimensions.get(dimension.id).get('label'),
+                        value: self.filterDimensions.get(dimension.id).get('representations').getSingleValue().get('label')
+                    }
+                })
+                .value();
             self.render();
         },
 
@@ -105,12 +116,29 @@
             this.stopListening();
         },
 
+        updatingDimensionPositions: function () {
+            this._applyVisualizationRestrictions();
+            this.resetDimensionsLimits();
+        },
+
+        // This method must be the same as the one from the table to be able to download the data info in a coherent way with the table visualization
+        _applyVisualizationRestrictions: function () {
+            if (this._mustApplyVisualizationRestrictions()) {
+                this._forceDimensionsByMetadataInfo();                
+                this._moveAllSingleValueDimensionsToZone('fixed');
+            }
+
+            this._updateMustApplyVisualizationRestrictions();
+        },
+
         render: function () {
             if (!this.$el) { return; }
 
             var context = {
                 metadata: this.data.metadata.toJSON(),
                 datasetAttributes: this.datasetAttributes,
+                dimensionLikeAttributes: this.dimensionLikeAttributes,
+                hasAttributesOrLikeAttributes: this.datasetAttributes || this.dimensionLikeAttributes,
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,

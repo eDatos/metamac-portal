@@ -7,17 +7,7 @@
 
 <ul class="capitulos">
     <%
-        String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
-
-        Cookie[] cookies = request.getCookies();
-        String locale = request.getLocale().getLanguage();
-        if (cookies != null && !"error".equals(internationalizationCookieName)) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(request.getAttribute("internationalizationCookie"))) {
-                    locale = cookie.getValue();
-                }
-            }
-        }
+        String locale = (String) request.getAttribute("currentLocale");        
     	Helpers helper = new Helpers(locale);
         Integer nodeDepth = (Integer)request.getAttribute("nodeDepth");
         if (nodeDepth == null) {

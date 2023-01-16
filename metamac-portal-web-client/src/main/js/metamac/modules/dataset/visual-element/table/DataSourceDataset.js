@@ -110,12 +110,18 @@
 
         _formatCategories: function (categoryValues) {
             var self = this;
-            return _.map(categoryValues, function (value, key) {
-                return {
-                    dimension: self.filterDimensions.get(key).get('label'),
-                    value: value
-                };
-            });
+            return _.chain(categoryValues)
+                .map(function (value, key) {
+                    if (self.filterDimensions.get(key).get('singleValue')) {
+                        return null;
+                    }
+                    return {
+                        dimension: self.filterDimensions.get(key).get('label'),
+                        value: value
+                    }   
+                })
+                .filter(function(value) { return !!value; })
+                .value();
         },
 
         datasetAttributes: function () {

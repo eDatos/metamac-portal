@@ -205,7 +205,7 @@
                     self.modal.close();
                 },
                 onReject: function() { 
-                    form.action = self._buildExportEndpoint('tsv', {fields: '-attributes'});                  
+                    form.action = self._buildExportEndpoint('tsv', { fields: '-attributes' });                  
                     form.submit(); 
                     self.modal.close();
                 }
@@ -215,9 +215,10 @@
             this.modal.show();
         },
 
-        _buildExportEndpoint: function(type, attributes) {
+        _buildExportEndpoint: function(type, additionalParams) {
             var exportEndpoint = new URL(App.endpoints["export"] + "/" + type + this.filterDimensions.metadata.urlIdentifierPart());
-            _.each(attributes, function(value,key) { 
+            additionalParams = _.extend({}, additionalParams, { lang: I18n.locale });
+            _.each(additionalParams, function(value,key) { 
                 exportEndpoint.searchParams.append(key, value);
             });
             return exportEndpoint;

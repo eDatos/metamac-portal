@@ -18,6 +18,15 @@
 		<listener-class>org.siemac.metamac.portal.web.ApplicationStartup</listener-class>
 	</listener>
     
+    <servlet>
+        <servlet-name>operations</servlet-name>
+        <jsp-file>/jsp/visualizer/operations.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>operations</servlet-name>
+        <url-pattern>/visualizer/operations.html</url-pattern>
+    </servlet-mapping>
+    
 	<servlet>
 		<servlet-name>data</servlet-name>
 		<jsp-file>/jsp/visualizer/data.jsp</jsp-file>
@@ -109,7 +118,7 @@
 		<location>/error.html</location>
 	</error-page>
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
+		<welcome-file>jsp/visualizer/operations.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>
