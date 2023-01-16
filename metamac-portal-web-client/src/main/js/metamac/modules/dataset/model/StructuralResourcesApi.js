@@ -146,12 +146,12 @@
                 if (measureConcept.length === 0) {
                     callback(null, []);
                 } else {
-                    this.getConceptsFromConceptSchemeUrl(this.getConceptSchemeUrlFromListOfConcepts(measureConcept), callback);
+                    this.getConceptsFromConceptSchemeUrl(this.getConceptSchemeUrlFromListOfConcepts(measureConcept), measureConcept, callback);
                 }
             }
         },
 
-        getConceptsFromConceptSchemeUrl: function (conceptSchemeUrl, callback) {
+        getConceptsFromConceptSchemeUrl: function (conceptSchemeUrl, selectedConcepts, callback) {
             var requestParams = {
                 url: conceptSchemeUrl + "/concepts?_type=json&fields=+description,+annotations",
                 method: "GET",
@@ -161,7 +161,12 @@
 
             $.ajax(requestParams)
                 .done(function (response) {
-                    callback(null, response.concept);
+                    var filteredResponse = response.concept.filter(function (responseConcept) {
+                        return selectedConcepts.some(function (selectedConcept) {
+                           return responseConcept.id === selectedConcept.id;
+                        });
+                    });
+                    callback(null, filteredResponse);
                 })
                 .fail(function () {
                     callback("Error fetching concepts");
