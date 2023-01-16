@@ -22,6 +22,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     private static final String PARAM_BREADCRUMBS                 = "migas";
     private static final String PARAM_APP_NAME                    = "appName";
+    private static final String PARAM_APP_URL                     = "appUrl";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -325,7 +326,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         return joiner.toString();
     }
 
-    private static String getParam(String param, String value) {
+    private static String buildParam(String param, String value) {
         try {
             return param + "=" + URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
@@ -343,11 +344,15 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String buildHeaderQuery(String lang) {
-        return buildQuery(getBreadcrumbsParams(lang), getAppNameParam(lang));
+        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam());
     }
 
-    private static String getAppNameParam(String lang) {
-        return getParam(PARAM_APP_NAME, getAppName(lang));
+    private static String buildAppUrlParam() {
+        return buildParam(PARAM_APP_URL, getPortalBaseUrl());
+    }
+
+    private static String buildAppNameParam(String lang) {
+        return buildParam(PARAM_APP_NAME, getAppName(lang));
     }
 
     private static String getAppName(String lang) {
@@ -355,9 +360,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         return LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
     }
 
-    private static String getBreadcrumbsParams(String lang) {
-        String visualizerTranslation = getAppName(lang);
-        return getParam(PARAM_BREADCRUMBS, visualizerTranslation);
+    private static String buildBreadcrumbsParams(String lang) {
+        return buildParam(PARAM_BREADCRUMBS, getAppName(lang));
     }
 
 }
