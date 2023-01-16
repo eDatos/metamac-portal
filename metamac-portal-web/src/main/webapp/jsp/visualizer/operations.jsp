@@ -89,7 +89,7 @@
     function buildCollectionsList(collections) {
         if (!collections.length) { return null;}
         var collectionList = document.createElement('ul');
-        collectionList.classList.add('capitulos');
+        collectionList.classList.add('capitulos', 'simple-list');
         collections.forEach(collection => {
             var listItem = document.createElement('li');
             var link = document.createElement('a');
