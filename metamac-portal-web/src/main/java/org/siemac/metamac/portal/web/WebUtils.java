@@ -315,6 +315,16 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         WebUtils.helpUrl = helpUrl;
     }
 
+    public static String buildPageTitle(String organisation, String resourceName, String lang) {
+        StringJoiner joiner = new StringJoiner(" | ");
+        joiner.add(organisation);
+        if (!resourceName.isEmpty()) {
+            joiner.add(resourceName);
+        }
+        joiner.add(getAppName(lang));
+        return joiner.toString();
+    }
+
     private static String getParam(String param, String value) {
         try {
             return param + "=" + URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
@@ -337,14 +347,16 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String getAppNameParam(String lang) {
+        return getParam(PARAM_APP_NAME, getAppName(lang));
+    }
+
+    private static String getAppName(String lang) {
         Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
-        String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
-        return getParam(PARAM_APP_NAME, visualizerTranslation);
+        return LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
     }
 
     private static String getBreadcrumbsParams(String lang) {
-        Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
-        String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
+        String visualizerTranslation = getAppName(lang);
         return getParam(PARAM_BREADCRUMBS, visualizerTranslation);
     }
 
