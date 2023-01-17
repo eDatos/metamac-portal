@@ -69,8 +69,7 @@
             if (analyticsAddthisCode != null && !analyticsAddthisCode.isEmpty()) {                    
                 request.setAttribute("AddthisCode","#pubid=" + analyticsAddthisCode);
             }
-			request.setAttribute("titlePrefix",ORGANISATION + " | ");
-		    
+			
 		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
@@ -173,7 +172,7 @@
         String indicatorSystem = request.getParameter(Helpers.PARAMETER_INDICATOR_SYSTEM);
 
 	    request.setAttribute("resourceEmpty", true);
-	    String resourceName = "";
+	    request.setAttribute("resourceName", "");
 	    String resourceDescription = "";                     
 	    
         if (multidatasetId != null) {
@@ -269,19 +268,20 @@
        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
        request.setAttribute("helpUrl", WebUtils.getHelpUrl());
+       request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
 
 	%>	
-   	<title>${titlePrefix}${resourceName}</title>
+   	<title>${pageTitle}</title>
    	
    	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
    	    
     <meta name="description" content="${resourceDescriptionOnlyText}" />
 
-    <meta property="og:title" content="${titlePrefix}${resourceName}"/>
+    <meta property="og:title" content="${pageTitle}"/>
     <meta property="og:description" content="${resourceDescriptionOnlyText}"/>
        
-    <meta itemprop="name" content="${titlePrefix}${resourceName}" />
+    <meta itemprop="name" content="${pageTitle}" />
 	<meta itemprop="description" content="${resourceDescriptionOnlyText}" />
 	
   	<meta name="keywords" content="${keywords}" />

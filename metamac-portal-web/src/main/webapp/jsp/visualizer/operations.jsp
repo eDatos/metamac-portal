@@ -54,6 +54,7 @@
         var agencyId = tripletIdentifier.substring(0, tripletIdentifier.indexOf(":"));
         var hasVersion = tripletIdentifier.indexOf("(") != -1;
         var resourceId = tripletIdentifier.substring(tripletIdentifier.indexOf(":") + 1, hasVersion ? tripletIdentifier.indexOf("(") : tripletIdentifier.length);
+        // if no match, version will be empty string
         var version = tripletIdentifier.substring(tripletIdentifier.indexOf("(") + 1, tripletIdentifier.indexOf(")"));
         return {
             "agencyId": agencyId,
@@ -77,7 +78,7 @@
         operationsList.classList.add('capitulos', 'deep-tree');
         operations.forEach(operation => {
             var listItem = document.createElement('li');
-            listItem.classList.add('dimension','dimension-depth-1', 'closed');
+            listItem.classList.add('dimension','dimension-depth-1', 'close');
             listItem.innerHTML = '<a href="#" class="tree-icon"></a><span class="dimension-title">'+ getText(operation.statisticalOperation.name) + '</span>';
             listItem.append(buildCollectionsList(operation.collections));
             operationsList.append(listItem);
@@ -88,7 +89,7 @@
     function buildCollectionsList(collections) {
         if (!collections.length) { return null;}
         var collectionList = document.createElement('ul');
-        collectionList.classList.add('capitulos');
+        collectionList.classList.add('capitulos', 'simple-list');
         collections.forEach(collection => {
             var listItem = document.createElement('li');
             var link = document.createElement('a');
