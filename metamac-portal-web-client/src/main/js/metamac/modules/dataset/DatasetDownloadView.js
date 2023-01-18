@@ -23,6 +23,11 @@
 
         render: function () {
             var datasetSelection = this.getDatasetSelection();
+            var jsonStatUrl = this._getJsonStatUrl();
+            var entries = [];
+            for (var entry of jsonStatUrl.searchParams.entries()) {
+                entries.push(entry);
+            }
 
             var context = {
                 selection: JSON.stringify(datasetSelection),
@@ -31,7 +36,10 @@
                     tsv: this._buildExportEndpoint('tsv'),
                     excel: this._buildExportEndpoint('excel'),
                     px: this._buildExportEndpoint('px'),
-                    jsonstat: this._getJsonStatUrl(),
+                    jsonstat: {
+                        href: jsonStatUrl.toString(),
+                        searchParams: entries,
+                    }
                 },
                 buttonConfig: this._getButtonConfiguration()
             };
@@ -226,13 +234,19 @@
 
         _getJsonStatUrl() {
             var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+
+            var jsonStatUrl;
             if (link.hasOwnProperty("href")) {
-                return link.href + ".jsonstat";
+                jsonStatUrl = new URL(link.href + ".jsonstat");
             } else if (typeof link === 'string') {
-                return link + ".jsonstat";
+                jsonStatUrl = new URL(link + ".jsonstat");
             } else {
                 return null;
             }
+
+            var locale = I18n.locale;
+            jsonStatUrl.searchParams.append('lang', locale);
+            return jsonStatUrl;
         }
     });
 
