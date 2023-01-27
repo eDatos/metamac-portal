@@ -110,7 +110,7 @@ public class ExcelExporter {
         Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
 
         // Title
-        String title = PortalUtils.getLabel(resourceAccess.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
+        String title = PortalUtils.getLabel(resourceAccess.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault());
         if (!StringUtils.isEmpty(title)) {
             Row rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, title, headerCellStyle);
@@ -123,7 +123,7 @@ public class ExcelExporter {
             Iterator<Resource> iterator = subjectAreas.getResources().iterator();
             while (iterator.hasNext()) {
                 Resource subjectArea = iterator.next();
-                valueName.append(PortalUtils.getLabel(subjectArea.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative()));
+                valueName.append(PortalUtils.getLabel(subjectArea.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault()));
                 if (iterator.hasNext()) {
                     valueName.append("; ");
                 }
@@ -236,8 +236,8 @@ public class ExcelExporter {
         // @formatter:off
         unitBuilder
             .append(LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_UNITS_UNIT, locale))
-            .append(" (").append(PortalUtils.getLabel(value.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative())).append("): ")
-            .append(PortalUtils.getLabel(unitCode, resourceAccess.getLang(), resourceAccess.getLangAlternative()));
+            .append(" (").append(PortalUtils.getLabel(value.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault())).append("): ")
+            .append(PortalUtils.getLabel(unitCode, resourceAccess.getLang(), resourceAccess.getLangDefault()));
         // @formatter:on
         return unitBuilder.toString();
     }
@@ -252,19 +252,19 @@ public class ExcelExporter {
         // @formatter:off
         if (contact.getName() != null) {
             contactBuilder
-                .append(PortalUtils.getLabel(contact.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative()))
+                .append(PortalUtils.getLabel(contact.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault()))
                 .append(SEPARATOR_FIELD);
         }
 
         if (contact.getResponsibility() != null) {
             contactBuilder
-                .append(PortalUtils.getLabel(contact.getResponsibility(), resourceAccess.getLang(), resourceAccess.getLangAlternative()))
+                .append(PortalUtils.getLabel(contact.getResponsibility(), resourceAccess.getLang(), resourceAccess.getLangDefault()))
                 .append(SEPARATOR_FIELD);
         }
 
         if (contact.getOrganisationUnit() != null) {
             contactBuilder
-                .append(PortalUtils.getLabel(contact.getOrganisationUnit(), resourceAccess.getLang(), resourceAccess.getLangAlternative()))
+                .append(PortalUtils.getLabel(contact.getOrganisationUnit(), resourceAccess.getLang(), resourceAccess.getLangDefault()))
                 .append(SEPARATOR_FIELD);
         }
 
@@ -341,7 +341,7 @@ public class ExcelExporter {
         // Rights Holder
         Organisation rightsHolder = resourceAccess.getMetadata().getRightsHolder();
         if (rightsHolder != null) {
-            String rightsHolderLabel = PortalUtils.getLabel(rightsHolder.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
+            String rightsHolderLabel = PortalUtils.getLabel(rightsHolder.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault());
 
             Row row = sheet.createRow(currentRowCount++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);

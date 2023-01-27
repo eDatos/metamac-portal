@@ -49,7 +49,7 @@ public class ResourceAccess {
     private DatasetSelection                              datasetSelection;
 
     private String                                        lang;
-    private String                                        langAlternative;
+    private String                                        langDefault;
 
     private Data                                          data;
     private Dimensions                                    dimensions;
@@ -144,9 +144,9 @@ public class ResourceAccess {
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
     }
 
-    private void initialize(Data data, Dimensions dimensions, Attributes attributes, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+    private void initialize(Data data, Dimensions dimensions, Attributes attributes, DatasetSelection datasetSelection, String lang, String langDefault) throws MetamacException {
         this.lang = lang;
-        this.langAlternative = langAlternative;
+        this.langDefault = langDefault;
 
         initializeDimensions(dimensions, datasetSelection);
         initializeAttributes(data, attributes, datasetSelection);
@@ -208,12 +208,12 @@ public class ResourceAccess {
         return lang;
     }
 
-    public String getLangAlternative() {
-        return langAlternative;
     }
 
     public String getLangEffective() {
         return lang != null ? lang : langAlternative;
+    public String getLangDefault() {
+        return langDefault;
     }
 
     public List<Dimension> getDimensionsMetadata() {
@@ -326,9 +326,9 @@ public class ResourceAccess {
 
             dimensionsMetadataMap.put(dimensionId, dimension);
             labelVisualisationsMode.put(dimensionId, buildMapDimensionToMapDimensionsLabelVisualisationMode(datasetSelection, dimension));
-            dimensionsValuesCurrentLocaleLabels.put(dimension.getId(), buildMapDimensionsValuesLabels(dimension, lang, langAlternative));
+            dimensionsValuesCurrentLocaleLabels.put(dimension.getId(), buildMapDimensionsValuesLabels(dimension, lang, langDefault));
             dimensionsValuesLabels.put(dimension.getId(), buildMapDimensionsValuesLocalisedLabels(dimension));
-            dimensionsLabels.put(dimensionId, buildMapDimensionLabel(dimension, lang, langAlternative));
+            dimensionsLabels.put(dimensionId, buildMapDimensionLabel(dimension, lang, langDefault));
 
             if (DimensionType.MEASURE_DIMENSION.equals(dimension.getType())) {
                 measureDimension = dimension;
@@ -378,9 +378,9 @@ public class ResourceAccess {
 
         this.attributesMetadataMap = attributesMetadataMap;
         attributesLabelVisualisationMode = buildMapAttributesLabelVisualisationMode(datasetSelection, attributesMetadata);
-        attributesValuesCurrentLocaleLabels = buildMapAttributesValuesLabels(attributesMetadata, lang, langAlternative);
+        attributesValuesCurrentLocaleLabels = buildMapAttributesValuesLabels(attributesMetadata, lang, langDefault);
         attributesValuesLabels = buildMapAttributesValuesLocalisedLabels(attributesMetadata);
-        attributesLabels = buildMapAttributesLabels(attributesMetadata, lang, langAlternative);
+        attributesLabels = buildMapAttributesLabels(attributesMetadata, lang, langDefault);
     }
 
     /**

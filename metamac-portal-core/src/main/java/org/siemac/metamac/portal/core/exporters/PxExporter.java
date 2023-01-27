@@ -316,7 +316,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeNextUpdate(PrintWriter printWriter) throws MetamacException {
-        String label = PortalUtils.getLabel(datasetAccess.getMetadata().getDateNextUpdate(), datasetAccess.getLang(), datasetAccess.getLangAlternative());
+        String label = PortalUtils.getLabel(datasetAccess.getMetadata().getDateNextUpdate(), datasetAccess.getLang(), datasetAccess.getLangDefault());
         PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.NEXT_UPDATE).withValue(label).build();
         writeLine(printWriter, line);
     }
@@ -332,7 +332,7 @@ public class PxExporter {
         if (nextVersion != null) {
             if (NextVersionType.SCHEDULED_UPDATE.equals(nextVersion)) {
                 Resource updateFrequency = datasetAccess.getMetadata().getUpdateFrequency();
-                String label = PortalUtils.getLabel(updateFrequency.getName(), datasetAccess.getLang(), datasetAccess.getLangAlternative());
+                String label = PortalUtils.getLabel(updateFrequency.getName(), datasetAccess.getLang(), datasetAccess.getLangDefault());
                 value.append(label).append(SPACE).append(LEFT_PARENTHESES).append(updateFrequency.getId()).append(RIGHT_PARENTHESES);
             } else {
                 value.append(nextVersion.name());
