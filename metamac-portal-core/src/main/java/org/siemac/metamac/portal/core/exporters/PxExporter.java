@@ -77,14 +77,13 @@ public class PxExporter {
     private Integer                showDecimals             = null;
     private final static int       MAX_PX_MATRIX_LENGTH     = 8;
 
-    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        datasetAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
+    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langDefault) throws MetamacException {
+        datasetAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault);
         this.datasetSelection = datasetSelection;
     }
 
-    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
-            throws MetamacException {
-        datasetAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
+    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault) throws MetamacException {
+        datasetAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault);
         this.datasetSelection = datasetSelection;
     }
 
@@ -511,8 +510,7 @@ public class PxExporter {
     private void writeUnits(PrintWriter printWriter) throws MetamacException {
         if (datasetAccess.existsContVariable()) {
             // The general UNITS (not indexed) is mandatory or will launch a "missing units" on pc axis 2008
-            final boolean allowEmptyValues = true;
-            writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), buildInternationalStringFromSingleCode(StringUtils.EMPTY, languages), allowEmptyValues);
+            writeLocalisedLineAllowEmptyValues(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), buildInternationalStringFromSingleCode(StringUtils.EMPTY, languages));
 
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
@@ -546,8 +544,7 @@ public class PxExporter {
                     }
                 }
                 if (writeEmptyUnit) {
-                    final boolean allowEmptyValues = true;
-                    writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), buildInternationalStringFromSingleCode(StringUtils.EMPTY, languages), allowEmptyValues);
+                    writeLocalisedLineAllowEmptyValues(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), buildInternationalStringFromSingleCode(StringUtils.EMPTY, languages));
                 }
             } else {
                 throw new RuntimeException("No attribute of type Measure or Measure Dimension found in the dataset. This is a Metamac error.");
@@ -569,7 +566,7 @@ public class PxExporter {
             logger.debug("STUB is NOT present. At least one of the keywords STUB or HEADING must be included");
         } else {
             logger.debug("STUB is present");
-            writeLocalisedLine(printWriter, PxKeysEnum.STUB, Collections.emptyList(), stubInternationalString);
+            writeLocalisedLineAllowMixedTranslation(printWriter, PxKeysEnum.STUB, Collections.emptyList(), stubInternationalString);
         }
     }
 
@@ -587,7 +584,7 @@ public class PxExporter {
             logger.debug("HEADING is NOT present. At least one of the keywords STUB or HEADING must be included");
         } else {
             logger.debug("HEADING is present");
-            writeLocalisedLine(printWriter, PxKeysEnum.HEADING, Collections.emptyList(), headingInternationalString);
+            writeLocalisedLineAllowMixedTranslation(printWriter, PxKeysEnum.HEADING, Collections.emptyList(), headingInternationalString);
         }
     }
 
@@ -619,7 +616,7 @@ public class PxExporter {
         }
     }
 
-    private List<String> computeLabelValuesForLang(String lang, List<InternationalString> indexValues) {
+    private List<String> computeLabelValuesForLang(String lang, List<InternationalString> indexValues, boolean fillValuesWithDefaultLanguage) {
         if (indexValues == null || indexValues.isEmpty()) {
             return Collections.emptyList();
         }
@@ -627,7 +624,12 @@ public class PxExporter {
         List<String> result = new LinkedList<>();
 
         for (InternationalString indexValue : indexValues) {
-            String label = PortalUtils.getLabel(indexValue, lang);
+            String label = null;
+            if (fillValuesWithDefaultLanguage) {
+                label = PortalUtils.getLabel(indexValue, lang, datasetAccess.getLangDefault());
+            } else {
+                label = PortalUtils.getLabel(indexValue, lang);
+            }
             if (StringUtils.isEmpty(label)) {
                 return Collections.emptyList();
             }
@@ -651,7 +653,7 @@ public class PxExporter {
             // @formatter:off
             PxLineContainer pxLineContainer = PxLineContainerBuilder.pxLineContainer()
                     .withPxKey(PxKeysEnum.CODES)
-                    .withIndexedValue(Arrays.asList(datasetAccess.getDimensionLabel(dimensionId)))
+                    .withIndexedValue(Arrays.asList(datasetAccess.getDimensionLabelDefaultLocale(dimensionId)))
                     .withValue(datasetSelection.getDimension(dimensionId).getSelectedDimensionValues())
                     .build();
             // @formatter:on
@@ -771,8 +773,8 @@ public class PxExporter {
         if (datasetAccess.existsContVariable()) {
             // Measure dimension Has an enumerated representation
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
-                String variableLabel = PortalUtils.getLabel(datasetAccess.getMeasureDimension().getName(), datasetAccess.getLang(), datasetAccess.getLangDefault());
-                String valueLabel = PortalUtils.getLabel(dimensionValue.getName(), datasetAccess.getLang(), datasetAccess.getLangDefault());
+                String variableLabel = PortalUtils.getLabel(datasetAccess.getMeasureDimension().getName(), datasetAccess.getLangDefault());
+                String valueLabel = PortalUtils.getLabel(dimensionValue.getName(), datasetAccess.getLangDefault());
                 // @formatter:off
                 PxLineContainer pxLineContainer = PxLineContainerBuilder.pxLineContainer()
                         .withPxKey(PxKeysEnum.PRECISION)
@@ -874,13 +876,13 @@ public class PxExporter {
                 List<String> dimensionValuesId = datasetAccess.getDimensionValuesOrderedForData(dimensionId);
                 for (String dimensionValueId : dimensionValuesId) {
                     if (valueNote.get(dimensionId).containsKey(dimensionValueId)) {
-                        String dimensionValueLabel = datasetAccess.getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
+                        String dimensionValueLabel = PortalUtils.getLabel(datasetAccess.getDimensionValueLabel(dimensionId, dimensionValueId), datasetAccess.getLangDefault());
                         // Localised Value Note is not supported
                         // @formatter:off
                         PxLineContainer pxLineContainer = PxLineContainerBuilder.pxLineContainer()
                                 .withPxKey(pxKey)
                                 .withValue(valueNote.get(dimensionId).get(dimensionValueId).toString())
-                                .withIndexedValue(Arrays.asList(datasetAccess.getDimensionLabel(dimensionId), dimensionValueLabel)).build();
+                                .withIndexedValue(Arrays.asList(datasetAccess.getDimensionLabelDefaultLocale(dimensionId), dimensionValueLabel)).build();
                         // @formatter:on
                         writeLine(printWriter, pxLineContainer);
                     }
@@ -953,7 +955,7 @@ public class PxExporter {
                         String dimensionId = iterator.next();
                         if (dimensionValuesForAttributeValue.containsKey(dimensionId)) {
                             String dimensionValueId = dimensionValuesForAttributeValue.get(dimensionId);
-                            key.append(datasetAccess.getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId));
+                            key.append(PortalUtils.getLabel(datasetAccess.getDimensionValueLabel(dimensionId, dimensionValueId), datasetAccess.getLangDefault()));
                         } else {
                             key.append("*");
                         }
@@ -1099,12 +1101,7 @@ public class PxExporter {
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value) throws MetamacException {
-        final boolean allowEmptyValues = false;
-        writeLocalisedLine(printWriter, pxKey, indexValues, value, allowEmptyValues);
-    }
-
-    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value, boolean allowEmptyValues) throws MetamacException {
-        writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value), allowEmptyValues);
+        writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value));
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, InternationalString indexValue, List<InternationalString> values) throws MetamacException {
@@ -1113,17 +1110,31 @@ public class PxExporter {
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values) throws MetamacException {
         final boolean allowEmptyValues = false;
-        writeLocalisedLine(printWriter, pxKey, indexValues, values, allowEmptyValues);
+        final boolean fillValuesWithDefaultLanguage = false;
+        writeLocalisedLine(printWriter, pxKey, indexValues, values, allowEmptyValues, fillValuesWithDefaultLanguage);
     }
 
-    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values, boolean allowEmptyValues)
-            throws MetamacException {
+    private void writeLocalisedLineAllowEmptyValues(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value) throws MetamacException {
+        final boolean allowEmptyValues = true;
+        final boolean fillValuesWithDefaultLanguage = false;
+        writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value), allowEmptyValues, fillValuesWithDefaultLanguage);
+    }
+
+    /* This is needed for STUB and HEADING or we won't be able to mix translated with non translated dimensions, generating a non valid PX */
+    private void writeLocalisedLineAllowMixedTranslation(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values) throws MetamacException {
+        final boolean allowEmptyValues = false;
+        final boolean fillValuesWithDefaultLanguage = true;
+        writeLocalisedLine(printWriter, pxKey, indexValues, values, allowEmptyValues, fillValuesWithDefaultLanguage);
+    }
+
+    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values, boolean allowEmptyValues,
+            boolean fillValuesWithDefaultLanguage) throws MetamacException {
         if (values == null) {
             return;
         }
 
         String defaultLang = datasetAccess.getLangDefault();
-        List<String> computedIndexValuesForDefaultLang = computeLabelValuesForLang(defaultLang, indexValues);
+        List<String> computedIndexValuesForDefaultLang = computeLabelValuesForLang(defaultLang, indexValues, false);
 
         Map<Integer, PxLineContainer> linesMap = new TreeMap<Integer, PxLineContainer>();
 
@@ -1135,7 +1146,7 @@ public class PxExporter {
                     PxLineContainer line = PxLineContainerBuilder.pxLineContainer()
                             .withPxKey(pxKey)
                             .withIndexedValue(computedIndexValuesForDefaultLang)
-                            .withValue(computeLabelValuesForLang(lang, values))
+                            .withValue(computeLabelValuesForLang(lang, values, false))
                             .build();
                     // @formatter:on
                     // First, default lang
@@ -1146,13 +1157,13 @@ public class PxExporter {
                     }
 
                     // If there is some missing translation in de index array, the default locale index array is used
-                    List<String> computedIndexValues = computeLabelValuesForLang(lang, indexValues);
+                    List<String> computedIndexValues = computeLabelValuesForLang(lang, indexValues, false);
                     if (computedIndexValues.isEmpty()) {
                         computedIndexValues = computedIndexValuesForDefaultLang;
                     }
 
                     // If there is some missing translation in de values array, the current lang for the metadata is skipped
-                    List<String> computedValues = computeLabelValuesForLang(lang, values);
+                    List<String> computedValues = computeLabelValuesForLang(lang, values, fillValuesWithDefaultLanguage);
                     if (!allowEmptyValues && computedValues.isEmpty()) {
                         continue;
                     }
@@ -1161,7 +1172,7 @@ public class PxExporter {
                     PxLineContainer line = PxLineContainerBuilder.pxLineContainer()
                             .withPxKey(pxKey)
                             .withIndexedValue(computedIndexValues)
-                            .withValue(computeLabelValuesForLang(lang, values))
+                            .withValue(computedValues)
                             .withLang(lang).build();
                     // @formatter:on
                     linesMap.put(languageOrder.get(lang), line);

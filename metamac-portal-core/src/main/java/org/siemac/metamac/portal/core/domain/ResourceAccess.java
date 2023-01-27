@@ -67,7 +67,8 @@ public class ResourceAccess {
     private List<Dimension>                               dimensionsMetadata;
     private Map<String, Dimension>                        dimensionsMetadataMap;
     private Dimension                                     measureDimension;
-    private Map<String, String>                           dimensionLabels;
+    private Map<String, String>                           dimensionLabelsCurrentLocale;
+    private Map<String, String>                           dimensionLabelsDefaultLocale;
     private Map<String, Map<String, String>>              dimensionsValuesCurrentLocaleLabels;
     private Map<String, Map<String, InternationalString>> dimensionsValuesLabels;
     private Map<String, LabelVisualisationModeEnum>       dimensionsLabelVisualisationMode;
@@ -236,8 +237,12 @@ public class ResourceAccess {
         return measureDimension;
     }
 
-    public String getDimensionLabel(String dimensionId) {
-        return dimensionLabels.get(dimensionId);
+    public String getDimensionLabelCurrentLocale(String dimensionId) {
+        return dimensionLabelsCurrentLocale.get(dimensionId);
+    }
+
+    public String getDimensionLabelDefaultLocale(String dimensionId) {
+        return dimensionLabelsDefaultLocale.get(dimensionId);
     }
 
     public String getDimensionValueLabelCurrentLocale(String dimensionId, String dimensionValueId) {
@@ -315,7 +320,8 @@ public class ResourceAccess {
         Map<String, LabelVisualisationModeEnum> labelVisualisationsMode = new HashMap<String, LabelVisualisationModeEnum>(dimensionsMetadata.size());
         Map<String, Map<String, String>> dimensionsValuesCurrentLocaleLabels = new HashMap<String, Map<String, String>>(dimensionsMetadata.size());
         Map<String, Map<String, InternationalString>> dimensionsValuesLabels = new HashMap<String, Map<String, InternationalString>>(dimensionsMetadata.size());
-        Map<String, String> dimensionsLabels = new HashMap<String, String>(dimensionsMetadata.size());
+        Map<String, String> dimensionsLabelsCurrentLocale = new HashMap<String, String>(dimensionsMetadata.size());
+        Map<String, String> dimensionsLabelsDefaultLocale = new HashMap<String, String>(dimensionsMetadata.size());
 
         for (Dimension dimension : dimensionsMetadata) {
             String dimensionId = dimension.getId();
@@ -324,7 +330,8 @@ public class ResourceAccess {
             labelVisualisationsMode.put(dimensionId, buildMapDimensionToMapDimensionsLabelVisualisationMode(datasetSelection, dimension));
             dimensionsValuesCurrentLocaleLabels.put(dimension.getId(), buildMapDimensionsValuesLabels(dimension, lang, langDefault));
             dimensionsValuesLabels.put(dimension.getId(), buildMapDimensionsValuesLocalisedLabels(dimension));
-            dimensionsLabels.put(dimensionId, buildMapDimensionLabel(dimension, lang, langDefault));
+            dimensionsLabelsCurrentLocale.put(dimensionId, buildMapDimensionLabel(dimension, lang, langDefault));
+            dimensionsLabelsDefaultLocale.put(dimensionId, buildMapDimensionLabel(dimension, langDefault, langDefault));
 
             if (DimensionType.MEASURE_DIMENSION.equals(dimension.getType())) {
                 measureDimension = dimension;
@@ -335,7 +342,8 @@ public class ResourceAccess {
         dimensionsLabelVisualisationMode = labelVisualisationsMode;
         this.dimensionsValuesCurrentLocaleLabels = dimensionsValuesCurrentLocaleLabels;
         this.dimensionsValuesLabels = dimensionsValuesLabels;
-        dimensionLabels = dimensionsLabels;
+        dimensionLabelsCurrentLocale = dimensionsLabelsCurrentLocale;
+        dimensionLabelsDefaultLocale = dimensionsLabelsDefaultLocale;
     }
 
     /**
@@ -521,14 +529,14 @@ public class ResourceAccess {
                 resultText = dimensionId;
                 break;
             case LABEL: {
-                String dimensionValueLabel = getDimensionLabel(dimensionId);
+                String dimensionValueLabel = getDimensionLabelCurrentLocale(dimensionId);
                 if (dimensionValueLabel != null) {
                     resultText = dimensionValueLabel;
                 }
             }
                 break;
             case CODE_AND_LABEL: {
-                String dimensionValueLabel = getDimensionLabel(dimensionId);
+                String dimensionValueLabel = getDimensionLabelCurrentLocale(dimensionId);
                 if (dimensionValueLabel != null) {
                     resultText = dimensionValueLabel + " (" + dimensionId + ")";
                 }
