@@ -259,7 +259,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeLanguage(PrintWriter printWriter) throws MetamacException {
-        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.LANGUAGE).withValue(datasetAccess.getLangEffective().toLowerCase()).build();
+        PxLineContainer line = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.LANGUAGE).withValue(datasetAccess.getLangDefault().toLowerCase()).build();
         writeLine(printWriter, line);
     }
 
@@ -274,7 +274,7 @@ public class PxExporter {
         this.languages = new HashSet<String>(resourcesToResourcesId);
         languageOrder = new HashMap<String, Integer>();
         int i = 1;
-        String defaultLang = datasetAccess.getLangEffective();
+        String defaultLang = datasetAccess.getLangDefault();
         for (String lang : resourcesToResourcesId) {
             if (defaultLang.equals(lang)) {
                 languageOrder.put(lang, 0);
@@ -720,7 +720,7 @@ public class PxExporter {
         InternationalString statisticalOperationName = datasetAccess.getMetadata().getStatisticalOperation().getName();
         String statisticalOperationCode = extractStatisticalOperationCodeFromLink(datasetAccess.getMetadata().getStatisticalOperation().getSelfLink());
 
-        String defaultLang = datasetAccess.getLangEffective();
+        String defaultLang = datasetAccess.getLangDefault();
         Map<Integer, PxLineContainer> linesMap = new TreeMap<Integer, PxLineContainer>();
         for (LocalisedString localisedString : statisticalOperationName.getTexts()) {
             if (filterLanguagesToApply(localisedString.getLang())) {
@@ -771,8 +771,8 @@ public class PxExporter {
         if (datasetAccess.existsContVariable()) {
             // Measure dimension Has an enumerated representation
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
-                String variableLabel = PortalUtils.getLabel(datasetAccess.getMeasureDimension().getName(), datasetAccess.getLangEffective());
-                String valueLabel = PortalUtils.getLabel(dimensionValue.getName(), datasetAccess.getLangEffective());
+                String variableLabel = PortalUtils.getLabel(datasetAccess.getMeasureDimension().getName(), datasetAccess.getLang(), datasetAccess.getLangDefault());
+                String valueLabel = PortalUtils.getLabel(dimensionValue.getName(), datasetAccess.getLang(), datasetAccess.getLangDefault());
                 // @formatter:off
                 PxLineContainer pxLineContainer = PxLineContainerBuilder.pxLineContainer()
                         .withPxKey(PxKeysEnum.PRECISION)
@@ -1122,7 +1122,7 @@ public class PxExporter {
             return;
         }
 
-        String defaultLang = datasetAccess.getLangEffective();
+        String defaultLang = datasetAccess.getLangDefault();
         List<String> computedIndexValuesForDefaultLang = computeLabelValuesForLang(defaultLang, indexValues);
 
         Map<Integer, PxLineContainer> linesMap = new TreeMap<Integer, PxLineContainer>();
@@ -1209,7 +1209,7 @@ public class PxExporter {
 
     private boolean filterLanguagesToApply(String lang) {
         // Checks if the default locale or is language in the alternatives languages of PX
-        return (datasetAccess.getLangEffective().equals(lang) || languages.contains(lang));
+        return (datasetAccess.getLangDefault().equals(lang) || languages.contains(lang));
     }
 
     private void writeFieldResourceName(PrintWriter printWriter, PxKeysEnum pxKey, Resource value) throws MetamacException {
@@ -1291,7 +1291,7 @@ public class PxExporter {
     private InternationalString createInternationalStringWithDefaultValue(String value) {
         InternationalString internationalString = new InternationalString();
         LocalisedString localisedString = new LocalisedString();
-        localisedString.setLang(datasetAccess.getLangEffective());
+        localisedString.setLang(datasetAccess.getLangDefault());
         localisedString.setValue(value);
         internationalString.getTexts().add(localisedString);
         return internationalString;

@@ -208,10 +208,6 @@ public class ResourceAccess {
         return lang;
     }
 
-    }
-
-    public String getLangEffective() {
-        return lang != null ? lang : langAlternative;
     public String getLangDefault() {
         return langDefault;
     }
