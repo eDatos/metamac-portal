@@ -612,7 +612,7 @@ public class PxExporter {
                 dimensionValuesLabels.add(datasetAccess.getDimensionValueLabel(dimensionId, dimensionValueId));
             }
 
-            writeLocalisedLine(printWriter, PxKeysEnum.VALUES, datasetAccess.getDimensionsMetadataMap().get(dimensionId).getName(), dimensionValuesLabels);
+            writeLocalisedLineAllowMixedTranslation(printWriter, PxKeysEnum.VALUES, Arrays.asList(datasetAccess.getDimensionsMetadataMap().get(dimensionId).getName()), dimensionValuesLabels);
         }
     }
 
