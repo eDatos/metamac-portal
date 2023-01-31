@@ -1833,6 +1833,20 @@ public class ExportServiceTest implements ExportServiceTestBase {
         }
 
         {
+            Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000003.xml"));
+
+            File tmpFile = tempFolder.newFile();
+            tmpFile = new File("W:/temp/Px_TEST/testExportDatasetToPxEnglish.px");
+            FileOutputStream out = new FileOutputStream(tmpFile);
+            exportService.exportDatasetToPx(ctx, dataset, datasetSelection, "en", out);
+            out.close();
+
+            // Check checksum
+            InputStream responseExpected = ExportServiceTest.class.getResourceAsStream("/resources/export/testExportDatasetToPxEnglish.px");
+            assertEqualsResponseIdentical(responseExpected, new FileInputStream(tmpFile));
+        }
+
+        {
             Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002_ATTR_MEASURE.xml"));
 
             File tmpFile = tempFolder.newFile();
