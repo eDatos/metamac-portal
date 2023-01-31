@@ -1823,6 +1823,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002.xml"));
 
             File tmpFile = tempFolder.newFile();
+            // tmpFile = new File("W:/temp/Px_TEST/archivo.px");
             FileOutputStream out = new FileOutputStream(tmpFile);
             exportService.exportDatasetToPx(ctx, dataset, datasetSelection, null, out);
             out.close();
@@ -1836,7 +1837,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000003.xml"));
 
             File tmpFile = tempFolder.newFile();
-            tmpFile = new File("W:/temp/Px_TEST/testExportDatasetToPxEnglish.px");
+            // tmpFile = new File("W:/temp/Px_TEST/testExportDatasetToPxEnglish.px");
             FileOutputStream out = new FileOutputStream(tmpFile);
             exportService.exportDatasetToPx(ctx, dataset, datasetSelection, "en", out);
             out.close();
@@ -1850,6 +1851,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002_ATTR_MEASURE.xml"));
 
             File tmpFile = tempFolder.newFile();
+            // tmpFile = new File("W:/temp/Px_TEST/ContVariable.px");
             FileOutputStream out = new FileOutputStream(tmpFile);
             exportService.exportDatasetToPx(ctx, dataset, datasetSelection, null, out);
             out.close();
