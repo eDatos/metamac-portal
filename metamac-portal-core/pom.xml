@@ -404,6 +404,13 @@
             <artifactId>cxf-rt-rs-extension-providers</artifactId>
             <version>${cxf.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>${icu4j.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 	<profiles>
