@@ -153,7 +153,7 @@
 
         getConceptsFromConceptSchemeUrl: function (conceptSchemeUrl, selectedConcepts, callback) {
             var requestParams = {
-                url: conceptSchemeUrl + "/concepts?_type=json&fields=+description,+annotations",
+                url: conceptSchemeUrl + "/concepts?_type=json&fields=+description,+annotations,+pluralName",
                 method: "GET",
                 dataType: 'jsonp',
                 jsonp: '_callback'

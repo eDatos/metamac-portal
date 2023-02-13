@@ -109,34 +109,51 @@
             var self = this;
             async.parallel(loads, function (err, result) {
                 self.metadata = self.metadataRequest.getMetadataResponse();
-                self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
-                self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
 
-                self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata });
-                
-                self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
+                var structuralResourcesApi = new App.dataset.StructuralResourcesApi({ metadata: self.metadata });
+                structuralResourcesApi.getMeasureConcepts(function (error, concepts) {
+                    var parsedConcepts = _.map(concepts, function (concept) {
+                        concept.name = App.i18n.localizeText(concept.name);
+                        concept.description = App.i18n.localizeText(concept.description);
+                        concept.annotations = concept.annotations ? _.map(concept.annotations.annotation, function (annotation) {
+                            return {
+                                href: annotation.url,
+                                name: App.i18n.localizeText(annotation.text)
+                            };
+                        }) : [];
+                        return concept;
+                    });
 
-                if (result.permalink) {
-                    self.filterDimensions.importJSONSelection(self.filterDimensions.preprocessSelectionWithDynamicSelection(result.permalink.selection, result.permalink.dynamicSelection));
-                    self.filterDimensions.importJSONState(result.permalink.state);
-                    if (!window.location.hash.includes(result.permalink.hash)) {
-                        self.visualizationView.optionsModel.set('mustApplyVisualizationRestrictions', true);
+                    self.metadata.setMeasureConcepts(parsedConcepts);
+                    self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
+                    self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
+
+                    self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata });
+
+                    self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data, measureConcepts: parsedConcepts });
+
+                    if (result.permalink) {
+                        self.filterDimensions.importJSONSelection(self.filterDimensions.preprocessSelectionWithDynamicSelection(result.permalink.selection, result.permalink.dynamicSelection));
+                        self.filterDimensions.importJSONState(result.permalink.state);
+                        if (!window.location.hash.includes(result.permalink.hash)) {
+                            self.visualizationView.optionsModel.set('mustApplyVisualizationRestrictions', true);
+                        }
+                        deferred.resolve();
+                    } else if (datasetIdentifier.geo) {
+                        self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
+                        deferred.resolve();
+                    } else {
+                        deferred.resolve();
                     }
-                    deferred.resolve();
-                } else if (datasetIdentifier.geo) {
-                    self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
-                    deferred.resolve();
-                } else {
-                    deferred.resolve();
-                }
 
-                if(!$(".visualizer-header-user") || !(App.endpoints["external-users"] && App.endpoints["external-users-web"])) {
-                    console.log("No se pudo cargar el header de usuarios");
-                } else {
-                    new UserHeaderView({
-                        el: $(".visualizer-header-user")
-                    }).render();
-                }
+                    if(!$(".visualizer-header-user") || !(App.endpoints["external-users"] && App.endpoints["external-users-web"])) {
+                        console.log("No se pudo cargar el header de usuarios");
+                    } else {
+                        new UserHeaderView({
+                            el: $(".visualizer-header-user")
+                        }).render();
+                    }
+                });
             });
 
             return deferred.promise();

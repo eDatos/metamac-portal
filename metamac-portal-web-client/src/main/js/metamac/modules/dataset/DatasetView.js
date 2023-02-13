@@ -18,6 +18,7 @@
         initialize: function (options) {
             this.controller = options.controller;
             this.filterDimensions = options.filterDimensions;
+            this.measureConcepts = options.measureConcepts;
             this.metadata = options.metadata;
             this.data = options.data;
 
@@ -58,7 +59,8 @@
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
                 veElements: this.visualElements,
-                optionsView: this.optionsView
+                optionsView: this.optionsView,
+                measureConcepts: this.measureConcepts
             });
 
             this.dimensionsView = new App.modules.dataset.DimensionsView({
