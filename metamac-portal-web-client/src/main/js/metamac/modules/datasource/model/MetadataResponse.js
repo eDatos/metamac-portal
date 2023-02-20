@@ -216,16 +216,7 @@
                 var dimensionValues = dimension.dimensionValues.value;
                 representations = _.map(dimensionValues, function(dimensionValue, index) {
                     var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
-                    if (isMeasureDimension && !_.isEmpty(self.measureConcepts)) {
-                        var measureConcept = self.measureConcepts.find(measureConcept => measureConcept.id === representation.id);
-                        if (measureConcept.pluralName && !_.isEmpty(measureConcept.pluralName.text)) {
-                            representation.label = self.localizeLabel(measureConcept.pluralName.text);
-                        } else {
-                            representation.label = self.localizeLabel(dimensionValue.name.text);
-                        }
-                    } else {
-                        representation.label = self.localizeLabel(dimensionValue.name.text);
-                    }
+                    representation.label = self.localizeLabel(dimensionValue.name.text);
 
                     if (dimensionValue.measureQuantity && dimensionValue.measureQuantity.unitCode) {
                         representation.measureUnit = self.localizeLabel(dimensionValue.measureQuantity.unitCode.name.text);
@@ -662,10 +653,6 @@
 
         _getResourceName: function (resource) {
             return resource && this.localizeLabel(resource.name.text);
-        },
-
-        setMeasureConcepts: function (measureConcepts) {
-            this.measureConcepts = measureConcepts;
         }
     };
 

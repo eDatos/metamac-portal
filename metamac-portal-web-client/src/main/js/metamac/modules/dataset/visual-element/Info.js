@@ -5,7 +5,6 @@
 
     App.VisualElement.Info = function (options) {
         this.initialize(options);
-        this.measureConcepts = options.measureConcepts;
         this._type = 'info';
         this.api = new App.dataset.StructuralResourcesApi({ metadata: this.data.metadata });
     };
@@ -18,9 +17,15 @@
 
         load: function () {
             this.getDimensions();
+            this.getMeasureConcepts();
             this.getDatasetAttributes();
             this._getSelectionApiUrl();
             this._bindEvents();
+            this.render();
+        },
+
+        updateMeasureConcepts: function (concepts) {
+            this.measureConcepts = concepts;
             this.render();
         },
 
@@ -78,6 +83,24 @@
                     });
                     self.updateDimensions(parsedDimensions);
                 });
+            });
+        },
+
+        getMeasureConcepts: function () {
+            var self = this;
+            this.api.getMeasureConcepts(function (error, concepts) {
+                var parsedConcepts = _.map(concepts, function (concept) {
+                    concept.name = App.i18n.localizeText(concept.name);
+                    concept.description = App.i18n.localizeText(concept.description);
+                    concept.annotations = concept.annotations ? _.map(concept.annotations.annotation, function (annotation) {
+                        return {
+                            href: annotation.url,
+                            name: App.i18n.localizeText(annotation.text)
+                        };
+                    }) : [];
+                    return concept;
+                });
+                self.updateMeasureConcepts(parsedConcepts);
             });
         },
 

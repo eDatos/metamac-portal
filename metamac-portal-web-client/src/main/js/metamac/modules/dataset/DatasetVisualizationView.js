@@ -13,7 +13,6 @@
             this.data.colors = {};
 
             this.filterDimensions = options.filterDimensions;
-            this.measureConcepts = options.measureConcepts;
 
             this.optionsModel = options.optionsModel;
             this.veElements = options.veElements;
@@ -31,7 +30,7 @@
                 optionsModel: this.optionsModel
             };
             this.ve = {
-                info: new App.VisualElement.Info(_.extend(options, {measureConcepts: this.measureConcepts})),
+                info: new App.VisualElement.Info(options),
                 column: new App.VisualElement.ColumnChart(options),
                 bar: new App.VisualElement.BarChart(options),
                 line: new App.VisualElement.LineChart(options),
