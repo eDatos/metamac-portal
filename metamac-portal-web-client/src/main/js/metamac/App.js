@@ -44,7 +44,6 @@
         "widget": false,
         "showHeader": true,
         "showRightsHolder": true,
-        "chromeFrameObject": false,
         "installationType": "EXTERNAL"
     }
 
