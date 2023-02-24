@@ -165,12 +165,7 @@
         clickDownloadButton: function (e) {
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
-
-            if (this._isChromeFrameWidget()) {
-                this._openPopupDownloadForm($currentTarget.parent("form"));
-            } else {
-                $currentTarget.parent("form").submit();
-            }
+            $currentTarget.parent("form").submit();
         },
 
         _openPopupDownloadForm: function (form) {
@@ -187,12 +182,6 @@
             var popup = window.open('', '', popupProperties);
             popup.document.write(formHTML);
             popup.focus();
-        },
-
-        _isChromeFrameWidget: function () {
-            return App.config["chromeFrameObject"];
-            // I haven´t found a way to properly detect the difference between a embedded chromeFrame object and chromeFrame triggered from parent, so passed as variable when embedded object
-            //return App.config["widget"] && !!window.externalHost;
         },
 
         _setupTsvExportAttributes: function() {
