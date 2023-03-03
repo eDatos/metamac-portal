@@ -358,6 +358,8 @@
                 updateFrequency: this.getUpdateFrequency(),
 
 
+                dataProviders: this.getDataProviders(),
+                dataProviderAnnotations: this.getDataProviderAnnotations(),
                 publishers: this.getPublishers(),
                 contributors: this.getContributors(),
                 mediators: this.getMediators(),
@@ -580,6 +582,19 @@
 
         getNextVersion: function () {
             return I18n.t("entity.dataset.nextVersion.enum." + this.metadata.nextVersion, { defaultValue: "" });
+        },
+
+        getDataProviders: function () {
+            var self = this;
+            if (this.metadata.dataProviders) {
+                return _.map(this.metadata.dataProviders.resource, function (resource) { return self.localizeLabel(resource.name.text); });
+            }
+        },
+
+        getDataProviderAnnotations: function () {
+            if (this.metadata.dataProviderAnnotations) {
+                return this.localizeLabel(this.metadata.dataProviderAnnotations.text);
+            }
         },
 
         getPublishers: function () {
