@@ -12,19 +12,20 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFCell;
+import org.apache.poi.xssf.streaming.SXSSFCreationHelper;
+import org.apache.poi.xssf.streaming.SXSSFDrawing;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -63,7 +64,7 @@ public class ExcelExporter {
 
     private final ResourceAccess   resourceAccess;
     private final DatasetSelection datasetSelection;
-    private Sheet                  sheet;
+    private SXSSFSheet             sheet;
 
     private int                    rowsOfData;
     private int                    columnsOfData;
@@ -71,7 +72,7 @@ public class ExcelExporter {
 
     private int                    currentRowCount                = 0;
     private SXSSFWorkbook          workbook;
-    private CreationHelper         creationHelper;
+    private SXSSFCreationHelper    creationHelper;
     private int                    maxRightColumnIndexWithContent = 0;
 
     private static Logger          log                            = LoggerFactory.getLogger(ExcelExporter.class);
@@ -97,7 +98,7 @@ public class ExcelExporter {
         rowsOfData = datasetSelection.getRows();
         columnsOfData = datasetSelection.getColumns();
         leftHeaderSizeOfData = datasetSelection.getLeftDimensions().size();
-        creationHelper = workbook.getCreationHelper();
+        creationHelper = (SXSSFCreationHelper) workbook.getCreationHelper();
 
         headerCellStyle = createStyleSolid(COLOR_BLACK, COLOR_WHITE, true);
         dataCellStyle = createStyleSolid(COLOR_BLACK, null, null);
@@ -112,7 +113,7 @@ public class ExcelExporter {
         // Title
         String title = PortalUtils.getLabel(resourceAccess.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
         if (!StringUtils.isEmpty(title)) {
-            Row rowTitle = sheet.createRow(headerRow++);
+            SXSSFRow rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, title, headerCellStyle);
         }
 
@@ -131,7 +132,7 @@ public class ExcelExporter {
         }
 
         if (valueName.length() > 0) {
-            Row rowSubjectArea = sheet.createRow(headerRow++);
+            SXSSFRow rowSubjectArea = sheet.createRow(headerRow++);
             addStringCell(rowSubjectArea, 0, valueName.toString(), headerCellStyle);
         }
 
@@ -140,7 +141,7 @@ public class ExcelExporter {
         // Last update date
         Date lastUpdateDate = resourceAccess.getMetadata().getLastUpdate();
         if (lastUpdateDate != null) {
-            Row row = sheet.createRow(headerRow++);
+            SXSSFRow row = sheet.createRow(headerRow++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LAST_UPDATE, locale);
             addStringCell(row, 0, messageForCode, listTitleCellStyle);
             DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, locale);
@@ -148,14 +149,14 @@ public class ExcelExporter {
         }
 
         // Units
-        Row titleRowForUnits = sheet.createRow(headerRow++);
+        SXSSFRow titleRowForUnits = sheet.createRow(headerRow++);
         boolean hasAnyUnits = false;
         if (resourceAccess.existsContVariable()) { // Measure dimension
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : resourceAccess.getSelectedValuesForMeasureDimension()) {
                 final String unit = buildUnitText(dimensionValue);
                 if (unit != null) {
-                    Row row = sheet.createRow(headerRow++);
+                    SXSSFRow row = sheet.createRow(headerRow++);
                     addStringCell(row, 1, unit, null);
                     hasAnyUnits = true;
                 }
@@ -177,7 +178,7 @@ public class ExcelExporter {
                         if (attributeValue.getId().equals(attributeValuesFromData[0])) {
                             final String unit = buildUnitText(attributeValue);
                             if (unit != null) {
-                                Row row = sheet.createRow(headerRow++);
+                                SXSSFRow row = sheet.createRow(headerRow++);
                                 addStringCell(row, 1, unit, null);
                                 hasAnyUnits = true;
                             }
@@ -207,7 +208,7 @@ public class ExcelExporter {
         if (fixedDimensionsText.length() > 0) {
             fixedDimensionsText.delete(fixedDimensionsText.length() - 3, fixedDimensionsText.length()); // delete last comma and space
             String by = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LABEL_PARA, locale);
-            Row rowTitle = sheet.createRow(headerRow++);
+            SXSSFRow rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, by + " " + fixedDimensionsText.toString(), null);
             headerRow += 1;
         }
@@ -303,7 +304,7 @@ public class ExcelExporter {
     private void contentHeader() {
         int headerRow = currentRowCount;
         for (DatasetSelectionDimension dimension : datasetSelection.getTopDimensions()) {
-            Row row = sheet.createRow(headerRow);
+            SXSSFRow row = sheet.createRow(headerRow);
             List<String> selectedDimensionValues = dimension.getSelectedDimensionValues();
             int headerColumn = leftHeaderSizeOfData;
             int multiplier = datasetSelection.getMultiplierForDimension(dimension);
@@ -312,7 +313,7 @@ public class ExcelExporter {
                 for (String selectedDimensionValue : selectedDimensionValues) {
                     String dimensionValueLabel = toDimensionValueLabel(dimension.getId(), selectedDimensionValue);
 
-                    Cell cell = initializeCell(row, headerColumn);
+                    SXSSFCell cell = initializeCell(row, headerColumn);
                     cell.setCellValue(dimensionValueLabel);
                     cell.setCellType(CellType.STRING);
                     cell.setCellStyle(headerCellStyle);
@@ -327,7 +328,7 @@ public class ExcelExporter {
     private void content() {
         int observationsStartRow = currentRowCount;
         for (int i = 0; i < rowsOfData; i++) {
-            Row row = sheet.createRow(observationsStartRow + i);
+            SXSSFRow row = sheet.createRow(observationsStartRow + i);
             leftHeaderAtRow(i, row);
             observationsAtRow(i, row);
         }
@@ -343,7 +344,7 @@ public class ExcelExporter {
         if (rightsHolder != null) {
             String rightsHolderLabel = PortalUtils.getLabel(rightsHolder.getName(), resourceAccess.getLang(), resourceAccess.getLangAlternative());
 
-            Row row = sheet.createRow(currentRowCount++);
+            SXSSFRow row = sheet.createRow(currentRowCount++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);
             addStringCell(row, 0, messageForCode, listTitleCellStyle);
             addStringCell(row, 1, rightsHolderLabel, null);
@@ -352,7 +353,7 @@ public class ExcelExporter {
         // Copyright date
         Integer copyrightDate = resourceAccess.getMetadata().getCopyrightDate();
         if (copyrightDate != null) {
-            Row row = sheet.createRow(currentRowCount++);
+            SXSSFRow row = sheet.createRow(currentRowCount++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_COPYRIGHT, locale);
             addStringCell(row, 0, messageForCode, listTitleCellStyle);
             addStringCell(row, 1, copyrightDate.toString(), null);
@@ -360,24 +361,24 @@ public class ExcelExporter {
 
         // Contacts
         if (rightsHolder != null && rightsHolder.getContacts() != null && rightsHolder.getContacts().getTotal().longValue() > 0) {
-            Row rowHeader = sheet.createRow(currentRowCount++);
+            SXSSFRow rowHeader = sheet.createRow(currentRowCount++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_CONTACTS, locale);
             addStringCell(rowHeader, 0, messageForCode, listTitleCellStyle);
             for (Contact contact : rightsHolder.getContacts().getContacts()) {
-                Row row = sheet.createRow(currentRowCount++);
+                SXSSFRow row = sheet.createRow(currentRowCount++);
                 addStringCell(row, 1, buildContactText(contact), null);
             }
         }
     }
 
-    private void addStringCell(Row row, int column, String cellValue, CellStyle cellStyle) {
-        Cell cell = initializeCell(row, column);
+    private void addStringCell(SXSSFRow row, int column, String cellValue, CellStyle cellStyle) {
+        SXSSFCell cell = initializeCell(row, column);
         cell.setCellValue(cellValue);
         cell.setCellType(CellType.STRING);
         cell.setCellStyle(cellStyle);
     }
 
-    private void leftHeaderAtRow(int observationRowIndex, Row row) {
+    private void leftHeaderAtRow(int observationRowIndex, SXSSFRow row) {
         List<DatasetSelectionDimension> leftDimensions = datasetSelection.getLeftDimensions();
         for (int leftDimensionIndex = 0; leftDimensionIndex < leftDimensions.size(); leftDimensionIndex++) {
             DatasetSelectionDimension dimension = leftDimensions.get(leftDimensionIndex);
@@ -387,24 +388,24 @@ public class ExcelExporter {
                 String dimensionValueId = dimension.getSelectedDimensionValues().get((observationRowIndex / multiplier) % dimension.getSelectedDimensionValues().size());
                 String dimensionValueLabel = toDimensionValueLabel(dimensionId, dimensionValueId);
 
-                Cell cell = initializeCell(row, leftDimensionIndex);
+                SXSSFCell cell = initializeCell(row, leftDimensionIndex);
                 cell.setCellValue(dimensionValueLabel);
                 cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             } else {
                 // Empty Cells
-                Cell cell = initializeCell(row, leftDimensionIndex);
+                SXSSFCell cell = initializeCell(row, leftDimensionIndex);
                 cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             }
         }
     }
 
-    private void observationsAtRow(int observationRowIndex, Row row) {
+    private void observationsAtRow(int observationRowIndex, SXSSFRow row) {
         for (int j = 0; j < columnsOfData; j++) {
             Map<String, String> permutationAtCell = datasetSelection.permutationAtCell(observationRowIndex, j);
             String observation = resourceAccess.observationAtPermutation(permutationAtCell);
-            Cell cell = initializeCell(row, leftHeaderSizeOfData + j);
+            SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
 
             addCellComment(resourceAccess.observationAttributesAtPermutation(permutationAtCell), cell);
 
@@ -421,7 +422,7 @@ public class ExcelExporter {
         }
     }
 
-    private void addCellComment(CellCommentDetails cellCommentDetails, Cell cell) {
+    private void addCellComment(CellCommentDetails cellCommentDetails, SXSSFCell cell) {
         String commentString = cellCommentDetails.getValue();
         if (commentString == null) {
             return;
@@ -485,7 +486,7 @@ public class ExcelExporter {
         int green = Integer.parseInt(RGB.substring(2, 4), 16);
         int blue = Integer.parseInt(RGB.substring(4, 6), 16);
 
-        return new XSSFColor(new byte[]{(byte) red, (byte) green, (byte) blue});
+        return new XSSFColor(new byte[]{(byte) red, (byte) green, (byte) blue}, new DefaultIndexedColorMap());
     }
 
     /**
@@ -503,36 +504,36 @@ public class ExcelExporter {
         CellStyle style = workbook.createCellStyle();
 
         // We work with XLSX -> SXSSFWorkbook
-        XSSFCellStyle styleXSSF = (XSSFCellStyle) style;
+        XSSFCellStyle styleSXSSF = (XSSFCellStyle) style;
 
         if (foregroundColor != null) {
-            styleXSSF.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            styleXSSF.setFillForegroundColor(foregroundColor);
+            styleSXSSF.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            styleSXSSF.setFillForegroundColor(foregroundColor);
         }
 
         if (fontColor != null) {
             Font font = workbook.createFont();
             // We work with XLSX -> SXSSFWorkbook
-            XSSFFont fontXSSF = (XSSFFont) font;
-            fontXSSF.setColor(fontColor);
+            XSSFFont fontSXSSF = (XSSFFont) font;
+            fontSXSSF.setColor(fontColor);
             if (bold != null) {
-                fontXSSF.setBold(bold);
+                fontSXSSF.setBold(bold);
             }
-            styleXSSF.setFont(fontXSSF);
+            styleSXSSF.setFont(fontSXSSF);
         }
 
         return style;
     }
 
     private void addBorderToCellStyle(CellStyle cellStyle) {
-        XSSFCellStyle styleXSSF = (XSSFCellStyle) cellStyle;
-        styleXSSF.setBorderBottom(BorderStyle.THIN);
-        styleXSSF.setBorderLeft(BorderStyle.THIN);
-        styleXSSF.setBorderRight(BorderStyle.THIN);
-        styleXSSF.setBorderTop(BorderStyle.THIN);
+        XSSFCellStyle styleSXSSF = (XSSFCellStyle) cellStyle;
+        styleSXSSF.setBorderBottom(BorderStyle.THIN);
+        styleSXSSF.setBorderLeft(BorderStyle.THIN);
+        styleSXSSF.setBorderRight(BorderStyle.THIN);
+        styleSXSSF.setBorderTop(BorderStyle.THIN);
     }
 
-    private Cell initializeCell(Row row, int headerColumn) {
+    private SXSSFCell initializeCell(SXSSFRow row, int headerColumn) {
         if (headerColumn > maxRightColumnIndexWithContent) {
             maxRightColumnIndexWithContent = headerColumn;
         }
