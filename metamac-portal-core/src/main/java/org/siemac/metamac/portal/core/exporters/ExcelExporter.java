@@ -81,6 +81,8 @@ public class ExcelExporter {
     private CellStyle              headerCellStyle;
     private CellStyle              listTitleCellStyle;
 
+    private SXSSFDrawing           drawing;
+
     public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
@@ -95,6 +97,7 @@ public class ExcelExporter {
     private void initialize() {
         workbook = new SXSSFWorkbook(ROW_ACCESS_WINDOW_SIZE);
         sheet = workbook.createSheet();
+        drawing = sheet.createDrawingPatriarch();
         rowsOfData = datasetSelection.getRows();
         columnsOfData = datasetSelection.getColumns();
         leftHeaderSizeOfData = datasetSelection.getLeftDimensions().size();
@@ -427,9 +430,6 @@ public class ExcelExporter {
         if (commentString == null) {
             return;
         }
-
-        // Create the comment
-        Drawing drawing = sheet.createDrawingPatriarch();
 
         // When the comment box is visible, have it show in a box
         ClientAnchor anchor = creationHelper.createClientAnchor();
