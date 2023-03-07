@@ -17,7 +17,6 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.xssf.streaming.SXSSFCell;
 import org.apache.poi.xssf.streaming.SXSSFCreationHelper;
@@ -78,9 +77,9 @@ public class ExcelExporter {
 
     private static Logger          log                            = LoggerFactory.getLogger(ExcelExporter.class);
 
-    private CellStyle              dataCellStyle;
-    private CellStyle              headerCellStyle;
-    private CellStyle              listTitleCellStyle;
+    private XSSFCellStyle          dataCellStyle;
+    private XSSFCellStyle          headerCellStyle;
+    private XSSFCellStyle          listTitleCellStyle;
 
     private SXSSFDrawing           drawing;
 
@@ -498,41 +497,37 @@ public class ExcelExporter {
      * @param fontColor optional
      * @return
      */
-    private CellStyle createStyleSolid(XSSFColor fontColor, XSSFColor foregroundColor, Boolean bold) {
+    private XSSFCellStyle createStyleSolid(XSSFColor fontColor, XSSFColor foregroundColor, Boolean bold) {
         if (foregroundColor == null && fontColor == null) {
             return null;
         }
 
-        CellStyle style = workbook.createCellStyle();
-
         // We work with XLSX -> SXSSFWorkbook
-        XSSFCellStyle styleSXSSF = (XSSFCellStyle) style;
+        XSSFCellStyle style = (XSSFCellStyle) workbook.createCellStyle();
 
         if (foregroundColor != null) {
-            styleSXSSF.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            styleSXSSF.setFillForegroundColor(foregroundColor);
+            style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            style.setFillForegroundColor(foregroundColor);
         }
 
         if (fontColor != null) {
-            Font font = workbook.createFont();
+            XSSFFont font = (XSSFFont) workbook.createFont();
             // We work with XLSX -> SXSSFWorkbook
-            XSSFFont fontSXSSF = (XSSFFont) font;
-            fontSXSSF.setColor(fontColor);
+            font.setColor(fontColor);
             if (bold != null) {
-                fontSXSSF.setBold(bold);
+                font.setBold(bold);
             }
-            styleSXSSF.setFont(fontSXSSF);
+            style.setFont(font);
         }
 
         return style;
     }
 
-    private void addBorderToCellStyle(CellStyle cellStyle) {
-        XSSFCellStyle styleSXSSF = (XSSFCellStyle) cellStyle;
-        styleSXSSF.setBorderBottom(BorderStyle.THIN);
-        styleSXSSF.setBorderLeft(BorderStyle.THIN);
-        styleSXSSF.setBorderRight(BorderStyle.THIN);
-        styleSXSSF.setBorderTop(BorderStyle.THIN);
+    private void addBorderToCellStyle(XSSFCellStyle cellStyle) {
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setBorderTop(BorderStyle.THIN);
     }
 
     private SXSSFCell initializeCell(SXSSFRow row, int headerColumn) {
