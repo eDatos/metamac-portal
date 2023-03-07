@@ -152,7 +152,7 @@ public class ExcelExporter {
         }
 
         // Units
-        SXSSFRow titleRowForUnits = sheet.createRow(headerRow++);
+        int titleRowForUnitsIndex = headerRow++;
         boolean hasAnyUnits = false;
         if (resourceAccess.existsContVariable()) { // Measure dimension
             // Indexed to ContVariable Values
@@ -193,6 +193,7 @@ public class ExcelExporter {
             }
         }
         if (hasAnyUnits) {
+            SXSSFRow titleRowForUnits = sheet.createRow(titleRowForUnitsIndex);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_UNITS, locale);
             addStringCell(titleRowForUnits, 0, messageForCode, listTitleCellStyle);
         }
