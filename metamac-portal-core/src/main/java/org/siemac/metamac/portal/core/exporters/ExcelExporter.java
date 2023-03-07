@@ -57,6 +57,7 @@ import org.slf4j.LoggerFactory;
 
 public class ExcelExporter {
 
+    // https://andriymz.github.io/misc/apache-poi-slow-excel-generation/
     private static final int       ROW_ACCESS_WINDOW_SIZE         = 100;
 
     private static final XSSFColor COLOR_WHITE                    = getXSSFColor("FFFFFF");
