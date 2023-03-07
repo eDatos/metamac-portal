@@ -83,15 +83,39 @@ public class ExcelExporter {
 
     private SXSSFDrawing           drawing;
 
+    private boolean                highPerformanceMode            = false;
+
     public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
+        enableHighPerformanceModeIfNeeded();
     }
 
     public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
             throws MetamacException {
         resourceAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
+        enableHighPerformanceModeIfNeeded();
+    }
+
+    /*
+     * Apache POI is not very performant when drawing comment cells.
+     * - It's slow, because it needs to copy xml internally. This problem can produce timeouts
+     * - And it consumes a high amount of ram, because it keeps the whole uncompressed XML with the comments
+     * in memory, that later is efficiently zipped into the xlsx. This problem can produce out of memory errors
+     * The workaround consists on removing the inneficient comments if we are above a certain threshold of them. In that case
+     * we'll reorganize the table and present the attributes in a column besides the observations
+     * This approach is highly heuristic and subject to change on the selected value
+     * getPrimaryMeasureAttributesCount is on itself, an upper bound, because if we have several primary measure attributes,
+     * they could be drawn on the same cell
+     * This way of calculate the number of comment cells is subject to change when the attributes at other levels are implemented
+     */
+    private void enableHighPerformanceModeIfNeeded() {
+        log.debug("Number of non empty  " + String.valueOf(resourceAccess.getPrimaryMeasureAttributesCount()));
+        highPerformanceMode = resourceAccess.getPrimaryMeasureAttributesCount() > 250_000;
+        if (highPerformanceMode) {
+            datasetSelection.moveTopDimensionsToLeft();
+        }
     }
 
     private void initialize() {
@@ -432,6 +456,16 @@ public class ExcelExporter {
             return;
         }
 
+        if (highPerformanceMode) {
+            SXSSFCell commentCell = initializeCell((SXSSFRow) cell.getRow(), cell.getColumnIndex() + 1);
+            commentCell.setCellValue(commentString);
+            commentCell.setCellType(CellType.STRING);
+        } else {
+            addCellCommentAsComment(cellCommentDetails, cell, commentString);
+        }
+    }
+
+    private void addCellCommentAsComment(CellCommentDetails cellCommentDetails, SXSSFCell cell, String commentString) {
         // When the comment box is visible, have it show in a box
         ClientAnchor anchor = creationHelper.createClientAnchor();
         anchor.setCol1(cell.getColumnIndex());
@@ -461,6 +495,9 @@ public class ExcelExporter {
     }
 
     public void write(OutputStream os) throws MetamacException {
+        log.warn("Before initialize MB: " + (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+        long start1 = System.nanoTime();
+
         initialize();
         header();
         contentHeader();
