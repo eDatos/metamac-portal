@@ -26,8 +26,12 @@
         
         <!-- TODO: Revisar si es necesario que estas dependencias esten aqui o se pueden pasar al proyecto metamac-parent -->
         <google-guava.version>15.0</google-guava.version>
-        <apache-poi.version>3.15</apache-poi.version>
-        <apache-poi-schemas.version>1.3</apache-poi-schemas.version>
+        
+        <!-- Excel -->
+        <apache-poi.version>5.2.3</apache-poi.version>
+        <apache-poi-schemas.version>5.2.3</apache-poi-schemas.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        
         <commons-lang3.version>3.0.1</commons-lang3.version>
         <batik-core.version>1.7</batik-core.version> <!-- Error al subir a batik 1.10. Ver METAMAC-2921 -->
         <jsoup.version>1.7.2</jsoup.version>
@@ -315,7 +319,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
-                <artifactId>ooxml-schemas</artifactId>
+                <artifactId>poi-ooxml-lite</artifactId>
                 <version>${apache-poi-schemas.version}</version>
             </dependency>
             <dependency>

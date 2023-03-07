@@ -623,6 +623,7 @@ public class ResourceAccess {
         return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn());
     }
 
+    // IDEA This will be more efficient if the concept is included on the dataset
     private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn) {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);

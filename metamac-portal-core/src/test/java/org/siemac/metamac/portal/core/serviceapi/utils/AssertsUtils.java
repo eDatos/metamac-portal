@@ -10,6 +10,7 @@ import java.util.Iterator;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -33,9 +34,9 @@ public class AssertsUtils {
             while (cellIterator.hasNext()) {
                 Cell cell = cellIterator.next();
                 String value;
-                if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                if (cell.getCellType() == CellType.STRING) {
                     value = cell.getStringCellValue();
-                } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+                } else if (cell.getCellType() == CellType.BLANK) {
                     value = StringUtils.EMPTY;
                 } else {
                     value = StringUtils.EMPTY + cell.getNumericCellValue();
@@ -58,9 +59,9 @@ public class AssertsUtils {
             while (cellIterator.hasNext()) {
                 Cell cell = cellIterator.next();
                 String value;
-                if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+                if (cell.getCellType() == CellType.STRING) {
                     value = cell.getStringCellValue();
-                } else if (cell.getCellType() == Cell.CELL_TYPE_BLANK) {
+                } else if (cell.getCellType() == CellType.BLANK) {
                     value = StringUtils.EMPTY;
                 } else {
                     value = StringUtils.EMPTY + cell.getNumericCellValue();
