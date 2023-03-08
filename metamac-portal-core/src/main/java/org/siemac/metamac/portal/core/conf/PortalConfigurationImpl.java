@@ -79,6 +79,11 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
     }
 
     @Override
+    public Integer retrieveExportExcelCellThreshold() throws MetamacException {
+        return Integer.valueOf(retrieveProperty(PortalConfigurationConstants.PORTAL_EXPORT_EXCEL_CELL_THRESHOLD));
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
 

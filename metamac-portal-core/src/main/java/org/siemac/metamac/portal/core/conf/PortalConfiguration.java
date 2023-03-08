@@ -26,4 +26,6 @@ public interface PortalConfiguration extends ConfigurationService {
 
     String retrievePortalCustomStyleBaseUrl() throws MetamacException;
 
+    Integer retrieveExportExcelCellThreshold() throws MetamacException;
+
 }
