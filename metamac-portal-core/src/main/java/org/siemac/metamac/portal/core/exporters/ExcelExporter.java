@@ -84,7 +84,6 @@ public class ExcelExporter {
     private SXSSFDrawing           drawing;
 
     private boolean                highPerformanceMode            = false;
-
     private Integer                cellThreshold                  = 250_000;
 
     public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold)
@@ -501,9 +500,6 @@ public class ExcelExporter {
     }
 
     public void write(OutputStream os) throws MetamacException {
-        log.warn("Before initialize MB: " + (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
-        long start1 = System.nanoTime();
-
         initialize();
         header();
         contentHeader();
