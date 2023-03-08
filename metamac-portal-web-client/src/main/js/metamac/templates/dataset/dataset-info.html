@@ -103,8 +103,6 @@
         </div>
         <div class="metadata-value">
             <ul>
-                <li>{{ fieldOutput "entity.dataset.dataProviders" metadata.dataProviders "text" }}</li>
-                <li>{{ fieldOutput "entity.dataset.dataProviderAnnotations" metadata.dataProviderAnnotations "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.bibliographicCitation" metadata.bibliographicCitation "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.rightsHolder" metadata.rightsHolder "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.copyrightDate" metadata.copyrightDate "text" }}</li>
@@ -113,6 +111,8 @@
                 <li>{{ fieldOutput "entity.dataset.publishers" metadata.publishers "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.contributors" metadata.contributors "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.mediators" metadata.mediators "text" }}</li>
+                <li>{{ fieldOutput "entity.dataset.dataProviders" metadata.dataProviders "text" }}</li>
+                <li>{{ fieldOutput "entity.dataset.dataProviderAnnotations" metadata.dataProviderAnnotations "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.apiDocumentationUrl" metadata.apiDocumentationUrl "resource" }}</li>
                 <li>{{ fieldOutput "entity.dataset.apiUrl" metadata.apiUrl "resource" }}</li>
                 {{#if urlParametersForDimensionSelection.isVisible}}
