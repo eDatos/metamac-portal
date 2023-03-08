@@ -67,6 +67,9 @@ public class ApplicationStartup extends ApplicationStartupListener {
         checkRequiredProperty(PortalConfigurationConstants.ENDPOINT_SRM_EXTERNAL_API);
         checkRequiredProperty(PortalConfigurationConstants.ENDPOINT_STATISTICAL_RESOURCES_EXTERNAL_API);
 
+        // Export needs to know the cell threshold for excel high performance mode
+        checkRequiredProperty(PortalConfigurationConstants.PORTAL_EXPORT_EXCEL_CELL_THRESHOLD);
+
         // Visualizer (also the api ones)
         checkRequiredProperty(PortalConfigurationConstants.METAMAC_ORGANISATION);
         String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
