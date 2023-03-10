@@ -13,7 +13,7 @@ public class Table extends CollectionNode {
 
     /**
      * Gets the value of the dataset property.
-     * 
+     *
      * @return
      *         possible object is
      *         {@link ResourceInternal }
@@ -24,18 +24,18 @@ public class Table extends CollectionNode {
 
     /**
      * Sets the value of the dataset property.
-     * 
+     *
      * @param value
      *            allowed object is
      *            {@link ResourceInternal }
      */
     public void setDataset(Resource value) {
-        this.dataset = value;
+        dataset = value;
     }
 
     /**
      * Gets the value of the query property.
-     * 
+     *
      * @return
      *         possible object is
      *         {@link ResourceInternal }
@@ -46,13 +46,13 @@ public class Table extends CollectionNode {
 
     /**
      * Sets the value of the query property.
-     * 
+     *
      * @param value
      *            allowed object is
      *            {@link ResourceInternal }
      */
     public void setQuery(Resource value) {
-        this.query = value;
+        query = value;
     }
 
     public Resource getMultidataset() {
