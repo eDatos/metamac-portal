@@ -46,6 +46,10 @@ public class DatasetSelection {
             }
         }
 
+        recalculateMultipliers();
+    }
+
+    private void recalculateMultipliers() {
         initializeMultipliers(getLeftDimensions());
         initializeMultipliers(getTopDimensions());
         initializedFixedMultipliers();
@@ -142,6 +146,19 @@ public class DatasetSelection {
 
     public List<DatasetSelectionDimension> getFixedDimensions() {
         return getDimensionsInPositionRange(FIXED_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION + 20);
+    }
+
+    public void moveTopDimensionsToLeft() {
+        int currentAvailablePosition = LEFT_DIMENSIONS_START_POSITION;
+        for (DatasetSelectionDimension dimension : getDimensions()) {
+            // We are not interested on fixedDimensions
+            if (getFixedDimensions().contains(dimension)) {
+                continue;
+            }
+            dimension.setPosition(currentAvailablePosition);
+            currentAvailablePosition += 1;
+        }
+        recalculateMultipliers();
     }
 
     private List<DatasetSelectionDimension> getDimensionsInPositionRange(int from, int to) {
