@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.siemac.metamac.metamac-portal</groupId>
 		<artifactId>metamac-portal-parent</artifactId>
-		<version>8.3.1-SNAPSHOT</version>
+		<version>8.3.1</version>
 		<relativePath>../metamac-portal-parent/pom.xml</relativePath>
 	</parent>
 
