@@ -12,7 +12,7 @@
 ## 8.3.0 a 8.3.1 *hotfix*
 * Es necesario ejecutar los scripts SQL contenidos en la carpeta
 ```
-etc/changes-from-release/8.2.5/db/common-metadata/postgresql/20220310_insert_cell_threshold.sql
+etc/changes-from-release/8.3.0/db/common-metadata/postgresql/20220310_insert_cell_threshold.sql
 ```
 
 ## 8.2.5 a 8.3.0 
