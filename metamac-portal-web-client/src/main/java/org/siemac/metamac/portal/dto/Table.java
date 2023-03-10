@@ -9,6 +9,7 @@ public class Table extends CollectionNode {
     protected Resource dataset;
     protected Resource query;
     protected Resource multidataset;
+    protected Resource url;
 
     /**
      * Gets the value of the dataset property.
@@ -60,6 +61,14 @@ public class Table extends CollectionNode {
 
     public void setMultidataset(Resource multidataset) {
         this.multidataset = multidataset;
+    }
+
+    public Resource getUrl() {
+        return url;
+    }
+
+    public void setUrl(Resource url) {
+        this.url = url;
     }
 
 }

@@ -362,25 +362,8 @@ public class Helpers {
     }
 
     public static String tableViewUrl(Table table) {
-        StringBuilder builder = new StringBuilder();
-
         Resource resource = getResourceFromTable(table);
-
-        if (resource != null) {
-            String[] tripleIdentifier = getTripleIdentifier(resource);
-            if (table.getMultidataset() != null) {
-                appendParameter(builder, PARAMETER_MULTIDATASET_ID, tripleIdentifier[0] + ":" + tripleIdentifier[1]);
-            } else {
-                appendParameter(builder, PARAMETER_RESOURCE_TYPE, resourceKindToResourceType(resource.getKind()));
-                appendParameter(builder, PARAMETER_AGENCY_ID, tripleIdentifier[0]);
-                appendParameter(builder, PARAMETER_RESOURCE_ID, tripleIdentifier[1]);
-                appendParameter(builder, PARAMETER_VERSION, tripleIdentifier[2]);
-            }
-            builder.insert(0, PATH_RELATIVE_DATA_PAGE);
-        }
-        builder.append("#");
-
-        return builder.toString();
+        return resource.getVisualizerHtmlLink();
     }
 
     private static Resource getResourceFromTable(Table table) {
@@ -392,6 +375,8 @@ public class Helpers {
             resource = table.getQuery();
         } else if (table.getMultidataset() != null) {
             resource = table.getMultidataset();
+        } else if (table.getUrl() != null) {
+            resource = table.getUrl();
         }
         return resource;
     }
