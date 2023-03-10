@@ -17,8 +17,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
-import org.siemac.metamac.portal.core.constants.PortalConstants.ResourceType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.portal.dto.Chapter;
 import org.siemac.metamac.portal.dto.Collection;
@@ -47,7 +45,6 @@ import org.springframework.web.util.UriUtils;
 
 public class Helpers {
 
-    private static final String PATH_RELATIVE_DATA_PAGE                           = "data.html";
     public static final String  PARAMETER_RESOURCE_TYPE                           = "resourceType";
     public static final String  PARAMETER_RESOURCE_ID                             = "resourceId";
     public static final String  PARAMETER_AGENCY_ID                               = "agencyId";
@@ -227,10 +224,12 @@ public class Helpers {
 
         QueryParams queryParams = permalink.getContent().getQueryParams();
 
+        // Permalink url must be rebuild, because you must not store the visualizer url inside the permalink stored on db in case
+        // the baseUrl changes tomorrow.
         buildUrl(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
                 queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title);
 
-        // Includes #
+        // Hash is the SPA route, for example #datasets/selection. Includes #
         stringBuilder.append(permalink.getContent().getHash());
         stringBuilder.append("/").append("permalink").append("/").append(permalink.getId());
 
@@ -249,9 +248,11 @@ public class Helpers {
             return StringUtils.EMPTY;
         }
 
-        String[] tripleIdentifier = getTripleIdentifier(resource);
-
-        buildUrl(stringBuilder, resourceKindToResourceType(resource.getKind()), tripleIdentifier[0], tripleIdentifier[1], tripleIdentifier[2], null, multidatasetId, sharedVisualizerUrl, locale, title);
+        String baseUrl = resource.getVisualizerHtmlLink();
+        if (!StringUtils.isBlank(baseUrl)) {
+            stringBuilder.append(baseUrl);
+        }
+        buildUrl(stringBuilder, null, null, null, null, null, multidatasetId, sharedVisualizerUrl, locale, title);
 
         return stringBuilder.toString();
     }
@@ -269,19 +270,6 @@ public class Helpers {
         if (locale != null) {
             appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
         }
-    }
-
-    private static String resourceKindToResourceType(String kind) {
-        TypeExternalArtefactsEnum typeExternalArtefact = TypeExternalArtefactsEnum.fromValue(kind);
-        switch (typeExternalArtefact) {
-            case DATASET:
-                return ResourceType.DATASET.getName();
-            case QUERY:
-                return ResourceType.QUERY.getName();
-            default:
-                break;
-        }
-        return null;
     }
 
     private static org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0 getInternalJAXRSClient(String statisticalResourcesEndpoint) {
@@ -379,14 +367,6 @@ public class Helpers {
             resource = table.getUrl();
         }
         return resource;
-    }
-
-    private static String[] getTripleIdentifier(Resource resource) {
-        if (resource != null) {
-            return PortalUtils.splitUrnStructure(resource.getUrn());
-        } else {
-            return new String[]{null, null, null};
-        }
     }
 
     private static void appendParameter(StringBuilder builder, String key, String value) {
