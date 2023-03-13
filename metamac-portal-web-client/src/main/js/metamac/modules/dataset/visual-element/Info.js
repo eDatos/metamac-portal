@@ -191,7 +191,13 @@
 
                 if (this.data.metadata.metadata.type === "LATEST_DATA" || this.data.metadata.metadata.type === "AUTOINCREMENTAL") {
                     _.extend(metadata, _.pick(formattedMetadataFromRelatedDataset, 'nextVersion', 'dateNextUpdate', 'updateFrequency'));
-                    metadata.hasVersionInfo = metadata.nextVersion || metadata.dateNextUpdate || metadata.updateFrequency;
+                    metadata.hasVersionInfo = !!metadata.nextVersion || !!metadata.dateNextUpdate || !!metadata.updateFrequency;
+                } else {
+                    var versionProperties = ['version', 'versionRationale', 'keepAllData', 'replacesVersion', 'replaces', 'isReplacedByVersion', 'isReplacedBy', 'dateNextUpdate', 'updateFrequency'];
+                    versionProperties.forEach(function (versionPropertyKey) {
+                        metadata[versionPropertyKey] = undefined;
+                    });
+                    metadata.hasVersionInfo = !!metadata.nextVersion;
                 }
             }
 
