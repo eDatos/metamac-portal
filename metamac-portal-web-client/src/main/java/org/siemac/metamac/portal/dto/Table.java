@@ -9,10 +9,11 @@ public class Table extends CollectionNode {
     protected Resource dataset;
     protected Resource query;
     protected Resource multidataset;
+    protected Resource url;
 
     /**
      * Gets the value of the dataset property.
-     * 
+     *
      * @return
      *         possible object is
      *         {@link ResourceInternal }
@@ -23,18 +24,18 @@ public class Table extends CollectionNode {
 
     /**
      * Sets the value of the dataset property.
-     * 
+     *
      * @param value
      *            allowed object is
      *            {@link ResourceInternal }
      */
     public void setDataset(Resource value) {
-        this.dataset = value;
+        dataset = value;
     }
 
     /**
      * Gets the value of the query property.
-     * 
+     *
      * @return
      *         possible object is
      *         {@link ResourceInternal }
@@ -45,13 +46,13 @@ public class Table extends CollectionNode {
 
     /**
      * Sets the value of the query property.
-     * 
+     *
      * @param value
      *            allowed object is
      *            {@link ResourceInternal }
      */
     public void setQuery(Resource value) {
-        this.query = value;
+        query = value;
     }
 
     public Resource getMultidataset() {
@@ -60,6 +61,14 @@ public class Table extends CollectionNode {
 
     public void setMultidataset(Resource multidataset) {
         this.multidataset = multidataset;
+    }
+
+    public Resource getUrl() {
+        return url;
+    }
+
+    public void setUrl(Resource url) {
+        this.url = url;
     }
 
 }
