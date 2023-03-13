@@ -18,7 +18,7 @@
         load: function () {
             this.getDimensions();
             this.getMeasureConcepts();
-            this.getExtraMetadata();
+            this.getMetadataFromRelatedDataset();
             this.getDatasetAttributes();
             this._getSelectionApiUrl();
             this._bindEvents();
@@ -50,8 +50,8 @@
             self.render();
         },
 
-        updateExtraMetadata: function (datasetMetadata) {
-            this.extraMetadata = datasetMetadata;
+        updateMetadataFromRelatedDataset: function (datasetMetadata) {
+            this.metadataFromRelatedDataset = datasetMetadata;
             this.render();
         },
 
@@ -92,25 +92,15 @@
             });
         },
 
-        getExtraMetadata: function () {
+        getMetadataFromRelatedDataset: function () {
             if (this._isQuery()) {
-                var datasetHelper = App.datasource.helper.DatasourceHelperFactory.getHelper("dataset");
-                var url = this.data.metadata.metadata.relatedDataset.selfLink.href + datasetHelper.getParametersForMetadataUrl();
+                var datasourceIdentifier = App.datasource.DatasourceIdentifier.initializeWithUrn(this.data.metadata.metadata.relatedDataset.urn);
+                var relatedDatasetMetadataRequest = new App.datasource.MetadataRequest(datasourceIdentifier);
 
                 var self = this;
-                $.ajax({
-                    url: url,
-                    dataType: 'jsonp',
-                    jsonp: "_callback"
-                }).success(function (response) {
-                    var datasourceIdentifier = new App.datasource.DatasourceIdentifier({
-                        "agency": response.metadata.agency,
-                        "identifier": response.id,
-                        "version": response.metadata.version,
-                        "type": response.metadata.type
-                    });
-                    var datasetMetadata = new App.datasource.model.MetadataResponse({ datasourceIdentifier: datasourceIdentifier, datasourceHelper: datasetHelper, response: response})
-                    self.updateExtraMetadata(datasetMetadata);
+                relatedDatasetMetadataRequest.fetch(function () {
+                    var datasetMetadata = relatedDatasetMetadataRequest.getMetadataResponse();
+                    self.updateMetadataFromRelatedDataset(datasetMetadata);
                 });
             }
         },
@@ -191,32 +181,18 @@
 
         _getMetadata: function () {
             var metadata = this.data.metadata.toJSON();
-            if (this._isQuery() && this.extraMetadata) {
-                var formattedExtraMetadata = this.extraMetadata.toJSON();
-                metadata.subjectAreas = formattedExtraMetadata.subjectAreas;
+            if (this._isQuery() && this.metadataFromRelatedDataset) {
+                var formattedMetadataFromRelatedDataset = this.metadataFromRelatedDataset.toJSON();
+                _.extend(metadata, _.pick(formattedMetadataFromRelatedDataset, 'subjectAreas', 'statisticOfficiality', 'dataProviders', 'dataProviderAnnotations',
+                    'bibliographicCitation', 'rightsHolder', 'copyrightDate', 'license', 'accessRights', 'publishers', 'contributors', 'mediators'));
                 metadata.formatExtentObservations = this.data.observations.length;
                 metadata.hasDescriptors = !!metadata.subjectAreas || !!metadata.statisticalOperation || !!metadata.formatExtentObservations;
-
-                metadata.statisticOfficiality = formattedExtraMetadata.statisticOfficiality;
                 metadata.hasValidity = metadata.dates.validFrom || metadata.dates.validTo || metadata.statisticOfficiality;
 
                 if (this.data.metadata.metadata.type === "LATEST_DATA" || this.data.metadata.metadata.type === "AUTOINCREMENTAL") {
-                    metadata.nextVersion = formattedExtraMetadata.nextVersion;
-                    metadata.dateNextUpdate = formattedExtraMetadata.dateNextUpdate;
-                    metadata.updateFrequency = formattedExtraMetadata.updateFrequency;
+                    _.extend(metadata, _.pick(formattedMetadataFromRelatedDataset, 'nextVersion', 'dateNextUpdate', 'updateFrequency'));
                     metadata.hasVersionInfo = metadata.nextVersion || metadata.dateNextUpdate || metadata.updateFrequency;
                 }
-
-                metadata.dataProviders = formattedExtraMetadata.dataProviders;
-                metadata.dataProviderAnnotations = formattedExtraMetadata.dataProviderAnnotations;
-                metadata.bibliographicCitation = formattedExtraMetadata.bibliographicCitation;
-                metadata.rightsHolder = formattedExtraMetadata.rightsHolder;
-                metadata.copyrightDate = formattedExtraMetadata.copyrightDate;
-                metadata.license = formattedExtraMetadata.license;
-                metadata.accessRights = formattedExtraMetadata.accessRights;
-                metadata.publishers = formattedExtraMetadata.publishers;
-                metadata.contributors = formattedExtraMetadata.contributors;
-                metadata.mediators = formattedExtraMetadata.mediators;
             }
 
             return metadata;
@@ -224,7 +200,7 @@
 
         _getContextRightsHolder: function () {
             if (this.showRightsHolderText()) {
-                return (this._isQuery() && this.extraMetadata) ? this.extraMetadata.getRightsHolder() : this.getRightsHolderText();
+                return (this._isQuery() && this.metadataFromRelatedDataset) ? this.metadataFromRelatedDataset.getRightsHolder() : this.getRightsHolderText();
             }
             return '';
         },
