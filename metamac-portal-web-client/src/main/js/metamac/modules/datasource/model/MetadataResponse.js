@@ -549,7 +549,7 @@
 
         buildVisualizerUrl: function (resource) {
             if (resource.urn) {
-                var identifier = this.getIdentifierFromUrn(resource.urn);
+                var identifier = App.datasource.DatasourceIdentifier.initializeWithUrn(resource.urn).getIdentifier();
                 return {
                     href: [
                         location.protocol,
@@ -561,22 +561,6 @@
                     ].join(''),
                     name: this.localizeLabel(resource.name.text)
                 }
-            }
-        },
-
-        getIdentifierFromUrn: function (urn) {
-            var splittedUrn = urn.split("=");
-            var resourcePrefix = splittedUrn[0];
-            var statisticalResource = splittedUrn[1];
-
-            var statisticalResourceRegex = /(\w+):([a-z_0-9]+)\(([0-9\.]+)\)/i;
-            var statisticalResourceMatchs = statisticalResourceRegex.exec(statisticalResource);
-
-            return {
-                type: _.last(resourcePrefix.split(".")).toLowerCase(),
-                agency: statisticalResourceMatchs[1],
-                identifier: statisticalResourceMatchs[2],
-                version: statisticalResourceMatchs[3]
             }
         },
 
