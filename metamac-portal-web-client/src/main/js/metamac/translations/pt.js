@@ -206,6 +206,8 @@ I18n.translations.pt = {
             updateFrequency: "Frequência de atualização",
             statisticOfficiality: "Estatísticas Oficiais",
             bibliographicCitation: "Citação bibliográfica",
+            dataProviders: "Provedores de dados",
+            dataProviderAnnotations: "Observações associadas a provedores de dados",
             measureConcepts: {
                 title: "O que é medido pelos dados",
                 annotations: "Notas gerais"

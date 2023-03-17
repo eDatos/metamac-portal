@@ -8,13 +8,25 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 8.2.3 a 8.3.0
-* Es necesario ejecutar los scripts SQL contenidos en la carpeta
 
+## 8.3.0 a 8.3.1 *hotfix*
+* Es necesario ejecutar los scripts SQL contenidos en la carpeta
 ```
-etc/changes-from-release/8.2.3/db/common-metadata/postgresql/*.sql
+etc/changes-from-release/8.3.0/db/common-metadata/postgresql/20220310_insert_cell_threshold.sql
+```
+
+## 8.2.5 a 8.3.0 
+* Es necesario ejecutar los scripts SQL contenidos en la carpeta
+```
+etc/changes-from-release/8.2.5/db/common-metadata/postgresql/20221114_update_header_style_url.sql
 ```
 * Importante: Esta versión depende de la versión complementos-apps - 5.0.3-SNAPSHOT para ajustar del todo ciertos estilos.
+
+## 8.2.3 a 8.2.5 *hotfix*
+* Es necesario ejecutar los scripts SQL contenidos en la carpeta
+```
+etc/changes-from-release/8.2.3/db/common-metadata/postgresql/20220308_insert_cell_threshold.sql
+```
 
 ## 8.0.0 a 8.1.0
 * Es necesario ejecutar los scripts SQL contenidos en la carpeta

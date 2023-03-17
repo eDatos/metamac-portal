@@ -41,7 +41,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         if (lang == null) {
             lang = langDefault;
         }
-        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault);
+        Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
+        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault, cellThreshold);
         exporter.write(resultOutputStream);
     }
 
@@ -115,7 +116,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         if (lang == null) {
             lang = langDefault;
         }
-        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault);
+        Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
+        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault, cellThreshold);
         exporter.write(resultOutputStream);
     }
 

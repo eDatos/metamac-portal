@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
@@ -89,10 +90,12 @@ public class ResourceAccess {
 
     private Dataset                                       dataset;
 
-    private final Map<String, Integer>                    multipliers         = new HashMap<String, Integer>();
-    private final Map<String, Map<String, Long>>          representationIndex = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
+    private final Map<String, Integer>                    multipliers                   = new HashMap<String, Integer>();
+    private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
 
     private SrmRestExternalFacade                         srmRestExternalFacade;
+
+    private int                                           primaryMeasureAttributesCount = 0;
 
     public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         this.srmRestExternalFacade = srmRestExternalFacade;
@@ -371,6 +374,10 @@ public class ResourceAccess {
                 }
             }
 
+            if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
+                primaryMeasureAttributesCount += calculateNonEmptyCount(attributesValuesByAttributeId.get(attribute.getId()));
+            }
+
             // Measure Attribute
             if (ComponentType.MEASURE.equals(attribute.getType())) {
                 measureAttribute = attribute;
@@ -385,6 +392,19 @@ public class ResourceAccess {
         attributesValuesCurrentLocaleLabels = buildMapAttributesValuesLabels(attributesMetadata, lang, langDefault);
         attributesValuesLabels = buildMapAttributesValuesLocalisedLabels(attributesMetadata);
         attributesLabels = buildMapAttributesLabels(attributesMetadata, lang, langDefault);
+    }
+
+    private int calculateNonEmptyCount(String[] strings) {
+        if (strings == null) {
+            return 0;
+        }
+        int totalNonEmpty = 0;
+        for (int i = 0; i < strings.length; i++) {
+            if (StringUtils.isNotBlank(strings[i])) {
+                totalNonEmpty++;
+            }
+        }
+        return totalNonEmpty;
     }
 
     /**
@@ -623,6 +643,7 @@ public class ResourceAccess {
         return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn());
     }
 
+    // IDEA This will be more efficient if the concept is included on the dataset
     private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn) {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
@@ -673,5 +694,9 @@ public class ResourceAccess {
         }
 
         return result;
+    }
+
+    public int getPrimaryMeasureAttributesCount() {
+        return primaryMeasureAttributesCount;
     }
 }
