@@ -628,7 +628,7 @@ public class ResourceAccess {
 
     // ... and we'll have the multipliers stored for attributes at DIMENSION or combinated DIMENSION attachment level
     private void initializeMultipliersAttributes() {
-        for (Attribute attribute : getMetadata().getAttributes().getAttributes()) {
+        for (Attribute attribute : attributesMetadata) {
             if (!AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
                 continue;
             }
