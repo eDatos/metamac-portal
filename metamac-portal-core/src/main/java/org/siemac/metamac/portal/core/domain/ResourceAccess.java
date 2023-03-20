@@ -91,6 +91,7 @@ public class ResourceAccess {
     private Dataset                                       dataset;
 
     private final Map<String, Integer>                    multipliers                   = new HashMap<String, Integer>();
+    private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
     private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
 
     private SrmRestExternalFacade                         srmRestExternalFacade;
@@ -157,6 +158,7 @@ public class ResourceAccess {
         initializeObservations(data);
         initializeDimensionsForData(data);
         initializeMultipliers();
+        initializeMultipliersAttributes();
         initializeIndex();
     }
 
@@ -594,6 +596,7 @@ public class ResourceAccess {
         return dimensionValueId;
     }
 
+    // We´ll have the "multipliers" variable, used for calculating the offset for observations or attributes at PRIMARY_MEASURE attachment level
     private void initializeMultipliers() {
         List<DimensionRepresentation> dimensions = getData().getDimensions().getDimensions();
         ListIterator<DimensionRepresentation> dimensionsListIterator = dimensions.listIterator(dimensions.size());
@@ -604,6 +607,25 @@ public class ResourceAccess {
             DimensionRepresentation dimension = dimensionsListIterator.previous();
             multipliers.put(dimension.getDimensionId(), incrementCounter);
             incrementCounter *= dimension.getRepresentations().getRepresentations().size();
+        }
+    }
+
+    // ... and we'll have the multipliers stored for attributes at DIMENSION or combinated DIMENSION attachment level
+    private void initializeMultipliersAttributes() {
+        for (Attribute attribute : getMetadata().getAttributes().getAttributes()) {
+            if (!AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
+                continue;
+            }
+            multipliersByAttribute.put(attribute.getId(), new HashMap<String, Integer>());
+            List<AttributeDimension> dimensions = attribute.getDimensions().getDimensions();
+            ListIterator<AttributeDimension> dimensionsListIterator = dimensions.listIterator(dimensions.size());
+            int incrementCounter = 1;
+            // Iterate the list in reverse order: right to left or down to up in the display table for calculate cell spacing
+            while (dimensionsListIterator.hasPrevious()) {
+                AttributeDimension dimension = dimensionsListIterator.previous();
+                multipliersByAttribute.get(attribute.getId()).put(dimension.getDimensionId(), incrementCounter);
+                incrementCounter *= dimensionValuesOrderedForDataByDimensionId.get(dimension.getDimensionId()).size();
+            }
         }
     }
 
