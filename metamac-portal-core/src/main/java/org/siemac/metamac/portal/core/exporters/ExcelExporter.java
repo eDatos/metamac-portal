@@ -440,7 +440,7 @@ public class ExcelExporter {
             String observation = resourceAccess.observationAtPermutation(permutationAtCell);
             SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
 
-            addCellComment(resourceAccess.observationAttributesAtPermutation(permutationAtCell), cell);
+            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell), cell);
 
             if (observation != null) {
                 if (NumberUtils.isNumber(observation)) {

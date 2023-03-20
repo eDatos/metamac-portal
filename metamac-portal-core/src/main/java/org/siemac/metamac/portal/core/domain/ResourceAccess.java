@@ -487,7 +487,7 @@ public class ResourceAccess {
         return attributeValue;
     }
 
-    public CellCommentDetails observationAttributesAtPermutation(Map<String, String> permutation) {
+    public CellCommentDetails attributesAtPermutation(Map<String, String> permutation) {
         CellCommentDetails cellCommentDetails = new CellCommentDetails();
         for (Attribute attribute : getAttributesMetadata()) {
             if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
