@@ -43,6 +43,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Contact;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
@@ -372,6 +373,18 @@ public class ExcelExporter {
         Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
         currentRowCount += 2;
 
+        // Dataset Notes Attributes
+        {
+            Integer newCurrentRowCount = addBodyOfDatasetAttributes(currentRowCount);
+            // Some dataset note attribute was added
+            if (newCurrentRowCount > currentRowCount) {
+                addFootNotesTitle(currentRowCount);
+                currentRowCount = newCurrentRowCount;
+            }
+        }
+
+        currentRowCount++;
+
         // Rights Holder
         Organisation rightsHolder = resourceAccess.getMetadata().getRightsHolder();
         if (rightsHolder != null) {
@@ -402,6 +415,41 @@ public class ExcelExporter {
                 addStringCell(row, 1, buildContactText(contact), null);
             }
         }
+    }
+
+    private int addBodyOfDatasetAttributes(int footerRow) {
+        final int COLUMN_OF_BODY_NOTES_START = 1;
+
+        for (Attribute attribute : resourceAccess.getAttributesMetadata()) {
+            if (!AttributeAttachmentLevelType.DATASET.equals(attribute.getAttachmentLevel())) {
+                continue;
+            }
+            String attributeId = attribute.getId();
+            String[] attributeValues = resourceAccess.getAttributeValues(attributeId);
+
+            if (attributeValues == null) {
+                continue;
+            }
+            String attributeName = getLabel(resourceAccess.getAttributesMetadataMap().get(attributeId).getName());
+            String attributeValue = resourceAccess.obtainAttributeValue(attributeId, 0);
+            if (StringUtils.isNotBlank(attributeValue)) {
+                attributeValue = attributeValue.trim();
+
+                // Data table cell
+                SXSSFRow row = sheet.createRow(++footerRow);
+                addStringCell(row, COLUMN_OF_BODY_NOTES_START, attributeName, headerCellStyle);
+                XSSFCellStyle styleSolid = dataCellStyle;
+                addBorderToCellStyle(styleSolid);
+                addStringCell(row, COLUMN_OF_BODY_NOTES_START + 1, attributeValue, styleSolid);
+            }
+        }
+        return footerRow;
+    }
+
+    private void addFootNotesTitle(int footerRow) {
+        SXSSFRow row = sheet.createRow(footerRow);
+        String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_NOTES_TABLE, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+        addStringCell(row, 0, messageForCode, listTitleCellStyle);
     }
 
     private void addStringCell(SXSSFRow row, int column, String cellValue, CellStyle cellStyle) {
