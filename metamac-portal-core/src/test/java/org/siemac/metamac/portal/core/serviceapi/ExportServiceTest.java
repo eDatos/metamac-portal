@@ -1930,65 +1930,64 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
                 // DATASET ATTRIBUTES DEFINITIONS
                 .attribute("ATTRIBUTE_A", "Attribute A", AttributeAttachmentLevelType.DATASET, ComponentType.OTHER)
+                        .attributeData("ATTRIBUTE_A", "a1")
                 .attribute("ATTRIBUTE_A2", "Attribute A2", AttributeAttachmentLevelType.DATASET, ComponentType.MEASURE)
                         .attributeValue("a2", "a2 Label")
+                        .attributeData("ATTRIBUTE_A2", "a2")
                 .attribute("NOTEX", "Attribute Notex", AttributeAttachmentLevelType.DATASET, ComponentType.OTHER)
                         .attributeValue("a3", "a3 Label")
+                        .attributeData("NOTEX", "a3")
 
                 // DIMENSION ATTRIBUTES DEFINITIONS
                 .attribute("VALUENOTEX", "ValueNotex", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("DESTINO_ALOJAMIENTO")
+                        .attributeData("VALUENOTEX", "vn1 | vn2")
                 .attribute("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", "AttrDestinoAlojamiento01", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("DESTINO_ALOJAMIENTO")
                         .attributeValue("da1", "da1 Label")
+                        .attributeData("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", "da1 | ")
                 .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", "AttrCategoriaAlojamiento01", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("CATEGORIA_ALOJAMIENTO")
+                        .attributeData("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", "ca1 | ca2")
                 .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", "AttrCategoriaAlojamiento02", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("CATEGORIA_ALOJAMIENTO")
+                        .attributeData("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", "ca3 | ca4")
                 .attribute("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", "AttrCategoriaAlojamiento03", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("CATEGORIA_ALOJAMIENTO")
                         .attributeValue("ca5", "ca 5 Label")
+                        .attributeData("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", " | ca5")
                 .attribute("INDICADORES_A", "Attribute Indicadores A", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("INDICADORES")
+                        .attributeData("INDICADORES_A", "ioA_1")
                 .attribute("CELLNOTE_A", "Attribute CellNote A", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("DESTINO_ALOJAMIENTO", "TIME_PERIOD")
+                        .attributeData("CELLNOTE_A", "cnA_1 | cnA_2 | cnA_3 | cnA_4")
                 .attribute("CELLNOTE_B", "Attribute CellNote B", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("DESTINO_ALOJAMIENTO", "TIME_PERIOD", "CATEGORIA_ALOJAMIENTO")
+                        .attributeData("CELLNOTE_B", "cnB_1 | cnB_2 | cnB_3 |  | cnB_5 | cnB_6 | cnB_7 | cnB_8")
                 .attribute("CELLNOTE_C", "Attribute CellNote C", AttributeAttachmentLevelType.DIMENSION, ComponentType.OTHER)
                         .dimensionsAttached("TIME_PERIOD", "CATEGORIA_ALOJAMIENTO", "DESTINO_ALOJAMIENTO") // unordered in attribute definition
                            .attributeValue("cnC_1", "cnC_1 Label").attributeValue("cnC_2", "cnC_2 Label").attributeValue("cnC_6", "cnC_6 Label")
+                        .attributeData("CELLNOTE_C", "cnC_1 | cnC_2 |  |  |  | cnC_6 |  | ")
 
                 // PRIMARY MEASURE DEFINITIONS
                 .attribute("ATTRIBUTE_B", "Attribute B", AttributeAttachmentLevelType.PRIMARY_MEASURE, ComponentType.OTHER)
                            .attributeValue("b1", "b1 Label").attributeValue("b2", "b2 Label").attributeValue("b3", "b3 Label")
                            .attributeValue("b4", "b4 Label").attributeValue("b5", "b5 Label").attributeValue("b6", "b6 Label")
                            .attributeValue("b7", "b7 Label").attributeValue("b8", "b8 Label").attributeValue("b9", "b9 Label")
+                           .attributeData("ATTRIBUTE_B", "b1 | b2 | b3 |  | b5 | b6 | b7 | b8")
                 .attribute("ATTRIBUTE_C", "Attribute C",AttributeAttachmentLevelType.PRIMARY_MEASURE, ComponentType.OTHER)
+                            // No data
                 .attribute("ATTRIBUTE_D", "Attribute D",AttributeAttachmentLevelType.PRIMARY_MEASURE, ComponentType.OTHER)
                            .attributeValue("d1", "d1 Label").attributeValue("d2", "d2 Label").attributeValue("d3", "d3 Label")
                            .attributeValue("d4", "d4 Label").attributeValue("d5", "d5 Label").attributeValue("d6", "d6 Label")
                            .attributeValue("d7", "d7 Label").attributeValue("d8", "d8 Label").attributeValue("d9", "d9 Label")
+                           .attributeData("ATTRIBUTE_D", "d1 | d2 | d3 | d4 | d5 | d6 | d7 | d8")
                 .attribute("ATTRIBUTE_E", "Attribute E",AttributeAttachmentLevelType.PRIMARY_MEASURE, ComponentType.OTHER)
+                            .attributeData("ATTRIBUTE_E", "e1 | e2 | e3 | e4 | e5 | e6 | e7 | e8")
 
                 // OBSERVATIONS
                 .observations("1.1 | 2 | 3 | 4 | 5 | 6 |  | 8")
-
-                // ATTRIBUTE INSTANCES
-                .attributeData("ATTRIBUTE_A", "a1")
-                .attributeData("ATTRIBUTE_A2", "a2")
-                .attributeData("NOTEX", "a3")
-                .attributeData("VALUENOTEX", "vn1 | vn2")
-                .attributeData("ATTRIBUTE_DESTINO_ALOJAMIENTO_01", "da1 | ")
-                .attributeData("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_01", "ca1 | ca2")
-                .attributeData("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_02", "ca3 | ca4")
-                .attributeData("ATTRIBUTE_CATEGORIA_ALOJAMIENTO_03", " | ca5")
-                .attributeData("INDICADORES_A", "ioA_1")
-                .attributeData("CELLNOTE_A", "cnA_1 | cnA_2 | cnA_3 | cnA_4")
-                .attributeData("CELLNOTE_B", "cnB_1 | cnB_2 | cnB_3 |  | cnB_5 | cnB_6 | cnB_7 | cnB_8")
-                .attributeData("CELLNOTE_C", "cnC_1 | cnC_2 |  |  |  | cnC_6 |  | ")
-                .attributeData("ATTRIBUTE_B", "b1 | b2 | b3 |  | b5 | b6 | b7 | b8")
-                .attributeData("ATTRIBUTE_D", "d1 | d2 | d3 | d4 | d5 | d6 | d7 | d8")
-                .attributeData("ATTRIBUTE_E", "e1 | e2 | e3 | e4 | e5 | e6 | e7 | e8")
                 .build();
         //@formatter:on
     }
