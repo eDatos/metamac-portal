@@ -348,6 +348,10 @@ public class ExcelExporter {
                     String dimensionValueLabel = toDimensionValueLabel(dimension.getId(), selectedDimensionValue);
 
                     SXSSFCell cell = initializeCell(row, headerColumn);
+
+                    CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), selectedDimensionValue));
+                    addCellComment(cellDetails, cell);
+
                     cell.setCellValue(dimensionValueLabel);
                     cell.setCellType(CellType.STRING);
                     cell.setCellStyle(headerCellStyle);
@@ -470,6 +474,10 @@ public class ExcelExporter {
                 String dimensionValueLabel = toDimensionValueLabel(dimensionId, dimensionValueId);
 
                 SXSSFCell cell = initializeCell(row, leftDimensionIndex);
+
+                CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), dimensionValueId));
+                addCellComment(cellDetails, cell);
+
                 cell.setCellValue(dimensionValueLabel);
                 cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
