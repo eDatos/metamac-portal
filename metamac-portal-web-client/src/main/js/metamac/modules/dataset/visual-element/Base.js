@@ -260,7 +260,7 @@
         },
 
         showRightsHolderText: function () {
-            return App.config.showRightsHolder && App.config.widget && !this._isEmbededOnVisualizerDomain();
+            return App.config.widget ? !this._isEmbededOnVisualizerDomain() : App.config.showRightsHolder;
         },
 
         _isEmbededOnVisualizerDomain: function () {
