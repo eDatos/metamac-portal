@@ -39,6 +39,9 @@ I18n.translations.es = {
         download: {
             selection: "Descargar selección",
             all: "Descargar todo",
+            excel: {
+                disabled: "Este recurso no se puede descargar en formato XLSX porque excede el número de observaciones para este formato. Por favor, use otro formato."
+            },
             modal: {
                 title: "Información de descarga"
             },

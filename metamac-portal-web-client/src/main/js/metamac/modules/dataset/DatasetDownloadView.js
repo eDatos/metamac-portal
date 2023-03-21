@@ -19,6 +19,8 @@
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
             this.visualizationType = this.options.visualizationType;
+            this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
+            this.numberOfObservations = this.options.numberOfObservations;
         },
 
         render: function () {
@@ -105,8 +107,29 @@
                 allDimensionsWithSelections: allDimensionsWithSelections,
                 mapFormats: haveMapFormats,
                 imageFormats: haveImageFormats,
-                iconPreffix: visualizationSupertype
+                iconPreffix: visualizationSupertype,
+                disableFormat: {
+                    all: {
+                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all)
+                    },
+                    selection: {
+                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection)
+                    }
+                },
             };
+        },
+
+        // This is based on org.siemac.metamac.portal.core.exporters.ExcelExporter.enableHighPerformanceModeIfNeeded()
+        // We need to take into account both download all, and download selection
+        // In the export api, it only read the response from the external apis to guess the estimatedNumberOfCells. That's because
+        // that response is already filtered (or not) by the selection
+        // The quid is that highPerformanceMode breaks because it reorders the data to be only rows and that breaks the export
+        // See more at EDATOS-4008
+        disableExcelDownload: function(estimatedNumberOfCells, numberOfObservations) {
+            // org.apache.poi.ss.SpreadsheetVersion.getLastRowIndex()
+            var MAX_EXCEL_ROWS = 2^20;
+            var highPerformanceMode = estimatedNumberOfCells > App.config.cellThreshold;
+            return highPerformanceMode && numberOfObservations > MAX_EXCEL_ROWS;
         },
 
         _getImageExportApiParams: function (type) {
@@ -165,7 +188,9 @@
         clickDownloadButton: function (e) {
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
-            $currentTarget.parent("form").submit();
+            if (!$currentTarget.hasClass('disabled')) {
+                $currentTarget.parent("form").submit();
+            }
         },
         
         _setupTsvExportAttributes: function() {

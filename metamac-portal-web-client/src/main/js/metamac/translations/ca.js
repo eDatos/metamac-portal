@@ -42,6 +42,9 @@ I18n.translations.ca = {
             modal: {
                 title: "Informació de descàrrega"
             },
+            excel: {
+                disabled: "Aquest recurs no es pot descarregar en format XLSX perquè excedeix el nombre d'observacions per a aquest format. Si us plau, usi altres formats."
+            },
             attributes: {
                 modal: {
                     title: "Incloure atributs",
