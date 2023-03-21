@@ -167,23 +167,7 @@
             var $currentTarget = $(e.currentTarget);
             $currentTarget.parent("form").submit();
         },
-
-        _openPopupDownloadForm: function (form) {
-            var form = form.clone();
-            form.append('<input type="submit" value="' + 'Descargar' + '">');
-            var formHTML = form[0].outerHTML;
-
-            var popupProperties = "";
-            popupProperties += 'width=' + 200 + ',';
-            popupProperties += 'height=' + 100 + ',';
-            popupProperties += 'left=' + 100 + ',';
-            popupProperties += 'top=' + 100;
-
-            var popup = window.open('', '', popupProperties);
-            popup.document.write(formHTML);
-            popup.focus();
-        },
-
+        
         _setupTsvExportAttributes: function() {
             var self = this;
             this.$el.find('.download-tsv').closest('form').submit(function(e) {
