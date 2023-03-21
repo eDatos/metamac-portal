@@ -52,6 +52,19 @@
             });
         },
 
+        getPrimaryMeasureAttributesNonEmptyCount: function() {
+            return _.chain(this.primaryMeasureAttributesValues)
+                        .map(function(values) {  
+                            // We only want to know if this cell/position will draw a tooltip/cell comment, 
+                            // we don't care about the content here
+                            // so we just compact falsy values and join the remaining
+                            return _.compact(values).join(","); 
+                        })
+                        .compact() // After the previous operation, we compact it again
+                    .value()
+                    .length; // And count the survivors to estimate the number of cells
+        },
+
         getCombinatedDimensionsAttributesByDimensionsPositions: function (dimensionsPositions) {
             var self = this;
             return _.map(this.combinatedDimensionsAttributes, function (combinatedDimensionAttribute) {
