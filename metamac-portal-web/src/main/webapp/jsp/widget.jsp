@@ -59,6 +59,7 @@
         request.setAttribute("geographicalGranularityUrn", WebUtils.getGeographicalGranularityUrn());
         request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
         request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
+        request.setAttribute("cellThreshold", WebUtils.getCellThreshold());
         request.setAttribute("analyticsGoogleTrackingId", WebUtils.getAnalyticsGoogleTrackingId());
     %>
     <%
