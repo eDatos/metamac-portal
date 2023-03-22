@@ -53,14 +53,16 @@
         },
 
         getPrimaryMeasureAttributesNonEmptyCount: function() {
+            // Sample input: [["", "a"], ["b", "c"], ["d", ""], ["", ""]]
             return _.chain(this.primaryMeasureAttributesValues)
                         .map(function(values) {  
                             // We only want to know if this cell/position will draw a tooltip/cell comment, 
                             // we don't care about the content here
                             // so we just compact falsy values and join the remaining
+                            // Result after map: ["a", "b,c", "d", ""]
                             return _.compact(values).join(","); 
-                        })
-                        .compact() // After the previous operation, we compact it again
+                        }) 
+                        .compact() // After the previous operation, we compact it again. Result after second compact: ["a", "b,c", "d"]
                     .value()
                     .length; // And count the survivors to estimate the number of cells
         },
