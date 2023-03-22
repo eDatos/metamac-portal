@@ -43,7 +43,7 @@ I18n.translations.en = {
                 title: "Download info"
             },
             excel: {
-                disabled: "This resource cannot be downloaded in XLSX format because it exceeds the number of observations for this format. Please use other formats."
+                disabled: "This resource cannot be downloaded as XLSX because it exceeds the number of observations for this format. Please, choose another option."
             },
             attributes: {
                 modal: {
