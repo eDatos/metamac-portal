@@ -127,7 +127,7 @@
         // See more at EDATOS-4008
         disableExcelDownload: function(estimatedNumberOfCells, numberOfObservations) {
             // org.apache.poi.ss.SpreadsheetVersion.getLastRowIndex()
-            var MAX_EXCEL_ROWS = 2^20;
+            var MAX_EXCEL_ROWS = 2**20;
             var highPerformanceMode = estimatedNumberOfCells > App.config.cellThreshold;
             return highPerformanceMode && numberOfObservations > MAX_EXCEL_ROWS;
         },
