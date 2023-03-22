@@ -47,6 +47,7 @@
 
             // Options bar
             this.optionsView = new App.modules.dataset.OptionsView({
+                data: this.data,
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
                 buttons: this.visualElements
