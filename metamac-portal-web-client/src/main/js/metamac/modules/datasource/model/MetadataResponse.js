@@ -164,12 +164,16 @@
             var result = _.map(dimensions, function (dimension) {
                 return {
                     id: dimension.id,
-                    label: this.localizeLabel(dimension.name.text),
+                    label: this._getDimensionLabel(dimension),
                     type: dimension.type,
                     hierarchy: this._dimensionHasHierarchy(dimension)
                 };
             }, this);
             return result;
+        },
+
+        _getDimensionLabel: function (dimension) {
+            return this.localizeLabel(dimension.pluralName && !_.isEmpty(dimension.pluralName.text) ?  dimension.pluralName.text : dimension.name.text);
         },
 
         _sortHierarchyRepresentations: function (representations) {
