@@ -21,7 +21,7 @@
         },
 
         getParametersForMetadataUrl: function () {
-            return ".json?_type=json&fields=-data,+dimension.description,+dimension.pluralName";
+            return ".json?_type=json&fields=-data,+dimension.description";
         },
 
         getParametersForDataUrl: function() {
