@@ -59,6 +59,7 @@
         request.setAttribute("geographicalGranularityUrn", WebUtils.getGeographicalGranularityUrn());
         request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
         request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
+        request.setAttribute("cellThreshold", WebUtils.getCellThreshold());
         request.setAttribute("analyticsGoogleTrackingId", WebUtils.getAnalyticsGoogleTrackingId());
     %>
     <%
@@ -127,6 +128,7 @@
         App.config["installationType"] = "${installationType}";
         App.config["socialTwitterVia"] = "${socialTwitterVia}";
         App.config["enableGraphColors"] = ${enableGraphColors};
+        App.config["cellThreshold"] = ${cellThreshold};
 
         App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
         App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";

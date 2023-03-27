@@ -67,6 +67,14 @@
             };
         },
 
+        getDataObservationsCount: function() {
+            return this.observations ? this.observations.length : 0;
+        },
+
+        getDataNonEmptyAttributesCount: function() {
+            return this.attributes.getPrimaryMeasureAttributesNonEmptyCount();
+        },
+
         /*** OTHER METHODS ***/
         _createMult: function () {
             var m = [];

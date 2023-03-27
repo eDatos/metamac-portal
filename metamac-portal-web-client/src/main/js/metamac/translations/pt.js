@@ -42,6 +42,9 @@ I18n.translations.pt = {
             modal: {
                 title: "Baixar informações"
             },
+            excel: {
+                disabled: "Este recurso não pode ser baixado como XLSX porque excede o número de observações para este formato. Escolha outra opção."
+            },
             attributes: {
                 modal: {
                     title: "Incluir atributos",
@@ -206,6 +209,8 @@ I18n.translations.pt = {
             updateFrequency: "Frequência de atualização",
             statisticOfficiality: "Estatísticas Oficiais",
             bibliographicCitation: "Citação bibliográfica",
+            dataProviders: "Provedores de dados",
+            dataProviderAnnotations: "Observações associadas a provedores de dados",
             measureConcepts: {
                 title: "O que é medido pelos dados",
                 annotations: "Notas gerais"

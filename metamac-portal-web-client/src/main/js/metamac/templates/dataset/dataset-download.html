@@ -1,12 +1,12 @@
 <div class="dataset-download-group">
     <h3>{{ message "filter.download.selection" }}</h3>
 
-{{#if buttonConfig.allDimensionsWithSelections}}
-       
+{{#if buttonConfig.allDimensionsWithSelections}}    
+
     {{#if buttonConfig.dataFormats}}       
-    <form method="POST" action="{{url.excel}}" target="_parent">
-        <input type="hidden" name="jsonBody" value="{{selection}}">
-        <a href="#" class="download-xlsx"><i class="icon-data-xlsx"></i></a>
+    <form method="POST" action="{{url.excel}}" target="_parent" >
+        <input type="hidden" name="jsonBody" value="{{selection}}" >
+        <a href="#" class="download-xlsx {{#if buttonConfig.disableFormat.selection.excel}}disabled{{/if}}" ><i class="icon-data-xlsx"></i></a>
     </form>
 
     <form method="POST" action="{{url.tsv}}" target="_parent">
@@ -36,6 +36,8 @@
         <a href="#" class="download-svg"><i class="icon-{{buttonConfig.iconPreffix}}-svg"></i></a>
     </form>
     {{/if}}
+
+    {{#if buttonConfig.disableFormat.selection.excel}}<div class="modal-info">{{ message "filter.download.excel.disabled"}}</div>{{/if}}
     
 {{/if}}
 
@@ -50,9 +52,10 @@
 {{#if buttonConfig.dataFormats}}
 <div class="dataset-download-group">
     <h3>{{ message "filter.download.all" }}</h3>
+
     <form method="POST" action="{{url.excel}}" target="_parent">
         <input type="hidden" name="jsonBody" value="{{emptySelection}}">
-        <a href="#" class="download-xlsx"><i class="icon-data-xlsx"></i></a>
+        <a href="#" class="download-xlsx {{#if buttonConfig.disableFormat.all.excel}}disabled{{/if}}"><i class="icon-data-xlsx"></i></a>
     </form>
 
     <form method="POST" action="{{url.tsv}}" target="_parent">
@@ -75,5 +78,8 @@
          <a href="#" class="download-jsonstat"><i class="icon-data-jsonstat"></i></a>
     </form>
     {{/if}}
+    
+    {{#if buttonConfig.disableFormat.all.excel}}<div class="modal-info">{{ message "filter.download.excel.disabled"}}</div>{{/if}}
+
 </div>
 {{/if}}

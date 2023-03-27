@@ -260,11 +260,11 @@
         },
 
         showRightsHolderText: function () {
-            return App.config.showRightsHolder && !this._isEmbededOnVisualizerDomain();
+            return App.config.widget ? !this._isEmbededOnVisualizerDomain() : App.config.showRightsHolder;
         },
 
         _isEmbededOnVisualizerDomain: function () {
-            return window.location.hostname == App.Helpers.getHostname(App.endpoints["statistical-visualizer"]);
+            return document.referrer && (new URL(document.referrer)).hostname === App.Helpers.getHostname(App.endpoints["statistical-visualizer"]);
         },
 
         getDrawableRepresentations: function (dimension) {

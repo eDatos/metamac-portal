@@ -42,6 +42,9 @@ I18n.translations.ca = {
             modal: {
                 title: "Informació de descàrrega"
             },
+            excel: {
+                disabled: "Aquest recurs no es pot descarregar com XLSX perquè excedeix el nombre d'observacions per a aquest format. Si us plau, triï una altra opció."
+            },
             attributes: {
                 modal: {
                     title: "Incloure atributs",
@@ -206,6 +209,8 @@ I18n.translations.ca = {
             updateFrequency: "Freqüència d'actualització",
             statisticOfficiality: "Oficialitat estadística",
             bibliographicCitation: "Citació bibliogràfica",
+            dataProviders: "Proveïdors de dades",
+            dataProviderAnnotations: "Observacions associades als proveïdors de dades",
             measureConcepts: {
                 title: "Què mesuren les dades",
                 annotations: "Notes generals"

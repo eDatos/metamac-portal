@@ -42,6 +42,9 @@ I18n.translations.en = {
             modal: {
                 title: "Download info"
             },
+            excel: {
+                disabled: "This resource cannot be downloaded as XLSX because it exceeds the number of observations for this format. Please, choose another option."
+            },
             attributes: {
                 modal: {
                     title: "Attributes inclusion",
@@ -206,6 +209,8 @@ I18n.translations.en = {
             updateFrequency: "Update frequency",
             statisticOfficiality: "Statistic officiality",
             bibliographicCitation: "Bibliographic citation",
+            dataProviders: "Data providers",
+            dataProviderAnnotations: "Observations associated with data providers",
             measureConcepts: {
                 title: "What is measured by the data",
                 annotations: "General notes"

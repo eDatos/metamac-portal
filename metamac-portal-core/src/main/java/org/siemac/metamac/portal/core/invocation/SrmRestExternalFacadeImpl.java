@@ -6,7 +6,6 @@ import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelist;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codes;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concepts;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.DataStructure;
@@ -33,7 +32,7 @@ public class SrmRestExternalFacadeImpl implements SrmRestExternalFacade {
             String agencyID = urnSplited[0];
             String resourceID = urnSplited[1];
             String version = urnSplited[2];
-            return restApiLocator.getSrmRestExternalFacadeV10().retrieveDataStructure(agencyID, resourceID, version);
+            return restApiLocator.getSrmRestExternalFacadeV10().retrieveDataStructure(agencyID, resourceID, version, null);
         } catch (Exception e) {
             throw toRestException(e);
         }
@@ -47,20 +46,6 @@ public class SrmRestExternalFacadeImpl implements SrmRestExternalFacade {
             String resourceID = urnSplited[1];
             String version = urnSplited[2];
             return restApiLocator.getSrmRestExternalFacadeV10().retrieveCodelist(agencyID, resourceID, version);
-        } catch (Exception e) {
-            throw toRestException(e);
-        }
-    }
-
-    @Override
-    public Codes retrieveCodesByCodelistUrn(String urn, String order, String openness) {
-        try {
-            String[] urnSplited = UrnUtils.splitUrnItemScheme(urn);
-            String agencyID = urnSplited[0];
-            String resourceID = urnSplited[1];
-            String version = urnSplited[2];
-            String fields = null;
-            return restApiLocator.getSrmRestExternalFacadeV10().findCodes(agencyID, resourceID, version, null, null, null, null, order, openness, fields);
         } catch (Exception e) {
             throw toRestException(e);
         }

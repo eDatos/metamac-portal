@@ -3,6 +3,8 @@
 
     App.namespace("App.DataSourceDataset");
 
+    var Cell = App.Table.Cell;
+
     App.DataSourceDataset = function (options) {
         this.data = options.data;
         this.filterDimensions = options.filterDimensions;
@@ -81,6 +83,23 @@
 
         cellAttributesAtIndex: function (cell) {
             return this.data.getAttributes({ cell: cell });
+        },
+
+        getSelectionNonEmptyAttributesCount: function() {
+            var tableSize = this.filterDimensions.getTableInfo().getTableSize();
+            var count = 0;
+            for (var row = 0; row < tableSize.rows; row++) {
+                for (var column = 0; column < tableSize.columns; column++) {
+                    if (this.cellHasPrimaryAttributes(new Cell(column, row))) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        },
+
+        getSelectionObservationsCount: function() {
+            return this.filterDimensions.getTableInfo().getTableSize().rows * this.filterDimensions.getTableInfo().getTableSize().columns;
         },
 
         cellInfoAtIndex: function (cell) {

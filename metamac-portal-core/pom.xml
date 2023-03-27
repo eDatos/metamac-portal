@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-portal</groupId>
         <artifactId>metamac-portal-parent</artifactId>
-        <version>8.3.1-SNAPSHOT</version>
+        <version>8.3.2-SNAPSHOT</version>
         <relativePath>../metamac-portal-parent/pom.xml</relativePath>
     </parent>
 
@@ -274,15 +274,19 @@
             <version>${commons-dbcp.version}</version>
         </dependency>
 
-        <!-- MISC -->
+        <!-- Excel support -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
         </dependency>
        <dependency>
-           <groupId>org.apache.poi</groupId>
-           <artifactId>ooxml-schemas</artifactId>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-lite</artifactId>
        </dependency>
+       <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
 
         <!-- SVG Export -->
         <dependency>
