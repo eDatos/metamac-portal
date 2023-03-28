@@ -47,8 +47,8 @@
             this.children.reset(children);
             var open = this.get("open");
             if (!open) {
-                this.set("selected", false);
-                this.set("drawable", false);
+                this.set("selected", false, { silent: true });
+                this.set("drawable");
             }
         },
 
