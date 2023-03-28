@@ -46,7 +46,7 @@
         I18n.locale = "es";
 
         
-        App.endpoints["statistical-resources"] = "http://localhost:8080/statistical-resources-internal-6.0.1-SNAPSHOT/apis/statistical-resources-internal/v1.0";
+        App.endpoints["statistical-resources"] = "https://estadisticas.arte-consultores.com/statistical-resources-internal/apis/statistical-resources-internal/v1.0";
         App.endpoints["structural-resources"] = "https://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal/v1.0";
         App.endpoints["statistical-visualizer"] = "https://estadisticas.arte-consultores.com/statistical-visualizer";
         App.endpoints["permalinks"] = "https://estadisticas.arte-consultores.com/permalinks/v1.0";
@@ -136,7 +136,6 @@
         // EDATOS-3915 - No mostrar la información de las dimensiones que tienen un único valor en el pop-up de la observación
         App.queryParams = { "agency": "ISTAC", "identifier": "C00124A_000001", "version": "1.0", "type": "dataset" };    
         App.queryParams = { "agency": "ISTAC", "identifier": "PRUEBA_04_2DIMENSIONES", "type": "query" };
-        App.queryParams = { "agency": "ISTAC", "identifier": "C00031A_000002", "version": "001.006", "type": "dataset" };
         // Vista widget
         // App.config.widget = true;
         App.config["geographicalGranularityUrn"] = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISTAC:CL_GEO_GRANULARITIES(01.006)";
@@ -148,7 +147,7 @@
         App.config["cellThreshold"] = 250_000;
         
 
-        var ENABLE_IBESTAT = false;
+        var ENABLE_IBESTAT = true;
         if (ENABLE_IBESTAT) {
 
             // http://estadisticas.arte-consultores.com/statistical-resources
@@ -179,7 +178,7 @@
             // App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000008", "version": "1.0", "type": "dataset" };
         }
 
-        var ENABLE_IESTADIS = false;
+        var ENABLE_IESTADIS = true;
         if (ENABLE_IESTADIS) {
 
             // http://estadisticas.arte-consultores.com/statistical-resources

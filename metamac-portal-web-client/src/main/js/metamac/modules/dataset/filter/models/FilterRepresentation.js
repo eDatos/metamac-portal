@@ -48,7 +48,7 @@
             var open = this.get("open");
             if (!open) {
                 this.set("selected", false, { silent: true });
-                this.set("drawable");
+                this.set("drawable", false, { silent: true });
             }
         },
 
@@ -68,7 +68,7 @@
 
         _closeInit: function () {
             this.children.each(function (child) {
-                var openChild = new Array();
+                var openChild = [];
                 if (!child.get('open')) {
                     child.checkAnyChildOpen(openChild);
                     if (openChild.length === 0) {
@@ -81,15 +81,13 @@
 
         checkAnyChildOpen: function(openChilds) {
             if (this.get('open')) {
-                openChilds.push(this);
+                return true;
             }
-            if (this.children.length > 0) {
-                this.children.each(function (child) {
-                   child.checkAnyChildOpen(openChilds);
-                });
-            } else {
-                return;
-            }
+            this.children.each(function (child) {
+                if (child.checkAnyChildOpen()) {
+                   return true;
+                };
+            });
         },
 
         _open: function () {
@@ -131,12 +129,7 @@
 
         checkAnyChildVisible: function () {
             var checkAnyChildVisible = false;
-            this.children.each(function (child) {
-                if(child.get('visible')) {
-                    checkAnyChildVisible = true;
-                }
-            });
-            return checkAnyChildVisible;
+            return this.children.findWhere('visible');
         }
 
     });
