@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    App.namespace("App.DimensionsUtils");
+    App.namespace("App.InternationalizationUtils");
 
     App.InternationalizationUtils = {
 
