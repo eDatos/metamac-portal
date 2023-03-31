@@ -24,6 +24,11 @@
 
         isIndicatorRequest: function () {
             return App.queryParams.type === "indicator" || App.queryParams.type === "indicatorInstance";
-        }
+        },
+
+        getDimensionLabel: function (dimension) {
+            return App.InternationalizationUtils.localizeLabel(dimension.pluralName && !_.isEmpty(dimension.pluralName.text) ?  dimension.pluralName.text : dimension.name.text);
+        },
+
     };
 }());

@@ -43,11 +43,10 @@
         getPrimaryMeasureAttributesByPos: function (pos) {
             var attributeValues = this.primaryMeasureAttributesValues ? (this.primaryMeasureAttributesValues[pos] ? this.primaryMeasureAttributesValues[pos] : []) : [];
             var primaryMeasureAttributes = _.where(this.attributes, { attachmentLevel: ATTACHMENT_LEVELS.PRIMARY_MEASURE });
-            var self = this;
             return _.map(attributeValues, function(atributeValue, i) {
                 return {
                     value: atributeValue,
-                    attribute: self.localizeLabel(primaryMeasureAttributes[i].name.text),
+                    attribute: App.InternationalizationUtils.localizeLabel(primaryMeasureAttributes[i].name.text),
                 };
             });
         },
@@ -62,7 +61,7 @@
                 }, pos, self);
                 return {
                     value: combinatedDimensionAttribute.values[pos],
-                    attribute: self.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
+                    attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
                 }
             }, dimensionsPositions);
         },
@@ -86,7 +85,7 @@
                 return {
                     value: combinatedDimensionAttribute.values[pos],
                     dimensionId: combinatedDimensionAttribute.attributeDimensionsIds[0],
-                    attribute: self.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
+                    attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
                 };
             }, dimensionsPositions);
         },
@@ -216,7 +215,7 @@
         _getValueForEnumerate: function (attributeRawValue, attributeEnumerates) {
             if (attributeRawValue != "") {
                 if (!_.isUndefined(attributeEnumerates[attributeRawValue])) {
-                    return attributeEnumerates[attributeRawValue] ? this.localizeLabel(attributeEnumerates[attributeRawValue].name.text) : null;
+                    return attributeEnumerates[attributeRawValue] ? App.InternationalizationUtils.localizeLabel(attributeEnumerates[attributeRawValue].name.text) : null;
                 } else {
                     return attributeRawValue;
                 }
@@ -232,33 +231,9 @@
             };
         },
 
-        localizeLabel: function (labels) {
-            if (labels) {
-                var self = this;
-                var label;
-                if (this.localesIndex.primary) {
-                    label = _.find(labels, function (label) {
-                        return label.lang == self.localesIndex.primary;
-                    });
-                    if (label) label = label.value;
-                }
-                if (!label && this.localesIndex.secondary) {
-                    label = _.find(labels, function (label) {
-                        return label.lang == self.localesIndex.secondary;
-                    });
-                    if (label) label = label.value;
-                }
-                if (!label) {
-                    label = _.first(labels).value
-                }
-
-                return label;
-            }
-        },
-
         _parseDatasetValue: function (attribute) {
             if (attribute.name.text) {
-                attribute.name = this.localizeLabel(attribute.name.text);
+                attribute.name = App.InternationalizationUtils.localizeLabel(attribute.name.text);
             }
 
             var attributeEnumerates = attribute.attributeValues;
