@@ -15,7 +15,6 @@
             this.response = options.response;
             this.metadata = options.metadata;
 
-            this.initializeLocalesIndex();
             this.attributesValues = !_.isUndefined(this.response.data.attributes) ? this.response.data.attributes.attribute : {};
             this.attributesMetadata = !_.isUndefined(this.metadata) ? this.metadata.getAttributes() : {};
 
@@ -222,13 +221,6 @@
             } else {
                 return "";
             }
-        },
-
-        initializeLocalesIndex: function () {
-            this.localesIndex = {
-                primary: I18n.locale,
-                secondary: I18n.defaultLocale
-            };
         },
 
         _parseDatasetValue: function (attribute) {

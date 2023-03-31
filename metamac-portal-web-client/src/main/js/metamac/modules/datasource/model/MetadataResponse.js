@@ -30,7 +30,6 @@
                     }
                 }
             }
-            this.initializeLocalesIndex();
             this.initializeCache();
         },
         identifier: function () {
@@ -85,13 +84,6 @@
                     return JSON.stringify(selection);
                 }
             });
-        },
-
-        initializeLocalesIndex: function () {
-            this.localesIndex = {
-                primary: I18n.locale,
-                secondary: I18n.defaultLocale
-            };
         },
 
         getLocalizedLabel: function (label) {
@@ -450,8 +442,8 @@
         },
 
         getTitle: function () {
-            if (this.datasourceIdentifier.identifier.widgetTitle && this.datasourceIdentifier.identifier.widgetTitle[this.localesIndex.primary]) {
-                return this.datasourceIdentifier.identifier.widgetTitle[this.localesIndex.primary];
+            if (this.datasourceIdentifier.identifier.widgetTitle && this.datasourceIdentifier.identifier.widgetTitle[App.InternationalizationUtils.localesIndex.primary]) {
+                return this.datasourceIdentifier.identifier.widgetTitle[App.InternationalizationUtils.localesIndex.primary];
             }
             return this.getLocalizedLabel(this.metadataResponse.name);
         },
