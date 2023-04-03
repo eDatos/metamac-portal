@@ -5,13 +5,19 @@
 
     App.InternationalizationUtils = {
 
-        localesIndex: {
-            primary: I18n.locale,
-            secondary: I18n.defaultLocale
+        initializeLocalesIndex: function () {
+            if (!this.localesIndex || !this.localesIndex.primary) {
+                this.localesIndex = {
+                    primary: I18n.locale,
+                    secondary: I18n.defaultLocale
+                };
+            }
         },
 
         localizeLabel: function (labels) {
             if (labels) {
+                this.initializeLocalesIndex();
+
                 var self = this;
                 var label;
                 if (this.localesIndex.primary) {
