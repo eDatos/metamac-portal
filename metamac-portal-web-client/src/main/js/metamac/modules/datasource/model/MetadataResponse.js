@@ -535,15 +535,14 @@
         },
 
         getDataProviders: function () {
-            var self = this;
             if (this.metadata.dataProviders) {
-                return _.map(this.metadata.dataProviders.resource, function (resource) { return self.localizeLabel(resource.name.text); });
+                return _.map(this.metadata.dataProviders.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name.text); });
             }
         },
 
         getDataProviderAnnotations: function () {
             if (this.metadata.dataProviderAnnotations) {
-                return this.localizeLabel(this.metadata.dataProviderAnnotations.text);
+                return App.InternationalizationUtils.localizeLabel(this.metadata.dataProviderAnnotations.text);
             }
         },
 
