@@ -135,10 +135,18 @@
             var measureConcept;
             if (this.metadata.metadata.measureCoverages) {
                 measureConcept = this.metadata.metadata.measureCoverages.resource;
-            } else if (this.metadata.metadata.attributes) {
-                var measureAttribute = _.findWhere(this.metadata.metadata.attributes.attribute, { type: "MEASURE", attachmentLevel: "DATASET" });
-                if (measureAttribute) {
-                    measureConcept = measureAttribute.attributeValues.value;
+            } else {
+                if (this.metadata.metadata.attributes) {
+                    var measureAttribute = _.findWhere(this.metadata.metadata.attributes.attribute, {type: "MEASURE", attachmentLevel: "DATASET"});
+                    if (measureAttribute) {
+                        measureConcept = measureAttribute.attributeValues.value;
+                    }
+                }
+                if (!measureConcept && this.metadata.metadata.dimensions) {
+                    var measureDimension = _.findWhere(this.metadata.metadata.dimensions.dimension, { type: "MEASURE_DIMENSION" });
+                    if (measureDimension) {
+                        measureConcept = measureDimension.dimensionValues.value;
+                    }
                 }
             }
 

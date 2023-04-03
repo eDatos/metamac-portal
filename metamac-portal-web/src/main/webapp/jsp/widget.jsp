@@ -120,7 +120,6 @@
         App.queryParams["geo"] = getQueryParamsAndUnescape("geo");
         App.queryParams["multidatasetId"] = getQueryParamsAndUnescape("multidatasetId");
         App.queryParams["widgetTitle"] = JSON.parse(getQueryParamsAndDecode("title"));
-        App.config["chromeFrameObject"] = getQueryParamsAndUnescape("chromeFrameObject");
         App.config["widget"] = true;
 
         App.config["organisationUrn"] = "${organisationUrn}";

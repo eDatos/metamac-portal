@@ -25,7 +25,7 @@
                 for (var dimension of this.metadata.dimensions.dimension) {
                     var dimensionValues = dimension.dimensionValues;
                     var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
-                    if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type)) {
+                    if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type) && dimensionValues.value[0].selfLink != null) {
                         this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
                     }
                 }
@@ -324,6 +324,8 @@
                 updateFrequency: this.getUpdateFrequency(),
 
 
+                dataProviders: this.getDataProviders(),
+                dataProviderAnnotations: this.getDataProviderAnnotations(),
                 publishers: this.getPublishers(),
                 contributors: this.getContributors(),
                 mediators: this.getMediators(),
@@ -513,7 +515,7 @@
 
         buildVisualizerUrl: function (resource) {
             if (resource.urn) {
-                var identifier = this.getIdentifierFromUrn(resource.urn);
+                var identifier = App.datasource.DatasourceIdentifier.initializeWithUrn(resource.urn).getIdentifier();
                 return {
                     href: [
                         location.protocol,
@@ -528,24 +530,21 @@
             }
         },
 
-        getIdentifierFromUrn: function (urn) {
-            var splittedUrn = urn.split("=");
-            var resourcePrefix = splittedUrn[0];
-            var statisticalResource = splittedUrn[1];
+        getNextVersion: function () {
+            return I18n.t("entity.dataset.nextVersion.enum." + this.metadata.nextVersion, { defaultValue: "" });
+        },
 
-            var statisticalResourceRegex = /(\w+):([a-z_0-9]+)\(([0-9\.]+)\)/i;
-            var statisticalResourceMatchs = statisticalResourceRegex.exec(statisticalResource);
-
-            return {
-                type: _.last(resourcePrefix.split(".")).toLowerCase(),
-                agency: statisticalResourceMatchs[1],
-                identifier: statisticalResourceMatchs[2],
-                version: statisticalResourceMatchs[3]
+        getDataProviders: function () {
+            var self = this;
+            if (this.metadata.dataProviders) {
+                return _.map(this.metadata.dataProviders.resource, function (resource) { return self.localizeLabel(resource.name.text); });
             }
         },
 
-        getNextVersion: function () {
-            return I18n.t("entity.dataset.nextVersion.enum." + this.metadata.nextVersion, { defaultValue: "" });
+        getDataProviderAnnotations: function () {
+            if (this.metadata.dataProviderAnnotations) {
+                return this.localizeLabel(this.metadata.dataProviderAnnotations.text);
+            }
         },
 
         getPublishers: function () {

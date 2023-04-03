@@ -289,16 +289,6 @@
   	<meta name="robots" content="index, follow" />
   	<meta name="revisit-after" content="7 days" />
 
-  	<style>
-  	    .chromeFrameInstallDefaultStyle {
-            width: 100% !important;
-            height: 460px !important;
-            position: relative !important;
-            left: 0 !important;
-            top: 0 !important;
-            margin: 0 !important;
-        }
-    </style>
     
     <!-- Default styles with low precedece that can be easily overwritten by custom headers -->
     <style>                

@@ -48,6 +48,7 @@
                 },
                 series: {
                     animation: false,
+                    turboThreshold: 1200,
                     marker: {
                         states: {
                             hover: {
