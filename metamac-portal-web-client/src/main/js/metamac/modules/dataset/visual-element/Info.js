@@ -83,7 +83,7 @@
                     var parsedDimensions = _.map(self.dimensions, function (dimension) {
                         var dimensionConcept = _.findWhere(dimensionsConcepts, { id: dimension.conceptIdentity.id });
                         dimension.conceptIdentity = dimensionConcept;
-                        dimension.conceptName = App.i18n.localizeText(dimensionConcept.name);
+                        dimension.conceptName = App.DimensionsUtils.getDimensionLabel(dimensionConcept);
                         dimension.conceptDescription = App.i18n.localizeText(dimensionConcept.description);
                         return dimension;
                     });
