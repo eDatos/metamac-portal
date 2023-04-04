@@ -24,6 +24,8 @@
         this.observations = datasourceHelper.typedResponseToObservations(this.response);
 
         this._createMult();
+        this._initializeDimensionIds();
+        this._initializeRepresentationIndex();
         this._setUpTransformIdToPos();
         this._setUpTransformPosToPosArray();
     };
@@ -74,6 +76,20 @@
         getDataNonEmptyAttributesCount: function() {
             return this.attributes.getPrimaryMeasureAttributesNonEmptyCount();
         },
+    
+        getDataTableSize: function() {
+            return {
+                columns: this._calculateTotalSideRepresentations(this.attributes.getDimensionsPosition().top),
+                rows: this._calculateTotalSideRepresentations(this.attributes.getDimensionsPosition().left)
+            }
+        },
+
+        _calculateTotalSideRepresentations: function(dimensionIds) {
+            var self = this;
+            return _.reduce(dimensionIds, function (mem, dimensionId) {
+                return mem * self.representationIndex[dimensionId].total;
+            }, 1);
+        },
 
         /*** OTHER METHODS ***/
         _createMult: function () {
@@ -95,23 +111,29 @@
             this._mult = m;
         },
 
-        _setUpTransformIdToPos: function () {
-            var body = "";
-            var ds = this.response;
+        _initializeDimensionIds: function() {
             this.dimensionIds = _.map(this.response.data.dimensions.dimension, function (dimension) {
                 return dimension.dimensionId;
             });
+        },
+
+        _initializeRepresentationIndex: function() {
             this.representationIndex = _.reduce(this.response.data.dimensions.dimension, function (memo, dimension) {
                 var representationIndex = _.reduce(dimension.representations.representation, function (memo, representation) {
                     memo[representation.code] = representation.index;
                     return memo;
                 }, {});
                 memo[dimension.dimensionId] = {
-                    representationIndex: representationIndex
+                    representationIndex: representationIndex,
+                    total: dimension.representations.total
                 };
                 return memo;
             }, {});
-
+        },
+        
+        _setUpTransformIdToPos: function () {
+            var body = "";
+            var ds = this.response;
             body += "var ds = this.response, pos = [];\n";
             for (var i = 0; i < this.dimensionIds.length; i++) {
                 body += "pos.push(this.representationIndex[this.dimensionIds[" + i + "]].representationIndex[id[" + i + "]]);\n";

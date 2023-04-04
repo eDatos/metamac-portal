@@ -110,10 +110,10 @@
                 iconPreffix: visualizationSupertype,
                 disableFormat: {
                     all: {
-                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all)
+                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize)
                     },
                     selection: {
-                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection)
+                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize)
                     }
                 },
             };
@@ -125,11 +125,21 @@
         // that response is already filtered (or not) by the selection
         // The quid is that highPerformanceMode breaks because it reorders the data to be only rows and that breaks the export
         // See more at EDATOS-4008
-        disableExcelDownload: function(estimatedNumberOfCells, numberOfObservations) {
+        disableExcelDownload: function(estimatedNumberOfCells, totalNumberOfObservations, tableSize) {
+            var rows = tableSize.rows;
+            var columns = tableSize.columns;
+
             // org.apache.poi.ss.SpreadsheetVersion.getLastRowIndex()
-            var MAX_EXCEL_ROWS = 2**20;
+            var MAX_EXCEL_ROWS = 2**20; // ~ 1 million
+            var MAX_EXCEL_COLUMNS = 2**14; // ~ 16K
+            
+            if (rows > MAX_EXCEL_ROWS) { return true; }
+            if (columns > MAX_EXCEL_COLUMNS) { return true; }
+            
             var highPerformanceMode = estimatedNumberOfCells > App.config.cellThreshold;
-            return highPerformanceMode && numberOfObservations > MAX_EXCEL_ROWS;
+            if (highPerformanceMode && totalNumberOfObservations > MAX_EXCEL_ROWS) { return true; }
+
+            return false;
         },
 
         _getImageExportApiParams: function (type) {
