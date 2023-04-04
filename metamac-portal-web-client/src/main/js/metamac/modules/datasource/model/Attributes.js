@@ -67,6 +67,10 @@
                     .length; // And count the survivors to estimate the number of cells
         },
 
+        getDimensionsPosition: function() {
+            return this.metadata.getDimensionsPosition();
+        },
+
         getCombinatedDimensionsAttributesByDimensionsPositions: function (dimensionsPositions) {
             var self = this;
             return _.map(this.combinatedDimensionsAttributes, function (combinatedDimensionAttribute) {
