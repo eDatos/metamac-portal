@@ -59,11 +59,9 @@
                     };
                     _.extend(context, svgContext);
                     self.$el.html(self.template(context));
-                    self._setupTsvExportAttributes();
                 });
             } else {
                 this.$el.html(this.template(context));
-                this._setupTsvExportAttributes();
             }
         },
 
@@ -199,30 +197,86 @@
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
             if (!$currentTarget.hasClass('disabled')) {
-                $currentTarget.parent("form").submit();
+                var self = this;
+                if ($currentTarget.hasClass('download-tsv')) {
+                    this._showExportTsvAttributesConfig(function (url) {
+                        self.downloadFile($currentTarget.parent("form")[0], null, url);
+                    });
+                } else if ($currentTarget.hasClass('download-jsonstat')) {
+                    this.downloadFile($currentTarget.parent("form")[0], function (xhr) {
+                        var identifier = self.filterDimensions.metadata.identifier();
+                        return [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + ".jsonstat";
+                    }, null);
+                } else {
+                    this.downloadFile($currentTarget.parent("form")[0]);
+                }
             }
         },
-        
-        _setupTsvExportAttributes: function() {
-            var self = this;
-            this.$el.find('.download-tsv').closest('form').submit(function(e) {
-                e.preventDefault();    
-                self._showExportTsvAttributesConfig(this);
-            });
+
+        downloadFile: function (form, getFilenameFunction, url) {
+            var xhr = new XMLHttpRequest();
+
+            xhr.open(form.method, url ? url : form.action, true);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    var filename = "nombre-por-defecto";// TODO para jsonstat sacar de ExportUtils
+                    if (getFilenameFunction) {
+                        filename = getFilenameFunction(xhr);
+                    } else {
+                        var disposition = xhr.getResponseHeader('Content-Disposition'); // TODO requiere aplicar cambios aquí: https://chat.arte.dev/group/edatos-soporte/thread/ZxbzPGN7WmdLHqKxw
+                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            var matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+                    var type = xhr.getResponseHeader('Content-Type');
+
+                    var blob = new Blob([this.response], {type: type});
+                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                        window.navigator.msSaveBlob(blob, filename);
+                    } else {
+                        var URL = window.URL || window.webkitURL;
+                        var downloadUrl = URL.createObjectURL(blob);
+
+                        if (filename) {
+                            // use HTML5 a[download] attribute to specify filename
+                            var a = document.createElement("a");
+                            // safari doesn't support this yet
+                            if (typeof a.download === 'undefined') {
+                                window.location = downloadUrl;
+                            } else {
+                                a.href = downloadUrl;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.click();
+                            }
+                        } else {
+                            window.location = downloadUrl;
+                        }
+
+                        setTimeout(function () {
+                            URL.revokeObjectURL(downloadUrl);
+                        }, 100); // cleanup
+                    }
+                }
+            };
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.send(new URLSearchParams(new FormData(form)));
         },
 
-        _showExportTsvAttributesConfig: function (form) {
+        _showExportTsvAttributesConfig: function (callback) {
             var self = this;
             var modalContentView = new App.components.modal.ConfirmationModalView({
                 question: I18n.t("filter.download.attributes.modal.question"),
-                onConfirm: function() { 
-                    form.action = self._buildExportEndpoint('tsv');
-                    form.submit(); 
+                onConfirm: function() {
+                    callback(self._buildExportEndpoint('tsv'));
                     self.modal.close();
                 },
-                onReject: function() { 
-                    form.action = self._buildExportEndpoint('tsv', { fields: '-attributes' });                  
-                    form.submit(); 
+                onReject: function() {
+                    callback(self._buildExportEndpoint('tsv', { fields: '-attributes' }));
                     self.modal.close();
                 }
             });
