@@ -21,48 +21,32 @@
             this.visualizationType = this.options.visualizationType;
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
-        },
-
-        render: function () {
-            var datasetSelection = this.getDatasetSelection();
-            var jsonStatUrl = this._getJsonStatUrl();
-            var entries = [];
-            for (var entry of jsonStatUrl.searchParams.entries()) {
-                entries.push(entry);
-            }
-
-            var context = {
-                selection: JSON.stringify(datasetSelection),
-                emptySelection: JSON.stringify(this.getEmptyDatasetSelection()),
-                url: {
-                    tsv: this._buildExportEndpoint('tsv'),
-                    excel: this._buildExportEndpoint('excel'),
-                    px: this._buildExportEndpoint('px'),
-                    jsonstat: {
-                        href: jsonStatUrl.toString(),
-                        searchParams: entries,
-                    }
-                },
-                buttonConfig: this._getButtonConfiguration()
-            };
-
+            this.datasetSelection = this.getDatasetSelection();
+            this.svg = null;
             if (this._exportableImage()) {
                 var self = this;
                 svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($(SVG_SELECTOR))).done(function (svg) {
-                    var svgContext = {
-                        svg: svg,
-                        url: {
-                            png: App.endpoints["export"] + "/image" + self._getImageExportApiParams('png'),
-                            pdf: App.endpoints["export"] + "/image" + self._getImageExportApiParams('pdf'),
-                            svg: App.endpoints["export"] + "/image" + self._getImageExportApiParams('svg')
-                        }
-                    };
-                    _.extend(context, svgContext);
-                    self.$el.html(self.template(context));
+                    self.svg = svg;
                 });
-            } else {
-                this.$el.html(this.template(context));
             }
+            this.urls = {
+                tsv: this._buildExportEndpoint('tsv'),
+                excel: this._buildExportEndpoint('excel'),
+                px: this._buildExportEndpoint('px'),
+                jsonstat: this._getJsonStatUrl(),
+                png: App.endpoints["export"] + "/image" + this._getImageExportApiParams('png'),
+                pdf: App.endpoints["export"] + "/image" + this._getImageExportApiParams('pdf'),
+                svg: App.endpoints["export"] + "/image" + this._getImageExportApiParams('svg')
+            };
+        },
+
+        render: function () {
+            var context = {
+                buttonConfig: this._getButtonConfiguration(),
+                hasJsonstatUrl: !!this.urls.jsonstat
+            };
+
+            this.$el.html(this.template(context));
         },
 
         _getVisualizationType: function () {
@@ -197,74 +181,72 @@
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
             if (!$currentTarget.hasClass('disabled')) {
-                var self = this;
-                if ($currentTarget.hasClass('download-tsv')) {
+                if ($currentTarget.hasClass('download-xlsx')) {
+                    this.downloadFile('POST', this.urls.excel, { jsonBody: $currentTarget.hasClass('selection') ? JSON.stringify(this.datasetSelection) : JSON.stringify(this.getEmptyDatasetSelection()) });
+                } else if ($currentTarget.hasClass('download-tsv')) {
+                    var self = this;
                     this._showExportTsvAttributesConfig(function (url) {
-                        self.downloadFile($currentTarget.parent("form")[0], null, url);
+                        self.downloadFile('POST', url, { jsonBody: $currentTarget.hasClass('selection') ? JSON.stringify(this.datasetSelection) : JSON.stringify(this.getEmptyDatasetSelection()) });
                     });
+                } else if ($currentTarget.hasClass('download-csv')) {
+                    this.downloadFile('POST', this.urls.px, { jsonBody: $currentTarget.hasClass('selection') ? JSON.stringify(this.datasetSelection) : JSON.stringify(this.getEmptyDatasetSelection()) });
+                } else if ($currentTarget.hasClass('download-png')) {
+                    this.downloadFile('POST', this.urls.png, { svg: this.svg });
+                } else if ($currentTarget.hasClass('download-pdf')) {
+                    this.downloadFile('POST', this.urls.pdf, { svg: this.svg });
+                } else if ($currentTarget.hasClass('download-svg')) {
+                    this.downloadFile('POST', this.urls.svg, { svg: this.svg });
                 } else if ($currentTarget.hasClass('download-jsonstat')) {
-                    this.downloadFile($currentTarget.parent("form")[0], function (xhr) {
-                        var identifier = self.filterDimensions.metadata.identifier();
-                        return [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + ".jsonstat";
-                    }, null);
-                } else {
-                    this.downloadFile($currentTarget.parent("form")[0]);
+                    var identifier = this.filterDimensions.metadata.identifier();
+                    var jsonstatFilename = [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + ".jsonstat";
+                    this.downloadFile('GET', this.urls.jsonstat, null, jsonstatFilename);
                 }
             }
         },
 
-        downloadFile: function (form, getFilenameFunction, url) {
+        downloadFile: function (requestMethod, url, requestParams, predefinedFilename) {
             var xhr = new XMLHttpRequest();
-
-            xhr.open(form.method, url ? url : form.action, true);
+            xhr.open(requestMethod, url, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.responseType = 'arraybuffer';
+
+            var self = this;
             xhr.onload = function () {
                 if (this.status === 200) {
-                    var filename = "nombre-por-defecto";// TODO para jsonstat sacar de ExportUtils
-                    if (getFilenameFunction) {
-                        filename = getFilenameFunction(xhr);
-                    } else {
-                        var disposition = xhr.getResponseHeader('Content-Disposition'); // TODO requiere aplicar cambios aquí: https://chat.arte.dev/group/edatos-soporte/thread/ZxbzPGN7WmdLHqKxw
-                        if (disposition && disposition.indexOf('attachment') !== -1) {
-                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                            var matches = filenameRegex.exec(disposition);
-                            if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                        }
-                    }
-                    var type = xhr.getResponseHeader('Content-Type');
-
-                    var blob = new Blob([this.response], {type: type});
-                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                        window.navigator.msSaveBlob(blob, filename);
-                    } else {
-                        var URL = window.URL || window.webkitURL;
-                        var downloadUrl = URL.createObjectURL(blob);
-
-                        if (filename) {
-                            // use HTML5 a[download] attribute to specify filename
-                            var a = document.createElement("a");
-                            // safari doesn't support this yet
-                            if (typeof a.download === 'undefined') {
-                                window.location = downloadUrl;
-                            } else {
-                                a.href = downloadUrl;
-                                a.download = filename;
-                                document.body.appendChild(a);
-                                a.click();
-                            }
-                        } else {
-                            window.location = downloadUrl;
-                        }
-
-                        setTimeout(function () {
-                            URL.revokeObjectURL(downloadUrl);
-                        }, 100); // cleanup
-                    }
+                    var blob = new Blob([this.response], { type: xhr.getResponseHeader('Content-Type') });
+                    var filename = predefinedFilename ? predefinedFilename : self._getFilenameFromContentDisposition(xhr);
+                    self._downloadFileInBrowserFromBlob(blob, filename);
                 }
             };
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send(new URLSearchParams(new FormData(form)));
+            xhr.send(new URLSearchParams(requestParams));
+        },
+
+        _getFilenameFromContentDisposition: function (xhr) {
+            var disposition = xhr.getResponseHeader('Content-Disposition'); // TODO requiere aplicar cambios aquí: https://chat.arte.dev/group/edatos-soporte/thread/ZxbzPGN7WmdLHqKxw
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                var filenameRegex = /filename[^\w;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                var filenameMatches = filenameRegex.exec(disposition);
+                if (filenameMatches != null && filenameMatches[1]) return filenameMatches[1].replace(/['"]/g, '');
+            }
+            return "";
+        },
+
+        _downloadFileInBrowserFromBlob: function (blob, filename) {
+            var downloadUrl = window.URL.createObjectURL(blob);
+
+            var a = document.createElement("a");
+            if (typeof a.download === 'undefined') {
+                window.location = downloadUrl;
+            } else {
+                a.href = downloadUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+            }
+
+            setTimeout(function () {
+                window.URL.revokeObjectURL(downloadUrl);
+            }, 1000);
         },
 
         _showExportTsvAttributesConfig: function (callback) {
