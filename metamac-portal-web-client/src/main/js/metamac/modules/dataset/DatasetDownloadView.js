@@ -21,7 +21,7 @@
             this.visualizationType = this.options.visualizationType;
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
-            this.datasetSelection = this.getDatasetSelection();
+            this.datasetSelection = JSON.stringify(this.getDatasetSelection());
             this.svg = null;
             if (this._exportableImage()) {
                 var self = this;
@@ -30,7 +30,6 @@
                 });
             }
             this.urls = {
-                tsv: this._buildExportEndpoint('tsv'),
                 excel: this._buildExportEndpoint('excel'),
                 px: this._buildExportEndpoint('px'),
                 jsonstat: this._getJsonStatUrl(),
@@ -180,31 +179,32 @@
         clickDownloadButton: function (e) {
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
-            if (!$currentTarget.hasClass('disabled')) {
-                if ($currentTarget.hasClass('download-xlsx')) {
-                    this.downloadFile('POST', this.urls.excel, { jsonBody: $currentTarget.hasClass('selection') ? JSON.stringify(this.datasetSelection) : JSON.stringify(this.getEmptyDatasetSelection()) });
-                } else if ($currentTarget.hasClass('download-tsv')) {
-                    var self = this;
-                    this._showExportTsvAttributesConfig(function (url) {
-                        self.downloadFile('POST', url, { jsonBody: $currentTarget.hasClass('selection') ? JSON.stringify(this.datasetSelection) : JSON.stringify(this.getEmptyDatasetSelection()) });
-                    });
-                } else if ($currentTarget.hasClass('download-csv')) {
-                    this.downloadFile('POST', this.urls.px, { jsonBody: $currentTarget.hasClass('selection') ? JSON.stringify(this.datasetSelection) : JSON.stringify(this.getEmptyDatasetSelection()) });
-                } else if ($currentTarget.hasClass('download-png')) {
-                    this.downloadFile('POST', this.urls.png, { svg: this.svg });
-                } else if ($currentTarget.hasClass('download-pdf')) {
-                    this.downloadFile('POST', this.urls.pdf, { svg: this.svg });
-                } else if ($currentTarget.hasClass('download-svg')) {
-                    this.downloadFile('POST', this.urls.svg, { svg: this.svg });
-                } else if ($currentTarget.hasClass('download-jsonstat')) {
-                    var identifier = this.filterDimensions.metadata.identifier();
-                    var jsonstatFilename = [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + ".jsonstat";
-                    this.downloadFile('GET', this.urls.jsonstat, null, jsonstatFilename);
-                }
+            if ($currentTarget.hasClass('disabled')) {
+                return;
+            }
+
+            var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : JSON.stringify(this.getEmptyDatasetSelection());
+            if ($currentTarget.hasClass('download-xlsx')) {
+                this.downloadFile('POST', this.urls.excel, { jsonBody: jsonBody });
+            } else if ($currentTarget.hasClass('download-tsv')) {
+                var self = this;
+                this._showExportTsvAttributesConfig(function (url) {
+                    self.downloadFile('POST', url, { jsonBody: jsonBody });
+                });
+            } else if ($currentTarget.hasClass('download-csv')) {
+                this.downloadFile('POST', this.urls.px, { jsonBody: jsonBody });
+            } else if ($currentTarget.hasClass('download-png')) {
+                this.downloadFile('POST', this.urls.png, { svg: this.svg });
+            } else if ($currentTarget.hasClass('download-pdf')) {
+                this.downloadFile('POST', this.urls.pdf, { svg: this.svg });
+            } else if ($currentTarget.hasClass('download-svg')) {
+                this.downloadFile('POST', this.urls.svg, { svg: this.svg });
+            } else if ($currentTarget.hasClass('download-jsonstat')) {
+                this.downloadFile('GET', this.urls.jsonstat, null);
             }
         },
 
-        downloadFile: function (requestMethod, url, requestParams, predefinedFilename) {
+        downloadFile: function (requestMethod, url, requestParams) {
             var xhr = new XMLHttpRequest();
             xhr.open(requestMethod, url, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -214,7 +214,10 @@
             xhr.onload = function () {
                 if (this.status === 200) {
                     var blob = new Blob([this.response], { type: xhr.getResponseHeader('Content-Type') });
-                    var filename = predefinedFilename ? predefinedFilename : self._getFilenameFromContentDisposition(xhr);
+                    var filename = self._getFilenameFromContentDisposition(xhr);
+                    if (!filename) {
+                        filename = self._getFilenameFromIdentifier();
+                    }
                     self._downloadFileInBrowserFromBlob(blob, filename);
                 }
             };
@@ -226,9 +229,14 @@
             if (disposition && disposition.indexOf('attachment') !== -1) {
                 var filenameRegex = /filename[^\w;=\n]*=((['"]).*?\2|[^;\n]*)/;
                 var filenameMatches = filenameRegex.exec(disposition);
-                if (filenameMatches != null && filenameMatches[1]) return filenameMatches[1].replace(/['"]/g, '');
+                if (filenameMatches != null && filenameMatches[1]) { return filenameMatches[1].replace(/['"]/g, ''); }
             }
             return "";
+        },
+
+        _getFilenameFromIdentifier: function () {
+            var identifier = this.filterDimensions.metadata.identifier();
+            return [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + ".jsonstat";
         },
 
         _downloadFileInBrowserFromBlob: function (blob, filename) {
@@ -246,7 +254,7 @@
 
             setTimeout(function () {
                 window.URL.revokeObjectURL(downloadUrl);
-            }, 1000);
+            }, 150);
         },
 
         _showExportTsvAttributesConfig: function (callback) {
