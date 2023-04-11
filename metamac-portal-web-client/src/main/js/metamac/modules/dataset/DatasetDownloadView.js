@@ -32,7 +32,7 @@
             this.svg = null;
             this.urls = {
                 xlsx: this._buildExportEndpoint('excel'),
-                px: this._buildExportEndpoint('px'),
+                csv: this._buildExportEndpoint('px'),
                 jsonstat: this._getJsonStatUrl(),
                 png: App.endpoints["export"] + "/image" + this._getImageExportApiParams('png'),
                 pdf: App.endpoints["export"] + "/image" + this._getImageExportApiParams('pdf'),
