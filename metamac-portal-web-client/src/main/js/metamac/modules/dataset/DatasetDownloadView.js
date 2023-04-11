@@ -207,26 +207,26 @@
 
             var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : JSON.stringify(this.getEmptyDatasetSelection());
             if ($currentTarget.hasClass('download-xlsx')) {
-                this.downloadFile('POST', this.urls.excel, { jsonBody: jsonBody });
+                this.downloadFile('POST', this.urls.excel, { jsonBody: jsonBody }, ".xslx");
             } else if ($currentTarget.hasClass('download-tsv')) {
                 var self = this;
-                this._showExportTsvAttributesConfig(function (url) {
-                    self.downloadFile('POST', url, { jsonBody: jsonBody });
+                this._showExportTsvAttributesConfig(function (url, fileExtension) {
+                    self.downloadFile('POST', url, { jsonBody: jsonBody }, fileExtension);
                 });
             } else if ($currentTarget.hasClass('download-csv')) {
-                this.downloadFile('POST', this.urls.px, { jsonBody: jsonBody });
+                this.downloadFile('POST', this.urls.px, { jsonBody: jsonBody }, ".px");
             } else if ($currentTarget.hasClass('download-png')) {
-                this.downloadFile('POST', this.urls.png, { svg: this.svg });
+                this.downloadFile('POST', this.urls.png, { svg: this.svg }, ".png");
             } else if ($currentTarget.hasClass('download-pdf')) {
-                this.downloadFile('POST', this.urls.pdf, { svg: this.svg });
+                this.downloadFile('POST', this.urls.pdf, { svg: this.svg }, ".pdf");
             } else if ($currentTarget.hasClass('download-svg')) {
-                this.downloadFile('POST', this.urls.svg, { svg: this.svg });
+                this.downloadFile('POST', this.urls.svg, { svg: this.svg }, ".svg");
             } else if ($currentTarget.hasClass('download-jsonstat')) {
-                this.downloadFile('GET', this.urls.jsonstat, null);
+                this.downloadFile('GET', this.urls.jsonstat, null, ".jsonstat");
             }
         },
 
-        downloadFile: function (requestMethod, url, requestParams) {
+        downloadFile: function (requestMethod, url, requestParams, fileExtension) {
             this.optionsModel.set('isDownloading', true);
 
             var xhr = new XMLHttpRequest();
@@ -240,7 +240,7 @@
                     var blob = new Blob([this.response], { type: xhr.getResponseHeader('Content-Type') });
                     var filename = self._getFilenameFromContentDisposition(xhr);
                     if (!filename) {
-                        filename = self._getFilenameFromIdentifier();
+                        filename = self._getFilenameFromIdentifier(fileExtension);
                     }
                     self._downloadFileInBrowserFromBlob(blob, filename);
                 }
@@ -259,9 +259,9 @@
             return "";
         },
 
-        _getFilenameFromIdentifier: function () {
+        _getFilenameFromIdentifier: function (fileExtension) {
             var identifier = this.filterDimensions.metadata.identifier();
-            return [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + ".jsonstat";
+            return [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + fileExtension;
         },
 
         _downloadFileInBrowserFromBlob: function (blob, filename) {
@@ -287,11 +287,11 @@
             var modalContentView = new App.components.modal.ConfirmationModalView({
                 question: I18n.t("filter.download.attributes.modal.question"),
                 onConfirm: function() {
-                    callback(self._buildExportEndpoint('tsv'));
+                    callback(self._buildExportEndpoint('tsv'), ".zip");
                     self.modal.close();
                 },
                 onReject: function() {
-                    callback(self._buildExportEndpoint('tsv', { fields: '-attributes' }));
+                    callback(self._buildExportEndpoint('tsv', { fields: '-attributes' }, ".tsv"));
                     self.modal.close();
                 }
             });
