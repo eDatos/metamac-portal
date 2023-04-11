@@ -260,7 +260,7 @@
         },
 
         _getFilenameFromContentDisposition: function (xhr) {
-            var disposition = xhr.getResponseHeader('Content-Disposition'); // TODO requiere aplicar cambios aquí: https://chat.arte.dev/group/edatos-soporte/thread/ZxbzPGN7WmdLHqKxw
+            var disposition = xhr.getResponseHeader('Content-Disposition');
             if (disposition && disposition.indexOf('attachment') !== -1) {
                 var filenameRegex = /filename[^\w;=\n]*=((['"]).*?\2|[^;\n]*)/;
                 var filenameMatches = filenameRegex.exec(disposition);
