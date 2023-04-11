@@ -277,7 +277,12 @@
         _downloadFileInBrowserFromBlob: function (blob, filename) {
             var downloadUrl = window.URL.createObjectURL(blob);
 
-            var a = document.createElement("a");
+            var a = $('a#blob-download-anchor')[0];
+            if (!a) {
+                a = document.createElement("a");
+                a.id = "blob-download-anchor";
+            }
+
             if (typeof a.download === 'undefined') {
                 window.location = downloadUrl;
             } else {
