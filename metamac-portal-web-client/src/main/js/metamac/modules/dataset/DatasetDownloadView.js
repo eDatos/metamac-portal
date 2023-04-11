@@ -13,7 +13,13 @@
         className: "dataset-download",
 
         events: {
-            "click a": "clickDownloadButton"
+            "click a.download-xlsx": function(event) { this.clickDownloadButton(event, 'xlsx'); },
+            "click a.download-tsv": function(event) { this.clickDownloadButton(event, 'tsv'); },
+            "click a.download-csv": function(event) { this.clickDownloadButton(event, 'csv'); },
+            "click a.download-png": function(event) { this.clickDownloadButton(event, 'png'); },
+            "click a.download-pdf": function(event) { this.clickDownloadButton(event, 'pdf'); },
+            "click a.download-svg": function(event) { this.clickDownloadButton(event, 'svg'); },
+            "click a.download-jsonstat": function(event) { this.clickDownloadButton(event, 'jsonstat'); },
         },
 
         initialize: function () {
@@ -25,7 +31,7 @@
             this.datasetSelection = JSON.stringify(this.getDatasetSelection());
             this.svg = null;
             this.urls = {
-                excel: this._buildExportEndpoint('excel'),
+                xlsx: this._buildExportEndpoint('excel'),
                 px: this._buildExportEndpoint('px'),
                 jsonstat: this._getJsonStatUrl(),
                 png: App.endpoints["export"] + "/image" + this._getImageExportApiParams('png'),
@@ -200,7 +206,7 @@
             return { datasetSelection: null };
         },
 
-        clickDownloadButton: function (e) {
+        clickDownloadButton: function (e, type) {
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
             if ($currentTarget.hasClass('disabled')) {
@@ -208,23 +214,25 @@
             }
 
             var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : JSON.stringify(this.getEmptyDatasetSelection());
-            if ($currentTarget.hasClass('download-xlsx')) {
-                this.downloadFile('POST', this.urls.excel, { jsonBody: jsonBody }, ".xslx");
-            } else if ($currentTarget.hasClass('download-tsv')) {
-                var self = this;
-                this._showExportTsvAttributesConfig(function (url, fileExtension) {
-                    self.downloadFile('POST', url, { jsonBody: jsonBody }, fileExtension);
-                });
-            } else if ($currentTarget.hasClass('download-csv')) {
-                this.downloadFile('POST', this.urls.px, { jsonBody: jsonBody }, ".px");
-            } else if ($currentTarget.hasClass('download-png')) {
-                this.downloadFile('POST', this.urls.png, { svg: this.svg }, ".png");
-            } else if ($currentTarget.hasClass('download-pdf')) {
-                this.downloadFile('POST', this.urls.pdf, { svg: this.svg }, ".pdf");
-            } else if ($currentTarget.hasClass('download-svg')) {
-                this.downloadFile('POST', this.urls.svg, { svg: this.svg }, ".svg");
-            } else if ($currentTarget.hasClass('download-jsonstat')) {
-                this.downloadFile('GET', this.urls.jsonstat, null, ".jsonstat");
+            switch (type) {
+                case "tsv":
+                    var self = this;
+                    this._showExportTsvAttributesConfig(function (url, fileExtension) {
+                        self.downloadFile('POST', url, { jsonBody: jsonBody }, fileExtension);
+                    });
+                    break;
+                case "xlsx":
+                case "csv":
+                    this.downloadFile('POST', this.urls[type], { jsonBody: jsonBody }, "." + type);
+                    break;
+                case "png":
+                case "pdf":
+                case "svg":
+                    this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type);
+                    break;
+                case "jsonstat":
+                    this.downloadFile('GET', this.urls[type], null, "." + type);
+                    break;
             }
         },
 
