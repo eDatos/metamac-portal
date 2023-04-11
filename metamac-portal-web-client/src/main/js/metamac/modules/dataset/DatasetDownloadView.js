@@ -281,6 +281,7 @@
             if (!a) {
                 a = document.createElement("a");
                 a.id = "blob-download-anchor";
+                document.body.appendChild(a);
             }
 
             if (typeof a.download === 'undefined') {
@@ -288,7 +289,6 @@
             } else {
                 a.href = downloadUrl;
                 a.download = filename;
-                document.body.appendChild(a);
                 a.click();
             }
 
