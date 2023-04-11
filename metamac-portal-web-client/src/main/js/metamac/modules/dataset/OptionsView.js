@@ -287,7 +287,6 @@
             } else {
                 modalContentView = new App.modules.dataset.DatasetDownloadView({ 
                     filterDimensions: this.filterDimensions, 
-                    visualizationType: this.optionsModel.get('type'),
                     estimatedNumberOfCells: {
                         all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest
                         selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
