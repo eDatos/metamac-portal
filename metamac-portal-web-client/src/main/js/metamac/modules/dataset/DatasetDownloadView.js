@@ -17,8 +17,9 @@
         },
 
         initialize: function () {
+            this.optionsModel = this.options.optionsModel;
+            this.visualizationType = this.optionsModel.get('type');
             this.filterDimensions = this.options.filterDimensions;
-            this.visualizationType = this.options.visualizationType;
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
             this.datasetSelection = JSON.stringify(this.getDatasetSelection());
@@ -37,6 +38,14 @@
                 pdf: App.endpoints["export"] + "/image" + this._getImageExportApiParams('pdf'),
                 svg: App.endpoints["export"] + "/image" + this._getImageExportApiParams('svg')
             };
+
+            this._bindEvents();
+        },
+
+        _bindEvents: function () {
+            this.listenTo(this.optionsModel, "change:isDownloading", this.render);
+
+            this.delegateEvents();
         },
 
         render: function () {
@@ -82,6 +91,9 @@
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
             var haveImageFormats = this._hasExportableImage(visualizationSupertype);
             var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length == 0;
+            var disableAnyFormat = this.optionsModel.get('isDownloading');
+            var disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
+            var disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
 
             return {
                 dataFormats: haveDataFormats,
@@ -91,10 +103,20 @@
                 iconPreffix: visualizationSupertype,
                 disableFormat: {
                     all: {
-                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize)
+                        excel: disableAnyFormat || disableAllExcel,
+                        tsv: disableAnyFormat,
+                        csv: disableAnyFormat,
+                        jsonstat: disableAnyFormat,
+                        infoMessage: disableAllExcel ? I18n.t("filter.download.excel.disabled") : null
                     },
                     selection: {
-                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize)
+                        excel: disableAnyFormat || disableSelectionExcel,
+                        tsv: disableAnyFormat,
+                        csv: disableAnyFormat,
+                        png: disableAnyFormat,
+                        pdf: disableAnyFormat,
+                        svg: disableAnyFormat,
+                        infoMessage: disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : null
                     }
                 },
             };
@@ -205,6 +227,8 @@
         },
 
         downloadFile: function (requestMethod, url, requestParams) {
+            this.optionsModel.set('isDownloading', true);
+
             var xhr = new XMLHttpRequest();
             xhr.open(requestMethod, url, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -220,6 +244,7 @@
                     }
                     self._downloadFileInBrowserFromBlob(blob, filename);
                 }
+                self.optionsModel.set('isDownloading', false);
             };
             xhr.send(new URLSearchParams(requestParams));
         },

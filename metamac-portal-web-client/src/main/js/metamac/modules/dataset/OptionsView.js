@@ -301,7 +301,8 @@
                             total: this.dataSource.getSelectionObservationsCount(),
                             tableSize: this.filterDimensions.getTableInfo().getTableSize()
                         }
-                    }
+                    },
+                    optionsModel: this.optionsModel
                 });
             }
             var title = I18n.t("filter.download.modal.title");
