@@ -24,12 +24,6 @@
             this.numberOfObservations = this.options.numberOfObservations;
             this.datasetSelection = JSON.stringify(this.getDatasetSelection());
             this.svg = null;
-            if (this._exportableImage()) {
-                var self = this;
-                svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($(SVG_SELECTOR))).done(function (svg) {
-                    self.svg = svg;
-                });
-            }
             this.urls = {
                 excel: this._buildExportEndpoint('excel'),
                 px: this._buildExportEndpoint('px'),
@@ -54,7 +48,15 @@
                 hasJsonstatUrl: !!this.urls.jsonstat
             };
 
-            this.$el.html(this.template(context));
+            if (this._exportableImage()) {
+                var self = this;
+                svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($(SVG_SELECTOR))).done(function (svg) {
+                    self.svg = svg;
+                    self.$el.html(self.template(context));
+                });
+            } else {
+                this.$el.html(this.template(context));
+            }
         },
 
         _getVisualizationType: function () {
