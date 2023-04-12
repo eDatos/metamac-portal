@@ -57,7 +57,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
         checkRequiredProperty(PortalConfigurationConstants.DB_URL);
         checkRequiredProperty(PortalConfigurationConstants.DB_USERNAME);
         checkRequiredProperty(PortalConfigurationConstants.DB_PASSWORD);
-        checkRequiredProperty(PortalConfigurationConstants.DB_DIALECT);
 
         // Api
         checkRequiredProperty(PortalConfigurationConstants.ENDPOINT_PORTAL_EXTERNAL_BASE);
