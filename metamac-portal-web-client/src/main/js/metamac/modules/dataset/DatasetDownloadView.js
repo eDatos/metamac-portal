@@ -15,7 +15,7 @@
         events: {
             "click a.download-xlsx": function(event) { this.clickDownloadButton(event, 'xlsx'); },
             "click a.download-tsv": function(event) { this.clickDownloadButton(event, 'tsv'); },
-            "click a.download-csv": function(event) { this.clickDownloadButton(event, 'csv'); },
+            "click a.download-csv": function(event) { this.clickDownloadButton(event, 'px'); },
             "click a.download-png": function(event) { this.clickDownloadButton(event, 'png'); },
             "click a.download-pdf": function(event) { this.clickDownloadButton(event, 'pdf'); },
             "click a.download-svg": function(event) { this.clickDownloadButton(event, 'svg'); },
@@ -32,7 +32,7 @@
             this.svg = null;
             this.urls = {
                 xlsx: this._buildExportEndpoint('excel'),
-                csv: this._buildExportEndpoint('px'),
+                px: this._buildExportEndpoint('px'),
                 jsonstat: this._getJsonStatUrl(),
                 png: App.endpoints["export"] + "/image" + this._getImageExportApiParams('png'),
                 pdf: App.endpoints["export"] + "/image" + this._getImageExportApiParams('pdf'),
@@ -214,21 +214,22 @@
             }
 
             var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : JSON.stringify(this.getEmptyDatasetSelection());
+            var xlsxCsvAndTsvFilenameSuffix = $currentTarget.hasClass('selection') ? "-selection" : "";
             switch (type) {
                 case "tsv":
                     var self = this;
-                    this._showExportTsvAttributesConfig(function (url, fileExtension) {
-                        self.downloadFile('POST', url, { jsonBody: jsonBody }, fileExtension);
+                    this._showExportTsvAttributesConfig(function (url, suffixAndFileExtension) {
+                        self.downloadFile('POST', url, { jsonBody: jsonBody }, xlsxCsvAndTsvFilenameSuffix + suffixAndFileExtension);
                     });
                     break;
                 case "xlsx":
-                case "csv":
-                    this.downloadFile('POST', this.urls[type], { jsonBody: jsonBody }, "." + type);
+                case "px":
+                    this.downloadFile('POST', this.urls[type], { jsonBody: jsonBody }, xlsxCsvAndTsvFilenameSuffix + "." + type);
                     break;
                 case "png":
                 case "pdf":
                 case "svg":
-                    this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type);
+                    this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type, "chart");
                     break;
                 case "jsonstat":
                     this.downloadFile('GET', this.urls[type], null, "." + type);
@@ -236,7 +237,7 @@
             }
         },
 
-        downloadFile: function (requestMethod, url, requestParams, fileExtension) {
+        downloadFile: function (requestMethod, url, requestParams, suffixAndFileExtension, filenameCustomPrefix) {
             this.optionsModel.set('isDownloading', true);
 
             var xhr = new XMLHttpRequest();
@@ -250,7 +251,7 @@
                     var blob = new Blob([this.response], { type: xhr.getResponseHeader('Content-Type') });
                     var filename = self._getFilenameFromContentDisposition(xhr);
                     if (!filename) {
-                        filename = self._getFilenameFromIdentifier(fileExtension);
+                        filename = self._getFilenameFromIdentifier(suffixAndFileExtension, filenameCustomPrefix);
                     }
                     self._downloadFileInBrowserFromBlob(blob, filename);
                 }
@@ -269,9 +270,9 @@
             return "";
         },
 
-        _getFilenameFromIdentifier: function (fileExtension) {
+        _getFilenameFromIdentifier: function (suffixAndFileExtension, customPrefix) {
             var identifier = this.filterDimensions.metadata.identifier();
-            return [identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + fileExtension;
+            return [customPrefix ? customPrefix : identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + suffixAndFileExtension;
         },
 
         _downloadFileInBrowserFromBlob: function (blob, filename) {
@@ -306,7 +307,7 @@
                     self.modal.close();
                 },
                 onReject: function() {
-                    callback(self._buildExportEndpoint('tsv', { fields: '-attributes' }, ".tsv"));
+                    callback(self._buildExportEndpoint('tsv', { fields: '-attributes' }), "-observations.tsv");
                     self.modal.close();
                 }
             });
