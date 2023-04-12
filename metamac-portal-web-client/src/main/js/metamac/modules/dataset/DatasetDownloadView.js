@@ -255,8 +255,11 @@
                     }
                     self._downloadFileInBrowserFromBlob(blob, filename);
                 }
+            };
+            xhr.onloadend = function () {
                 self.optionsModel.set('isDownloading', false);
             };
+            xhr.ontimeout = xhr.onloadend;
             xhr.send(new URLSearchParams(requestParams));
         },
 
