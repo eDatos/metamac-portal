@@ -636,7 +636,7 @@ public class ResourceAccess {
             List<AttributeDimension> dimensions = attribute.getDimensions().getDimensions();
             ListIterator<AttributeDimension> dimensionsListIterator = dimensions.listIterator(dimensions.size());
             int incrementCounter = 1;
-            // Iterate the list in reverse order: right to left or down to up in the display table for calculate cell spacing
+            // Iterate the list in reverse order: right to left or down to up in the display table to calculate cell spacing
             while (dimensionsListIterator.hasPrevious()) {
                 AttributeDimension dimension = dimensionsListIterator.previous();
                 multipliersByAttribute.get(attribute.getId()).put(dimension.getDimensionId(), incrementCounter);
