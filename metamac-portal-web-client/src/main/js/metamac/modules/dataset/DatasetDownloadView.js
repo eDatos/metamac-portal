@@ -154,8 +154,7 @@
         },
 
         _getImageExportApiParams: function (type) {
-            var identifier = this.filterDimensions.metadata.identifier();
-            var filename = "chart" + "-" + identifier.agency + "-" + identifier.identifier + "-" + identifier.version; // IDEA Add visualization type to the name
+            var filename = this._getFilenameFromIdentifier("", "chart");
 
             var mime = svgExporter.mimeTypeFromType(type);
             var params = '?';
