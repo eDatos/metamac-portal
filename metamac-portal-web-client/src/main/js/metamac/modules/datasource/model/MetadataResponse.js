@@ -121,7 +121,7 @@
         },
 
         _dimensionHasHierarchy: function (dimension) {
-            return _.any(dimension.dimensionValues.value, function (dimensionValue) {
+            return dimension.id === 'TIME_PERIOD' || _.any(dimension.dimensionValues.value, function (dimensionValue) {
                 return _.has(dimensionValue, 'visualisationParent');
             });
         },
