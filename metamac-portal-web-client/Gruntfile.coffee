@@ -59,6 +59,7 @@ module.exports = (grunt) ->
 
                 # User
                 paths.js + "/metamac/modules/user/UserUtils.js"
+                paths.js + "/metamac/modules/user/UserHeaderView.js"
 
                 # Metamac libs
                 paths.js + "/metamac/libs/i18n.js"

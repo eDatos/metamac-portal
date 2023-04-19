@@ -1,0 +1,11 @@
+<div class="user-header">
+    <p>{{ username }}</p>
+    <button id="button-user" class="header-button" title="{{#if isLogged}}{{ message 'user.header.userAreaTooltip' }}{{else}}{{ message 'user.header.loginTooltip' }}{{/if}}">
+        <i class="icon icon-user"></i>
+    </button>
+    {{#if isLogged}}
+    <button id="button-logout" class="header-button" title="{{ message 'user.header.logoutTooltip' }}">
+        <i class="icon icon-logout"></i>
+    </button>
+    {{/if}}
+</div>

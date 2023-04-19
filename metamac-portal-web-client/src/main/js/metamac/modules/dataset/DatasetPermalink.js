@@ -50,7 +50,7 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({ content: content }),
-                    beforeSend: prepareAuthorizationAndXSRFHeaders,
+                    beforeSend: UserUtils.prepareAuthorizationAndXSRFHeaders(true),
                 }).fail(function(jqXHR) {
                     reject(jqXHR)
                 }).done(function(val) {
@@ -68,7 +68,7 @@
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({content: content}),
-                        beforeSend: prepareAuthorizationAndXSRFHeaders
+                        beforeSend: UserUtils.prepareAuthorizationAndXSRFHeaders()
                     }).fail(function (jqXHR) {
                         reject(jqXHR)
                     }).done(function (val) {
