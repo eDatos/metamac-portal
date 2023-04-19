@@ -353,7 +353,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String buildHeaderQuery(String lang) {
-        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam());
+        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam(), "userHeader");
     }
 
     private static String buildAppUrlParam() {

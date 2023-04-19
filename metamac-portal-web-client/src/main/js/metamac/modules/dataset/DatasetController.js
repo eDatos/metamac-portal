@@ -2,7 +2,6 @@
     "use strict";
 
     var DatasetPermalink = App.modules.dataset.DatasetPermalink;
-    var UserHeaderView = App.modules.user.UserHeaderView;
 
     App.namespace('App.modules.dataset.DatasetController');
 
@@ -128,14 +127,6 @@
                     deferred.resolve();
                 } else {
                     deferred.resolve();
-                }
-
-                if(!$(".visualizer-header-user") || !(App.endpoints["external-users"] && App.endpoints["external-users-web"])) {
-                    console.log("No se pudo cargar el header de usuarios");
-                } else {
-                    new UserHeaderView({
-                        el: $(".visualizer-header-user")
-                    }).render();
                 }
             });
 
