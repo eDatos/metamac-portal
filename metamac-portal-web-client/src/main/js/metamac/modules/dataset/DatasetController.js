@@ -108,6 +108,11 @@
 
             var self = this;
             async.parallel(loads, function (err, result) {
+                if (result.data != 'done') {
+                    self.errorView = new App.modules.dataset.ErrorView({ errors : result.data });
+                    self.region.show(self.errorView);
+                    return deferred.promise();
+                }
                 self.metadata = self.metadataRequest.getMetadataResponse();
                 self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                 self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
@@ -138,7 +143,6 @@
                     }).render();
                 }
             });
-
             return deferred.promise();
         }
     });
