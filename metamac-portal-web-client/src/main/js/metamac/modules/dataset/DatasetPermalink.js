@@ -41,24 +41,6 @@
             });
         },
 
-        savePermalinkWithUserAuth: function (content) {
-            var self = this;
-            return new Promise(function(resolve, reject) {
-                $.ajax({
-                    url: self.baseUrl(),
-                    method: "POST",
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({ content: content }),
-                    beforeSend: UserUtils.prepareAuthorizationAndXSRFHeaders(true),
-                }).fail(function(jqXHR) {
-                    reject(jqXHR)
-                }).done(function(val) {
-                    resolve(val)
-                });
-            });
-        },
-
         savePermalink: function (content, el) {
             var requestFunction = function (url) {
                 return new Promise(function (resolve, reject) {
@@ -68,7 +50,7 @@
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({content: content}),
-                        beforeSend: UserUtils.prepareAuthorizationAndXSRFHeaders()
+                        beforeSend: Edatos.UserManagement.prepareAuthorizationAndXSRFHeaders
                     }).fail(function (jqXHR) {
                         reject(jqXHR)
                     }).done(function (val) {

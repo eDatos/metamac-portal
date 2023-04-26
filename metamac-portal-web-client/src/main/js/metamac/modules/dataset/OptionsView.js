@@ -2,7 +2,6 @@
 
     App.namespace("App.modules.dataset");
 
-    var UserUtils = App.modules.user.UserUtils;
     var DatasetPermalink = App.modules.dataset.DatasetPermalink;
     var DisabledFeatureInternalPortalView = Backbone.View.extend({
         render: function () {
@@ -213,7 +212,7 @@
                 modal.show();
             } else {
                 var self = this;
-                UserUtils.getAccount().then(function(val) {
+                Edatos.UserManagement.getAccount().then(function(val) {
                     var modal;
                     var title = I18n.t("filter.save.modal.title");
                     if (DatasetPermalink.needsPermalink(self.filterDimensions)) {
@@ -237,7 +236,7 @@
                     var modalContentView = new App.components.modal.ConfirmationModalView({
                         question: I18n.t("modal.information.loginRequired.message"),
                         onConfirm: function () {
-                            UserUtils.login();
+                            Edatos.UserManagement.login();
                             modal.close();
                         },
                         onReject: function () {
