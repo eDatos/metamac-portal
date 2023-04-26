@@ -1,0 +1,8 @@
+<div class="alert alert-danger"> 
+    {{#if emptyError}}
+    <p> {{ message 'dataset.empty_dataset.text' }}</p>
+    {{/if}}
+    {{#if generalError}}
+    <p> {{ message 'dataset.general_error.text' }}</p>
+    {{/if}}
+</div>

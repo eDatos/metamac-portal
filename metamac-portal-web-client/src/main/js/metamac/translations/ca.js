@@ -391,5 +391,13 @@ I18n.translations.ca = {
         label: {
             text: "Escriviu el valor de la imatge mostrada damunt"
         }
+    },
+    dataset: {
+        empty_dataset: {
+            text: "El dataset no té dades"
+        },
+        general_error: {
+            text: "S'ha produït un error"
+        }
     }
 };

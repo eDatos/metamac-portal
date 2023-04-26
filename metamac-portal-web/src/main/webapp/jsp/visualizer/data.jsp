@@ -22,6 +22,9 @@
 		    	<h3>Error - Propiedad no configurada</h3>
 	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
 	       	</c:when>
+	       	<c:when test="${internalError != ''}">
+	            <p class="justificado">${internalError}</p>
+	       	</c:when>
 			<c:otherwise>
 				<c:if test="${ApiUrlExternalUsers != 'error' && WebApplicationExternalUsers != 'error'}">
 					<div class="visualizer-header-user"></div>

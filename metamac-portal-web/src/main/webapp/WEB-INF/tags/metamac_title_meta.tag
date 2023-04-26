@@ -55,7 +55,7 @@
 
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
-			   
+			request.setAttribute("internalError", "");
 		    INSTALLATION_TYPE = configurationService.retrieveInstallationType();
 		    internalPortal = INSTALLATION_TYPE.equals("INTERNAL");
 			request.setAttribute("installationType", INSTALLATION_TYPE);
@@ -202,6 +202,7 @@
                         }
                         break;
                     case DATASET:
+                        try {
                         Dataset dataset = Helpers.getDataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, agencyId, resourceId, version);
                         
                         if (dataset != null) {
@@ -210,6 +211,10 @@
                             request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(dataset.getDescription())));
                             request.setAttribute("resourceDescription", helper.localizeText(dataset.getDescription()));
                             request.setAttribute("keywords", helper.localizeText(dataset.getKeywords()));
+                        }
+                        } catch(Exception e) {
+                            log.error(e.getMessage());
+                            request.setAttribute("internalError", e.getMessage());
                         }
                         break;
                     case QUERY:

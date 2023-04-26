@@ -389,5 +389,13 @@ I18n.translations.en = {
         label: {
             text: "Write the value of the image shown above"
         }
+    },
+    dataset: {
+        empty_dataset: {
+            text: "the dataset has no data"
+        },
+        general_error: {
+            text: "An error has occurred"
+        }
     }
 };

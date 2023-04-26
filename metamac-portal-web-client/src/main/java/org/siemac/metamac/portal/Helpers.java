@@ -17,6 +17,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.portal.dto.Chapter;
 import org.siemac.metamac.portal.dto.Collection;
@@ -38,6 +41,7 @@ import org.siemac.metamac.portal.mapper.Query2DtoMapper;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.rest.exception.RestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -102,7 +106,7 @@ public class Helpers {
         return collection;
     }
 
-    public static Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) {
+    public static Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) throws Exception {
         Dataset dataset = null;
         Dataset2DtoMapper dataset2DtoMapper = new Dataset2DtoMapper();
         try {
@@ -121,8 +125,19 @@ public class Helpers {
 
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Dataset", e);
+            MetamacException exception = getException(e, resourceId);
+            if (exception != null) {
+                throw exception;
+            }
         }
         return dataset;
+    }
+
+    private static MetamacException getException(Exception e, String resourceId) {
+        if (e.getMessage().contains("exception.resources.dataset.empty_data")) {
+            return new MetamacException(ServiceExceptionType.DATASET_NO_DATA, resourceId);
+        }
+        return null;
     }
 
     public static Query getQuery(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) {
