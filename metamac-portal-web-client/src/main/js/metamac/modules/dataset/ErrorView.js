@@ -8,17 +8,12 @@
 
         initialize: function (options) {
             this.errorsJson = JSON.parse(options.errors);
-            if (this.errorsJson.code === 'exception.resources.dataset.empty_data') {
-                this.emptyError = this.errorsJson.code;
-            } else {
-                this.generalError = this.errorsJson.code;
-            }
+            this.emptyError = I18n.t(this.errorsJson.code);
         },
         
         render: function () {
             var context = {
-                emptyError: this.emptyError,
-                generalError: this.generalError
+                emptyError: this.emptyError 
             }
             this.$el.html(this.template(context));
             return this;

@@ -392,12 +392,19 @@ I18n.translations.ca = {
             text: "Escriviu el valor de la imatge mostrada damunt"
         }
     },
-    dataset: {
-        empty_dataset: {
-            text: "El dataset no té dades"
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "El dataset no té dades"
+            }
         },
-        general_error: {
-            text: "S'ha produït un error"
+        statistical_resources: {
+            dataset: { 
+                not_found: "El dataset no s'ha trobat"
+            }
+        },
+        common: {
+            unknown: "Error desconegut"
         }
     }
 };

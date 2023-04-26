@@ -390,12 +390,20 @@ I18n.translations.es = {
             text: "Escriba el valor de la imagen mostrada encima"
         }
     },
-    dataset: {
-        empty_dataset: {
-            text: "El dataset no tiene datos"
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "El dataset no tiene datos"
+            }
         },
-        general_error: {
-            text: "Se ha producido un error"
+        statistical_resources: {
+            dataset: { 
+                not_found: "El dataset no ha sido encontrado"
+            }
+        },
+        common: {
+            unknown: "Error desconocido"
         }
     }
+    
 };
