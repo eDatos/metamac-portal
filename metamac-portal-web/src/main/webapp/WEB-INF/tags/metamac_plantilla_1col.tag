@@ -18,24 +18,11 @@
 	</c:choose>
 </head>
 <body>
-	<%
-		String internationalizationCookieName = (String) request.getAttribute("internationalizationCookie");
-		String locale = request.getLocale().getLanguage();
-		if (request.getCookies() != null && !"error".equals(internationalizationCookieName)) {
-			for (Cookie cookie : request.getCookies()) {
-				if (internationalizationCookieName.equals(cookie.getName())) {
-					locale = cookie.getValue();
-					break;
-				}
-			}
-		}
-		request.setAttribute("locale", locale);
-	%>
 	<!-- begin: #cabecera -->
     <c:choose>
         <c:when test="${!empty portalStyleHeaderUrl}">
 			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
-				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
+				<c:param name="${internationalizationCookie}" value="${currentLocale}" />
 			</c:import>
         </c:when>
         <c:otherwise>
@@ -59,7 +46,7 @@
     <c:choose>
         <c:when test="${!empty portalStyleFooterUrl}">
 			<c:import charEncoding="UTF-8" url="${portalStyleFooterUrl}">
-				<c:param name="${internationalizationCookie}" value="<%= locale %>" />
+				<c:param name="${internationalizationCookie}" value="${currentLocale}" />
 			</c:import>
         </c:when>
         <c:otherwise>

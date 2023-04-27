@@ -15,6 +15,7 @@ I18n.translations.es = {
             info: "Información",
             table: "Tabla de datos",
             column: "Gráfico de columnas",
+            bar: "Gráfico de barras",
             line: "Gráfico de líneas",
             map: "Mapa",
             mapbubble: "Mapa de símbolos",
@@ -38,6 +39,9 @@ I18n.translations.es = {
         download: {
             selection: "Descargar selección",
             all: "Descargar todo",
+            excel: {
+                disabled: "Este recurso no se puede descargar como XLSX porque excede el número de observaciones para este formato. Por favor, elija otra opción."
+            },
             modal: {
                 title: "Información de descarga"
             },
@@ -75,6 +79,7 @@ I18n.translations.es = {
             fixedDimensionX: "Dimensión fija",
             horizontalAxis: "Eje horizontal",
             columns: "Columnas",
+            bars: "Barras",
             lines: "Lineas",
             sectors: "Sectores",
             map: "Territorios",
@@ -111,6 +116,12 @@ I18n.translations.es = {
                     axisy: "Eje Y",
                     top: "Columnas"
                 },
+                bar: {
+                    fixed: "Fijadas",
+                    left: "Eje Y",
+                    axisy: "Eje X",
+                    top: "Barras"
+                },
                 line: {
                     fixed: "Fijadas",
                     left: "Eje X",
@@ -129,7 +140,10 @@ I18n.translations.es = {
             }
         },
         selector: {
-            level: "Nivel {{level}}"
+            level: {
+                template: "Nivel {{level}}",
+                all: "Todos"
+            }
         },
         sort: {
             options: {
@@ -195,6 +209,8 @@ I18n.translations.es = {
             updateFrequency: "Frecuencia de actualización",
             statisticOfficiality: "Oficialidad estadística",
             bibliographicCitation: "Citación bibliográfica",
+            dataProviders: "Proveedores de datos",
+            dataProviderAnnotations: "Observaciones asociadas a los proveedores de datos",
             measureConcepts: {
                 title: "Qué miden los datos",
                 annotations: "Notas generales"
@@ -351,6 +367,11 @@ I18n.translations.es = {
             info: {
                 noTemporalDimension: "Este recurso no permite elegir el periodo porque no tiene una dimensión temporal.",
                 noVersionUpdate: "Este recurso no permite consultar versiones anteriores."
+            }
+        },
+        embedConfig: {
+            label: {
+                title: "Título"
             }
         }
     },

@@ -15,6 +15,7 @@ I18n.translations.en = {
             info: "Info",
             table: "Datatable",
             column: "Columns chart",
+            bar: "Bars chart",
             line: "Lines chart",
             map: "Map",
             mapbubble: "Bubble map",
@@ -40,6 +41,9 @@ I18n.translations.en = {
             all: "Download All",
             modal: {
                 title: "Download info"
+            },
+            excel: {
+                disabled: "This resource cannot be downloaded as XLSX because it exceeds the number of observations for this format. Please, choose another option."
             },
             attributes: {
                 modal: {
@@ -75,6 +79,7 @@ I18n.translations.en = {
             fixedDimensionX: "Fixed dimension",
             horizontalAxis: "Horizontal axis",
             columns: "Columns",
+            bars: "Bars",
             lines: "Lines",
             sectors: "Sectors",
             map: "Territories",
@@ -111,6 +116,12 @@ I18n.translations.en = {
                     axisy: "Y axis",
                     top: "Columns"
                 },
+                bar: {
+                    fixed: "Fixed values",
+                    left: "Y axis",
+                    axisy: "X axis",
+                    top: "Bars"
+                },
                 line: {
                     fixed: "Fixed values",
                     left: "X axis",
@@ -129,7 +140,10 @@ I18n.translations.en = {
             }
         },
         selector: {
-            level: "Level {{level}}"
+            level: {
+                template: "Level {{level}}",
+                all: "All"
+            }
         },
         sort: {
             options: {
@@ -195,6 +209,8 @@ I18n.translations.en = {
             updateFrequency: "Update frequency",
             statisticOfficiality: "Statistic officiality",
             bibliographicCitation: "Bibliographic citation",
+            dataProviders: "Data providers",
+            dataProviderAnnotations: "Observations associated with data providers",
             measureConcepts: {
                 title: "What is measured by the data",
                 annotations: "General notes"
@@ -351,6 +367,11 @@ I18n.translations.en = {
             info: {
                 noTemporalDimension: "This resource does not allow choosing the period because it does not have a temporal dimension.",
                 noVersionUpdate: "This resource does not allow checking previous versions."
+            }
+        },
+        embedConfig: {
+            label: {
+                title: "Title"
             }
         }
     },

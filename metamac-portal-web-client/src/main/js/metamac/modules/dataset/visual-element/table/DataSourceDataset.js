@@ -3,6 +3,8 @@
 
     App.namespace("App.DataSourceDataset");
 
+    var Cell = App.Table.Cell;
+
     App.DataSourceDataset = function (options) {
         this.data = options.data;
         this.filterDimensions = options.filterDimensions;
@@ -83,6 +85,23 @@
             return this.data.getAttributes({ cell: cell });
         },
 
+        getSelectionNonEmptyAttributesCount: function() {
+            var tableSize = this.filterDimensions.getTableInfo().getTableSize();
+            var count = 0;
+            for (var row = 0; row < tableSize.rows; row++) {
+                for (var column = 0; column < tableSize.columns; column++) {
+                    if (this.cellHasPrimaryAttributes(new Cell(column, row))) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        },
+
+        getSelectionObservationsCount: function() {
+            return this.filterDimensions.getTableInfo().getTableSize().rows * this.filterDimensions.getTableInfo().getTableSize().columns;
+        },
+
         cellInfoAtIndex: function (cell) {
             var categoryValues = this.filterDimensions.getTableInfo().getCategoryValuesForCell(cell);
             var formattedCategories = this._formatCategories(categoryValues);
@@ -110,12 +129,18 @@
 
         _formatCategories: function (categoryValues) {
             var self = this;
-            return _.map(categoryValues, function (value, key) {
-                return {
-                    dimension: self.filterDimensions.get(key).get('label'),
-                    value: value
-                };
-            });
+            return _.chain(categoryValues)
+                .map(function (value, key) {
+                    if (self.filterDimensions.get(key).get('singleValue')) {
+                        return null;
+                    }
+                    return {
+                        dimension: self.filterDimensions.get(key).get('label'),
+                        value: value
+                    }   
+                })
+                .filter(function(value) { return !!value; })
+                .value();
         },
 
         datasetAttributes: function () {

@@ -10,6 +10,7 @@
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
             this.permalinkId = this.options.permalinkId;
+            this.title = this.options.title;
         },
 
         getWidgetUrl: function () {
@@ -33,7 +34,7 @@
                 defaultId: 'dataset-widget',
                 defaultWidth: 500,
                 defaultHeight: 400,
-                title: this.filterDimensions.metadata.getTitle(),
+                title: this.title || this.filterDimensions.metadata.getTitle(),
                 description: this.filterDimensions.metadata.getDescription()
             };
             this.$el.html(this.template(context));

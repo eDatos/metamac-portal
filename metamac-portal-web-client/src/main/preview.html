@@ -133,6 +133,9 @@
         App.queryParams = { "agency": "ISTAC", "identifier": "E30138A_000001", "version": "1.1", "type": "dataset" };
     
 
+        // EDATOS-3915 - No mostrar la información de las dimensiones que tienen un único valor en el pop-up de la observación
+        App.queryParams = { "agency": "ISTAC", "identifier": "C00124A_000001", "version": "1.0", "type": "dataset" };    
+        App.queryParams = { "agency": "ISTAC", "identifier": "PRUEBA_04_2DIMENSIONES", "type": "query" };    
         // Vista widget
         // App.config.widget = true;
         App.config["geographicalGranularityUrn"] = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISTAC:CL_GEO_GRANULARITIES(01.006)";
@@ -141,6 +144,8 @@
         App.config["socialTwitterVia"] = "mi_twitter_handle";
         App.config["enableGraphColors"] = true;
         App.config["helpUrl"] = "http://www.gobiernodecanarias.org/istac/galerias/documentos/pec-2018-2022.pdf";
+        App.config["cellThreshold"] = 250_000;
+        
 
         var ENABLE_IBESTAT = true;
         if (ENABLE_IBESTAT) {

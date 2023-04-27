@@ -4,6 +4,7 @@
     App.namespace('App.modules.dataset.DatasetDownloadView');
 
     var svgExporter = new App.svg.Exporter();
+    var SVG_SELECTOR = '.dataset-visualization-visual-element svg';
 
     App.modules.dataset.DatasetDownloadView = Backbone.View.extend({
 
@@ -18,10 +19,17 @@
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
             this.visualizationType = this.options.visualizationType;
+            this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
+            this.numberOfObservations = this.options.numberOfObservations;
         },
 
         render: function () {
             var datasetSelection = this.getDatasetSelection();
+            var jsonStatUrl = this._getJsonStatUrl();
+            var entries = [];
+            for (var entry of jsonStatUrl.searchParams.entries()) {
+                entries.push(entry);
+            }
 
             var context = {
                 selection: JSON.stringify(datasetSelection),
@@ -30,14 +38,17 @@
                     tsv: this._buildExportEndpoint('tsv'),
                     excel: this._buildExportEndpoint('excel'),
                     px: this._buildExportEndpoint('px'),
-                    jsonstat: this._getJsonStatUrl(),
+                    jsonstat: {
+                        href: jsonStatUrl.toString(),
+                        searchParams: entries,
+                    }
                 },
                 buttonConfig: this._getButtonConfiguration()
             };
 
             if (this._exportableImage()) {
                 var self = this;
-                svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($('svg'))).done(function (svg) {
+                svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($(SVG_SELECTOR))).done(function (svg) {
                     var svgContext = {
                         svg: svg,
                         url: {
@@ -56,11 +67,7 @@
             }
         },
 
-        _exportableImage: function () {
-            return $('svg').exists();
-        },
-
-        _getButtonConfiguration: function () {
+        _getVisualizationType: function () {
             var visualizationSupertype = '';
             switch (this.visualizationType) {
                 case '': // On selection mode
@@ -76,10 +83,23 @@
                     visualizationSupertype = 'graph';
                     break;
             }
+            return visualizationSupertype;
+        },
 
+        _hasExportableImage: function (visualizationSupertype) {
+            return _.contains(['graph', 'map'], visualizationSupertype) && $(SVG_SELECTOR).exists();
+        },
+
+        _exportableImage: function () {
+            var visualizationSupertype = this._getVisualizationType();
+            return this._hasExportableImage(visualizationSupertype);
+        },
+
+        _getButtonConfiguration: function () {
+            var visualizationSupertype = this._getVisualizationType();
             var haveDataFormats = visualizationSupertype == 'data';
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
-            var haveImageFormats = _.contains(['graph', 'map'], visualizationSupertype) && this._exportableImage();
+            var haveImageFormats = this._hasExportableImage(visualizationSupertype);
             var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length == 0;
 
             return {
@@ -87,8 +107,39 @@
                 allDimensionsWithSelections: allDimensionsWithSelections,
                 mapFormats: haveMapFormats,
                 imageFormats: haveImageFormats,
-                iconPreffix: visualizationSupertype
+                iconPreffix: visualizationSupertype,
+                disableFormat: {
+                    all: {
+                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize)
+                    },
+                    selection: {
+                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize)
+                    }
+                },
             };
+        },
+
+        // This is based on org.siemac.metamac.portal.core.exporters.ExcelExporter.enableHighPerformanceModeIfNeeded()
+        // We need to take into account both download all, and download selection
+        // In the export api, it only read the response from the external apis to guess the estimatedNumberOfCells. That's because
+        // that response is already filtered (or not) by the selection
+        // The quid is that highPerformanceMode breaks because it reorders the data to be only rows and that breaks the export
+        // See more at EDATOS-4008
+        disableExcelDownload: function(estimatedNumberOfCells, totalNumberOfObservations, tableSize) {
+            var rows = tableSize.rows;
+            var columns = tableSize.columns;
+
+            // org.apache.poi.ss.SpreadsheetVersion.getLastRowIndex()
+            var MAX_EXCEL_ROWS = 2**20; // ~ 1 million
+            var MAX_EXCEL_COLUMNS = 2**14; // ~ 16K
+            
+            if (rows > MAX_EXCEL_ROWS) { return true; }
+            if (columns > MAX_EXCEL_COLUMNS) { return true; }
+            
+            var highPerformanceMode = estimatedNumberOfCells > App.config.cellThreshold;
+            if (highPerformanceMode && totalNumberOfObservations > MAX_EXCEL_ROWS) { return true; }
+
+            return false;
         },
 
         _getImageExportApiParams: function (type) {
@@ -99,7 +150,7 @@
             var params = '?';
             params += 'filename=' + encodeURIComponent(filename);
             params += '&type=' + encodeURIComponent(mime);
-            params += '&width=' + $('svg').width();
+            params += '&width=' + $(SVG_SELECTOR).width();
             params += '&scale=2';
 
             return params;
@@ -147,36 +198,11 @@
         clickDownloadButton: function (e) {
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
-
-            if (this._isChromeFrameWidget()) {
-                this._openPopupDownloadForm($currentTarget.parent("form"));
-            } else {
+            if (!$currentTarget.hasClass('disabled')) {
                 $currentTarget.parent("form").submit();
             }
         },
-
-        _openPopupDownloadForm: function (form) {
-            var form = form.clone();
-            form.append('<input type="submit" value="' + 'Descargar' + '">');
-            var formHTML = form[0].outerHTML;
-
-            var popupProperties = "";
-            popupProperties += 'width=' + 200 + ',';
-            popupProperties += 'height=' + 100 + ',';
-            popupProperties += 'left=' + 100 + ',';
-            popupProperties += 'top=' + 100;
-
-            var popup = window.open('', '', popupProperties);
-            popup.document.write(formHTML);
-            popup.focus();
-        },
-
-        _isChromeFrameWidget: function () {
-            return App.config["chromeFrameObject"];
-            // I haven´t found a way to properly detect the difference between a embedded chromeFrame object and chromeFrame triggered from parent, so passed as variable when embedded object
-            //return App.config["widget"] && !!window.externalHost;
-        },
-
+        
         _setupTsvExportAttributes: function() {
             var self = this;
             this.$el.find('.download-tsv').closest('form').submit(function(e) {
@@ -195,7 +221,7 @@
                     self.modal.close();
                 },
                 onReject: function() { 
-                    form.action = self._buildExportEndpoint('tsv', {fields: '-attributes'});                  
+                    form.action = self._buildExportEndpoint('tsv', { fields: '-attributes' });                  
                     form.submit(); 
                     self.modal.close();
                 }
@@ -205,9 +231,10 @@
             this.modal.show();
         },
 
-        _buildExportEndpoint: function(type, attributes) {
+        _buildExportEndpoint: function(type, additionalParams) {
             var exportEndpoint = new URL(App.endpoints["export"] + "/" + type + this.filterDimensions.metadata.urlIdentifierPart());
-            _.each(attributes, function(value,key) { 
+            additionalParams = _.extend({}, additionalParams, { lang: I18n.locale });
+            _.each(additionalParams, function(value,key) { 
                 exportEndpoint.searchParams.append(key, value);
             });
             return exportEndpoint;
@@ -215,13 +242,19 @@
 
         _getJsonStatUrl() {
             var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+
+            var jsonStatUrl;
             if (link.hasOwnProperty("href")) {
-                return link.href + ".jsonstat";
+                jsonStatUrl = new URL(link.href + ".jsonstat");
             } else if (typeof link === 'string') {
-                return link + ".jsonstat";
+                jsonStatUrl = new URL(link + ".jsonstat");
             } else {
                 return null;
             }
+
+            var locale = I18n.locale;
+            jsonStatUrl.searchParams.append('lang', locale);
+            return jsonStatUrl;
         }
     });
 

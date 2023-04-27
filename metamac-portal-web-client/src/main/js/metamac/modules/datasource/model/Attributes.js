@@ -15,7 +15,6 @@
             this.response = options.response;
             this.metadata = options.metadata;
 
-            this.initializeLocalesIndex();
             this.attributesValues = !_.isUndefined(this.response.data.attributes) ? this.response.data.attributes.attribute : {};
             this.attributesMetadata = !_.isUndefined(this.metadata) ? this.metadata.getAttributes() : {};
 
@@ -43,13 +42,31 @@
         getPrimaryMeasureAttributesByPos: function (pos) {
             var attributeValues = this.primaryMeasureAttributesValues ? (this.primaryMeasureAttributesValues[pos] ? this.primaryMeasureAttributesValues[pos] : []) : [];
             var primaryMeasureAttributes = _.where(this.attributes, { attachmentLevel: ATTACHMENT_LEVELS.PRIMARY_MEASURE });
-            var self = this;
             return _.map(attributeValues, function(atributeValue, i) {
                 return {
                     value: atributeValue,
-                    attribute: self.localizeLabel(primaryMeasureAttributes[i].name.text),
+                    attribute: App.InternationalizationUtils.localizeLabel(primaryMeasureAttributes[i].name.text),
                 };
             });
+        },
+
+        getPrimaryMeasureAttributesNonEmptyCount: function() {
+            // Sample input: [["", "a"], ["b", "c"], ["d", ""], ["", ""]]
+            return _.chain(this.primaryMeasureAttributesValues)
+                        .map(function(values) {  
+                            // We only want to know if this cell/position will draw a tooltip/cell comment, 
+                            // we don't care about the content here
+                            // so we just compact falsy values and join the remaining
+                            // Result after map: ["a", "b,c", "d", ""]
+                            return _.compact(values).join(","); 
+                        }) 
+                        .compact() // After the previous operation, we compact it again. Result after second compact: ["a", "b,c", "d"]
+                    .value()
+                    .length; // And count the survivors to estimate the number of cells
+        },
+
+        getDimensionsPosition: function() {
+            return this.metadata.getDimensionsPosition();
         },
 
         getCombinatedDimensionsAttributesByDimensionsPositions: function (dimensionsPositions) {
@@ -62,7 +79,7 @@
                 }, pos, self);
                 return {
                     value: combinatedDimensionAttribute.values[pos],
-                    attribute: self.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
+                    attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
                 }
             }, dimensionsPositions);
         },
@@ -86,7 +103,7 @@
                 return {
                     value: combinatedDimensionAttribute.values[pos],
                     dimensionId: combinatedDimensionAttribute.attributeDimensionsIds[0],
-                    attribute: self.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
+                    attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
                 };
             }, dimensionsPositions);
         },
@@ -216,7 +233,7 @@
         _getValueForEnumerate: function (attributeRawValue, attributeEnumerates) {
             if (attributeRawValue != "") {
                 if (!_.isUndefined(attributeEnumerates[attributeRawValue])) {
-                    return attributeEnumerates[attributeRawValue] ? this.localizeLabel(attributeEnumerates[attributeRawValue].name.text) : null;
+                    return attributeEnumerates[attributeRawValue] ? App.InternationalizationUtils.localizeLabel(attributeEnumerates[attributeRawValue].name.text) : null;
                 } else {
                     return attributeRawValue;
                 }
@@ -225,40 +242,9 @@
             }
         },
 
-        initializeLocalesIndex: function () {
-            this.localesIndex = {
-                primary: I18n.locale,
-                secondary: I18n.defaultLocale
-            };
-        },
-
-        localizeLabel: function (labels) {
-            if (labels) {
-                var self = this;
-                var label;
-                if (this.localesIndex.primary) {
-                    label = _.find(labels, function (label) {
-                        return label.lang == self.localesIndex.primary;
-                    });
-                    if (label) label = label.value;
-                }
-                if (!label && this.localesIndex.secondary) {
-                    label = _.find(labels, function (label) {
-                        return label.lang == self.localesIndex.secondary;
-                    });
-                    if (label) label = label.value;
-                }
-                if (!label) {
-                    label = _.first(labels).value
-                }
-
-                return label;
-            }
-        },
-
         _parseDatasetValue: function (attribute) {
             if (attribute.name.text) {
-                attribute.name = this.localizeLabel(attribute.name.text);
+                attribute.name = App.InternationalizationUtils.localizeLabel(attribute.name.text);
             }
 
             var attributeEnumerates = attribute.attributeValues;

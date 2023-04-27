@@ -40,8 +40,17 @@
         function getQueryParams(params) {
             var reg = new RegExp("(^|&)" + params + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
-            if (r != null) return unescape(r[2]);
-            return null;
+            return (r != null) ? r[2] : null;
+        }
+
+        function getQueryParamsAndUnescape(params) {
+            var paramValue = getQueryParams(params);
+            return (paramValue != null) ? unescape(paramValue) : null;
+        }
+
+        function getQueryParamsAndDecode(params) {
+            var paramValue = getQueryParams(params);
+            return (paramValue != null) ? decodeURIComponent(paramValue) : null;
         }
     </script>
     <script>
@@ -51,12 +60,12 @@
             I18n.defaultLocale = "es";
             I18n.locale = "es";
 
-            App.queryParams["agency"] = getQueryParams("agencyId");
-            App.queryParams["identifier"] = getQueryParams("resourceId");
-            App.queryParams["version"] = getQueryParams("version");
-            App.queryParams["type"] = getQueryParams("resourceType");
-            App.queryParams["indicatorSystem"] = getQueryParams("indicatorSystem");
-            App.config["chromeFrameObject"] = getQueryParams("chromeFrameObject");
+            App.queryParams["agency"] = getQueryParamsAndUnescape("agencyId");
+            App.queryParams["identifier"] = getQueryParamsAndUnescape("resourceId");
+            App.queryParams["version"] = getQueryParamsAndUnescape("version");
+            App.queryParams["type"] = getQueryParamsAndUnescape("resourceType");
+            App.queryParams["indicatorSystem"] = getQueryParamsAndUnescape("indicatorSystem");
+            App.queryParams["widgetTitle"] = JSON.parse(getQueryParamsAndDecode("title"));
             App.config["installationType"] = "EXTERNAL";
             App.config["socialTwitterVia"] = "mi_twitter_handle";
             App.config["enableGraphColors"] = false;
@@ -69,7 +78,7 @@
             App.endpoints["statistical-visualizer"] = "http://estadisticas.arte-consultores.com/statistical-visualizer";
             App.endpoints["permalinks"] = "http://estadisticas.arte-consultores.com/permalinks/v1.0";
             App.endpoints["export"] = "http://estadisticas.arte-consultores.com/export/v1.0";
-            App.endpoints["sharedVisualizerUrl"] = getQueryParams("sharedVisualizerUrl");
+            App.endpoints["sharedVisualizerUrl"] = getQueryParamsAndUnescape("sharedVisualizerUrl");
             App.endpoints["indicators"] = "http://estadisticas.arte-consultores.com/indicators/v1.0";
 
             App.start();

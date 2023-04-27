@@ -69,8 +69,7 @@
             if (analyticsAddthisCode != null && !analyticsAddthisCode.isEmpty()) {                    
                 request.setAttribute("AddthisCode","#pubid=" + analyticsAddthisCode);
             }
-			request.setAttribute("titlePrefix",ORGANISATION + " | ");
-		    
+			
 		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
@@ -163,6 +162,8 @@
                 }
             }
         }
+        request.setAttribute("currentLocale", locale);
+        
         Helpers helper = new Helpers(locale);
 
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);
@@ -171,7 +172,7 @@
         String indicatorSystem = request.getParameter(Helpers.PARAMETER_INDICATOR_SYSTEM);
 
 	    request.setAttribute("resourceEmpty", true);
-	    String resourceName = "";
+	    request.setAttribute("resourceName", "");
 	    String resourceDescription = "";                     
 	    
         if (multidatasetId != null) {
@@ -267,19 +268,21 @@
        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
        request.setAttribute("helpUrl", WebUtils.getHelpUrl());
+       request.setAttribute("cellThreshold", WebUtils.getCellThreshold());
+       request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
 
 	%>	
-   	<title>${titlePrefix}${resourceName}</title>
+   	<title>${pageTitle}</title>
    	
    	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
    	    
     <meta name="description" content="${resourceDescriptionOnlyText}" />
 
-    <meta property="og:title" content="${titlePrefix}${resourceName}"/>
+    <meta property="og:title" content="${pageTitle}"/>
     <meta property="og:description" content="${resourceDescriptionOnlyText}"/>
        
-    <meta itemprop="name" content="${titlePrefix}${resourceName}" />
+    <meta itemprop="name" content="${pageTitle}" />
 	<meta itemprop="description" content="${resourceDescriptionOnlyText}" />
 	
   	<meta name="keywords" content="${keywords}" />
@@ -287,16 +290,6 @@
   	<meta name="robots" content="index, follow" />
   	<meta name="revisit-after" content="7 days" />
 
-  	<style>
-  	    .chromeFrameInstallDefaultStyle {
-            width: 100% !important;
-            height: 460px !important;
-            position: relative !important;
-            left: 0 !important;
-            top: 0 !important;
-            margin: 0 !important;
-        }
-    </style>
     
     <!-- Default styles with low precedece that can be easily overwritten by custom headers -->
     <style>                
@@ -305,7 +298,8 @@
             font-size: 14px;
         }
         
-        .visualizer-wrapper {
-            padding: 8px;        
+        .visualizer-wrapper,
+        .contenido .loader {
+            padding: 8px;
         }
     </style>

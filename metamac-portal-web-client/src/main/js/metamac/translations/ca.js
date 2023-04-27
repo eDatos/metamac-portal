@@ -15,6 +15,7 @@ I18n.translations.ca = {
             info: "Informació",
             table: "Taula de dades",
             column: "Gràfic de columnes",
+            bar: "Gràfic de barres",
             line: "Gràfic de línies",
             map: "Mapa",
             mapbubble: "Mapa de símbols",
@@ -40,6 +41,9 @@ I18n.translations.ca = {
             all: "Descarregar tot",
             modal: {
                 title: "Informació de descàrrega"
+            },
+            excel: {
+                disabled: "Aquest recurs no es pot descarregar com XLSX perquè excedeix el nombre d'observacions per a aquest format. Si us plau, triï una altra opció."
             },
             attributes: {
                 modal: {
@@ -75,6 +79,7 @@ I18n.translations.ca = {
             fixedDimensionX: "Dimensió fixa",
             horizontalAxis: "Eix horitzontal",
             columns: "Columnes",
+            bars: "Barres",
             lines: "Lineas",
             sectors: "Sectors",
             map: "Territoris",
@@ -111,6 +116,12 @@ I18n.translations.ca = {
                     axisy: "Eix I",
                     top: "Columnes"
                 },
+                bar: {
+                    fixed: "Fixades",
+                    left: "Eix Y",
+                    axisy: "Eix X",
+                    top: "Barres"
+                },
                 line: {
                     fixed: "Fixades",
                     left: "Eix X",
@@ -129,7 +140,10 @@ I18n.translations.ca = {
             }
         },
         selector: {
-            level: "Nivell {{level}}"
+            level: {
+                template: "Nivell {{level}}",
+                all: "Tots"
+            }
         },
         sort: {
             options: {
@@ -195,6 +209,8 @@ I18n.translations.ca = {
             updateFrequency: "Freqüència d'actualització",
             statisticOfficiality: "Oficialitat estadística",
             bibliographicCitation: "Citació bibliogràfica",
+            dataProviders: "Proveïdors de dades",
+            dataProviderAnnotations: "Observacions associades als proveïdors de dades",
             measureConcepts: {
                 title: "Què mesuren les dades",
                 annotations: "Notes generals"
@@ -353,6 +369,11 @@ I18n.translations.ca = {
             info: {
                 noTemporalDimension: "Aquest recurs no permet triar el període perquè no té una dimensió temporal.",
                 noVersionUpdate: "Aquest recurs no permet consultar versions anteriors."
+            }
+        },
+        embedConfig: {
+            label: {
+                title: "Títol"
             }
         }
     },

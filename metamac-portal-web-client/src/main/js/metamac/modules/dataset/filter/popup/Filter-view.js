@@ -4,6 +4,7 @@ App.widget.filter.FilterView = Backbone.View.extend({
     _templateExternalContainer : App.templateManager.get('dataset/filter/popup/filter-external-container'),
     _templateTableContainers : App.templateManager.get('dataset/filter/popup/filter-table-containers'),
     _templateColumnContainers : App.templateManager.get('dataset/filter/popup/filter-column-containers'),
+    _templateBarContainers : App.templateManager.get('dataset/filter/popup/filter-bar-containers'),
     _templateLineContainers : App.templateManager.get('dataset/filter/popup/filter-line-containers'),
     _templatePieContainers : App.templateManager.get('dataset/filter/popup/filter-pie-containers'),
     _templateMapContainers : App.templateManager.get('dataset/filter/popup/filter-map-containers'),
@@ -21,6 +22,10 @@ App.widget.filter.FilterView = Backbone.View.extend({
             case 'column':
                 this._renderColumnContainers();
                 this._renderColumnDimensions();
+                break;
+            case 'bar':
+                this._renderBarContainers();
+                this._renderBarDimensions();
                 break;
             case 'line':
                 this._renderLineContainers();
@@ -55,6 +60,13 @@ App.widget.filter.FilterView = Backbone.View.extend({
 
     _renderColumnContainers : function () {
         this.$filterZonesContainers = $(this._templateColumnContainers());
+        this.$filterContainer.append(this.$filterZonesContainers);
+
+        return this;
+    },
+
+    _renderBarContainers : function () {
+        this.$filterZonesContainers = $(this._templateBarContainers());
         this.$filterContainer.append(this.$filterZonesContainers);
 
         return this;
@@ -99,6 +111,19 @@ App.widget.filter.FilterView = Backbone.View.extend({
     },
 
     _renderColumnDimensions : function () {
+        var horizontalDim = this.model.getHorizontalDimension();
+        var columnsDim = this.model.getColumnsDimension();
+        var fixedZonecontext = {dims : this.model.getFixedDimensions()};
+        this._createDimension(horizontalDim, '#div-dimension-long1');
+        this._createDimension(columnsDim, '#div-dimension-long2');
+        _.each(fixedZonecontext.dims, function (dim) {
+            this._createDimension(dim, '#div-fixed-dimensions');
+        }, this);
+
+        return this;
+    },
+
+    _renderBarDimensions : function () {
         var horizontalDim = this.model.getHorizontalDimension();
         var columnsDim = this.model.getColumnsDimension();
         var fixedZonecontext = {dims : this.model.getFixedDimensions()};

@@ -22,6 +22,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     private static final String PARAM_BREADCRUMBS                 = "migas";
     private static final String PARAM_APP_NAME                    = "appName";
+    private static final String PARAM_APP_URL                     = "appUrl";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -61,6 +62,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static Boolean    portalGraphColorsEnabled          = false;
     protected static String     analyticsGoogleTrackingId         = null;
     protected static String     helpUrl                           = null;
+    private static Integer      cellThreshold                     = null;
 
     public static String getInstallationType() {
         return installationType;
@@ -315,7 +317,25 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         WebUtils.helpUrl = helpUrl;
     }
 
-    private static String getParam(String param, String value) {
+    public static void setCellThreshold(Integer cellThreshold) {
+        WebUtils.cellThreshold = cellThreshold;
+    }
+
+    public static Integer getCellThreshold() {
+        return cellThreshold;
+    }
+
+    public static String buildPageTitle(String organisation, String resourceName, String lang) {
+        StringJoiner joiner = new StringJoiner(" | ");
+        joiner.add(organisation);
+        if (!resourceName.isEmpty()) {
+            joiner.add(resourceName);
+        }
+        joiner.add(getAppName(lang));
+        return joiner.toString();
+    }
+
+    private static String buildParam(String param, String value) {
         try {
             return param + "=" + URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
@@ -333,19 +353,24 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String buildHeaderQuery(String lang) {
-        return buildQuery(getBreadcrumbsParams(lang), getAppNameParam(lang));
+        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam());
     }
 
-    private static String getAppNameParam(String lang) {
-        Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
-        String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
-        return getParam(PARAM_APP_NAME, visualizerTranslation);
+    private static String buildAppUrlParam() {
+        return buildParam(PARAM_APP_URL, getPortalBaseUrl());
     }
 
-    private static String getBreadcrumbsParams(String lang) {
+    private static String buildAppNameParam(String lang) {
+        return buildParam(PARAM_APP_NAME, getAppName(lang));
+    }
+
+    private static String getAppName(String lang) {
         Locale locale = LocaleUtil.getLocaleFromLocaleString(lang);
-        String visualizerTranslation = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
-        return getParam(PARAM_BREADCRUMBS, visualizerTranslation);
+        return LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_VISUALIZER, locale);
+    }
+
+    private static String buildBreadcrumbsParams(String lang) {
+        return buildParam(PARAM_BREADCRUMBS, getAppName(lang));
     }
 
 }

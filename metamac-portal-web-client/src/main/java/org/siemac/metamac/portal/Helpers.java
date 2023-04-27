@@ -2,6 +2,8 @@ package org.siemac.metamac.portal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +17,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import org.siemac.metamac.core.common.enume.domain.TypeExternalArtefactsEnum;
-import org.siemac.metamac.portal.core.constants.PortalConstants.ResourceType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.portal.dto.Chapter;
 import org.siemac.metamac.portal.dto.Collection;
@@ -41,10 +41,10 @@ import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriUtils;
 
 public class Helpers {
 
-    private static final String PATH_RELATIVE_DATA_PAGE                           = "data.html";
     public static final String  PARAMETER_RESOURCE_TYPE                           = "resourceType";
     public static final String  PARAMETER_RESOURCE_ID                             = "resourceId";
     public static final String  PARAMETER_AGENCY_ID                               = "agencyId";
@@ -53,6 +53,7 @@ public class Helpers {
     public static final String  PARAMETER_SHARED_VISUALIZER_URL                   = "sharedVisualizerUrl";
     public static final String  PARAMETER_MULTIDATASET_ID                         = "multidatasetId";
     public static final String  PARAMETER_LOCALE                                  = "locale";
+    public static final String  PARAMETER_TITLE                                   = "title";
 
     // Mainly intended for debug
     public static final String  PARAMETER_THEME                                   = "theme";
@@ -214,30 +215,32 @@ public class Helpers {
         return objectMapper.readValue(content, PermalinkContent.class);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) {
-        return buildUrl(permalink, sharedVisualizerUrl, null);
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) throws UnsupportedEncodingException {
+        return buildUrl(permalink, sharedVisualizerUrl, null, null);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale) {
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
 
         QueryParams queryParams = permalink.getContent().getQueryParams();
 
+        // Permalink url must be rebuild, because you must not store the visualizer url inside the permalink stored on db in case
+        // the baseUrl changes tomorrow.
         buildUrl(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
-                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale);
+                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title);
 
-        // Includes #
+        // Hash is the SPA route, for example #datasets/selection. Includes #
         stringBuilder.append(permalink.getContent().getHash());
         stringBuilder.append("/").append("permalink").append("/").append(permalink.getId());
 
         return stringBuilder.toString();
     }
 
-    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl) {
-        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null);
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl) throws UnsupportedEncodingException {
+        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null, null);
     }
 
-    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale) {
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
         MultidatasetTable table = (MultidatasetTable) multidataset.getData().getNodes().getNodes().get(0);
         Resource resource = table.getDataset() != null ? table.getDataset() : table.getQuery();
@@ -245,15 +248,17 @@ public class Helpers {
             return StringUtils.EMPTY;
         }
 
-        String[] tripleIdentifier = getTripleIdentifier(resource);
-
-        buildUrl(stringBuilder, resourceKindToResourceType(resource.getKind()), tripleIdentifier[0], tripleIdentifier[1], tripleIdentifier[2], null, multidatasetId, sharedVisualizerUrl, locale);
+        String baseUrl = resource.getVisualizerHtmlLink();
+        if (!StringUtils.isBlank(baseUrl)) {
+            stringBuilder.append(baseUrl);
+        }
+        buildUrl(stringBuilder, null, null, null, null, null, multidatasetId, sharedVisualizerUrl, locale, title);
 
         return stringBuilder.toString();
     }
 
     private static void buildUrl(StringBuilder stringBuilder, String resourceType, String agency, String identifier, String version, String indicatorSystem, String multidatasetId,
-            String sharedVisualizerUrl, String locale) {
+            String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         appendParameter(stringBuilder, PARAMETER_RESOURCE_TYPE, resourceType);
         appendParameter(stringBuilder, PARAMETER_AGENCY_ID, agency);
         appendParameter(stringBuilder, PARAMETER_RESOURCE_ID, identifier);
@@ -261,22 +266,10 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_INDICATOR_SYSTEM, indicatorSystem);
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
+        appendParameter(stringBuilder, PARAMETER_TITLE, UriUtils.encodeQueryParam(title, StandardCharsets.UTF_8.toString()));
         if (locale != null) {
             appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
         }
-    }
-
-    private static String resourceKindToResourceType(String kind) {
-        TypeExternalArtefactsEnum typeExternalArtefact = TypeExternalArtefactsEnum.fromValue(kind);
-        switch (typeExternalArtefact) {
-            case DATASET:
-                return ResourceType.DATASET.getName();
-            case QUERY:
-                return ResourceType.QUERY.getName();
-            default:
-                break;
-        }
-        return null;
     }
 
     private static org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0 getInternalJAXRSClient(String statisticalResourcesEndpoint) {
@@ -357,25 +350,8 @@ public class Helpers {
     }
 
     public static String tableViewUrl(Table table) {
-        StringBuilder builder = new StringBuilder();
-
         Resource resource = getResourceFromTable(table);
-
-        if (resource != null) {
-            String[] tripleIdentifier = getTripleIdentifier(resource);
-            if (table.getMultidataset() != null) {
-                appendParameter(builder, PARAMETER_MULTIDATASET_ID, tripleIdentifier[0] + ":" + tripleIdentifier[1]);
-            } else {
-                appendParameter(builder, PARAMETER_RESOURCE_TYPE, resourceKindToResourceType(resource.getKind()));
-                appendParameter(builder, PARAMETER_AGENCY_ID, tripleIdentifier[0]);
-                appendParameter(builder, PARAMETER_RESOURCE_ID, tripleIdentifier[1]);
-                appendParameter(builder, PARAMETER_VERSION, tripleIdentifier[2]);
-            }
-            builder.insert(0, PATH_RELATIVE_DATA_PAGE);
-        }
-        builder.append("#");
-
-        return builder.toString();
+        return resource.getVisualizerHtmlLink();
     }
 
     private static Resource getResourceFromTable(Table table) {
@@ -387,16 +363,10 @@ public class Helpers {
             resource = table.getQuery();
         } else if (table.getMultidataset() != null) {
             resource = table.getMultidataset();
+        } else if (table.getUrl() != null) {
+            resource = table.getUrl();
         }
         return resource;
-    }
-
-    private static String[] getTripleIdentifier(Resource resource) {
-        if (resource != null) {
-            return PortalUtils.splitUrnStructure(resource.getUrn());
-        } else {
-            return new String[]{null, null, null};
-        }
     }
 
     private static void appendParameter(StringBuilder builder, String key, String value) {

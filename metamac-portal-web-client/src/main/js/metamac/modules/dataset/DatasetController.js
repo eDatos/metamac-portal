@@ -43,7 +43,7 @@
             this.router.navigate(link);
 
             var self = this;
-            var datasetIdentifier = _.pick(options, "type", "agency", "identifier", "version", "permalinkId", "indicatorSystem", "geo", "multidatasetId");
+            var datasetIdentifier = _.pick(options, "type", "agency", "identifier", "version", "permalinkId", "indicatorSystem", "geo", "multidatasetId", "widgetTitle");
             if (this.visualizationView) {
                 this.visualizationView.showLoading();
             }
@@ -112,7 +112,7 @@
                 self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                 self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
 
-                self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata });
+                self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata, data: self.data });
                 
                 self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
 

@@ -31,7 +31,7 @@
             if(!errorMessage) {
                 var self = this;
                 this.createPermalink().then(function (permalink) {
-                    self.onSubmit(permalink);
+                    self.onSubmit(permalink, self.getExtraDataForSubmit());
                 });
             } else {
                 var errorEl = this.$("#permalink-config-error")[0];
@@ -150,6 +150,10 @@
 
             this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
         },
+
+        getExtraDataForSubmit: function () {
+            return {};
+        }
     });
 
 }());

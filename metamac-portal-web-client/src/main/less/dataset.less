@@ -234,6 +234,9 @@
                 &.active {
                     .options-bar-btn-side-active;
                 }
+                i {
+                    font-size: 24px;
+                }
             }    	    
         }
         position: absolute;
@@ -301,6 +304,11 @@
         }
     }
     &.dataset-visualization-type-column {
+        .dataset-visualization-visual-element {
+            padding-top: @dimensionsBarTypeColumn;
+        }
+    }
+    &.dataset-visualization-type-bar {
         .dataset-visualization-visual-element {
             padding-top: @dimensionsBarTypeColumn;
         }
@@ -419,6 +427,11 @@
     .icon-column;
 }
 
+.dataset-options-type-bar {
+    .dataset-options-type-icon;
+    .icon-bar;
+}
+
 .dataset-options-type-line {
     .dataset-options-type-icon;
     .icon-line;
@@ -446,7 +459,7 @@
 
 .options-filter {
     .dataset-options-type-icon;
-    .icon-cogwheel;
+    .icon-filter;
 }
 
 .dataset-options-share {
@@ -501,6 +514,10 @@
 
         &:first-child {
             margin-top: 0;
+        }
+
+        a.disabled {
+            color: @istacGreyLight;
         }
     }
 

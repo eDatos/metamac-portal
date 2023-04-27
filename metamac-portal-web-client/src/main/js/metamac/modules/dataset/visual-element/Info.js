@@ -18,6 +18,7 @@
         load: function () {
             this.getDimensions();
             this.getMeasureConcepts();
+            this.getMetadataFromRelatedDataset();
             this.getDatasetAttributes();
             this._getSelectionApiUrl();
             this._bindEvents();
@@ -35,7 +36,23 @@
             self.nonMeasureDimensions = _.filter(self.dimensions, function (dimension) { 
                 return dimension.type !== "MEASURE_DIMENSION"  && !self.filterDimensions.get(dimension.id).get('singleValue'); 
             });
+            self.dimensionLikeAttributes = _.chain(self.dimensions)
+                .filter(function (dimension) { 
+                    return self.filterDimensions.get(dimension.id).get('singleValue'); 
+                })
+                .map(function(dimension) {
+                    return {
+                        name: self.filterDimensions.get(dimension.id).get('label'),
+                        value: self.filterDimensions.get(dimension.id).get('representations').getSingleValue().get('label')
+                    }
+                })
+                .value();
             self.render();
+        },
+
+        updateMetadataFromRelatedDataset: function (datasetMetadata) {
+            this.metadataFromRelatedDataset = datasetMetadata;
+            this.render();
         },
 
         getDatasetAttributes: function () {
@@ -66,13 +83,26 @@
                     var parsedDimensions = _.map(self.dimensions, function (dimension) {
                         var dimensionConcept = _.findWhere(dimensionsConcepts, { id: dimension.conceptIdentity.id });
                         dimension.conceptIdentity = dimensionConcept;
-                        dimension.conceptName = App.i18n.localizeText(dimensionConcept.name);
+                        dimension.conceptName = App.DimensionsUtils.getDimensionLabel(dimensionConcept);
                         dimension.conceptDescription = App.i18n.localizeText(dimensionConcept.description);
                         return dimension;
                     });
                     self.updateDimensions(parsedDimensions);
                 });
             });
+        },
+
+        getMetadataFromRelatedDataset: function () {
+            if (this._isQuery()) {
+                var datasourceIdentifier = App.datasource.DatasourceIdentifier.initializeWithUrn(this.data.metadata.metadata.relatedDataset.urn);
+                var relatedDatasetMetadataRequest = new App.datasource.MetadataRequest(datasourceIdentifier);
+
+                var self = this;
+                relatedDatasetMetadataRequest.fetch(function () {
+                    var datasetMetadata = relatedDatasetMetadataRequest.getMetadataResponse();
+                    self.updateMetadataFromRelatedDataset(datasetMetadata);
+                });
+            }
         },
 
         getMeasureConcepts: function () {
@@ -105,16 +135,33 @@
             this.stopListening();
         },
 
+        updatingDimensionPositions: function () {
+            this._applyVisualizationRestrictions();
+            this.resetDimensionsLimits();
+        },
+
+        // This method must be the same as the one from the table to be able to download the data info in a coherent way with the table visualization
+        _applyVisualizationRestrictions: function () {
+            if (this._mustApplyVisualizationRestrictions()) {
+                this._forceDimensionsByMetadataInfo();                
+                this._moveAllSingleValueDimensionsToZone('fixed');
+            }
+
+            this._updateMustApplyVisualizationRestrictions();
+        },
+
         render: function () {
             if (!this.$el) { return; }
 
             var context = {
-                metadata: this.data.metadata.toJSON(),
+                metadata: this._getMetadata(),
                 datasetAttributes: this.datasetAttributes,
+                dimensionLikeAttributes: this.dimensionLikeAttributes,
+                hasAttributesOrLikeAttributes: this.datasetAttributes || this.dimensionLikeAttributes,
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,
-                rightsHolder: this.showRightsHolderText() ? this.getRightsHolderText() : ''
+                rightsHolder: this._getContextRightsHolder()
             };
 
             this.$el.html(this.template(context));
@@ -132,6 +179,38 @@
             scrollGroup.perfectScrollbar('update');
         },
 
+        _getMetadata: function () {
+            var metadata = this.data.metadata.toJSON();
+            if (this._isQuery() && this.metadataFromRelatedDataset) {
+                var formattedMetadataFromRelatedDataset = this.metadataFromRelatedDataset.toJSON();
+                _.extend(metadata, _.pick(formattedMetadataFromRelatedDataset, 'subjectAreas', 'statisticOfficiality', 'dataProviders', 'dataProviderAnnotations',
+                    'bibliographicCitation', 'rightsHolder', 'copyrightDate', 'license', 'accessRights', 'publishers', 'contributors', 'mediators'));
+                metadata.formatExtentObservations = this.data.observations.length;
+                metadata.hasDescriptors = !!metadata.subjectAreas || !!metadata.statisticalOperation || !!metadata.formatExtentObservations;
+                metadata.hasValidity = metadata.dates.validFrom || metadata.dates.validTo || metadata.statisticOfficiality;
+
+                if (this.data.metadata.metadata.type === "LATEST_DATA" || this.data.metadata.metadata.type === "AUTOINCREMENTAL") {
+                    _.extend(metadata, _.pick(formattedMetadataFromRelatedDataset, 'nextVersion', 'dateNextUpdate', 'updateFrequency'));
+                    metadata.hasVersionInfo = !!metadata.nextVersion || !!metadata.dateNextUpdate || !!metadata.updateFrequency;
+                } else {
+                    var versionProperties = ['version', 'versionRationale', 'keepAllData', 'replacesVersion', 'replaces', 'isReplacedByVersion', 'isReplacedBy', 'dateNextUpdate', 'updateFrequency'];
+                    versionProperties.forEach(function (versionPropertyKey) {
+                        metadata[versionPropertyKey] = undefined;
+                    });
+                    metadata.hasVersionInfo = !!metadata.nextVersion;
+                }
+            }
+
+            return metadata;
+        },
+
+        _getContextRightsHolder: function () {
+            if (this.showRightsHolderText()) {
+                return (this._isQuery() && this.metadataFromRelatedDataset) ? this.metadataFromRelatedDataset.getRightsHolder() : this.getRightsHolderText();
+            }
+            return '';
+        },
+
         _getDimensionsForApiUrl: function () {
             return _.map(this.filterDimensions.getDimensionsWithSomeRepresentationNotSelected(), function (dimension) {
                 var representations = _.map(dimension.get("representations").where({ selected: true}), function(representation) {
@@ -146,6 +225,10 @@
 
         _isIndicator: function () {
             return App.Constants.visualization.type.INDICATOR === this.data.metadata.identifier().type || App.Constants.visualization.type.INDICATOR_INSTANCE === this.data.metadata.identifier().type;
+        },
+
+        _isQuery: function () {
+            return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
         }
     });
 

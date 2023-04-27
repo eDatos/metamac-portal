@@ -5,7 +5,7 @@
 
     var DRAGOVER_CLASS = "drag-over";
 
-    // TODO: Can we have a common View for for this and OrderSidebarView?
+    // IDEA: Can we have a common View for for this and OrderSidebarView?
     App.modules.dataset.DimensionsView = Backbone.View.extend({
 
         template: App.templateManager.get('dataset/dataset-dimensions'),
@@ -55,6 +55,40 @@
                     },
                     top: {
                         icon: "column",
+                        draggable: true,
+                        location: "right",
+                        showHeader: true,
+                        width: "calc(100% - 225px)",
+                        sortable: true
+                    },
+                    fixed: {
+                        icon: "lock",
+                        draggable: true,
+                        location: "right",
+                        showHeader: true
+                    }
+                }
+            },
+            bar: {
+                zones: {
+                    axisy: {
+                        icon: "axis-x",
+                        draggable: false,
+                        location: "left",
+                        showHeader: true,
+                        showSingleValue: true,
+                        assignedAttributeTypes: ["MEASURE"]
+                    },
+                    left: {
+                        icon: "axis-y",
+                        draggable: true,
+                        location: "right",
+                        showHeader: true,
+                        width: "225px",
+                        sortable: true
+                    },
+                    top: {
+                        icon: "bar",
                         draggable: true,
                         location: "right",
                         showHeader: true,
@@ -465,7 +499,7 @@
             return _(uniqueLevels).map(function (level) {
                 return {
                     level: level.toString(),
-                    label: I18n.t('filter.selector.level', { level: (level + 1) })
+                    label: I18n.t('filter.selector.level.template', { level: (level + 1) })
                 };
             });
         },

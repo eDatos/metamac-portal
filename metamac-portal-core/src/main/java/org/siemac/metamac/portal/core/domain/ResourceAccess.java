@@ -50,7 +50,7 @@ public class ResourceAccess {
     private DatasetSelection                              datasetSelection;
 
     private String                                        lang;
-    private String                                        langAlternative;
+    private String                                        langDefault;
 
     private Data                                          data;
     private Dimensions                                    dimensions;
@@ -68,7 +68,8 @@ public class ResourceAccess {
     private List<Dimension>                               dimensionsMetadata;
     private Map<String, Dimension>                        dimensionsMetadataMap;
     private Dimension                                     measureDimension;
-    private Map<String, String>                           dimensionLabels;
+    private Map<String, String>                           dimensionLabelsCurrentLocale;
+    private Map<String, String>                           dimensionLabelsDefaultLocale;
     private Map<String, Map<String, String>>              dimensionsValuesCurrentLocaleLabels;
     private Map<String, Map<String, InternationalString>> dimensionsValuesLabels;
     private Map<String, LabelVisualisationModeEnum>       dimensionsLabelVisualisationMode;
@@ -147,9 +148,9 @@ public class ResourceAccess {
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
     }
 
-    private void initialize(Data data, Dimensions dimensions, Attributes attributes, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+    private void initialize(Data data, Dimensions dimensions, Attributes attributes, DatasetSelection datasetSelection, String lang, String langDefault) throws MetamacException {
         this.lang = lang;
-        this.langAlternative = langAlternative;
+        this.langDefault = langDefault;
 
         initializeDimensions(dimensions, datasetSelection);
         initializeAttributes(data, attributes, datasetSelection);
@@ -211,12 +212,8 @@ public class ResourceAccess {
         return lang;
     }
 
-    public String getLangAlternative() {
-        return langAlternative;
-    }
-
-    public String getLangEffective() {
-        return lang != null ? lang : langAlternative;
+    public String getLangDefault() {
+        return langDefault;
     }
 
     public List<Dimension> getDimensionsMetadata() {
@@ -243,8 +240,12 @@ public class ResourceAccess {
         return measureDimension;
     }
 
-    public String getDimensionLabel(String dimensionId) {
-        return dimensionLabels.get(dimensionId);
+    public String getDimensionLabelCurrentLocale(String dimensionId) {
+        return dimensionLabelsCurrentLocale.get(dimensionId);
+    }
+
+    public String getDimensionLabelDefaultLocale(String dimensionId) {
+        return dimensionLabelsDefaultLocale.get(dimensionId);
     }
 
     public String getDimensionValueLabelCurrentLocale(String dimensionId, String dimensionValueId) {
@@ -322,16 +323,18 @@ public class ResourceAccess {
         Map<String, LabelVisualisationModeEnum> labelVisualisationsMode = new HashMap<String, LabelVisualisationModeEnum>(dimensionsMetadata.size());
         Map<String, Map<String, String>> dimensionsValuesCurrentLocaleLabels = new HashMap<String, Map<String, String>>(dimensionsMetadata.size());
         Map<String, Map<String, InternationalString>> dimensionsValuesLabels = new HashMap<String, Map<String, InternationalString>>(dimensionsMetadata.size());
-        Map<String, String> dimensionsLabels = new HashMap<String, String>(dimensionsMetadata.size());
+        Map<String, String> dimensionsLabelsCurrentLocale = new HashMap<String, String>(dimensionsMetadata.size());
+        Map<String, String> dimensionsLabelsDefaultLocale = new HashMap<String, String>(dimensionsMetadata.size());
 
         for (Dimension dimension : dimensionsMetadata) {
             String dimensionId = dimension.getId();
 
             dimensionsMetadataMap.put(dimensionId, dimension);
             labelVisualisationsMode.put(dimensionId, buildMapDimensionToMapDimensionsLabelVisualisationMode(datasetSelection, dimension));
-            dimensionsValuesCurrentLocaleLabels.put(dimension.getId(), buildMapDimensionsValuesLabels(dimension, lang, langAlternative));
+            dimensionsValuesCurrentLocaleLabels.put(dimension.getId(), buildMapDimensionsValuesLabels(dimension, lang, langDefault));
             dimensionsValuesLabels.put(dimension.getId(), buildMapDimensionsValuesLocalisedLabels(dimension));
-            dimensionsLabels.put(dimensionId, buildMapDimensionLabel(dimension, lang, langAlternative));
+            dimensionsLabelsCurrentLocale.put(dimensionId, buildMapDimensionLabel(dimension, lang, langDefault));
+            dimensionsLabelsDefaultLocale.put(dimensionId, buildMapDimensionLabel(dimension, langDefault, langDefault));
 
             if (DimensionType.MEASURE_DIMENSION.equals(dimension.getType())) {
                 measureDimension = dimension;
@@ -342,7 +345,8 @@ public class ResourceAccess {
         dimensionsLabelVisualisationMode = labelVisualisationsMode;
         this.dimensionsValuesCurrentLocaleLabels = dimensionsValuesCurrentLocaleLabels;
         this.dimensionsValuesLabels = dimensionsValuesLabels;
-        dimensionLabels = dimensionsLabels;
+        dimensionLabelsCurrentLocale = dimensionsLabelsCurrentLocale;
+        dimensionLabelsDefaultLocale = dimensionsLabelsDefaultLocale;
     }
 
     /**
@@ -385,9 +389,9 @@ public class ResourceAccess {
 
         this.attributesMetadataMap = attributesMetadataMap;
         attributesLabelVisualisationMode = buildMapAttributesLabelVisualisationMode(datasetSelection, attributesMetadata);
-        attributesValuesCurrentLocaleLabels = buildMapAttributesValuesLabels(attributesMetadata, lang, langAlternative);
+        attributesValuesCurrentLocaleLabels = buildMapAttributesValuesLabels(attributesMetadata, lang, langDefault);
         attributesValuesLabels = buildMapAttributesValuesLocalisedLabels(attributesMetadata);
-        attributesLabels = buildMapAttributesLabels(attributesMetadata, lang, langAlternative);
+        attributesLabels = buildMapAttributesLabels(attributesMetadata, lang, langDefault);
     }
 
     private int calculateNonEmptyCount(String[] strings) {
@@ -545,14 +549,14 @@ public class ResourceAccess {
                 resultText = dimensionId;
                 break;
             case LABEL: {
-                String dimensionValueLabel = getDimensionLabel(dimensionId);
+                String dimensionValueLabel = getDimensionLabelCurrentLocale(dimensionId);
                 if (dimensionValueLabel != null) {
                     resultText = dimensionValueLabel;
                 }
             }
                 break;
             case CODE_AND_LABEL: {
-                String dimensionValueLabel = getDimensionLabel(dimensionId);
+                String dimensionValueLabel = getDimensionLabelCurrentLocale(dimensionId);
                 if (dimensionValueLabel != null) {
                     resultText = dimensionValueLabel + " (" + dimensionId + ")";
                 }

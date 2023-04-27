@@ -78,6 +78,10 @@
                     begin : 20,
                     end : 20
                 },
+                bars : {
+                    begin : 20,
+                    end : 20
+                },
                 lines : {
                     begin : 20,
                     end : 20
@@ -190,6 +194,7 @@
                 (zone === "map") ||
                 (zone === "horizontal") ||
                 (zone === "columns") ||
+                (zone === "bars") ||
                 (zone === "lines") ||
                 (zone === "top") ||
                 (zone === "fixed") ||

@@ -30,7 +30,6 @@ module.exports = (grunt) ->
                 # paths.lib + "/polyfills/es5-shim.js"
                 paths.lib + "/polyfills/addEventListener-polyfill.js"
                 paths.lib + "/polyfills/console-shim.js"
-                paths.lib + "/CFInstall.min.js"
 
                 # External libs
                 paths.lib + "/jquery-1.9.0.js"
@@ -126,6 +125,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/utils/DimensionsUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/QueryParamsUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/TemporalUtils.js"
+                paths.js + "/metamac/modules/dataset/utils/InternationalizationUtils.js"
 
                 # data
                 paths.js + "/metamac/modules/dataset/model/StructuralResourcesApi.js"
@@ -144,6 +144,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/components/modal/ModalView.js"
                 paths.js + "/metamac/components/modal/ConfirmationModalView.js"
                 paths.js + "/metamac/components/modal/PermalinkConfigModalView.js"
+                paths.js + "/metamac/components/modal/EmbedConfigModalView.js"
                 paths.js + "/metamac/components/modal/InformationModalView.js"
 
                 # filters
@@ -172,8 +173,10 @@ module.exports = (grunt) ->
 
                 # visual elements
                 paths.js + "/metamac/modules/dataset/visual-element/Base.js"
+                paths.js + "/metamac/modules/dataset/visual-element/RectangularBars.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Info.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Column.js"
+                paths.js + "/metamac/modules/dataset/visual-element/Bar.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Line.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Table.js"
                 paths.js + "/metamac/modules/dataset/visual-element/line/DetailZoomModel.js"
