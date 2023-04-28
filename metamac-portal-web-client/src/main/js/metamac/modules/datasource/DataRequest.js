@@ -34,7 +34,6 @@
         },
 
         getDataResponse: function(metadata, filterDimensions) {
-            console.log('entra en getDataResponse')
             return new App.datasource.model.DataResponse(this.response, metadata, this.helper, filterDimensions);
         }
 
