@@ -6,4 +6,8 @@ public class ServiceExceptionType extends CommonServiceExceptionType {
 
     public static final CommonServiceExceptionType PERMALINK_NOT_FOUND = create("exception.portal.permalink.not_found");
     public static final CommonServiceExceptionType DATASET_NO_DATA = create("exception.portal.empty_data");
+    public static final CommonServiceExceptionType DATASET_NO_FOUND = create("exception.portal.dataset.not_found");
+    public static final CommonServiceExceptionType COLLECTION_NO_FOUND = create("exception.portal.collection.not_found");
+    public static final CommonServiceExceptionType QUERY_NO_FOUND = create("exception.portal.query.not_found");
+    public static final CommonServiceExceptionType MULTIDATASET_NO_FOUND = create("exception.portal.multidataset.not_found");
 }

@@ -396,6 +396,9 @@ I18n.translations.ca = {
         resources: {
             dataset: {
                 empty_data: "El dataset no té dades"
+            },
+            indicators: {
+                no_representations: "La dimensió {0} no té representacions"
             }
         },
         statistical_resources: {

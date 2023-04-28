@@ -17,12 +17,24 @@
         fetch: function (callback) {
             var self = this;
             $.ajax({
-                url: self._url(),
-                dataType: 'jsonp',
-                jsonp: "_callback"
+                url: self._url()
             }).success(function (response) {
                 self.response = response;
-                callback(null, "done")
+                var allHaveRepresentation = true;
+                var dimensionWithoutRepresentation = '';
+                for (var dimension in self.response.dimension) {
+                    if (!dimension.representation) {
+                        allHaveRepresentation = false;
+                        dimensionWithoutRepresentation = dimension;
+                    }
+                }
+                if (allHaveRepresentation) {
+                    callback(null, "done");
+                } else {
+                    var error = I18n.t('exception.resources.indicators.no_representations');
+                    callback(error.replace("{0}", dimensionWithoutRepresentation), null);
+                }
+            }). error(function(response) {
             });
         },
 

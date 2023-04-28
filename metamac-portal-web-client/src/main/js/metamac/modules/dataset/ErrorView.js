@@ -7,13 +7,12 @@
         template: App.templateManager.get('dataset/dataset-error'),
 
         initialize: function (options) {
-            this.errorsJson = JSON.parse(options.errors);
-            this.emptyError = I18n.t(this.errorsJson.code);
+            this.error = options.error;
         },
         
         render: function () {
             var context = {
-                emptyError: this.emptyError 
+                errorText: this.error 
             }
             this.$el.html(this.template(context));
             return this;

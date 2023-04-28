@@ -23,7 +23,9 @@
                 callback(null, "done")
             }).error(function (response) {
                 self.response = response;
-                callback(response.responseText, response.responseText);
+                var errorsJson = JSON.parse(response.responseText);
+                var error = I18n.t(errorsJson.code);
+                callback(error, null);
             });
         },
 
@@ -32,6 +34,7 @@
         },
 
         getDataResponse: function(metadata, filterDimensions) {
+            console.log('entra en getDataResponse')
             return new App.datasource.model.DataResponse(this.response, metadata, this.helper, filterDimensions);
         }
 

@@ -6,8 +6,10 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
@@ -19,6 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.utils.TranslateExceptions;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.portal.dto.Chapter;
@@ -68,7 +71,7 @@ public class Helpers {
 
     private static final Logger LOGGGER                                           = LoggerFactory.getLogger(Helpers.class);
 
-    private String              language;
+    private static String              language;
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
@@ -86,7 +89,7 @@ public class Helpers {
         return packageInfo.getImplementationVersion();
     }
 
-    public static Collection getCollection(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) {
+    public static Collection getCollection(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
         Collection collection = null;
         Collection2DtoMapper collection2DtoMapper = new Collection2DtoMapper();
         try {
@@ -102,11 +105,16 @@ public class Helpers {
 
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo la Colección", e);
+            getExceptionDataset(e, agencyId, resourceId, "");
+        }
+        if (collection == null || collection.getData() == null || collection.getData().getNodes() == null) {
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.COLLECTION_NO_FOUND, resourceId, agencyId));
         }
         return collection;
     }
 
-    public static Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) throws Exception {
+    public static Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) throws Throwable {
         Dataset dataset = null;
         Dataset2DtoMapper dataset2DtoMapper = new Dataset2DtoMapper();
         try {
@@ -125,22 +133,30 @@ public class Helpers {
 
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Dataset", e);
-            MetamacException exception = getException(e, resourceId);
-            if (exception != null) {
-                throw exception;
-            }
+            getExceptionDataset(e, agencyId, resourceId, version);
         }
         return dataset;
     }
 
-    private static MetamacException getException(Exception e, String resourceId) {
+    private static void getExceptionDataset(Exception e, String agencyId, String resourceId, String version) throws Throwable  {
         if (e.getMessage().contains("exception.resources.dataset.empty_data")) {
-            return new MetamacException(ServiceExceptionType.DATASET_NO_DATA, resourceId);
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.DATASET_NO_DATA, resourceId));
+        } else if (e.getMessage().contains("exception.statistical_resources.dataset.not_found")) {
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.DATASET_NO_FOUND, resourceId, version, agencyId));
+        } else if (e.getMessage().contains("exception.statistical_resources.query.not_found")) {
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.QUERY_NO_FOUND, resourceId, agencyId));
+        } else if (e.getMessage().contains("exception.statistical_resources.collection.not_found")) {
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.COLLECTION_NO_FOUND, resourceId, agencyId));
+        } else if (e.getMessage().contains(ServiceExceptionType.MULTIDATASET_NO_FOUND.getCode())) {
+            throw e;
         }
-        return null;
     }
 
-    public static Query getQuery(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) {
+    public static Query getQuery(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
         Query query = null;
         Query2DtoMapper query2DtoMapper = new Query2DtoMapper();
         try {
@@ -161,11 +177,12 @@ public class Helpers {
 
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Query", e);
+            getExceptionDataset(e, agencyId, resourceId, "");
         }
         return query;
     }
 
-    public static Multidataset getMultidataset(String apiUrlStatisticalResources, Boolean internalPortal, String multidatasetId) {
+    public static Multidataset getMultidataset(String apiUrlStatisticalResources, Boolean internalPortal, String multidatasetId) throws Throwable {
         Multidataset multidataset = null;
         Multidataset2DtoMapper multidataset2DtoMapper = new Multidataset2DtoMapper();
         try {
@@ -180,9 +197,13 @@ public class Helpers {
             } else {
                 multidataset = multidataset2DtoMapper.multidatasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             }
-
+            if (multidataset == null || multidataset.getData() == null || multidataset.getData().getNodes() == null) {
+                Locale locale = LocaleUtils.toLocale(language);
+                throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.MULTIDATASET_NO_FOUND, resourceId, agencyId));
+            }
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo la Colección", e);
+            getExceptionDataset(e, "", multidatasetId, "");
         }
         return multidataset;
     }

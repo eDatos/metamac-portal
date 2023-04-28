@@ -108,8 +108,9 @@
 
             var self = this;
             async.parallel(loads, function (err, result) {
-                if (result.data != 'done') {
-                    self.errorView = new App.modules.dataset.ErrorView({ errors : result.data });
+                if (err) {
+                    
+                    self.errorView = new App.modules.dataset.ErrorView({ error : err });
                     self.region.show(self.errorView);
                     return deferred.promise();
                 }
