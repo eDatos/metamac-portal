@@ -13,7 +13,7 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     data: filter.toString(),
-                    beforeSend: Edatos.UserManagement.prepareAuthorizationAndXSRFHeaders,
+                    beforeSend: Edatos.UserManagement.prepareRequestToExternalUserAuthenticatedEndpoint,
                     xhrFields: {
                         withCredentials: true
                     },
@@ -30,7 +30,7 @@
                 $.ajax({
                     url: App.endpoints["external-users"] + '/api/filters/last-access/' + permalinkId,
                     method: "PUT",
-                    beforeSend: Edatos.UserManagement.prepareAuthorizationAndXSRFHeaders,
+                    beforeSend: Edatos.UserManagement.prepareRequestToExternalUserAuthenticatedEndpoint,
                     xhrFields: {
                         withCredentials: true
                     },

@@ -50,7 +50,7 @@
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({content: content}),
-                        beforeSend: Edatos.UserManagement.prepareAuthorizationAndXSRFHeaders
+                        beforeSend: Edatos.UserManagement.prepareRequestWithEdatosUserAuthentication
                     }).fail(function (jqXHR) {
                         reject(jqXHR)
                     }).done(function (val) {
