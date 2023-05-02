@@ -12,28 +12,28 @@
             selected: false
         },
 
-        parse: function (response, options) {
+        parse: function (node, options) {
             var attributes = {};
             var multidatasetIdentifier = options.multidatasetIdentifier;
             var resourceIdentifier = options.resourceIdentifier;
 
-            attributes.name = App.i18n.localizeText(response.name);
-            attributes.description = response.description ? App.i18n.localizeText(response.description) : attributes.name;
+            attributes.name = App.i18n.localizeText(node.name);
+            attributes.description = node.description ? App.i18n.localizeText(node.description) : attributes.name;        
 
-            if (response.query) {
+            if (node.query) {
                 attributes.type = 'query';
-                var urn = response.query.urn;
-                var queryIdentifier = _.last(urn.split('='));
+                attributes.urn = node.query.urn;
+                var queryIdentifier = _.last(attributes.urn.split('='));
                 var urlPartMatches = queryIdentifier.match(/(.*):(.*)/);
                 attributes.agency = urlPartMatches[1];
                 attributes.identifier = urlPartMatches[2];
                 attributes.url = "?agencyId=" + attributes.agency + "&resourceId=" + attributes.identifier + "&resourceType=" + attributes.type;
             }
 
-            if (response.dataset) {
+            if (node.dataset) {
                 attributes.type = 'dataset';
-                var urn = response.dataset.urn;
-                var datasetIdentifier = _.last(urn.split('='));
+                attributes.urn = node.dataset.urn;
+                var datasetIdentifier = _.last(attributes.urn.split('='));
                 var urlPartMatches = datasetIdentifier.match(/(.*):(.*)\(([^\)]*?)\)/);
                 attributes.agency = urlPartMatches[1];
                 attributes.identifier = urlPartMatches[2];
@@ -43,11 +43,11 @@
 
             attributes.url += "&multidatasetId=" + multidatasetIdentifier + window.location.hash;
 
-            if (response.nodes) {
-                this.nodes = App.modules.multidataset.MultidatasetNode.parseNodes(response.nodes);
+            if (node.nodes) {
+                this.nodes = App.modules.multidataset.MultidatasetNode.parseNodes(node.nodes);
             }
 
-            attributes.selected = App.modules.multidataset.MultidatasetNode.areSameResource(resourceIdentifier, attributes);
+            attributes.selected = resourceIdentifier.urn === attributes.urn;
 
             return attributes;
         }
@@ -62,12 +62,7 @@
                     });
                 });
                 return new Backbone.Collection(models);
-            },
-
-            areSameResource: function (resourceIdentifier, attributes) {
-                return resourceIdentifier.agency === attributes.agency && resourceIdentifier.identifier === attributes.identifier && ((!resourceIdentifier.version && !attributes.version) || (resourceIdentifier.version == attributes.version));
             }
-
         });
 
 }());
