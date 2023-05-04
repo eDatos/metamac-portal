@@ -35,6 +35,10 @@
                     callback(error.replace("{0}", dimensionWithoutRepresentation), null);
                 }
             }). error(function(response) {
+                self.response = response;
+                var errorsJson = JSON.parse(response.responseText);
+                var error = I18n.t(errorsJson.code);
+                callback(error, null);
             });
         },
 
