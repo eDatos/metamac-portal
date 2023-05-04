@@ -71,4 +71,20 @@ public class Table extends CollectionNode {
         this.url = url;
     }
 
+    public Resource getResource() {
+        Resource resource = null;
+
+        if (getDataset() != null) {
+            resource = getDataset();
+        } else if (getQuery() != null) {
+            resource = getQuery();
+        } else if (getMultidataset() != null) {
+            resource = getMultidataset();
+        } else if (getUrl() != null) {
+            resource = getUrl();
+        }
+
+        return resource;
+    }
+
 }
