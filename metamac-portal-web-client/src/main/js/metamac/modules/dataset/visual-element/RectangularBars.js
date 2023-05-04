@@ -152,7 +152,12 @@
                     var name = self.data.getStringData({ ids: currentPermutation });
                     // Instead of saving the data as an array on the same serie, we create as many series as needed so we can sort them independtly
                     // `undefined` is returned in case colors object is empty, so default values are used instead
-                    serie.data = [{ y: y, name: name, x: horizontalCategoryIndex, color: self.data.colors[horizontalCategory.get('urn')] }];
+                    serie.data = [{ y: y, name: name, x: horizontalCategoryIndex }];
+                    if (columnsDimensionSelectedCategories.length === 1) {
+                        serie.data[0].color = self.data.colors[horizontalCategory.get('urn')]
+                    } else {
+                        serie.data[0].color = self.data.colors[columnCategory.get('urn')]
+                    }
                     serie.name = columnCategory.get('visibleLabel');
 
                     // We keep track on the categories assigned to each serie, so later we can assign the proper x (order) and column color
@@ -186,7 +191,7 @@
 
                     // Instead of checking if we are working with nested columns or not, we simply store the last order.
                     // In the case of not nested columns, the x axis will be sorted properly
-                    horizontalAxisCategories[horizontalCategoryIndex] = { horizontalCategoryIndex: horizontalCategoryIndex, order: order };                    
+                    horizontalAxisCategories[horizontalCategoryIndex] = { horizontalCategoryIndex: horizontalCategoryIndex, order: order };
 
                     columnSeries.push(serie);
                 });
@@ -242,7 +247,15 @@
                 // We decide the colors the first time we get the value, because that will be the same value they will use on the legend
                 if (!columnAxisCategories[serie.columnCategory]) {
                     var totalColors = Highcharts.getOptions().colors.length;
-                    columnAxisCategories[serie.columnCategory] = Highcharts.getOptions().colors[index % totalColors];
+                    if (serie.data[0].color) {
+                        columnAxisCategories[serie.columnCategory] = serie.data[0].color;
+                    } else {
+                        columnAxisCategories[serie.columnCategory] = Highcharts.getOptions().colors[index % totalColors];
+                    }
+                    serie.color = columnAxisCategories[serie.columnCategory];
+                    if (columnsDimensionSelectedCategories.length === 1) {
+                        serie.showInLegend = false;
+                    }
                 } else { // Else, we don´t have to show the label on the legend
                     serie.showInLegend = false;
                     serie.dataLabels = {
