@@ -13,6 +13,8 @@ import org.apache.commons.lang.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
+import org.apache.cxf.jaxrs.client.WebClient;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -21,6 +23,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.TranslateExceptions;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
@@ -103,9 +106,10 @@ public class Helpers {
                 collection = collection2DtoMapper.collectionExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));
             }
 
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, agencyId, resourceId, null);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo la Colección", e);
-            getExceptionDataset(e, agencyId, resourceId, "");
         }
         if (collection == null || collection.getData() == null || collection.getData().getNodes() == null) {
             Locale locale = LocaleUtils.toLocale(language);
@@ -131,28 +135,37 @@ public class Helpers {
                 dataset = dataset2DtoMapper.datasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null));
             }
 
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, agencyId, resourceId, version);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Dataset", e);
-            getExceptionDataset(e, agencyId, resourceId, version);
         }
         return dataset;
     }
 
-    private static void getExceptionDataset(Exception e, String agencyId, String resourceId, String version) throws Throwable  {
-        if (e.getMessage().contains("exception.resources.dataset.empty_data")) {
+    private static Throwable getExceptionDataset(ServerWebApplicationException e, String apiUrlStatisticalResources, String agencyId, String resourceId, String version) {
+        try {
+            LOGGGER.error(e.getMessage(), e);
             Locale locale = LocaleUtils.toLocale(language);
-            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.DATASET_NO_DATA, resourceId));
-        } else if (e.getMessage().contains("exception.statistical_resources.dataset.not_found")) {
-            Locale locale = LocaleUtils.toLocale(language);
-            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.DATASET_NO_FOUND, resourceId, version, agencyId));
-        } else if (e.getMessage().contains("exception.statistical_resources.query.not_found")) {
-            Locale locale = LocaleUtils.toLocale(language);
-            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.QUERY_NO_FOUND, resourceId, agencyId));
-        } else if (e.getMessage().contains("exception.statistical_resources.collection.not_found")) {
-            Locale locale = LocaleUtils.toLocale(language);
-            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.COLLECTION_NO_FOUND, resourceId, agencyId));
-        } else if (e.getMessage().contains(ServiceExceptionType.MULTIDATASET_NO_FOUND.getCode())) {
-            throw e;
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = e.toErrorObject(WebClient.client(
+                    Helpers.getInternalJAXRSClient(apiUrlStatisticalResources)),
+                    org.siemac.metamac.rest.common.v1_0.domain.Exception.class);
+            CommonServiceExceptionType serviceExceptionType = ServiceExceptionType.lookup(exception.getCode());
+            Throwable throwable = null;
+            if (agencyId == null && version == null) {
+                 throwable = new TranslateExceptions().translateException(locale,
+                        new MetamacException(serviceExceptionType, resourceId));
+            } else if (version == null) {
+                throwable = new TranslateExceptions().translateException(locale,
+                        new MetamacException(serviceExceptionType, resourceId, agencyId));
+            } else {
+                throwable = new TranslateExceptions().translateException(locale,
+                        new MetamacException(serviceExceptionType, resourceId, agencyId, version)); 
+            }
+            return throwable;
+        } catch (Exception ex) {
+            LOGGGER.error(ex.getMessage(), ex);
+            throw ex;
         }
     }
 
@@ -175,9 +188,10 @@ public class Helpers {
                 query = query2DtoMapper.queryExternalToDto(statisticalResourcesQuery);
             }
 
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, agencyId, resourceId, null);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Query", e);
-            getExceptionDataset(e, agencyId, resourceId, "");
         }
         return query;
     }
@@ -201,9 +215,10 @@ public class Helpers {
                 Locale locale = LocaleUtils.toLocale(language);
                 throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.MULTIDATASET_NO_FOUND, resourceId, agencyId));
             }
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, null, multidatasetId, null);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo la Colección", e);
-            getExceptionDataset(e, "", multidatasetId, "");
         }
         return multidataset;
     }
