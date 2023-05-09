@@ -42,14 +42,16 @@ import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Contact;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Contact;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,12 +152,12 @@ public class ExcelExporter {
         }
 
         // Subject area
-        Resources subjectAreas = resourceAccess.getMetadata().getSubjectAreas();
+        ResourcesStatisticalResourceBase subjectAreas = resourceAccess.getMetadata().getSubjectAreas();
         StringBuilder valueName = new StringBuilder();
         if (subjectAreas != null) {
-            Iterator<Resource> iterator = subjectAreas.getResources().iterator();
+            Iterator<ResourceStatisticalResourceBase> iterator = subjectAreas.getResources().iterator();
             while (iterator.hasNext()) {
-                Resource subjectArea = iterator.next();
+                ResourceStatisticalResourceBase subjectArea = iterator.next();
                 valueName.append(PortalUtils.getLabel(subjectArea.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault()));
                 if (iterator.hasNext()) {
                     valueName.append("; ");

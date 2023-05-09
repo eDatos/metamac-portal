@@ -41,12 +41,12 @@ import org.siemac.metamac.portal.core.serviceapi.utils.QueryMockBuilder;
 import org.siemac.metamac.portal.core.serviceapi.utils.XMLUtils;
 import org.siemac.metamac.portal.core.serviceapi.validators.ExportServiceInvocationValidator;
 import org.siemac.metamac.portal.core.serviceimpl.ExportServiceImpl;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.ComponentType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Concept
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Quantity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;

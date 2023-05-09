@@ -24,7 +24,7 @@ public class Collection2DtoMapper {
         return target;
     }
 
-    public CollectionData collectionDataExternalToDto(org.siemac.metamac.rest.statistical_resources.v1_0.domain.CollectionData source) {
+    public CollectionData collectionDataExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionData source) {
         if (source == null) {
             return null;
         }
@@ -35,7 +35,7 @@ public class Collection2DtoMapper {
         return target;
     }
 
-    public CollectionNodes collectionNodesExternalToDto(org.siemac.metamac.rest.statistical_resources.v1_0.domain.CollectionNodes source) {
+    public CollectionNodes collectionNodesExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionNodes source) {
         if (source == null) {
             return null;
         }
@@ -48,29 +48,29 @@ public class Collection2DtoMapper {
         return target;
     }
 
-    public CollectionNode collectionNodeExternalToDto(org.siemac.metamac.rest.statistical_resources.v1_0.domain.CollectionNode source) {
+    public CollectionNode collectionNodeExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionNode source) {
         if (source == null) {
             return null;
         }
 
-        if (source instanceof org.siemac.metamac.rest.statistical_resources.v1_0.domain.Table) {
+        if (source instanceof org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) {
 
             Table target = new Table();
             target.setName(source.getName());
             target.setDescription(source.getDescription());
-            target.setDataset(((org.siemac.metamac.rest.statistical_resources.v1_0.domain.Table) source).getDataset());
-            target.setQuery(((org.siemac.metamac.rest.statistical_resources.v1_0.domain.Table) source).getQuery());
-            target.setMultidataset(((org.siemac.metamac.rest.statistical_resources.v1_0.domain.Table) source).getMultidataset());
-            target.setUrl(((org.siemac.metamac.rest.statistical_resources.v1_0.domain.Table) source).getUrl());
+            target.setDataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getDataset());
+            target.setQuery(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getQuery());
+            target.setMultidataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getMultidataset());
+            target.setUrl(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getUrl());
 
             return target;
 
-        } else if (source instanceof org.siemac.metamac.rest.statistical_resources.v1_0.domain.Chapter) {
+        } else if (source instanceof org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) {
 
             Chapter target = new Chapter();
             target.setName(source.getName());
             target.setDescription(source.getDescription());
-            target.setNodes(collectionNodesExternalToDto(((org.siemac.metamac.rest.statistical_resources.v1_0.domain.Chapter) source).getNodes()));
+            target.setNodes(collectionNodesExternalToDto(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) source).getNodes()));
 
             return target;
 
@@ -93,7 +93,7 @@ public class Collection2DtoMapper {
         return target;
     }
 
-    public CollectionData collectionDataInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.CollectionData source) {
+    public CollectionData collectionDataInternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionData source) {
         if (source == null) {
             return null;
         }
@@ -104,7 +104,7 @@ public class Collection2DtoMapper {
         return target;
     }
 
-    public CollectionNodes collectionNodesInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.CollectionNodes source) {
+    public CollectionNodes collectionNodesInternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionNodes source) {
         if (source == null) {
             return null;
         }
@@ -117,29 +117,29 @@ public class Collection2DtoMapper {
         return target;
     }
 
-    public CollectionNode collectionNodeInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.CollectionNode source) {
+    public CollectionNode collectionNodeInternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionNode source) {
         if (source == null) {
             return null;
         }
 
-        if (source instanceof org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Table) {
+        if (source instanceof org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) {
 
             Table target = new Table();
             target.setName(source.getName());
             target.setDescription(source.getDescription());
-            target.setDataset(((org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Table) source).getDataset());
-            target.setQuery(((org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Table) source).getQuery());
-            target.setMultidataset(((org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Table) source).getMultidataset());
-            target.setUrl(((org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Table) source).getUrl());
+            target.setDataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getDataset());
+            target.setQuery(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getQuery());
+            target.setMultidataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getMultidataset());
+            target.setUrl(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getUrl());
 
             return target;
 
-        } else if (source instanceof org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Chapter) {
+        } else if (source instanceof org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) {
 
             Chapter target = new Chapter();
             target.setName(source.getName());
             target.setDescription(source.getDescription());
-            target.setNodes(collectionNodesInternalToDto(((org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Chapter) source).getNodes()));
+            target.setNodes(collectionNodesInternalToDto(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) source).getNodes()));
 
             return target;
 
