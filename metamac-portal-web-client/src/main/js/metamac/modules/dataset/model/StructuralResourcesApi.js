@@ -154,7 +154,12 @@
                 if (measureConcept.length === 0) {
                     callback(null, []);
                 } else {
-                    this.getConceptsFromConceptSchemeUrl(this.getConceptSchemeUrlFromListOfConcepts(measureConcept), measureConcept, callback);
+                    const conceptSchemeUrlFromListOfConcepts = this.getConceptSchemeUrlFromListOfConcepts(measureConcept);
+                    if (conceptSchemeUrlFromListOfConcepts) {
+                        this.getConceptsFromConceptSchemeUrl(conceptSchemeUrlFromListOfConcepts, measureConcept, callback);
+                    } else {
+                        console.info("Could not obtain URL from measure concept", measureConcept);
+                    }
                 }
             }
         },
@@ -182,6 +187,9 @@
         },
 
         getConceptSchemeUrlFromListOfConcepts: function (conceptItems) {
+            if (!conceptItems[0].selfLink) {
+                return null;
+            }
             var conceptsUrl = new URL(conceptItems[0].selfLink.href);
             conceptsUrl.pathname = conceptsUrl.pathname.replace(/\/concepts\/[^\/]+\/*$/, '');
             return conceptsUrl.toString();
