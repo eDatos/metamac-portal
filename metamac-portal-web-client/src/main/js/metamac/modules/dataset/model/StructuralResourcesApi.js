@@ -142,7 +142,7 @@
                         measureConcept = measureAttribute.attributeValues.value;
                     }
                 }
-                if (!measureConcept && this.metadata.metadata.dimensions) {
+                if (!measureConcept && this.metadata.metadata.dimensions && this.metadata.metadataResponse.type === "query") {
                     var measureDimension = _.findWhere(this.metadata.metadata.dimensions.dimension, { type: "MEASURE_DIMENSION" });
                     if (measureDimension) {
                         measureConcept = measureDimension.dimensionValues.value;
