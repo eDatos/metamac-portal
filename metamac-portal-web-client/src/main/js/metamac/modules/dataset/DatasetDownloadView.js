@@ -25,7 +25,8 @@
 
         render: function () {
             var datasetSelection = this.getDatasetSelection();
-            const jsonStatUrl = this._getJsonStatUrl(datasetSelection);
+            const selection = this._getSelection(datasetSelection)
+            const jsonStatUrl = this._getJsonStatUrl();
 
             var context = {
                 selection: JSON.stringify(datasetSelection),
@@ -37,6 +38,7 @@
                     jsonstat: {
                         href: jsonStatUrl.toString(),
                         searchParams: [...jsonStatUrl.searchParams.entries()],
+                        selection
                     }
                 },
                 buttonConfig: this._getButtonConfiguration()
@@ -236,7 +238,15 @@
             return exportEndpoint;
         },
 
-        _getJsonStatUrl(datasetSelection) {
+        _getSelection: function (datasetSelection) {
+            const representations = [];
+            for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
+                representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
+            }
+            return ["representation", representations.join(":")];
+        },
+
+        _getJsonStatUrl() {
             var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
 
             var jsonStatUrl;
@@ -250,12 +260,6 @@
 
             var locale = I18n.locale;
             jsonStatUrl.searchParams.append('lang', locale);
-
-            const representations = [];
-            for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
-                representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
-            }
-            jsonStatUrl.searchParams.append("representation", representations.join(":"));
 
             return jsonStatUrl;
         },
