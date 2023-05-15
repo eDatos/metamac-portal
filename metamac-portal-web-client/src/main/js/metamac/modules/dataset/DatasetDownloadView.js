@@ -247,16 +247,25 @@
         },
 
         _getJsonStatUrl() {
-            var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+            let link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+            let isIndicator = this.filterDimensions.metadata.datasourceIdentifier.identifier.type === 'indicator';
 
-            var jsonStatUrl;
+            let jsonStatUrl;
+
             if (link.hasOwnProperty("href")) {
-                jsonStatUrl = new URL(link.href + ".jsonstat");
+                // dataset or query
+                jsonStatUrl = new URL(link.href);
             } else if (typeof link === 'string') {
-                jsonStatUrl = new URL(link + ".jsonstat");
+                // indicator
+                jsonStatUrl = new URL(link);
             } else {
                 return null;
             }
+
+            if (isIndicator) {
+                jsonStatUrl.href += "/data";
+            }
+            jsonStatUrl.href += ".jsonstat";
 
             var locale = I18n.locale;
             jsonStatUrl.searchParams.append('lang', locale);
