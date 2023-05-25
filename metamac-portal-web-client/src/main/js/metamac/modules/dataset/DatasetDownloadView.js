@@ -25,7 +25,8 @@
 
         render: function () {
             var datasetSelection = this.getDatasetSelection();
-            const jsonStatUrl = this._getJsonStatUrl(datasetSelection);
+            const selection = this._getSelection(datasetSelection)
+            const jsonStatUrl = this._getJsonStatUrl();
 
             var context = {
                 selection: JSON.stringify(datasetSelection),
@@ -37,6 +38,7 @@
                     jsonstat: {
                         href: jsonStatUrl.toString(),
                         searchParams: [...jsonStatUrl.searchParams.entries()],
+                        selection
                     }
                 },
                 buttonConfig: this._getButtonConfiguration()
@@ -236,26 +238,37 @@
             return exportEndpoint;
         },
 
-        _getJsonStatUrl(datasetSelection) {
-            var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
-
-            var jsonStatUrl;
-            if (link.hasOwnProperty("href")) {
-                jsonStatUrl = new URL(link.href + ".jsonstat");
-            } else if (typeof link === 'string') {
-                jsonStatUrl = new URL(link + ".jsonstat");
-            } else {
-                return null;
-            }
-
-            var locale = I18n.locale;
-            jsonStatUrl.searchParams.append('lang', locale);
-
+        _getSelection: function (datasetSelection) {
             const representations = [];
             for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
                 representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
             }
-            jsonStatUrl.searchParams.append("representation", representations.join(":"));
+            return ["representation", representations.join(":")];
+        },
+
+        _getJsonStatUrl() {
+            let link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+            let isIndicator = this.filterDimensions.metadata.datasourceIdentifier.identifier.type === 'indicator';
+
+            let jsonStatUrl;
+
+            if (link.hasOwnProperty("href")) {
+                // dataset or query
+                jsonStatUrl = new URL(link.href);
+            } else if (typeof link === 'string') {
+                // indicator
+                jsonStatUrl = new URL(link);
+            } else {
+                return null;
+            }
+
+            if (isIndicator) {
+                jsonStatUrl.href += "/data";
+            }
+            jsonStatUrl.href += ".jsonstat";
+
+            var locale = I18n.locale;
+            jsonStatUrl.searchParams.append('lang', locale);
 
             return jsonStatUrl;
         },
