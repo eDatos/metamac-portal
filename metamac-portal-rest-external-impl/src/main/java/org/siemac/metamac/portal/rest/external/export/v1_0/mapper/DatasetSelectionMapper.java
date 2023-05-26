@@ -25,13 +25,13 @@ import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.export.v1_0.domain.DimensionFilters;
 import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
 import org.siemac.metamac.rest.export.v1_0.domain.LabelVisualisationMode;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attributes;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentations;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataStructureDefinition;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentations;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentations;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentations;
 
 public class DatasetSelectionMapper {
 
