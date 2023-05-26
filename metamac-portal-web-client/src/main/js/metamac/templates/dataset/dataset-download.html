@@ -27,6 +27,7 @@
         {{#each url.jsonstat.searchParams}}
         <input type="hidden" name="{{this.[0]}}" value="{{this.[1]}}" />
         {{/each}}
+        <input type="hidden" name="{{url.jsonstat.selection.[0]}}" value="{{url.jsonstat.selection.[1]}}" />
          <a href="#" class="download-jsonstat"><i class="icon-data-jsonstat"></i></a>
     </form>
     {{/if}}
