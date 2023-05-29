@@ -24,11 +24,21 @@
 
         initialize: function () {
             this.optionsModel = this.options.optionsModel;
+            var optionsModel = this.optionsModel;
+            this.pageshowListener = function () {
+                optionsModel.set('isDownloading', false);
+            };
+            window.addEventListener("pageshow", this.pageshowListener);
+
             this.visualizationType = this.optionsModel.get('type');
             this.filterDimensions = this.options.filterDimensions;
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
-            this.datasetSelection = JSON.stringify(this.getDatasetSelection());
+
+            var datasetSelectionObject = this.getDatasetSelection();
+            this.datasetSelection = JSON.stringify(datasetSelectionObject);
+            this.jsonstatSelection = this._getSelection(datasetSelectionObject);
+
             this.svg = null;
             this.urls = {
                 xlsx: this._buildExportEndpoint('excel'),
@@ -131,6 +141,7 @@
                         excel: disableAnyFormat || disableSelectionExcel,
                         tsv: disableAnyFormat,
                         csv: disableAnyFormat,
+                        jsonstat: disableAnyFormat,
                         png: disableAnyFormat,
                         pdf: disableAnyFormat,
                         svg: disableAnyFormat,
@@ -241,9 +252,21 @@
                     this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type, "chart");
                     break;
                 case "jsonstat":
-                    this.downloadFile('GET', this.urls[type], null, "." + type);
+                    this.redirectToFile(this.urls[type], $currentTarget.hasClass('selection') ? { representation: this.jsonstatSelection } : null);
                     break;
             }
+        },
+
+        redirectToFile: function (url, requestParams) {
+            this.optionsModel.set('isDownloading', true);
+
+            var formattedUrl = new URL(url);
+            if (requestParams) {
+                _.each(Object.keys(requestParams), function (key) {
+                    formattedUrl.searchParams.append(key, requestParams[key]);
+                });
+            }
+            window.location.href = formattedUrl.href;
         },
 
         downloadFile: function (requestMethod, url, requestParams, suffixAndFileExtension, filenameCustomPrefix) {
@@ -342,7 +365,7 @@
             for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
                 representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
             }
-            return ["representation", representations.join(":")];
+            return representations.join(":");
         },
 
         _getJsonStatUrl() {

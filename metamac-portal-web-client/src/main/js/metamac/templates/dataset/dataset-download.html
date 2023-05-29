@@ -7,16 +7,8 @@
     <a href="#" class="download-xlsx selection {{#if buttonConfig.disableFormat.selection.excel}}disabled{{/if}}" ><i class="icon-data-xlsx"></i></a>
     <a href="#" class="download-tsv selection {{#if buttonConfig.disableFormat.selection.tsv}}disabled{{/if}}"><i class="icon-data-tsv"></i></a>
     <a href="#" class="download-csv selection {{#if buttonConfig.disableFormat.selection.csv}}disabled{{/if}}"><i class="icon-px"></i></a>
-    {{#if url.jsonstat}}
-    <form method="GET" action="{{url.jsonstat.href}}" target="_parent">
-        <!--GET on form actions requires hidden input elements for query parameters-->
-        <!--https://stackoverflow.com/questions/1116019/when-submitting-a-get-form-the-query-string-is-removed-from-the-action-url-->
-        {{#each url.jsonstat.searchParams}}
-        <input type="hidden" name="{{this.[0]}}" value="{{this.[1]}}" />
-        {{/each}}
-        <input type="hidden" name="{{url.jsonstat.selection.[0]}}" value="{{url.jsonstat.selection.[1]}}" />
-        <a href="#" class="download-jsonstat"><i class="icon-data-jsonstat"></i></a>
-    </form>
+    {{#if hasJsonstatUrl}}
+    <a href="#" class="download-jsonstat selection {{#if buttonConfig.disableFormat.selection.jsonstat}}disabled{{/if}}"><i class="icon-data-jsonstat"></i></a>
     {{/if}}
     {{/if}}
 
