@@ -91,7 +91,8 @@ public class ResourceAccess {
     private Dataset                                       dataset;
 
     private final Map<String, Integer>                    multipliers                   = new HashMap<String, Integer>();
-    private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
+    private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
+    private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>();   // Map<Dimension, Map<Code, Index>
 
     private SrmRestExternalFacade                         srmRestExternalFacade;
 
@@ -157,6 +158,7 @@ public class ResourceAccess {
         initializeObservations(data);
         initializeDimensionsForData(data);
         initializeMultipliers();
+        initializeMultipliersAttributes();
         initializeIndex();
     }
 
@@ -487,15 +489,31 @@ public class ResourceAccess {
         return attributeValue;
     }
 
-    public CellCommentDetails observationAttributesAtPermutation(Map<String, String> permutation) {
+    public CellCommentDetails attributesAtPermutation(Map<String, String> permutation) {
         CellCommentDetails cellCommentDetails = new CellCommentDetails();
         for (Attribute attribute : getAttributesMetadata()) {
-            if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
-                continue; // only observation attachment level
+            // We handle dataset level attributes elsewhere
+            if (AttributeAttachmentLevelType.DATASET.equals(attribute.getAttachmentLevel())) {
+                continue;
             }
-            String attributeId = attribute.getId();
-            int offset = calculateOffsetAtPermutation(permutation);
 
+            int offset = 0;
+            String attributeId = attribute.getId();
+            // Observation level attributes (body cell)
+            if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
+                offset = calculateOffsetAtPermutation(permutation);
+            } else if (AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
+                if (attribute.getDimensions() == null) {
+                    continue;
+                }
+                boolean singleDimensionLevelAttributeForHeaderCellMatchHeaderCellDimension = permutation.size() == 1 && attribute.getDimensions().getDimensions().size() == 1
+                        && permutation.get(attribute.getDimensions().getDimensions().get(0).getDimensionId()) != null;
+                boolean combinationDimensionLevelAttributeForBodyCell = permutation.size() > 1 && attribute.getDimensions().getDimensions().size() > 1;
+                if (!(singleDimensionLevelAttributeForHeaderCellMatchHeaderCellDimension || combinationDimensionLevelAttributeForBodyCell)) {
+                    continue;
+                }
+                offset = calculateOffsetAtPermutation(permutation, multipliersByAttribute.get(attribute.getId()));
+            }
             String attributeValue = obtainAttributeValue(attributeId, offset);
             cellCommentDetails.addCommentLine(attributeValue);
         }
@@ -594,6 +612,7 @@ public class ResourceAccess {
         return dimensionValueId;
     }
 
+    // We´ll have the "multipliers" variable, used for calculating the offset for observations or attributes at PRIMARY_MEASURE attachment level
     private void initializeMultipliers() {
         List<DimensionRepresentation> dimensions = getData().getDimensions().getDimensions();
         ListIterator<DimensionRepresentation> dimensionsListIterator = dimensions.listIterator(dimensions.size());
@@ -604,6 +623,25 @@ public class ResourceAccess {
             DimensionRepresentation dimension = dimensionsListIterator.previous();
             multipliers.put(dimension.getDimensionId(), incrementCounter);
             incrementCounter *= dimension.getRepresentations().getRepresentations().size();
+        }
+    }
+
+    // ... and we'll have the multipliers stored for attributes at DIMENSION or combinated DIMENSION attachment level
+    private void initializeMultipliersAttributes() {
+        for (Attribute attribute : attributesMetadata) {
+            if (!AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
+                continue;
+            }
+            multipliersByAttribute.put(attribute.getId(), new HashMap<String, Integer>());
+            List<AttributeDimension> dimensions = attribute.getDimensions().getDimensions();
+            ListIterator<AttributeDimension> dimensionsListIterator = dimensions.listIterator(dimensions.size());
+            int incrementCounter = 1;
+            // Iterate the list in reverse order: right to left or down to up in the display table to calculate cell spacing
+            while (dimensionsListIterator.hasPrevious()) {
+                AttributeDimension dimension = dimensionsListIterator.previous();
+                multipliersByAttribute.get(attribute.getId()).put(dimension.getDimensionId(), incrementCounter);
+                incrementCounter *= dimensionValuesOrderedForDataByDimensionId.get(dimension.getDimensionId()).size();
+            }
         }
     }
 
@@ -623,14 +661,20 @@ public class ResourceAccess {
     }
 
     private int calculateOffsetAtPermutation(Map<String, String> permutation) {
+        return calculateOffsetAtPermutation(permutation, multipliers);
+    }
+
+    private int calculateOffsetAtPermutation(Map<String, String> permutation, Map<String, Integer> multipliers) {
         int offset = 0;
         for (Map.Entry<String, String> permutationEntry : permutation.entrySet()) {
             String dimensionId = permutationEntry.getKey();
             String representationId = permutationEntry.getValue();
 
             long index = representationIndex.get(dimensionId).get(representationId);
-            int multiplier = multipliers.get(dimensionId);
-            offset += index * multiplier;
+            Integer multiplier = multipliers.get(dimensionId);
+            if (multiplier != null) {
+                offset += index * multiplier;
+            }
         }
         return offset;
     }

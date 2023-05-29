@@ -350,23 +350,11 @@ public class Helpers {
     }
 
     public static String tableViewUrl(Table table) {
-        Resource resource = getResourceFromTable(table);
-        return resource.getVisualizerHtmlLink();
-    }
-
-    private static Resource getResourceFromTable(Table table) {
-        Resource resource = null;
-
-        if (table.getDataset() != null) {
-            resource = table.getDataset();
-        } else if (table.getQuery() != null) {
-            resource = table.getQuery();
-        } else if (table.getMultidataset() != null) {
-            resource = table.getMultidataset();
-        } else if (table.getUrl() != null) {
-            resource = table.getUrl();
+        Resource resource = table.getResource();
+        if (resource == null) {
+            return StringUtils.EMPTY;
         }
-        return resource;
+        return resource.getVisualizerHtmlLink();
     }
 
     private static void appendParameter(StringBuilder builder, String key, String value) {

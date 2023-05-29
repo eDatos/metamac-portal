@@ -49,9 +49,19 @@
         },
 
         render: function () {
+            const selection = this._getSelection(this.getDatasetSelection());
+            var jsonStatUrl = this._getJsonStatUrl();
+
             var context = {
                 buttonConfig: this._getButtonConfiguration(),
-                hasJsonstatUrl: !!this.urls.jsonstat
+                hasJsonstatUrl: !!this.urls.jsonstat,
+                url: {
+                    jsonstat: {
+                        href: jsonStatUrl.toString(),
+                        searchParams: [...jsonStatUrl.searchParams.entries()],
+                        selection
+                    }
+                }
             };
 
             if (this._exportableImage()) {
@@ -327,22 +337,40 @@
             return exportEndpoint;
         },
 
-        _getJsonStatUrl() {
-            var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+        _getSelection: function (datasetSelection) {
+            const representations = [];
+            for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
+                representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
+            }
+            return ["representation", representations.join(":")];
+        },
 
-            var jsonStatUrl;
+        _getJsonStatUrl() {
+            let link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+            let isIndicator = this.filterDimensions.metadata.datasourceIdentifier.identifier.type === 'indicator';
+
+            let jsonStatUrl;
+
             if (link.hasOwnProperty("href")) {
-                jsonStatUrl = new URL(link.href + ".jsonstat");
+                // dataset or query
+                jsonStatUrl = new URL(link.href);
             } else if (typeof link === 'string') {
-                jsonStatUrl = new URL(link + ".jsonstat");
+                // indicator
+                jsonStatUrl = new URL(link);
             } else {
                 return null;
             }
 
+            if (isIndicator) {
+                jsonStatUrl.href += "/data";
+            }
+            jsonStatUrl.href += ".jsonstat";
+
             var locale = I18n.locale;
             jsonStatUrl.searchParams.append('lang', locale);
+
             return jsonStatUrl;
-        }
+        },
     });
 
 }());
