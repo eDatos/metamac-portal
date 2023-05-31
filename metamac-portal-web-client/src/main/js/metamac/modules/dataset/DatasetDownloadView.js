@@ -24,9 +24,9 @@
 
         initialize: function () {
             this.optionsModel = this.options.optionsModel;
-            var optionsModel = this.optionsModel;
+            var self = this;
             this.pageshowListener = function () {
-                optionsModel.set('isDownloading', false);
+                self.optionsModel.set('isDownloading', false);
             };
             window.addEventListener("pageshow", this.pageshowListener);
 
