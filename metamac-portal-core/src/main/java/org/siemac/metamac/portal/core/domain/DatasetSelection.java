@@ -213,6 +213,12 @@ public class DatasetSelection {
         return permutation;
     }
 
+    public Map<String, String> permutationAtDimension(String dimensionId, String selectedDimensionValue) {
+        Map<String, String> permutation = new HashMap<>();
+        permutation.put(dimensionId, selectedDimensionValue);
+        return permutation;
+    }
+
     public int getMultiplierForDimension(DatasetSelectionDimension dimension) {
         return multipliers.get(dimension.getId());
     }
