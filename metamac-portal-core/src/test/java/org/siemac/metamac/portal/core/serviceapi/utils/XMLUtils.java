@@ -18,7 +18,8 @@ public class XMLUtils {
         JAXBContext jc;
         Unmarshaller u;
         try {
-            jc = JAXBContext.newInstance(org.siemac.metamac.rest.statistical_resources.v1_0.domain.ObjectFactory.class, org.siemac.metamac.rest.common.v1_0.domain.ObjectFactory.class);
+            jc = JAXBContext.newInstance(org.siemac.metamac.rest.statistical_resources.v1_0.domain.ObjectFactory.class,
+                    org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ObjectFactory.class, org.siemac.metamac.rest.common.v1_0.domain.ObjectFactory.class);
             u = jc.createUnmarshaller();
 
         } catch (JAXBException e) {
