@@ -52,6 +52,7 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Enumerat
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,7 +146,7 @@ public class ExcelExporter {
         Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
 
         // Title
-        String title = PortalUtils.getLabel(resourceAccess.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault());
+        String title = getLabel(resourceAccess.getName());
         if (!StringUtils.isEmpty(title)) {
             SXSSFRow rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, title, headerCellStyle);
@@ -158,7 +159,7 @@ public class ExcelExporter {
             Iterator<ResourceStatisticalResourceBase> iterator = subjectAreas.getResources().iterator();
             while (iterator.hasNext()) {
                 ResourceStatisticalResourceBase subjectArea = iterator.next();
-                valueName.append(PortalUtils.getLabel(subjectArea.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault()));
+                valueName.append(getLabel(subjectArea.getName()));
                 if (iterator.hasNext()) {
                     valueName.append("; ");
                 }
@@ -272,8 +273,8 @@ public class ExcelExporter {
         // @formatter:off
         unitBuilder
             .append(LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_UNITS_UNIT, locale))
-            .append(" (").append(PortalUtils.getLabel(value.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault())).append("): ")
-            .append(PortalUtils.getLabel(unitCode, resourceAccess.getLang(), resourceAccess.getLangDefault()));
+            .append(" (").append(getLabel(value.getName())).append("): ")
+            .append(getLabel(unitCode));
         // @formatter:on
         return unitBuilder.toString();
     }
@@ -288,19 +289,19 @@ public class ExcelExporter {
         // @formatter:off
         if (contact.getName() != null) {
             contactBuilder
-                .append(PortalUtils.getLabel(contact.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault()))
+                .append(getLabel(contact.getName()))
                 .append(SEPARATOR_FIELD);
         }
 
         if (contact.getResponsibility() != null) {
             contactBuilder
-                .append(PortalUtils.getLabel(contact.getResponsibility(), resourceAccess.getLang(), resourceAccess.getLangDefault()))
+                .append(getLabel(contact.getResponsibility()))
                 .append(SEPARATOR_FIELD);
         }
 
         if (contact.getOrganisationUnit() != null) {
             contactBuilder
-                .append(PortalUtils.getLabel(contact.getOrganisationUnit(), resourceAccess.getLang(), resourceAccess.getLangDefault()))
+                .append(getLabel(contact.getOrganisationUnit()))
                 .append(SEPARATOR_FIELD);
         }
 
@@ -349,6 +350,10 @@ public class ExcelExporter {
                     String dimensionValueLabel = toDimensionValueLabel(dimension.getId(), selectedDimensionValue);
 
                     SXSSFCell cell = initializeCell(row, headerColumn);
+
+                    CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), selectedDimensionValue));
+                    addCellComment(cellDetails, cell);
+
                     cell.setCellValue(dimensionValueLabel);
                     cell.setCellType(CellType.STRING);
                     cell.setCellStyle(headerCellStyle);
@@ -374,10 +379,22 @@ public class ExcelExporter {
         Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
         currentRowCount += 2;
 
+        // Dataset Notes Attributes
+        {
+            Integer newCurrentRowCount = addBodyOfDatasetAttributes(currentRowCount);
+            // Some dataset note attribute was added
+            if (newCurrentRowCount > currentRowCount) {
+                addFootNotesTitle(currentRowCount);
+                currentRowCount = newCurrentRowCount;
+            }
+        }
+
+        currentRowCount++;
+
         // Rights Holder
         Organisation rightsHolder = resourceAccess.getMetadata().getRightsHolder();
         if (rightsHolder != null) {
-            String rightsHolderLabel = PortalUtils.getLabel(rightsHolder.getName(), resourceAccess.getLang(), resourceAccess.getLangDefault());
+            String rightsHolderLabel = getLabel(rightsHolder.getName());
 
             SXSSFRow row = sheet.createRow(currentRowCount++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_RIGHTS_HOLDER, locale);
@@ -406,6 +423,41 @@ public class ExcelExporter {
         }
     }
 
+    private int addBodyOfDatasetAttributes(int footerRow) {
+        final int COLUMN_OF_BODY_NOTES_START = 1;
+
+        for (Attribute attribute : resourceAccess.getAttributesMetadata()) {
+            if (!AttributeAttachmentLevelType.DATASET.equals(attribute.getAttachmentLevel())) {
+                continue;
+            }
+            String attributeId = attribute.getId();
+            String[] attributeValues = resourceAccess.getAttributeValues(attributeId);
+
+            if (attributeValues == null) {
+                continue;
+            }
+            String attributeName = getLabel(resourceAccess.getAttributesMetadataMap().get(attributeId).getName());
+            String attributeValue = resourceAccess.obtainAttributeValue(attributeId, 0);
+            if (StringUtils.isNotBlank(attributeValue)) {
+                attributeValue = attributeValue.trim();
+
+                // Data table cell
+                SXSSFRow row = sheet.createRow(++footerRow);
+                addStringCell(row, COLUMN_OF_BODY_NOTES_START, attributeName, headerCellStyle);
+                XSSFCellStyle styleSolid = dataCellStyle;
+                addBorderToCellStyle(styleSolid);
+                addStringCell(row, COLUMN_OF_BODY_NOTES_START + 1, attributeValue, styleSolid);
+            }
+        }
+        return footerRow;
+    }
+
+    private void addFootNotesTitle(int footerRow) {
+        SXSSFRow row = sheet.createRow(footerRow);
+        String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_NOTES_TABLE, LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang()));
+        addStringCell(row, 0, messageForCode, listTitleCellStyle);
+    }
+
     private void addStringCell(SXSSFRow row, int column, String cellValue, CellStyle cellStyle) {
         SXSSFCell cell = initializeCell(row, column);
         cell.setCellValue(cellValue);
@@ -424,6 +476,10 @@ public class ExcelExporter {
                 String dimensionValueLabel = toDimensionValueLabel(dimensionId, dimensionValueId);
 
                 SXSSFCell cell = initializeCell(row, leftDimensionIndex);
+
+                CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), dimensionValueId));
+                addCellComment(cellDetails, cell);
+
                 cell.setCellValue(dimensionValueLabel);
                 cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
@@ -442,7 +498,7 @@ public class ExcelExporter {
             String observation = resourceAccess.observationAtPermutation(permutationAtCell);
             SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
 
-            addCellComment(resourceAccess.observationAttributesAtPermutation(permutationAtCell), cell);
+            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell), cell);
 
             if (observation != null) {
                 if (NumberUtils.isNumber(observation)) {
@@ -529,6 +585,10 @@ public class ExcelExporter {
         int blue = Integer.parseInt(RGB.substring(4, 6), 16);
 
         return new XSSFColor(new byte[]{(byte) red, (byte) green, (byte) blue}, new DefaultIndexedColorMap());
+    }
+
+    public String getLabel(InternationalString internationalString) {
+        return PortalUtils.getLabel(internationalString, resourceAccess.getLang(), resourceAccess.getLangDefault());
     }
 
     /**

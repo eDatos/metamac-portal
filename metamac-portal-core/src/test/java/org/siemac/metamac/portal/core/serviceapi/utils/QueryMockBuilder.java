@@ -3,7 +3,7 @@ package org.siemac.metamac.portal.core.serviceapi.utils;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeDimensions;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimensions;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentations;

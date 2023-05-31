@@ -4,16 +4,17 @@ import java.math.BigInteger;
 
 import org.joda.time.DateTime;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeDimensions;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimensions;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentations;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Contact;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Contacts;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Contacts;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttributes;
@@ -54,7 +55,7 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
         dataset.setDescription(internationalString("description"));
         dataset.setMetadata(new DatasetMetadata());
         dataset.getMetadata().setStatisticalOperation(mockResource("C00000A"));
-        dataset.getMetadata().setLanguages(new Resources());
+        dataset.getMetadata().setLanguages(new ResourcesStatisticalResourceBase());
         dataset.getMetadata().getLanguages().getResources().add(mockResource("es"));
         dataset.getMetadata().getLanguages().getResources().add(mockResource("en"));
         dataset.getMetadata().setCreatedDate(new DateTime(2013, 1, 2, 13, 15, 12, 0).toDate());
