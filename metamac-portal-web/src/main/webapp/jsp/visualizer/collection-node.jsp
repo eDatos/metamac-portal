@@ -1,6 +1,7 @@
 <%@ page import="org.siemac.metamac.portal.dto.Chapter" %>
 <%@ page import="org.siemac.metamac.portal.dto.CollectionNode" %>
 <%@ page import="org.siemac.metamac.portal.dto.Table" %>
+<%@ page import="org.siemac.metamac.rest.common.v1_0.domain.Resource" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -58,10 +59,17 @@
         request.setAttribute("numeration", numeration);
         Integer numberOfFixedDigitsInNumeration = (Integer)request.getAttribute("numberOfFixedDigitsInNumeration");
         request.setAttribute("numerationFixed", String.format("%0"+ numberOfFixedDigitsInNumeration +"d", numeration));
+        
+        Resource resource = table.getResource();
+        String iconClass = "icon-collection-table";
+        if (resource != null && "statisticalResources#url".equals(resource.getKind())) {
+            iconClass = "icon-link";
+        }
+        request.setAttribute("iconClass", iconClass);
     %>
 
     <li>
-        <i class="icon-collection-table"></i>
+        <i class="${iconClass}"></i>
         <span class="item-numeration">${numerationFixed}</span>
         <a class="nouline" href="<%= Helpers.tableViewUrl(table) %>"><%= helper.localizeText(table.getName()) %>
         </a>

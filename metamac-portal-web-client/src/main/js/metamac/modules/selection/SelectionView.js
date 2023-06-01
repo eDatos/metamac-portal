@@ -16,6 +16,7 @@
 
         initialize: function (options) {
             this.metadata = options.metadata;
+            this.data = options.data;
             this.controller = options.controller;
             this.filterDimensions = this.controller.filterDimensions;
 
@@ -43,6 +44,7 @@
 
         _initializeOptionsView: function () {
             this.optionsView = new App.modules.dataset.OptionsView({
+                data: this.data,
                 optionsModel: this.optionsModel,
                 filterDimensions: this.filterDimensions,
                 el: this.$(".selection-options-bar")

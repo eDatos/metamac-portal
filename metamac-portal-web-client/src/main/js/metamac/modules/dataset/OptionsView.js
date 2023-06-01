@@ -293,8 +293,14 @@
                         selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
                     },
                     numberOfObservations: {
-                        all: this.data.getDataObservationsCount(),
-                        selection: this.dataSource.getSelectionObservationsCount()
+                        all: {
+                            total: this.data.getDataObservationsCount(),
+                            tableSize: this.data.getDataTableSize()
+                        },
+                        selection: {
+                            total: this.dataSource.getSelectionObservationsCount(),
+                            tableSize: this.filterDimensions.getTableInfo().getTableSize()
+                        }
                     }
                 });
             }

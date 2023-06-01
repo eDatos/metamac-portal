@@ -17,27 +17,29 @@ import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attributes;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentations;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.ComponentType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Data;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataAttribute;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataAttributes;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataStructureDefinition;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentations;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttributes;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentations;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimensions;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionsId;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentations;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimensions;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionsId;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Agency;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisation;
 
@@ -136,11 +138,11 @@ public class IndicatorsRestExternalMapper {
         return datasetAttribute;
     }
 
-    private static Resource indicatorSystemToStatisticalOperation(IndicatorsSystemType indicatorSystem) {
+    private static ResourceStatisticalResourceBase indicatorSystemToStatisticalOperation(IndicatorsSystemType indicatorSystem) {
         if (indicatorSystem == null) {
             return null;
         }
-        Resource statisticalOperation = new Resource();
+        ResourceStatisticalResourceBase statisticalOperation = new ResourceStatisticalResourceBase();
         statisticalOperation.setName(localisedStringsToInternationalString(indicatorSystem.getTitle()));
         statisticalOperation.setSelfLink(linkTypeToResourceLink(indicatorSystem.getStatisticalOperationLink()));
         return statisticalOperation;
@@ -153,14 +155,14 @@ public class IndicatorsRestExternalMapper {
         return resourceLink;
     }
 
-    private static Resources organisationToResources(Organisation organisation) {
-        Resources publishers = new Resources();
+    private static ResourcesStatisticalResourceBase organisationToResources(Organisation organisation) {
+        ResourcesStatisticalResourceBase publishers = new ResourcesStatisticalResourceBase();
         publishers.getResources().add(organisationToResource(organisation));
         return publishers;
     }
 
-    private static org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation organisationToResource(Organisation organisation) {
-        org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation organization = new org.siemac.metamac.rest.statistical_resources.v1_0.domain.Organisation();
+    private static org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisationToResource(Organisation organisation) {
+        org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organization = new org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation();
         organization.setName(organisation.getName()); // The only one currently used on the export
         organization.setId(organisation.getId());
         organization.setKind(organisation.getKind());
@@ -202,10 +204,10 @@ public class IndicatorsRestExternalMapper {
      *
      * @see org.siemac.metamac.portal.core.exporters.PxExporter.writeLanguages
      */
-    private static Resources buildPartialDatasetLanguageResourceFromIndicatorLanguages(List<String> languagesIds) {
-        Resources languages = new Resources();
+    private static ResourcesStatisticalResourceBase buildPartialDatasetLanguageResourceFromIndicatorLanguages(List<String> languagesIds) {
+        ResourcesStatisticalResourceBase languages = new ResourcesStatisticalResourceBase();
         for (String languageId : languagesIds) {
-            Resource language = new Resource();
+            ResourceStatisticalResourceBase language = new ResourceStatisticalResourceBase();
             language.setId(languageId);
             languages.getResources().add(language);
         }
