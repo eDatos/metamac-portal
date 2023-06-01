@@ -22,7 +22,7 @@
 		    	<h3>Error - Propiedad no configurada</h3>
 	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
 	       	</c:when>
-	       	<c:when test="${internalError != ''}">
+	       	<c:when test="${internalError != null && internalError != ''}">
 	            <p class="justificado">${internalError}</p>
 	       	</c:when>
 			<c:otherwise>

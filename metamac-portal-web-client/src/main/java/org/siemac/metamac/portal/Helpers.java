@@ -23,7 +23,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.core.common.exception.MetamacExceptionItem;
 import org.siemac.metamac.core.common.exception.utils.TranslateExceptions;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
@@ -47,7 +46,6 @@ import org.siemac.metamac.portal.mapper.Query2DtoMapper;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
-import org.siemac.metamac.rest.exception.RestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -199,26 +197,27 @@ public class Helpers {
     public static Multidataset getMultidataset(String apiUrlStatisticalResources, Boolean internalPortal, String multidatasetId) throws Throwable {
         Multidataset multidataset = null;
         Multidataset2DtoMapper multidataset2DtoMapper = new Multidataset2DtoMapper();
+        String agencyId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[0];
+        String resourceId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[1];
         try {
             // Ex: "http://HOST/statistical-resources/apis/statistical-resources";
             List<String> lang = new ArrayList<String>();
             String fields = FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS;
-            String agencyId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[0];
-            String resourceId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[1];
 
             if (internalPortal) {
                 multidataset = multidataset2DtoMapper.multidatasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             } else {
                 multidataset = multidataset2DtoMapper.multidatasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             }
-            if (multidataset == null || multidataset.getData() == null || multidataset.getData().getNodes() == null) {
-                Locale locale = LocaleUtils.toLocale(language);
-                throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.MULTIDATASET_NO_FOUND, resourceId, agencyId));
-            }
+            
         } catch (ServerWebApplicationException e) {
             throw getExceptionDataset(e, apiUrlStatisticalResources, null, multidatasetId, null);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo la Colección", e);
+        }
+        if (multidataset == null || multidataset.getData() == null || multidataset.getData().getNodes() == null) {
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.MULTIDATASET_NO_FOUND, resourceId, agencyId));
         }
         return multidataset;
     }

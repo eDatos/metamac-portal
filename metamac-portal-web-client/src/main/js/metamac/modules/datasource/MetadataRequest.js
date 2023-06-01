@@ -20,26 +20,31 @@
                 url: self._url()
             }).success(function (response) {
                 self.response = response;
-                var allHaveRepresentation = true;
-                var dimensionWithoutRepresentation = '';
-                for (var dimension in self.response.dimension) {
-                    if (!dimension.representation) {
-                        allHaveRepresentation = false;
-                        dimensionWithoutRepresentation = dimension;
-                    }
-                }
-                if (allHaveRepresentation) {
-                    callback(null, "done");
-                } else {
-                    var error = I18n.t('exception.resources.indicators.no_representations');
-                    callback(error.replace("{0}", dimensionWithoutRepresentation), null);
-                }
+                var result = self.checkAllDimensionHaveRepresentations(self);
+                callback(result.error, result.success);
             }). error(function(response) {
                 self.response = response;
                 var errorsJson = JSON.parse(response.responseText);
                 var error = I18n.t(errorsJson.code);
                 callback(error, null);
             });
+        },
+        
+        checkAllDimensionHaveRepresentations: function(self) {
+            var allHaveRepresentation = true;
+            var dimensionWithoutRepresentation = '';
+            for (var dimension in self.response.dimension) {
+                if (!dimension.representation) {
+                    allHaveRepresentation = false;
+                    dimensionWithoutRepresentation = dimension;
+                }
+            }
+            if (allHaveRepresentation) {
+                return {success : 'done', error: null};
+            } else {
+                var error = I18n.t('exception.resources.indicators.no_representations', {error: dimensionWithoutRepresentation});
+                return {success : null , error : error};
+            }
         },
 
         _url: function() {

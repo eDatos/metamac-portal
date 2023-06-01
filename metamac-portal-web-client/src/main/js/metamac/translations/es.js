@@ -396,7 +396,7 @@ I18n.translations.es = {
                 empty_data: "El dataset no tiene datos"
             },
             indicators: {
-                no_representations: "La dimensión {0} no tiene representaciones"
+                no_representations: "La dimensión {{error}} no tiene representaciones"
             }
         },
         statistical_resources: {

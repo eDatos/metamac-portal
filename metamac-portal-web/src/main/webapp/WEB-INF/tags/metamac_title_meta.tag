@@ -55,7 +55,6 @@
 
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
-			request.setAttribute("internalError", "");
 		    INSTALLATION_TYPE = configurationService.retrieveInstallationType();
 		    internalPortal = INSTALLATION_TYPE.equals("INTERNAL");
 			request.setAttribute("installationType", INSTALLATION_TYPE);
