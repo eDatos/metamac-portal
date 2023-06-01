@@ -47,10 +47,8 @@
             this.children.reset(children);
             var open = this.get("open");
             if (!open) {
-                this.children.each(function (child) {
-                    child.setMeAndMyChildren("selected", false, { silent: true });
-                    child.setMeAndMyChildren("drawable", false, { silent: true });
-                });
+                this.set("selected", false, { silent: true });
+                this.set("drawable", false, { silent: true });
             }
         },
 
@@ -65,6 +63,30 @@
             this.children.each(function (child) {
                 child.set('visible', false);
                 child._close();
+            });
+        },
+
+        _closeInit: function () {
+            this.children.each(function (child) {
+                var openChild = [];
+                if (!child.get('open')) {
+                    child.checkAnyChildOpen(openChild);
+                    if (openChild.length === 0) {
+                        child.set('visible', false);
+                    }
+                }
+                child._closeInit();
+            });
+        },
+
+        checkAnyChildOpen: function(openChilds) {
+            if (this.get('open')) {
+                return true;
+            }
+            this.children.each(function (child) {
+                if (child.checkAnyChildOpen()) {
+                   return true;
+                };
             });
         },
 
@@ -85,6 +107,14 @@
             }
         },
 
+        _onChangeOpenInit: function () {
+            if (this.get('open')) {
+                this._open();
+            } else {
+                this._closeInit();
+            }
+        },
+
         toggleMeAndMyChildren: function (property) {
             var newSelectedValue = !this.get(property);
             this.setMeAndMyChildren(property, newSelectedValue);
@@ -95,6 +125,11 @@
             this.children.each(function (child) {
                 child.setMeAndMyChildren(property, value);
             });
+        },
+
+        checkAnyChildVisible: function () {
+            var checkAnyChildVisible = false;
+            return this.children.findWhere('visible');
         }
 
     });
