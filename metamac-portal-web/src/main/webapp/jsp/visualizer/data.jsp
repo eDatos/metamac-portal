@@ -23,9 +23,6 @@
 	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
 	       	</c:when>
 			<c:otherwise>
-				<c:if test="${ApiUrlExternalUsers != 'error' && WebApplicationExternalUsers != 'error'}">
-					<div class="visualizer-header-user"></div>
-				</c:if>
 			    <c:choose>
 					<c:when test="${!resourceEmpty}">
 						<div class="visualizer-header-info">

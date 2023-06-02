@@ -23,6 +23,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static final String PARAM_BREADCRUMBS                 = "migas";
     private static final String PARAM_APP_NAME                    = "appName";
     private static final String PARAM_APP_URL                     = "appUrl";
+    private static final String PARAM_ENABLE_AUTHENTICATION       = "enableAuthentication";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -353,7 +354,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String buildHeaderQuery(String lang) {
-        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam());
+        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam(), PARAM_ENABLE_AUTHENTICATION);
     }
 
     private static String buildAppUrlParam() {
