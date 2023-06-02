@@ -65,28 +65,14 @@
                 child._close();
             });
         },
-
+        
         _closeInit: function () {
             this.children.each(function (child) {
-                var openChild = [];
                 if (!child.get('open')) {
-                    child.checkAnyChildOpen(openChild);
-                    if (openChild.length === 0) {
-                        child.set('visible', false);
-                    }
+                    child.set('visible', false);
+                    child.set("selected", false, { silent: true });
                 }
                 child._closeInit();
-            });
-        },
-
-        checkAnyChildOpen: function(openChilds) {
-            if (this.get('open')) {
-                return true;
-            }
-            this.children.each(function (child) {
-                if (child.checkAnyChildOpen()) {
-                   return true;
-                };
             });
         },
 
@@ -96,6 +82,8 @@
                     child.set('visible', true);
                     child._open();
                 });
+            } else {
+                this.set("selected", false, { silent: true });
             }
         },
 
@@ -110,8 +98,29 @@
         _onChangeOpenInit: function () {
             if (this.get('open')) {
                 this._open();
-            } else {
+            } else if (!this.checkAnyChildOpen(this)) {
                 this._closeInit();
+            }
+        },
+        
+        checkAnyChildOpen(child) {
+            var nodos = [];
+            this.findOpenedChild(child, nodos)
+            return nodos.length > 0;
+        },
+
+        findOpenedChild(child, nodos) {
+            if (child.get('open')) {
+                nodos.push(child.get('id'));
+                return nodos;
+            }
+            if(child.children.length === 0) {
+                return nodos;
+            }
+            if (child.children.length !== 0) {
+                child.children.each(function(childAux) {
+                    return child.findOpenedChild(childAux, nodos);
+                })
             }
         },
 
@@ -128,8 +137,7 @@
         },
 
         checkAnyChildVisible: function () {
-            var checkAnyChildVisible = false;
-            return this.children.findWhere('visible');
+            return this.children.findWhere({visible: true});
         }
 
     });
