@@ -96,10 +96,11 @@
         },
 
         _onChangeOpenInit: function () {
-            if (this.get('open')) {
-                this._open();
-            } else if (!this.checkAnyChildOpen(this)) {
+            //if the node is not open and does not have any open children, it is considered closed, otherwise it is considered an open node
+            if (!this.get('open') && !this.checkAnyChildOpen(this)) {
                 this._closeInit();
+            } else {
+                this._open();
             }
         },
         
