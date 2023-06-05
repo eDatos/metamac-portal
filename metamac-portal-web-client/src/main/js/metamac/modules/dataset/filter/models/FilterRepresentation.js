@@ -47,10 +47,8 @@
             this.children.reset(children);
             var open = this.get("open");
             if (!open) {
-                this.children.each(function (child) {
-                    child.setMeAndMyChildren("selected", false, { silent: true });
-                    child.setMeAndMyChildren("drawable", false, { silent: true });
-                });
+                this.set("selected", false, { silent: true });
+                this.set("drawable", false, { silent: true });
             }
         },
 
@@ -68,12 +66,24 @@
             });
         },
 
+        _closeInit: function () {
+            this.children.each(function (child) {
+                if (!child.get('open')) {
+                    child.set('visible', false);
+                    child.set("selected", false, { silent: true });
+                }
+                child._closeInit();
+            });
+        },
+
         _open: function () {
             if (this.get('open')) {
                 this.children.each(function (child) {
                     child.set('visible', true);
                     child._open();
                 });
+            } else {
+                this.set("selected", false, { silent: true });
             }
         },
 
@@ -82,6 +92,35 @@
                 this._open();
             } else {
                 this._close();
+            }
+        },
+
+        _onChangeOpenInit: function () {
+            //if the node is not open and does not have any open children, it is considered closed, otherwise it is considered an open node
+            if (!this.get('open') && !this.checkAnyChildOpen(this)) {
+                this._closeInit();
+            } else {
+                this._open();
+            }
+        },
+        
+        checkAnyChildOpen(child) {
+            var nodos = [];
+            this.findOpenedChild(child, nodos)
+            return nodos.length > 0;
+        },
+
+        findOpenedChild(child, nodos) {
+            if (child.get('open')) {
+                nodos.push(child.get('id'));
+                return;
+            }
+            if(child.children.length === 0) {
+                return;
+            } else {
+                child.children.each(function(childAux) {
+                    return child.findOpenedChild(childAux, nodos);
+                })
             }
         },
 
@@ -95,6 +134,10 @@
             this.children.each(function (child) {
                 child.setMeAndMyChildren(property, value);
             });
+        },
+
+        checkAnyChildVisible: function () {
+            return this.children.findWhere({visible: true});
         }
 
     });

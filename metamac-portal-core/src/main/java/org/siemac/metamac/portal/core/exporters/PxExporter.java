@@ -50,15 +50,17 @@ import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.common.v1_0.domain.Resources;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.NextVersionType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NextVersionType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -267,7 +269,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeLanguages(PrintWriter printWriter) throws MetamacException {
-        Resources languages = datasetAccess.getMetadata().getLanguages();
+        ResourcesStatisticalResourceBase languages = datasetAccess.getMetadata().getLanguages();
 
         List<String> resourcesToResourcesId = resourcesToResourcesId(languages.getResources());
         this.languages = new HashSet<String>(resourcesToResourcesId);
@@ -290,12 +292,12 @@ public class PxExporter {
         writeLine(printWriter, line);
     }
 
-    private List<String> resourcesToResourcesId(List<Resource> sources) {
+    private List<String> resourcesToResourcesId(List<ResourceStatisticalResourceBase> sources) {
         List<String> targets = new ArrayList<String>();
         if (CollectionUtils.isEmpty(sources)) {
             return targets;
         }
-        for (Resource source : sources) {
+        for (ResourceStatisticalResourceBase source : sources) {
             targets.add(source.getId().toLowerCase());
         }
         return targets;
@@ -417,7 +419,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeSubjectAreaAndSubjectCode(PrintWriter printWriter) throws MetamacException {
-        Resources subjectAreas = datasetAccess.getMetadata().getSubjectAreas();
+        ResourcesStatisticalResourceBase subjectAreas = datasetAccess.getMetadata().getSubjectAreas();
 
         if (subjectAreas == null) {
             writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), datasetAccess.getDataset().getName());
@@ -428,8 +430,8 @@ public class PxExporter {
 
         InternationalString valueNameInternationalString = null;
         StringBuilder valueCode = new StringBuilder();
-        for (Iterator<Resource> iterator = subjectAreas.getResources().iterator(); iterator.hasNext();) {
-            Resource subjectArea = iterator.next();
+        for (Iterator<ResourceStatisticalResourceBase> iterator = subjectAreas.getResources().iterator(); iterator.hasNext();) {
+            ResourceStatisticalResourceBase subjectArea = iterator.next();
             valueNameInternationalString = PortalUtils.concatenateInternationalString(valueNameInternationalString, subjectArea.getName());
             valueCode.append(subjectArea.getId());
             if (iterator.hasNext()) {
@@ -685,7 +687,7 @@ public class PxExporter {
      */
     private void writeContact(PrintWriter printWriter) throws MetamacException {
         // Calculate International String Contact
-        Resources publishers = datasetAccess.getMetadata().getPublishers();
+        ResourcesStatisticalResourceBase publishers = datasetAccess.getMetadata().getPublishers();
         InternationalString value = null;
         for (Resource publisher : publishers.getResources()) {
             value = PortalUtils.concatenateInternationalString(value, publisher.getName());

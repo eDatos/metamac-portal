@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<stat:query xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:stat="http://www.siemac.org/metamac/rest/statistical-resources/v1.0/domain" kind="statisticalResources#query">
-    <stat:id>INDICADORES_OCUPACION</stat:id>
-    <stat:urn>urn:siemac:org.siemac.metamac.infomodel.statisticalresources.Query=ISTAC:INDICADORES_OCUPACION</stat:urn>
-    <stat:selfLink kind="statisticalResources#query" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/queries/ISTAC/INDICADORES_OCUPACION"/>
-    <stat:parentLink kind="statisticalResources#queries" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/queries"/>
-    <stat:name>
+<stat:query xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" xmlns:stat="http://www.siemac.org/metamac/rest/statistical-resources/v1.0/domain" xmlns:ns4="http://www.siemac.org/metamac/statistical-resources/rest/common/v1.0/domain" kind="statisticalResources#query">
+    <ns4:id>INDICADORES_OCUPACION</ns4:id>
+    <ns4:urn>urn:siemac:org.siemac.metamac.infomodel.statisticalresources.Query=ISTAC:INDICADORES_OCUPACION</ns4:urn>
+    <ns4:selfLink kind="statisticalResources#query" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/queries/ISTAC/INDICADORES_OCUPACION"/>
+    <ns4:parentLink kind="statisticalResources#queries" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/queries"/>
+    <ns4:name>
         <cdomain:text xml:lang="es">Indicadores de ocupación</cdomain:text>
-    </stat:name>
-    <stat:description>
+    </ns4:name>
+    <ns4:description>
         <cdomain:text xml:lang="es">Indicadores de ocupación hotelera</cdomain:text>
-    </stat:description>
-    <stat:selectedLanguages total="7">
-        <stat:language>es</stat:language>
-        <stat:language>en</stat:language>
-        <stat:language>pt</stat:language>
-        <stat:language>ru</stat:language>
-        <stat:language>zh</stat:language>
-        <stat:language>fr</stat:language>
-        <stat:language>de</stat:language>
-    </stat:selectedLanguages>
-    <stat:metadata>
-        <stat:relatedDataset kind="statisticalResources#dataset">
+    </ns4:description>
+    <ns4:selectedLanguages total="7">
+        <ns4:language>es</ns4:language>
+        <ns4:language>en</ns4:language>
+        <ns4:language>pt</ns4:language>
+        <ns4:language>ru</ns4:language>
+        <ns4:language>zh</ns4:language>
+        <ns4:language>fr</ns4:language>
+        <ns4:language>de</ns4:language>
+    </ns4:selectedLanguages>
+    <ns4:metadata>
+        <ns4:relatedDataset kind="statisticalResources#dataset">
             <cdomain:id>C00031A_000001</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticalresources.Dataset=ISTAC:C00031A_000001(002.003)</cdomain:urn>
             <cdomain:selfLink kind="statisticalResources#dataset" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/datasets/ISTAC/C00031A_000001/~latest"/>
@@ -29,1010 +29,1010 @@
                 <cdomain:text xml:lang="en">Censal index</cdomain:text>
                 <cdomain:text xml:lang="es">Índice censal de ocupación por plazas o por habitaciones según islas</cdomain:text>
             </cdomain:name>
-        </stat:relatedDataset>
-        <stat:relatedDsd kind="structuralResources#dataStructure">
+        </ns4:relatedDataset>
+        <ns4:relatedDsd kind="structuralResources#dataStructure">
             <cdomain:id>DSD_INDICE_OCUPACION</cdomain:id>
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=ISTAC:DSD_INDICE_OCUPACION(01.000)</cdomain:urn>
             <cdomain:selfLink kind="structuralResources#dataStructure" href="http://estadisticas.arte-consultores.com/structural-resources/latest/datastructures/ISTAC/DSD_INDICE_OCUPACION/01.000"/>
             <cdomain:name>
                 <cdomain:text xml:lang="es">Índice censal de ocupación por plazas o por habitaciones según categorías por municipios de alojamiento y periodos.</cdomain:text>
             </cdomain:name>
-            <stat:heading total="2">
-                <stat:dimensionId>INDICADORES</stat:dimensionId>
-                <stat:dimensionId>TIME_PERIOD</stat:dimensionId>
-            </stat:heading>
-            <stat:stub total="2">
-                <stat:dimensionId>CATEGORIA_ALOJAMIENTO</stat:dimensionId>
-                <stat:dimensionId>DESTINO_ALOJAMIENTO</stat:dimensionId>
-            </stat:stub>
-            <stat:autoOpen>true</stat:autoOpen>
-            <stat:showDecimals>2</stat:showDecimals>
-        </stat:relatedDsd>
-        <stat:dimensions total="4">
-            <stat:dimension>
-                <stat:id>TIME_PERIOD</stat:id>
-                <stat:name>
+            <ns4:heading total="2">
+                <ns4:dimensionId>INDICADORES</ns4:dimensionId>
+                <ns4:dimensionId>TIME_PERIOD</ns4:dimensionId>
+            </ns4:heading>
+            <ns4:stub total="2">
+                <ns4:dimensionId>CATEGORIA_ALOJAMIENTO</ns4:dimensionId>
+                <ns4:dimensionId>DESTINO_ALOJAMIENTO</ns4:dimensionId>
+            </ns4:stub>
+            <ns4:autoOpen>true</ns4:autoOpen>
+            <ns4:showDecimals>2</ns4:showDecimals>
+        </ns4:relatedDsd>
+        <ns4:dimensions total="4">
+            <ns4:dimension>
+                <ns4:id>TIME_PERIOD</ns4:id>
+                <ns4:name>
                     <cdomain:text xml:lang="es">Periodo de tiempo</cdomain:text>
-                </stat:name>
-                <stat:type>TIME_DIMENSION</stat:type>
-                <stat:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stat:NonEnumeratedDimensionValues" total="102">
-                    <stat:value>
-                        <stat:id>2013</stat:id>
-                        <stat:name>
+                </ns4:name>
+                <ns4:type>TIME_DIMENSION</ns4:type>
+                <ns4:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:NonEnumeratedDimensionValues" total="102">
+                    <ns4:value>
+                        <ns4:id>2013</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2013</cdomain:text>
                             <cdomain:text xml:lang="es">2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2013</cdomain:text>
                             <cdomain:text xml:lang="es">12/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2013</cdomain:text>
                             <cdomain:text xml:lang="es">11/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2013</cdomain:text>
                             <cdomain:text xml:lang="es">10/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2013</cdomain:text>
                             <cdomain:text xml:lang="es">09/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M08</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M08</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">08/2013</cdomain:text>
                             <cdomain:text xml:lang="es">08/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M07</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M07</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">07/2013</cdomain:text>
                             <cdomain:text xml:lang="es">07/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M06</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M06</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">06/2013</cdomain:text>
                             <cdomain:text xml:lang="es">06/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M05</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M05</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">05/2013</cdomain:text>
                             <cdomain:text xml:lang="es">05/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M04</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M04</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">04/2013</cdomain:text>
                             <cdomain:text xml:lang="es">04/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M03</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M03</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">03/2013</cdomain:text>
                             <cdomain:text xml:lang="es">03/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M02</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M02</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">02/2013</cdomain:text>
                             <cdomain:text xml:lang="es">02/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2013-M01</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2013-M01</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">01/2013</cdomain:text>
                             <cdomain:text xml:lang="es">01/2013</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2012</cdomain:text>
                             <cdomain:text xml:lang="es">2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2012</cdomain:text>
                             <cdomain:text xml:lang="es">12/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2012</cdomain:text>
                             <cdomain:text xml:lang="es">11/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2012</cdomain:text>
                             <cdomain:text xml:lang="es">10/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2012</cdomain:text>
                             <cdomain:text xml:lang="es">09/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M08</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M08</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">08/2012</cdomain:text>
                             <cdomain:text xml:lang="es">08/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M07</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M07</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">07/2012</cdomain:text>
                             <cdomain:text xml:lang="es">07/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M06</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M06</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">06/2012</cdomain:text>
                             <cdomain:text xml:lang="es">06/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M05</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M05</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">05/2012</cdomain:text>
                             <cdomain:text xml:lang="es">05/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M04</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M04</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">04/2012</cdomain:text>
                             <cdomain:text xml:lang="es">04/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M03</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M03</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">03/2012</cdomain:text>
                             <cdomain:text xml:lang="es">03/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M02</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M02</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">02/2012</cdomain:text>
                             <cdomain:text xml:lang="es">02/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2012-M01</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2012-M01</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">01/2012</cdomain:text>
                             <cdomain:text xml:lang="es">01/2012</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2011</cdomain:text>
                             <cdomain:text xml:lang="es">2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2011</cdomain:text>
                             <cdomain:text xml:lang="es">12/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2011</cdomain:text>
                             <cdomain:text xml:lang="es">11/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2011</cdomain:text>
                             <cdomain:text xml:lang="es">10/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2011</cdomain:text>
                             <cdomain:text xml:lang="es">09/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M08</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M08</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">08/2011</cdomain:text>
                             <cdomain:text xml:lang="es">08/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M07</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M07</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">07/2011</cdomain:text>
                             <cdomain:text xml:lang="es">07/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M06</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M06</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">06/2011</cdomain:text>
                             <cdomain:text xml:lang="es">06/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M05</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M05</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">05/2011</cdomain:text>
                             <cdomain:text xml:lang="es">05/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M04</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M04</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">04/2011</cdomain:text>
                             <cdomain:text xml:lang="es">04/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M03</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M03</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">03/2011</cdomain:text>
                             <cdomain:text xml:lang="es">03/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M02</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M02</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">02/2011</cdomain:text>
                             <cdomain:text xml:lang="es">02/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2011-M01</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2011-M01</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">01/2011</cdomain:text>
                             <cdomain:text xml:lang="es">01/2011</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2010</cdomain:text>
                             <cdomain:text xml:lang="es">2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2010</cdomain:text>
                             <cdomain:text xml:lang="es">12/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2010</cdomain:text>
                             <cdomain:text xml:lang="es">11/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2010</cdomain:text>
                             <cdomain:text xml:lang="es">10/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2010</cdomain:text>
                             <cdomain:text xml:lang="es">09/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M08</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M08</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">08/2010</cdomain:text>
                             <cdomain:text xml:lang="es">08/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M07</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M07</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">07/2010</cdomain:text>
                             <cdomain:text xml:lang="es">07/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M06</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M06</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">06/2010</cdomain:text>
                             <cdomain:text xml:lang="es">06/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M05</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M05</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">05/2010</cdomain:text>
                             <cdomain:text xml:lang="es">05/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M04</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M04</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">04/2010</cdomain:text>
                             <cdomain:text xml:lang="es">04/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M03</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M03</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">03/2010</cdomain:text>
                             <cdomain:text xml:lang="es">03/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M02</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M02</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">02/2010</cdomain:text>
                             <cdomain:text xml:lang="es">02/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2010-M01</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2010-M01</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">01/2010</cdomain:text>
                             <cdomain:text xml:lang="es">01/2010</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2009</cdomain:text>
                             <cdomain:text xml:lang="es">2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2009</cdomain:text>
                             <cdomain:text xml:lang="es">12/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2009</cdomain:text>
                             <cdomain:text xml:lang="es">11/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2009</cdomain:text>
                             <cdomain:text xml:lang="es">10/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2009</cdomain:text>
                             <cdomain:text xml:lang="es">09/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M08</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M08</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">08/2009</cdomain:text>
                             <cdomain:text xml:lang="es">08/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M07</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M07</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">07/2009</cdomain:text>
                             <cdomain:text xml:lang="es">07/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M06</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M06</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">06/2009</cdomain:text>
                             <cdomain:text xml:lang="es">06/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M05</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M05</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">05/2009</cdomain:text>
                             <cdomain:text xml:lang="es">05/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M04</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M04</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">04/2009</cdomain:text>
                             <cdomain:text xml:lang="es">04/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M03</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M03</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">03/2009</cdomain:text>
                             <cdomain:text xml:lang="es">03/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M02</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M02</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">02/2009</cdomain:text>
                             <cdomain:text xml:lang="es">02/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2009-M01</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2009-M01</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">01/2009</cdomain:text>
                             <cdomain:text xml:lang="es">01/2009</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2008</cdomain:text>
                             <cdomain:text xml:lang="es">2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2008</cdomain:text>
                             <cdomain:text xml:lang="es">12/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2008</cdomain:text>
                             <cdomain:text xml:lang="es">11/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2008</cdomain:text>
                             <cdomain:text xml:lang="es">10/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2008</cdomain:text>
                             <cdomain:text xml:lang="es">09/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M08</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M08</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">08/2008</cdomain:text>
                             <cdomain:text xml:lang="es">08/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M07</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M07</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">07/2008</cdomain:text>
                             <cdomain:text xml:lang="es">07/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M06</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M06</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">06/2008</cdomain:text>
                             <cdomain:text xml:lang="es">06/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M05</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M05</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">05/2008</cdomain:text>
                             <cdomain:text xml:lang="es">05/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M04</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M04</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">04/2008</cdomain:text>
                             <cdomain:text xml:lang="es">04/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M03</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M03</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">03/2008</cdomain:text>
                             <cdomain:text xml:lang="es">03/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M02</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M02</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">02/2008</cdomain:text>
                             <cdomain:text xml:lang="es">02/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2008-M01</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2008-M01</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">01/2008</cdomain:text>
                             <cdomain:text xml:lang="es">01/2008</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2007</cdomain:text>
                             <cdomain:text xml:lang="es">2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2007</cdomain:text>
                             <cdomain:text xml:lang="es">12/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2007</cdomain:text>
                             <cdomain:text xml:lang="es">11/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2007</cdomain:text>
                             <cdomain:text xml:lang="es">10/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2007</cdomain:text>
                             <cdomain:text xml:lang="es">09/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M08</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M08</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">08/2007</cdomain:text>
                             <cdomain:text xml:lang="es">08/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M07</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M07</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">07/2007</cdomain:text>
                             <cdomain:text xml:lang="es">07/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M06</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M06</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">06/2007</cdomain:text>
                             <cdomain:text xml:lang="es">06/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M05</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M05</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">05/2007</cdomain:text>
                             <cdomain:text xml:lang="es">05/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M04</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M04</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">04/2007</cdomain:text>
                             <cdomain:text xml:lang="es">04/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M03</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M03</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">03/2007</cdomain:text>
                             <cdomain:text xml:lang="es">03/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M02</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M02</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">02/2007</cdomain:text>
                             <cdomain:text xml:lang="es">02/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2007-M01</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2007-M01</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">01/2007</cdomain:text>
                             <cdomain:text xml:lang="es">01/2007</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2006</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2006</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2006</cdomain:text>
                             <cdomain:text xml:lang="es">2006</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2006-M12</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2006-M12</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">12/2006</cdomain:text>
                             <cdomain:text xml:lang="es">12/2006</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2006-M11</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2006-M11</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">11/2006</cdomain:text>
                             <cdomain:text xml:lang="es">11/2006</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2006-M10</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2006-M10</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">10/2006</cdomain:text>
                             <cdomain:text xml:lang="es">10/2006</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2006-M09</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2006-M09</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">09/2006</cdomain:text>
                             <cdomain:text xml:lang="es">09/2006</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>MONTHLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2005</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>MONTHLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2005</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2005</cdomain:text>
                             <cdomain:text xml:lang="es">2005</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2004</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2004</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2004</cdomain:text>
                             <cdomain:text xml:lang="es">2004</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2003</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2003</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2003</cdomain:text>
                             <cdomain:text xml:lang="es">2003</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2002</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2002</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2002</cdomain:text>
                             <cdomain:text xml:lang="es">2002</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2001</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2001</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2001</cdomain:text>
                             <cdomain:text xml:lang="es">2001</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                    <stat:value>
-                        <stat:id>2000</stat:id>
-                        <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                    <ns4:value>
+                        <ns4:id>2000</ns4:id>
+                        <ns4:name>
                             <cdomain:text xml:lang="en">2000</cdomain:text>
                             <cdomain:text xml:lang="es">2000</cdomain:text>
-                        </stat:name>
-                        <stat:temporalGranularity>YEARLY</stat:temporalGranularity>
-                    </stat:value>
-                </stat:dimensionValues>
-            </stat:dimension>
-            <stat:dimension>
-                <stat:id>INDICADORES</stat:id>
-                <stat:name>
+                        </ns4:name>
+                        <ns4:temporalGranularity>YEARLY</ns4:temporalGranularity>
+                    </ns4:value>
+                </ns4:dimensionValues>
+            </ns4:dimension>
+            <ns4:dimension>
+                <ns4:id>INDICADORES</ns4:id>
+                <ns4:name>
                     <cdomain:text xml:lang="es">Indicadores</cdomain:text>
-                </stat:name>
-                <stat:type>MEASURE_DIMENSION</stat:type>
-                <stat:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stat:EnumeratedDimensionValues" total="2">
-                    <stat:value kind="structuralResources#concept">
+                </ns4:name>
+                <ns4:type>MEASURE_DIMENSION</ns4:type>
+                <ns4:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:EnumeratedDimensionValues" total="2">
+                    <ns4:value kind="structuralResources#concept">
                         <cdomain:id>INDICE_OCUPACION_PLAZAS</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:INDICES_CENSALES_OCUPACION_HOTELERA(01.000).INDICE_OCUPACION_PLAZAS</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#concept" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/conceptschemes/ISTAC/INDICES_CENSALES_OCUPACION_HOTELERA/01.000/concepts/INDICE_OCUPACION_PLAZAS"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">Índice de ocupación de plazas</cdomain:text>
                         </cdomain:name>
-                    </stat:value>
-                    <stat:value kind="structuralResources#concept">
+                    </ns4:value>
+                    <ns4:value kind="structuralResources#concept">
                         <cdomain:id>INDICE_OCUPACION_HABITACIONES</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.conceptscheme.Concept=ISTAC:INDICES_CENSALES_OCUPACION_HOTELERA(01.000).INDICE_OCUPACION_HABITACIONES</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#concept" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/conceptschemes/ISTAC/INDICES_CENSALES_OCUPACION_HOTELERA/01.000/concepts/INDICE_OCUPACION_HABITACIONES"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">Índice de ocupación de habitaciones</cdomain:text>
                         </cdomain:name>
-                        <stat:showDecimalsPrecision>3</stat:showDecimalsPrecision>
-                    </stat:value>
-                </stat:dimensionValues>
-            </stat:dimension>
-            <stat:dimension>
-                <stat:id>CATEGORIA_ALOJAMIENTO</stat:id>
-                <stat:name>
+                        <ns4:showDecimalsPrecision>3</ns4:showDecimalsPrecision>
+                    </ns4:value>
+                </ns4:dimensionValues>
+            </ns4:dimension>
+            <ns4:dimension>
+                <ns4:id>CATEGORIA_ALOJAMIENTO</ns4:id>
+                <ns4:name>
                     <cdomain:text xml:lang="es">Categoría del alojamiento</cdomain:text>
-                </stat:name>
-                <stat:type>DIMENSION</stat:type>
-                <stat:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stat:EnumeratedDimensionValues" total="1">
-                    <stat:value kind="structuralResources#code">
+                </ns4:name>
+                <ns4:type>DIMENSION</ns4:type>
+                <ns4:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:EnumeratedDimensionValues" total="1">
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>TOTAL</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_CATEGORIA_ESTABLECIMIENTO_HOTELERO(01.000).TOTAL</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_CATEGORIA_ESTABLECIMIENTO_HOTELERO/01.000/codes/TOTAL"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">Total</cdomain:text>
                         </cdomain:name>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                </stat:dimensionValues>
-            </stat:dimension>
-            <stat:dimension>
-                <stat:id>DESTINO_ALOJAMIENTO</stat:id>
-                <stat:name>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                </ns4:dimensionValues>
+            </ns4:dimension>
+            <ns4:dimension>
+                <ns4:id>DESTINO_ALOJAMIENTO</ns4:id>
+                <ns4:name>
                     <cdomain:text xml:lang="es">Destino del alojamiento</cdomain:text>
-                </stat:name>
-                <stat:type>GEOGRAPHIC_DIMENSION</stat:type>
-                <stat:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stat:EnumeratedDimensionValues" total="7">
-                    <stat:value kind="structuralResources#code">
+                </ns4:name>
+                <ns4:type>GEOGRAPHIC_DIMENSION</ns4:type>
+                <ns4:dimensionValues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns4:EnumeratedDimensionValues" total="7">
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>EL_HIERRO</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_ISLAS_CANARIAS(01.001).EL_HIERRO</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_ISLAS_CANARIAS/01.001/codes/EL_HIERRO"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">El Hierro</cdomain:text>
                         </cdomain:name>
-                        <stat:variableElement kind="structuralResources#variableElement">
+                        <ns4:variableElement kind="structuralResources#variableElement">
                             <cdomain:id>EL_HIERRO</cdomain:id>
                             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=ISLAS.EL_HIERRO</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#variableElement" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/variables/ISLAS/variableelements/EL_HIERRO"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">EHR</cdomain:text>
                             </cdomain:name>
-                        </stat:variableElement>
-                        <stat:geographicGranularity kind="structuralResources#code">
+                        </ns4:variableElement>
+                        <ns4:geographicGranularity kind="structuralResources#code">
                             <cdomain:id>ISLANDS</cdomain:id>
                             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_GEO_GRANULARITIES(01.003).ISLANDS</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_GEO_GRANULARITIES/01.003/codes/ISLANDS"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Islas</cdomain:text>
                             </cdomain:name>
-                        </stat:geographicGranularity>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                    <stat:value kind="structuralResources#code">
+                        </ns4:geographicGranularity>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>LA_PALMA</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_ISLAS_CANARIAS(01.001).LA_PALMA</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_ISLAS_CANARIAS/01.001/codes/LA_PALMA"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">La Palma</cdomain:text>
                         </cdomain:name>
-                        <stat:variableElement kind="structuralResources#variableElement">
+                        <ns4:variableElement kind="structuralResources#variableElement">
                             <cdomain:id>LA_PALMA</cdomain:id>
                             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=ISLAS.LA_PALMA</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#variableElement" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/variables/ISLAS/variableelements/LA_PALMA"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Lpl</cdomain:text>
                             </cdomain:name>
-                        </stat:variableElement>
-                        <stat:geographicGranularity kind="structuralResources#code">
+                        </ns4:variableElement>
+                        <ns4:geographicGranularity kind="structuralResources#code">
                             <cdomain:id>ISLANDS</cdomain:id>
                             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_GEO_GRANULARITIES(01.003).ISLANDS</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_GEO_GRANULARITIES/01.003/codes/ISLANDS"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Islas</cdomain:text>
                             </cdomain:name>
-                        </stat:geographicGranularity>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                    <stat:value kind="structuralResources#code">
+                        </ns4:geographicGranularity>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>LA_GOMERA</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_ISLAS_CANARIAS(01.001).LA_GOMERA</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_ISLAS_CANARIAS/01.001/codes/LA_GOMERA"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">La Gomera</cdomain:text>
                         </cdomain:name>
-                        <stat:variableElement kind="structuralResources#variableElement">
+                        <ns4:variableElement kind="structuralResources#variableElement">
                             <cdomain:id>LA_GOMERA</cdomain:id>
                             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=ISLAS.LA_GOMERA</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#variableElement" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/variables/ISLAS/variableelements/LA_GOMERA"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Gmr</cdomain:text>
                             </cdomain:name>
-                        </stat:variableElement>
-                        <stat:geographicGranularity kind="structuralResources#code">
+                        </ns4:variableElement>
+                        <ns4:geographicGranularity kind="structuralResources#code">
                             <cdomain:id>ISLANDS</cdomain:id>
                             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_GEO_GRANULARITIES(01.003).ISLANDS</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_GEO_GRANULARITIES/01.003/codes/ISLANDS"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Islas</cdomain:text>
                             </cdomain:name>
-                        </stat:geographicGranularity>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                    <stat:value kind="structuralResources#code">
+                        </ns4:geographicGranularity>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>TENERIFE</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_ISLAS_CANARIAS(01.001).TENERIFE</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_ISLAS_CANARIAS/01.001/codes/TENERIFE"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">Tenerife</cdomain:text>
                         </cdomain:name>
-                        <stat:variableElement kind="structuralResources#variableElement">
+                        <ns4:variableElement kind="structuralResources#variableElement">
                             <cdomain:id>TENERIFE</cdomain:id>
                             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=ISLAS.TENERIFE</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#variableElement" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/variables/ISLAS/variableelements/TENERIFE"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Tenerife</cdomain:text>
                             </cdomain:name>
-                        </stat:variableElement>
-                        <stat:geographicGranularity kind="structuralResources#code">
+                        </ns4:variableElement>
+                        <ns4:geographicGranularity kind="structuralResources#code">
                             <cdomain:id>ISLANDS</cdomain:id>
                             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_GEO_GRANULARITIES(01.003).ISLANDS</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_GEO_GRANULARITIES/01.003/codes/ISLANDS"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Islas</cdomain:text>
                             </cdomain:name>
-                        </stat:geographicGranularity>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                    <stat:value kind="structuralResources#code">
+                        </ns4:geographicGranularity>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>GRAN_CANARIA</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_ISLAS_CANARIAS(01.001).GRAN_CANARIA</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_ISLAS_CANARIAS/01.001/codes/GRAN_CANARIA"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">Gran Canaria</cdomain:text>
                         </cdomain:name>
-                        <stat:variableElement kind="structuralResources#variableElement">
+                        <ns4:variableElement kind="structuralResources#variableElement">
                             <cdomain:id>GRAN_CANARIA</cdomain:id>
                             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=ISLAS.GRAN_CANARIA</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#variableElement" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/variables/ISLAS/variableelements/GRAN_CANARIA"/>
@@ -1040,73 +1040,73 @@
 <cdomain:text xml:lang="pt">Grã Canária</cdomain:text>
 <cdomain:text xml:lang="es">Gc.</cdomain:text>
                             </cdomain:name>
-                        </stat:variableElement>
-                        <stat:geographicGranularity kind="structuralResources#code">
+                        </ns4:variableElement>
+                        <ns4:geographicGranularity kind="structuralResources#code">
                             <cdomain:id>ISLANDS</cdomain:id>
                             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_GEO_GRANULARITIES(01.003).ISLANDS</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_GEO_GRANULARITIES/01.003/codes/ISLANDS"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Islas</cdomain:text>
                             </cdomain:name>
-                        </stat:geographicGranularity>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                    <stat:value kind="structuralResources#code">
+                        </ns4:geographicGranularity>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>FUERTEVENTURA</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_ISLAS_CANARIAS(01.001).FUERTEVENTURA</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_ISLAS_CANARIAS/01.001/codes/FUERTEVENTURA"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">Fuerteventura</cdomain:text>
                         </cdomain:name>
-                        <stat:variableElement kind="structuralResources#variableElement">
+                        <ns4:variableElement kind="structuralResources#variableElement">
                             <cdomain:id>FUERTEVENTURA</cdomain:id>
                             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=ISLAS.FUERTEVENTURA</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#variableElement" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/variables/ISLAS/variableelements/FUERTEVENTURA"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Ftv</cdomain:text>
                             </cdomain:name>
-                        </stat:variableElement>
-                        <stat:geographicGranularity kind="structuralResources#code">
+                        </ns4:variableElement>
+                        <ns4:geographicGranularity kind="structuralResources#code">
                             <cdomain:id>ISLANDS</cdomain:id>
                             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_GEO_GRANULARITIES(01.003).ISLANDS</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_GEO_GRANULARITIES/01.003/codes/ISLANDS"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Islas</cdomain:text>
                             </cdomain:name>
-                        </stat:geographicGranularity>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                    <stat:value kind="structuralResources#code">
+                        </ns4:geographicGranularity>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                    <ns4:value kind="structuralResources#code">
                         <cdomain:id>LANZAROTE</cdomain:id>
                         <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_ISLAS_CANARIAS(01.001).LANZAROTE</cdomain:urn>
                         <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_ISLAS_CANARIAS/01.001/codes/LANZAROTE"/>
                         <cdomain:name>
                             <cdomain:text xml:lang="es">Lanzarote</cdomain:text>
                         </cdomain:name>
-                        <stat:variableElement kind="structuralResources#variableElement">
+                        <ns4:variableElement kind="structuralResources#variableElement">
                             <cdomain:id>LANZAROTE</cdomain:id>
                             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.structuralresources.VariableElement=ISLAS.LANZAROTE</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#variableElement" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/variables/ISLAS/variableelements/LANZAROTE"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Lnz</cdomain:text>
                             </cdomain:name>
-                        </stat:variableElement>
-                        <stat:geographicGranularity kind="structuralResources#code">
+                        </ns4:variableElement>
+                        <ns4:geographicGranularity kind="structuralResources#code">
                             <cdomain:id>ISLANDS</cdomain:id>
                             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.codelist.Code=ISTAC:CL_GEO_GRANULARITIES(01.003).ISLANDS</cdomain:urn>
                             <cdomain:selfLink kind="structuralResources#code" href="http://estadisticas.arte-consultores.com/structural-resources/v1.0/codelists/ISTAC/CL_GEO_GRANULARITIES/01.003/codes/ISLANDS"/>
                             <cdomain:name>
 <cdomain:text xml:lang="es">Islas</cdomain:text>
                             </cdomain:name>
-                        </stat:geographicGranularity>
-                        <stat:open>true</stat:open>
-                    </stat:value>
-                </stat:dimensionValues>
-            </stat:dimension>
-        </stat:dimensions>
-        <stat:status>ACTIVE</stat:status>
-        <stat:type>AUTOINCREMENTAL</stat:type>
-        <stat:requires kind="statisticalResources#dataset">
+                        </ns4:geographicGranularity>
+                        <ns4:open>true</ns4:open>
+                    </ns4:value>
+                </ns4:dimensionValues>
+            </ns4:dimension>
+        </ns4:dimensions>
+        <ns4:status>ACTIVE</ns4:status>
+        <ns4:type>AUTOINCREMENTAL</ns4:type>
+        <ns4:requires kind="statisticalResources#dataset">
             <cdomain:id>C00031A_000001</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticalresources.Dataset=ISTAC:C00031A_000001(002.003)</cdomain:urn>
             <cdomain:selfLink kind="statisticalResources#dataset" href="http://estadisticas.arte-consultores.com/statistical-resources/v1.0/datasets/ISTAC/C00031A_000001/002.003"/>
@@ -1115,16 +1115,16 @@
                 <cdomain:text xml:lang="en">Censal index</cdomain:text>
                 <cdomain:text xml:lang="es">Índice censal de ocupación por plazas o por habitaciones según islas</cdomain:text>
             </cdomain:name>
-        </stat:requires>
-        <stat:statisticalOperation kind="statisticalOperations#operation">
+        </ns4:requires>
+        <ns4:statisticalOperation kind="statisticalOperations#operation">
             <cdomain:id>C00031A</cdomain:id>
             <cdomain:urn>urn:siemac:org.siemac.metamac.infomodel.statisticaloperations.Operation=C00031A</cdomain:urn>
             <cdomain:selfLink kind="statisticalOperations#operation" href="http://estadisticas.arte-consultores.com/operations/latest/operations/C00031A"/>
             <cdomain:name>
                 <cdomain:text xml:lang="es">Encuesta de Alojamiento Turístico en Establecimientos Hoteleros</cdomain:text>
             </cdomain:name>
-        </stat:statisticalOperation>
-        <stat:maintainer kind="structuralResources#agency">
+        </ns4:statisticalOperation>
+        <ns4:maintainer kind="structuralResources#agency">
             <cdomain:id>ISTAC</cdomain:id>
             <cdomain:nestedId>ISTAC</cdomain:nestedId>
             <cdomain:urn>urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISTAC</cdomain:urn>
@@ -1133,245 +1133,245 @@
                 <cdomain:text xml:lang="en">ISTAC</cdomain:text>
                 <cdomain:text xml:lang="es">Instituto Canario de Estadística</cdomain:text>
             </cdomain:name>
-        </stat:maintainer>
-        <stat:validFrom>2017-01-04T12:59:50.473+01:00</stat:validFrom>
-    </stat:metadata>
-    <stat:data>
-        <stat:dimensions total="4">
-            <stat:dimension>
-                <stat:dimensionId>TIME_PERIOD</stat:dimensionId>
-                <stat:representations total="203">
-                    <stat:representation code="2013" index="0"/>
-                    <stat:representation code="2013-M12" index="1"/>
-                    <stat:representation code="2013-M11" index="2"/>
-                    <stat:representation code="2013-M10" index="3"/>
-                    <stat:representation code="2013-M09" index="4"/>
-                    <stat:representation code="2013-M08" index="5"/>
-                    <stat:representation code="2013-M07" index="6"/>
-                    <stat:representation code="2013-M06" index="7"/>
-                    <stat:representation code="2013-M05" index="8"/>
-                    <stat:representation code="2013-M04" index="9"/>
-                    <stat:representation code="2013-M03" index="10"/>
-                    <stat:representation code="2013-M02" index="11"/>
-                    <stat:representation code="2013-M01" index="12"/>
-                    <stat:representation code="2012" index="13"/>
-                    <stat:representation code="2012-M12" index="14"/>
-                    <stat:representation code="2012-M11" index="15"/>
-                    <stat:representation code="2012-M10" index="16"/>
-                    <stat:representation code="2012-M09" index="17"/>
-                    <stat:representation code="2012-M08" index="18"/>
-                    <stat:representation code="2012-M07" index="19"/>
-                    <stat:representation code="2012-M06" index="20"/>
-                    <stat:representation code="2012-M05" index="21"/>
-                    <stat:representation code="2012-M04" index="22"/>
-                    <stat:representation code="2012-M03" index="23"/>
-                    <stat:representation code="2012-M02" index="24"/>
-                    <stat:representation code="2012-M01" index="25"/>
-                    <stat:representation code="2011" index="26"/>
-                    <stat:representation code="2011-M12" index="27"/>
-                    <stat:representation code="2011-M11" index="28"/>
-                    <stat:representation code="2011-M10" index="29"/>
-                    <stat:representation code="2011-M09" index="30"/>
-                    <stat:representation code="2011-M08" index="31"/>
-                    <stat:representation code="2011-M07" index="32"/>
-                    <stat:representation code="2011-M06" index="33"/>
-                    <stat:representation code="2011-M05" index="34"/>
-                    <stat:representation code="2011-M04" index="35"/>
-                    <stat:representation code="2011-M03" index="36"/>
-                    <stat:representation code="2011-M02" index="37"/>
-                    <stat:representation code="2011-M01" index="38"/>
-                    <stat:representation code="2010" index="39"/>
-                    <stat:representation code="2010-M12" index="40"/>
-                    <stat:representation code="2010-M11" index="41"/>
-                    <stat:representation code="2010-M10" index="42"/>
-                    <stat:representation code="2010-M09" index="43"/>
-                    <stat:representation code="2010-M08" index="44"/>
-                    <stat:representation code="2010-M07" index="45"/>
-                    <stat:representation code="2010-M06" index="46"/>
-                    <stat:representation code="2010-M05" index="47"/>
-                    <stat:representation code="2010-M04" index="48"/>
-                    <stat:representation code="2010-M03" index="49"/>
-                    <stat:representation code="2010-M02" index="50"/>
-                    <stat:representation code="2010-M01" index="51"/>
-                    <stat:representation code="2009" index="52"/>
-                    <stat:representation code="2009-M12" index="53"/>
-                    <stat:representation code="2009-M11" index="54"/>
-                    <stat:representation code="2009-M10" index="55"/>
-                    <stat:representation code="2009-M09" index="56"/>
-                    <stat:representation code="2009-M08" index="57"/>
-                    <stat:representation code="2009-M07" index="58"/>
-                    <stat:representation code="2009-M06" index="59"/>
-                    <stat:representation code="2009-M05" index="60"/>
-                    <stat:representation code="2009-M04" index="61"/>
-                    <stat:representation code="2009-M03" index="62"/>
-                    <stat:representation code="2009-M02" index="63"/>
-                    <stat:representation code="2009-M01" index="64"/>
-                    <stat:representation code="2008" index="65"/>
-                    <stat:representation code="2008-M12" index="66"/>
-                    <stat:representation code="2008-M11" index="67"/>
-                    <stat:representation code="2008-M10" index="68"/>
-                    <stat:representation code="2008-M09" index="69"/>
-                    <stat:representation code="2008-M08" index="70"/>
-                    <stat:representation code="2008-M07" index="71"/>
-                    <stat:representation code="2008-M06" index="72"/>
-                    <stat:representation code="2008-M05" index="73"/>
-                    <stat:representation code="2008-M04" index="74"/>
-                    <stat:representation code="2008-M03" index="75"/>
-                    <stat:representation code="2008-M02" index="76"/>
-                    <stat:representation code="2008-M01" index="77"/>
-                    <stat:representation code="2007" index="78"/>
-                    <stat:representation code="2007-M12" index="79"/>
-                    <stat:representation code="2007-M11" index="80"/>
-                    <stat:representation code="2007-M10" index="81"/>
-                    <stat:representation code="2007-M09" index="82"/>
-                    <stat:representation code="2007-M08" index="83"/>
-                    <stat:representation code="2007-M07" index="84"/>
-                    <stat:representation code="2007-M06" index="85"/>
-                    <stat:representation code="2007-M05" index="86"/>
-                    <stat:representation code="2007-M04" index="87"/>
-                    <stat:representation code="2007-M03" index="88"/>
-                    <stat:representation code="2007-M02" index="89"/>
-                    <stat:representation code="2007-M01" index="90"/>
-                    <stat:representation code="2006" index="91"/>
-                    <stat:representation code="2006-M12" index="92"/>
-                    <stat:representation code="2006-M11" index="93"/>
-                    <stat:representation code="2006-M10" index="94"/>
-                    <stat:representation code="2006-M09" index="95"/>
-                    <stat:representation code="2005" index="96"/>
-                    <stat:representation code="2004" index="97"/>
-                    <stat:representation code="2003" index="98"/>
-                    <stat:representation code="2002" index="99"/>
-                    <stat:representation code="2001" index="100"/>
-                    <stat:representation code="2000" index="101"/>
-                    <stat:representation code="2001" index="102"/>
-                    <stat:representation code="2002" index="103"/>
-                    <stat:representation code="2003" index="104"/>
-                    <stat:representation code="2004" index="105"/>
-                    <stat:representation code="2005" index="106"/>
-                    <stat:representation code="2006" index="107"/>
-                    <stat:representation code="2006-M09" index="108"/>
-                    <stat:representation code="2006-M10" index="109"/>
-                    <stat:representation code="2006-M11" index="110"/>
-                    <stat:representation code="2006-M12" index="111"/>
-                    <stat:representation code="2007" index="112"/>
-                    <stat:representation code="2007-M01" index="113"/>
-                    <stat:representation code="2007-M02" index="114"/>
-                    <stat:representation code="2007-M03" index="115"/>
-                    <stat:representation code="2007-M04" index="116"/>
-                    <stat:representation code="2007-M05" index="117"/>
-                    <stat:representation code="2007-M06" index="118"/>
-                    <stat:representation code="2007-M07" index="119"/>
-                    <stat:representation code="2007-M08" index="120"/>
-                    <stat:representation code="2007-M09" index="121"/>
-                    <stat:representation code="2007-M10" index="122"/>
-                    <stat:representation code="2007-M11" index="123"/>
-                    <stat:representation code="2007-M12" index="124"/>
-                    <stat:representation code="2008" index="125"/>
-                    <stat:representation code="2008-M01" index="126"/>
-                    <stat:representation code="2008-M02" index="127"/>
-                    <stat:representation code="2008-M03" index="128"/>
-                    <stat:representation code="2008-M04" index="129"/>
-                    <stat:representation code="2008-M05" index="130"/>
-                    <stat:representation code="2008-M06" index="131"/>
-                    <stat:representation code="2008-M07" index="132"/>
-                    <stat:representation code="2008-M08" index="133"/>
-                    <stat:representation code="2008-M09" index="134"/>
-                    <stat:representation code="2008-M10" index="135"/>
-                    <stat:representation code="2008-M11" index="136"/>
-                    <stat:representation code="2008-M12" index="137"/>
-                    <stat:representation code="2009" index="138"/>
-                    <stat:representation code="2009-M01" index="139"/>
-                    <stat:representation code="2009-M02" index="140"/>
-                    <stat:representation code="2009-M03" index="141"/>
-                    <stat:representation code="2009-M04" index="142"/>
-                    <stat:representation code="2009-M05" index="143"/>
-                    <stat:representation code="2009-M06" index="144"/>
-                    <stat:representation code="2009-M07" index="145"/>
-                    <stat:representation code="2009-M08" index="146"/>
-                    <stat:representation code="2009-M09" index="147"/>
-                    <stat:representation code="2009-M10" index="148"/>
-                    <stat:representation code="2009-M11" index="149"/>
-                    <stat:representation code="2009-M12" index="150"/>
-                    <stat:representation code="2010" index="151"/>
-                    <stat:representation code="2010-M01" index="152"/>
-                    <stat:representation code="2010-M02" index="153"/>
-                    <stat:representation code="2010-M03" index="154"/>
-                    <stat:representation code="2010-M04" index="155"/>
-                    <stat:representation code="2010-M05" index="156"/>
-                    <stat:representation code="2010-M06" index="157"/>
-                    <stat:representation code="2010-M07" index="158"/>
-                    <stat:representation code="2010-M08" index="159"/>
-                    <stat:representation code="2010-M09" index="160"/>
-                    <stat:representation code="2010-M10" index="161"/>
-                    <stat:representation code="2010-M11" index="162"/>
-                    <stat:representation code="2010-M12" index="163"/>
-                    <stat:representation code="2011" index="164"/>
-                    <stat:representation code="2011-M01" index="165"/>
-                    <stat:representation code="2011-M02" index="166"/>
-                    <stat:representation code="2011-M03" index="167"/>
-                    <stat:representation code="2011-M04" index="168"/>
-                    <stat:representation code="2011-M05" index="169"/>
-                    <stat:representation code="2011-M06" index="170"/>
-                    <stat:representation code="2011-M07" index="171"/>
-                    <stat:representation code="2011-M08" index="172"/>
-                    <stat:representation code="2011-M09" index="173"/>
-                    <stat:representation code="2011-M10" index="174"/>
-                    <stat:representation code="2011-M11" index="175"/>
-                    <stat:representation code="2011-M12" index="176"/>
-                    <stat:representation code="2012" index="177"/>
-                    <stat:representation code="2012-M01" index="178"/>
-                    <stat:representation code="2012-M02" index="179"/>
-                    <stat:representation code="2012-M03" index="180"/>
-                    <stat:representation code="2012-M04" index="181"/>
-                    <stat:representation code="2012-M05" index="182"/>
-                    <stat:representation code="2012-M06" index="183"/>
-                    <stat:representation code="2012-M07" index="184"/>
-                    <stat:representation code="2012-M08" index="185"/>
-                    <stat:representation code="2012-M09" index="186"/>
-                    <stat:representation code="2012-M10" index="187"/>
-                    <stat:representation code="2012-M11" index="188"/>
-                    <stat:representation code="2012-M12" index="189"/>
-                    <stat:representation code="2013" index="190"/>
-                    <stat:representation code="2013-M01" index="191"/>
-                    <stat:representation code="2013-M02" index="192"/>
-                    <stat:representation code="2013-M03" index="193"/>
-                    <stat:representation code="2013-M04" index="194"/>
-                    <stat:representation code="2013-M05" index="195"/>
-                    <stat:representation code="2013-M06" index="196"/>
-                    <stat:representation code="2013-M07" index="197"/>
-                    <stat:representation code="2013-M08" index="198"/>
-                    <stat:representation code="2013-M09" index="199"/>
-                    <stat:representation code="2013-M10" index="200"/>
-                    <stat:representation code="2013-M11" index="201"/>
-                    <stat:representation code="2013-M12" index="202"/>
-                </stat:representations>
-            </stat:dimension>
-            <stat:dimension>
-                <stat:dimensionId>INDICADORES</stat:dimensionId>
-                <stat:representations total="2">
-                    <stat:representation code="INDICE_OCUPACION_HABITACIONES" index="0"/>
-                    <stat:representation code="INDICE_OCUPACION_PLAZAS" index="1"/>
-                </stat:representations>
-            </stat:dimension>
-            <stat:dimension>
-                <stat:dimensionId>CATEGORIA_ALOJAMIENTO</stat:dimensionId>
-                <stat:representations total="1">
-                    <stat:representation code="TOTAL" index="0"/>
-                </stat:representations>
-            </stat:dimension>
-            <stat:dimension>
-                <stat:dimensionId>DESTINO_ALOJAMIENTO</stat:dimensionId>
-                <stat:representations total="7">
-                    <stat:representation code="EL_HIERRO" index="0"/>
-                    <stat:representation code="FUERTEVENTURA" index="1"/>
-                    <stat:representation code="GRAN_CANARIA" index="2"/>
-                    <stat:representation code="LANZAROTE" index="3"/>
-                    <stat:representation code="LA_GOMERA" index="4"/>
-                    <stat:representation code="LA_PALMA" index="5"/>
-                    <stat:representation code="TENERIFE" index="6"/>
-                </stat:representations>
-            </stat:dimension>
-        </stat:dimensions>
-        <stat:observations>233447 | 107930 | 143138 | 77196 | 185781 | 222260 | 179493 | 8671 | 5071 | 6063 | 4308 | 7293 | 8687 | 7156 | 30519 | 11990 | 16821 | 7873 | 22722 | 27736 | 21543 | 1442 | 591 | 806 | 471 | 1150 | 1422 | 1049 | 11882 | 3236 | 5437 | 1582 | 8946 | 10883 | 7846 | 513 | 166 | 255 | 114 | 411 | 544 | 354 | 768 | 503 | 603 | 426 | 619 | 728 | 730 | 22 | 21 | 25 | 21 | 17 | 22 | 26 | 3003 | 1341 | 1920 | 784 | 2540 | 3026 | 2476 | 170 | 51 | 87 | 38 | 121 | 163 | 113 | 3336 | 1585 | 2031 | 1184 | 2345 | 3063 | 2423 | 172 | 86 | 107 | 63 | 147 | 180 | 133 | 7436 | 3888 | 4669 | 3014 | 5424 | 6488 | 5354 | 432 | 223 | 269 | 205 | 367 | 409 | 331 | 757 | 410 | 522 | 320 | 580 | 665 | 524 | 35 | 14 | 17 | 10 | 24 | 30 | 23 | 3337 | 1027 | 1639 | 563 | 2268 | 2883 | 2190 | 98 | 30 | 46 | 20 | 63 | 74 | 69 | 22498 | 6920 | 9668 | 4124 | 16018 | 20526 | 13458 | 799 | 274 | 320 | 186 | 545 | 784 | 419 | 2782 | 877 | 1393 | 388 | 1895 | 2426 | 1619 | 40 | 18 | 17 | 13 | 25 | 29 | 18 | 75 | 53 | 54 | 47 | 77 | 93 | 73 | 5 | 1 | 1 | 1 | 5 | 7 | 1 | 6779 | 1874 | 2723 | 1282 | 4534 | 5741 | 3634 | 291 | 68 | 103 | 46 | 189 | 262 | 128 | 6173 | 2522 | 3373 | 1573 | 4599 | 5778 | 4291 | 306 | 125 | 134 | 89 | 198 | 310 | 160 | 4608 | 979 | 1159 | 463 | 3528 | 4534 | 2665 | 120 | 46 | 44 | 28 | 97 | 142 | 83 | 2081 | 615 | 966 | 371 | 1385 | 1954 | 1176 | 37 | 16 | 21 | 9 | 31 | 34 | 29 | 60765 | 33469 | 42995 | 25611 | 52340 | 60531 | 54369 | 2888 | 2252 | 2565 | 2018 | 2914 | 3223 | 3038 | 239 | 350 | 371 | 336 | 204 | 233 | 366 | 5 | 3 | 5 | 2 | 5 | 7 | 6 | 2250 | 918 | 1274 | 659 | 1834 | 2100 | 1708 | 66 | 43 | 55 | 48 | 77 | 74 | 69 | 4 | 8 | 6 | 9 | 10 | 8 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 441 | 309 | 374 | 249 | 398 | 455 | 421 | 18 | 20 | 20 | 18 | 21 | 22 | 22 | 102 | 59 | 72 | 56 | 82 | 102 | 67 | 13 | 5 | 4 | 2 | 13 | 14 | 9 | 285 | 141 | 170 | 127 | 197 | 240 | 201 | 10 | 6 | 7 | 5 | 5 | 7 | 6 | 1208 | 463 | 649 | 344 | 1036 | 1149 | 931 | 63 | 22 | 38 | 30 | 60 | 66 | 52 | 5439 | 3066 | 4060 | 2022 | 4116 | 4953 | 4836 | 166 | 121 | 153 | 94 | 144 | 161 | 165 | 48 | 40 | 39 | 41 | 44 | 40 | 45 | 1 | 3 | 3 | 2 | 1 | 1 | 2 | 688 | 18026 | 41610 | 20598 | 1972 | 4539 | 68341 | 715 | 16018 | 40944 | 19199 | 2038 | 4863 | 67458 | 12216 | 7960 | 9379 | 6848 | 9838 | 11501 | 11414 | 510 | 443 | 466 | 435 | 471 | 503 | 545 | 590 | 79 | 136 | 56 | 187 | 390 | 183 | 7 | 3 | 2 | 1 | 5 | 11 | 1 | 699 | 712 | 811 | 630 | 702 | 793 | 869 | 67 | 78 | 84 | 71 | 65 | 64 | 80 | 8044 | 3187 | 4643 | 2231 | 6915 | 8059 | 6374 | 638 | 361 | 415 | 276 | 532 | 663 | 502 | 164 | 85 | 99 | 63 | 147 | 146 | 148 | 2 | 7 | 7 | 4 | 6 | 3 | 7 | 41 | 5 | 11 | 2 | 32 | 44 | 31 | 1 | 2 | 1 | 2 | 1 | 1 | 1 | 2755 | 1419 | 1791 | 1181 | 2355 | 2762 | 2343 | 70 | 62 | 103 | 53 | 83 | 83 | 110 | 171 | 107 | 127 | 93 | 182 | 178 | 148 | 6 | 1 | 7 | 1 | 8 | 6 | 7 | 345 | 139 | 220 | 103 | 275 | 349 | 258 | 30 | 15 | 20 | 13 | 19 | 21 | 21 | 41 | 32 | 39 | 15 | 52 | 56 | 47 | 1 | 1 | 1 | 0 | 1 | 2 | 1 | 95 | 25 | 76 | 21 | 95 | 110 | 92 | 3 | 3 | 5 | 4 | 3 | 3 | 5 | 107697 | 47358 | 64130 | 32666 | 84606 | 101946 | 79432 | 3287 | 1703 | 2052 | 1400 | 2408 | 2961 | 2335 | 685 | 17799 | 40749 | 20630 | 1922 | 4431 | 70177 | 704 | 15553 | 40322 | 18999 | 2010 | 4736 | 68662 | 138 | 70 | 88 | 50 | 124 | 139 | 118 | 3 | 3 | 5 | 2 | 4 | 3 | 5 | 1077 | 533 | 723 | 444 | 965 | 1066 | 917 | 9 | 5 | 11 | 5 | 8 | 8 | 11 | 27234 | 9662 | 13890 | 5957 | 19112 | 24248 | 18038 | 882 | 247 | 328 | 195 | 414 | 639 | 396 | 225 | 199 | 252 | 166 | 242 | 270 | 285 | 8 | 5 | 9 | 2 | 10 | 10 | 10 | 1800 | 508 | 870 | 415 | 1562 | 1807 | 1230 | 32 | 18 | 24 | 20 | 25 | 31 | 22 | 74 | 31 | 41 | 15 | 93 | 87 | 73 | 2 | 0 | 0 | 0 | 2 | 2 | 1 | 248 | 371 | 394 | 246 | 369 | 380 | 401 | 5 | 12 | 12 | 6 | 12 | 12 | 12 | 8665 | 1808 | 4743 | 1330 | 6610 | 7989 | 5847 | 276 | 56 | 66 | 26 | 138 | 247 | 75 | 160 | 118 | 133 | 93 | 145 | 152 | 135 | 24 | 12 | 27 | 10 | 24 | 25 | 25 | 3679 | 1143 | 1822 | 639 | 2844 | 3419 | 2427 | 70 | 18 | 26 | 9 | 35 | 57 | 31 | 623 | 257 | 560 | 212 | 629 | 698 | 633 | 16 | 4 | 7 | 3 | 15 | 19 | 11 | 1539 | 850 | 847 | 512 | 1559 | 1689 | 1287 | 40 | 44 | 45 | 28 | 61 | 70 | 60 | 692 | 17600 | 39210 | 21362 | 1882 | 4366 | 68699 | 716 | 14968 | 38893 | 19261 | 1953 | 4644 | 66958 | 540 | 394 | 450 | 325 | 461 | 519 | 494 | 14 | 14 | 13 | 11 | 8 | 12 | 7 | 2013 | 1309 | 1524 | 1164 | 1710 | 1861 | 1726 | 91 | 81 | 88 | 73 | 88 | 94 | 94 | 5390 | 4943 | 5522 | 2681 | 4716 | 5343 | 6364 | 184 | 221 | 244 | 178 | 196 | 211 | 255 | 2667 | 2104 | 2413 | 1914 | 2306 | 2548 | 2653 | 75 | 83 | 97 | 75 | 80 | 80 | 99 | 966 | 521 | 605 | 422 | 787 | 934 | 704 | 31 | 20 | 21 | 18 | 21 | 31 | 22 | 166 | 122 | 213 | 94 | 205 | 221 | 242 | 2 | 3 | 5 | 3 | 4 | 4 | 5 | 4159 | 1562 | 2028 | 1165 | 3081 | 3692 | 2574 | 98 | 39 | 51 | 38 | 100 | 103 | 84 | 12320 | 5310 | 7089 | 4473 | 10150 | 12338 | 9194 | 456 | 432 | 478 | 415 | 460 | 501 | 502 | 1503 | 988 | 1183 | 817 | 1302 | 1446 | 1378 | 60 | 40 | 49 | 38 | 53 | 55 | 58 | 5644 | 3935 | 4514 | 3508 | 5171 | 5514 | 4923 | 101 | 35 | 63 | 19 | 83 | 91 | 72 | 733 | 692 | 763 | 674 | 657 | 707 | 808 | 14 | 14 | 14 | 13 | 17 | 16 | 16 | 663 | 517 | 604 | 488 | 706 | 739 | 701 | 8 | 3 | 4 | 2 | 2 | 5 | 3 | 641 | 16516 | 37057 | 20642 | 1799 | 4147 | 64832 | 662 | 13782 | 36531 | 18229 | 1834 | 4364 | 62811 | 137 | 153 | 170 | 124 | 160 | 198 | 202 | 2 | 9 | 10 | 9 | 4 | 4 | 8 | 185 | 112 | 127 | 79 | 167 | 187 | 151 | 3 | 7 | 5 | 7 | 5 | 4 | 6 | 323 | 202 | 260 | 179 | 300 | 343 | 291 | 8 | 5 | 7 | 7 | 7 | 8 | 8 | 221 | 75 | 140 | 52 | 208 | 244 | 186 | 8 | 0 | 1 | 0 | 6 | 8 | 3 | 3114 | 1498 | 1643 | 1255 | 2532 | 2919 | 1923 | 64 | 55 | 55 | 40 | 64 | 70 | 66 | 46 | 39 | 48 | 36 | 59 | 65 | 50 | 1 | 0 | 2 | 0 | 2 | 2 | 2 | 261 | 80 | 109 | 71 | 185 | 220 | 171 | 8 | 6 | 6 | 2 | 8 | 9 | 8 | 165 | 122 | 132 | 112 | 156 | 157 | 151 | 4 | 1 | 1 | 0 | 0 | 0 | 1 | 856 | 298 | 276 | 197 | 631 | 856 | 256 | 9 | 14 | 12 | 8 | 11 | 15 | 10 | 1593 | 862 | 957 | 787 | 1299 | 1417 | 1114 | 32 | 27 | 24 | 28 | 26 | 27 | 26 | 193 | 97 | 121 | 52 | 202 | 204 | 181 | 10 | 7 | 10 | 2 | 17 | 17 | 19 | 7537 | 5854 | 6777 | 4984 | 6515 | 7281 | 7480 | 168 | 169 | 231 | 167 | 177 | 187 | 208 | 572 | 14182 | 32688 | 17870 | 1646 | 3786 | 58152 | 605 | 11414 | 31974 | 15771 | 1678 | 4050 | 56348 | 585 | 513 | 558 | 447 | 554 | 604 | 625 | 8 | 4 | 7 | 7 | 7 | 11 | 7 | 386 | 287 | 327 | 238 | 337 | 369 | 373 | 6 | 6 | 8 | 6 | 6 | 6 | 10 | 148 | 47 | 55 | 44 | 91 | 124 | 83 | 0 | 0 | 0 | 1 | 2 | 2 | 0 | 253 | 238 | 249 | 222 | 228 | 259 | 267 | 14 | 26 | 29 | 28 | 19 | 20 | 28 | 2295 | 1697 | 2128 | 1300 | 2023 | 2207 | 2313 | 40 | 36 | 80 | 32 | 48 | 49 | 53 | 1034 | 1020 | 1099 | 971 | 882 | 967 | 1192 | 10 | 12 | 9 | 12 | 6 | 7 | 10 | 254 | 140 | 162 | 125 | 158 | 198 | 173 | 20 | 14 | 17 | 13 | 13 | 14 | 16 | 176 | 121 | 164 | 87 | 172 | 205 | 190 | 2 | 8 | 12 | 6 | 6 | 5 | 10 | 135 | 62 | 81 | 53 | 115 | 168 | 99 | 5 | 4 | 4 | 4 | 4 | 6 | 4 | 905 | 440 | 573 | 318 | 776 | 900 | 713 | 12 | 10 | 10 | 12 | 11 | 11 | 11 | 418 | 555 | 583 | 521 | 317 | 385 | 585 | 13 | 15 | 16 | 16 | 13 | 15 | 17 | 445 | 350 | 363 | 301 | 363 | 401 | 369 | 22 | 17 | 19 | 14 | 21 | 21 | 20 | 673 | 12446 | 30973 | 16197 | 1532 | 3616 | 55374 | 644 | 10052 | 29792 | 14322 | 1582 | 3921 | 52323 | 1317 | 841 | 1104 | 683 | 1048 | 1321 | 1288 | 23 | 27 | 34 | 26 | 35 | 40 | 41 | 899 | 634 | 772 | 538 | 614 | 863 | 866 | 12 | 15 | 21 | 16 | 16 | 20 | 27 | 418 | 207 | 332 | 145 | 434 | 458 | 422 | 11 | 12 | 13 | 10 | 19 | 20 | 14 |  |  |  |  |  |  |  |  |  |  |  |  |  |  | 654 | 11502 | 31150 | 14648 | 1426 | 3552 | 52523 | 667 | 9024 | 29381 | 13088 | 1493 | 3729 | 49423 | 513 | 8922 | 26827 | 11808 | 1228 | 3155 | 43459 | 535 | 7096 | 25513 | 10914 | 1304 | 3360 | 41147 | 641 | 7615 | 27866 | 11097 | 913 | 3704 | 40741 | 647 | 5843 | 26503 | 10446 | 1010 | 3776 | 38691 | 533 | 5521 | 21929 | 8549 | 777 | 3382 | 32656 | 571 | 4147 | 21066 | 8272 | 866 | 3395 | 31474 | 394 | 3967 | 16894 | 6112 | 705 | 2923 | 23773 | 447 | 2953 | 16575 | 5878 | 793 | 2931 | 23585 | 312 | 2263 | 12591 | 3877 | 588 | 2487 | 15982 | 371 | 1861 | 13020 | 3996 | 667 | 2497 | 16684 | 394 | 3967 | 16894 | 6112 | 705 | 2923 | 23773 | 447 | 2953 | 16575 | 5878 | 793 | 2931 | 23585 | 533 | 5521 | 21929 | 8549 | 777 | 3382 | 32656 | 571 | 4147 | 21066 | 8272 | 866 | 3395 | 31474 | 641 | 7615 | 27866 | 11097 | 913 | 3704 | 40741 | 647 | 5843 | 26503 | 10446 | 1010 | 3776 | 38691 | 513 | 8922 | 26827 | 11808 | 1228 | 3155 | 43459 | 535 | 7096 | 25513 | 10914 | 1304 | 3360 | 41147 | 654 | 11502 | 31150 | 14648 | 1426 | 3552 | 52523 | 667 | 9024 | 29381 | 13088 | 1493 | 3729 | 49423 | 673 | 12446 | 30973 | 16197 | 1532 | 3616 | 55374 | 644 | 10052 | 29792 | 14322 | 1582 | 3921 | 52323 |  |  |  |  |  |  |  |  |  |  |  |  |  |  | 418 | 207 | 332 | 145 | 434 | 458 | 422 | 11 | 12 | 13 | 10 | 19 | 20 | 14 | 899 | 634 | 772 | 538 | 614 | 863 | 866 | 12 | 15 | 21 | 16 | 16 | 20 | 27 | 1317 | 841 | 1104 | 683 | 1048 | 1321 | 1288 | 23 | 27 | 34 | 26 | 35 | 40 | 41 | 572 | 14182 | 32688 | 17870 | 1646 | 3786 | 58152 | 605 | 11414 | 31974 | 15771 | 1678 | 4050 | 56348 | 445 | 350 | 363 | 301 | 363 | 401 | 369 | 22 | 17 | 19 | 14 | 21 | 21 | 20 | 418 | 555 | 583 | 521 | 317 | 385 | 585 | 13 | 15 | 16 | 16 | 13 | 15 | 17 | 905 | 440 | 573 | 318 | 776 | 900 | 713 | 12 | 10 | 10 | 12 | 11 | 11 | 11 | 135 | 62 | 81 | 53 | 115 | 168 | 99 | 5 | 4 | 4 | 4 | 4 | 6 | 4 | 176 | 121 | 164 | 87 | 172 | 205 | 190 | 2 | 8 | 12 | 6 | 6 | 5 | 10 | 254 | 140 | 162 | 125 | 158 | 198 | 173 | 20 | 14 | 17 | 13 | 13 | 14 | 16 | 1034 | 1020 | 1099 | 971 | 882 | 967 | 1192 | 10 | 12 | 9 | 12 | 6 | 7 | 10 | 2295 | 1697 | 2128 | 1300 | 2023 | 2207 | 2313 | 40 | 36 | 80 | 32 | 48 | 49 | 53 | 253 | 238 | 249 | 222 | 228 | 259 | 267 | 14 | 26 | 29 | 28 | 19 | 20 | 28 | 148 | 47 | 55 | 44 | 91 | 124 | 83 | 0 | 0 | 0 | 1 | 2 | 2 | 0 | 386 | 287 | 327 | 238 | 337 | 369 | 373 | 6 | 6 | 8 | 6 | 6 | 6 | 10 | 585 | 513 | 558 | 447 | 554 | 604 | 625 | 8 | 4 | 7 | 7 | 7 | 11 | 7 | 641 | 16516 | 37057 | 20642 | 1799 | 4147 | 64832 | 662 | 13782 | 36531 | 18229 | 1834 | 4364 | 62811 | 7537 | 5854 | 6777 | 4984 | 6515 | 7281 | 7480 | 168 | 169 | 231 | 167 | 177 | 187 | 208 | 193 | 97 | 121 | 52 | 202 | 204 | 181 | 10 | 7 | 10 | 2 | 17 | 17 | 19 | 1593 | 862 | 957 | 787 | 1299 | 1417 | 1114 | 32 | 27 | 24 | 28 | 26 | 27 | 26 | 856 | 298 | 276 | 197 | 631 | 856 | 256 | 9 | 14 | 12 | 8 | 11 | 15 | 10 | 165 | 122 | 132 | 112 | 156 | 157 | 151 | 4 | 1 | 1 | 0 | 0 | 0 | 1 | 261 | 80 | 109 | 71 | 185 | 220 | 171 | 8 | 6 | 6 | 2 | 8 | 9 | 8 | 46 | 39 | 48 | 36 | 59 | 65 | 50 | 1 | 0 | 2 | 0 | 2 | 2 | 2 | 3114 | 1498 | 1643 | 1255 | 2532 | 2919 | 1923 | 64 | 55 | 55 | 40 | 64 | 70 | 66 | 221 | 75 | 140 | 52 | 208 | 244 | 186 | 8 | 0 | 1 | 0 | 6 | 8 | 3 | 323 | 202 | 260 | 179 | 300 | 343 | 291 | 8 | 5 | 7 | 7 | 7 | 8 | 8 | 185 | 112 | 127 | 79 | 167 | 187 | 151 | 3 | 7 | 5 | 7 | 5 | 4 | 6 | 137 | 153 | 170 | 124 | 160 | 198 | 202 | 2 | 9 | 10 | 9 | 4 | 4 | 8 | 692 | 17600 | 39210 | 21362 | 1882 | 4366 | 68699 | 716 | 14968 | 38893 | 19261 | 1953 | 4644 | 66958 | 663 | 517 | 604 | 488 | 706 | 739 | 701 | 8 | 3 | 4 | 2 | 2 | 5 | 3 | 733 | 692 | 763 | 674 | 657 | 707 | 808 | 14 | 14 | 14 | 13 | 17 | 16 | 16 | 5644 | 3935 | 4514 | 3508 | 5171 | 5514 | 4923 | 101 | 35 | 63 | 19 | 83 | 91 | 72 | 1503 | 988 | 1183 | 817 | 1302 | 1446 | 1378 | 60 | 40 | 49 | 38 | 53 | 55 | 58 | 12320 | 5310 | 7089 | 4473 | 10150 | 12338 | 9194 | 456 | 432 | 478 | 415 | 460 | 501 | 502 | 4159 | 1562 | 2028 | 1165 | 3081 | 3692 | 2574 | 98 | 39 | 51 | 38 | 100 | 103 | 84 | 166 | 122 | 213 | 94 | 205 | 221 | 242 | 2 | 3 | 5 | 3 | 4 | 4 | 5 | 966 | 521 | 605 | 422 | 787 | 934 | 704 | 31 | 20 | 21 | 18 | 21 | 31 | 22 | 2667 | 2104 | 2413 | 1914 | 2306 | 2548 | 2653 | 75 | 83 | 97 | 75 | 80 | 80 | 99 | 5390 | 4943 | 5522 | 2681 | 4716 | 5343 | 6364 | 184 | 221 | 244 | 178 | 196 | 211 | 255 | 2013 | 1309 | 1524 | 1164 | 1710 | 1861 | 1726 | 91 | 81 | 88 | 73 | 88 | 94 | 94 | 540 | 394 | 450 | 325 | 461 | 519 | 494 | 14 | 14 | 13 | 11 | 8 | 12 | 7 | 685 | 17799 | 40749 | 20630 | 1922 | 4431 | 70177 | 704 | 15553 | 40322 | 18999 | 2010 | 4736 | 68662 | 1539 | 850 | 847 | 512 | 1559 | 1689 | 1287 | 40 | 44 | 45 | 28 | 61 | 70 | 60 | 623 | 257 | 560 | 212 | 629 | 698 | 633 | 16 | 4 | 7 | 3 | 15 | 19 | 11 | 3679 | 1143 | 1822 | 639 | 2844 | 3419 | 2427 | 70 | 18 | 26 | 9 | 35 | 57 | 31 | 160 | 118 | 133 | 93 | 145 | 152 | 135 | 24 | 12 | 27 | 10 | 24 | 25 | 25 | 8665 | 1808 | 4743 | 1330 | 6610 | 7989 | 5847 | 276 | 56 | 66 | 26 | 138 | 247 | 75 | 248 | 371 | 394 | 246 | 369 | 380 | 401 | 5 | 12 | 12 | 6 | 12 | 12 | 12 | 74 | 31 | 41 | 15 | 93 | 87 | 73 | 2 | 0 | 0 | 0 | 2 | 2 | 1 | 1800 | 508 | 870 | 415 | 1562 | 1807 | 1230 | 32 | 18 | 24 | 20 | 25 | 31 | 22 | 225 | 199 | 252 | 166 | 242 | 270 | 285 | 8 | 5 | 9 | 2 | 10 | 10 | 10 | 27234 | 9662 | 13890 | 5957 | 19112 | 24248 | 18038 | 882 | 247 | 328 | 195 | 414 | 639 | 396 | 1077 | 533 | 723 | 444 | 965 | 1066 | 917 | 9 | 5 | 11 | 5 | 8 | 8 | 11 | 138 | 70 | 88 | 50 | 124 | 139 | 118 | 3 | 3 | 5 | 2 | 4 | 3 | 5 | 688 | 18026 | 41610 | 20598 | 1972 | 4539 | 68341 | 715 | 16018 | 40944 | 19199 | 2038 | 4863 | 67458 | 107697 | 47358 | 64130 | 32666 | 84606 | 101946 | 79432 | 3287 | 1703 | 2052 | 1400 | 2408 | 2961 | 2335 | 95 | 25 | 76 | 21 | 95 | 110 | 92 | 3 | 3 | 5 | 4 | 3 | 3 | 5 | 41 | 32 | 39 | 15 | 52 | 56 | 47 | 1 | 1 | 1 | 0 | 1 | 2 | 1 | 345 | 139 | 220 | 103 | 275 | 349 | 258 | 30 | 15 | 20 | 13 | 19 | 21 | 21 | 171 | 107 | 127 | 93 | 182 | 178 | 148 | 6 | 1 | 7 | 1 | 8 | 6 | 7 | 2755 | 1419 | 1791 | 1181 | 2355 | 2762 | 2343 | 70 | 62 | 103 | 53 | 83 | 83 | 110 | 41 | 5 | 11 | 2 | 32 | 44 | 31 | 1 | 2 | 1 | 2 | 1 | 1 | 1 | 164 | 85 | 99 | 63 | 147 | 146 | 148 | 2 | 7 | 7 | 4 | 6 | 3 | 7 | 8044 | 3187 | 4643 | 2231 | 6915 | 8059 | 6374 | 638 | 361 | 415 | 276 | 532 | 663 | 502 | 699 | 712 | 811 | 630 | 702 | 793 | 869 | 67 | 78 | 84 | 71 | 65 | 64 | 80 | 590 | 79 | 136 | 56 | 187 | 390 | 183 | 7 | 3 | 2 | 1 | 5 | 11 | 1 | 12216 | 7960 | 9379 | 6848 | 9838 | 11501 | 11414 | 510 | 443 | 466 | 435 | 471 | 503 | 545 | 6173 | 2522 | 3373 | 1573 | 4599 | 5778 | 4291 | 306 | 125 | 134 | 89 | 198 | 310 | 160 | 48 | 40 | 39 | 41 | 44 | 40 | 45 | 1 | 3 | 3 | 2 | 1 | 1 | 2 | 5439 | 3066 | 4060 | 2022 | 4116 | 4953 | 4836 | 166 | 121 | 153 | 94 | 144 | 161 | 165 | 1208 | 463 | 649 | 344 | 1036 | 1149 | 931 | 63 | 22 | 38 | 30 | 60 | 66 | 52 | 285 | 141 | 170 | 127 | 197 | 240 | 201 | 10 | 6 | 7 | 5 | 5 | 7 | 6 | 102 | 59 | 72 | 56 | 82 | 102 | 67 | 13 | 5 | 4 | 2 | 13 | 14 | 9 | 441 | 309 | 374 | 249 | 398 | 455 | 421 | 18 | 20 | 20 | 18 | 21 | 22 | 22 | 4 | 8 | 6 | 9 | 10 | 8 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2250 | 918 | 1274 | 659 | 1834 | 2100 | 1708 | 66 | 43 | 55 | 48 | 77 | 74 | 69 | 239 | 350 | 371 | 336 | 204 | 233 | 366 | 5 | 3 | 5 | 2 | 5 | 7 | 6 | 60765 | 33469 | 42995 | 25611 | 52340 | 60531 | 54369 | 2888 | 2252 | 2565 | 2018 | 2914 | 3223 | 3038 | 2081 | 615 | 966 | 371 | 1385 | 1954 | 1176 | 37 | 16 | 21 | 9 | 31 | 34 | 29 | 4608 | 979 | 1159 | 463 | 3528 | 4534 | 2665 | 120 | 46 | 44 | 28 | 97 | 142 | 83 | 233447 | 107930 | 143138 | 77196 | 185781 | 222260 | 179493 | 8671 | 5071 | 6063 | 4308 | 7293 | 8687 | 7156 | 6779 | 1874 | 2723 | 1282 | 4534 | 5741 | 3634 | 291 | 68 | 103 | 46 | 189 | 262 | 128 | 75 | 53 | 54 | 47 | 77 | 93 | 73 | 5 | 1 | 1 | 1 | 5 | 7 | 1 | 2782 | 877 | 1393 | 388 | 1895 | 2426 | 1619 | 40 | 18 | 17 | 13 | 25 | 29 | 18 | 22498 | 6920 | 9668 | 4124 | 16018 | 20526 | 13458 | 799 | 274 | 320 | 186 | 545 | 784 | 419 | 3337 | 1027 | 1639 | 563 | 2268 | 2883 | 2190 | 98 | 30 | 46 | 20 | 63 | 74 | 69 | 757 | 410 | 522 | 320 | 580 | 665 | 524 | 35 | 14 | 17 | 10 | 24 | 30 | 23 | 7436 | 3888 | 4669 | 3014 | 5424 | 6488 | 5354 | 432 | 223 | 269 | 205 | 367 | 409 | 331 | 3336 | 1585 | 2031 | 1184 | 2345 | 3063 | 2423 | 172 | 86 | 107 | 63 | 147 | 180 | 133 | 3003 | 1341 | 1920 | 784 | 2540 | 3026 | 2476 | 170 | 51 | 87 | 38 | 121 | 163 | 113 | 768 | 503 | 603 | 426 | 619 | 728 | 730 | 22 | 21 | 25 | 21 | 17 | 22 | 26 | 11882 | 3236 | 5437 | 1582 | 8946 | 10883 | 7846 | 513 | 166 | 255 | 114 | 411 | 544 | 354 | 30519 | 11990 | 16821 | 7873 | 22722 | 27736 | 21543 | 1442 | 591 | 806 | 471 | 1150 | 1422 | 1049</stat:observations>
-    </stat:data>
+        </ns4:maintainer>
+        <ns4:validFrom>2017-01-04T12:59:50.473+01:00</ns4:validFrom>
+    </ns4:metadata>
+    <ns4:data>
+        <ns4:dimensions total="4">
+            <ns4:dimension>
+                <ns4:dimensionId>TIME_PERIOD</ns4:dimensionId>
+                <ns4:representations total="203">
+                    <ns4:representation code="2013" index="0"/>
+                    <ns4:representation code="2013-M12" index="1"/>
+                    <ns4:representation code="2013-M11" index="2"/>
+                    <ns4:representation code="2013-M10" index="3"/>
+                    <ns4:representation code="2013-M09" index="4"/>
+                    <ns4:representation code="2013-M08" index="5"/>
+                    <ns4:representation code="2013-M07" index="6"/>
+                    <ns4:representation code="2013-M06" index="7"/>
+                    <ns4:representation code="2013-M05" index="8"/>
+                    <ns4:representation code="2013-M04" index="9"/>
+                    <ns4:representation code="2013-M03" index="10"/>
+                    <ns4:representation code="2013-M02" index="11"/>
+                    <ns4:representation code="2013-M01" index="12"/>
+                    <ns4:representation code="2012" index="13"/>
+                    <ns4:representation code="2012-M12" index="14"/>
+                    <ns4:representation code="2012-M11" index="15"/>
+                    <ns4:representation code="2012-M10" index="16"/>
+                    <ns4:representation code="2012-M09" index="17"/>
+                    <ns4:representation code="2012-M08" index="18"/>
+                    <ns4:representation code="2012-M07" index="19"/>
+                    <ns4:representation code="2012-M06" index="20"/>
+                    <ns4:representation code="2012-M05" index="21"/>
+                    <ns4:representation code="2012-M04" index="22"/>
+                    <ns4:representation code="2012-M03" index="23"/>
+                    <ns4:representation code="2012-M02" index="24"/>
+                    <ns4:representation code="2012-M01" index="25"/>
+                    <ns4:representation code="2011" index="26"/>
+                    <ns4:representation code="2011-M12" index="27"/>
+                    <ns4:representation code="2011-M11" index="28"/>
+                    <ns4:representation code="2011-M10" index="29"/>
+                    <ns4:representation code="2011-M09" index="30"/>
+                    <ns4:representation code="2011-M08" index="31"/>
+                    <ns4:representation code="2011-M07" index="32"/>
+                    <ns4:representation code="2011-M06" index="33"/>
+                    <ns4:representation code="2011-M05" index="34"/>
+                    <ns4:representation code="2011-M04" index="35"/>
+                    <ns4:representation code="2011-M03" index="36"/>
+                    <ns4:representation code="2011-M02" index="37"/>
+                    <ns4:representation code="2011-M01" index="38"/>
+                    <ns4:representation code="2010" index="39"/>
+                    <ns4:representation code="2010-M12" index="40"/>
+                    <ns4:representation code="2010-M11" index="41"/>
+                    <ns4:representation code="2010-M10" index="42"/>
+                    <ns4:representation code="2010-M09" index="43"/>
+                    <ns4:representation code="2010-M08" index="44"/>
+                    <ns4:representation code="2010-M07" index="45"/>
+                    <ns4:representation code="2010-M06" index="46"/>
+                    <ns4:representation code="2010-M05" index="47"/>
+                    <ns4:representation code="2010-M04" index="48"/>
+                    <ns4:representation code="2010-M03" index="49"/>
+                    <ns4:representation code="2010-M02" index="50"/>
+                    <ns4:representation code="2010-M01" index="51"/>
+                    <ns4:representation code="2009" index="52"/>
+                    <ns4:representation code="2009-M12" index="53"/>
+                    <ns4:representation code="2009-M11" index="54"/>
+                    <ns4:representation code="2009-M10" index="55"/>
+                    <ns4:representation code="2009-M09" index="56"/>
+                    <ns4:representation code="2009-M08" index="57"/>
+                    <ns4:representation code="2009-M07" index="58"/>
+                    <ns4:representation code="2009-M06" index="59"/>
+                    <ns4:representation code="2009-M05" index="60"/>
+                    <ns4:representation code="2009-M04" index="61"/>
+                    <ns4:representation code="2009-M03" index="62"/>
+                    <ns4:representation code="2009-M02" index="63"/>
+                    <ns4:representation code="2009-M01" index="64"/>
+                    <ns4:representation code="2008" index="65"/>
+                    <ns4:representation code="2008-M12" index="66"/>
+                    <ns4:representation code="2008-M11" index="67"/>
+                    <ns4:representation code="2008-M10" index="68"/>
+                    <ns4:representation code="2008-M09" index="69"/>
+                    <ns4:representation code="2008-M08" index="70"/>
+                    <ns4:representation code="2008-M07" index="71"/>
+                    <ns4:representation code="2008-M06" index="72"/>
+                    <ns4:representation code="2008-M05" index="73"/>
+                    <ns4:representation code="2008-M04" index="74"/>
+                    <ns4:representation code="2008-M03" index="75"/>
+                    <ns4:representation code="2008-M02" index="76"/>
+                    <ns4:representation code="2008-M01" index="77"/>
+                    <ns4:representation code="2007" index="78"/>
+                    <ns4:representation code="2007-M12" index="79"/>
+                    <ns4:representation code="2007-M11" index="80"/>
+                    <ns4:representation code="2007-M10" index="81"/>
+                    <ns4:representation code="2007-M09" index="82"/>
+                    <ns4:representation code="2007-M08" index="83"/>
+                    <ns4:representation code="2007-M07" index="84"/>
+                    <ns4:representation code="2007-M06" index="85"/>
+                    <ns4:representation code="2007-M05" index="86"/>
+                    <ns4:representation code="2007-M04" index="87"/>
+                    <ns4:representation code="2007-M03" index="88"/>
+                    <ns4:representation code="2007-M02" index="89"/>
+                    <ns4:representation code="2007-M01" index="90"/>
+                    <ns4:representation code="2006" index="91"/>
+                    <ns4:representation code="2006-M12" index="92"/>
+                    <ns4:representation code="2006-M11" index="93"/>
+                    <ns4:representation code="2006-M10" index="94"/>
+                    <ns4:representation code="2006-M09" index="95"/>
+                    <ns4:representation code="2005" index="96"/>
+                    <ns4:representation code="2004" index="97"/>
+                    <ns4:representation code="2003" index="98"/>
+                    <ns4:representation code="2002" index="99"/>
+                    <ns4:representation code="2001" index="100"/>
+                    <ns4:representation code="2000" index="101"/>
+                    <ns4:representation code="2001" index="102"/>
+                    <ns4:representation code="2002" index="103"/>
+                    <ns4:representation code="2003" index="104"/>
+                    <ns4:representation code="2004" index="105"/>
+                    <ns4:representation code="2005" index="106"/>
+                    <ns4:representation code="2006" index="107"/>
+                    <ns4:representation code="2006-M09" index="108"/>
+                    <ns4:representation code="2006-M10" index="109"/>
+                    <ns4:representation code="2006-M11" index="110"/>
+                    <ns4:representation code="2006-M12" index="111"/>
+                    <ns4:representation code="2007" index="112"/>
+                    <ns4:representation code="2007-M01" index="113"/>
+                    <ns4:representation code="2007-M02" index="114"/>
+                    <ns4:representation code="2007-M03" index="115"/>
+                    <ns4:representation code="2007-M04" index="116"/>
+                    <ns4:representation code="2007-M05" index="117"/>
+                    <ns4:representation code="2007-M06" index="118"/>
+                    <ns4:representation code="2007-M07" index="119"/>
+                    <ns4:representation code="2007-M08" index="120"/>
+                    <ns4:representation code="2007-M09" index="121"/>
+                    <ns4:representation code="2007-M10" index="122"/>
+                    <ns4:representation code="2007-M11" index="123"/>
+                    <ns4:representation code="2007-M12" index="124"/>
+                    <ns4:representation code="2008" index="125"/>
+                    <ns4:representation code="2008-M01" index="126"/>
+                    <ns4:representation code="2008-M02" index="127"/>
+                    <ns4:representation code="2008-M03" index="128"/>
+                    <ns4:representation code="2008-M04" index="129"/>
+                    <ns4:representation code="2008-M05" index="130"/>
+                    <ns4:representation code="2008-M06" index="131"/>
+                    <ns4:representation code="2008-M07" index="132"/>
+                    <ns4:representation code="2008-M08" index="133"/>
+                    <ns4:representation code="2008-M09" index="134"/>
+                    <ns4:representation code="2008-M10" index="135"/>
+                    <ns4:representation code="2008-M11" index="136"/>
+                    <ns4:representation code="2008-M12" index="137"/>
+                    <ns4:representation code="2009" index="138"/>
+                    <ns4:representation code="2009-M01" index="139"/>
+                    <ns4:representation code="2009-M02" index="140"/>
+                    <ns4:representation code="2009-M03" index="141"/>
+                    <ns4:representation code="2009-M04" index="142"/>
+                    <ns4:representation code="2009-M05" index="143"/>
+                    <ns4:representation code="2009-M06" index="144"/>
+                    <ns4:representation code="2009-M07" index="145"/>
+                    <ns4:representation code="2009-M08" index="146"/>
+                    <ns4:representation code="2009-M09" index="147"/>
+                    <ns4:representation code="2009-M10" index="148"/>
+                    <ns4:representation code="2009-M11" index="149"/>
+                    <ns4:representation code="2009-M12" index="150"/>
+                    <ns4:representation code="2010" index="151"/>
+                    <ns4:representation code="2010-M01" index="152"/>
+                    <ns4:representation code="2010-M02" index="153"/>
+                    <ns4:representation code="2010-M03" index="154"/>
+                    <ns4:representation code="2010-M04" index="155"/>
+                    <ns4:representation code="2010-M05" index="156"/>
+                    <ns4:representation code="2010-M06" index="157"/>
+                    <ns4:representation code="2010-M07" index="158"/>
+                    <ns4:representation code="2010-M08" index="159"/>
+                    <ns4:representation code="2010-M09" index="160"/>
+                    <ns4:representation code="2010-M10" index="161"/>
+                    <ns4:representation code="2010-M11" index="162"/>
+                    <ns4:representation code="2010-M12" index="163"/>
+                    <ns4:representation code="2011" index="164"/>
+                    <ns4:representation code="2011-M01" index="165"/>
+                    <ns4:representation code="2011-M02" index="166"/>
+                    <ns4:representation code="2011-M03" index="167"/>
+                    <ns4:representation code="2011-M04" index="168"/>
+                    <ns4:representation code="2011-M05" index="169"/>
+                    <ns4:representation code="2011-M06" index="170"/>
+                    <ns4:representation code="2011-M07" index="171"/>
+                    <ns4:representation code="2011-M08" index="172"/>
+                    <ns4:representation code="2011-M09" index="173"/>
+                    <ns4:representation code="2011-M10" index="174"/>
+                    <ns4:representation code="2011-M11" index="175"/>
+                    <ns4:representation code="2011-M12" index="176"/>
+                    <ns4:representation code="2012" index="177"/>
+                    <ns4:representation code="2012-M01" index="178"/>
+                    <ns4:representation code="2012-M02" index="179"/>
+                    <ns4:representation code="2012-M03" index="180"/>
+                    <ns4:representation code="2012-M04" index="181"/>
+                    <ns4:representation code="2012-M05" index="182"/>
+                    <ns4:representation code="2012-M06" index="183"/>
+                    <ns4:representation code="2012-M07" index="184"/>
+                    <ns4:representation code="2012-M08" index="185"/>
+                    <ns4:representation code="2012-M09" index="186"/>
+                    <ns4:representation code="2012-M10" index="187"/>
+                    <ns4:representation code="2012-M11" index="188"/>
+                    <ns4:representation code="2012-M12" index="189"/>
+                    <ns4:representation code="2013" index="190"/>
+                    <ns4:representation code="2013-M01" index="191"/>
+                    <ns4:representation code="2013-M02" index="192"/>
+                    <ns4:representation code="2013-M03" index="193"/>
+                    <ns4:representation code="2013-M04" index="194"/>
+                    <ns4:representation code="2013-M05" index="195"/>
+                    <ns4:representation code="2013-M06" index="196"/>
+                    <ns4:representation code="2013-M07" index="197"/>
+                    <ns4:representation code="2013-M08" index="198"/>
+                    <ns4:representation code="2013-M09" index="199"/>
+                    <ns4:representation code="2013-M10" index="200"/>
+                    <ns4:representation code="2013-M11" index="201"/>
+                    <ns4:representation code="2013-M12" index="202"/>
+                </ns4:representations>
+            </ns4:dimension>
+            <ns4:dimension>
+                <ns4:dimensionId>INDICADORES</ns4:dimensionId>
+                <ns4:representations total="2">
+                    <ns4:representation code="INDICE_OCUPACION_HABITACIONES" index="0"/>
+                    <ns4:representation code="INDICE_OCUPACION_PLAZAS" index="1"/>
+                </ns4:representations>
+            </ns4:dimension>
+            <ns4:dimension>
+                <ns4:dimensionId>CATEGORIA_ALOJAMIENTO</ns4:dimensionId>
+                <ns4:representations total="1">
+                    <ns4:representation code="TOTAL" index="0"/>
+                </ns4:representations>
+            </ns4:dimension>
+            <ns4:dimension>
+                <ns4:dimensionId>DESTINO_ALOJAMIENTO</ns4:dimensionId>
+                <ns4:representations total="7">
+                    <ns4:representation code="EL_HIERRO" index="0"/>
+                    <ns4:representation code="FUERTEVENTURA" index="1"/>
+                    <ns4:representation code="GRAN_CANARIA" index="2"/>
+                    <ns4:representation code="LANZAROTE" index="3"/>
+                    <ns4:representation code="LA_GOMERA" index="4"/>
+                    <ns4:representation code="LA_PALMA" index="5"/>
+                    <ns4:representation code="TENERIFE" index="6"/>
+                </ns4:representations>
+            </ns4:dimension>
+        </ns4:dimensions>
+        <ns4:observations>233447 | 107930 | 143138 | 77196 | 185781 | 222260 | 179493 | 8671 | 5071 | 6063 | 4308 | 7293 | 8687 | 7156 | 30519 | 11990 | 16821 | 7873 | 22722 | 27736 | 21543 | 1442 | 591 | 806 | 471 | 1150 | 1422 | 1049 | 11882 | 3236 | 5437 | 1582 | 8946 | 10883 | 7846 | 513 | 166 | 255 | 114 | 411 | 544 | 354 | 768 | 503 | 603 | 426 | 619 | 728 | 730 | 22 | 21 | 25 | 21 | 17 | 22 | 26 | 3003 | 1341 | 1920 | 784 | 2540 | 3026 | 2476 | 170 | 51 | 87 | 38 | 121 | 163 | 113 | 3336 | 1585 | 2031 | 1184 | 2345 | 3063 | 2423 | 172 | 86 | 107 | 63 | 147 | 180 | 133 | 7436 | 3888 | 4669 | 3014 | 5424 | 6488 | 5354 | 432 | 223 | 269 | 205 | 367 | 409 | 331 | 757 | 410 | 522 | 320 | 580 | 665 | 524 | 35 | 14 | 17 | 10 | 24 | 30 | 23 | 3337 | 1027 | 1639 | 563 | 2268 | 2883 | 2190 | 98 | 30 | 46 | 20 | 63 | 74 | 69 | 22498 | 6920 | 9668 | 4124 | 16018 | 20526 | 13458 | 799 | 274 | 320 | 186 | 545 | 784 | 419 | 2782 | 877 | 1393 | 388 | 1895 | 2426 | 1619 | 40 | 18 | 17 | 13 | 25 | 29 | 18 | 75 | 53 | 54 | 47 | 77 | 93 | 73 | 5 | 1 | 1 | 1 | 5 | 7 | 1 | 6779 | 1874 | 2723 | 1282 | 4534 | 5741 | 3634 | 291 | 68 | 103 | 46 | 189 | 262 | 128 | 6173 | 2522 | 3373 | 1573 | 4599 | 5778 | 4291 | 306 | 125 | 134 | 89 | 198 | 310 | 160 | 4608 | 979 | 1159 | 463 | 3528 | 4534 | 2665 | 120 | 46 | 44 | 28 | 97 | 142 | 83 | 2081 | 615 | 966 | 371 | 1385 | 1954 | 1176 | 37 | 16 | 21 | 9 | 31 | 34 | 29 | 60765 | 33469 | 42995 | 25611 | 52340 | 60531 | 54369 | 2888 | 2252 | 2565 | 2018 | 2914 | 3223 | 3038 | 239 | 350 | 371 | 336 | 204 | 233 | 366 | 5 | 3 | 5 | 2 | 5 | 7 | 6 | 2250 | 918 | 1274 | 659 | 1834 | 2100 | 1708 | 66 | 43 | 55 | 48 | 77 | 74 | 69 | 4 | 8 | 6 | 9 | 10 | 8 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 441 | 309 | 374 | 249 | 398 | 455 | 421 | 18 | 20 | 20 | 18 | 21 | 22 | 22 | 102 | 59 | 72 | 56 | 82 | 102 | 67 | 13 | 5 | 4 | 2 | 13 | 14 | 9 | 285 | 141 | 170 | 127 | 197 | 240 | 201 | 10 | 6 | 7 | 5 | 5 | 7 | 6 | 1208 | 463 | 649 | 344 | 1036 | 1149 | 931 | 63 | 22 | 38 | 30 | 60 | 66 | 52 | 5439 | 3066 | 4060 | 2022 | 4116 | 4953 | 4836 | 166 | 121 | 153 | 94 | 144 | 161 | 165 | 48 | 40 | 39 | 41 | 44 | 40 | 45 | 1 | 3 | 3 | 2 | 1 | 1 | 2 | 688 | 18026 | 41610 | 20598 | 1972 | 4539 | 68341 | 715 | 16018 | 40944 | 19199 | 2038 | 4863 | 67458 | 12216 | 7960 | 9379 | 6848 | 9838 | 11501 | 11414 | 510 | 443 | 466 | 435 | 471 | 503 | 545 | 590 | 79 | 136 | 56 | 187 | 390 | 183 | 7 | 3 | 2 | 1 | 5 | 11 | 1 | 699 | 712 | 811 | 630 | 702 | 793 | 869 | 67 | 78 | 84 | 71 | 65 | 64 | 80 | 8044 | 3187 | 4643 | 2231 | 6915 | 8059 | 6374 | 638 | 361 | 415 | 276 | 532 | 663 | 502 | 164 | 85 | 99 | 63 | 147 | 146 | 148 | 2 | 7 | 7 | 4 | 6 | 3 | 7 | 41 | 5 | 11 | 2 | 32 | 44 | 31 | 1 | 2 | 1 | 2 | 1 | 1 | 1 | 2755 | 1419 | 1791 | 1181 | 2355 | 2762 | 2343 | 70 | 62 | 103 | 53 | 83 | 83 | 110 | 171 | 107 | 127 | 93 | 182 | 178 | 148 | 6 | 1 | 7 | 1 | 8 | 6 | 7 | 345 | 139 | 220 | 103 | 275 | 349 | 258 | 30 | 15 | 20 | 13 | 19 | 21 | 21 | 41 | 32 | 39 | 15 | 52 | 56 | 47 | 1 | 1 | 1 | 0 | 1 | 2 | 1 | 95 | 25 | 76 | 21 | 95 | 110 | 92 | 3 | 3 | 5 | 4 | 3 | 3 | 5 | 107697 | 47358 | 64130 | 32666 | 84606 | 101946 | 79432 | 3287 | 1703 | 2052 | 1400 | 2408 | 2961 | 2335 | 685 | 17799 | 40749 | 20630 | 1922 | 4431 | 70177 | 704 | 15553 | 40322 | 18999 | 2010 | 4736 | 68662 | 138 | 70 | 88 | 50 | 124 | 139 | 118 | 3 | 3 | 5 | 2 | 4 | 3 | 5 | 1077 | 533 | 723 | 444 | 965 | 1066 | 917 | 9 | 5 | 11 | 5 | 8 | 8 | 11 | 27234 | 9662 | 13890 | 5957 | 19112 | 24248 | 18038 | 882 | 247 | 328 | 195 | 414 | 639 | 396 | 225 | 199 | 252 | 166 | 242 | 270 | 285 | 8 | 5 | 9 | 2 | 10 | 10 | 10 | 1800 | 508 | 870 | 415 | 1562 | 1807 | 1230 | 32 | 18 | 24 | 20 | 25 | 31 | 22 | 74 | 31 | 41 | 15 | 93 | 87 | 73 | 2 | 0 | 0 | 0 | 2 | 2 | 1 | 248 | 371 | 394 | 246 | 369 | 380 | 401 | 5 | 12 | 12 | 6 | 12 | 12 | 12 | 8665 | 1808 | 4743 | 1330 | 6610 | 7989 | 5847 | 276 | 56 | 66 | 26 | 138 | 247 | 75 | 160 | 118 | 133 | 93 | 145 | 152 | 135 | 24 | 12 | 27 | 10 | 24 | 25 | 25 | 3679 | 1143 | 1822 | 639 | 2844 | 3419 | 2427 | 70 | 18 | 26 | 9 | 35 | 57 | 31 | 623 | 257 | 560 | 212 | 629 | 698 | 633 | 16 | 4 | 7 | 3 | 15 | 19 | 11 | 1539 | 850 | 847 | 512 | 1559 | 1689 | 1287 | 40 | 44 | 45 | 28 | 61 | 70 | 60 | 692 | 17600 | 39210 | 21362 | 1882 | 4366 | 68699 | 716 | 14968 | 38893 | 19261 | 1953 | 4644 | 66958 | 540 | 394 | 450 | 325 | 461 | 519 | 494 | 14 | 14 | 13 | 11 | 8 | 12 | 7 | 2013 | 1309 | 1524 | 1164 | 1710 | 1861 | 1726 | 91 | 81 | 88 | 73 | 88 | 94 | 94 | 5390 | 4943 | 5522 | 2681 | 4716 | 5343 | 6364 | 184 | 221 | 244 | 178 | 196 | 211 | 255 | 2667 | 2104 | 2413 | 1914 | 2306 | 2548 | 2653 | 75 | 83 | 97 | 75 | 80 | 80 | 99 | 966 | 521 | 605 | 422 | 787 | 934 | 704 | 31 | 20 | 21 | 18 | 21 | 31 | 22 | 166 | 122 | 213 | 94 | 205 | 221 | 242 | 2 | 3 | 5 | 3 | 4 | 4 | 5 | 4159 | 1562 | 2028 | 1165 | 3081 | 3692 | 2574 | 98 | 39 | 51 | 38 | 100 | 103 | 84 | 12320 | 5310 | 7089 | 4473 | 10150 | 12338 | 9194 | 456 | 432 | 478 | 415 | 460 | 501 | 502 | 1503 | 988 | 1183 | 817 | 1302 | 1446 | 1378 | 60 | 40 | 49 | 38 | 53 | 55 | 58 | 5644 | 3935 | 4514 | 3508 | 5171 | 5514 | 4923 | 101 | 35 | 63 | 19 | 83 | 91 | 72 | 733 | 692 | 763 | 674 | 657 | 707 | 808 | 14 | 14 | 14 | 13 | 17 | 16 | 16 | 663 | 517 | 604 | 488 | 706 | 739 | 701 | 8 | 3 | 4 | 2 | 2 | 5 | 3 | 641 | 16516 | 37057 | 20642 | 1799 | 4147 | 64832 | 662 | 13782 | 36531 | 18229 | 1834 | 4364 | 62811 | 137 | 153 | 170 | 124 | 160 | 198 | 202 | 2 | 9 | 10 | 9 | 4 | 4 | 8 | 185 | 112 | 127 | 79 | 167 | 187 | 151 | 3 | 7 | 5 | 7 | 5 | 4 | 6 | 323 | 202 | 260 | 179 | 300 | 343 | 291 | 8 | 5 | 7 | 7 | 7 | 8 | 8 | 221 | 75 | 140 | 52 | 208 | 244 | 186 | 8 | 0 | 1 | 0 | 6 | 8 | 3 | 3114 | 1498 | 1643 | 1255 | 2532 | 2919 | 1923 | 64 | 55 | 55 | 40 | 64 | 70 | 66 | 46 | 39 | 48 | 36 | 59 | 65 | 50 | 1 | 0 | 2 | 0 | 2 | 2 | 2 | 261 | 80 | 109 | 71 | 185 | 220 | 171 | 8 | 6 | 6 | 2 | 8 | 9 | 8 | 165 | 122 | 132 | 112 | 156 | 157 | 151 | 4 | 1 | 1 | 0 | 0 | 0 | 1 | 856 | 298 | 276 | 197 | 631 | 856 | 256 | 9 | 14 | 12 | 8 | 11 | 15 | 10 | 1593 | 862 | 957 | 787 | 1299 | 1417 | 1114 | 32 | 27 | 24 | 28 | 26 | 27 | 26 | 193 | 97 | 121 | 52 | 202 | 204 | 181 | 10 | 7 | 10 | 2 | 17 | 17 | 19 | 7537 | 5854 | 6777 | 4984 | 6515 | 7281 | 7480 | 168 | 169 | 231 | 167 | 177 | 187 | 208 | 572 | 14182 | 32688 | 17870 | 1646 | 3786 | 58152 | 605 | 11414 | 31974 | 15771 | 1678 | 4050 | 56348 | 585 | 513 | 558 | 447 | 554 | 604 | 625 | 8 | 4 | 7 | 7 | 7 | 11 | 7 | 386 | 287 | 327 | 238 | 337 | 369 | 373 | 6 | 6 | 8 | 6 | 6 | 6 | 10 | 148 | 47 | 55 | 44 | 91 | 124 | 83 | 0 | 0 | 0 | 1 | 2 | 2 | 0 | 253 | 238 | 249 | 222 | 228 | 259 | 267 | 14 | 26 | 29 | 28 | 19 | 20 | 28 | 2295 | 1697 | 2128 | 1300 | 2023 | 2207 | 2313 | 40 | 36 | 80 | 32 | 48 | 49 | 53 | 1034 | 1020 | 1099 | 971 | 882 | 967 | 1192 | 10 | 12 | 9 | 12 | 6 | 7 | 10 | 254 | 140 | 162 | 125 | 158 | 198 | 173 | 20 | 14 | 17 | 13 | 13 | 14 | 16 | 176 | 121 | 164 | 87 | 172 | 205 | 190 | 2 | 8 | 12 | 6 | 6 | 5 | 10 | 135 | 62 | 81 | 53 | 115 | 168 | 99 | 5 | 4 | 4 | 4 | 4 | 6 | 4 | 905 | 440 | 573 | 318 | 776 | 900 | 713 | 12 | 10 | 10 | 12 | 11 | 11 | 11 | 418 | 555 | 583 | 521 | 317 | 385 | 585 | 13 | 15 | 16 | 16 | 13 | 15 | 17 | 445 | 350 | 363 | 301 | 363 | 401 | 369 | 22 | 17 | 19 | 14 | 21 | 21 | 20 | 673 | 12446 | 30973 | 16197 | 1532 | 3616 | 55374 | 644 | 10052 | 29792 | 14322 | 1582 | 3921 | 52323 | 1317 | 841 | 1104 | 683 | 1048 | 1321 | 1288 | 23 | 27 | 34 | 26 | 35 | 40 | 41 | 899 | 634 | 772 | 538 | 614 | 863 | 866 | 12 | 15 | 21 | 16 | 16 | 20 | 27 | 418 | 207 | 332 | 145 | 434 | 458 | 422 | 11 | 12 | 13 | 10 | 19 | 20 | 14 |  |  |  |  |  |  |  |  |  |  |  |  |  |  | 654 | 11502 | 31150 | 14648 | 1426 | 3552 | 52523 | 667 | 9024 | 29381 | 13088 | 1493 | 3729 | 49423 | 513 | 8922 | 26827 | 11808 | 1228 | 3155 | 43459 | 535 | 7096 | 25513 | 10914 | 1304 | 3360 | 41147 | 641 | 7615 | 27866 | 11097 | 913 | 3704 | 40741 | 647 | 5843 | 26503 | 10446 | 1010 | 3776 | 38691 | 533 | 5521 | 21929 | 8549 | 777 | 3382 | 32656 | 571 | 4147 | 21066 | 8272 | 866 | 3395 | 31474 | 394 | 3967 | 16894 | 6112 | 705 | 2923 | 23773 | 447 | 2953 | 16575 | 5878 | 793 | 2931 | 23585 | 312 | 2263 | 12591 | 3877 | 588 | 2487 | 15982 | 371 | 1861 | 13020 | 3996 | 667 | 2497 | 16684 | 394 | 3967 | 16894 | 6112 | 705 | 2923 | 23773 | 447 | 2953 | 16575 | 5878 | 793 | 2931 | 23585 | 533 | 5521 | 21929 | 8549 | 777 | 3382 | 32656 | 571 | 4147 | 21066 | 8272 | 866 | 3395 | 31474 | 641 | 7615 | 27866 | 11097 | 913 | 3704 | 40741 | 647 | 5843 | 26503 | 10446 | 1010 | 3776 | 38691 | 513 | 8922 | 26827 | 11808 | 1228 | 3155 | 43459 | 535 | 7096 | 25513 | 10914 | 1304 | 3360 | 41147 | 654 | 11502 | 31150 | 14648 | 1426 | 3552 | 52523 | 667 | 9024 | 29381 | 13088 | 1493 | 3729 | 49423 | 673 | 12446 | 30973 | 16197 | 1532 | 3616 | 55374 | 644 | 10052 | 29792 | 14322 | 1582 | 3921 | 52323 |  |  |  |  |  |  |  |  |  |  |  |  |  |  | 418 | 207 | 332 | 145 | 434 | 458 | 422 | 11 | 12 | 13 | 10 | 19 | 20 | 14 | 899 | 634 | 772 | 538 | 614 | 863 | 866 | 12 | 15 | 21 | 16 | 16 | 20 | 27 | 1317 | 841 | 1104 | 683 | 1048 | 1321 | 1288 | 23 | 27 | 34 | 26 | 35 | 40 | 41 | 572 | 14182 | 32688 | 17870 | 1646 | 3786 | 58152 | 605 | 11414 | 31974 | 15771 | 1678 | 4050 | 56348 | 445 | 350 | 363 | 301 | 363 | 401 | 369 | 22 | 17 | 19 | 14 | 21 | 21 | 20 | 418 | 555 | 583 | 521 | 317 | 385 | 585 | 13 | 15 | 16 | 16 | 13 | 15 | 17 | 905 | 440 | 573 | 318 | 776 | 900 | 713 | 12 | 10 | 10 | 12 | 11 | 11 | 11 | 135 | 62 | 81 | 53 | 115 | 168 | 99 | 5 | 4 | 4 | 4 | 4 | 6 | 4 | 176 | 121 | 164 | 87 | 172 | 205 | 190 | 2 | 8 | 12 | 6 | 6 | 5 | 10 | 254 | 140 | 162 | 125 | 158 | 198 | 173 | 20 | 14 | 17 | 13 | 13 | 14 | 16 | 1034 | 1020 | 1099 | 971 | 882 | 967 | 1192 | 10 | 12 | 9 | 12 | 6 | 7 | 10 | 2295 | 1697 | 2128 | 1300 | 2023 | 2207 | 2313 | 40 | 36 | 80 | 32 | 48 | 49 | 53 | 253 | 238 | 249 | 222 | 228 | 259 | 267 | 14 | 26 | 29 | 28 | 19 | 20 | 28 | 148 | 47 | 55 | 44 | 91 | 124 | 83 | 0 | 0 | 0 | 1 | 2 | 2 | 0 | 386 | 287 | 327 | 238 | 337 | 369 | 373 | 6 | 6 | 8 | 6 | 6 | 6 | 10 | 585 | 513 | 558 | 447 | 554 | 604 | 625 | 8 | 4 | 7 | 7 | 7 | 11 | 7 | 641 | 16516 | 37057 | 20642 | 1799 | 4147 | 64832 | 662 | 13782 | 36531 | 18229 | 1834 | 4364 | 62811 | 7537 | 5854 | 6777 | 4984 | 6515 | 7281 | 7480 | 168 | 169 | 231 | 167 | 177 | 187 | 208 | 193 | 97 | 121 | 52 | 202 | 204 | 181 | 10 | 7 | 10 | 2 | 17 | 17 | 19 | 1593 | 862 | 957 | 787 | 1299 | 1417 | 1114 | 32 | 27 | 24 | 28 | 26 | 27 | 26 | 856 | 298 | 276 | 197 | 631 | 856 | 256 | 9 | 14 | 12 | 8 | 11 | 15 | 10 | 165 | 122 | 132 | 112 | 156 | 157 | 151 | 4 | 1 | 1 | 0 | 0 | 0 | 1 | 261 | 80 | 109 | 71 | 185 | 220 | 171 | 8 | 6 | 6 | 2 | 8 | 9 | 8 | 46 | 39 | 48 | 36 | 59 | 65 | 50 | 1 | 0 | 2 | 0 | 2 | 2 | 2 | 3114 | 1498 | 1643 | 1255 | 2532 | 2919 | 1923 | 64 | 55 | 55 | 40 | 64 | 70 | 66 | 221 | 75 | 140 | 52 | 208 | 244 | 186 | 8 | 0 | 1 | 0 | 6 | 8 | 3 | 323 | 202 | 260 | 179 | 300 | 343 | 291 | 8 | 5 | 7 | 7 | 7 | 8 | 8 | 185 | 112 | 127 | 79 | 167 | 187 | 151 | 3 | 7 | 5 | 7 | 5 | 4 | 6 | 137 | 153 | 170 | 124 | 160 | 198 | 202 | 2 | 9 | 10 | 9 | 4 | 4 | 8 | 692 | 17600 | 39210 | 21362 | 1882 | 4366 | 68699 | 716 | 14968 | 38893 | 19261 | 1953 | 4644 | 66958 | 663 | 517 | 604 | 488 | 706 | 739 | 701 | 8 | 3 | 4 | 2 | 2 | 5 | 3 | 733 | 692 | 763 | 674 | 657 | 707 | 808 | 14 | 14 | 14 | 13 | 17 | 16 | 16 | 5644 | 3935 | 4514 | 3508 | 5171 | 5514 | 4923 | 101 | 35 | 63 | 19 | 83 | 91 | 72 | 1503 | 988 | 1183 | 817 | 1302 | 1446 | 1378 | 60 | 40 | 49 | 38 | 53 | 55 | 58 | 12320 | 5310 | 7089 | 4473 | 10150 | 12338 | 9194 | 456 | 432 | 478 | 415 | 460 | 501 | 502 | 4159 | 1562 | 2028 | 1165 | 3081 | 3692 | 2574 | 98 | 39 | 51 | 38 | 100 | 103 | 84 | 166 | 122 | 213 | 94 | 205 | 221 | 242 | 2 | 3 | 5 | 3 | 4 | 4 | 5 | 966 | 521 | 605 | 422 | 787 | 934 | 704 | 31 | 20 | 21 | 18 | 21 | 31 | 22 | 2667 | 2104 | 2413 | 1914 | 2306 | 2548 | 2653 | 75 | 83 | 97 | 75 | 80 | 80 | 99 | 5390 | 4943 | 5522 | 2681 | 4716 | 5343 | 6364 | 184 | 221 | 244 | 178 | 196 | 211 | 255 | 2013 | 1309 | 1524 | 1164 | 1710 | 1861 | 1726 | 91 | 81 | 88 | 73 | 88 | 94 | 94 | 540 | 394 | 450 | 325 | 461 | 519 | 494 | 14 | 14 | 13 | 11 | 8 | 12 | 7 | 685 | 17799 | 40749 | 20630 | 1922 | 4431 | 70177 | 704 | 15553 | 40322 | 18999 | 2010 | 4736 | 68662 | 1539 | 850 | 847 | 512 | 1559 | 1689 | 1287 | 40 | 44 | 45 | 28 | 61 | 70 | 60 | 623 | 257 | 560 | 212 | 629 | 698 | 633 | 16 | 4 | 7 | 3 | 15 | 19 | 11 | 3679 | 1143 | 1822 | 639 | 2844 | 3419 | 2427 | 70 | 18 | 26 | 9 | 35 | 57 | 31 | 160 | 118 | 133 | 93 | 145 | 152 | 135 | 24 | 12 | 27 | 10 | 24 | 25 | 25 | 8665 | 1808 | 4743 | 1330 | 6610 | 7989 | 5847 | 276 | 56 | 66 | 26 | 138 | 247 | 75 | 248 | 371 | 394 | 246 | 369 | 380 | 401 | 5 | 12 | 12 | 6 | 12 | 12 | 12 | 74 | 31 | 41 | 15 | 93 | 87 | 73 | 2 | 0 | 0 | 0 | 2 | 2 | 1 | 1800 | 508 | 870 | 415 | 1562 | 1807 | 1230 | 32 | 18 | 24 | 20 | 25 | 31 | 22 | 225 | 199 | 252 | 166 | 242 | 270 | 285 | 8 | 5 | 9 | 2 | 10 | 10 | 10 | 27234 | 9662 | 13890 | 5957 | 19112 | 24248 | 18038 | 882 | 247 | 328 | 195 | 414 | 639 | 396 | 1077 | 533 | 723 | 444 | 965 | 1066 | 917 | 9 | 5 | 11 | 5 | 8 | 8 | 11 | 138 | 70 | 88 | 50 | 124 | 139 | 118 | 3 | 3 | 5 | 2 | 4 | 3 | 5 | 688 | 18026 | 41610 | 20598 | 1972 | 4539 | 68341 | 715 | 16018 | 40944 | 19199 | 2038 | 4863 | 67458 | 107697 | 47358 | 64130 | 32666 | 84606 | 101946 | 79432 | 3287 | 1703 | 2052 | 1400 | 2408 | 2961 | 2335 | 95 | 25 | 76 | 21 | 95 | 110 | 92 | 3 | 3 | 5 | 4 | 3 | 3 | 5 | 41 | 32 | 39 | 15 | 52 | 56 | 47 | 1 | 1 | 1 | 0 | 1 | 2 | 1 | 345 | 139 | 220 | 103 | 275 | 349 | 258 | 30 | 15 | 20 | 13 | 19 | 21 | 21 | 171 | 107 | 127 | 93 | 182 | 178 | 148 | 6 | 1 | 7 | 1 | 8 | 6 | 7 | 2755 | 1419 | 1791 | 1181 | 2355 | 2762 | 2343 | 70 | 62 | 103 | 53 | 83 | 83 | 110 | 41 | 5 | 11 | 2 | 32 | 44 | 31 | 1 | 2 | 1 | 2 | 1 | 1 | 1 | 164 | 85 | 99 | 63 | 147 | 146 | 148 | 2 | 7 | 7 | 4 | 6 | 3 | 7 | 8044 | 3187 | 4643 | 2231 | 6915 | 8059 | 6374 | 638 | 361 | 415 | 276 | 532 | 663 | 502 | 699 | 712 | 811 | 630 | 702 | 793 | 869 | 67 | 78 | 84 | 71 | 65 | 64 | 80 | 590 | 79 | 136 | 56 | 187 | 390 | 183 | 7 | 3 | 2 | 1 | 5 | 11 | 1 | 12216 | 7960 | 9379 | 6848 | 9838 | 11501 | 11414 | 510 | 443 | 466 | 435 | 471 | 503 | 545 | 6173 | 2522 | 3373 | 1573 | 4599 | 5778 | 4291 | 306 | 125 | 134 | 89 | 198 | 310 | 160 | 48 | 40 | 39 | 41 | 44 | 40 | 45 | 1 | 3 | 3 | 2 | 1 | 1 | 2 | 5439 | 3066 | 4060 | 2022 | 4116 | 4953 | 4836 | 166 | 121 | 153 | 94 | 144 | 161 | 165 | 1208 | 463 | 649 | 344 | 1036 | 1149 | 931 | 63 | 22 | 38 | 30 | 60 | 66 | 52 | 285 | 141 | 170 | 127 | 197 | 240 | 201 | 10 | 6 | 7 | 5 | 5 | 7 | 6 | 102 | 59 | 72 | 56 | 82 | 102 | 67 | 13 | 5 | 4 | 2 | 13 | 14 | 9 | 441 | 309 | 374 | 249 | 398 | 455 | 421 | 18 | 20 | 20 | 18 | 21 | 22 | 22 | 4 | 8 | 6 | 9 | 10 | 8 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2250 | 918 | 1274 | 659 | 1834 | 2100 | 1708 | 66 | 43 | 55 | 48 | 77 | 74 | 69 | 239 | 350 | 371 | 336 | 204 | 233 | 366 | 5 | 3 | 5 | 2 | 5 | 7 | 6 | 60765 | 33469 | 42995 | 25611 | 52340 | 60531 | 54369 | 2888 | 2252 | 2565 | 2018 | 2914 | 3223 | 3038 | 2081 | 615 | 966 | 371 | 1385 | 1954 | 1176 | 37 | 16 | 21 | 9 | 31 | 34 | 29 | 4608 | 979 | 1159 | 463 | 3528 | 4534 | 2665 | 120 | 46 | 44 | 28 | 97 | 142 | 83 | 233447 | 107930 | 143138 | 77196 | 185781 | 222260 | 179493 | 8671 | 5071 | 6063 | 4308 | 7293 | 8687 | 7156 | 6779 | 1874 | 2723 | 1282 | 4534 | 5741 | 3634 | 291 | 68 | 103 | 46 | 189 | 262 | 128 | 75 | 53 | 54 | 47 | 77 | 93 | 73 | 5 | 1 | 1 | 1 | 5 | 7 | 1 | 2782 | 877 | 1393 | 388 | 1895 | 2426 | 1619 | 40 | 18 | 17 | 13 | 25 | 29 | 18 | 22498 | 6920 | 9668 | 4124 | 16018 | 20526 | 13458 | 799 | 274 | 320 | 186 | 545 | 784 | 419 | 3337 | 1027 | 1639 | 563 | 2268 | 2883 | 2190 | 98 | 30 | 46 | 20 | 63 | 74 | 69 | 757 | 410 | 522 | 320 | 580 | 665 | 524 | 35 | 14 | 17 | 10 | 24 | 30 | 23 | 7436 | 3888 | 4669 | 3014 | 5424 | 6488 | 5354 | 432 | 223 | 269 | 205 | 367 | 409 | 331 | 3336 | 1585 | 2031 | 1184 | 2345 | 3063 | 2423 | 172 | 86 | 107 | 63 | 147 | 180 | 133 | 3003 | 1341 | 1920 | 784 | 2540 | 3026 | 2476 | 170 | 51 | 87 | 38 | 121 | 163 | 113 | 768 | 503 | 603 | 426 | 619 | 728 | 730 | 22 | 21 | 25 | 21 | 17 | 22 | 26 | 11882 | 3236 | 5437 | 1582 | 8946 | 10883 | 7846 | 513 | 166 | 255 | 114 | 411 | 544 | 354 | 30519 | 11990 | 16821 | 7873 | 22722 | 27736 | 21543 | 1442 | 591 | 806 | 471 | 1150 | 1422 | 1049</ns4:observations>
+    </ns4:data>
 </stat:query>
