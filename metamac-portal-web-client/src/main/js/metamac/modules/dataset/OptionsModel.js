@@ -12,7 +12,8 @@
             widgetButton: true,
             widgetInitialType: '',
             menu: true,
-            mustApplyVisualizationRestrictions: true
+            mustApplyVisualizationRestrictions: true,
+            isDownloading: false
         }
     });
 
