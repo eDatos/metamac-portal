@@ -52,6 +52,12 @@
             }
         },
 
+        initNodesWithoutChildren() {
+            if (!this.get("open")) {
+                this.set("selected", false, { silent: true });
+            }
+        },
+
         _updateChildrenSelected: function () {
             var childrenSelected = this.children.any(function (child) {
                 return child.get('selected') || child.get('childrenSelected');
