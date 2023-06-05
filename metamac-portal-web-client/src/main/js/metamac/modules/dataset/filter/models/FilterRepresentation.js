@@ -65,7 +65,7 @@
                 child._close();
             });
         },
-        
+
         _closeInit: function () {
             this.children.each(function (child) {
                 if (!child.get('open')) {
