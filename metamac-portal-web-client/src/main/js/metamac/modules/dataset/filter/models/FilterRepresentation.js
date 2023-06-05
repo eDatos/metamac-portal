@@ -117,8 +117,7 @@
             }
             if(child.children.length === 0) {
                 return;
-            }
-            if (child.children.length !== 0) {
+            } else {
                 child.children.each(function(childAux) {
                     return child.findOpenedChild(childAux, nodos);
                 })
