@@ -113,10 +113,10 @@
         findOpenedChild(child, nodos) {
             if (child.get('open')) {
                 nodos.push(child.get('id'));
-                return nodos;
+                return;
             }
             if(child.children.length === 0) {
-                return nodos;
+                return;
             }
             if (child.children.length !== 0) {
                 child.children.each(function(childAux) {
