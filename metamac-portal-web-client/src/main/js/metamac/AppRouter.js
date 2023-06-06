@@ -69,7 +69,8 @@
         },
 
         error: function () {
-            console.error("error");
+            console.error("error")
+            this.datasetController.showError();
         },
 
         linkTo: function (routeName, params) {

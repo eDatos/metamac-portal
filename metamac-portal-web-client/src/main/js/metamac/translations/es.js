@@ -376,5 +376,24 @@ I18n.translations.es = {
         label: {
             text: "Escriba el valor de la imagen mostrada encima"
         }
+    },
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "El dataset no tiene datos"
+            },
+            indicators: {
+                no_representations: "La dimensión {{error}} no tiene representaciones"
+            }
+        },
+        statistical_resources: {
+            dataset: { 
+                not_found: "El dataset no ha sido encontrado"
+            }
+        },
+        common: {
+            unknown: "Error desconocido"
+        }
     }
+    
 };

@@ -11,6 +11,11 @@
             this.region = options.region;
         },
 
+        showError: function() {
+            this.errorView = new App.modules.dataset.ErrorView({ error : I18n.t('exception.common.unknown') });
+            this.region.show(this.errorView);
+        },
+
         showDataset: function (datasetIdentifier) {
             var self = this;
             this._loadMetadataAndData(datasetIdentifier).then(function () {
@@ -107,6 +112,11 @@
 
             var self = this;
             async.parallel(loads, function (err, result) {
+                if (err) {  
+                    self.errorView = new App.modules.dataset.ErrorView({ error : err });
+                    self.region.show(self.errorView);
+                    return deferred.promise();
+                }
                 self.metadata = self.metadataRequest.getMetadataResponse();
                 self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                 self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
@@ -129,7 +139,6 @@
                     deferred.resolve();
                 }
             });
-
             return deferred.promise();
         }
     });

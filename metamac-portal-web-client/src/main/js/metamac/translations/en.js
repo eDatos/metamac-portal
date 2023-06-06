@@ -376,5 +376,23 @@ I18n.translations.en = {
         label: {
             text: "Write the value of the image shown above"
         }
+    },
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "The dataset has no data"
+            },
+            indicators: {
+                no_representations: "Dimension {{error}} has no representations"
+            }
+        },
+        statistical_resources: {
+            dataset: { 
+                not_found: "The dataset has not been found"
+            }
+        },
+        common: {
+            unknown: "Unknown error"
+        }
     }
 };

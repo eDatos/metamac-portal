@@ -376,5 +376,5 @@ I18n.translations.pt = {
         label: {
             text: "Escreva o valor da imagem mostrada acima"
         }
-    }
+    },
 };

@@ -378,5 +378,23 @@ I18n.translations.ca = {
         label: {
             text: "Escriviu el valor de la imatge mostrada damunt"
         }
+    },
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "El dataset no té dades"
+            },
+            indicators: {
+                no_representations: "La dimensió {{error}} no té representacions"
+            }
+        },
+        statistical_resources: {
+            dataset: { 
+                not_found: "El dataset no s'ha trobat"
+            }
+        },
+        common: {
+            unknown: "Error desconegut"
+        }
     }
 };
