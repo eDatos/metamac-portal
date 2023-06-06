@@ -315,12 +315,6 @@ I18n.translations.es = {
             server: "Ha habido un problema iniciando sesión. Inténtelo de nuevo más tarde."
         }
     },
-    logout: {
-        modal: {
-            title: "Cerrar sesión",
-            question: "¿Está seguro de que quiere cerrar sesión?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -373,13 +367,6 @@ I18n.translations.es = {
             label: {
                 title: "Título"
             }
-        }
-    },
-    user: {
-        header: {
-            userAreaTooltip: "Área del usuario",
-            loginTooltip: "Iniciar sesión",
-            logoutTooltip: "Cerrar sesión"
         }
     },
     captcha: {

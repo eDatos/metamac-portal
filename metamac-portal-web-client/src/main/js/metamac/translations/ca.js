@@ -317,12 +317,6 @@ I18n.translations.ca = {
             server: "Hi ha hagut un problema iniciant sessió. Intente-ho de nou més tard"
         }
     },
-    logout: {
-        modal: {
-            title: "Tancar sessió",
-            question: "Està segur que vol tancar sessió?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -375,13 +369,6 @@ I18n.translations.ca = {
             label: {
                 title: "Títol"
             }
-        }
-    },
-    user: {
-        header: {
-            userAreaTooltip: "Àrea de l'usuari",
-            loginTooltip: "Iniciar sessió",
-            logoutTooltip: "Tancar sessió"
         }
     },
     captcha: {

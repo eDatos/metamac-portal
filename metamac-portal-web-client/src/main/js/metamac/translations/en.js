@@ -315,12 +315,6 @@ I18n.translations.en = {
             server: "There was a problem logging in. Try again later."
         }
     },
-    logout: {
-        modal: {
-            title: "Log out",
-            question: "Are you sure you want to log out?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -373,13 +367,6 @@ I18n.translations.en = {
             label: {
                 title: "Title"
             }
-        }
-    },
-    user: {
-        header: {
-            userAreaTooltip: "Área do usuário",
-            loginTooltip: "Sign in",
-            logoutTooltip: "Log out"
         }
     },
     captcha: {
