@@ -91,7 +91,8 @@
 
         _collapseClass: function () {
             if (this.filterRepresentation.children.length > 0) {
-                if (this.filterRepresentation.get('open')) {
+                if (this.filterRepresentation.get('open') || this.filterRepresentation.checkAnyChildVisible()) {
+                    this.filterRepresentation.set('open', true);
                     return this.filterRepresentation.get('childrenSelected') ? 'filter-sidebar-category-any-children-icon-collapse' : 'filter-sidebar-category-icon-collapse';
                 } else {
                     return this.filterRepresentation.get('childrenSelected') ? 'filter-sidebar-category-any-children-icon-expand' : 'filter-sidebar-category-icon-expand';

@@ -1,15 +1,14 @@
 package org.siemac.metamac.portal.dto;
 
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
-import org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.ResourceInternal;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
 
 public class Table extends CollectionNode {
 
     // Antes, resourceInternal (org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.ResourceInternal)
-    protected Resource dataset;
-    protected Resource query;
-    protected Resource multidataset;
-    protected Resource url;
+    protected ResourceStatisticalResourceBase dataset;
+    protected ResourceStatisticalResourceBase query;
+    protected ResourceStatisticalResourceBase multidataset;
+    protected ResourceStatisticalResourceBase url;
 
     /**
      * Gets the value of the dataset property.
@@ -18,7 +17,7 @@ public class Table extends CollectionNode {
      *         possible object is
      *         {@link ResourceInternal }
      */
-    public Resource getDataset() {
+    public ResourceStatisticalResourceBase getDataset() {
         return dataset;
     }
 
@@ -29,7 +28,7 @@ public class Table extends CollectionNode {
      *            allowed object is
      *            {@link ResourceInternal }
      */
-    public void setDataset(Resource value) {
+    public void setDataset(ResourceStatisticalResourceBase value) {
         dataset = value;
     }
 
@@ -40,7 +39,7 @@ public class Table extends CollectionNode {
      *         possible object is
      *         {@link ResourceInternal }
      */
-    public Resource getQuery() {
+    public ResourceStatisticalResourceBase getQuery() {
         return query;
     }
 
@@ -51,28 +50,28 @@ public class Table extends CollectionNode {
      *            allowed object is
      *            {@link ResourceInternal }
      */
-    public void setQuery(Resource value) {
+    public void setQuery(ResourceStatisticalResourceBase value) {
         query = value;
     }
 
-    public Resource getMultidataset() {
+    public ResourceStatisticalResourceBase getMultidataset() {
         return multidataset;
     }
 
-    public void setMultidataset(Resource multidataset) {
+    public void setMultidataset(ResourceStatisticalResourceBase multidataset) {
         this.multidataset = multidataset;
     }
 
-    public Resource getUrl() {
+    public ResourceStatisticalResourceBase getUrl() {
         return url;
     }
 
-    public void setUrl(Resource url) {
+    public void setUrl(ResourceStatisticalResourceBase url) {
         this.url = url;
     }
 
-    public Resource getResource() {
-        Resource resource = null;
+    public ResourceStatisticalResourceBase getResource() {
+        ResourceStatisticalResourceBase resource = null;
 
         if (getDataset() != null) {
             resource = getDataset();

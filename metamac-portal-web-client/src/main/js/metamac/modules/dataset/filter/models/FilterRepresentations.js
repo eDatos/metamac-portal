@@ -35,7 +35,9 @@
                 if (children.length) {
                     hasHierarchy = true;
                     representation.initChildren(children);
-                    representation._onChangeOpen();
+                    representation._onChangeOpenInit();
+                } else {
+                    representation.initNodesWithoutChildren();
                 }
             }, this);
             this.hasHierarchy = hasHierarchy;
