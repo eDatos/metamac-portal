@@ -23,7 +23,7 @@
                 <jsp:include page="/jsp/visualizer/collection-node.jsp" />
             </c:when>
             <c:when test="${internalError != null && internalError != ''}">
-	            <p class="justificado">${internalError}</p>
+	            <p class="alert-danger">${internalError}</p>
 	       	</c:when>
 			<c:otherwise>
                 <div class="visualizer-header-info">
