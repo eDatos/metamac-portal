@@ -23,9 +23,7 @@
 	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
 	       	</c:when>
 	       	<c:when test="${internalError != null && internalError != ''}">
-	       	<div class="alert-danger">
-	            <p class="justificado">${internalError}</p>
-	        </div>
+	            <p class="alert-danger">${internalError}</p>
 	       	</c:when>
 			<c:otherwise>
 			    <c:choose>
