@@ -23,7 +23,9 @@
                 <jsp:include page="/jsp/visualizer/collection-node.jsp" />
             </c:when>
             <c:when test="${internalError != null && internalError != ''}">
-	            <p class="justificado" style="background-color:#f2dede; border-color:#ebccd1; color:#a94442">${internalError}</p>
+            <div class="alert-danger">
+	            <p class="justificado">${internalError}</p>
+	        </div>
 	       	</c:when>
 			<c:otherwise>
                 <div class="visualizer-header-info">
@@ -57,6 +59,7 @@
     </script>
 
     <script>
+    	<link rel="stylesheet" type="text/css" href="style.css">
 	    LazyLoad.css('${baseURL}/client/metamac.css', function () {
 	        LazyLoad.js('${baseURL}/client/metamac.js', function () {
 

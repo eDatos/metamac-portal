@@ -23,7 +23,9 @@
 	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
 	       	</c:when>
 	       	<c:when test="${internalError != null && internalError != ''}">
-	            <p class="justificado" style="background-color:#f2dede; border-color:#ebccd1; color:#a94442">${internalError}</p>
+	       	<div class="alert-danger">
+	            <p class="justificado">${internalError}</p>
+	        </div>
 	       	</c:when>
 			<c:otherwise>
 			    <c:choose>
