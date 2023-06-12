@@ -21,6 +21,7 @@ import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 
 public class PlainTextExporter {
 
@@ -102,13 +103,13 @@ public class PlainTextExporter {
 
     private void writeHeaderForPlainTextObservations(PrintWriter printWriter) {
         StringBuilder header = new StringBuilder();
-        for (String dimensionId : datasetAccess.getDimensionsOrderedForData()) {
-            LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimensionId);
+        for (Dimension dimension : datasetAccess.getDimensionsMetadata()) {
+            LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimension.getId());
             if (labelVisualisation.isLabel() || labelVisualisation.isCode()) {
-                header.append(escapeString(dimensionId, ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
+                header.append(escapeString(dimension.getId(), ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
             }
             if (labelVisualisation.isCode() && labelVisualisation.isLabel()) {
-                header.append(escapeString(dimensionId + HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE, ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
+                header.append(escapeString(dimension.getId() + HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE, ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
             }
         }
         header.append(HEADER_OBSERVATION);
@@ -137,11 +138,11 @@ public class PlainTextExporter {
                 StringBuilder line = new StringBuilder();
 
                 // Dimension values
-                for (String dimensionId : datasetAccess.getDimensionsOrderedForData()) {
-                    String dimensionValueId = permutationAtCell.get(dimensionId);
-                    LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimensionId);
+                for (Dimension dimension : datasetAccess.getDimensionsMetadata()) {
+                    String dimensionValueId = permutationAtCell.get(dimension.getId());
+                    LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimension.getId());
                     if (labelVisualisation.isLabel()) {
-                        String dimensionValueLabel = datasetAccess.getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
+                        String dimensionValueLabel = datasetAccess.getDimensionValueLabelCurrentLocale(dimension.getId(), dimensionValueId);
                         line.append(escapeString(dimensionValueLabel, ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
                     }
                     if (labelVisualisation.isCode()) {
