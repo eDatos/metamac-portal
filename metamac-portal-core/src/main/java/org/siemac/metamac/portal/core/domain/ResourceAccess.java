@@ -693,8 +693,7 @@ public class ResourceAccess {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
             if (conceptDetail.getQuantity() != null) {
-                // TODO EDATOS-2944 - Mostrar la información de "Medida" en el visualizador. Cuando cambie el modo de devolver el multiplicador, tambien ha de cambiar aqui
-                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
+                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), conceptDetail.getQuantity().getUnitMultiplier().getName().getTexts());
                 if (value != null) {
                     return value;
                 }
@@ -723,22 +722,32 @@ public class ResourceAccess {
         }
         return result;
     }
-    private static InternationalString prepareQuantityInternationalString(InternationalString current, String prependString) {
+
+    private static InternationalString prepareQuantityInternationalString(InternationalString current, List<LocalisedString> unitMultiplierListLS) {
         if (current == null) {
             return null;
         }
 
         InternationalString result = new InternationalString();
-
         for (LocalisedString localisedString : current.getTexts()) {
-            String label = localisedString.getValue() + " (x" + prependString + ")";
+            String language = localisedString.getLang();
+            String unitMultiplier = getUnitMultiplierValue(unitMultiplierListLS, language);
+
             LocalisedString localisedStringResult = new LocalisedString();
-            localisedStringResult.setLang(localisedString.getLang());
-            localisedStringResult.setValue(label);
+            localisedStringResult.setLang(language);
+            localisedStringResult.setValue(localisedString.getValue() + unitMultiplier);
             result.getTexts().add(localisedStringResult);
         }
-
         return result;
+    }
+
+    private static String getUnitMultiplierValue(List<LocalisedString> unitMultiplierListLS, String language) {
+        for (LocalisedString unitMultiplierLS : unitMultiplierListLS) {
+            if (unitMultiplierLS.getLang().equals(language)) {
+                return " (" + unitMultiplierLS.getValue() + ")";
+            }
+        }
+        return " (" + unitMultiplierListLS.get(0).getValue() + ")";
     }
 
     public int getPrimaryMeasureAttributesCount() {

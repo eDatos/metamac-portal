@@ -43,6 +43,11 @@ import org.siemac.metamac.portal.core.serviceapi.validators.ExportServiceInvocat
 import org.siemac.metamac.portal.core.serviceimpl.ExportServiceImpl;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
+import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.common.v1_0.domain.Resource;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.ItemResource;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.Codelist;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Quantity;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
@@ -2169,11 +2174,20 @@ public class ExportServiceTest implements ExportServiceTestBase {
             public Concept answer(InvocationOnMock invocation) throws Throwable {
                 Concept concept = new Concept();
                 concept.setUrn((String) invocation.getArguments()[0]);
-                Quantity a = new Quantity();
-                a.setUnitMultiplier(null);
-                concept.setQuantity(a);
+                Quantity quantity = new Quantity();
+
+                ItemResource unitMultiplier = new ItemResource();
+                InternationalString internationalString = new InternationalString();
+                LocalisedString localisedString = new LocalisedString();
+                localisedString.setLang("es");
+                localisedString.setValue("Unidades");
+                internationalString.getTexts().add(localisedString);
+                unitMultiplier.setName(internationalString);
+
+                quantity.setUnitMultiplier(unitMultiplier);
+                concept.setQuantity(quantity);
                 return concept;
-            };
+            }
         });
     }
 
