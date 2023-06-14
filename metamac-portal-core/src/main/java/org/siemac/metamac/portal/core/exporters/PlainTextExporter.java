@@ -188,7 +188,8 @@ public class PlainTextExporter {
 
     private void writeHeaderForPlainTextAttributes(PrintWriter printWriter, int numberOfColumnsToAttributeValue) {
         StringBuilder header = new StringBuilder();
-        for (String dimensionId : datasetAccess.getDimensionsOrderedForData()) {
+        for (Dimension dimension : datasetAccess.getDimensionsMetadata()) {
+            String dimensionId = dimension.getId();
             LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimensionId);
             if (labelVisualisation.isLabel() || labelVisualisation.isCode()) {
                 header.append(escapeString(dimensionId, ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
@@ -207,47 +208,47 @@ public class PlainTextExporter {
 
     private void writeBodyForPlainTextAttributesDataset(PrintWriter printWriter, List<Attribute> attributes, int numberOfColumnsToAttributeValue) {
         for (Attribute attribute : attributes) {
-            if (!AttributeAttachmentLevelType.DATASET.equals(attribute.getAttachmentLevel())) {
-                continue;
-            }
-            String attributeId = attribute.getId();
-            String[] attributeValues = datasetAccess.getAttributeValues(attributeId);
-            if (attributeValues == null) {
-                continue;
-            }
-            StringBuilder line = new StringBuilder();
-            // Dimensions
-            for (String dimensionId : datasetAccess.getDimensionsOrderedForData()) {
-                // Write empty code dimensions
-                LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimensionId);
-                if (labelVisualisation.isLabel()) {
-                    line.append(plainTextTypeEnum.getSeparator());
+            if (AttributeAttachmentLevelType.DATASET.equals(attribute.getAttachmentLevel())) {
+
+                String attributeId = attribute.getId();
+                String[] attributeValues = datasetAccess.getAttributeValues(attributeId);
+                if (attributeValues != null) {
+
+                    StringBuilder line = new StringBuilder();
+                    // Dimensions
+                    for (Dimension dimension : datasetAccess.getDimensionsMetadata()) {
+                        String dimensionId = dimension.getId();
+                        // Write empty code dimensions
+                        LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimensionId);
+                        if (labelVisualisation.isLabel()) {
+                            line.append(plainTextTypeEnum.getSeparator());
+                        }
+                        if (labelVisualisation.isCode()) {
+                            line.append(plainTextTypeEnum.getSeparator());
+                        }
+                    }
+                    // Attribute Id
+                    line.append(escapeString(attributeId, ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
+                    // Attribute value
+                    String attributeValue = attributeValues[0];
+                    writeBodyAttributeValueForPlainTextAttributes(line, attributeId, attributeValue, numberOfColumnsToAttributeValue);
+                    printWriter.println(line);
                 }
-                if (labelVisualisation.isCode()) {
-                    line.append(plainTextTypeEnum.getSeparator());
-                }
             }
-            // Attribute Id
-            line.append(escapeString(attributeId, ESCAPE_IF_NECESSARY) + plainTextTypeEnum.getSeparator());
-            // Attribute value
-            String attributeValue = attributeValues[0];
-            writeBodyAttributeValueForPlainTextAttributes(line, attributeId, attributeValue, numberOfColumnsToAttributeValue);
-            printWriter.println(line);
         }
     }
 
     private void writeBodyForPlainTextAttributesDimensions(PrintWriter printWriter, List<Attribute> attributes, int numberOfColumnsToAttributeValue) {
         for (Attribute attribute : attributes) {
-            if (!AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
-                continue;
+            if (AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
+
+                String attributeId = attribute.getId();
+                String[] attributeValues = datasetAccess.getAttributeValues(attributeId);
+                if (attributeValues != null) {
+                    List<String> dimensionsAttributeOrderedForData = datasetAccess.getDimensionsAttributeOrderedForData(attribute);
+                    writeBodyForPlainTextAttributeDimensions(printWriter, attributeId, attributeValues, dimensionsAttributeOrderedForData, numberOfColumnsToAttributeValue);
+                }
             }
-            String attributeId = attribute.getId();
-            String[] attributeValues = datasetAccess.getAttributeValues(attributeId);
-            if (attributeValues == null) {
-                continue;
-            }
-            List<String> dimensionsAttributeOrderedForData = datasetAccess.getDimensionsAttributeOrderedForData(attribute);
-            writeBodyForPlainTextAttributeDimensions(printWriter, attributeId, attributeValues, dimensionsAttributeOrderedForData, numberOfColumnsToAttributeValue);
         }
     }
 
@@ -273,10 +274,11 @@ public class PlainTextExporter {
             if (dimensionPosition == lastDimensionPosition) {
                 // We have all dimensions here
                 String attributeValue = attributeValues[attributeValueIndex++];
-                if (!StringUtils.isEmpty(attributeValue) && allDimensionValuesAreSelected(datasetAccess.getDimensionsOrderedForData(), dimensionValuesForAttributeValue)) {
+                if (!StringUtils.isEmpty(attributeValue) && allDimensionValuesAreSelected(datasetAccess.getDimensionsMetadata(), dimensionValuesForAttributeValue)) {
                     StringBuilder line = new StringBuilder();
                     // Dimensions
-                    for (String dimensionId : datasetAccess.getDimensionsOrderedForData()) {
+                    for (Dimension dimension : datasetAccess.getDimensionsMetadata()) {
+                        String dimensionId = dimension.getId();
                         String dimensionValueId = dimensionValuesForAttributeValue.get(dimensionId);
                         LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimensionId);
                         if (labelVisualisation.isLabel()) {
@@ -310,8 +312,9 @@ public class PlainTextExporter {
         }
     }
 
-    private boolean allDimensionValuesAreSelected(List<String> dimensionsOrderedForData, Map<String, String> dimensionValuesForAttributeValue) {
-        for (String dimensionId : dimensionsOrderedForData) {
+    private boolean allDimensionValuesAreSelected(List<Dimension> dimensionsOrderedMetadata, Map<String, String> dimensionValuesForAttributeValue) {
+        for (Dimension dimension : dimensionsOrderedMetadata) {
+            String dimensionId = dimension.getId();
             if (dimensionValuesForAttributeValue.containsKey(dimensionId)) {
                 String dimensionValueId = dimensionValuesForAttributeValue.get(dimensionId);
                 if (!datasetSelection.getDimension(dimensionId).getSelectedDimensionValues().contains(dimensionValueId)) {
