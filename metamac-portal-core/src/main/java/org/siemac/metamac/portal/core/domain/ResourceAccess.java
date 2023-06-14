@@ -21,6 +21,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
+import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
@@ -693,7 +694,7 @@ public class ResourceAccess {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
             if (conceptDetail.getQuantity() != null) {
-                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), conceptDetail.getQuantity().getUnitMultiplier().getName().getTexts());
+                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), conceptDetail.getQuantity().getUnitMultiplier().getName());
                 if (value != null) {
                     return value;
                 }
@@ -723,7 +724,7 @@ public class ResourceAccess {
         return result;
     }
 
-    private static InternationalString prepareQuantityInternationalString(InternationalString current, List<LocalisedString> unitMultiplierListLS) {
+    private InternationalString prepareQuantityInternationalString(InternationalString current, InternationalString internationalString) {
         if (current == null) {
             return null;
         }
@@ -731,23 +732,14 @@ public class ResourceAccess {
         InternationalString result = new InternationalString();
         for (LocalisedString localisedString : current.getTexts()) {
             String language = localisedString.getLang();
-            String unitMultiplier = getUnitMultiplierValue(unitMultiplierListLS, language);
+            String label = PortalUtils.getLabel(internationalString, language, langDefault);
 
             LocalisedString localisedStringResult = new LocalisedString();
             localisedStringResult.setLang(language);
-            localisedStringResult.setValue(localisedString.getValue() + unitMultiplier);
+            localisedStringResult.setValue(localisedString.getValue() + " (" + label + ")");
             result.getTexts().add(localisedStringResult);
         }
         return result;
-    }
-
-    private static String getUnitMultiplierValue(List<LocalisedString> unitMultiplierListLS, String language) {
-        for (LocalisedString unitMultiplierLS : unitMultiplierListLS) {
-            if (unitMultiplierLS.getLang().equals(language)) {
-                return " (" + unitMultiplierLS.getValue() + ")";
-            }
-        }
-        return " (" + unitMultiplierListLS.get(0).getValue() + ")";
     }
 
     public int getPrimaryMeasureAttributesCount() {
