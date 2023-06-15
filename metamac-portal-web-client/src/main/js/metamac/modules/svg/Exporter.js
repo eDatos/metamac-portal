@@ -9,6 +9,11 @@
     App.svg.Exporter.prototype = {
 
         sanitizeSvg: function (svg) {
+            const regex = /rgba\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]?(?:\.[0-9]+)?)\s*\)/;
+            const found = svg.match(regex);
+            if (found) {
+                svg = svg.replace(found[0], 'rgb('+ found[1] + ', '+ found[2] + ', '+ found[3] + ')');
+            }
             // sanitize
             svg = svg
                 .replace(/zIndex="[^"]+"/g, '')
@@ -47,7 +52,7 @@
         addStyleAsync: function (svg) {
             var self = this;
             var response = new $.Deferred();
-            var request = $.get(App.endpoints["statistical-visualizer"] + "/client/map.css");
+            var request = $.get(App.endpoints["statistical-visualizer-css"] + "/client/map.css");
             $.when(request).done(function (css) {
                 var stiledSvg = self._insertStyleInSvg(svg, css);
                 response.resolveWith(null, [stiledSvg]);
