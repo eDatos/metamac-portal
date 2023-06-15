@@ -23,6 +23,9 @@ import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
@@ -33,8 +36,6 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
@@ -43,8 +44,6 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Enumerat
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MeasureQuantity;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 
 public class ResourceAccess {
 
@@ -86,7 +85,6 @@ public class ResourceAccess {
     // Data
     private String[]                                      observations;
     private Map<String, String[]>                         attributesValuesByAttributeId;
-    private List<String>                                  dimensionsOrderedForData;
     private Map<String, List<String>>                     dimensionValuesOrderedForDataByDimensionId;
 
     private Dataset                                       dataset;
@@ -287,25 +285,21 @@ public class ResourceAccess {
         return attributesValuesByAttributeId.get(attributeId);
     }
 
-    public List<String> getDimensionsOrderedForData() {
-        return dimensionsOrderedForData;
-    }
-
     public List<String> getDimensionValuesOrderedForData(String dimensionId) {
         return dimensionValuesOrderedForDataByDimensionId.get(dimensionId);
     }
 
     public List<String> getDimensionsAttributeOrderedForData(Attribute attribute) {
-        List<String> allDimensionsOrderedForData = getDimensionsOrderedForData();
+        List<String> allDimensionsOrderedForData = new ArrayList<String>(getDimensionsMetadataMap().keySet());
         if (AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
             List<String> dimensionsAttribute = new ArrayList<String>();
             for (AttributeDimension attributeDimension : attribute.getDimensions().getDimensions()) {
                 dimensionsAttribute.add(attributeDimension.getDimensionId());
             }
             List<String> dimensionsAttributeOrdered = new ArrayList<String>(dimensionsAttribute.size());
-            for (String dimensionDatasetId : getDimensionsOrderedForData()) {
-                if (dimensionsAttribute.contains(dimensionDatasetId)) {
-                    dimensionsAttributeOrdered.add(dimensionDatasetId);
+            for (Dimension dimension : getDimensionsMetadata()) {
+                if (dimensionsAttribute.contains(dimension.getId())) {
+                    dimensionsAttributeOrdered.add(dimension.getId());
                 }
             }
             return dimensionsAttributeOrdered;
@@ -422,11 +416,9 @@ public class ResourceAccess {
      */
     private void initializeDimensionsForData(Data data) throws MetamacException {
         List<DimensionRepresentation> dimensionRepresentations = data.getDimensions().getDimensions();
-        dimensionsOrderedForData = new ArrayList<String>(dimensionRepresentations.size());
         dimensionValuesOrderedForDataByDimensionId = new HashMap<String, List<String>>(dimensionRepresentations.size());
         for (DimensionRepresentation dimensionRepresentation : dimensionRepresentations) {
             String dimensionId = dimensionRepresentation.getDimensionId();
-            dimensionsOrderedForData.add(dimensionId);
 
             List<CodeRepresentation> codesRepresentations = dimensionRepresentation.getRepresentations().getRepresentations();
             dimensionValuesOrderedForDataByDimensionId.put(dimensionId, new ArrayList<String>(codesRepresentations.size()));
