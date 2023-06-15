@@ -52,7 +52,7 @@
         addStyleAsync: function (svg) {
             var self = this;
             var response = new $.Deferred();
-            var request = $.get(App.endpoints["statistical-visualizer-css"] + "/client/map.css");
+            var request = $.get(App.endpoints["statistical-visualizer"] + "/client/map.css");
             $.when(request).done(function (css) {
                 var stiledSvg = self._insertStyleInSvg(svg, css);
                 response.resolveWith(null, [stiledSvg]);
