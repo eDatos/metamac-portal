@@ -254,7 +254,8 @@ I18n.translations.pt = {
         },
         category: {
             measure: {
-                unit: 'Unidade de medida'
+                unit: 'Unidade de medida',
+                multiplier: 'Multiplicador de unidade'
             },
             attributes: {
                 title: 'Atributos da categoria'

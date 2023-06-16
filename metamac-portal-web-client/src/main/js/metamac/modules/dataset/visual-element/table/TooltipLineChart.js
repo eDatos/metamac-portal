@@ -87,6 +87,7 @@
         _setPermutation: function(permutation) {
             this.permutation = permutation;
             this.measureUnit = this.data.metadata.measureUnitForSelection(permutation);
+            this.unitMultiplier = this.data.metadata.unitMultiplierForSelection(permutation);
         },
 
         tooltipFormatter: function () {
@@ -159,6 +160,11 @@
                 if (self.measureUnit) {
                     name = name + ' (' + self.measureUnit + ')';
                 }
+
+                if (self.unitMultiplier) {
+                    name = name + ' (' + self.unitMultiplier + ')';
+                }
+
                 var point = { y: y, name: name };
 
                 if (self.permutation[self.timeDimension.id] === timeCategory.id) {

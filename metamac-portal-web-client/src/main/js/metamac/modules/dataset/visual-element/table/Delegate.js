@@ -152,7 +152,8 @@
                 categories: cellInfo.categories,
                 hasAttributes: formattedCellAttributes && (formattedCellAttributes.primaryMeasureAttributes.length || formattedCellAttributes.combinatedDimensionsAttributes.length),
                 cellValue: cellInfo.cellValue,
-                measureUnit: cellInfo.measureUnit
+                measureUnit: cellInfo.measureUnit,
+                unitMultiplier: cellInfo.unitMultiplier
             }
             return template(context);
         },
@@ -173,6 +174,7 @@
                 title: headerInfo.title,
                 description: headerInfo.description,
                 measureUnit: headerInfo.measureUnit,
+                unitMultiplier: headerInfo.unitMultiplier,
                 attributes: this.formatAttributes(headerInfo.attributes)
             }
             return template(context);

@@ -190,8 +190,15 @@
                     var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
                     representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name.text);
 
-                    if (dimensionValue.measureQuantity && dimensionValue.measureQuantity.unitCode) {
-                        representation.measureUnit = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitCode.name.text);
+                    if (dimensionValue.measureQuantity) {
+                        if (dimensionValue.measureQuantity.unitCode) {
+                            console.log(dimensionValue.measureQuantity);
+                            representation.measureUnit = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitCode.name.text);
+                        }
+
+                        if (dimensionValue.measureQuantity.unitMultiplier) {
+                            representation.unitMultiplier = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitMultiplier.name.text);
+                        }
                     }
 
                     if (dimensionValue.description && dimensionValue.description.text) {
@@ -415,6 +422,13 @@
             var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
             if (selectedDimValue) {
                 return selectedDimValue.measureUnit;
+            }
+        },
+
+        unitMultiplierForSelection: function (selection) {
+            var selectedDimValue = this._findSelectedUnitMultiplierDimensionValue(selection);
+            if (selectedDimValue) {
+                return selectedDimValue.unitMultiplier;
             }
         },
 

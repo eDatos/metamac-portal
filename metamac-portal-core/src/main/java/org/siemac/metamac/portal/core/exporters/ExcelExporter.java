@@ -256,7 +256,7 @@ public class ExcelExporter {
 
     // Samples:
     // - Unidad de medida (Índice de palomas): Índice de palomas
-    // - Unidad de medida (Variacion): Porcentaje (x10)
+    // - Unidad de medida (Variacion): Porcentaje (Unidades)
     private String buildUnitText(Resource value) {
         StringBuilder unitBuilder = new StringBuilder();
         Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
