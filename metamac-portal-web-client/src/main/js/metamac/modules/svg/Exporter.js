@@ -12,6 +12,7 @@
             const regex = /rgba\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]?(?:\.[0-9]+)?)\s*\)/;
             const found = svg.match(regex);
             if (found) {
+                // This conversion is enough for our purposes because this come mainly for a previous highcharts conversion that always output 1, so we can safely ignore it
                 svg = svg.replace(found[0], 'rgb('+ found[1] + ', '+ found[2] + ', '+ found[3] + ')');
             }
             // sanitize
