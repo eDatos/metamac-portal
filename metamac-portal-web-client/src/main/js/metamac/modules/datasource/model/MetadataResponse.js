@@ -133,15 +133,15 @@
 
         getDimensions: function () {
             var dimensions = this.metadata.dimensions.dimension;
-            var result = _.map(dimensions, function (dimension) {
+            return _.map(dimensions, function (dimension) {
                 return {
                     id: dimension.id,
-                    label: App.DimensionsUtils.getDimensionLabel(dimension),
+                    label: App.InternationalizationUtils.localizeLabel(dimension.name.text),
+                    pluralLabel: App.DimensionsUtils.getDimensionLabel(dimension),
                     type: dimension.type,
                     hierarchy: this._dimensionHasHierarchy(dimension)
                 };
             }, this);
-            return result;
         },
 
         _sortHierarchyRepresentations: function (representations) {
