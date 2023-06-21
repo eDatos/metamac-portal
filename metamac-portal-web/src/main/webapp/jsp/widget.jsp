@@ -11,6 +11,7 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="org.siemac.metamac.portal.web.WebUtils" %>
+<%@ page import="org.siemac.metamac.core.common.util.InternationalizationUtils" %>
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -41,24 +42,14 @@
         }
     </style>
     <%
-        String locale = request.getParameter("locale");
+        String localeFromCookie;
         try {
-            PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
-            String internationalizationCookieId = configurationService.retrieveInternationalizationCookieId();
-
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals(internationalizationCookieId)) {
-                        locale = cookie.getValue();
-                        break;
-                    }
-                }
-            }
+            localeFromCookie = InternationalizationUtils.getInstance().getLocaleFromCookie(request);
         } catch (MetamacException e) {
-            // ignore and use the default value for locale instead
+            localeFromCookie = null;
         }
 
+        String locale = localeFromCookie == null ? request.getParameter("locale") : localeFromCookie;
         request.setAttribute("locale", locale);
     %>
     <%
