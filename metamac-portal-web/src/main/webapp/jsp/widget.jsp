@@ -42,6 +42,23 @@
     </style>
     <%
         String locale = request.getParameter("locale");
+        try {
+            PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
+            String internationalizationCookieId = configurationService.retrieveInternationalizationCookieId();
+
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals(internationalizationCookieId)) {
+                        locale = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+        } catch (MetamacException e) {
+            // ignore and use the default value for locale instead
+        }
+
         request.setAttribute("locale", locale);
     %>
     <%
