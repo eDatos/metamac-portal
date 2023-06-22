@@ -17,12 +17,15 @@
         fetch: function (callback) {
             var self = this;
             $.ajax({
-                url: self._url(),
-                dataType: 'jsonp',
-                jsonp: "_callback"
+                url: self._url()
             }).success(function (response) {
                 self.response = response;
                 callback(null, "done")
+            }).error(function (response) {
+                self.response = response;
+                var errorsJson = JSON.parse(response.responseText);
+                var error = I18n.t(errorsJson.code);
+                callback(error, null);
             });
         },
 

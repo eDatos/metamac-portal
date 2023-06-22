@@ -315,12 +315,6 @@ I18n.translations.pt = {
             server: "Ocorreu um problema ao fazer login. Tente novamente mais tarde."
         }
     },
-    logout: {
-        modal: {
-            title: "Fechar Sessão",
-            question: "Tem a certeza que quer terminar a sessão?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -375,13 +369,6 @@ I18n.translations.pt = {
             }
         }
     },
-    user: {
-        header: {
-            userAreaTooltip: "",
-            loginTooltip: "Iniciar sessão",
-            logoutTooltip: "Fechar Sessão"
-        }
-    },
     captcha: {
         button: {
             text: "Mandar"
@@ -389,5 +376,5 @@ I18n.translations.pt = {
         label: {
             text: "Escreva o valor da imagem mostrada acima"
         }
-    }
+    },
 };

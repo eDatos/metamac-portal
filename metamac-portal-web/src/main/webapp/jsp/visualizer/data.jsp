@@ -22,10 +22,10 @@
 		    	<h3>Error - Propiedad no configurada</h3>
 	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
 	       	</c:when>
+	       	<c:when test="${internalError != null && internalError != ''}">
+	            <p class="alert-danger">${internalError}</p>
+	       	</c:when>
 			<c:otherwise>
-				<c:if test="${ApiUrlExternalUsers != 'error' && WebApplicationExternalUsers != 'error'}">
-					<div class="visualizer-header-user"></div>
-				</c:if>
 			    <c:choose>
 					<c:when test="${!resourceEmpty}">
 						<div class="visualizer-header-info">

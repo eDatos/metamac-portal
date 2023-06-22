@@ -315,12 +315,6 @@ I18n.translations.en = {
             server: "There was a problem logging in. Try again later."
         }
     },
-    logout: {
-        modal: {
-            title: "Log out",
-            question: "Are you sure you want to log out?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -375,19 +369,30 @@ I18n.translations.en = {
             }
         }
     },
-    user: {
-        header: {
-            userAreaTooltip: "Área do usuário",
-            loginTooltip: "Sign in",
-            logoutTooltip: "Log out"
-        }
-    },
     captcha: {
         button: {
             text: "Send"
         },
         label: {
             text: "Write the value of the image shown above"
+        }
+    },
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "The dataset has no data"
+            },
+            indicators: {
+                no_representations: "Dimension {{error}} has no representations"
+            }
+        },
+        statistical_resources: {
+            dataset: { 
+                not_found: "The dataset has not been found"
+            }
+        },
+        common: {
+            unknown: "Unknown error"
         }
     }
 };

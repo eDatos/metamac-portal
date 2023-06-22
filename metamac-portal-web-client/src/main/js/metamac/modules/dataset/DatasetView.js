@@ -71,7 +71,6 @@
             // sidebarView
             var sideViews = [];
             if (!this.optionsModel.get('widget')) {
-
                 // sidebar - filter
                 this.filterSidebarView = new App.widget.filter.sidebar.FilterSidebarView({
                     filterDimensions: this.filterDimensions,

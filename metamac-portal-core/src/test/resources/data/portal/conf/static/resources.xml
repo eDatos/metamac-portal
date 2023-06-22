@@ -7,7 +7,6 @@
     <entry key="metamac.portal.db.url">jdbc:postgresql://artejenkins.arte.internal:5432/ARTE</entry>
     <entry key="metamac.portal.db.username">JENKINS_METAMAC_PORTAL</entry>
     <entry key="metamac.portal.db.password">JENKINS_METAMAC_PORTAL</entry>
-    <entry key="metamac.portal.db.dialect">org.hibernate.dialect.PostgreSQLDialect</entry>
     <entry key="metamac.portal.db.driver_name">org.postgresql.Driver</entry>
     <entry key="metamac.portal.db.provider">POSTGRESQL</entry>
   

@@ -23,7 +23,7 @@ public class Multidataset2DtoMapper {
         return target;
     }
 
-    public MultidatasetData multidatasetDataExternalToDto(org.siemac.metamac.rest.statistical_resources.v1_0.domain.MultidatasetData source) {
+    public MultidatasetData multidatasetDataExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetData source) {
         if (source == null) {
             return null;
         }
@@ -34,7 +34,7 @@ public class Multidataset2DtoMapper {
         return target;
     }
 
-    public MultidatasetNodes multidatasetNodesExternalToDto(org.siemac.metamac.rest.statistical_resources.v1_0.domain.MultidatasetNodes source) {
+    public MultidatasetNodes multidatasetNodesExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetNodes source) {
         if (source == null) {
             return null;
         }
@@ -47,7 +47,7 @@ public class Multidataset2DtoMapper {
         return target;
     }
 
-    public MultidatasetNode multidatasetNodeExternalToDto(org.siemac.metamac.rest.statistical_resources.v1_0.domain.MultidatasetNode source) {
+    public MultidatasetNode multidatasetNodeExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetNode source) {
         if (source == null) {
             return null;
         }
@@ -55,8 +55,8 @@ public class Multidataset2DtoMapper {
         MultidatasetTable target = new MultidatasetTable();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setDataset(((org.siemac.metamac.rest.statistical_resources.v1_0.domain.MultidatasetTable) source).getDataset());
-        target.setQuery(((org.siemac.metamac.rest.statistical_resources.v1_0.domain.MultidatasetTable) source).getQuery());
+        target.setDataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetTable) source).getDataset());
+        target.setQuery(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetTable) source).getQuery());
 
         return target;
     }
@@ -76,7 +76,7 @@ public class Multidataset2DtoMapper {
         return target;
     }
 
-    public MultidatasetData multidatasetDataInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.MultidatasetData source) {
+    public MultidatasetData multidatasetDataInternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetData source) {
         if (source == null) {
             return null;
         }
@@ -87,7 +87,7 @@ public class Multidataset2DtoMapper {
         return target;
     }
 
-    public MultidatasetNodes multidatasetNodesInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.MultidatasetNodes source) {
+    public MultidatasetNodes multidatasetNodesInternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetNodes source) {
         if (source == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public class Multidataset2DtoMapper {
         return target;
     }
 
-    public MultidatasetNode multidatasetNodeInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.MultidatasetNode source) {
+    public MultidatasetNode multidatasetNodeInternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetNode source) {
         if (source == null) {
             return null;
         }
@@ -108,8 +108,8 @@ public class Multidataset2DtoMapper {
         MultidatasetTable target = new MultidatasetTable();
         target.setName(source.getName());
         target.setDescription(source.getDescription());
-        target.setDataset(((org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.MultidatasetTable) source).getDataset());
-        target.setQuery(((org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.MultidatasetTable) source).getQuery());
+        target.setDataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetTable) source).getDataset());
+        target.setQuery(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MultidatasetTable) source).getQuery());
 
         return target;
     }
