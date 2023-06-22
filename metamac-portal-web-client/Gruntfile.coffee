@@ -321,7 +321,12 @@ module.exports = (grunt) ->
                 options:
                     port: 3000
                     hostname: 'localhost'
-
+                    middleware:(connect, options, middlewares) ->
+                        middlewares.unshift (req, res, next) ->
+                            res.setHeader 'Access-Control-Allow-Origin', '*'
+                            res.setHeader 'Access-Control-Allow-Methods', '*'
+                            next()
+                        middlewares
         open:
             test:
                 path: 'http://localhost:<%= connect.server.options.port %>/src/test/javascript/runner/runner.html'
