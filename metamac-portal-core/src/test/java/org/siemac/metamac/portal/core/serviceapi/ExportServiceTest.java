@@ -1629,6 +1629,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
             Dataset relatedDataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000001.xml"));
 
             File tmpFile = tempFolder.newFile();
+            // tmpFile = new File("W:/temp/Px_TEST/query-ISTAC-INDICADORES_OCUPACION.px");
             FileOutputStream out = new FileOutputStream(tmpFile);
             exportService.exportQueryToPx(ctx, query, relatedDataset, datasetSelection, null, out);
             out.close();

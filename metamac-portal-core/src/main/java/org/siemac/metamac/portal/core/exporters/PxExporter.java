@@ -743,6 +743,9 @@ public class PxExporter {
                 }
             }
         }
+        for (Map.Entry<Integer, PxLineContainer> line : linesMap.entrySet()) {
+            writeLine(printWriter, line.getValue());
+        }
     }
 
     /**
