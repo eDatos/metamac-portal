@@ -42,13 +42,7 @@
         }
     </style>
     <%
-        String localeFromCookie;
-        try {
-            localeFromCookie = InternationalizationUtils.getInstance().getLocaleFromCookie(request);
-        } catch (MetamacException e) {
-            localeFromCookie = null;
-        }
-
+        String localeFromCookie = InternationalizationUtils.getInstance().getLocaleFromCookie(request);
         String locale = localeFromCookie == null ? request.getParameter("locale") : localeFromCookie;
         request.setAttribute("locale", locale);
     %>
