@@ -11,7 +11,6 @@
         this.canvas = view.canvas;
         this.$canvas = $(this.canvas);
         this.lastPoint = undefined;
-        this.$body = $('body');
         this.$document = $(document);
 
         this.eventNamespace = ".scrollManager";
@@ -22,7 +21,7 @@
     };
 
     ScrollManager.prototype.destroy = function () {
-        this.$body.removeClass('move move-updown col-resize move-lefright');
+        this.$canvas.removeClass('move move-updown col-resize move-lefright');
         this.unbindEvents();
     };
 
@@ -215,11 +214,11 @@
             }
 
             if (cursorClass) {
-                this.$body.addClass(cursorClass);
+                this.$canvas.addClass(cursorClass);
             }
 
             var toRemove = _.without(["move", "move-updown", "move-leftright", "col-resize"], cursorClass).join(" ");
-            this.$body.removeClass(toRemove);
+            this.$canvas.removeClass(toRemove);
         }
     };
 
