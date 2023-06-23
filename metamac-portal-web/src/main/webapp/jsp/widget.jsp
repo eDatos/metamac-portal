@@ -1,6 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<%@ page import="org.siemac.metamac.core.common.exception.MetamacException" %>
 <%@ page import="org.siemac.metamac.portal.core.conf.PortalConfiguration" %>
 <%@ page import="org.siemac.metamac.core.common.util.ApplicationContextProvider" %>
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
@@ -45,6 +44,9 @@
         String localeFromCookie = InternationalizationUtils.getInstance().getLocaleFromCookie(request);
         String locale = localeFromCookie == null ? request.getParameter("locale") : localeFromCookie;
         request.setAttribute("locale", locale);
+
+        PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
+        request.setAttribute("defaultLocale", configurationService.retrieveDefaultInternationalizationLanguage());
     %>
     <%
         String STATISTICAL_RESOURCES_API_URL_BASE = WebUtils.getStatisticalResourcesApiBaseUrl();
@@ -112,7 +114,7 @@
 
     LazyLoad.js('client/metamac.js?d=${jsDate}', function () {
 
-        I18n.defaultLocale = "es";
+        I18n.defaultLocale = "${defaultLocale}";
         I18n.locale = "${locale}";
 
         App.queryParams["agency"] = getQueryParamsAndUnescape("agencyId");

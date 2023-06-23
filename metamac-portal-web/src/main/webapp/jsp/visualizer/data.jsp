@@ -46,7 +46,7 @@
 		        <script>
 		            LazyLoad.css('${baseURL}/client/metamac.css?d=${cssDate}', function () {
 		                LazyLoad.js('${baseURL}/client/metamac.js?d=${jsDate}', function () {
-							I18n.defaultLocale = "es";
+							I18n.defaultLocale = "${defaultInternationalizationLanguage}";
 							I18n.locale = "${currentLocale}";
 
 							// http://estadisticas.arte-consultores.com/statistical-resources

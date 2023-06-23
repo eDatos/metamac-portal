@@ -66,7 +66,6 @@ public class Helpers {
     // Mainly intended for debug
     public static final String  PARAMETER_THEME                                   = "theme";
 
-    private static final String DEFAULT_LANGUAGE                                  = "es";
     private static final String LATEST_VERSION                                    = "~latest";
     private static final int    MINIMAL_FIXED_DIGITS_IN_NUMERATION                = 2;
 
@@ -78,11 +77,7 @@ public class Helpers {
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
 
     public Helpers(String language) {
-        if (language.isEmpty()) {
-            this.language = DEFAULT_LANGUAGE;
-        } else {
-            this.language = language;
-        }
+        this.language = language;
     }
 
     public static String getPackageVersion() {

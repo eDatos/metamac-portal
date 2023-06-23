@@ -52,6 +52,7 @@
 		Boolean internalPortal = null;
 		String ORGANISATION = "";
         String INTERNATIONALIZATION_COOKIE_ID = "";
+        String DEFAULT_INTERNATIONALIZATION_LANGUAGE = "";
 
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
@@ -73,11 +74,8 @@
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
             EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
-            try {
-                INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
-            } catch (MetamacException ignored) {
-                INTERNATIONALIZATION_COOKIE_ID = "error";
-            }
+            INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
+            DEFAULT_INTERNATIONALIZATION_LANGUAGE = configurationService.retrieveDefaultInternationalizationLanguage();
             try {
                 // We group this try catch because all of them are served from external-users
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();
@@ -111,6 +109,7 @@
             request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
             request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
+            request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
 
 		} catch (MetamacException e) {
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
@@ -126,6 +125,7 @@
 		 	request.setAttribute("organisationUrn", "error");
 		 	request.setAttribute("geographicalGranularityUrn", "error");
             request.setAttribute("internationalizationCookie", "error");
+            request.setAttribute("defaultInternationalizationLanguage", "error");
 
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
@@ -158,7 +158,7 @@
     %>
 	<%
         Cookie[] cookies = request.getCookies();
-        String locale = request.getLocale().getLanguage();
+        String locale = DEFAULT_INTERNATIONALIZATION_LANGUAGE;
         if (cookies != null && !"error".equals(INTERNATIONALIZATION_COOKIE_ID)) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(INTERNATIONALIZATION_COOKIE_ID)) {
