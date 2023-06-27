@@ -16,6 +16,10 @@
 
         localizeLabel: function (labels) {
             if (labels) {
+                if (_.has(labels, 'text')) {
+                    labels = labels.text;
+                }
+
                 this.initializeLocalesIndex();
 
                 var self = this;
