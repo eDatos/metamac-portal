@@ -111,7 +111,7 @@ public class Helpers {
         }
         if (collection == null || collection.getData() == null || collection.getData().getNodes() == null) {
             Locale locale = LocaleUtils.toLocale(language);
-            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.COLLECTION_NO_FOUND, resourceId, agencyId));
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.COLLECTION_NO_DATA, resourceId, agencyId));
         }
         return collection;
     }
@@ -217,7 +217,7 @@ public class Helpers {
         }
         if (multidataset == null || multidataset.getData() == null || multidataset.getData().getNodes() == null) {
             Locale locale = LocaleUtils.toLocale(language);
-            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.MULTIDATASET_NO_FOUND, resourceId, agencyId));
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.MULTIDATASET_NO_DATA, resourceId, agencyId));
         }
         return multidataset;
     }
