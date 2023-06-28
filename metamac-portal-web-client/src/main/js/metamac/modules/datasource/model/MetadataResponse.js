@@ -148,7 +148,7 @@
                 return _.has(dimensionValue, 'visualisationParent');
             });
 
-            return timeDimensionWithHierarchy || dimensionValuesHasVisualizationParents;
+            return timeDimensionWithDifferentGranularities || dimensionValuesHasVisualizationParents;
         },
 
         getDimensions: function () {
