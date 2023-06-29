@@ -8,8 +8,9 @@
 
 <ul class="capitulos">
     <%
-        String locale = (String) request.getAttribute("currentLocale");        
-    	Helpers helper = new Helpers(locale);
+        String locale = (String) request.getAttribute("currentLocale");
+        String defaultLocale = (String) request.getAttribute("defaultInternationalizationLanguage");
+    	Helpers helper = new Helpers(locale, defaultLocale);
         Integer nodeDepth = (Integer)request.getAttribute("nodeDepth");
         if (nodeDepth == null) {
             nodeDepth = 1;

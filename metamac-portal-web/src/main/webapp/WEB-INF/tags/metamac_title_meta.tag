@@ -158,7 +158,8 @@
     %>
 	<%
         Cookie[] cookies = request.getCookies();
-        String locale = DEFAULT_INTERNATIONALIZATION_LANGUAGE;
+        String defaultLocale = DEFAULT_INTERNATIONALIZATION_LANGUAGE;
+        String locale = defaultLocale;
         if (cookies != null && !"error".equals(INTERNATIONALIZATION_COOKIE_ID)) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(INTERNATIONALIZATION_COOKIE_ID)) {
@@ -168,7 +169,7 @@
         }
         request.setAttribute("currentLocale", locale);
         
-        Helpers helper = new Helpers(locale);
+        Helpers helper = new Helpers(locale, defaultLocale);
 
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);
         String resourceId = request.getParameter(Helpers.PARAMETER_RESOURCE_ID);
