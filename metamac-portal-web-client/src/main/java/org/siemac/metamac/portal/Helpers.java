@@ -66,23 +66,20 @@ public class Helpers {
     // Mainly intended for debug
     public static final String  PARAMETER_THEME                                   = "theme";
 
-    private static final String DEFAULT_LANGUAGE                                  = "es";
     private static final String LATEST_VERSION                                    = "~latest";
     private static final int    MINIMAL_FIXED_DIGITS_IN_NUMERATION                = 2;
 
     private static final Logger LOGGGER                                           = LoggerFactory.getLogger(Helpers.class);
 
     private static String       language;
+    private static String       defaultLanguage;
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
 
-    public Helpers(String language) {
-        if (language.isEmpty()) {
-            this.language = DEFAULT_LANGUAGE;
-        } else {
-            this.language = language;
-        }
+    public Helpers(String language, String defaultLanguage) {
+        this.language = language;
+        this.defaultLanguage = defaultLanguage;
     }
 
     public static String getPackageVersion() {
@@ -366,12 +363,15 @@ public class Helpers {
 
     public String localizeText(InternationalString internationalString) {
         if (internationalString != null) {
+            String defaultText = internationalString.getTexts().get(0).getValue();
             for (LocalisedString text : internationalString.getTexts()) {
                 if (text.getLang().equals(language)) {
                     return text.getValue();
+                } else if (text.getLang().equals(defaultLanguage)) {
+                    defaultText = text.getValue();
                 }
             }
-            return internationalString.getTexts().get(0).getValue();
+            return defaultText;
         } else {
             return StringUtils.EMPTY;
         }
