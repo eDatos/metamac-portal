@@ -121,14 +121,14 @@
         },
 
         _dimensionHasHierarchy: function (dimension) {
-            const timeDimensionWithDifferentGranularities = dimension.id === 'TIME_PERIOD'
-                && !dimension.dimensionValues.value.every((value) => value.temporalGranularity === dimension.dimensionValues.value[0].temporalGranularity);
+            const timeDimensionWithDifferentGranularity = dimension.type === 'TIME_DIMENSION'
+                && dimension.dimensionValues.value.some((value) => value.temporalGranularity !== dimension.dimensionValues.value[0].temporalGranularity);
 
             const dimensionValuesHasVisualizationParents = _.any(dimension.dimensionValues.value, function (dimensionValue) {
                 return _.has(dimensionValue, 'visualisationParent');
             });
 
-            return timeDimensionWithDifferentGranularities || dimensionValuesHasVisualizationParents;
+            return timeDimensionWithDifferentGranularity || dimensionValuesHasVisualizationParents;
         },
 
         getDimensions: function () {
