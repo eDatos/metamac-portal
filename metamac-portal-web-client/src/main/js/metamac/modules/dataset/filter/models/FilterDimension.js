@@ -123,15 +123,50 @@
             if (_.isUndefined(filterLevel)) {
                 representations.invoke('set', { visible: true, open: true })
             } else {
-                representations.each(function (model) {
-                    var level = model.get('level');
-                    var visible = filterLevel === -1 || filterLevel === level;
-                    if (visible) {
-                        model.set({ visible: true, open: false, matchIndexBegin: undefined, matchIndexEnd: undefined });
-                    } else {
-                        model.set({ visible: false, matchIndexBegin: undefined, matchIndexEnd: undefined });
-                    }
-                });
+                if (this.isTimeDimension()) {
+                    const granularities = this.getGranularities();
+                    representations.each(function (model) {
+                        const showAll = filterLevel === -1;
+                        const visible = showAll || granularities.indexOf(model.get('temporalGranularity')) === filterLevel;
+
+                        let level = model.get('level');
+                        let originalLvl = model.get('originalLvl');
+                        // values are to be shown with hierarchy levels, unless some granularity is selected (in which case all are shown at the same level)
+                        if (showAll) {
+                            level = originalLvl || level;
+                        } else {
+                            originalLvl = originalLvl || level;
+                            level = 0;
+                        }
+                        model.set({level, originalLvl})
+
+                        if (visible) {
+                            model.set({
+                                visible: true,
+                                open: false,
+                                matchIndexBegin: undefined,
+                                matchIndexEnd: undefined,
+                            });
+                        } else {
+                            model.set({visible: false, matchIndexBegin: undefined, matchIndexEnd: undefined});
+                        }
+                    });
+                } else {
+                    representations.each(function (model) {
+                        var level = model.get('level');
+                        var visible = filterLevel === -1 || filterLevel === level;
+                        if (visible) {
+                            model.set({
+                                visible: true,
+                                open: false,
+                                matchIndexBegin: undefined,
+                                matchIndexEnd: undefined
+                            });
+                        } else {
+                            model.set({visible: false, matchIndexBegin: undefined, matchIndexEnd: undefined});
+                        }
+                    });
+                }
             }
         },
 
