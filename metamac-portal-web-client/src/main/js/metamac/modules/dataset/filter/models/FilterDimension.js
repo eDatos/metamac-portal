@@ -142,6 +142,10 @@
             return maxLevelModel.get('level');
         },
 
+        getGranularities: function () {
+            return  _.uniq(this.get('representations').getAllTemporalGranularities());
+        },
+
         _onChangeVisibleLabelType: function () {
             var visibleLabelType = this.get("visibleLabelType");
             var representations = this.get("representations");

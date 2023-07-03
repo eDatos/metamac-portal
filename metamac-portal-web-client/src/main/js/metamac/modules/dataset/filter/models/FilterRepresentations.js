@@ -208,6 +208,10 @@
             return _(this.getSelectedRepresentations()).invoke("get", "temporalGranularity");
         },
 
+        getAllTemporalGranularities: function () {
+            return this.invoke("get", "temporalGranularity");
+        },
+
         _getMostRepeatedValue: function (collection) {
             var countedBy = _(collection).countBy();
             var maxPopulation = _(countedBy).max();
