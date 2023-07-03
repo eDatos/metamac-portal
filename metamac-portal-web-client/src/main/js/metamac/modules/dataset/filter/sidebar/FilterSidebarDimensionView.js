@@ -88,10 +88,19 @@
             this.subviews.push(this.actionsView);
 
             if (this.filterDimension.get('hierarchy')) {
-                var hierarchyLevel = this.filterDimension.getMaxHierarchyLevel() + 1;
-                var levelsModels = _(hierarchyLevel).times(function (n) {
-                    return { id: n, title: 'Nivel ' + (n + 1) };
-                });
+                let hierarchyLevel;
+                let levelsModels;
+                if (this.filterDimension.isTimeDimension()) {
+                    hierarchyLevel = this.filterDimension.getGranularities();
+                    levelsModels = hierarchyLevel.map((n, i) => {
+                        return {id: i, title: I18n.t('filter.selector.temporal.' + n)};
+                    });
+                } else {
+                    hierarchyLevel = this.filterDimension.getMaxHierarchyLevel() + 1;
+                    levelsModels = _(hierarchyLevel).times(function (n) {
+                        return {id: n, title: 'Nivel ' + (n + 1)};
+                    });
+                }
                 levelsModels.unshift({ id: -1, title: I18n.t('filter.selector.level.all') });
                 this.levelsCollection = new Backbone.Collection(levelsModels);
 
