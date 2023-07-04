@@ -128,43 +128,34 @@
                     representations.each(function (model) {
                         const showAll = filterLevel === -1;
                         const visible = showAll || granularities.indexOf(model.get('temporalGranularity')) === filterLevel;
-
                         let level = model.get('level');
-                        let originalLvl = model.get('originalLvl');
+                        let originalLevel = model.get('originalLevel');
                         // values are to be shown with hierarchy levels, unless some granularity is selected (in which case all are shown at the same level)
                         if (showAll) {
-                            level = originalLvl || level;
+                            level = originalLevel || level;
                         } else {
-                            originalLvl = originalLvl || level;
+                            originalLevel = originalLevel || level;
                             level = 0;
                         }
-                        model.set({level, originalLvl})
-
-                        if (visible) {
-                            model.set({
-                                visible: true,
-                                open: false,
-                                matchIndexBegin: undefined,
-                                matchIndexEnd: undefined,
-                            });
-                        } else {
-                            model.set({visible: false, matchIndexBegin: undefined, matchIndexEnd: undefined});
-                        }
+                        model.set({
+                            visible: visible,
+                            open: false,
+                            matchIndexBegin: undefined,
+                            matchIndexEnd: undefined,
+                            level,
+                            originalLevel
+                        });
                     });
                 } else {
                     representations.each(function (model) {
                         var level = model.get('level');
                         var visible = filterLevel === -1 || filterLevel === level;
-                        if (visible) {
-                            model.set({
-                                visible: true,
-                                open: false,
-                                matchIndexBegin: undefined,
-                                matchIndexEnd: undefined
-                            });
-                        } else {
-                            model.set({visible: false, matchIndexBegin: undefined, matchIndexEnd: undefined});
-                        }
+                        model.set({
+                            visible: visible,
+                            open: false,
+                            matchIndexBegin: undefined,
+                            matchIndexEnd: undefined,
+                        });
                     });
                 }
             }
