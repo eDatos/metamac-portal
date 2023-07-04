@@ -98,7 +98,7 @@
                 } else {
                     hierarchyLevel = this.filterDimension.getMaxHierarchyLevel() + 1;
                     levelsModels = _(hierarchyLevel).times(function (n) {
-                        return {id: n, title: 'Nivel ' + (n + 1)};
+                        return {id: n, title: I18n.t('filter.selector.level.template', { level: (n + 1) })};
                     });
                 }
                 levelsModels.unshift({ id: -1, title: I18n.t('filter.selector.level.all') });
