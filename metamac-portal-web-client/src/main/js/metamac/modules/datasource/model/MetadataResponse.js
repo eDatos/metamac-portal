@@ -88,7 +88,7 @@
 
         getLocalizedLabel: function (label) {
             if (label) {
-                return App.InternationalizationUtils.localizeLabel(label.text);
+                return App.InternationalizationUtils.localizeLabel(label);
             }
         },
 
@@ -105,7 +105,7 @@
                 var languages = this.metadata.languages.resource;
                 var id = _.pluck(languages, 'id');
                 var label = _.reduce(languages, function (memo, language) {
-                    memo[language.id] = App.InternationalizationUtils.localizeLabel(language.name.text);
+                    memo[language.id] = App.InternationalizationUtils.localizeLabel(language.name);
                     return memo;
                 }, {});
                 return { id: id, label: label };
@@ -120,28 +120,48 @@
             return result;
         },
 
+        _timeDimensionHasHierarchy: function (dimension) {
+            const dimensionValues = dimension.dimensionValues.value;
+            for (let index = 0; index < dimensionValues.length; index++) {
+                const dimensionValue = dimensionValues[index];
+                if (index > 0) {
+                    let previousIndex = index - 1;
+                    const currentPriority = App.TemporalUtils.getTemporalGranularityPriority(dimensionValue.temporalGranularity);
+                    while (previousIndex >= 0) {
+                        const previousDimensionValue = dimensionValues[previousIndex];
+                        const previousPriority = App.TemporalUtils.getTemporalGranularityPriority(previousDimensionValue.temporalGranularity);
+                        if (previousPriority > currentPriority && App.TemporalUtils.contains(previousDimensionValue, dimensionValue)) {
+                            return true;
+                        }
+                        previousIndex--;
+                    }
+                }
+            }
+            return false;
+        },
+
         _dimensionHasHierarchy: function (dimension) {
-            const timeDimensionWithDifferentGranularities = dimension.id === 'TIME_PERIOD'
-                && !dimension.dimensionValues.value.every((value) => value.temporalGranularity === dimension.dimensionValues.value[0].temporalGranularity);
+            const timeDimensionWithHierarchy = dimension.id === 'TIME_PERIOD'
+                && this._timeDimensionHasHierarchy(dimension);
 
             const dimensionValuesHasVisualizationParents = _.any(dimension.dimensionValues.value, function (dimensionValue) {
                 return _.has(dimensionValue, 'visualisationParent');
             });
 
-            return timeDimensionWithDifferentGranularities || dimensionValuesHasVisualizationParents;
+            return timeDimensionWithHierarchy || dimensionValuesHasVisualizationParents;
         },
 
         getDimensions: function () {
             var dimensions = this.metadata.dimensions.dimension;
-            var result = _.map(dimensions, function (dimension) {
+            return _.map(dimensions, function (dimension) {
                 return {
                     id: dimension.id,
-                    label: App.DimensionsUtils.getDimensionLabel(dimension),
+                    label: App.InternationalizationUtils.localizeLabel(dimension.name),
+                    pluralLabel: App.DimensionsUtils.getDimensionLabel(dimension),
                     type: dimension.type,
                     hierarchy: this._dimensionHasHierarchy(dimension)
                 };
             }, this);
-            return result;
         },
 
         _sortHierarchyRepresentations: function (representations) {
@@ -188,7 +208,7 @@
                 var dimensionValues = dimension.dimensionValues.value;
                 representations = _.map(dimensionValues, function(dimensionValue, index) {
                     var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
-                    representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name.text);
+                    representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name);
 
                     if (dimensionValue.measureQuantity) {
                         if (dimensionValue.measureQuantity.unitCode) {
@@ -201,8 +221,8 @@
                         }
                     }
 
-                    if (dimensionValue.description && dimensionValue.description.text) {
-                        representation.description = App.InternationalizationUtils.localizeLabel(dimensionValue.description.text);
+                    if (dimensionValue.description && dimensionValue.description) {
+                        representation.description = App.InternationalizationUtils.localizeLabel(dimensionValue.description);
                     }
 
                     if (dimensionValue.visualisationParent) {
@@ -254,7 +274,7 @@
                 representations = _.map(attribute.attributeValues.value, function(dimensionValue, index) {
                     var representation = {};
                     representation.id = dimensionValue.id;
-                    representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name.text);
+                    representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name);
                     return representation;
                 });
             }
@@ -281,7 +301,7 @@
                 .map(function(attribute) {
                     return {
                         id : attribute.id,
-                        label: App.InternationalizationUtils.localizeLabel(attribute.name.text),
+                        label: App.InternationalizationUtils.localizeLabel(attribute.name),
                         type: attribute.type,
                         hierarchy: false,
                         isAttribute: true,
@@ -544,7 +564,7 @@
                         '?', this.buildQueryString(identifier),
                         '#visualization/info'
                     ].join(''),
-                    name: App.InternationalizationUtils.localizeLabel(resource.name.text)
+                    name: App.InternationalizationUtils.localizeLabel(resource.name)
                 }
             }
         },
@@ -555,31 +575,31 @@
 
         getDataProviders: function () {
             if (this.metadata.dataProviders) {
-                return _.map(this.metadata.dataProviders.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name.text); });
+                return _.map(this.metadata.dataProviders.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name); });
             }
         },
 
         getDataProviderAnnotations: function () {
             if (this.metadata.dataProviderAnnotations) {
-                return App.InternationalizationUtils.localizeLabel(this.metadata.dataProviderAnnotations.text);
+                return App.InternationalizationUtils.localizeLabel(this.metadata.dataProviderAnnotations);
             }
         },
 
         getPublishers: function () {
             if (this.metadata.publishers) {
-                return _.map(this.metadata.publishers.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name.text); });
+                return _.map(this.metadata.publishers.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name); });
             }
         },
 
         getContributors: function () {
             if (this.metadata.contributors) {
-                return _.map(this.metadata.contributors.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name.text); });
+                return _.map(this.metadata.contributors.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name); });
             }
         },
 
         getMediators: function () {
             if (this.metadata.mediators) {
-                return _.map(this.metadata.mediators.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name.text); });
+                return _.map(this.metadata.mediators.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name); });
             }
         },
 
@@ -601,7 +621,7 @@
 
         getSubjectAreas: function () {
             if (this.metadata.subjectAreas) {
-                return _.map(this.metadata.subjectAreas.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name.text); });
+                return _.map(this.metadata.subjectAreas.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name); });
             }
         },
 
@@ -631,7 +651,7 @@
         },
 
         _getResourceName: function (resource) {
-            return resource && App.InternationalizationUtils.localizeLabel(resource.name.text);
+            return resource && App.InternationalizationUtils.localizeLabel(resource.name);
         }
     };
 

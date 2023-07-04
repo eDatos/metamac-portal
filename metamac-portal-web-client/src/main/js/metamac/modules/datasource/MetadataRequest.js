@@ -33,10 +33,13 @@
         checkAllDimensionHaveRepresentations: function(self) {
             var allHaveRepresentation = true;
             var dimensionWithoutRepresentation = '';
-            for (var dimension in self.response.dimension) {
-                if (!dimension.representation) {
-                    allHaveRepresentation = false;
-                    dimensionWithoutRepresentation = dimension;
+            if (self.response.dimension)  {
+                const dimensions = Object.values(self.response.dimension);
+                for (let dimension of dimensions) {
+                    if (!dimension.representation) {
+                        allHaveRepresentation = false;
+                        dimensionWithoutRepresentation = dimension;
+                    }
                 }
             }
             if (allHaveRepresentation) {

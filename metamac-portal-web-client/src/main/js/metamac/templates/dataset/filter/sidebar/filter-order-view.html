@@ -13,9 +13,9 @@ Arrastre las dimensiones para cambiar el orden
         {{#each dimensions }}
             <a href="#" class="order-sidebar-dimension {{#if draggable}}draggable{{/if}}" {{#if draggable}}draggable="true"{{/if}} data-dimension-id="{{id}}">
                 {{#if selectedCategory }}
-                    {{ label }} : <small>{{ selectedCategory.label }}</small>
+                    {{ pluralLabel }} : <small>{{ selectedCategory.label }}</small>
                 {{ else }}
-                    {{ label }}
+                    {{ pluralLabel }}
                 {{/if}}
             </a>
         {{/each}}
