@@ -26,7 +26,8 @@
     App.endpoints = {
         "structural-resources": "",
         "statistical-resources": "",
-        "statistical-visualizer": ""
+        "statistical-visualizer": "",
+        "common-metadata": "",
     };
 
     App.queryParams = {

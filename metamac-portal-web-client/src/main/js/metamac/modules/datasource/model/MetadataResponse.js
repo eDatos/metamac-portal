@@ -12,6 +12,7 @@
         initialize: function (options) {
             this.datasourceIdentifier = options.datasourceIdentifier;
             this.datasourceHelper = options.datasourceHelper;
+            this.unitMeasureProperties = options.unitMeasureProperties
             this.parse(options.response);
         },
 
@@ -170,7 +171,6 @@
                 return representation.parent;
             });
 
-
             // recursive depth tree traversal
             var rootRepresentations = representationsByParent["undefined"];
             var sortedRepresentations = [];
@@ -206,18 +206,18 @@
                 var isGeographic = dimension.type === "GEOGRAPHIC_DIMENSION";
                 var isTemporal = dimension.type === 'TIME_DIMENSION';
                 var dimensionValues = dimension.dimensionValues.value;
-                representations = _.map(dimensionValues, function(dimensionValue, index) {
+
+                representations = _.map(dimensionValues, function (dimensionValue, index) {
                     var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
                     representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name);
 
-                    if (dimensionValue.measureQuantity) {
+                    if (dimensionValue.measureQuantity && self.unitMeasureProperties) {
                         if (dimensionValue.measureQuantity.unitCode) {
-                            console.log(dimensionValue.measureQuantity);
-                            representation.measureUnit = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitCode.name.text);
+                            representation.measureUnit = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitCode.name.text, self.unitMeasureProperties.unitCode);
                         }
 
                         if (dimensionValue.measureQuantity.unitMultiplier) {
-                            representation.unitMultiplier = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitMultiplier.name.text);
+                            representation.unitMultiplier = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitMultiplier.name.text, self.unitMeasureProperties.unitMultiplier);
                         }
                     }
 
@@ -242,8 +242,7 @@
                                     representation.parent = previousDimensionValue.id;
                                     break;
                                 }
-
-                                previousIndex --;
+                                previousIndex--;
                             }
                         }
                     }
@@ -259,19 +258,30 @@
                 });
 
                 //sort
-                var hasHierarchy = this._dimensionHasHierarchy(dimension);
-                representations = hasHierarchy ? this._sortHierarchyRepresentations(representations) : representations;
+                var hasHierarchy = self._dimensionHasHierarchy(dimension);
+                representations = hasHierarchy ? self._sortHierarchyRepresentations(representations) : representations;
             }
             return representations;
         },
 
-        
+        getUnitMeasureLabelProperty: function (unitText, unitMeasureProperty) {
+            var unitMeasureText = unitText;
+            var attributes = this.metadata.attributes.attribute;
+            for (var attribute of attributes) {
+                if (attribute.id === unitMeasureProperty) {
+                    unitMeasureText = attribute.attributeValues.value[0].name.text;
+                    break;
+                }
+            }
+            return App.InternationalizationUtils.localizeLabel(unitMeasureText);
+        },
+
         getRepresentationsForAttributeDimension: function (attributeId) {
             var attribute = _.findWhere(this.metadata.attributes.attribute, { id: attributeId });
             var representations = [];
 
             if (attribute && attribute.attributeValues) {
-                representations = _.map(attribute.attributeValues.value, function(dimensionValue, index) {
+                representations = _.map(attribute.attributeValues.value, function (dimensionValue, index) {
                     var representation = {};
                     representation.id = dimensionValue.id;
                     representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name);
@@ -283,24 +293,24 @@
 
         getDimensionsAndRepresentations: function () {
             var self = this;
-            var dimensions = this.getDimensions();
+            var dimensions = self.getDimensions();
             _.each(dimensions, function (dimension) {
                 dimension.representations = self.getRepresentations(dimension.id);
             });
             return dimensions;
         },
 
-        getAttributesLikeDimensions: function() {
+        getAttributesLikeDimensions: function () {
             if (!this.metadata.attributes) { return []; }
 
             var self = this;
             return _.chain(this.metadata.attributes.attribute)
-                .filter(function(attribute) {
+                .filter(function (attribute) {
                     return attribute.attachmentLevel == "DATASET" && _.include(["MEASURE", "TEMPORAL", "SPATIAL"], attribute.type);
                 })
-                .map(function(attribute) {
+                .map(function (attribute) {
                     return {
-                        id : attribute.id,
+                        id: attribute.id,
                         label: App.InternationalizationUtils.localizeLabel(attribute.name),
                         type: attribute.type,
                         hierarchy: false,
@@ -309,7 +319,7 @@
                     }
                 })
                 .value();
-        },        
+        },
 
         getMeasureDimension: function () {
             var dimensions = this.getDimensionsAndRepresentations();
@@ -446,7 +456,7 @@
         },
 
         unitMultiplierForSelection: function (selection) {
-            var selectedDimValue = this._findSelectedUnitMultiplierDimensionValue(selection);
+            var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
             if (selectedDimValue) {
                 return selectedDimValue.unitMultiplier;
             }
@@ -489,7 +499,7 @@
             return this.getLocalizedLabel(this.metadataResponse.name);
         },
 
-        getKeepAllData: function() {
+        getKeepAllData: function () {
             return this.metadata.keepAllData;
         },
 
