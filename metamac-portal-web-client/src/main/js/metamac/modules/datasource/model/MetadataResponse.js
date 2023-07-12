@@ -121,35 +121,15 @@
             return result;
         },
 
-        _timeDimensionHasHierarchy: function (dimension) {
-            const dimensionValues = dimension.dimensionValues.value;
-            for (let index = 0; index < dimensionValues.length; index++) {
-                const dimensionValue = dimensionValues[index];
-                if (index > 0) {
-                    let previousIndex = index - 1;
-                    const currentPriority = App.TemporalUtils.getTemporalGranularityPriority(dimensionValue.temporalGranularity);
-                    while (previousIndex >= 0) {
-                        const previousDimensionValue = dimensionValues[previousIndex];
-                        const previousPriority = App.TemporalUtils.getTemporalGranularityPriority(previousDimensionValue.temporalGranularity);
-                        if (previousPriority > currentPriority && App.TemporalUtils.contains(previousDimensionValue, dimensionValue)) {
-                            return true;
-                        }
-                        previousIndex--;
-                    }
-                }
-            }
-            return false;
-        },
-
         _dimensionHasHierarchy: function (dimension) {
-            const timeDimensionWithHierarchy = dimension.id === 'TIME_PERIOD'
-                && this._timeDimensionHasHierarchy(dimension);
+            const timeDimensionWithDifferentGranularity = dimension.type === 'TIME_DIMENSION'
+                && dimension.dimensionValues.value.some((value) => value.temporalGranularity !== dimension.dimensionValues.value[0].temporalGranularity);
 
             const dimensionValuesHasVisualizationParents = _.any(dimension.dimensionValues.value, function (dimensionValue) {
                 return _.has(dimensionValue, 'visualisationParent');
             });
 
-            return timeDimensionWithHierarchy || dimensionValuesHasVisualizationParents;
+            return timeDimensionWithDifferentGranularity || dimensionValuesHasVisualizationParents;
         },
 
         getDimensions: function () {

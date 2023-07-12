@@ -143,6 +143,16 @@ I18n.translations.ca = {
             level: {
                 template: "Nivell {{level}}",
                 all: "Tots"
+            },
+            temporal: {
+                YEARLY: "Anual",
+                BIYEARLY: "Semestral",
+                FOUR_MONTHLY: "Quatrimestral",
+                QUARTERLY: "Trimestral",
+                MONTHLY: "Mensual",
+                WEEKLY: "Setmanal",
+                DAILY: "Diaris",
+                HOURLY: "Per hores",
             }
         },
         sort: {

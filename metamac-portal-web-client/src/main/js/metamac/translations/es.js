@@ -143,6 +143,16 @@ I18n.translations.es = {
             level: {
                 template: "Nivel {{level}}",
                 all: "Todos"
+            },
+            temporal: {
+                YEARLY: "Anual",
+                BIYEARLY: "Semestral",
+                FOUR_MONTHLY: "Cuatrimestral",
+                QUARTERLY: "Trimestral",
+                MONTHLY: "Mensual",
+                WEEKLY: "Semanal",
+                DAILY: "Diarios",
+                HOURLY: "Por horas",
             }
         },
         sort: {
