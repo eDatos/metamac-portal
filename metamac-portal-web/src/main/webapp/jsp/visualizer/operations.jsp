@@ -78,7 +78,7 @@
         operationsList.classList.add('capitulos', 'deep-tree');
         operations.forEach(operation => {
             var listItem = document.createElement('li');
-            listItem.classList.add('dimension','dimension-depth-1', 'close');
+            listItem.classList.add('dimension','dimension-depth-1', 'dimension-close');
             listItem.innerHTML = '<a href="#" class="tree-icon"></a><span class="dimension-title">'+ getText(operation.statisticalOperation.name) + '</span>';
             listItem.append(buildCollectionsList(operation.collections));
             operationsList.append(listItem);
@@ -114,8 +114,8 @@
                 e.preventDefault();
                 var $icon = $(this);
                 var $parentDimension = $icon.closest(".dimension-depth-1");
-                $parentDimension.toggleClass("open");
-                $parentDimension.toggleClass("close");
+                $parentDimension.toggleClass("dimension-open");
+                $parentDimension.toggleClass("dimension-close");
             });
         });
 </script>
