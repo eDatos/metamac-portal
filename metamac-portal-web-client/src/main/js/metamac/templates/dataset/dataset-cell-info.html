@@ -3,7 +3,8 @@
 {{#each categories }}
     <li><b>{{ dimension }}:</b> {{value}}</li>
 {{/each}}
-{{#if cellValue}}<li><b>{{ message 'entity.observation.measure.data' }}:</b> {{ cellValue }} {{#if measureUnit}} ({{ measureUnit }}) ({{ unitMultiplier }}) {{/if}}</li>{{/if}}
+{{#if cellValue}}<li><b>{{ message 'entity.observation.measure.data' }}:</b> {{ cellValue }} ({{#if unitMultiplier}}{{ unitMultiplier }} de {{/if}}{{#if measureUnit}}{{ measureUnit }}) {{/if}}
+</li>{{/if}}
 </ul>
 
 {{#if hasAttributes}}

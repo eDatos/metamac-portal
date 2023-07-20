@@ -28,6 +28,13 @@
 
         getDimensionLabel: function (dimension) {
             return App.InternationalizationUtils.localizeLabel(dimension.pluralName && !_.isEmpty(dimension.pluralName.text) ?  dimension.pluralName.text : dimension.name.text);
-        }
+        },
+
+        getUnitMultiplierCellAtribute: function(unitMultiplier) {
+            if (unitMultiplier === "Unidades" || unitMultiplier === "Units" || unitMultiplier === "Unitats") {
+                return null;
+            }
+            return unitMultiplier;
+        },
     };
 }());

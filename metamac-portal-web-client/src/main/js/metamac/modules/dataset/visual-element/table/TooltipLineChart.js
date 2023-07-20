@@ -158,13 +158,14 @@
                 var y = self.data.getNumberData({ ids: currentPermutation });
                 var name = self.data.getStringData({ ids: currentPermutation });
                 if (self.measureUnit) {
-                    name = name + ' (' + self.measureUnit + ')';
+                    var unitMultiplier = App.DimensionsUtils.getUnitMultiplierCellAtribute(self.unitMultiplier);
+                    name = name + ' (';
+                    if (unitMultiplier) {
+                        name = name + unitMultiplier + " de ";
+                    }
+                    name = name + self.measureUnit + ')';
                 }
-
-                if (self.unitMultiplier) {
-                    name = name + ' (' + self.unitMultiplier + ')';
-                }
-
+                
                 var point = { y: y, name: name };
 
                 if (self.permutation[self.timeDimension.id] === timeCategory.id) {

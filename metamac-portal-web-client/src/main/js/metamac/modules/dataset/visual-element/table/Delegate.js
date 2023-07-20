@@ -153,7 +153,7 @@
                 hasAttributes: formattedCellAttributes && (formattedCellAttributes.primaryMeasureAttributes.length || formattedCellAttributes.combinatedDimensionsAttributes.length),
                 cellValue: cellInfo.cellValue,
                 measureUnit: cellInfo.measureUnit,
-                unitMultiplier: cellInfo.unitMultiplier
+                unitMultiplier: App.DimensionsUtils.getUnitMultiplierCellAtribute(cellInfo.unitMultiplier),
             }
             return template(context);
         },
