@@ -5,8 +5,8 @@
 
     App.CommonMetadata = {
 
-        UNIT_MEASURE_CODE: "metamac.coetl.git.branch",//"edatos.srm.dsd.unit_measure.id";
-        UNIT_MEASURE_MULTIPLIER: "metamac.coetl.git.branch",//"edatos.srm.dsd.unit_measure_multiplier.id";
+        UNIT_MEASURE_CODE: "edatos.srm.dsd.unit_measure.id",
+        UNIT_MEASURE_MULTIPLIER: "edatos.srm.dsd.unit_measure_multiplier.id",
 
         getProperty: function(property) {
             return new Promise(function(resolve, reject) {
