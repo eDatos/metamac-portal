@@ -694,7 +694,7 @@ public class ResourceAccess {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
             if (conceptDetail.getQuantity() != null) {
-                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), conceptDetail.getQuantity().getUnitMultiplier().getName());
+                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), measureQuantity.getUnitMultiplier().getName());
                 if (value != null) {
                     return value;
                 }
