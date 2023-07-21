@@ -65,8 +65,8 @@
                     e.preventDefault();
                     var $icon = $(this);
                     var $parentDimension = $icon.closest(".dimension");
-                    $parentDimension.toggleClass("open");
-                    $parentDimension.toggleClass("close");
+                    $parentDimension.toggleClass("dimension-open");
+                    $parentDimension.toggleClass("dimension-close");
                 });
 
             });
