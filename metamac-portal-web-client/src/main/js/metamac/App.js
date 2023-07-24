@@ -27,7 +27,6 @@
         "structural-resources": "",
         "statistical-resources": "",
         "statistical-visualizer": "",
-        "common-metadata": "",
     };
 
     App.queryParams = {

@@ -12,7 +12,6 @@
         initialize: function (options) {
             this.datasourceIdentifier = options.datasourceIdentifier;
             this.datasourceHelper = options.datasourceHelper;
-            this.unitMeasureProperties = options.unitMeasureProperties
             this.parse(options.response);
         },
 
@@ -191,13 +190,13 @@
                     var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
                     representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name);
 
-                    if (dimensionValue.measureQuantity && self.unitMeasureProperties) {
+                    if (dimensionValue.measureQuantity) {
                         if (dimensionValue.measureQuantity.unitCode) {
-                            representation.measureUnit = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitCode.name.text, self.unitMeasureProperties.unitCode);
+                            representation.measureUnit = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitCode.name.text, App.config.unitMeasure);
                         }
 
                         if (dimensionValue.measureQuantity.unitMultiplier) {
-                            representation.unitMultiplier = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitMultiplier.name.text, self.unitMeasureProperties.unitMultiplier);
+                            representation.unitMultiplier = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitMultiplier.name.text, App.config.unitMeasureMultiplier);
                         }
                     }
 

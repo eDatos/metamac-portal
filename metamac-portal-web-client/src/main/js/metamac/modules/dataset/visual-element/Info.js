@@ -99,10 +99,8 @@
 
                 var self = this;
                 relatedDatasetMetadataRequest.fetch(function () {
-                    App.CommonMetadata.getUnitMeasureProperties().then(function (unitMeasureProperties) {
-                        var datasetMetadata = relatedDatasetMetadataRequest.getMetadataResponse(unitMeasureProperties);
-                        self.updateMetadataFromRelatedDataset(datasetMetadata);
-                    });
+                    var datasetMetadata = relatedDatasetMetadataRequest.getMetadataResponse();
+                    self.updateMetadataFromRelatedDataset(datasetMetadata);
                 });
             }
         },

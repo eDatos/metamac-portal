@@ -58,6 +58,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setGeographicalGranularityUrn(configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
             WebUtils.setAnalyticsGoogleTrackingId(configurationService.retrieveAnalyticsGoogleTrackingId());
             WebUtils.setCellThreshold(portalConfigurationService.retrieveExportExcelCellThreshold());
+            WebUtils.setUnitMeasure(configurationService.retrieveUnitMeasure());
+            WebUtils.setUnitMeasureMultiplier(configurationService.retrieveUnitMeasureMultiplier());
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }

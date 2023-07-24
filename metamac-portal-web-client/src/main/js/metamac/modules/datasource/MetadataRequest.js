@@ -54,8 +54,8 @@
             return this.helper.getBaseUrl() + this.helper.buildUrlIdentifierPart(this.datasourceIdentifier.getIdentifier()) + this.helper.getParametersForMetadataUrl();
         },
 
-        getMetadataResponse: function(unitMeasureProperties) {
-            return new App.datasource.model.MetadataResponse({ datasourceIdentifier: this.datasourceIdentifier, datasourceHelper: this.helper, response: this.response, unitMeasureProperties: unitMeasureProperties});
+        getMetadataResponse: function() {
+            return new App.datasource.model.MetadataResponse({ datasourceIdentifier: this.datasourceIdentifier, datasourceHelper: this.helper, response: this.response });
         }
 
     };
