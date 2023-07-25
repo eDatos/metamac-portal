@@ -31,10 +31,10 @@
         },
 
         getUnitMultiplierCellAtribute: function(unitMultiplier) {
-            if (unitMultiplier === "Unidades" || unitMultiplier === "Units" || unitMultiplier === "Unitats") {
+            if (unitMultiplier.urn === "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_UNIT_MULT(1.0).0") {
                 return null;
             }
-            return unitMultiplier;
+            return App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text);
         },
     };
 }());

@@ -192,11 +192,11 @@
 
                     if (dimensionValue.measureQuantity) {
                         if (dimensionValue.measureQuantity.unitCode) {
-                            representation.measureUnit = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitCode.name.text, App.config.unitMeasure);
+                            representation.measureUnit = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitCode.name.text);
                         }
 
                         if (dimensionValue.measureQuantity.unitMultiplier) {
-                            representation.unitMultiplier = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitMultiplier.name.text, App.config.unitMeasureMultiplier);
+                            representation.unitMultiplier = self.getUnitMeasureMultiplierLabelProperty(dimensionValue.measureQuantity.unitMultiplier);
                         }
                     }
 
@@ -243,16 +243,31 @@
             return representations;
         },
 
-        getUnitMeasureLabelProperty: function (unitText, unitMeasureProperty) {
-            var unitMeasureText = unitText;
+        getUnitMeasureLabelProperty: function (unitMeasure) {
+            var unitMeasureText = unitMeasure;
             var attributes = this.metadata.attributes.attribute;
             for (var attribute of attributes) {
-                if (attribute.id === unitMeasureProperty) {
+                if (attribute.id === App.config.unitMeasure) {
                     unitMeasureText = attribute.attributeValues.value[0].name.text;
                     break;
                 }
             }
             return App.InternationalizationUtils.localizeLabel(unitMeasureText);
+        },
+
+        getUnitMeasureMultiplierLabelProperty: function (unitMeasureMultiplier) {
+            var unitMeasureMultiplierText = unitMeasureMultiplier;
+            var attributes = this.metadata.attributes.attribute;
+            for (var attribute of attributes) {
+                if (attribute.id === App.config.unitMeasureMultiplier) {
+                    console.log(attribute);
+                    console.log(attribute.attributeValues);
+                    console.log("=====================");
+                    unitMeasureMultiplierText = attribute.attributeValues.value[0];
+                    break;
+                }
+            }
+            return unitMeasureMultiplierText;
         },
 
         getRepresentationsForAttributeDimension: function (attributeId) {
