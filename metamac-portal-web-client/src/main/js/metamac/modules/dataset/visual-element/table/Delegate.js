@@ -173,7 +173,7 @@
                 title: headerInfo.title,
                 description: headerInfo.description,
                 measureUnit: headerInfo.measureUnit,
-                unitMultiplier: App.InternationalizationUtils.localizeLabel(headerInfo.unitMultiplier.name.text),
+                unitMultiplier: headerInfo.unitMultiplier ? App.InternationalizationUtils.localizeLabel(headerInfo.unitMultiplier.name.text) : null,
                 attributes: this.formatAttributes(headerInfo.attributes)
             }
             return template(context);
