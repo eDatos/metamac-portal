@@ -34,9 +34,9 @@
             var label = "";
             if (unitMeasure) {
                 label = "(";
-                if (unitMultiplier.urn != "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_UNIT_MULT(1.0).0") {
+                if (unitMultiplier && unitMultiplier.urn != "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_UNIT_MULT(1.0).0") {
                     var unitMultiplierText = App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text);
-                    var translation = this.startsWithVowelOrH(unitMultiplierText) ? 
+                    var translation = this.startsWithVowelOrH(unitMeasure) ? 
                         'entity.category.measure.unitMeasureStartsWithVowel' : 'entity.category.measure.unitMeasure';
                     label = label + I18n.t(translation, { unit: unitMeasure, multiplier: unitMultiplierText });
                 } else {
