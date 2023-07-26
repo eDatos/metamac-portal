@@ -8,8 +8,12 @@
 <br>
 <div>
     <ul>  
-        <li><b>{{message 'entity.category.measure.unit'}}:</b> {{ measureUnit }}</li>
-        <li><b>{{message 'entity.category.measure.multiplier'}}:</b> {{ unitMultiplier }}</li>
+        {{#if measureUnit}}
+            <li><b>{{message 'entity.category.measure.unit'}}:</b> {{ measureUnit }}</li> 
+        {{/if}}
+        {{#if unitMultiplier}}
+            <li><b>{{message 'entity.category.measure.multiplier'}}:</b> {{ unitMultiplier }}</li> 
+        {{/if}}
     </ul>
 </div>
 {{/if}}

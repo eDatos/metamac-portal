@@ -1,10 +1,11 @@
 <b>{{message 'entity.observation.measure.title'}}</b>
 <ul>
-{{#each categories }}
-    <li><b>{{ dimension }}:</b> {{value}}</li>
-{{/each}}
-{{#if cellValue}}<li><b>{{ message 'entity.observation.measure.data' }}:</b> {{ cellValue }} {{ measureUnit }}
-</li>{{/if}}
+    {{#each categories }}
+        <li><b>{{ dimension }}:</b> {{value}}</li>
+    {{/each}}
+    {{#if cellValue}}
+        <li><b>{{ message 'entity.observation.measure.data' }}:</b> {{ cellValue }} {{ measureUnit }}</li>
+    {{/if}}
 </ul>
 
 {{#if hasAttributes}}
