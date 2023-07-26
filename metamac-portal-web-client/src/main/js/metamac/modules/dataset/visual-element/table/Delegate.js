@@ -152,8 +152,7 @@
                 categories: cellInfo.categories,
                 hasAttributes: formattedCellAttributes && (formattedCellAttributes.primaryMeasureAttributes.length || formattedCellAttributes.combinatedDimensionsAttributes.length),
                 cellValue: cellInfo.cellValue,
-                measureUnit: cellInfo.measureUnit,
-                unitMultiplier: App.DimensionsUtils.getUnitMultiplierCellAtribute(cellInfo.unitMultiplier),
+                measureUnit: App.DimensionsUtils.getUnitMultiplierAndUnitMeasureLabel(cellInfo.measureUnit, cellInfo.unitMultiplier),
             }
             return template(context);
         },

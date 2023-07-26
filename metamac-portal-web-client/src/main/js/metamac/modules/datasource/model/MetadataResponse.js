@@ -245,9 +245,9 @@
 
         getUnitMeasureLabelProperty: function (unitMeasure) {
             var unitMeasureText = unitMeasure;
-            var attributes = this.metadata.attributes.attribute;
-            for (var attribute of attributes) {
+            for (var attribute of this.metadata.attributes.attribute) {
                 if (attribute.id === App.config.unitMeasure) {
+                    // Take unique value
                     unitMeasureText = attribute.attributeValues.value[0].name.text;
                     break;
                 }
@@ -257,12 +257,9 @@
 
         getUnitMeasureMultiplierLabelProperty: function (unitMeasureMultiplier) {
             var unitMeasureMultiplierText = unitMeasureMultiplier;
-            var attributes = this.metadata.attributes.attribute;
-            for (var attribute of attributes) {
+            for (var attribute of this.metadata.attributes.attribute) {
                 if (attribute.id === App.config.unitMeasureMultiplier) {
-                    console.log(attribute);
-                    console.log(attribute.attributeValues);
-                    console.log("=====================");
+                    // Take unique value
                     unitMeasureMultiplierText = attribute.attributeValues.value[0];
                     break;
                 }

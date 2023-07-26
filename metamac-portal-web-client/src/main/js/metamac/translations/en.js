@@ -265,7 +265,9 @@ I18n.translations.en = {
         category: {
             measure: {
                 unit: 'Measure unit',
-                multiplier: 'Unit multiplier'
+                multiplier: 'Unit multiplier',
+                unitMeasure: '{{multiplier}} of {{unit}}',
+                unitMeasureStartsWithVowel: '{{multiplier}} of {{unit}}',
             },
             attributes: {
                 title: 'Category attributes'

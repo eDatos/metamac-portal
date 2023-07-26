@@ -30,11 +30,27 @@
             return App.InternationalizationUtils.localizeLabel(dimension.pluralName && !_.isEmpty(dimension.pluralName.text) ?  dimension.pluralName.text : dimension.name.text);
         },
 
-        getUnitMultiplierCellAtribute: function(unitMultiplier) {
-            if (unitMultiplier.urn === "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_UNIT_MULT(1.0).0") {
-                return null;
+        getUnitMultiplierAndUnitMeasureLabel: function(unitMeasure, unitMultiplier) {
+            var label = "";
+            if (unitMeasure) {
+                label = "(";
+                if (unitMultiplier.urn != "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_UNIT_MULT(1.0).0") {
+                    var unitMultiplierText = App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text);
+                    var translation = this.startsWithVowelOrH(unitMultiplierText) ? 
+                        'entity.category.measure.unitMeasureStartsWithVowel' : 'entity.category.measure.unitMeasure';
+                    label = label + I18n.t(translation, { unit: unitMeasure, multiplier: unitMultiplierText });
+                } else {
+                    label = label + unitMeasure;
+                }
+                label = label + ")";
             }
-            return App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text);
+            return label;
         },
+
+        startsWithVowelOrH: function(string) {
+            var vowelAndHRegex = '^[aieouhAIEOUH].*';
+            return string.match(vowelAndHRegex);
+        }
+
     };
 }());

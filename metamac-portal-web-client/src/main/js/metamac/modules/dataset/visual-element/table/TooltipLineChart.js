@@ -157,14 +157,7 @@
 
                 var y = self.data.getNumberData({ ids: currentPermutation });
                 var name = self.data.getStringData({ ids: currentPermutation });
-                if (self.measureUnit) {
-                    var unitMultiplier = App.DimensionsUtils.getUnitMultiplierCellAtribute(self.unitMultiplier);
-                    name = name + ' (';
-                    if (unitMultiplier) {
-                        name = name + unitMultiplier + " de ";
-                    }
-                    name = name + self.measureUnit + ')';
-                }
+                name = name + " " + App.DimensionsUtils.getUnitMultiplierAndUnitMeasureLabel(self.measureUnit, self.unitMultiplier);
                 
                 var point = { y: y, name: name };
 
