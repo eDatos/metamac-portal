@@ -34,7 +34,8 @@
             var label = "";
             if (unitMeasure) {
                 label = "(";
-                // Normally, units urn will be "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_UNIT_MULT(1.0).0"
+                // Normally, units urn will be "urn:sdmx:org.sdmx.infomodel.codelist.Code=SDMX:CL_UNIT_MULT(1.0).0" so for now is enough.
+                // TODO EDATOS-4178
                 if (unitMultiplier && !unitMultiplier.urn.endsWith(".0")) {
                     var unitMultiplierText = App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text);
                     var translation = App.i18n.startsWithVowelOrH(unitMeasure) ? 
