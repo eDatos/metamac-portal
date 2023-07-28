@@ -15,7 +15,7 @@
         },
 
         localizeLabel: function (labels) {
-            if (labels && !_.isEmpty(labels)) {
+            if (!_.isEmpty(labels)) {
                 if (_.has(labels, 'text')) {
                     labels = labels.text;
                 }
