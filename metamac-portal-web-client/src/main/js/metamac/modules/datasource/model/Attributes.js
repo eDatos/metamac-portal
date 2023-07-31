@@ -103,7 +103,9 @@
                 return {
                     value: combinatedDimensionAttribute.values[pos],
                     dimensionId: combinatedDimensionAttribute.attributeDimensionsIds[0],
-                    attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text)
+                    attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text),
+                    attributeId: combinatedDimensionAttribute.attribute.id,
+                    valueUrn: combinatedDimensionAttribute.urn
                 };
             }, dimensionsPositions);
         },
@@ -130,8 +132,9 @@
             var attributeDimensionIds = _.pluck(attribute.dimensions.dimension, "dimensionId");
             var dimensionsMultiplicators = this._getDimensionsMultiplicators(attributeDimensionIds);
             var values = this._parseAttributeValuesList(attribute);
+            var urnValue = this._getUrnAttributeValue(attribute);
 
-            return { values: values, dimensionsMultiplicators: dimensionsMultiplicators, attributeDimensionsIds: attributeDimensionIds, attribute: attribute };
+            return { values: values, dimensionsMultiplicators: dimensionsMultiplicators, attributeDimensionsIds: attributeDimensionIds, attribute: attribute, urn: urnValue };
         },
 
         _getDimensionsMultiplicators: function (attributeDimensionsIds) {
@@ -218,6 +221,15 @@
             }
 
             return attributeValues;
+        },
+
+        _getUrnAttributeValue: function (attribute) {
+            var attributeValues = this._splitList(attribute.value);
+            if (attributeValues) {
+                var attribute = _.findWhere(attribute.attributeValues.value, {id: attributeValues[0]});
+                return attribute.urn;
+            }
+            return null;
         },
 
         _splitList: function (list) {

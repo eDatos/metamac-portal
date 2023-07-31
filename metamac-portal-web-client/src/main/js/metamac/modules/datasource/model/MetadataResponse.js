@@ -192,11 +192,11 @@
 
                     if (dimensionValue.measureQuantity) {
                         if (dimensionValue.measureQuantity.unitCode) {
-                            representation.measureUnit = self.getUnitMeasureLabelProperty(dimensionValue.measureQuantity.unitCode.name.text);
+                            representation.measureUnit = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitCode.name.text);
                         }
 
                         if (dimensionValue.measureQuantity.unitMultiplier) {
-                            representation.unitMultiplier = self.getUnitMeasureMultiplierLabelProperty(dimensionValue.measureQuantity.unitMultiplier);
+                            representation.unitMultiplier = dimensionValue.measureQuantity.unitMultiplier;
                         }
                     }
 
@@ -241,30 +241,6 @@
                 representations = hasHierarchy ? self._sortHierarchyRepresentations(representations) : representations;
             }
             return representations;
-        },
-
-        getUnitMeasureLabelProperty: function (unitMeasure) {
-            var unitMeasureText = unitMeasure;
-            for (var attribute of this.metadata.attributes.attribute) {
-                if (attribute.id === App.config.unitMeasure && attribute.attributeValues) {
-                    // Take unique value
-                    unitMeasureText = attribute.attributeValues.value[0].name.text;
-                    break;
-                }
-            }
-            return App.InternationalizationUtils.localizeLabel(unitMeasureText);
-        },
-
-        getUnitMeasureMultiplierLabelProperty: function (unitMeasureMultiplier) {
-            var unitMeasureMultiplierText = unitMeasureMultiplier;
-            for (var attribute of this.metadata.attributes.attribute) {
-                if (attribute.id === App.config.unitMeasureMultiplier && attribute.attributeValues) {
-                    // Take unique value
-                    unitMeasureMultiplierText = attribute.attributeValues.value[0];
-                    break;
-                }
-            }
-            return unitMeasureMultiplierText;
         },
 
         getRepresentationsForAttributeDimension: function (attributeId) {

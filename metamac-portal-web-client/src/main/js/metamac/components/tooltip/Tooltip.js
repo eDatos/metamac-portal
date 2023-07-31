@@ -153,13 +153,15 @@
                 return;
             }
 
+            var measureUnit = this.view.getCellInfoUnitMeasureMultiplier(point);
             this.$cellChart.show();
             if (!this.lineChart) {
                 this.lineChart = new App.VisualElement.TooltipLineChart({
                     el: this.$cellChart,
                     data: cellTimeSerie.data,
                     permutation: cellTimeSerie.permutation,
-                    timeDimension: cellTimeSerie.timeDimension
+                    timeDimension: cellTimeSerie.timeDimension,
+                    measureUnit: measureUnit,
                 });
                 this.lineChart.render();
             } else {
