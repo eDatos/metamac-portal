@@ -18,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -27,6 +28,7 @@ import static org.siemac.metamac.portal.rest.external.RestExternalConstantsPriva
 public class ExternalUserFilter implements RequestHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExternalUserFilter.class);
+    private static final String AUTH_COOKIE_NAME = "authenticationtoken";
 
     RestTemplate restTemplate = new RestTemplate();
 
@@ -38,11 +40,11 @@ public class ExternalUserFilter implements RequestHandler {
 
     @Override
     public Response handleRequest(Message m, ClassResourceInfo resourceClass) {
-        String authToken = request.getHeader("Authorization");
+        String authToken = getAuthTokenFromCookie();
         if(StringUtils.isNotBlank(authToken)) {
             LOG.info("Validating external user");
             MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-            header.add("Authorization", authToken);
+            header.add("Authorization", "Bearer " + authToken);
             HttpEntity<String> entity = new HttpEntity<>("body", header);
             try {
                 ResponseEntity<String> response = restTemplate.exchange(configurationService.retrieveExternalUsersExternalApiUrlBase() + "/api/account", HttpMethod.GET, entity, String.class);
@@ -62,5 +64,18 @@ public class ExternalUserFilter implements RequestHandler {
             request.getSession().setAttribute(AUTHENTICATED_SESSION_ATTRIBUTE, false);
         }
         return null;
+    }
+
+    private String getAuthTokenFromCookie() {
+        Cookie[] requestCookies = request.getCookies();
+        String authToken = null;
+        if (requestCookies != null) {
+            for (Cookie cookie : requestCookies) {
+                if (AUTH_COOKIE_NAME.equals(cookie.getName())) {
+                    authToken = (cookie.getValue());
+                }
+            }
+        }
+        return authToken;
     }
 }
