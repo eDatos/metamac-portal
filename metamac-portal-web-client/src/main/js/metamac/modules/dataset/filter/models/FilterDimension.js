@@ -127,7 +127,8 @@
                     const granularities = this.getGranularities();
                     representations.each(function (model) {
                         const showAll = filterLevel === -1;
-                        const visible = showAll || granularities.indexOf(model.get('temporalGranularity')) === filterLevel;
+                        const temporalGranularityLevel = granularities.indexOf(model.get('temporalGranularity'));
+                        const visible = showAll || temporalGranularityLevel === filterLevel;
                         let level = model.get('level');
                         let originalLevel = model.get('originalLevel');
                         // values are to be shown with hierarchy levels, unless some granularity is selected (in which case all are shown at the same level)
@@ -135,7 +136,7 @@
                             level = originalLevel || level;
                         } else {
                             originalLevel = originalLevel || level;
-                            level = 0;
+                            level = temporalGranularityLevel - filterLevel;
                         }
                         model.set({
                             visible: visible,
