@@ -40,11 +40,11 @@ public class ExternalUserFilter implements RequestHandler {
 
     @Override
     public Response handleRequest(Message m, ClassResourceInfo resourceClass) {
-        String authToken = getAuthTokenFromCookie();
+        String authToken = getAuthToken();
         if(StringUtils.isNotBlank(authToken)) {
             LOG.info("Validating external user");
             MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
-            header.add("Authorization", "Bearer " + authToken);
+            header.add("Authorization", authToken);
             HttpEntity<String> entity = new HttpEntity<>("body", header);
             try {
                 ResponseEntity<String> response = restTemplate.exchange(configurationService.retrieveExternalUsersExternalApiUrlBase() + "/api/account", HttpMethod.GET, entity, String.class);
@@ -66,6 +66,16 @@ public class ExternalUserFilter implements RequestHandler {
         return null;
     }
 
+    private String getAuthToken() {
+        String authToken = request.getHeader("Authorization");
+        if (authToken == null) {
+            String authTokenFromCookie = getAuthTokenFromCookie();
+            if (StringUtils.isNotBlank(authTokenFromCookie)) {
+                authToken = "Bearer " + authTokenFromCookie;
+            }
+        }
+        return authToken;
+    }
     private String getAuthTokenFromCookie() {
         Cookie[] requestCookies = request.getCookies();
         String authToken = null;
