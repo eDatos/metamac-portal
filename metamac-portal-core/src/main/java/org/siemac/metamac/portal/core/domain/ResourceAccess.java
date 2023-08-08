@@ -35,14 +35,15 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttr
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimensions;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ItemResource;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
@@ -681,26 +682,68 @@ public class ResourceAccess {
         return offset;
     }
 
-    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue) {
-        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn());
+    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasure, String unitMultiplier) {
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn(), unitMeasure, unitMultiplier);
     }
 
-    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue) {
-        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn());
+    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasure, String unitMultiplier) {
+        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn(), unitMeasure, unitMultiplier);
     }
 
     // IDEA This will be more efficient if the concept is included on the dataset
-    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn) {
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasure, String unitMultiplier) {
         if (measureQuantity != null) {
             Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
             if (conceptDetail.getQuantity() != null) {
-                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), measureQuantity.getUnitMultiplier().getName());
+                Integer measureDimensionIndex = getIndexMeasureDimensionById(conceptDetail.getId());
+                InternationalString unitMeasureName = getUnitMeasureValue(measureDimensionIndex, unitMeasure, measureQuantity.getUnitCode());
+                InternationalString unitMultiplierName = getUnitMeasureValue(measureDimensionIndex, unitMultiplier, measureQuantity.getUnitMultiplier());
+
+                InternationalString value = prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
                 if (value != null) {
                     return value;
                 }
             }
         }
         return null;
+    }
+
+    private InternationalString getUnitMeasureValue(Integer measureDimensionIndex, String property, ItemResource unitCode) {
+        InternationalString name = unitCode.getName();
+        if (attributesValuesByAttributeId.containsKey(property)) {
+            String unitMeasureAttributeValueId = attributesValuesByAttributeId.get(property)[measureDimensionIndex];
+            EnumeratedAttributeValue attribute = getAttributeValueByAttributeIdAndValueId(property, unitMeasureAttributeValueId);
+            if (attribute != null) {
+                name = attribute.getName();
+            }
+        }
+        return name;
+    }
+
+    private EnumeratedAttributeValue getAttributeValueByAttributeIdAndValueId(String attributeId, String valueId) {
+        for (Attribute attribute : attributes.getAttributes()) {
+            if (attribute.getId().equals(attributeId)) {
+                for (EnumeratedAttributeValue value : ((EnumeratedAttributeValues) attribute.getAttributeValues()).getValues()) {
+                    if (value.getId().equals(valueId)) {
+                        return value;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private int getIndexMeasureDimensionById(String id) {
+        EnumeratedDimensionValues values = (EnumeratedDimensionValues) getMeasureDimension().getDimensionValues();
+        if (values.getValues() != null) {
+            for (int i = 0; i < values.getValues().size(); i++) {
+                EnumeratedDimensionValue value = values.getValues().get(i);
+                if (value.getId().equals(id)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public boolean existsContVariable() {

@@ -14,10 +14,10 @@
         initialize: function (options) {
             this.response = options.response;
             this.metadata = options.metadata;
-
+            
             this.attributesValues = !_.isUndefined(this.response.data.attributes) ? this.response.data.attributes.attribute : {};
             this.attributesMetadata = !_.isUndefined(this.metadata) ? this.metadata.getAttributes() : {};
-
+            
             var attributesMetadataIndexed = _(this.attributesMetadata).indexBy("id");
             this.attributes = _(this.attributesValues).map(function (attributeValue) {
                 return _.extend({}, attributesMetadataIndexed[attributeValue["id"]], attributeValue);
@@ -105,7 +105,7 @@
                     dimensionId: combinatedDimensionAttribute.attributeDimensionsIds[0],
                     attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text),
                     attributeId: combinatedDimensionAttribute.attribute.id,
-                    valueUrn: combinatedDimensionAttribute.urn
+                    valueUrn: combinatedDimensionAttribute.urn[pos]
                 };
             }, dimensionsPositions);
         },
@@ -225,9 +225,15 @@
 
         _getUrnAttributeValue: function (attribute) {
             var attributeValues = this._splitList(attribute.value);
-            if (attributeValues) {
-                var attribute = _.findWhere(attribute.attributeValues.value, {id: attributeValues[0]});
-                return attribute.urn;
+            var attributeEnumerates = attribute.attributeValues;
+
+            if (attributeEnumerates) {
+                attributeEnumerates = _(attributeEnumerates.value).indexBy("id");
+                var self = this;
+                var attributeUrns = _.map(attributeValues, function (attributeRawValue) {
+                    return self._getUrnForEnumerate(attributeRawValue, attributeEnumerates);
+                });
+                return attributeUrns;
             }
             return null;
         },
@@ -246,6 +252,18 @@
             if (attributeRawValue != "") {
                 if (!_.isUndefined(attributeEnumerates[attributeRawValue])) {
                     return attributeEnumerates[attributeRawValue] ? App.InternationalizationUtils.localizeLabel(attributeEnumerates[attributeRawValue].name.text) : null;
+                } else {
+                    return attributeRawValue;
+                }
+            } else {
+                return "";
+            }
+        },
+
+        _getUrnForEnumerate: function (attributeRawValue, attributeEnumerates) {
+            if (attributeRawValue != "") {
+                if (!_.isUndefined(attributeEnumerates[attributeRawValue])) {
+                    return attributeEnumerates[attributeRawValue] ? attributeEnumerates[attributeRawValue].urn : null;
                 } else {
                     return attributeRawValue;
                 }

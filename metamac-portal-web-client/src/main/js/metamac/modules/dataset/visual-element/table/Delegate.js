@@ -185,7 +185,7 @@
         formatMeasureUnit: function (measureUnit, attributes) {
             if (measureUnit) {
                 var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasure});
-                return attribute ? attribute.value : measureUnit;
+                return (attribute && attribute.value != '') ? attribute.value : measureUnit;
             }
             return null;
         },
@@ -193,7 +193,7 @@
         formatUnitMultiplier: function (unitMultiplier, attributes) {
             if (unitMultiplier) {
                 var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasureMultiplier});
-                if (attribute) {
+                if (attribute && attribute.value != '') {
                     return {value: attribute.value, urn: attribute.valueUrn}
                 } else {
                     return {value: App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text), urn: unitMultiplier.urn}

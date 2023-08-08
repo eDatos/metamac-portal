@@ -42,7 +42,9 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
-        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault, cellThreshold);
+        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
@@ -102,7 +104,9 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        PxExporter exporter = new PxExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault);
+        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        PxExporter exporter = new PxExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
@@ -117,7 +121,9 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
-        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault, cellThreshold);
+        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
@@ -162,7 +168,9 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        PxExporter exporter = new PxExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault);
+        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        PxExporter exporter = new PxExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 

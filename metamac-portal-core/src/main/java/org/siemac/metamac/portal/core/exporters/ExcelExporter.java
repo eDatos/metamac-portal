@@ -88,20 +88,26 @@ public class ExcelExporter {
 
     private boolean                highPerformanceMode            = false;
     private Integer                cellThreshold                  = 250_000;
+    private String                 unitMeasure                    = "UNIDAD_MEDIDA";
+    private String                 unitMultiplier                 = "MULTIPLICADOR_UNIDAD";
 
-    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold)
-            throws MetamacException {
+    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold,
+            String unitMeasure, String unitMultiplier) throws MetamacException {
         resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.cellThreshold = cellThreshold;
+        this.unitMeasure = unitMeasure;
+        this.unitMultiplier = unitMultiplier;
         enableHighPerformanceModeIfNeeded();
     }
 
     public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative,
-            Integer cellThreshold) throws MetamacException {
+            Integer cellThreshold, String unitMeasure, String unitMultiplier) throws MetamacException {
         resourceAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.cellThreshold = cellThreshold;
+        this.unitMeasure = unitMeasure;
+        this.unitMultiplier = unitMultiplier;
         enableHighPerformanceModeIfNeeded();
     }
 
@@ -263,9 +269,9 @@ public class ExcelExporter {
         InternationalString unitCode = null;
         // Ugly, but...
         if (value instanceof EnumeratedDimensionValue) {
-            unitCode = resourceAccess.extractUnitCode((EnumeratedDimensionValue) value);
+            unitCode = resourceAccess.extractUnitCode((EnumeratedDimensionValue) value, unitMeasure, unitMultiplier);
         } else if (value instanceof EnumeratedAttributeValue) {
-            unitCode = resourceAccess.extractUnitCode((EnumeratedAttributeValue) value);
+            unitCode = resourceAccess.extractUnitCode((EnumeratedAttributeValue) value, unitMeasure, unitMultiplier);
         }
         if (unitCode == null) {
             return null;
