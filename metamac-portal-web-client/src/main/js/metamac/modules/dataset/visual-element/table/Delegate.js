@@ -162,51 +162,46 @@
         formatCellAttributes: function (attributes) {
             if (attributes) {
                 return {
-                    primaryMeasureAttributes: this.formatAttributes(null, null, attributes.primaryMeasureAttributes),
-                    combinatedDimensionsAttributes: this.formatAttributes(null, null, attributes.combinatedDimensionsAttributes)
+                    primaryMeasureAttributes: this.formatAttributes(attributes.primaryMeasureAttributes),
+                    combinatedDimensionsAttributes: this.formatAttributes(attributes.combinatedDimensionsAttributes)
                 }
             }
         },
 
         formatHeaderInfo: function (headerInfo) {
-            var template = App.templateManager.get("dataset/dataset-header-info");
             headerInfo.measureUnit = this.formatMeasureUnit(headerInfo.measureUnit, headerInfo.attributes);
             headerInfo.unitMultiplier = this.formatUnitMultiplier(headerInfo.unitMultiplier, headerInfo.attributes);
+
+            var template = App.templateManager.get("dataset/dataset-header-info");
             var context = {
                 title: headerInfo.title,
                 description: headerInfo.description,
                 measureUnit: headerInfo.measureUnit,
                 unitMultiplier: headerInfo.unitMultiplier ? headerInfo.unitMultiplier.value : null,
-                attributes: this.formatAttributes(headerInfo.measureUnit, headerInfo.unitMultiplier, headerInfo.attributes)
+                attributes: this.formatAttributes(headerInfo.attributes)
             }
             return template(context);
         },
 
         formatMeasureUnit: function (measureUnit, attributes) {
-            if (measureUnit) {
-                var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasure});
-                return (attribute && attribute.value != '') ? attribute.value : measureUnit;
-            }
-            return null;
+            var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasure});
+            return (attribute && attribute.value != '') ? attribute.value : measureUnit;
         },
 
         formatUnitMultiplier: function (unitMultiplier, attributes) {
-            if (unitMultiplier) {
-                var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasureMultiplier});
-                if (attribute && attribute.value != '') {
-                    return {value: attribute.value, urn: attribute.valueUrn}
-                } else {
-                    return {value: App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text), urn: unitMultiplier.urn}
-                }
+            var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasureMultiplier});
+            if (attribute && attribute.value != '') {
+                return {value: attribute.value, urn: attribute.valueUrn};
+            } else if (unitMultiplier) {
+                return {value: App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text), urn: unitMultiplier.urn};
             }
             return null;
         },
 
-        formatAttributes: function (measureUnit, unitMultiplier, attributes) {
+        formatAttributes: function (attributes) {
             var self = this;
             return _(_.filter(attributes, function(attribute) {
-                if (!(measureUnit && attribute.attributeId == App.config.unitMeasure) 
-                    && !(unitMultiplier && attribute.attributeId == App.config.unitMeasureMultiplier)) {
+                if (attribute.attributeId != App.config.unitMeasure && attribute.attributeId != App.config.unitMeasureMultiplier) {
                     return attribute.value;
                 }
             })).map(function(attribute) {

@@ -165,7 +165,7 @@
                 });
                 this.lineChart.render();
             } else {
-                this.lineChart.update(cellTimeSerie.permutation);
+                this.lineChart.update(cellTimeSerie.permutation, measureUnit);
             }
         },
 

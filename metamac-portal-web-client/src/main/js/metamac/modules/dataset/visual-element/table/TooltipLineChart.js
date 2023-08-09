@@ -112,8 +112,9 @@
             this._checkVisibility(data);
         },
 
-        update: function(permutation) {
+        update: function(permutation, measureUnit) {
             this._setPermutation(permutation);
+            this.measureUnit = measureUnit;
 
             this.detailChart.series[0].remove(false);
             var data = this._getData();
