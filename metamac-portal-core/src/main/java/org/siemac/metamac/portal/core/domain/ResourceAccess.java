@@ -766,21 +766,31 @@ public class ResourceAccess {
     }
 
     private InternationalString prepareQuantityInternationalString(InternationalString unitMeasure, InternationalString unitMultiplier) {
-        String unitMeasureLabel = PortalUtils.getLabel(unitMeasure, getLang());
-        String unitMultiplierLabel = PortalUtils.getLabel(unitMultiplier, getLang());
-        if (unitMeasureLabel != null || unitMultiplierLabel != null) {
-            String value = (unitMeasureLabel != null) ? unitMeasureLabel : "";
-            value += (unitMultiplierLabel != null) ? " (" + unitMultiplierLabel + ")" : "";
+        InternationalString result = null;
 
-            LocalisedString localisedString = new LocalisedString();
-            localisedString.setLang(getLang());
-            localisedString.setValue(value);
+        if (unitMeasure != null) {
+            result = new InternationalString();
+            for (LocalisedString unitMeasureLocalisedString : unitMeasure.getTexts()) {
+                String lang = unitMeasureLocalisedString.getLang();
+                String unitMeasureLabel = unitMeasureLocalisedString.getValue();
+                String unitMultiplierLabel = PortalUtils.getLabel(unitMultiplier, lang);
 
-            InternationalString result = new InternationalString();
-            result.getTexts().add(localisedString);
-            return result;
+                String value = unitMeasureLabel;
+                value += (unitMultiplierLabel != null) ? " (" + unitMultiplierLabel + ")" : "";
+
+                LocalisedString localisedString = new LocalisedString();
+                localisedString.setLang(lang);
+                localisedString.setValue(value);
+                result.getTexts().add(localisedString);
+            }
+        } else if (unitMultiplier != null) {
+            result = new InternationalString();
+            for (LocalisedString localisedString : unitMultiplier.getTexts()) {
+                localisedString.setValue("(" + localisedString.getValue() + ")");
+                result.getTexts().add(localisedString);
+            }
         }
-        return null;
+        return result;
     }
 
     public int getPrimaryMeasureAttributesCount() {
