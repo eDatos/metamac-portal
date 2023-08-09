@@ -357,7 +357,8 @@ public class ExcelExporter {
 
                     SXSSFCell cell = initializeCell(row, headerColumn);
 
-                    CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), selectedDimensionValue));
+                    CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), selectedDimensionValue), unitMeasure,
+                            unitMultiplier);
                     addCellComment(cellDetails, cell);
 
                     cell.setCellValue(dimensionValueLabel);
@@ -483,7 +484,7 @@ public class ExcelExporter {
 
                 SXSSFCell cell = initializeCell(row, leftDimensionIndex);
 
-                CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), dimensionValueId));
+                CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), dimensionValueId), unitMeasure, unitMultiplier);
                 addCellComment(cellDetails, cell);
 
                 cell.setCellValue(dimensionValueLabel);
@@ -504,7 +505,7 @@ public class ExcelExporter {
             String observation = resourceAccess.observationAtPermutation(permutationAtCell);
             SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
 
-            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell), cell);
+            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell, unitMeasure, unitMultiplier), cell);
 
             if (observation != null) {
                 if (NumberUtils.isNumber(observation)) {

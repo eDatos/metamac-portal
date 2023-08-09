@@ -49,7 +49,6 @@ import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
-import org.siemac.metamac.rest.common.v1_0.domain.Resources;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
@@ -846,7 +845,7 @@ public class PxExporter {
             }
             String attributeId = attribute.getId();
             String[] attributeValues = datasetAccess.getAttributeValues(attributeId);
-            if (attributeValues == null) {
+            if (attributeValues == null || unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
                 continue;
             }
             String dimensionId = attribute.getDimensions().getDimensions().get(0).getDimensionId();
