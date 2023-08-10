@@ -10,7 +10,7 @@
     <entry key="indicators.rest.external">http://data.istac.es/apis/indicators</entry>
     <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISTAC</entry>
     <entry key="metamac.portal.export.excel.cell_threshold">250000</entry>
-    <entry key="edatos.srm.dsd.unit_measure.id">UNIDAD_MEDIDA</entry>
-    <entry key="edatos.srm.dsd.unit_measure_multiplier.id">MULTIPLICADOR_UNIDAD</entry>     
+    <entry key="metamac.srm.dsd.unit_measure.id">UNIDAD_MEDIDA</entry>
+    <entry key="metamac.srm.dsd.unit_measure_multiplier.id">MULTIPLICADOR_UNIDAD</entry>     
  
 </properties>
