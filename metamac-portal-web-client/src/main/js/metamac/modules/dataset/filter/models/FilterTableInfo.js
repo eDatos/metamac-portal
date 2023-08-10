@@ -47,6 +47,7 @@
                     representationsValues: [],
                     representationsDescriptions: [],
                     representationsMeasureUnits: [],
+                    representationsUnitMultipliers: [],
                     representationsIds: [],
                     representationsLengths: []
                 };
@@ -68,6 +69,7 @@
                     result.representationsValues.push(_.invoke(representations, 'get', 'visibleLabel'));
                     result.representationsDescriptions.push(_.invoke(representations, 'get', 'description'));
                     result.representationsMeasureUnits.push(_.invoke(representations, 'get', 'measureUnit'));
+                    result.representationsUnitMultipliers.push(_.invoke(representations, 'get', 'unitMultiplier'));
                     result.representationsIds.push(_.invoke(representations, 'get', 'id'));
                     result.representationsLengths.push(representations.length);
                 });
@@ -85,6 +87,9 @@
                         [""]
                     ],
                     representationsMeasureUnits: [
+                        [""]
+                    ],
+                    representationsUnitMultipliers: [
                         [""]
                     ],
                     representationsIds: [

@@ -21,6 +21,7 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
+import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
@@ -34,12 +35,12 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttr
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimensions;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MeasureQuantity;
@@ -490,7 +491,7 @@ public class ResourceAccess {
         return attributeValue;
     }
 
-    public CellCommentDetails attributesAtPermutation(Map<String, String> permutation) {
+    public CellCommentDetails attributesAtPermutation(Map<String, String> permutation, String unitMeasure, String unitMultiplier) {
         CellCommentDetails cellCommentDetails = new CellCommentDetails();
         for (Attribute attribute : getAttributesMetadata()) {
             // We handle dataset level attributes elsewhere
@@ -500,6 +501,9 @@ public class ResourceAccess {
 
             int offset = 0;
             String attributeId = attribute.getId();
+            if (unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
+                continue;
+            }
             // Observation level attributes (body cell)
             if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
                 offset = calculateOffsetAtPermutation(permutation);
@@ -518,8 +522,8 @@ public class ResourceAccess {
             String attributeValue = obtainAttributeValue(attributeId, offset);
             cellCommentDetails.addCommentLine(attributeValue);
         }
-
         return cellCommentDetails;
+
     }
 
     public String obtainAttributeValue(String attributeId, int offset) {
@@ -680,27 +684,64 @@ public class ResourceAccess {
         return offset;
     }
 
-    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue) {
-        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn());
+    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasure, String unitMultiplier) {
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn(), unitMeasure, unitMultiplier);
     }
 
-    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue) {
-        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn());
+    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasure, String unitMultiplier) {
+        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn(), unitMeasure, unitMultiplier);
     }
 
     // IDEA This will be more efficient if the concept is included on the dataset
-    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn) {
-        if (measureQuantity != null) {
-            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
-            if (conceptDetail.getQuantity() != null) {
-                // TODO EDATOS-2944 - Mostrar la información de "Medida" en el visualizador. Cuando cambie el modo de devolver el multiplicador, tambien ha de cambiar aqui
-                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
-                if (value != null) {
-                    return value;
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasure, String unitMultiplier) {
+        Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
+        Integer measureDimensionIndex = getIndexMeasureDimensionById(conceptDetail.getId());
+        InternationalString unitMeasureName = getUnitMeasureValue(measureDimensionIndex, unitMeasure,
+                (measureQuantity != null && measureQuantity.getUnitCode() != null) ? measureQuantity.getUnitCode().getName() : null);
+        InternationalString unitMultiplierName = getUnitMeasureValue(measureDimensionIndex, unitMultiplier,
+                (measureQuantity != null && measureQuantity.getUnitMultiplier() != null) ? measureQuantity.getUnitMultiplier().getName() : null);
+        InternationalString value = prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
+        return value;
+    }
+
+    private InternationalString getUnitMeasureValue(Integer measureDimensionIndex, String property, InternationalString name) {
+        InternationalString value = name;
+        if (attributesValuesByAttributeId.containsKey(property)) {
+            String unitMeasureAttributeValueId = attributesValuesByAttributeId.get(property)[measureDimensionIndex];
+            EnumeratedAttributeValue attribute = getAttributeValueByAttributeIdAndValueId(property, unitMeasureAttributeValueId);
+            if (attribute != null) {
+                value = attribute.getName();
+            }
+        }
+        return value;
+    }
+
+    // TODO: This and the next method should behave like attributesAtPermutation() method
+    private EnumeratedAttributeValue getAttributeValueByAttributeIdAndValueId(String attributeId, String valueId) {
+        for (Attribute attribute : attributes.getAttributes()) {
+            if (attribute.getId().equals(attributeId)) {
+                for (EnumeratedAttributeValue value : ((EnumeratedAttributeValues) attribute.getAttributeValues()).getValues()) {
+                    if (value.getId().equals(valueId)) {
+                        return value;
+                    }
                 }
             }
         }
         return null;
+    }
+
+    // TODO: This and the previous method should behave like attributesAtPermutation() method
+    private int getIndexMeasureDimensionById(String id) {
+        EnumeratedDimensionValues values = (getMeasureDimension() != null) ? (EnumeratedDimensionValues) getMeasureDimension().getDimensionValues() : null;
+        if (values != null && values.getValues() != null) {
+            for (int i = 0; i < values.getValues().size(); i++) {
+                EnumeratedDimensionValue value = values.getValues().get(i);
+                if (value.getId().equals(id)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     public boolean existsContVariable() {
@@ -723,21 +764,32 @@ public class ResourceAccess {
         }
         return result;
     }
-    private static InternationalString prepareQuantityInternationalString(InternationalString current, String prependString) {
-        if (current == null) {
-            return null;
+
+    private InternationalString prepareQuantityInternationalString(InternationalString unitMeasure, InternationalString unitMultiplier) {
+        InternationalString result = null;
+
+        if (unitMeasure != null) {
+            result = new InternationalString();
+            for (LocalisedString unitMeasureLocalisedString : unitMeasure.getTexts()) {
+                String lang = unitMeasureLocalisedString.getLang();
+                String unitMeasureLabel = unitMeasureLocalisedString.getValue();
+                String unitMultiplierLabel = PortalUtils.getLabel(unitMultiplier, lang);
+
+                String value = unitMeasureLabel;
+                value += (unitMultiplierLabel != null) ? " (" + unitMultiplierLabel + ")" : "";
+
+                LocalisedString localisedString = new LocalisedString();
+                localisedString.setLang(lang);
+                localisedString.setValue(value);
+                result.getTexts().add(localisedString);
+            }
+        } else if (unitMultiplier != null) {
+            result = new InternationalString();
+            for (LocalisedString localisedString : unitMultiplier.getTexts()) {
+                localisedString.setValue("(" + localisedString.getValue() + ")");
+                result.getTexts().add(localisedString);
+            }
         }
-
-        InternationalString result = new InternationalString();
-
-        for (LocalisedString localisedString : current.getTexts()) {
-            String label = localisedString.getValue() + " (x" + prependString + ")";
-            LocalisedString localisedStringResult = new LocalisedString();
-            localisedStringResult.setLang(localisedString.getLang());
-            localisedStringResult.setValue(label);
-            result.getTexts().add(localisedStringResult);
-        }
-
         return result;
     }
 

@@ -485,5 +485,9 @@
         this.repaint();
     };
 
+    App.Table.View.prototype.getCellInfoUnitMeasureMultiplier = function (absolutePoint) {
+        return this.bodyZone.getCellInfoUnitMeasureMultiplier(absolutePoint);
+    }
+
 }());
 
