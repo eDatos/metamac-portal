@@ -732,12 +732,15 @@ public class ResourceAccess {
 
     // TODO: This and the previous method should behave like attributesAtPermutation() method
     private int getIndexMeasureDimensionById(String id) {
-        EnumeratedDimensionValues values = (getMeasureDimension() != null) ? (EnumeratedDimensionValues) getMeasureDimension().getDimensionValues() : null;
-        if (values != null && values.getValues() != null) {
-            for (int i = 0; i < values.getValues().size(); i++) {
-                EnumeratedDimensionValue value = values.getValues().get(i);
-                if (value.getId().equals(id)) {
-                    return i;
+        if (datasetSelection != null && this.datasetSelection.getDimensions() != null) {
+            for (DatasetSelectionDimension dimension : datasetSelection.getDimensions()) {
+                if (dimension.getSelectedDimensionValues() != null) {
+                    for (int i = 0; i < dimension.getSelectedDimensionValues().size(); i++) {
+                        String dimensionValue = dimension.getSelectedDimensionValues().get(i);
+                        if (dimensionValue.equals(id)) {
+                            return i;
+                        }
+                    }
                 }
             }
         }
