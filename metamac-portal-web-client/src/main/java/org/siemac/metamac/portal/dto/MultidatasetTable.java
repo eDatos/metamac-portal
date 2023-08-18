@@ -1,13 +1,12 @@
 package org.siemac.metamac.portal.dto;
 
-import org.siemac.metamac.rest.common.v1_0.domain.Resource;
-import org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.ResourceInternal;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
 
 public class MultidatasetTable extends MultidatasetNode {
 
     // Antes, resourceInternal (org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.ResourceInternal)
-    protected Resource dataset;
-    protected Resource query;
+    protected ResourceStatisticalResourceBase dataset;
+    protected ResourceStatisticalResourceBase query;
 
     /**
      * Gets the value of the dataset property.
@@ -16,7 +15,7 @@ public class MultidatasetTable extends MultidatasetNode {
      *         possible object is
      *         {@link ResourceInternal }
      */
-    public Resource getDataset() {
+    public ResourceStatisticalResourceBase getDataset() {
         return dataset;
     }
 
@@ -27,7 +26,7 @@ public class MultidatasetTable extends MultidatasetNode {
      *            allowed object is
      *            {@link ResourceInternal }
      */
-    public void setDataset(Resource value) {
+    public void setDataset(ResourceStatisticalResourceBase value) {
         dataset = value;
     }
 
@@ -38,7 +37,7 @@ public class MultidatasetTable extends MultidatasetNode {
      *         possible object is
      *         {@link ResourceInternal }
      */
-    public Resource getQuery() {
+    public ResourceStatisticalResourceBase getQuery() {
         return query;
     }
 
@@ -49,7 +48,7 @@ public class MultidatasetTable extends MultidatasetNode {
      *            allowed object is
      *            {@link ResourceInternal }
      */
-    public void setQuery(Resource value) {
+    public void setQuery(ResourceStatisticalResourceBase value) {
         query = value;
     }
 

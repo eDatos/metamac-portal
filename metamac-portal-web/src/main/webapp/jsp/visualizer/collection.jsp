@@ -22,6 +22,9 @@
                 </div>                	
                 <jsp:include page="/jsp/visualizer/collection-node.jsp" />
             </c:when>
+            <c:when test="${internalError != null && internalError != ''}">
+	            <p class="alert-danger">${internalError}</p>
+	       	</c:when>
 			<c:otherwise>
                 <div class="visualizer-header-info">
             	   <h2 class="visualizer-header-title">Control de Errores</h2>
@@ -62,8 +65,8 @@
                     e.preventDefault();
                     var $icon = $(this);
                     var $parentDimension = $icon.closest(".dimension");
-                    $parentDimension.toggleClass("open");
-                    $parentDimension.toggleClass("close");
+                    $parentDimension.toggleClass("dimension-open");
+                    $parentDimension.toggleClass("dimension-close");
                 });
 
             });

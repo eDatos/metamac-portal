@@ -21,27 +21,29 @@ import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
+import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attribute;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeAttachmentLevelType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.AttributeDimension;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Attributes;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.CodeRepresentation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.ComponentType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Data;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataAttribute;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DataStructureDefinition;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimension;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionRepresentation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DimensionType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dimensions;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedAttributeValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.EnumeratedDimensionValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.MeasureQuantity;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimensions;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MeasureQuantity;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 
@@ -57,7 +59,7 @@ public class ResourceAccess {
     private Attributes                                    attributes;
 
     private InternationalString                           name;
-    private DatasetMetadata                               metadata;
+    private DatasetMetadataBase                           metadata;
     private DataStructureDefinition                       relatedDsd;
     private String                                        urn;
     private String                                        id;
@@ -91,7 +93,8 @@ public class ResourceAccess {
     private Dataset                                       dataset;
 
     private final Map<String, Integer>                    multipliers                   = new HashMap<String, Integer>();
-    private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>(); // Map<Dimension, Map<Code, Index>
+    private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
+    private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>();   // Map<Dimension, Map<Code, Index>
 
     private SrmRestExternalFacade                         srmRestExternalFacade;
 
@@ -157,6 +160,7 @@ public class ResourceAccess {
         initializeObservations(data);
         initializeDimensionsForData(data);
         initializeMultipliers();
+        initializeMultipliersAttributes();
         initializeIndex();
     }
 
@@ -184,7 +188,7 @@ public class ResourceAccess {
         return dataset;
     }
 
-    public DatasetMetadata getMetadata() {
+    public DatasetMetadataBase getMetadata() {
         return metadata;
     }
 
@@ -487,20 +491,39 @@ public class ResourceAccess {
         return attributeValue;
     }
 
-    public CellCommentDetails observationAttributesAtPermutation(Map<String, String> permutation) {
+    public CellCommentDetails attributesAtPermutation(Map<String, String> permutation, String unitMeasure, String unitMultiplier) {
         CellCommentDetails cellCommentDetails = new CellCommentDetails();
         for (Attribute attribute : getAttributesMetadata()) {
-            if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
-                continue; // only observation attachment level
+            // We handle dataset level attributes elsewhere
+            if (AttributeAttachmentLevelType.DATASET.equals(attribute.getAttachmentLevel())) {
+                continue;
             }
-            String attributeId = attribute.getId();
-            int offset = calculateOffsetAtPermutation(permutation);
 
+            int offset = 0;
+            String attributeId = attribute.getId();
+            if (unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
+                continue;
+            }
+            // Observation level attributes (body cell)
+            if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
+                offset = calculateOffsetAtPermutation(permutation);
+            } else if (AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
+                if (attribute.getDimensions() == null) {
+                    continue;
+                }
+                boolean singleDimensionLevelAttributeForHeaderCellMatchHeaderCellDimension = permutation.size() == 1 && attribute.getDimensions().getDimensions().size() == 1
+                        && permutation.get(attribute.getDimensions().getDimensions().get(0).getDimensionId()) != null;
+                boolean combinationDimensionLevelAttributeForBodyCell = permutation.size() > 1 && attribute.getDimensions().getDimensions().size() > 1;
+                if (!(singleDimensionLevelAttributeForHeaderCellMatchHeaderCellDimension || combinationDimensionLevelAttributeForBodyCell)) {
+                    continue;
+                }
+                offset = calculateOffsetAtPermutation(permutation, multipliersByAttribute.get(attribute.getId()));
+            }
             String attributeValue = obtainAttributeValue(attributeId, offset);
             cellCommentDetails.addCommentLine(attributeValue);
         }
-
         return cellCommentDetails;
+
     }
 
     public String obtainAttributeValue(String attributeId, int offset) {
@@ -594,6 +617,7 @@ public class ResourceAccess {
         return dimensionValueId;
     }
 
+    // We´ll have the "multipliers" variable, used for calculating the offset for observations or attributes at PRIMARY_MEASURE attachment level
     private void initializeMultipliers() {
         List<DimensionRepresentation> dimensions = getData().getDimensions().getDimensions();
         ListIterator<DimensionRepresentation> dimensionsListIterator = dimensions.listIterator(dimensions.size());
@@ -604,6 +628,25 @@ public class ResourceAccess {
             DimensionRepresentation dimension = dimensionsListIterator.previous();
             multipliers.put(dimension.getDimensionId(), incrementCounter);
             incrementCounter *= dimension.getRepresentations().getRepresentations().size();
+        }
+    }
+
+    // ... and we'll have the multipliers stored for attributes at DIMENSION or combinated DIMENSION attachment level
+    private void initializeMultipliersAttributes() {
+        for (Attribute attribute : attributesMetadata) {
+            if (!AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
+                continue;
+            }
+            multipliersByAttribute.put(attribute.getId(), new HashMap<String, Integer>());
+            List<AttributeDimension> dimensions = attribute.getDimensions().getDimensions();
+            ListIterator<AttributeDimension> dimensionsListIterator = dimensions.listIterator(dimensions.size());
+            int incrementCounter = 1;
+            // Iterate the list in reverse order: right to left or down to up in the display table to calculate cell spacing
+            while (dimensionsListIterator.hasPrevious()) {
+                AttributeDimension dimension = dimensionsListIterator.previous();
+                multipliersByAttribute.get(attribute.getId()).put(dimension.getDimensionId(), incrementCounter);
+                incrementCounter *= dimensionValuesOrderedForDataByDimensionId.get(dimension.getDimensionId()).size();
+            }
         }
     }
 
@@ -623,39 +666,85 @@ public class ResourceAccess {
     }
 
     private int calculateOffsetAtPermutation(Map<String, String> permutation) {
+        return calculateOffsetAtPermutation(permutation, multipliers);
+    }
+
+    private int calculateOffsetAtPermutation(Map<String, String> permutation, Map<String, Integer> multipliers) {
         int offset = 0;
         for (Map.Entry<String, String> permutationEntry : permutation.entrySet()) {
             String dimensionId = permutationEntry.getKey();
             String representationId = permutationEntry.getValue();
 
             long index = representationIndex.get(dimensionId).get(representationId);
-            int multiplier = multipliers.get(dimensionId);
-            offset += index * multiplier;
+            Integer multiplier = multipliers.get(dimensionId);
+            if (multiplier != null) {
+                offset += index * multiplier;
+            }
         }
         return offset;
     }
 
-    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue) {
-        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn());
+    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasure, String unitMultiplier) {
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn(), unitMeasure, unitMultiplier);
     }
 
-    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue) {
-        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn());
+    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasure, String unitMultiplier) {
+        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn(), unitMeasure, unitMultiplier);
     }
 
     // IDEA This will be more efficient if the concept is included on the dataset
-    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn) {
-        if (measureQuantity != null) {
-            Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
-            if (conceptDetail.getQuantity() != null) {
-                // TODO EDATOS-2944 - Mostrar la información de "Medida" en el visualizador. Cuando cambie el modo de devolver el multiplicador, tambien ha de cambiar aqui
-                InternationalString value = prepareQuantityInternationalString(measureQuantity.getUnitCode().getName(), String.valueOf(conceptDetail.getQuantity().getUnitMultiplier()));
-                if (value != null) {
-                    return value;
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasure, String unitMultiplier) {
+        Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
+        Integer measureDimensionIndex = getIndexMeasureDimensionById(conceptDetail.getId());
+        InternationalString unitMeasureName = getUnitMeasureValue(measureDimensionIndex, unitMeasure,
+                (measureQuantity != null && measureQuantity.getUnitCode() != null) ? measureQuantity.getUnitCode().getName() : null);
+        InternationalString unitMultiplierName = getUnitMeasureValue(measureDimensionIndex, unitMultiplier,
+                (measureQuantity != null && measureQuantity.getUnitMultiplier() != null) ? measureQuantity.getUnitMultiplier().getName() : null);
+        InternationalString value = prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
+        return value;
+    }
+
+    private InternationalString getUnitMeasureValue(Integer measureDimensionIndex, String property, InternationalString name) {
+        InternationalString value = name;
+        if (attributesValuesByAttributeId.containsKey(property)) {
+            String unitMeasureAttributeValueId = attributesValuesByAttributeId.get(property)[measureDimensionIndex];
+            EnumeratedAttributeValue attribute = getAttributeValueByAttributeIdAndValueId(property, unitMeasureAttributeValueId);
+            if (attribute != null) {
+                value = attribute.getName();
+            }
+        }
+        return value;
+    }
+
+    // TODO: This and the next method should behave like attributesAtPermutation() method
+    private EnumeratedAttributeValue getAttributeValueByAttributeIdAndValueId(String attributeId, String valueId) {
+        for (Attribute attribute : attributes.getAttributes()) {
+            if (attribute.getId().equals(attributeId)) {
+                for (EnumeratedAttributeValue value : ((EnumeratedAttributeValues) attribute.getAttributeValues()).getValues()) {
+                    if (value.getId().equals(valueId)) {
+                        return value;
+                    }
                 }
             }
         }
         return null;
+    }
+
+    // TODO: This and the previous method should behave like attributesAtPermutation() method
+    private int getIndexMeasureDimensionById(String id) {
+        if (datasetSelection != null && this.datasetSelection.getDimensions() != null) {
+            for (DatasetSelectionDimension dimension : datasetSelection.getDimensions()) {
+                if (dimension.getSelectedDimensionValues() != null) {
+                    for (int i = 0; i < dimension.getSelectedDimensionValues().size(); i++) {
+                        String dimensionValue = dimension.getSelectedDimensionValues().get(i);
+                        if (dimensionValue.equals(id)) {
+                            return i;
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
     }
 
     public boolean existsContVariable() {
@@ -678,21 +767,32 @@ public class ResourceAccess {
         }
         return result;
     }
-    private static InternationalString prepareQuantityInternationalString(InternationalString current, String prependString) {
-        if (current == null) {
-            return null;
+
+    private InternationalString prepareQuantityInternationalString(InternationalString unitMeasure, InternationalString unitMultiplier) {
+        InternationalString result = null;
+
+        if (unitMeasure != null) {
+            result = new InternationalString();
+            for (LocalisedString unitMeasureLocalisedString : unitMeasure.getTexts()) {
+                String lang = unitMeasureLocalisedString.getLang();
+                String unitMeasureLabel = unitMeasureLocalisedString.getValue();
+                String unitMultiplierLabel = PortalUtils.getLabel(unitMultiplier, lang);
+
+                String value = unitMeasureLabel;
+                value += (unitMultiplierLabel != null) ? " (" + unitMultiplierLabel + ")" : "";
+
+                LocalisedString localisedString = new LocalisedString();
+                localisedString.setLang(lang);
+                localisedString.setValue(value);
+                result.getTexts().add(localisedString);
+            }
+        } else if (unitMultiplier != null) {
+            result = new InternationalString();
+            for (LocalisedString localisedString : unitMultiplier.getTexts()) {
+                localisedString.setValue("(" + localisedString.getValue() + ")");
+                result.getTexts().add(localisedString);
+            }
         }
-
-        InternationalString result = new InternationalString();
-
-        for (LocalisedString localisedString : current.getTexts()) {
-            String label = localisedString.getValue() + " (x" + prependString + ")";
-            LocalisedString localisedStringResult = new LocalisedString();
-            localisedStringResult.setLang(localisedString.getLang());
-            localisedStringResult.setValue(label);
-            result.getTexts().add(localisedStringResult);
-        }
-
         return result;
     }
 

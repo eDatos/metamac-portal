@@ -23,6 +23,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static final String PARAM_BREADCRUMBS                 = "migas";
     private static final String PARAM_APP_NAME                    = "appName";
     private static final String PARAM_APP_URL                     = "appUrl";
+    private static final String PARAM_ENABLE_AUTHENTICATION       = "enableAuthentication";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -63,6 +64,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     analyticsGoogleTrackingId         = null;
     protected static String     helpUrl                           = null;
     private static Integer      cellThreshold                     = null;
+    protected static String     unitMeasure                       = null;
+    protected static String     unitMeasureMultiplier             = null;
 
     public static String getInstallationType() {
         return installationType;
@@ -325,6 +328,22 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         return cellThreshold;
     }
 
+    public static String getUnitMeasure() {
+        return unitMeasure;
+    }
+
+    public static void setUnitMeasure(String unitMeasure) {
+        WebUtils.unitMeasure = unitMeasure;
+    }
+
+    public static String getUnitMeasureMultiplier() {
+        return unitMeasureMultiplier;
+    }
+
+    public static void setUnitMeasureMultiplier(String unitMeasureMultiplier) {
+        WebUtils.unitMeasureMultiplier = unitMeasureMultiplier;
+    }
+
     public static String buildPageTitle(String organisation, String resourceName, String lang) {
         StringJoiner joiner = new StringJoiner(" | ");
         joiner.add(organisation);
@@ -353,7 +372,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String buildHeaderQuery(String lang) {
-        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam());
+        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam(), PARAM_ENABLE_AUTHENTICATION);
     }
 
     private static String buildAppUrlParam() {

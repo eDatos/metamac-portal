@@ -13,57 +13,75 @@
         className: "dataset-download",
 
         events: {
-            "click a": "clickDownloadButton"
+            "click a.download-xlsx": function(event) { this.clickDownloadButton(event, 'xlsx'); },
+            "click a.download-tsv": function(event) { this.clickDownloadButton(event, 'tsv'); },
+            "click a.download-csv": function(event) { this.clickDownloadButton(event, 'px'); },
+            "click a.download-png": function(event) { this.clickDownloadButton(event, 'png'); },
+            "click a.download-pdf": function(event) { this.clickDownloadButton(event, 'pdf'); },
+            "click a.download-svg": function(event) { this.clickDownloadButton(event, 'svg'); },
+            "click a.download-jsonstat": function(event) { this.clickDownloadButton(event, 'jsonstat'); },
         },
 
         initialize: function () {
+            this.optionsModel = this.options.optionsModel;
+            var self = this;
+            this.pageshowListener = function () {
+                self.optionsModel.set('isDownloading', false);
+            };
+            window.addEventListener("pageshow", this.pageshowListener);
+
+            this.visualizationType = this.optionsModel.get('type');
             this.filterDimensions = this.options.filterDimensions;
-            this.visualizationType = this.options.visualizationType;
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
+
+            var datasetSelectionObject = this.getDatasetSelection();
+            this.datasetSelection = JSON.stringify(datasetSelectionObject);
+            this.jsonstatSelection = this._getSelection(datasetSelectionObject);
+
+            this.svg = null;
+            this.urls = {
+                xlsx: this._buildExportEndpoint('excel'),
+                px: this._buildExportEndpoint('px'),
+                jsonstat: this._getJsonStatUrl(),
+                png: App.endpoints["export"] + "/image" + this._getImageExportApiParams('png'),
+                pdf: App.endpoints["export"] + "/image" + this._getImageExportApiParams('pdf'),
+                svg: App.endpoints["export"] + "/image" + this._getImageExportApiParams('svg')
+            };
+
+            this._bindEvents();
+        },
+
+        _bindEvents: function () {
+            this.listenTo(this.optionsModel, "change:isDownloading", this.render);
+
+            this.delegateEvents();
         },
 
         render: function () {
-            var datasetSelection = this.getDatasetSelection();
+            const selection = this._getSelection(this.getDatasetSelection());
             var jsonStatUrl = this._getJsonStatUrl();
-            var entries = [];
-            for (var entry of jsonStatUrl.searchParams.entries()) {
-                entries.push(entry);
-            }
 
             var context = {
-                selection: JSON.stringify(datasetSelection),
-                emptySelection: JSON.stringify(this.getEmptyDatasetSelection()),
+                buttonConfig: this._getButtonConfiguration(),
+                hasJsonstatUrl: !!this.urls.jsonstat,
                 url: {
-                    tsv: this._buildExportEndpoint('tsv'),
-                    excel: this._buildExportEndpoint('excel'),
-                    px: this._buildExportEndpoint('px'),
                     jsonstat: {
                         href: jsonStatUrl.toString(),
-                        searchParams: entries,
+                        searchParams: [...jsonStatUrl.searchParams.entries()],
+                        selection
                     }
-                },
-                buttonConfig: this._getButtonConfiguration()
+                }
             };
 
             if (this._exportableImage()) {
                 var self = this;
                 svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($(SVG_SELECTOR))).done(function (svg) {
-                    var svgContext = {
-                        svg: svg,
-                        url: {
-                            png: App.endpoints["export"] + "/image" + self._getImageExportApiParams('png'),
-                            pdf: App.endpoints["export"] + "/image" + self._getImageExportApiParams('pdf'),
-                            svg: App.endpoints["export"] + "/image" + self._getImageExportApiParams('svg')
-                        }
-                    };
-                    _.extend(context, svgContext);
+                    self.svg = svg;
                     self.$el.html(self.template(context));
-                    self._setupTsvExportAttributes();
                 });
             } else {
                 this.$el.html(this.template(context));
-                this._setupTsvExportAttributes();
             }
         },
 
@@ -101,6 +119,9 @@
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
             var haveImageFormats = this._hasExportableImage(visualizationSupertype);
             var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length == 0;
+            var disableAnyFormat = this.optionsModel.get('isDownloading');
+            var disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
+            var disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
 
             return {
                 dataFormats: haveDataFormats,
@@ -110,10 +131,21 @@
                 iconPreffix: visualizationSupertype,
                 disableFormat: {
                     all: {
-                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize)
+                        excel: disableAnyFormat || disableAllExcel,
+                        tsv: disableAnyFormat,
+                        csv: disableAnyFormat,
+                        jsonstat: disableAnyFormat,
+                        infoMessage: disableAllExcel ? I18n.t("filter.download.excel.disabled") : null
                     },
                     selection: {
-                        excel: this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize)
+                        excel: disableAnyFormat || disableSelectionExcel,
+                        tsv: disableAnyFormat,
+                        csv: disableAnyFormat,
+                        jsonstat: disableAnyFormat,
+                        png: disableAnyFormat,
+                        pdf: disableAnyFormat,
+                        svg: disableAnyFormat,
+                        infoMessage: disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : null
                     }
                 },
             };
@@ -143,8 +175,7 @@
         },
 
         _getImageExportApiParams: function (type) {
-            var identifier = this.filterDimensions.metadata.identifier();
-            var filename = "chart" + "-" + identifier.agency + "-" + identifier.identifier + "-" + identifier.version; // IDEA Add visualization type to the name
+            var filename = this._getFilenameFromIdentifier("", "chart");
 
             var mime = svgExporter.mimeTypeFromType(type);
             var params = '?';
@@ -195,34 +226,123 @@
             return { datasetSelection: null };
         },
 
-        clickDownloadButton: function (e) {
+        clickDownloadButton: function (e, type) {
             e.preventDefault();
             var $currentTarget = $(e.currentTarget);
-            if (!$currentTarget.hasClass('disabled')) {
-                $currentTarget.parent("form").submit();
+            if ($currentTarget.hasClass('disabled')) {
+                return;
+            }
+
+            var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : JSON.stringify(this.getEmptyDatasetSelection());
+            var xlsxCsvAndTsvFilenameSuffix = $currentTarget.hasClass('selection') ? "-selection" : "";
+            switch (type) {
+                case "tsv":
+                    var self = this;
+                    this._showExportTsvAttributesConfig(function (url, suffixAndFileExtension) {
+                        self.downloadFile('POST', url, { jsonBody: jsonBody }, xlsxCsvAndTsvFilenameSuffix + suffixAndFileExtension);
+                    });
+                    break;
+                case "xlsx":
+                case "px":
+                    this.downloadFile('POST', this.urls[type], { jsonBody: jsonBody }, xlsxCsvAndTsvFilenameSuffix + "." + type);
+                    break;
+                case "png":
+                case "pdf":
+                case "svg":
+                    this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type, "chart");
+                    break;
+                case "jsonstat":
+                    this.redirectToFile(this.urls[type], $currentTarget.hasClass('selection') ? { representation: this.jsonstatSelection } : null);
+                    break;
             }
         },
-        
-        _setupTsvExportAttributes: function() {
-            var self = this;
-            this.$el.find('.download-tsv').closest('form').submit(function(e) {
-                e.preventDefault();    
-                self._showExportTsvAttributesConfig(this);
-            });
+
+        redirectToFile: function (url, requestParams) {
+            this.optionsModel.set('isDownloading', true);
+
+            var formattedUrl = new URL(url);
+            if (requestParams) {
+                _.each(Object.keys(requestParams), function (key) {
+                    formattedUrl.searchParams.append(key, requestParams[key]);
+                });
+            }
+            window.location.href = formattedUrl.href;
         },
 
-        _showExportTsvAttributesConfig: function (form) {
+        downloadFile: function (requestMethod, url, requestParams, suffixAndFileExtension, filenameCustomPrefix) {
+            this.optionsModel.set('isDownloading', true);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open(requestMethod, url, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.responseType = 'arraybuffer';
+
+            var self = this;
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    var blob = new Blob([this.response], { type: xhr.getResponseHeader('Content-Type') });
+                    var filename = self._getFilenameFromContentDisposition(xhr);
+                    if (!filename) {
+                        filename = self._getFilenameFromIdentifier(suffixAndFileExtension, filenameCustomPrefix);
+                    }
+                    self._downloadFileInBrowserFromBlob(blob, filename);
+                }
+            };
+            xhr.onloadend = function () {
+                self.optionsModel.set('isDownloading', false);
+            };
+            xhr.ontimeout = xhr.onloadend;
+            xhr.send(new URLSearchParams(requestParams));
+        },
+
+        _getFilenameFromContentDisposition: function (xhr) {
+            var disposition = xhr.getResponseHeader('Content-Disposition');
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+                var filenameRegex = /filename[^\w;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                var filenameMatches = filenameRegex.exec(disposition);
+                if (filenameMatches != null && filenameMatches[1]) { return filenameMatches[1].replace(/['"]/g, ''); }
+            }
+            return "";
+        },
+
+        _getFilenameFromIdentifier: function (suffixAndFileExtension, customPrefix) {
+            var identifier = this.filterDimensions.metadata.identifier();
+            return [customPrefix ? customPrefix : identifier.type, identifier.agency, identifier.identifier, identifier.version].join("-").replace(".", "_") + suffixAndFileExtension;
+        },
+
+        _downloadFileInBrowserFromBlob: function (blob, filename) {
+            var downloadUrl = window.URL.createObjectURL(blob);
+
+            var a = $('a#blob-download-anchor')[0];
+            if (!a) {
+                a = document.createElement("a");
+                a.id = "blob-download-anchor";
+                document.body.appendChild(a);
+            }
+
+            if (typeof a.download === 'undefined') {
+                window.location = downloadUrl;
+            } else {
+                a.href = downloadUrl;
+                a.download = filename;
+                a.click();
+            }
+
+            setTimeout(function () {
+                window.URL.revokeObjectURL(downloadUrl);
+            }, 150);
+        },
+
+        _showExportTsvAttributesConfig: function (callback) {
             var self = this;
             var modalContentView = new App.components.modal.ConfirmationModalView({
                 question: I18n.t("filter.download.attributes.modal.question"),
-                onConfirm: function() { 
-                    form.action = self._buildExportEndpoint('tsv');
-                    form.submit(); 
+                onConfirm: function() {
+                    callback(self._buildExportEndpoint('tsv'), ".zip");
                     self.modal.close();
                 },
-                onReject: function() { 
-                    form.action = self._buildExportEndpoint('tsv', { fields: '-attributes' });                  
-                    form.submit(); 
+                onReject: function() {
+                    callback(self._buildExportEndpoint('tsv', { fields: '-attributes' }), "-observations.tsv");
                     self.modal.close();
                 }
             });
@@ -240,22 +360,40 @@
             return exportEndpoint;
         },
 
-        _getJsonStatUrl() {
-            var link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+        _getSelection: function (datasetSelection) {
+            const representations = [];
+            for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
+                representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
+            }
+            return representations.join(":");
+        },
 
-            var jsonStatUrl;
+        _getJsonStatUrl() {
+            let link = this.filterDimensions.metadata.datasourceIdentifier.identifier.selfLink;
+            let isIndicator = this.filterDimensions.metadata.datasourceIdentifier.identifier.type === 'indicator';
+
+            let jsonStatUrl;
+
             if (link.hasOwnProperty("href")) {
-                jsonStatUrl = new URL(link.href + ".jsonstat");
+                // dataset or query
+                jsonStatUrl = new URL(link.href);
             } else if (typeof link === 'string') {
-                jsonStatUrl = new URL(link + ".jsonstat");
+                // indicator
+                jsonStatUrl = new URL(link);
             } else {
                 return null;
             }
 
+            if (isIndicator) {
+                jsonStatUrl.href += "/data";
+            }
+            jsonStatUrl.href += ".jsonstat";
+
             var locale = I18n.locale;
             jsonStatUrl.searchParams.append('lang', locale);
+
             return jsonStatUrl;
-        }
+        },
     });
 
 }());

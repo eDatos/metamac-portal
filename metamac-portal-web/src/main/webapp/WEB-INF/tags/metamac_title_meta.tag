@@ -52,10 +52,10 @@
 		Boolean internalPortal = null;
 		String ORGANISATION = "";
         String INTERNATIONALIZATION_COOKIE_ID = "";
+        String DEFAULT_INTERNATIONALIZATION_LANGUAGE = "";
 
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
-			   
 		    INSTALLATION_TYPE = configurationService.retrieveInstallationType();
 		    internalPortal = INSTALLATION_TYPE.equals("INTERNAL");
 			request.setAttribute("installationType", INSTALLATION_TYPE);
@@ -74,11 +74,8 @@
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
             EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
-            try {
-                INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
-            } catch (MetamacException ignored) {
-                INTERNATIONALIZATION_COOKIE_ID = "error";
-            }
+            INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
+            DEFAULT_INTERNATIONALIZATION_LANGUAGE = configurationService.retrieveDefaultInternationalizationLanguage();
             try {
                 // We group this try catch because all of them are served from external-users
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();
@@ -112,6 +109,7 @@
             request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
             request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
+            request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
 
 		} catch (MetamacException e) {
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
@@ -127,6 +125,7 @@
 		 	request.setAttribute("organisationUrn", "error");
 		 	request.setAttribute("geographicalGranularityUrn", "error");
             request.setAttribute("internationalizationCookie", "error");
+            request.setAttribute("defaultInternationalizationLanguage", "error");
 
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
@@ -147,14 +146,20 @@
         String resourceTypeValue = request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE);
         ResourceType resourceType =  resourceTypeValue != null ? ResourceType.fromValue(resourceTypeValue) : null;
         String multidatasetId = request.getParameter(Helpers.PARAMETER_MULTIDATASET_ID);
-        if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
-            Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
-            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));   
-        }        
+        try {
+           if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
+               Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
+               response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));   
+           }
+        } catch(Exception e) {
+            log.error(e.getMessage());
+            request.setAttribute("internalError", e.getMessage());
+        }
     %>
 	<%
         Cookie[] cookies = request.getCookies();
-        String locale = request.getLocale().getLanguage();
+        String defaultLocale = DEFAULT_INTERNATIONALIZATION_LANGUAGE;
+        String locale = defaultLocale;
         if (cookies != null && !"error".equals(INTERNATIONALIZATION_COOKIE_ID)) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(INTERNATIONALIZATION_COOKIE_ID)) {
@@ -164,7 +169,7 @@
         }
         request.setAttribute("currentLocale", locale);
         
-        Helpers helper = new Helpers(locale);
+        Helpers helper = new Helpers(locale, defaultLocale);
 
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);
         String resourceId = request.getParameter(Helpers.PARAMETER_RESOURCE_ID);
@@ -175,82 +180,87 @@
 	    request.setAttribute("resourceName", "");
 	    String resourceDescription = "";                     
 	    
-        if (multidatasetId != null) {
-            Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
-            if (multidataset != null && !multidatasetId.isEmpty()) {
-                request.setAttribute("resourceEmpty", false);
-                request.setAttribute("resourceName", helper.localizeText(multidataset.getName()));
-                request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(multidataset.getDescription())));
-                request.setAttribute("resourceDescription", helper.localizeText(multidataset.getDescription()));
-                request.setAttribute("keywords", helper.localizeText(multidataset.getKeywords()));   
-            }
-        } else {
-            if (resourceType != null) {
-                switch (resourceType) {
-                    case COLLECTION:
-                        Collection collection = Helpers.getCollection(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, agencyId, resourceId);            
-                        if (collection != null) {           
-                            request.setAttribute("resourceEmpty", false);
-                            request.setAttribute("resourceName", helper.localizeText(collection.getName()));
-                            request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(collection.getDescription())));
-                            request.setAttribute("resourceDescription", helper.localizeText(collection.getDescription()));
-                            request.setAttribute("keywords", helper.localizeText(collection.getKeywords()));
+        try {
+            if (multidatasetId != null) {
+                Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
+                if (multidataset != null && !multidatasetId.isEmpty()) {
+                    request.setAttribute("resourceEmpty", false);
+                    request.setAttribute("resourceName", helper.localizeText(multidataset.getName()));
+                    request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(multidataset.getDescription())));
+                    request.setAttribute("resourceDescription", helper.localizeText(multidataset.getDescription()));
+                    request.setAttribute("keywords", helper.localizeText(multidataset.getKeywords()));   
+                }
+            } else {
+                if (resourceType != null) {
+                    switch (resourceType) {
+                        case COLLECTION:
+                            Collection collection = Helpers.getCollection(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, agencyId, resourceId);
+                            if (collection != null) {
+                                request.setAttribute("resourceEmpty", false);
+                                request.setAttribute("resourceName", helper.localizeText(collection.getName()));
+                                request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(collection.getDescription())));
+                                request.setAttribute("resourceDescription", helper.localizeText(collection.getDescription()));
+                                request.setAttribute("keywords", helper.localizeText(collection.getKeywords()));
+
+                                request.setAttribute("collection", collection);
+                                request.setAttribute("numberOfFixedDigitsInNumeration", Helpers.numberOfFixedDigitsInNumeration(collection));
+                                request.setAttribute("nodes", collection.getData().getNodes().getNodes());
+                            }
+                            break;
+                        case DATASET:
+                            Dataset dataset = Helpers.getDataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, agencyId, resourceId, version);
                             
-                            request.setAttribute("collection", collection);
-                            request.setAttribute("numberOfFixedDigitsInNumeration", Helpers.numberOfFixedDigitsInNumeration(collection));
-                            request.setAttribute("nodes", collection.getData().getNodes().getNodes());
-                        }
-                        break;
-                    case DATASET:
-                        Dataset dataset = Helpers.getDataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, agencyId, resourceId, version);
-                        
-                        if (dataset != null) {
-                            request.setAttribute("resourceEmpty", false);
-                            request.setAttribute("resourceName", helper.localizeText(dataset.getName()));
-                            request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(dataset.getDescription())));
-                            request.setAttribute("resourceDescription", helper.localizeText(dataset.getDescription()));
-                            request.setAttribute("keywords", helper.localizeText(dataset.getKeywords()));
-                        }
-                        break;
-                    case QUERY:
-                        Query query = Helpers.getQuery(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, agencyId, resourceId);
-                        
-                        if (query != null) {
-                            request.setAttribute("resourceEmpty", false);
-                            request.setAttribute("resourceName", helper.localizeText(query.getName()));
-                            request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(query.getDescription())));
-                            request.setAttribute("resourceDescription", helper.localizeText(query.getDescription()));  
-                            request.setAttribute("keywords", helper.localizeText(query.getKeywords()));
-                        }
-                        break;
-                    case INDICATOR:
-                        Indicator indicator = Helpers.getIndicator(INDICATORS_API_URL_BASE, internalPortal, resourceId);            
-                        if (indicator != null) {
-                            request.setAttribute("resourceEmpty", false);
-                            request.setAttribute("resourceName", helper.localizeText(indicator.getTitle()));
-                            request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(indicator.getConceptDescription())));
-                            request.setAttribute("resourceDescription", helper.localizeText(indicator.getConceptDescription()));  
-                            request.setAttribute("keywords", "");
-                        }
-                        break;
-                    case INDICATOR_INSTANCE:
-                        IndicatorInstance indicatorInstance = Helpers.getIndicatorInstance(INDICATORS_API_URL_BASE, internalPortal, resourceId, indicatorSystem);            
-                        if (indicatorInstance != null) {
-                            request.setAttribute("resourceEmpty", false);
-                            request.setAttribute("resourceName", helper.localizeText(indicatorInstance.getTitle()));
-                            request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(indicatorInstance.getConceptDescription())));
-                            request.setAttribute("resourceDescription", helper.localizeText(indicatorInstance.getConceptDescription())); 
-                            request.setAttribute("keywords", "");
-                        } 
-                        break;
-                   default:
-                       request.setAttribute("resourceName", "Visualizador estadístico");
-                       request.setAttribute("resourceDescription", "Visualizador estadístico");
-                       request.setAttribute("resourceDescriptionOnlyText", "Visualizador estadístico");
-                       request.setAttribute("keywords", "");
-                       break;
+                            if (dataset != null) {
+                                request.setAttribute("resourceEmpty", false);
+                                request.setAttribute("resourceName", helper.localizeText(dataset.getName()));
+                                request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(dataset.getDescription())));
+                                request.setAttribute("resourceDescription", helper.localizeText(dataset.getDescription()));
+                                request.setAttribute("keywords", helper.localizeText(dataset.getKeywords()));
+                            }
+                            break;
+                        case QUERY:
+                            Query query = Helpers.getQuery(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, agencyId, resourceId);
+                            
+                            if (query != null) {
+                                request.setAttribute("resourceEmpty", false);
+                                request.setAttribute("resourceName", helper.localizeText(query.getName()));
+                                request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(query.getDescription())));
+                                request.setAttribute("resourceDescription", helper.localizeText(query.getDescription()));  
+                                request.setAttribute("keywords", helper.localizeText(query.getKeywords()));
+                            }
+                            break;
+                        case INDICATOR:
+                            Indicator indicator = Helpers.getIndicator(INDICATORS_API_URL_BASE, internalPortal, resourceId);
+                            if (indicator != null) {
+                                request.setAttribute("resourceEmpty", false);
+                                request.setAttribute("resourceName", helper.localizeText(indicator.getTitle()));
+                                request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(indicator.getConceptDescription())));
+                                request.setAttribute("resourceDescription", helper.localizeText(indicator.getConceptDescription()));  
+                                request.setAttribute("keywords", "");
+                            }
+                            break;
+                        case INDICATOR_INSTANCE:
+                            IndicatorInstance indicatorInstance = Helpers.getIndicatorInstance(INDICATORS_API_URL_BASE, internalPortal, resourceId, indicatorSystem);            
+                            if (indicatorInstance != null) {
+                                request.setAttribute("resourceEmpty", false);
+                                request.setAttribute("resourceName", helper.localizeText(indicatorInstance.getTitle()));
+                                request.setAttribute("resourceDescriptionOnlyText", Helpers.html2text(helper.localizeText(indicatorInstance.getConceptDescription())));
+                                request.setAttribute("resourceDescription", helper.localizeText(indicatorInstance.getConceptDescription())); 
+                                request.setAttribute("keywords", "");
+                            } 
+                            break;
+                       default:
+                           request.setAttribute("resourceName", "Visualizador estadístico");
+                           request.setAttribute("resourceDescription", "Visualizador estadístico");
+                           request.setAttribute("resourceDescriptionOnlyText", "Visualizador estadístico");
+                           request.setAttribute("keywords", "");
+                           break;
+                    }
                 }
             }
+        } catch(Exception e) {
+            log.error(e.getMessage());
+            request.setAttribute("internalError", e.getMessage());
         }
 	%>
 	<%
@@ -269,6 +279,8 @@
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
        request.setAttribute("helpUrl", WebUtils.getHelpUrl());
        request.setAttribute("cellThreshold", WebUtils.getCellThreshold());
+       request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
+       request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
        request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
 
 	%>	

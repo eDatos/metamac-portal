@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title></title>
 
-    <link href="https://estadisticas.arte-consultores.com/apps/organisations/istac/portal/default/styles.css" rel='stylesheet'/>
+    <!--<link href="https://estadisticas.arte-consultores.com/apps/organisations/istac/portal/default/styles.css" rel='stylesheet'/>-->
     <link rel="stylesheet" href="../../target/metamac.css" />
 
     <script src="//estadisticas.arte-consultores.com/external-users-external/api/captcha/authentication.js"></script>
@@ -33,7 +33,6 @@
 
         <div id="bloq_interior">
             <div class="visualizer-wrapper">
-                <div class="visualizer-header-user"></div>
             <div class="metamac-container" id="metamac-container">Cargando...</div>
         </div>
     </div>
@@ -135,10 +134,13 @@
 
         // EDATOS-3915 - No mostrar la información de las dimensiones que tienen un único valor en el pop-up de la observación
         App.queryParams = { "agency": "ISTAC", "identifier": "C00124A_000001", "version": "1.0", "type": "dataset" };    
-        App.queryParams = { "agency": "ISTAC", "identifier": "PRUEBA_04_2DIMENSIONES", "type": "query" };    
+        App.queryParams = { "agency": "ISTAC", "identifier": "PRUEBA_04_2DIMENSIONES", "type": "query" };
 
         // Multidataset con query
         App.queryParams = { "agency": "ISTAC", "identifier": "CONSULTA_NUEVO_VERSIONADO", "type": "query", "multidatasetId": "ISTAC:C00031A_000003" };
+
+        // EDATOS-4060
+        App.queryParams = { "agency": "ISTAC", "identifier": "C00031A_000002", "version": "~latest", "type": "dataset" };
 
         // Vista widget
         // App.config.widget = true;
@@ -149,7 +151,8 @@
         App.config["enableGraphColors"] = true;
         App.config["helpUrl"] = "http://www.gobiernodecanarias.org/istac/galerias/documentos/pec-2018-2022.pdf";
         App.config["cellThreshold"] = 250_000;
-        
+        App.config["unitMeasure"] = "UNIDAD_MEDIDA";
+        App.config["unitMeasureMultiplier"] = "MULTIPLICADOR_UNIDAD";
 
         var ENABLE_IBESTAT = true;
         if (ENABLE_IBESTAT) {

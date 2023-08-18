@@ -35,7 +35,9 @@
                 if (children.length) {
                     hasHierarchy = true;
                     representation.initChildren(children);
-                    representation._onChangeOpen();
+                    representation._onChangeOpenInit();
+                } else {
+                    representation.initNodesWithoutChildren();
                 }
             }, this);
             this.hasHierarchy = hasHierarchy;
@@ -204,6 +206,10 @@
 
         getSelectedTemporalGranularities: function () {
             return _(this.getSelectedRepresentations()).invoke("get", "temporalGranularity");
+        },
+
+        getAllTemporalGranularities: function () {
+            return this.invoke("get", "temporalGranularity");
         },
 
         _getMostRepeatedValue: function (collection) {

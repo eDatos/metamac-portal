@@ -22,10 +22,10 @@
 		    	<h3>Error - Propiedad no configurada</h3>
 	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
 	       	</c:when>
+	       	<c:when test="${internalError != null && internalError != ''}">
+	            <p class="alert-danger">${internalError}</p>
+	       	</c:when>
 			<c:otherwise>
-				<c:if test="${ApiUrlExternalUsers != 'error' && WebApplicationExternalUsers != 'error'}">
-					<div class="visualizer-header-user"></div>
-				</c:if>
 			    <c:choose>
 					<c:when test="${!resourceEmpty}">
 						<div class="visualizer-header-info">
@@ -46,7 +46,7 @@
 		        <script>
 		            LazyLoad.css('${baseURL}/client/metamac.css?d=${cssDate}', function () {
 		                LazyLoad.js('${baseURL}/client/metamac.js?d=${jsDate}', function () {
-							I18n.defaultLocale = "es";
+							I18n.defaultLocale = "${defaultInternationalizationLanguage}";
 							I18n.locale = "${currentLocale}";
 
 							// http://estadisticas.arte-consultores.com/statistical-resources
@@ -80,6 +80,8 @@
                             App.config["enableGraphColors"] = ${enableGraphColors};
 							App.config["helpUrl"] = "${helpUrl}";
 							App.config["cellThreshold"] = ${cellThreshold};
+							App.config["unitMeasure"] = "${unitMeasure}";
+							App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
 		                    App.queryParams["agency"] = '${param.agencyId}';
 		                    App.queryParams["identifier"] = '${param.resourceId}';
 		                    App.queryParams["version"] = '${param.version}';

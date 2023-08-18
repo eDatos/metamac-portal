@@ -6,17 +6,25 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.LocaleUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
+import org.apache.cxf.jaxrs.client.ServerWebApplicationException;
+import org.apache.cxf.jaxrs.client.WebClient;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.exception.utils.TranslateExceptions;
+import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.portal.dto.Chapter;
 import org.siemac.metamac.portal.dto.Collection;
@@ -58,23 +66,20 @@ public class Helpers {
     // Mainly intended for debug
     public static final String  PARAMETER_THEME                                   = "theme";
 
-    private static final String DEFAULT_LANGUAGE                                  = "es";
     private static final String LATEST_VERSION                                    = "~latest";
     private static final int    MINIMAL_FIXED_DIGITS_IN_NUMERATION                = 2;
 
     private static final Logger LOGGGER                                           = LoggerFactory.getLogger(Helpers.class);
 
-    private String              language;
+    private static String       language;
+    private static String       defaultLanguage;
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
 
-    public Helpers(String language) {
-        if (language.isEmpty()) {
-            this.language = DEFAULT_LANGUAGE;
-        } else {
-            this.language = language;
-        }
+    public Helpers(String language, String defaultLanguage) {
+        this.language = language;
+        this.defaultLanguage = defaultLanguage;
     }
 
     public static String getPackageVersion() {
@@ -82,7 +87,7 @@ public class Helpers {
         return packageInfo.getImplementationVersion();
     }
 
-    public static Collection getCollection(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) {
+    public static Collection getCollection(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
         Collection collection = null;
         Collection2DtoMapper collection2DtoMapper = new Collection2DtoMapper();
         try {
@@ -96,13 +101,19 @@ public class Helpers {
                 collection = collection2DtoMapper.collectionExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));
             }
 
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, agencyId, resourceId, null);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo la Colección", e);
+        }
+        if (collection == null || collection.getData() == null || collection.getData().getNodes() == null) {
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.COLLECTION_NO_DATA, resourceId, agencyId));
         }
         return collection;
     }
 
-    public static Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) {
+    public static Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) throws Throwable {
         Dataset dataset = null;
         Dataset2DtoMapper dataset2DtoMapper = new Dataset2DtoMapper();
         try {
@@ -119,13 +130,41 @@ public class Helpers {
                 dataset = dataset2DtoMapper.datasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null));
             }
 
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, agencyId, resourceId, version);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Dataset", e);
         }
         return dataset;
     }
 
-    public static Query getQuery(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) {
+    private static Throwable getExceptionDataset(ServerWebApplicationException e, String apiUrlStatisticalResources, String agencyId, String resourceId, String version) {
+        try {
+            LOGGGER.error(e.getMessage(), e);
+            Locale locale = LocaleUtils.toLocale(language);
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = e.toErrorObject(WebClient.client(
+                    Helpers.getInternalJAXRSClient(apiUrlStatisticalResources)),
+                    org.siemac.metamac.rest.common.v1_0.domain.Exception.class);
+            CommonServiceExceptionType serviceExceptionType = ServiceExceptionType.lookup(exception.getCode());
+            Throwable throwable = null;
+            if (agencyId == null && version == null) {
+                 throwable = new TranslateExceptions().translateException(locale,
+                        new MetamacException(serviceExceptionType, resourceId));
+            } else if (version == null) {
+                throwable = new TranslateExceptions().translateException(locale,
+                        new MetamacException(serviceExceptionType, resourceId, agencyId));
+            } else {
+                throwable = new TranslateExceptions().translateException(locale,
+                        new MetamacException(serviceExceptionType, resourceId, agencyId, version)); 
+            }
+            return throwable;
+        } catch (Exception ex) {
+            LOGGGER.error(ex.getMessage(), ex);
+            throw ex;
+        }
+    }
+
+    public static Query getQuery(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
         Query query = null;
         Query2DtoMapper query2DtoMapper = new Query2DtoMapper();
         try {
@@ -144,30 +183,38 @@ public class Helpers {
                 query = query2DtoMapper.queryExternalToDto(statisticalResourcesQuery);
             }
 
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, agencyId, resourceId, null);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Query", e);
         }
         return query;
     }
 
-    public static Multidataset getMultidataset(String apiUrlStatisticalResources, Boolean internalPortal, String multidatasetId) {
+    public static Multidataset getMultidataset(String apiUrlStatisticalResources, Boolean internalPortal, String multidatasetId) throws Throwable {
         Multidataset multidataset = null;
         Multidataset2DtoMapper multidataset2DtoMapper = new Multidataset2DtoMapper();
+        String agencyId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[0];
+        String resourceId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[1];
         try {
             // Ex: "http://HOST/statistical-resources/apis/statistical-resources";
             List<String> lang = new ArrayList<String>();
             String fields = FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS;
-            String agencyId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[0];
-            String resourceId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[1];
 
             if (internalPortal) {
                 multidataset = multidataset2DtoMapper.multidatasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             } else {
                 multidataset = multidataset2DtoMapper.multidatasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             }
-
+            
+        } catch (ServerWebApplicationException e) {
+            throw getExceptionDataset(e, apiUrlStatisticalResources, null, multidatasetId, null);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo la Colección", e);
+        }
+        if (multidataset == null || multidataset.getData() == null || multidataset.getData().getNodes() == null) {
+            Locale locale = LocaleUtils.toLocale(language);
+            throw new TranslateExceptions().translateException(locale, new MetamacException(ServiceExceptionType.MULTIDATASET_NO_DATA, resourceId, agencyId));
         }
         return multidataset;
     }
@@ -316,12 +363,15 @@ public class Helpers {
 
     public String localizeText(InternationalString internationalString) {
         if (internationalString != null) {
+            String defaultText = internationalString.getTexts().get(0).getValue();
             for (LocalisedString text : internationalString.getTexts()) {
                 if (text.getLang().equals(language)) {
                     return text.getValue();
+                } else if (text.getLang().equals(defaultLanguage)) {
+                    defaultText = text.getValue();
                 }
             }
-            return internationalString.getTexts().get(0).getValue();
+            return defaultText;
         } else {
             return StringUtils.EMPTY;
         }

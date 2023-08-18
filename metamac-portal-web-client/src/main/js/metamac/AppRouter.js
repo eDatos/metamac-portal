@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    var UserUtils = App.modules.user.UserUtils;
-
     App.namespace('App.AppRouter');
 
     App.AppRouter = Backbone.Router.extend({
@@ -25,8 +23,6 @@
         },
 
         initialize: function (options) {
-            UserUtils.loginOnlyIfAlreadyLoggedInExternalUsers();
-            
             options || (options = {});
 
             this.datasetController = options.datasetController;
@@ -73,7 +69,8 @@
         },
 
         error: function () {
-            console.error("error");
+            console.error("error")
+            this.datasetController.showError();
         },
 
         linkTo: function (routeName, params) {

@@ -12,7 +12,8 @@ SUBJECT-AREA="Turismo";
 SUBJECT-CODE="5";
 COPYRIGHT=YES;
 DESCRIPTION="�ndice censal de ocupaci�n seg�n indicadores por islas, provincias y comunidades";
-TITLE="�ndice censal de ocupaci�n seg�n indicadores por islas, provincias y comunidades. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt vitae eros at imperdiet. Suspendisse at velit ultrices, pellentesque purus non, maximus mauris. Ali"
+TITLE=
+"�ndice censal de ocupaci�n seg�n indicadores por islas, provincias y comunidades. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt vitae eros at imperdiet. Suspendisse at velit ultrices, pellentesque purus non, maximus mauris. Ali"
 "quam erat volutpat. Aenean et.";
 DESCRIPTIONDEFAULT=YES;
 CONTENTS="Indicadores";
@@ -28,7 +29,7 @@ CODES("Categor�a del alojamiento")="1_2_3_ESTRELLAS","4_5_ESTRELLAS";
 CODES("Indicadores")="INDICE_OCUPACION_PLAZAS";
 LAST-UPDATED("�ndice de ocupaci�n de plazas")="20170420 13:11";
 UNITS="";
-UNITS("�ndice de ocupaci�n de plazas")="Porcentaje (x100)";
+UNITS("�ndice de ocupaci�n de plazas")="Porcentaje";
 CONTACT("�ndice de ocupaci�n de plazas")="Instituto Canario de Estad�stica";
 SOURCE="Instituto Canario de Estad�stica";
 LINK="";

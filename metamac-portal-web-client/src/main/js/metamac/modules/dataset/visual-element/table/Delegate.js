@@ -144,6 +144,8 @@
 
         formatCellInfo: function (cellInfo) {
             var formattedCellAttributes = this.formatCellAttributes(cellInfo.attributes);
+            cellInfo.measureUnit = this.formatMeasureUnit(cellInfo.measureUnit, cellInfo.attributes.dimensionsAttributes);
+            cellInfo.unitMultiplier = this.formatUnitMultiplier(cellInfo.unitMultiplier, cellInfo.attributes.dimensionsAttributes);
 
             var template = App.templateManager.get("dataset/dataset-cell-info");
             var context = {
@@ -152,7 +154,7 @@
                 categories: cellInfo.categories,
                 hasAttributes: formattedCellAttributes && (formattedCellAttributes.primaryMeasureAttributes.length || formattedCellAttributes.combinatedDimensionsAttributes.length),
                 cellValue: cellInfo.cellValue,
-                measureUnit: cellInfo.measureUnit
+                measureUnit: App.DimensionsUtils.getUnitMultiplierAndUnitMeasureLabel(cellInfo.measureUnit, cellInfo.unitMultiplier),
             }
             return template(context);
         },
@@ -167,26 +169,46 @@
         },
 
         formatHeaderInfo: function (headerInfo) {
+            headerInfo.measureUnit = this.formatMeasureUnit(headerInfo.measureUnit, headerInfo.attributes);
+            headerInfo.unitMultiplier = this.formatUnitMultiplier(headerInfo.unitMultiplier, headerInfo.attributes);
+
             var template = App.templateManager.get("dataset/dataset-header-info");
-            
             var context = {
                 title: headerInfo.title,
                 description: headerInfo.description,
                 measureUnit: headerInfo.measureUnit,
+                unitMultiplier: headerInfo.unitMultiplier ? headerInfo.unitMultiplier.value : null,
                 attributes: this.formatAttributes(headerInfo.attributes)
             }
             return template(context);
         },
 
+        formatMeasureUnit: function (measureUnit, attributes) {
+            var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasure});
+            return (attribute && attribute.value != '') ? attribute.value : measureUnit;
+        },
+
+        formatUnitMultiplier: function (unitMultiplier, attributes) {
+            var attribute = _.findWhere(attributes, {attributeId: App.config.unitMeasureMultiplier});
+            if (attribute && attribute.value != '') {
+                return {value: attribute.value, urn: attribute.valueUrn};
+            } else if (unitMultiplier) {
+                return {value: App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text), urn: unitMultiplier.urn};
+            }
+            return null;
+        },
+
         formatAttributes: function (attributes) {
             var self = this;
-            return _(_.filter(attributes, function(attribute) {return attribute.value}))
-                .map(function(attribute) {
+            return _(_.filter(attributes, function(attribute) {
+                if (attribute.attributeId != App.config.unitMeasure && attribute.attributeId != App.config.unitMeasureMultiplier) {
+                    return attribute.value;
+                }
+            })).map(function(attribute) {
                     attribute.value = self.formatAttribute(attribute.value);
                     return attribute;
                 })
         },
-
 
         formatAttribute: function (attribute) {
             if (!attribute.href) {

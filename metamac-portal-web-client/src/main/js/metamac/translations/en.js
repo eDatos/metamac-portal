@@ -143,6 +143,16 @@ I18n.translations.en = {
             level: {
                 template: "Level {{level}}",
                 all: "All"
+            },
+            temporal: {
+                YEARLY: "Annual",
+                BIYEARLY: "Biyearly",
+                FOUR_MONTHLY: "Four-monthly",
+                QUARTERLY: "Quarterly",
+                MONTHLY: "Monthly",
+                WEEKLY: "Weekly",
+                DAILY: "Daily",
+                HOURLY: "Hourly",
             }
         },
         sort: {
@@ -254,7 +264,10 @@ I18n.translations.en = {
         },
         category: {
             measure: {
-                unit: 'Measure unit'
+                unit: 'Measure unit',
+                multiplier: 'Unit multiplier',
+                unitMeasure: '{{multiplier}} of {{unit}}',
+                unitMeasureStartsWithVowel: '{{multiplier}} of {{unit}}',
             },
             attributes: {
                 title: 'Category attributes'
@@ -315,12 +328,6 @@ I18n.translations.en = {
             server: "There was a problem logging in. Try again later."
         }
     },
-    logout: {
-        modal: {
-            title: "Log out",
-            question: "Are you sure you want to log out?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -375,19 +382,30 @@ I18n.translations.en = {
             }
         }
     },
-    user: {
-        header: {
-            userAreaTooltip: "Área do usuário",
-            loginTooltip: "Sign in",
-            logoutTooltip: "Log out"
-        }
-    },
     captcha: {
         button: {
             text: "Send"
         },
         label: {
             text: "Write the value of the image shown above"
+        }
+    },
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "The dataset has no data"
+            },
+            indicators: {
+                no_representations: "Dimension {{error}} has no representations"
+            }
+        },
+        statistical_resources: {
+            dataset: { 
+                not_found: "The dataset has not been found"
+            }
+        },
+        common: {
+            unknown: "Unknown error"
         }
     }
 };

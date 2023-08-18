@@ -143,6 +143,16 @@ I18n.translations.ca = {
             level: {
                 template: "Nivell {{level}}",
                 all: "Tots"
+            },
+            temporal: {
+                YEARLY: "Anual",
+                BIYEARLY: "Semestral",
+                FOUR_MONTHLY: "Quatrimestral",
+                QUARTERLY: "Trimestral",
+                MONTHLY: "Mensual",
+                WEEKLY: "Setmanal",
+                DAILY: "Diaris",
+                HOURLY: "Per hores",
             }
         },
         sort: {
@@ -254,7 +264,10 @@ I18n.translations.ca = {
         },
         category: {
             measure: {
-                unit: 'Unitat de mesura'
+                unit: 'Unitat de mesura',
+                multiplier: 'Multiplicador de la unitat',
+                unitMeasure: '{{multiplier}} de {{unit}}',
+                unitMeasureStartsWithVowel: '{{multiplier}} d\'{{unit}}',
             },
             attributes: {
                 title: 'Atributs de la categoria'
@@ -317,12 +330,6 @@ I18n.translations.ca = {
             server: "Hi ha hagut un problema iniciant sessió. Intente-ho de nou més tard"
         }
     },
-    logout: {
-        modal: {
-            title: "Tancar sessió",
-            question: "Està segur que vol tancar sessió?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -377,19 +384,30 @@ I18n.translations.ca = {
             }
         }
     },
-    user: {
-        header: {
-            userAreaTooltip: "Àrea de l'usuari",
-            loginTooltip: "Iniciar sessió",
-            logoutTooltip: "Tancar sessió"
-        }
-    },
     captcha: {
         button: {
             text: "Enviar"
         },
         label: {
             text: "Escriviu el valor de la imatge mostrada damunt"
+        }
+    },
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "El dataset no té dades"
+            },
+            indicators: {
+                no_representations: "La dimensió {{error}} no té representacions"
+            }
+        },
+        statistical_resources: {
+            dataset: { 
+                not_found: "El dataset no s'ha trobat"
+            }
+        },
+        common: {
+            unknown: "Error desconegut"
         }
     }
 };

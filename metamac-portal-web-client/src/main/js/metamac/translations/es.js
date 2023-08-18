@@ -143,6 +143,16 @@ I18n.translations.es = {
             level: {
                 template: "Nivel {{level}}",
                 all: "Todos"
+            },
+            temporal: {
+                YEARLY: "Anual",
+                BIYEARLY: "Semestral",
+                FOUR_MONTHLY: "Cuatrimestral",
+                QUARTERLY: "Trimestral",
+                MONTHLY: "Mensual",
+                WEEKLY: "Semanal",
+                DAILY: "Diarios",
+                HOURLY: "Por horas",
             }
         },
         sort: {
@@ -254,7 +264,10 @@ I18n.translations.es = {
         },
         category: {
             measure: {
-                unit: 'Unidad de medida'
+                unit: 'Unidad de medida',
+                multiplier: 'Multiplicador de la unidad',
+                unitMeasure: '{{multiplier}} de {{unit}}',
+                unitMeasureStartsWithVowel: '{{multiplier}} de {{unit}}',
             },
             attributes: {
                 title: 'Notas de categoría'
@@ -315,12 +328,6 @@ I18n.translations.es = {
             server: "Ha habido un problema iniciando sesión. Inténtelo de nuevo más tarde."
         }
     },
-    logout: {
-        modal: {
-            title: "Cerrar sesión",
-            question: "¿Está seguro de que quiere cerrar sesión?"
-        }
-    },
     modal: {
         confirmation: {
             button: {
@@ -375,13 +382,6 @@ I18n.translations.es = {
             }
         }
     },
-    user: {
-        header: {
-            userAreaTooltip: "Área del usuario",
-            loginTooltip: "Iniciar sesión",
-            logoutTooltip: "Cerrar sesión"
-        }
-    },
     captcha: {
         button: {
             text: "Enviar"
@@ -389,5 +389,24 @@ I18n.translations.es = {
         label: {
             text: "Escriba el valor de la imagen mostrada encima"
         }
+    },
+    exception: {
+        resources: {
+            dataset: {
+                empty_data: "El dataset no tiene datos"
+            },
+            indicators: {
+                no_representations: "La dimensión {{error}} no tiene representaciones"
+            }
+        },
+        statistical_resources: {
+            dataset: { 
+                not_found: "El dataset no ha sido encontrado"
+            }
+        },
+        common: {
+            unknown: "Error desconocido"
+        }
     }
+    
 };
