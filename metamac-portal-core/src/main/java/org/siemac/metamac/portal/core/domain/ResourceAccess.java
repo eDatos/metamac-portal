@@ -694,57 +694,41 @@ public class ResourceAccess {
 
     // IDEA This will be more efficient if the concept is included on the dataset
     private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasure, String unitMultiplier) {
-        Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
-        Integer measureDimensionIndex = getIndexMeasureDimensionById(conceptDetail.getId());
-        InternationalString unitMeasureName = getUnitMeasureValue(measureDimensionIndex, unitMeasure,
-                (measureQuantity != null && measureQuantity.getUnitCode() != null) ? measureQuantity.getUnitCode().getName() : null);
-        InternationalString unitMultiplierName = getUnitMeasureValue(measureDimensionIndex, unitMultiplier,
-                (measureQuantity != null && measureQuantity.getUnitMultiplier() != null) ? measureQuantity.getUnitMultiplier().getName() : null);
+        Integer offset = calculateOffsetUnitCode(urn);
+
+        InternationalString unitMeasureName = null;
+        InternationalString unitMultiplierName = null;
+        if (measureQuantity != null) {
+            if (measureQuantity.getUnitCode() != null) {
+                unitMeasureName = measureQuantity.getUnitCode().getName();
+            }
+            if (measureQuantity.getUnitMultiplier() != null) {
+                unitMultiplierName = measureQuantity.getUnitMultiplier().getName();
+            }
+        }
+        unitMeasureName = getUnitMeasureValue(offset, unitMeasure, unitMeasureName);
+        unitMultiplierName = getUnitMeasureValue(offset, unitMultiplier, unitMultiplierName);
+
         InternationalString value = prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
         return value;
     }
 
-    private InternationalString getUnitMeasureValue(Integer measureDimensionIndex, String property, InternationalString name) {
-        InternationalString value = name;
+    private Integer calculateOffsetUnitCode(String urn) {
+        Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
+        Map<String, String> permutation = new HashMap<>();
+        permutation.put(measureDimension.getId(), conceptDetail.getId());
+        return calculateOffsetAtPermutation(permutation);
+    }
+
+    private InternationalString getUnitMeasureValue(Integer offset, String property, InternationalString name) {
         if (attributesValuesByAttributeId.containsKey(property)) {
-            String unitMeasureAttributeValueId = attributesValuesByAttributeId.get(property)[measureDimensionIndex];
-            EnumeratedAttributeValue attribute = getAttributeValueByAttributeIdAndValueId(property, unitMeasureAttributeValueId);
-            if (attribute != null) {
-                value = attribute.getName();
+            String attributeValue = attributesValuesByAttributeId.get(property)[offset];
+            InternationalString attributeLabel = attributesValuesLabels.get(property).get(attributeValue);
+            if (attributeLabel != null) {
+                name = attributeLabel;
             }
         }
-        return value;
-    }
-
-    // TODO: This and the next method should behave like attributesAtPermutation() method
-    private EnumeratedAttributeValue getAttributeValueByAttributeIdAndValueId(String attributeId, String valueId) {
-        for (Attribute attribute : attributes.getAttributes()) {
-            if (attribute.getId().equals(attributeId)) {
-                for (EnumeratedAttributeValue value : ((EnumeratedAttributeValues) attribute.getAttributeValues()).getValues()) {
-                    if (value.getId().equals(valueId)) {
-                        return value;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    // TODO: This and the previous method should behave like attributesAtPermutation() method
-    private int getIndexMeasureDimensionById(String id) {
-        if (datasetSelection != null && this.datasetSelection.getDimensions() != null) {
-            for (DatasetSelectionDimension dimension : datasetSelection.getDimensions()) {
-                if (dimension.getSelectedDimensionValues() != null) {
-                    for (int i = 0; i < dimension.getSelectedDimensionValues().size(); i++) {
-                        String dimensionValue = dimension.getSelectedDimensionValues().get(i);
-                        if (dimensionValue.equals(id)) {
-                            return i;
-                        }
-                    }
-                }
-            }
-        }
-        return -1;
+        return name;
     }
 
     public boolean existsContVariable() {
