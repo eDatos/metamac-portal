@@ -105,7 +105,7 @@
                     dimensionId: combinatedDimensionAttribute.attributeDimensionsIds[0],
                     attribute: App.InternationalizationUtils.localizeLabel(combinatedDimensionAttribute.attribute.name.text),
                     attributeId: combinatedDimensionAttribute.attribute.id,
-                    valueUrn: combinatedDimensionAttribute.urn[pos]
+                    valueUrn: combinatedDimensionAttribute.urn ? combinatedDimensionAttribute.urn[pos] : undefined
                 };
             }, dimensionsPositions);
         },
