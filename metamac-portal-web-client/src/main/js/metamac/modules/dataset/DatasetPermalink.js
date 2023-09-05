@@ -44,7 +44,7 @@
         savePermalink: function (content, el) {
             var requestFunction = function (url) {
                 return new Promise(function (resolve, reject) {
-                    Edatos.UserManagement.prepareRequestWithEdatosUserAuthentication({
+                    Edatos.UserManagement.prepareRequestWithEdatosAuthentication({
                         url: url,
                         method: "POST",
                         dataType: "json",
