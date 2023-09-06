@@ -15,6 +15,11 @@
 
                 return text.value;
             }
+        },
+
+        startsWithVowelOrH: function(string) {
+            var vowelAndHRegex = '^[aieouhAIEOUH].*';
+            return string.match(vowelAndHRegex);
         }
 
     }

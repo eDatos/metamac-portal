@@ -264,7 +264,10 @@ I18n.translations.en = {
         },
         category: {
             measure: {
-                unit: 'Measure unit'
+                unit: 'Measure unit',
+                multiplier: 'Unit multiplier',
+                unitMeasure: '{{multiplier}} of {{unit}}',
+                unitMeasureStartsWithVowel: '{{multiplier}} of {{unit}}',
             },
             attributes: {
                 title: 'Category attributes'

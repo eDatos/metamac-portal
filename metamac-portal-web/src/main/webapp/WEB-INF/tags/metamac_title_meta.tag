@@ -279,6 +279,8 @@
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
        request.setAttribute("helpUrl", WebUtils.getHelpUrl());
        request.setAttribute("cellThreshold", WebUtils.getCellThreshold());
+       request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
+       request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
        request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
 
 	%>	

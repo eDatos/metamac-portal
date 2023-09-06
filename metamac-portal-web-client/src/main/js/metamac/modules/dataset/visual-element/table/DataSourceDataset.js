@@ -32,6 +32,10 @@
             return this.filterDimensions.getTableInfo().left.representationsMeasureUnits;
         },
 
+        leftHeaderUnitMultipliersByDimension: function () {
+            return this.filterDimensions.getTableInfo().left.representationsUnitMultipliers;
+        },
+
         leftHeaderDimensionsLengths: function () {
             return this.filterDimensions.getTableInfo().left.representationsLengths;
         },
@@ -58,6 +62,10 @@
 
         topHeaderMeasureUnits: function () {
             return this.filterDimensions.getTableInfo().top.representationsMeasureUnits;
+        },
+
+        topHeaderUnitMultipliers: function () {
+            return this.filterDimensions.getTableInfo().top.representationsUnitMultipliers;
         },
 
         cellAtIndex: function (cell) {
@@ -110,7 +118,8 @@
                 attributes: this.cellAttributesAtIndex(cell),
                 categories: formattedCategories,
                 cellValue: this.data.getStringData({ids: permutation}),
-                measureUnit: this.data.metadata.measureUnitForSelection(permutation)
+                measureUnit: this.data.metadata.measureUnitForSelection(permutation),
+                unitMultiplier: this.data.metadata.unitMultiplierForSelection(permutation)
             };
         },
 
@@ -209,7 +218,7 @@
          * @returns {Array}
          */
         topHeaderTooltipValues: function () {
-            return this._generateTooltipValues(this.topHeaderValues(), this.topHeaderDescriptions(), this.topHeaderMeasureUnits(), this.filterDimensions.getTableInfo().top.ids);
+            return this._generateTooltipValues(this.topHeaderValues(), this.topHeaderDescriptions(), this.topHeaderMeasureUnits(), this.topHeaderUnitMultipliers(), this.filterDimensions.getTableInfo().top.ids);
         },
 
         /**
@@ -218,7 +227,7 @@
          * @returns {Array}
          */
         leftHeaderTooltipValues: function () {
-            var leftHeaderTooltipValuesByDimension = this._generateTooltipValues(this.leftHeaderValuesByDimension(), this.leftHeaderDescriptionsByDimension(), this.leftHeaderMeasureUnitsByDimension(), this.filterDimensions.getTableInfo().left.ids);
+            var leftHeaderTooltipValuesByDimension = this._generateTooltipValues(this.leftHeaderValuesByDimension(), this.leftHeaderDescriptionsByDimension(), this.leftHeaderMeasureUnitsByDimension(), this.leftHeaderUnitMultipliersByDimension(), this.filterDimensions.getTableInfo().left.ids);
 
             return this._compressLeftHeaderValuesByDimension(leftHeaderTooltipValuesByDimension);
         },
@@ -232,7 +241,7 @@
             }, memo, this))];
         },
 
-        _generateTooltipValues: function (titlesByDimension, descriptionsByDimension, measureUnitsByDimension, dimensionIds) {
+        _generateTooltipValues: function (titlesByDimension, descriptionsByDimension, measureUnitsByDimension, unitMultipliersByDimension, dimensionIds) {
             var result = [];
 
             _.each(titlesByDimension, function (titles, dimensionIndex) {
@@ -242,6 +251,7 @@
                             title: title,
                             description: descriptionsByDimension[dimensionIndex][titleIndex],
                             measureUnit: measureUnitsByDimension[dimensionIndex][titleIndex],
+                            unitMultiplier: unitMultipliersByDimension[dimensionIndex][titleIndex],
                             dimensionId: dimensionIds[dimensionIndex]
                         }
                     })

@@ -138,6 +138,7 @@
             var cellTitle = "";
             var cellDescription = "";
             var cellMeasureUnit = "";
+            var cellUnitMultiplier = "";
             var cellInfo = tooltipValues[columnLevel][columnKey];
 
             if (cellInfo) {
@@ -151,6 +152,7 @@
                 cellTitle = cellInfo.title;
                 cellDescription = cellInfo.description;
                 cellMeasureUnit = cellInfo.measureUnit;
+                cellUnitMultiplier = cellInfo.unitMultiplier;
             }
 
             paintInfo[columnLevel].push(_.extend(cellResult, {
@@ -160,6 +162,7 @@
                 tooltipTitle: cellTitle,
                 tooltipDescription: cellDescription,
                 tooltipMeasureUnit: cellMeasureUnit,
+                tooltipUnitMultiplier: cellUnitMultiplier,
                 attributes: cellAttributes
             }));
         })
@@ -181,6 +184,7 @@
                 title: headerCellAtPoint.tooltipTitle,
                 description: headerCellAtPoint.tooltipDescription,
                 measureUnit: headerCellAtPoint.tooltipMeasureUnit,
+                unitMultiplier: headerCellAtPoint.tooltipUnitMultiplier,
                 attributes: headerCellAtPoint.attributes
             });
         }
