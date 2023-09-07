@@ -44,20 +44,18 @@
         savePermalink: function (content, el) {
             var requestFunction = function (url) {
                 return new Promise(function (resolve, reject) {
-                    $.ajax({
+                    Edatos.UserManagement.prepareRequestWithEdatosAuthentication({
                         url: url,
                         method: "POST",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({content: content}),
-                        beforeSend: Edatos.UserManagement.prepareRequestWithEdatosUserAuthentication,
-                        xhrFields: {
-                            withCredentials: true
-                        }
-                    }).fail(function (jqXHR) {
-                        reject(jqXHR)
-                    }).done(function (val) {
-                        resolve(val)
+                        data: JSON.stringify({content: content})
+                    }).then(ajaxSettings => {
+                        $.ajax(ajaxSettings).fail(function (jqXHR) {
+                            reject(jqXHR)
+                        }).done(function (val) {
+                            resolve(val)
+                        });
                     });
                 });
             };

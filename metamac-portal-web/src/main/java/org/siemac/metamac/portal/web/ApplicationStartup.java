@@ -58,8 +58,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setGeographicalGranularityUrn(configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
             WebUtils.setAnalyticsGoogleTrackingId(configurationService.retrieveAnalyticsGoogleTrackingId());
             WebUtils.setCellThreshold(portalConfigurationService.retrieveExportExcelCellThreshold());
-            WebUtils.setUnitMeasure(configurationService.retrieveUnitMeasure());
-            WebUtils.setUnitMeasureMultiplier(configurationService.retrieveUnitMeasureMultiplier());
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }
@@ -73,6 +71,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setSocialTwitterVia();
         setPortalGraphColorsEnabled();
         setHelpUrl();
+        setUnitMeasure();
+        setUnitMeasureMultiplier();
     }
 
     private void setPortalDefaultStyleCss() {
@@ -153,6 +153,22 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setHelpUrl(configurationService.retrievePortalVisualizerHelpUrl());
         } catch (MetamacException e) {
             log.debug("Error retrieving application visualizer help url", e);
+        }
+    }
+
+    private void setUnitMeasure() {
+        try {
+            WebUtils.setUnitMeasure(configurationService.retrieveUnitMeasure());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application unit measure property", e);
+        }
+    }
+
+    private void setUnitMeasureMultiplier() {
+        try {
+            WebUtils.setUnitMeasureMultiplier(configurationService.retrieveUnitMeasureMultiplier());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving application unit measure multiplier property", e);
         }
     }
 
