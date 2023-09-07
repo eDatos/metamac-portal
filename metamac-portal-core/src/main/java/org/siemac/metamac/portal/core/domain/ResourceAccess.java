@@ -24,6 +24,9 @@ import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
@@ -34,18 +37,14 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimensions;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MeasureQuantity;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 
 public class ResourceAccess {
 
@@ -692,43 +691,38 @@ public class ResourceAccess {
         return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn(), unitMeasure, unitMultiplier);
     }
 
-    // IDEA This will be more efficient if the concept is included on the dataset
-    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasure, String unitMultiplier) {
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasureKey, String unitMultiplierKey) {
         Integer offset = calculateOffsetUnitCode(urn);
 
-        InternationalString unitMeasureName = null;
-        InternationalString unitMultiplierName = null;
-        if (measureQuantity != null) {
-            if (measureQuantity.getUnitCode() != null) {
-                unitMeasureName = measureQuantity.getUnitCode().getName();
-            }
-            if (measureQuantity.getUnitMultiplier() != null) {
-                unitMultiplierName = measureQuantity.getUnitMultiplier().getName();
-            }
-        }
-        unitMeasureName = getUnitMeasureValue(offset, unitMeasure, unitMeasureName);
-        unitMultiplierName = getUnitMeasureValue(offset, unitMultiplier, unitMultiplierName);
+        InternationalString unitMeasureName = getAttributeByOffset(unitMeasureKey, offset);
+        InternationalString unitMultiplierName = getAttributeByOffset(unitMultiplierKey, offset);
 
-        InternationalString value = prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
-        return value;
+        if (unitMeasureName == null && measureQuantity != null && measureQuantity.getUnitCode() != null) {
+            unitMeasureName = measureQuantity.getUnitCode().getName();
+        }
+
+        if (unitMultiplierName == null && measureQuantity != null && measureQuantity.getUnitMultiplier() != null) {
+            unitMultiplierName = measureQuantity.getUnitMultiplier().getName();
+        }
+
+        return prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
     }
 
     private Integer calculateOffsetUnitCode(String urn) {
+        // FIXME ¿this is unneeded? could we pass id instead of urn? why retrieveConceptyByUrn was needed before?
         Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
         Map<String, String> permutation = new HashMap<>();
+        // FIXME test that measureDImension.getiD is not a problem when there is a measureAttribute dimension
         permutation.put(measureDimension.getId(), conceptDetail.getId());
         return calculateOffsetAtPermutation(permutation);
     }
 
-    private InternationalString getUnitMeasureValue(Integer offset, String property, InternationalString name) {
-        if (attributesValuesByAttributeId.containsKey(property)) {
-            String attributeValue = attributesValuesByAttributeId.get(property)[offset];
-            InternationalString attributeLabel = attributesValuesLabels.get(property).get(attributeValue);
-            if (attributeLabel != null) {
-                name = attributeLabel;
-            }
+    private InternationalString getAttributeByOffset(String attributeKey, Integer offset) {
+        if (!attributesValuesByAttributeId.containsKey(attributeKey)) {
+            return null;
         }
-        return name;
+        String attributeValue = attributesValuesByAttributeId.get(attributeKey)[offset];
+        return attributesValuesLabels.get(attributeKey).get(attributeValue);
     }
 
     public boolean existsContVariable() {
