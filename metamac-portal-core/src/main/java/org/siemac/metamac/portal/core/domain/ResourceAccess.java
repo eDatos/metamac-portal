@@ -20,13 +20,11 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
@@ -95,13 +93,9 @@ public class ResourceAccess {
     private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
     private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>();   // Map<Dimension, Map<Code, Index>
 
-    private SrmRestExternalFacade                         srmRestExternalFacade;
-
     private int                                           primaryMeasureAttributesCount = 0;
 
-    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        this.srmRestExternalFacade = srmRestExternalFacade;
-
+    public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = dataset.getData();
         dimensions = dataset.getMetadata().getDimensions();
         attributes = dataset.getMetadata().getAttributes();
@@ -124,10 +118,7 @@ public class ResourceAccess {
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
     }
 
-    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
-            throws MetamacException {
-        this.srmRestExternalFacade = srmRestExternalFacade;
-
+    public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = query.getData();
         dimensions = query.getMetadata().getDimensions();
         attributes = query.getMetadata().getAttributes();
@@ -683,37 +674,30 @@ public class ResourceAccess {
         return offset;
     }
 
-    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasure, String unitMultiplier) {
-        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn(), unitMeasure, unitMultiplier);
+    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasureKey, String unitMultiplierKey) {
+        Integer offset = calculateOffsetUnitCode(dimensionValue.getId());
+        InternationalString unitMeasureName = getAttributeByOffset(unitMeasureKey, offset);
+        InternationalString unitMultiplierName = getAttributeByOffset(unitMultiplierKey, offset);
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), unitMeasureName, unitMultiplierName);
     }
 
     public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasure, String unitMultiplier) {
-        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn(), unitMeasure, unitMultiplier);
+        return extractUnitCode(attributeValue.getMeasureQuantity(), null, null);
     }
 
-    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasureKey, String unitMultiplierKey) {
-        Integer offset = calculateOffsetUnitCode(urn);
-
-        InternationalString unitMeasureName = getAttributeByOffset(unitMeasureKey, offset);
-        InternationalString unitMultiplierName = getAttributeByOffset(unitMultiplierKey, offset);
-
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, InternationalString unitMeasureName, InternationalString unitMultiplierName) {
         if (unitMeasureName == null && measureQuantity != null && measureQuantity.getUnitCode() != null) {
             unitMeasureName = measureQuantity.getUnitCode().getName();
         }
-
         if (unitMultiplierName == null && measureQuantity != null && measureQuantity.getUnitMultiplier() != null) {
             unitMultiplierName = measureQuantity.getUnitMultiplier().getName();
         }
-
         return prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
     }
 
-    private Integer calculateOffsetUnitCode(String urn) {
-        // FIXME ¿this is unneeded? could we pass id instead of urn? why retrieveConceptyByUrn was needed before?
-        Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
+    private Integer calculateOffsetUnitCode(String attributeId) {
         Map<String, String> permutation = new HashMap<>();
-        // FIXME test that measureDImension.getiD is not a problem when there is a measureAttribute dimension
-        permutation.put(measureDimension.getId(), conceptDetail.getId());
+        permutation.put(measureDimension.getId(), attributeId);
         return calculateOffsetAtPermutation(permutation);
     }
 
