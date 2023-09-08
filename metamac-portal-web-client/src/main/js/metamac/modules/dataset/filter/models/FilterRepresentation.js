@@ -88,8 +88,6 @@
                     child.set('visible', true);
                     child._open();
                 });
-            } else {
-                this.set("selected", false, { silent: true });
             }
         },
 

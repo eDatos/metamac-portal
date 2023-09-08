@@ -18,7 +18,7 @@
             nodeDepth = nodeDepth + 1;
         }
         request.setAttribute("nodeDepth", nodeDepth);
-        request.setAttribute("openClass", "open");
+        request.setAttribute("openClass", "dimension-open");
 
         List<CollectionNode> nodes = (List<CollectionNode>) request.getAttribute("nodes");
         for (CollectionNode node : nodes) {

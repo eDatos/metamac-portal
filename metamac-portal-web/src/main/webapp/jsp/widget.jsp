@@ -65,6 +65,8 @@
         request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
         request.setAttribute("cellThreshold", WebUtils.getCellThreshold());
         request.setAttribute("analyticsGoogleTrackingId", WebUtils.getAnalyticsGoogleTrackingId());
+        request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
+        request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
     %>
     <%
         String permalinkId = request.getParameter("permalink");
@@ -133,6 +135,8 @@
         App.config["socialTwitterVia"] = "${socialTwitterVia}";
         App.config["enableGraphColors"] = ${enableGraphColors};
         App.config["cellThreshold"] = ${cellThreshold};
+		App.config["unitMeasure"] = "${unitMeasure}";
+		App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
 
         App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
         App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";

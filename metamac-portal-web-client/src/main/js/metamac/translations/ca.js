@@ -143,6 +143,16 @@ I18n.translations.ca = {
             level: {
                 template: "Nivell {{level}}",
                 all: "Tots"
+            },
+            temporal: {
+                YEARLY: "Anual",
+                BIYEARLY: "Semestral",
+                FOUR_MONTHLY: "Quatrimestral",
+                QUARTERLY: "Trimestral",
+                MONTHLY: "Mensual",
+                WEEKLY: "Setmanal",
+                DAILY: "Diaris",
+                HOURLY: "Per hores",
             }
         },
         sort: {
@@ -254,7 +264,10 @@ I18n.translations.ca = {
         },
         category: {
             measure: {
-                unit: 'Unitat de mesura'
+                unit: 'Unitat de mesura',
+                multiplier: 'Multiplicador de la unitat',
+                unitMeasure: '{{multiplier}} de {{unit}}',
+                unitMeasureStartsWithVowel: '{{multiplier}} d\'{{unit}}',
             },
             attributes: {
                 title: 'Atributs de la categoria'

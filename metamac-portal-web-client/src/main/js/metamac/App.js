@@ -26,7 +26,7 @@
     App.endpoints = {
         "structural-resources": "",
         "statistical-resources": "",
-        "statistical-visualizer": ""
+        "statistical-visualizer": "",
     };
 
     App.queryParams = {

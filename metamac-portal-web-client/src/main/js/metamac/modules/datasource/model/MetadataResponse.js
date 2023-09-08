@@ -120,35 +120,15 @@
             return result;
         },
 
-        _timeDimensionHasHierarchy: function (dimension) {
-            const dimensionValues = dimension.dimensionValues.value;
-            for (let index = 0; index < dimensionValues.length; index++) {
-                const dimensionValue = dimensionValues[index];
-                if (index > 0) {
-                    let previousIndex = index - 1;
-                    const currentPriority = App.TemporalUtils.getTemporalGranularityPriority(dimensionValue.temporalGranularity);
-                    while (previousIndex >= 0) {
-                        const previousDimensionValue = dimensionValues[previousIndex];
-                        const previousPriority = App.TemporalUtils.getTemporalGranularityPriority(previousDimensionValue.temporalGranularity);
-                        if (previousPriority > currentPriority && App.TemporalUtils.contains(previousDimensionValue, dimensionValue)) {
-                            return true;
-                        }
-                        previousIndex--;
-                    }
-                }
-            }
-            return false;
-        },
-
         _dimensionHasHierarchy: function (dimension) {
-            const timeDimensionWithHierarchy = dimension.id === 'TIME_PERIOD'
-                && this._timeDimensionHasHierarchy(dimension);
+            const timeDimensionWithDifferentGranularity = dimension.type === 'TIME_DIMENSION'
+                && dimension.dimensionValues.value.some((value) => value.temporalGranularity !== dimension.dimensionValues.value[0].temporalGranularity);
 
             const dimensionValuesHasVisualizationParents = _.any(dimension.dimensionValues.value, function (dimensionValue) {
                 return _.has(dimensionValue, 'visualisationParent');
             });
 
-            return timeDimensionWithHierarchy || dimensionValuesHasVisualizationParents;
+            return timeDimensionWithDifferentGranularity || dimensionValuesHasVisualizationParents;
         },
 
         getDimensions: function () {
@@ -169,7 +149,6 @@
             var representationsByParent = _.groupBy(representations, function (representation) {
                 return representation.parent;
             });
-
 
             // recursive depth tree traversal
             var rootRepresentations = representationsByParent["undefined"];
@@ -206,12 +185,19 @@
                 var isGeographic = dimension.type === "GEOGRAPHIC_DIMENSION";
                 var isTemporal = dimension.type === 'TIME_DIMENSION';
                 var dimensionValues = dimension.dimensionValues.value;
-                representations = _.map(dimensionValues, function(dimensionValue, index) {
+
+                representations = _.map(dimensionValues, function (dimensionValue, index) {
                     var representation = _.pick(dimensionValue, 'id', 'open', 'temporalGranularity', 'urn');
                     representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name);
 
-                    if (dimensionValue.measureQuantity && dimensionValue.measureQuantity.unitCode) {
-                        representation.measureUnit = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitCode.name);
+                    if (dimensionValue.measureQuantity) {
+                        if (dimensionValue.measureQuantity.unitCode) {
+                            representation.measureUnit = App.InternationalizationUtils.localizeLabel(dimensionValue.measureQuantity.unitCode.name.text);
+                        }
+
+                        if (dimensionValue.measureQuantity.unitMultiplier) {
+                            representation.unitMultiplier = dimensionValue.measureQuantity.unitMultiplier;
+                        }
                     }
 
                     if (dimensionValue.description && dimensionValue.description) {
@@ -235,8 +221,7 @@
                                     representation.parent = previousDimensionValue.id;
                                     break;
                                 }
-
-                                previousIndex --;
+                                previousIndex--;
                             }
                         }
                     }
@@ -252,19 +237,18 @@
                 });
 
                 //sort
-                var hasHierarchy = this._dimensionHasHierarchy(dimension);
-                representations = hasHierarchy ? this._sortHierarchyRepresentations(representations) : representations;
+                var hasHierarchy = self._dimensionHasHierarchy(dimension);
+                representations = hasHierarchy ? self._sortHierarchyRepresentations(representations) : representations;
             }
             return representations;
         },
 
-        
         getRepresentationsForAttributeDimension: function (attributeId) {
             var attribute = _.findWhere(this.metadata.attributes.attribute, { id: attributeId });
             var representations = [];
 
             if (attribute && attribute.attributeValues) {
-                representations = _.map(attribute.attributeValues.value, function(dimensionValue, index) {
+                representations = _.map(attribute.attributeValues.value, function (dimensionValue, index) {
                     var representation = {};
                     representation.id = dimensionValue.id;
                     representation.label = App.InternationalizationUtils.localizeLabel(dimensionValue.name);
@@ -276,24 +260,24 @@
 
         getDimensionsAndRepresentations: function () {
             var self = this;
-            var dimensions = this.getDimensions();
+            var dimensions = self.getDimensions();
             _.each(dimensions, function (dimension) {
                 dimension.representations = self.getRepresentations(dimension.id);
             });
             return dimensions;
         },
 
-        getAttributesLikeDimensions: function() {
+        getAttributesLikeDimensions: function () {
             if (!this.metadata.attributes) { return []; }
 
             var self = this;
             return _.chain(this.metadata.attributes.attribute)
-                .filter(function(attribute) {
+                .filter(function (attribute) {
                     return attribute.attachmentLevel == "DATASET" && _.include(["MEASURE", "TEMPORAL", "SPATIAL"], attribute.type);
                 })
-                .map(function(attribute) {
+                .map(function (attribute) {
                     return {
-                        id : attribute.id,
+                        id: attribute.id,
                         label: App.InternationalizationUtils.localizeLabel(attribute.name),
                         type: attribute.type,
                         hierarchy: false,
@@ -302,7 +286,7 @@
                     }
                 })
                 .value();
-        },        
+        },
 
         getMeasureDimension: function () {
             var dimensions = this.getDimensionsAndRepresentations();
@@ -438,6 +422,13 @@
             }
         },
 
+        unitMultiplierForSelection: function (selection) {
+            var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
+            if (selectedDimValue) {
+                return selectedDimValue.unitMultiplier;
+            }
+        },
+
         _findSelectedMeasureDimensionValue: function (selection) {
             var measureDim = this.getMeasureDimension();
             var selectedDimValueId = measureDim ? selection[measureDim.id] : null;
@@ -475,7 +466,7 @@
             return this.getLocalizedLabel(this.metadataResponse.name);
         },
 
-        getKeepAllData: function() {
+        getKeepAllData: function () {
             return this.metadata.keepAllData;
         },
 

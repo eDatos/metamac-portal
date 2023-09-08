@@ -143,6 +143,16 @@ I18n.translations.es = {
             level: {
                 template: "Nivel {{level}}",
                 all: "Todos"
+            },
+            temporal: {
+                YEARLY: "Anual",
+                BIYEARLY: "Semestral",
+                FOUR_MONTHLY: "Cuatrimestral",
+                QUARTERLY: "Trimestral",
+                MONTHLY: "Mensual",
+                WEEKLY: "Semanal",
+                DAILY: "Diarios",
+                HOURLY: "Por horas",
             }
         },
         sort: {
@@ -254,7 +264,10 @@ I18n.translations.es = {
         },
         category: {
             measure: {
-                unit: 'Unidad de medida'
+                unit: 'Unidad de medida',
+                multiplier: 'Multiplicador de la unidad',
+                unitMeasure: '{{multiplier}} de {{unit}}',
+                unitMeasureStartsWithVowel: '{{multiplier}} de {{unit}}',
             },
             attributes: {
                 title: 'Notas de categoría'

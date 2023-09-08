@@ -8,7 +8,7 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 8.4.2 a 8.4.3-SNAPSHOT
+## 8.4.2 a 8.5.0
 - Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión. 
   Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/8.4.2/db/common-metadata/postgresql/](etc/changes-from-release/8.4.2/db/common-metadata/postgresql)
   

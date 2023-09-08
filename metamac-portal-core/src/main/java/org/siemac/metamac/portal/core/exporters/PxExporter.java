@@ -49,7 +49,6 @@ import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
-import org.siemac.metamac.rest.common.v1_0.domain.Resources;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
@@ -78,15 +77,23 @@ public class PxExporter {
     private final DatasetSelection datasetSelection;
     private Integer                showDecimals             = null;
     private final static int       MAX_PX_MATRIX_LENGTH     = 8;
+    private String                 unitMeasure              = "UNIDAD_MEDIDA";
+    private String                 unitMultiplier           = "MULTIPLICADOR_UNIDAD";
 
-    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langDefault) throws MetamacException {
+    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier)
+            throws MetamacException {
         datasetAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault);
         this.datasetSelection = datasetSelection;
+        this.unitMeasure = unitMeasure;
+        this.unitMultiplier = unitMultiplier;
     }
 
-    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault) throws MetamacException {
+    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure,
+            String unitMultiplier) throws MetamacException {
         datasetAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault);
         this.datasetSelection = datasetSelection;
+        this.unitMeasure = unitMeasure;
+        this.unitMultiplier = unitMultiplier;
     }
 
     public void write(OutputStream os) throws MetamacException {
@@ -516,7 +523,7 @@ public class PxExporter {
 
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
-                final InternationalString unit = datasetAccess.extractUnitCode(dimensionValue);
+                final InternationalString unit = datasetAccess.extractUnitCode(dimensionValue, unitMeasure, unitMultiplier);
                 if (unit != null) {
                     writeLocalisedLine(printWriter, PxKeysEnum.UNITS, dimensionValue.getName(), unit);
                 }
@@ -537,7 +544,7 @@ public class PxExporter {
                     List<EnumeratedAttributeValue> metadataAttributeValues = ((EnumeratedAttributeValues) attributeValuesFromMetadata).getValues();
                     for (EnumeratedAttributeValue attributeValue : metadataAttributeValues) {
                         if (attributeValue.getId().equals(attributeValuesFromData[0])) {
-                            final InternationalString unit = datasetAccess.extractUnitCode(attributeValue);
+                            final InternationalString unit = datasetAccess.extractUnitCode(attributeValue, unitMeasure, unitMultiplier);
                             if (unit != null) {
                                 writeLocalisedLine(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), unit);
                                 writeEmptyUnit = false;
@@ -838,7 +845,7 @@ public class PxExporter {
             }
             String attributeId = attribute.getId();
             String[] attributeValues = datasetAccess.getAttributeValues(attributeId);
-            if (attributeValues == null) {
+            if (attributeValues == null || unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
                 continue;
             }
             String dimensionId = attribute.getDimensions().getDimensions().get(0).getDimensionId();
