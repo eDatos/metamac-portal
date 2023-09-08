@@ -112,6 +112,8 @@
                 });
                 this.levelView.render();
                 this.subviews.push(this.levelView);
+
+                this.listenTo(this.levelView, "changeSelect", this.updateScrollbar);
             }
 
             this.visibleLabelTypeView = new App.components.ToggleableView({
