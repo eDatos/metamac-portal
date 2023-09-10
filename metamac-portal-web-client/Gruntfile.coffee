@@ -18,6 +18,7 @@ module.exports = (grunt) ->
     paths.theme = 'src/main'
     paths.less = paths.theme + '/less'
     paths.lib = paths.theme + '/js/libs'
+    paths.nodeModules = "node_modules"
     paths.templates = paths.theme + "/js/metamac/templates"
     paths.js = "src/main/js"
     paths.modules = paths.js + "/metamac/modules"
@@ -44,6 +45,7 @@ module.exports = (grunt) ->
                 paths.lib + "/jquery.dotdotdot-1.5.0-packed.js"
                 paths.lib + "/async.js"
                 paths.lib + "/cookies.js"
+                paths.nodeModules + "/shareon/dist/shareon.iife.js"
                 paths.js + "/metamac/App.js"
                 paths.js + "/metamac/libs/HandlebarsHelpers.js"
                 paths.js + "/metamac/templates/HandlebarsTemplates.js"
