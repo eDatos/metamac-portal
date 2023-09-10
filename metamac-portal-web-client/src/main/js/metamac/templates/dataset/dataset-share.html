@@ -2,18 +2,12 @@
     <strong>{{ message "filter.share.permanent" }}</strong>
     <input type="text" size="60" class="campo_texto" value="{{url}}">
 	<div class="addthis_toolbox dataset-share-icons">
-		<div class="custom_images">
-			<a class="addthis_button_twitter"><span></span></a>
-			<a class="addthis_button_facebook"><span></span></a>
-			<a class="addthis_button_google_plusone_share"><span></span></a>
-			<a class="addthis_button_linkedin"><span></span></a>
-			<a class="addthis_button_tuenti"><span></span></a>
-			<a class="addthis_button_diigo"><span></span></a>
-			<a class="addthis_button_meneame" title="Menéame"><span></span></a>
-			<a class="addthis_button_digg"><span></span></a>
-			<a class="addthis_button_delicious"><span></span></a>
-			<a class="addthis_button_google"><span></span></a>
-			<a class="addthis_button_yahoobkm"><span></span></a>
+		<div class="custom_images shareon" data-url="{{url}}">
+			<a class="dataset-share-icon twitter" data-title="{{title}}" data-via="{{twitterVia}}" ></a>
+			<a class="dataset-share-icon facebook"></a>
+			<a class="dataset-share-icon linkedin"></a>
+			<a class="dataset-share-icon diigo" href="{{shareMeInDiigo}}" title="Diigo" target="_blank"></a>
+			<a class="dataset-share-icon meneame" href="{{shareMeInMeneame}}" title="Menéame" target="_blank"></a>
 		</div>
 	</div>
 </div>
