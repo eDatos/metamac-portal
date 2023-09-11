@@ -709,7 +709,7 @@ public class ResourceAccess {
     }
 
     private Integer calculateOffsetDimensionValueId(String dimensionValueId, String attributeKey) {
-        Integer offset = 0;
+        Integer offset = null;
         if (multipliersByAttribute.containsKey(attributeKey)) {
             Map<String, String> permutation = new HashMap<>();
             permutation.put(measureDimension.getId(), dimensionValueId);
