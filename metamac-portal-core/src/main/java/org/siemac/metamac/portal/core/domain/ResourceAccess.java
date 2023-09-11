@@ -491,6 +491,7 @@ public class ResourceAccess {
 
             int offset = 0;
             String attributeId = attribute.getId();
+            // unit multiplier and unit measure attributes wont appear here because they must appear elsewhere, in units
             if (unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
                 continue;
             }
@@ -675,14 +676,18 @@ public class ResourceAccess {
     }
 
     public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasureKey, String unitMultiplierKey) {
-        Integer offset = calculateOffsetUnitCode(dimensionValue.getId());
-        InternationalString unitMeasureName = getAttributeByOffset(unitMeasureKey, offset);
-        InternationalString unitMultiplierName = getAttributeByOffset(unitMultiplierKey, offset);
+        Integer offset = calculateOffsetDimensionValueId(dimensionValue.getId(), unitMeasureKey);
+        InternationalString unitMeasureName = getAttributeByDimensionValue(unitMeasureKey, offset);
+
+        offset = calculateOffsetDimensionValueId(dimensionValue.getId(), unitMultiplierKey);
+        InternationalString unitMultiplierName = getAttributeByDimensionValue(unitMultiplierKey, offset);
         return extractUnitCode(dimensionValue.getMeasureQuantity(), unitMeasureName, unitMultiplierName);
     }
 
-    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasure, String unitMultiplier) {
-        return extractUnitCode(attributeValue.getMeasureQuantity(), null, null);
+    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasureKey, String unitMultiplierKey) {
+        InternationalString unitMeasureName = getAttributeByDimensionValue(unitMeasureKey, 0);
+        InternationalString unitMultiplierName = getAttributeByDimensionValue(unitMultiplierKey, 0);
+        return extractUnitCode(attributeValue.getMeasureQuantity(), unitMeasureName, unitMultiplierName);
     }
 
     private InternationalString extractUnitCode(MeasureQuantity measureQuantity, InternationalString unitMeasureName, InternationalString unitMultiplierName) {
@@ -695,18 +700,22 @@ public class ResourceAccess {
         return prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
     }
 
-    private Integer calculateOffsetUnitCode(String attributeId) {
-        Map<String, String> permutation = new HashMap<>();
-        permutation.put(measureDimension.getId(), attributeId);
-        return calculateOffsetAtPermutation(permutation);
-    }
-
-    private InternationalString getAttributeByOffset(String attributeKey, Integer offset) {
+    private InternationalString getAttributeByDimensionValue(String attributeKey, Integer offset) {
         if (!attributesValuesByAttributeId.containsKey(attributeKey)) {
             return null;
         }
         String attributeValue = attributesValuesByAttributeId.get(attributeKey)[offset];
         return attributesValuesLabels.get(attributeKey).get(attributeValue);
+    }
+
+    private Integer calculateOffsetDimensionValueId(String dimensionValueId, String attributeKey) {
+        Integer offset = 0;
+        if (multipliersByAttribute.containsKey(attributeKey)) {
+            Map<String, String> permutation = new HashMap<>();
+            permutation.put(measureDimension.getId(), dimensionValueId);
+            offset = calculateOffsetAtPermutation(permutation, multipliersByAttribute.get(attributeKey));
+        }
+        return offset;
     }
 
     public boolean existsContVariable() {
