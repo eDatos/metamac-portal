@@ -44,19 +44,20 @@
         savePermalink: function (content, el) {
             var requestFunction = function (url) {
                 return new Promise(function (resolve, reject) {
-                    Edatos.UserManagement.prepareRequestWithEdatosAuthentication({
+                    var baseAjaxSettings = {
                         url: url,
                         method: "POST",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({content: content})
-                    }).then(ajaxSettings => {
-                        $.ajax(ajaxSettings).fail(function (jqXHR) {
-                            reject(jqXHR)
-                        }).done(function (val) {
-                            resolve(val)
+                    };
+                    if (Edatos && Edatos.UserManagement) {
+                        Edatos.UserManagement.prepareRequestWithEdatosAuthentication(baseAjaxSettings).then(ajaxSettings => {
+                            $.ajax(ajaxSettings).done(resolve).fail(reject);
                         });
-                    });
+                    } else {
+                        $.ajax(baseAjaxSettings).done(resolve).fail(reject);
+                    }
                 });
             };
             if (typeof requestWithCaptcha !== 'undefined') {
