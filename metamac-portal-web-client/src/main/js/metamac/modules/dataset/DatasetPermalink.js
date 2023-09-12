@@ -51,7 +51,7 @@
                         contentType: "application/json; charset=utf-8",
                         data: JSON.stringify({content: content})
                     };
-                    if (Edatos && Edatos.UserManagement) {
+                    if (window.Edatos && Edatos.UserManagement) {
                         Edatos.UserManagement.prepareRequestWithEdatosAuthentication(baseAjaxSettings).then(ajaxSettings => {
                             $.ajax(ajaxSettings).done(resolve).fail(reject);
                         });
