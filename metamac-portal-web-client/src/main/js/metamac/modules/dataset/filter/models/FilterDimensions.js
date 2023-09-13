@@ -203,11 +203,12 @@
                 var mustUpdateDrawables = false;
                 _.each(dimensionToImport.categories, function (category) {
                     if (!_.isUndefined(representations.get(category.id))) {
-                        mustUpdateDrawables = mustUpdateDrawables || _.isUndefined(category.drawable) || _.isNull(category.drawable);
-                        representations.get(category.id).set({ 
-                            selected: category.selected,
-                            drawable: category.drawable
-                         });
+                        representations.get(category.id).set({ selected: category.selected });
+                        if (_.isUndefined(category.drawable) || _.isNull(category.drawable)) {
+                            mustUpdateDrawables = true;
+                        } else {
+                            representations.get(category.id).set({ drawable: category.drawable });
+                        }
                     }
                 });
 
@@ -216,7 +217,7 @@
                 
                 representations._bindEvents();
                 if(mustUpdateDrawables) {
-                    representations.trigger("change:selected");
+                    representations.trigger("change:selected:immediate");
                 } else {
                     representations.trigger("change:drawable");
                 }

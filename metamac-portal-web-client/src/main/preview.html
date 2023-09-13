@@ -142,6 +142,9 @@
         // EDATOS-4060
         App.queryParams = { "agency": "ISTAC", "identifier": "C00031A_000002", "version": "~latest", "type": "dataset" };
 
+        // EDATOS-4218 Error al mostrar widgets generados con filtros de actualización automática ( filtros dinámicos , dynamicSelection)
+        App.queryParams = { "agency": "ISTAC", "identifier": "C00031A_000010", "version": "~latest", "type": "dataset", "permalink": "15wz5y2ivtdfmsvy1w7lfopr51" };
+
         // Vista widget
         // App.config.widget = true;
         App.config["geographicalGranularityUrn"] = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISTAC:CL_GEO_GRANULARITIES(01.006)";
@@ -209,6 +212,9 @@
             // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000007&version=1.0#visualization/column
             // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000018&version=1.0#visualization/column
             App.queryParams = { "agency": "IECM", "identifier": "003_000007", "version": "1.0", "type": "dataset" };
+
+            // EDATOS-4218 Error al mostrar widgets generados con filtros de actualización automática ( filtros dinámicos , dynamicSelection)
+            App.queryParams = { "agency": "IECM", "identifier": "029_000003", "version": "1.1", "type": "dataset", "permalinkId": "1zt20l1aezffbt0zad8ghdriy" };
         }
 
         App.start();
