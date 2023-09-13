@@ -523,19 +523,6 @@
 
 }
 
-
-.dataset-share-icon {
-    height: @mIconHeight;
-    width: @mIconWidth;
-    padding-left: 0;
-    font-size: @mIconHeight;
-    
-    &:before {
-        color: @istacBlack;
-        padding: 2px 3px;
-    }
-}
-
 .dataset-share {
     padding: 10px;
     .campo_texto {
@@ -544,83 +531,72 @@
     .dataset-share-icons {
         margin-top: 7px;
 
-        .addthis_button_twitter {
-            .dataset-share-icon;
-            .icon-twitter;
-            &:hover:before {
-                color: #2CA8D2;
+        .dataset-share-icon {
+            height: @mIconHeight;
+            width: @mIconWidth;
+            padding-left: 0;
+            font-size: @mIconHeight;
+            
+            &:before {
+                color: @istacBlack;
+                padding: 2px 3px;
             }
+
+            &.twitter {
+                .icon-twitter;
+                &:hover:before {
+                    color: #2CA8D2;
+                }
+            }
+            &.facebook {
+                .icon-facebook;
+                &:hover:before {
+                    color: #3b5999;
+                }
+            }
+            &.linkedin {
+                .icon-linkedin;
+                &:hover:before {
+                    color: #4498C8;
+                }
+            }
+            &.diigo {
+                .icon-diigo;            
+                &:hover:before {
+                    color: #0888D8;
+                }
+            }
+            &.meneame {
+                .icon-meneame;            
+                &:hover:before {
+                    color: #F47312;
+                }
+            }
+            &.digg {
+                .icon-digg;            
+                &:hover:before {
+                    color: #16B4EF;
+                }
+            }
+            &.delicious {
+                .icon-delicious;            
+                &:hover:before {
+                    color: #07529C;
+                }
+            }
+            &.google {
+                .icon-google;            
+                &:hover:before {
+                    color: #0868B9;
+                }
+            }                                                
+            &.yahoobkm {
+                .icon-yahoo;            
+                &:hover:before {
+                    color: #791998;
+                }
+            } 
         }
-        .addthis_button_facebook {
-            .dataset-share-icon;
-            .icon-facebook;
-            &:hover:before {
-                color: #3b5999;
-            }
-        }
-        .addthis_button_google_plusone_share {
-            .dataset-share-icon;
-            .icon-g_plus;
-            &:hover:before {
-                color: #CE4D39;
-            }
-        }
-        .addthis_button_linkedin {
-            .dataset-share-icon;
-            .icon-linkedin;
-            &:hover:before {
-                color: #4498C8;
-            }
-        }
-        .addthis_button_tuenti {
-            .dataset-share-icon;
-            .icon-tuenti;            
-            &:hover:before {
-                color: #5F729D;
-            }
-        }
-        .addthis_button_diigo {
-            .dataset-share-icon;
-            .icon-diigo;            
-            &:hover:before {
-                color: #0888D8;
-            }
-        }
-        .addthis_button_meneame {
-            .dataset-share-icon;
-            .icon-meneame;            
-            &:hover:before {
-                color: #F47312;
-            }
-        }
-        .addthis_button_digg {
-            .dataset-share-icon;
-            .icon-digg;            
-            &:hover:before {
-                color: #16B4EF;
-            }
-        }
-        .addthis_button_delicious {
-            .dataset-share-icon;
-            .icon-delicious;            
-            &:hover:before {
-                color: #07529C;
-            }
-        }
-        .addthis_button_google {
-            .dataset-share-icon;
-            .icon-google;            
-            &:hover:before {
-                color: #0868B9;
-            }
-        }                                                
-        .addthis_button_yahoobkm {
-            .dataset-share-icon;
-            .icon-yahoo;            
-            &:hover:before {
-                color: #791998;
-            }
-        } 
     }
 }
 

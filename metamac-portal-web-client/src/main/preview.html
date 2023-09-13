@@ -11,8 +11,16 @@
 
     <script src="//estadisticas.arte-consultores.com/external-users-external/api/captcha/authentication.js"></script>
     <!--<script src="http://localhost:8084/api/captcha/authentication.js"></script> ruta de external-users-->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-501fc6f600bacbe9"></script>
     <script type="text/javascript" src="../../target/metamac.js"></script>
+
+    <script>
+        async function importAuthentication() {
+            const resp = await fetch("https://estadisticas.arte-consultores.com/apps/includes/edatos-user-management.jsp?enableAuthentication");
+            const html = await resp.text();
+            const divFragment = document.createRange().createContextualFragment(html);
+            document.getElementById('authentication').prepend(divFragment);
+        }
+    </script>
 
     
 </head>
@@ -28,6 +36,7 @@
                     title="Página principal del Instituto Canario de Estadística (ISTAC) - Opciones de accesibilidad (tecla de acceso: i)"
                     accesskey="i">Instituto Canario de Estadística</a>
             </h1>
+            <div id="authentication"></div>
         </div>
 
 
@@ -218,6 +227,8 @@
         }
 
         App.start();
+
+        importAuthentication();
     </script>
 
 </body>

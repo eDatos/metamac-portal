@@ -29,33 +29,33 @@
         },
 
         render: function () {
+            // INFO sharing won't work on localhost URLs on some networks
+            var title = this.filterDimensions.metadata.getTitle();
+            var description = this.filterDimensions.metadata.getDescription();
+            var url = this.getSharedUrl();
+
             var context = {
-                url: this.getSharedUrl(),
-                title: this.filterDimensions.metadata.getTitle(),
-                description: this.filterDimensions.metadata.getDescription()
-            };
+                url: url,
+                title: title,
+                description: description,
+                twitterVia: App.config.socialTwitterVia,
+                shareMeInDiigo: this.buildDiigoShareUrl(url, title, description),
+                shareMeInMeneame: this.buildMeneameShareUrl(url)
+            };           
             this.$el.html(this.template(context));
 
-            var config = {
-                data_track_addressbar: true
-            };
+            // A setTimeout is needed here to work. Looks like 
+            setTimeout(function() { Shareon.init(); })
+        },
 
-            var share = {
-                url: context.url,
-                title: context.title,
-                description: context.description,
-                passthrough: {
-                    twitter: {
-                        text: context.title
-                    }
-                }
-            };   
-            
-            if (App.config.socialTwitterVia) { 
-                share.passthrough.twitter.via = App.config.socialTwitterVia;
-            }
+        buildDiigoShareUrl: function(url, title, desc) {
+            // Thanks to: https://www.addtoany.com/services/diigo_button
+            return 'https://www.diigo.com/post?url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + '&desc=' + encodeURIComponent(desc);
+        },
 
-            addthis.toolbox(this.$el.find('.addthis_toolbox')[0], config, share);
+        buildMeneameShareUrl: function(url) {
+            // Thanks to: https://www.addtoany.com/services/meneame_button
+            return 'https://old.meneame.net/submit?url=' + encodeURIComponent(url);
         }
 
     });
