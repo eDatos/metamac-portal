@@ -64,12 +64,7 @@
 			request.setAttribute("Organisation", ORGANISATION);
             
 			request.setAttribute("analyticsGoogleTrackingId", configurationService.retrieveAnalyticsGoogleTrackingId());
-			
-            String analyticsAddthisCode = configurationService.retrieveAnalyticsAddthisCode();
-            if (analyticsAddthisCode != null && !analyticsAddthisCode.isEmpty()) {                    
-                request.setAttribute("AddthisCode","#pubid=" + analyticsAddthisCode);
-            }
-			
+
 		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();

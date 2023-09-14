@@ -17,6 +17,7 @@
 
         _bindEvents: function () {
             this.listenTo(this, 'change:selected', _.debounce(this._onChangeSelected, 100));
+            this.listenTo(this, 'change:selected:immediate', _.debounce(this._onChangeSelected, 100, true));
             this.listenTo(this, 'change:drawable', this._onChangeDrawable);
         },
 

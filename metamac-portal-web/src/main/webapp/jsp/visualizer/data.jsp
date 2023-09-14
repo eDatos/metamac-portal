@@ -95,7 +95,6 @@
                             if(${ApiUrlCaptcha != "error"}) {
                                 LazyLoad.js("${ApiUrlCaptcha}/authentication.js");
                             }
-                            LazyLoad.js("//s7.addthis.com/js/300/addthis_widget.js${AddthisCode}");
 		                });
 		            });
 		        </script>
