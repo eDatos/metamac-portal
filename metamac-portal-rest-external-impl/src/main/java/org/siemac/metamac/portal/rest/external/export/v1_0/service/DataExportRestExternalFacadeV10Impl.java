@@ -76,10 +76,10 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
     private StatisticalResourcesRestExternalFacade statisticalResourcesRestExternal;
 
     @Autowired
-    private SrmRestExternalFacade                  srmRestExternal;
+    private IndicatorsRestExternalFacade           indicatorsRestExternal;
 
     @Autowired
-    private IndicatorsRestExternalFacade           indicatorsRestExternal;
+    private SrmRestExternalFacade                  srmRestExternal;
 
     @Autowired
     private IndicatorsSystemsRestExternalFacade    indicatorsSystemsRestExternal;
@@ -655,7 +655,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             if (lang == null) {
                 lang = langDefault;
             }
-            return new ResourceAccess(srmRestExternal, dataset, datasetSelection, lang, langDefault);
+            return new ResourceAccess(dataset, datasetSelection, lang, langDefault);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -676,7 +676,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
             if (lang == null) {
                 lang = langDefault;
             }
-            return new ResourceAccess(srmRestExternal, query, null, datasetSelection, lang, langDefault);
+            return new ResourceAccess(query, null, datasetSelection, lang, langDefault);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -695,7 +695,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
-            return new ResourceAccess(srmRestExternal, dataset, datasetSelection, langDefault, null);
+            return new ResourceAccess(dataset, datasetSelection, langDefault, null);
         } catch (Exception e) {
             throw manageException(e);
         }
@@ -713,7 +713,7 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
-            return new ResourceAccess(srmRestExternal, dataset, datasetSelection, langDefault, null);
+            return new ResourceAccess(dataset, datasetSelection, langDefault, null);
         } catch (Exception e) {
             throw manageException(e);
         }

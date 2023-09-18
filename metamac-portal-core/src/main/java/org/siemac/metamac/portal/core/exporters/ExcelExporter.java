@@ -36,12 +36,10 @@ import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
 import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
-import org.siemac.metamac.rest.common.v1_0.domain.Resources;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Contact;
@@ -91,9 +89,9 @@ public class ExcelExporter {
     private String                 unitMeasure                    = "UNIDAD_MEDIDA";
     private String                 unitMultiplier                 = "MULTIPLICADOR_UNIDAD";
 
-    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold,
-            String unitMeasure, String unitMultiplier) throws MetamacException {
-        resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
+    public ExcelExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold, String unitMeasure, String unitMultiplier)
+            throws MetamacException {
+        resourceAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.cellThreshold = cellThreshold;
         this.unitMeasure = unitMeasure;
@@ -101,9 +99,9 @@ public class ExcelExporter {
         enableHighPerformanceModeIfNeeded();
     }
 
-    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative,
-            Integer cellThreshold, String unitMeasure, String unitMultiplier) throws MetamacException {
-        resourceAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
+    public ExcelExporter(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold, String unitMeasure, String unitMultiplier)
+            throws MetamacException {
+        resourceAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.cellThreshold = cellThreshold;
         this.unitMeasure = unitMeasure;
