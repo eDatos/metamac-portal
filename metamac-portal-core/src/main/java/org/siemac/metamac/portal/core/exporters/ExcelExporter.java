@@ -36,12 +36,10 @@ import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
 import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
-import org.siemac.metamac.rest.common.v1_0.domain.Resources;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Contact;
@@ -88,20 +86,26 @@ public class ExcelExporter {
 
     private boolean                highPerformanceMode            = false;
     private Integer                cellThreshold                  = 250_000;
+    private String                 unitMeasure                    = "UNIDAD_MEDIDA";
+    private String                 unitMultiplier                 = "MULTIPLICADOR_UNIDAD";
 
-    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold)
+    public ExcelExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold, String unitMeasure, String unitMultiplier)
             throws MetamacException {
-        resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langAlternative);
+        resourceAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.cellThreshold = cellThreshold;
+        this.unitMeasure = unitMeasure;
+        this.unitMultiplier = unitMultiplier;
         enableHighPerformanceModeIfNeeded();
     }
 
-    public ExcelExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative,
-            Integer cellThreshold) throws MetamacException {
-        resourceAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langAlternative);
+    public ExcelExporter(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold, String unitMeasure, String unitMultiplier)
+            throws MetamacException {
+        resourceAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.cellThreshold = cellThreshold;
+        this.unitMeasure = unitMeasure;
+        this.unitMultiplier = unitMultiplier;
         enableHighPerformanceModeIfNeeded();
     }
 
@@ -256,16 +260,16 @@ public class ExcelExporter {
 
     // Samples:
     // - Unidad de medida (Índice de palomas): Índice de palomas
-    // - Unidad de medida (Variacion): Porcentaje (x10)
+    // - Unidad de medida (Variacion): Porcentaje (Unidades)
     private String buildUnitText(Resource value) {
         StringBuilder unitBuilder = new StringBuilder();
         Locale locale = LocaleUtil.getLocaleFromLocaleString(resourceAccess.getLang());
         InternationalString unitCode = null;
         // Ugly, but...
         if (value instanceof EnumeratedDimensionValue) {
-            unitCode = resourceAccess.extractUnitCode((EnumeratedDimensionValue) value);
+            unitCode = resourceAccess.extractUnitCode((EnumeratedDimensionValue) value, unitMeasure, unitMultiplier);
         } else if (value instanceof EnumeratedAttributeValue) {
-            unitCode = resourceAccess.extractUnitCode((EnumeratedAttributeValue) value);
+            unitCode = resourceAccess.extractUnitCode((EnumeratedAttributeValue) value, unitMeasure, unitMultiplier);
         }
         if (unitCode == null) {
             return null;
@@ -351,7 +355,8 @@ public class ExcelExporter {
 
                     SXSSFCell cell = initializeCell(row, headerColumn);
 
-                    CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), selectedDimensionValue));
+                    CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), selectedDimensionValue), unitMeasure,
+                            unitMultiplier);
                     addCellComment(cellDetails, cell);
 
                     cell.setCellValue(dimensionValueLabel);
@@ -477,7 +482,7 @@ public class ExcelExporter {
 
                 SXSSFCell cell = initializeCell(row, leftDimensionIndex);
 
-                CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), dimensionValueId));
+                CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(datasetSelection.permutationAtDimension(dimension.getId(), dimensionValueId), unitMeasure, unitMultiplier);
                 addCellComment(cellDetails, cell);
 
                 cell.setCellValue(dimensionValueLabel);
@@ -498,7 +503,7 @@ public class ExcelExporter {
             String observation = resourceAccess.observationAtPermutation(permutationAtCell);
             SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
 
-            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell), cell);
+            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell, unitMeasure, unitMultiplier), cell);
 
             if (observation != null) {
                 if (NumberUtils.isNumber(observation)) {

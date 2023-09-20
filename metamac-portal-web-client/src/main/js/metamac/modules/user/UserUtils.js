@@ -6,38 +6,34 @@
     App.modules.user.UserUtils = {
 
         saveFilter: function (filter) {
-            return new Promise(function(resolve, reject) {
-                $.ajax({
+            return new Promise(function (resolve, reject) {
+                Edatos.UserManagement.prepareRequestWithEdatosAuthenticationToExternalUsers({
                     url: App.endpoints["external-users"] + '/api/filters',
                     method: "POST",
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
-                    data: filter.toString(),
-                    beforeSend: Edatos.UserManagement.prepareRequestToExternalUserAuthenticatedEndpoint,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                }).done(function(val) {
-                    resolve(val)
-                }).fail(function(jqXHR) {
-                    reject(jqXHR)
+                    data: filter.toString()
+                }).then(ajaxSettings => {
+                    $.ajax(ajaxSettings).done(function (val) {
+                        resolve(val)
+                    }).fail(function (jqXHR) {
+                        reject(jqXHR)
+                    });
                 });
             });
         },
 
         updateLastAccess: function (permalinkId) {
             return new Promise(function(resolve, reject) {
-                $.ajax({
+                Edatos.UserManagement.prepareRequestWithEdatosAuthenticationToExternalUsers({
                     url: App.endpoints["external-users"] + '/api/filters/last-access/' + permalinkId,
-                    method: "PUT",
-                    beforeSend: Edatos.UserManagement.prepareRequestToExternalUserAuthenticatedEndpoint,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                }).done(function(val) {
-                    resolve(val)
-                }).fail(function(jqXHR) {
-                    reject(jqXHR)
+                    method: "PUT"
+                }).then(ajaxSettings => {
+                    $.ajax(ajaxSettings).done(function (val) {
+                        resolve(val)
+                    }).fail(function (jqXHR) {
+                        reject(jqXHR)
+                    });
                 });
             });
         },

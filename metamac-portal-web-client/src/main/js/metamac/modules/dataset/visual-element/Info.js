@@ -157,7 +157,7 @@
                 metadata: this._getMetadata(),
                 datasetAttributes: this.datasetAttributes,
                 dimensionLikeAttributes: this.dimensionLikeAttributes,
-                hasAttributesOrLikeAttributes: this.datasetAttributes || this.dimensionLikeAttributes,
+                hasAttributesOrLikeAttributes: (this.datasetAttributes && this.datasetAttributes.length > 0) || (this.dimensionLikeAttributes && this.dimensionLikeAttributes.length > 0),
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,

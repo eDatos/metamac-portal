@@ -11,8 +11,8 @@
             this.region = options.region;
         },
 
-        showError: function() {
-            this.errorView = new App.modules.dataset.ErrorView({ error : I18n.t('exception.common.unknown') });
+        showError: function () {
+            this.errorView = new App.modules.dataset.ErrorView({ error: I18n.t('exception.common.unknown') });
             this.region.show(this.errorView);
         },
 
@@ -96,7 +96,7 @@
                 deferred.resolve();
                 return deferred.promise();
             }
-            
+
             this.datasourceIdentifier = datasourceIdentifier;
             this.metadataRequest = new App.datasource.MetadataRequest(this.datasourceIdentifier);
             this.dataRequest = new App.datasource.DataRequest(this.datasourceIdentifier);
@@ -105,38 +105,47 @@
                 metadata: _.bind(this.metadataRequest.fetch, this.metadataRequest),
                 data: _.bind(this.dataRequest.fetch, this.dataRequest)
             };
-            
+
             if (datasetIdentifier.permalinkId) {
                 loads["permalink"] = _.bind(DatasetPermalink.retrievePermalink, DatasetPermalink, datasetIdentifier.permalinkId)
             }
 
             var self = this;
             async.parallel(loads, function (err, result) {
-                if (err) {  
-                    self.errorView = new App.modules.dataset.ErrorView({ error : err });
+                try {
+                    if (err) { 
+                        self.errorView = new App.modules.dataset.ErrorView({ error : err });
+                        self.region.show(self.errorView);
+                        return deferred.promise();
+                    }
+                    
+                    self.metadata = self.metadataRequest.getMetadataResponse();
+
+                    self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
+                    self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
+
+                    self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata, data: self.data });
+
+                    self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
+
+                    if (result.permalink) {
+                        self.filterDimensions.importJSONSelection(self.filterDimensions.preprocessSelectionWithDynamicSelection(result.permalink.selection, result.permalink.dynamicSelection));
+                        self.filterDimensions.importJSONState(result.permalink.state);
+                        if (!window.location.hash.includes(result.permalink.hash)) {
+                            self.visualizationView.optionsModel.set('mustApplyVisualizationRestrictions', true);
+                        }
+                        deferred.resolve();
+                    } else if (datasetIdentifier.geo) {
+                        self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
+                        deferred.resolve();
+                    } else {
+                        deferred.resolve();
+                    }
+                } catch (error) {
+                    console.log(error);
+                    self.errorView = new App.modules.dataset.ErrorView({ error : I18n.t('exception.common.unknown')});
                     self.region.show(self.errorView);
                     return deferred.promise();
-                }
-                self.metadata = self.metadataRequest.getMetadataResponse();
-                self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
-                self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
-
-                self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata, data: self.data });
-                
-                self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
-
-                if (result.permalink) {
-                    self.filterDimensions.importJSONSelection(self.filterDimensions.preprocessSelectionWithDynamicSelection(result.permalink.selection, result.permalink.dynamicSelection));
-                    self.filterDimensions.importJSONState(result.permalink.state);
-                    if (!window.location.hash.includes(result.permalink.hash)) {
-                        self.visualizationView.optionsModel.set('mustApplyVisualizationRestrictions', true);
-                    }
-                    deferred.resolve();
-                } else if (datasetIdentifier.geo) {
-                    self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
-                    deferred.resolve();
-                } else {
-                    deferred.resolve();
                 }
             });
             return deferred.promise();

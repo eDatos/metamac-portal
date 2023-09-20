@@ -11,6 +11,7 @@
         this.$el = options.el;
         this.data = options.data;
         this.timeDimension = options.timeDimension;
+        this.measureUnit = options.measureUnit;
         this._setPermutation(options.permutation);
 
         this._chartOptions = {
@@ -86,7 +87,6 @@
 
         _setPermutation: function(permutation) {
             this.permutation = permutation;
-            this.measureUnit = this.data.metadata.measureUnitForSelection(permutation);
         },
 
         tooltipFormatter: function () {
@@ -112,8 +112,9 @@
             this._checkVisibility(data);
         },
 
-        update: function(permutation) {
+        update: function(permutation, measureUnit) {
             this._setPermutation(permutation);
+            this.measureUnit = measureUnit;
 
             this.detailChart.series[0].remove(false);
             var data = this._getData();
@@ -156,9 +157,8 @@
 
                 var y = self.data.getNumberData({ ids: currentPermutation });
                 var name = self.data.getStringData({ ids: currentPermutation });
-                if (self.measureUnit) {
-                    name = name + ' (' + self.measureUnit + ')';
-                }
+                name = name + " " + self.measureUnit;
+                
                 var point = { y: y, name: name };
 
                 if (self.permutation[self.timeDimension.id] === timeCategory.id) {
