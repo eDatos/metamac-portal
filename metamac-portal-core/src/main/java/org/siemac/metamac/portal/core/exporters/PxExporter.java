@@ -43,7 +43,6 @@ import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.exporters.px.PxKeysEnum;
 import org.siemac.metamac.portal.core.exporters.px.PxLineContainer;
 import org.siemac.metamac.portal.core.exporters.px.PxLineContainerBuilder;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
@@ -80,17 +79,15 @@ public class PxExporter {
     private String                 unitMeasure              = "UNIDAD_MEDIDA";
     private String                 unitMultiplier           = "MULTIPLICADOR_UNIDAD";
 
-    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier)
-            throws MetamacException {
-        datasetAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault);
+    public PxExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
+        datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langDefault);
         this.datasetSelection = datasetSelection;
         this.unitMeasure = unitMeasure;
         this.unitMultiplier = unitMultiplier;
     }
 
-    public PxExporter(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure,
-            String unitMultiplier) throws MetamacException {
-        datasetAccess = new ResourceAccess(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault);
+    public PxExporter(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
+        datasetAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langDefault);
         this.datasetSelection = datasetSelection;
         this.unitMeasure = unitMeasure;
         this.unitMultiplier = unitMultiplier;
@@ -1111,10 +1108,6 @@ public class PxExporter {
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, InternationalString value) throws MetamacException {
         writeLocalisedLine(printWriter, pxKey, indexValues, Arrays.asList(value));
-    }
-
-    private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, InternationalString indexValue, List<InternationalString> values) throws MetamacException {
-        writeLocalisedLine(printWriter, pxKey, Arrays.asList(indexValue), values);
     }
 
     private void writeLocalisedLine(PrintWriter printWriter, PxKeysEnum pxKey, List<InternationalString> indexValues, List<InternationalString> values) throws MetamacException {

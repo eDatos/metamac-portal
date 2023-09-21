@@ -12,7 +12,6 @@ import org.siemac.metamac.portal.core.exporters.ExcelExporter;
 import org.siemac.metamac.portal.core.exporters.ImageExporter;
 import org.siemac.metamac.portal.core.exporters.PlainTextExporter;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.serviceapi.validators.ExportServiceInvocationValidator;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
@@ -28,9 +27,6 @@ public class ExportServiceImpl extends ExportServiceImplBase {
     @Autowired
     private PortalConfiguration              portalConfiguration;
 
-    @Autowired
-    private SrmRestExternalFacade            srmRestExternalFacade;
-
     /* Datasets */
 
     @Override
@@ -44,7 +40,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
         String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
         String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
-        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
+        ExcelExporter exporter = new ExcelExporter(dataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
@@ -75,7 +71,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         if (lang == null) {
             lang = langDefault;
         }
-        PlainTextExporter exporter = new PlainTextExporter(srmRestExternalFacade, plainTextTypeEnum, dataset, datasetSelection, lang, langDefault);
+        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, dataset, datasetSelection, lang, langDefault);
         exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
         exporter.writeAttributesWithDatasetAndDimensionAttachmentLevel(resultAttributesOutputStream);
     }
@@ -106,7 +102,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
 
         String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
         String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
-        PxExporter exporter = new PxExporter(srmRestExternalFacade, dataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
+        PxExporter exporter = new PxExporter(dataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
@@ -123,7 +119,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
         String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
         String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
-        ExcelExporter exporter = new ExcelExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
+        ExcelExporter exporter = new ExcelExporter(query, relatedDataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
@@ -154,7 +150,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
         if (lang == null) {
             lang = langDefault;
         }
-        PlainTextExporter exporter = new PlainTextExporter(srmRestExternalFacade, plainTextTypeEnum, query, datasetSelection, lang, langDefault);
+        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, query, datasetSelection, lang, langDefault);
         exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
         exporter.writeAttributesWithDatasetAndDimensionAttachmentLevel(resultAttributesOutputStream);
     }
@@ -170,7 +166,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
 
         String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
         String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
-        PxExporter exporter = new PxExporter(srmRestExternalFacade, query, relatedDataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
+        PxExporter exporter = new PxExporter(query, relatedDataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
