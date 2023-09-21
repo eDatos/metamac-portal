@@ -113,14 +113,48 @@
         cellInfoAtIndex: function (cell) {
             var categoryValues = this.filterDimensions.getTableInfo().getCategoryValuesForCell(cell);
             var formattedCategories = this._formatCategories(categoryValues);
+            var attributes = this.cellAttributesAtIndex(cell);
             var permutation = this.filterDimensions.getTableInfo().getCategoryIdsForCell(cell);
             return {
-                attributes: this.cellAttributesAtIndex(cell),
+                attributes: attributes,
                 categories: formattedCategories,
                 cellValue: this.data.getStringData({ids: permutation}),
-                measureUnit: this.data.metadata.measureUnitForSelection(permutation),
-                unitMultiplier: this.data.metadata.unitMultiplierForSelection(permutation)
+                measureUnit: this.formatMeasureUnit(permutation, attributes.dimensionsAttributes),
+                unitMultiplier: this.formatUnitMultiplier(permutation, attributes.dimensionsAttributes)
             };
+        },
+
+        formatMeasureUnit: function (permutation, dimensionsAttributes) {
+            var attribute = this.getUnitMeasureDimensionOrDatasetAttribute(dimensionsAttributes, App.config.unitMeasure);
+            return attribute ? attribute.value : this.data.metadata.measureUnitForSelection(permutation);
+        },
+
+        formatUnitMultiplier: function (permutation, dimensionsAttributes) {
+            var attribute = this.getUnitMeasureDimensionOrDatasetAttribute(dimensionsAttributes, App.config.unitMeasureMultiplier);
+            if (attribute) {
+                return attribute;
+            } else {
+                var unitMultiplier = this.data.metadata.unitMultiplierForSelection(permutation);
+                if (unitMultiplier) {
+                    return {value: App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text), urn: unitMultiplier.urn};
+                }
+            }
+        },
+
+        getUnitMeasureDimensionOrDatasetAttribute(dimensionsAttributes, propertyKey) {
+            var attribute;
+            if (dimensionsAttributes.length > 0) {
+                attribute = _.findWhere(dimensionsAttributes, {attributeId: propertyKey});
+                if (attribute && attribute.value != '') {
+                    return {value: attribute.value, urn: attribute.valueUrn};
+                }
+            } else {
+                attribute = _.findWhere(this.datasetAttributes(), {id: propertyKey});
+                if (attribute && attribute.attributeValues) {
+                    var attributeValue = attribute.attributeValues.value[0];
+                    return {value: App.InternationalizationUtils.localizeLabel(attributeValue.name.text), urn: attributeValue.urn};
+                }
+            }
         },
 
         canDrawLineVisualizations: function () {
