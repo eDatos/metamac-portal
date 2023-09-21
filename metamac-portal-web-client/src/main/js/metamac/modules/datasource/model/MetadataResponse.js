@@ -282,10 +282,24 @@
                         type: attribute.type,
                         hierarchy: false,
                         isAttribute: true,
-                        representations: self.getRepresentationsForAttributeDimension(attribute.id)
+                        representations: self.getRepresentationsForAttributeDimension(attribute.id),
+                        measureUnit: self.getUnitMeasureValueForAttributeDimension(attribute),
+                        unitMultiplier: self.getUnitMultiplierValueForAttributeDimension(attribute)
                     }
                 })
                 .value();
+        },
+
+        getUnitMeasureValueForAttributeDimension: function (attribute) {
+            if (attribute.attributeValues && attribute.attributeValues.value[0] && attribute.attributeValues.value[0].measureQuantity) {
+                return App.InternationalizationUtils.localizeLabel(attribute.attributeValues.value[0].measureQuantity.unitCode.name.text);
+            }
+        },
+
+        getUnitMultiplierValueForAttributeDimension: function (attribute) {
+            if (attribute.attributeValues && attribute.attributeValues.value[0] && attribute.attributeValues.value[0].measureQuantity) {
+                return attribute.attributeValues.value[0].measureQuantity.unitMultiplier;
+            }
         },
 
         getMeasureDimension: function () {
@@ -419,6 +433,8 @@
             var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
             if (selectedDimValue) {
                 return selectedDimValue.measureUnit;
+            } else {
+                return this._findMeasureAttributeValue().measureUnit;
             }
         },
 
@@ -426,6 +442,15 @@
             var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
             if (selectedDimValue) {
                 return selectedDimValue.unitMultiplier;
+            } else {
+                return this._findMeasureAttributeValue().unitMultiplier;
+            }
+        },
+
+        _findMeasureAttributeValue: function () {
+            var measureAttributes = _.where(this.getAttributesLikeDimensions(), { type: "MEASURE" });
+            if (measureAttributes) {
+                return measureAttributes[0];
             }
         },
 
