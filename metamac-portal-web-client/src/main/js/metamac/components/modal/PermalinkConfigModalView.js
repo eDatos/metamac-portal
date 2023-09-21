@@ -57,7 +57,7 @@
                 this.filterDimensions,
                 dynamicSelectionBuilder.build(),
                 this.isLastVersionSelected());
-            return DatasetPermalink.savePermalink(permalinkContent);
+            return DatasetPermalink.savePermalink(permalinkContent, this.$el.find("#modal-permalink-captcha")[0]);
         },
 
         isLastVersionSelected: function () {
