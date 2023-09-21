@@ -20,10 +20,11 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
@@ -34,18 +35,14 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimensions;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MeasureQuantity;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
 
 public class ResourceAccess {
 
@@ -96,13 +93,9 @@ public class ResourceAccess {
     private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
     private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>();   // Map<Dimension, Map<Code, Index>
 
-    private SrmRestExternalFacade                         srmRestExternalFacade;
-
     private int                                           primaryMeasureAttributesCount = 0;
 
-    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
-        this.srmRestExternalFacade = srmRestExternalFacade;
-
+    public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = dataset.getData();
         dimensions = dataset.getMetadata().getDimensions();
         attributes = dataset.getMetadata().getAttributes();
@@ -125,10 +118,7 @@ public class ResourceAccess {
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
     }
 
-    public ResourceAccess(SrmRestExternalFacade srmRestExternalFacade, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
-            throws MetamacException {
-        this.srmRestExternalFacade = srmRestExternalFacade;
-
+    public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = query.getData();
         dimensions = query.getMetadata().getDimensions();
         attributes = query.getMetadata().getAttributes();
@@ -501,6 +491,7 @@ public class ResourceAccess {
 
             int offset = 0;
             String attributeId = attribute.getId();
+            // unit multiplier and unit measure attributes wont appear here because they must appear elsewhere, in units
             if (unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
                 continue;
             }
@@ -684,67 +675,47 @@ public class ResourceAccess {
         return offset;
     }
 
-    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasure, String unitMultiplier) {
-        return extractUnitCode(dimensionValue.getMeasureQuantity(), dimensionValue.getUrn(), unitMeasure, unitMultiplier);
+    public InternationalString extractUnitCode(EnumeratedDimensionValue dimensionValue, String unitMeasureKey, String unitMultiplierKey) {
+        Integer offset = calculateOffsetDimensionValueId(dimensionValue.getId(), unitMeasureKey);
+        InternationalString unitMeasureName = getAttributeByDimensionValue(unitMeasureKey, offset);
+
+        offset = calculateOffsetDimensionValueId(dimensionValue.getId(), unitMultiplierKey);
+        InternationalString unitMultiplierName = getAttributeByDimensionValue(unitMultiplierKey, offset);
+        return extractUnitCode(dimensionValue.getMeasureQuantity(), unitMeasureName, unitMultiplierName);
     }
 
-    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasure, String unitMultiplier) {
-        return extractUnitCode(attributeValue.getMeasureQuantity(), attributeValue.getUrn(), unitMeasure, unitMultiplier);
+    public InternationalString extractUnitCode(EnumeratedAttributeValue attributeValue, String unitMeasureKey, String unitMultiplierKey) {
+        InternationalString unitMeasureName = getAttributeByDimensionValue(unitMeasureKey, 0);
+        InternationalString unitMultiplierName = getAttributeByDimensionValue(unitMultiplierKey, 0);
+        return extractUnitCode(attributeValue.getMeasureQuantity(), unitMeasureName, unitMultiplierName);
     }
 
-    // IDEA This will be more efficient if the concept is included on the dataset
-    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, String urn, String unitMeasure, String unitMultiplier) {
-        Concept conceptDetail = srmRestExternalFacade.retrieveConceptByUrn(urn);
-        Integer measureDimensionIndex = getIndexMeasureDimensionById(conceptDetail.getId());
-        InternationalString unitMeasureName = getUnitMeasureValue(measureDimensionIndex, unitMeasure,
-                (measureQuantity != null && measureQuantity.getUnitCode() != null) ? measureQuantity.getUnitCode().getName() : null);
-        InternationalString unitMultiplierName = getUnitMeasureValue(measureDimensionIndex, unitMultiplier,
-                (measureQuantity != null && measureQuantity.getUnitMultiplier() != null) ? measureQuantity.getUnitMultiplier().getName() : null);
-        InternationalString value = prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
-        return value;
-    }
-
-    private InternationalString getUnitMeasureValue(Integer measureDimensionIndex, String property, InternationalString name) {
-        InternationalString value = name;
-        if (attributesValuesByAttributeId.containsKey(property)) {
-            String unitMeasureAttributeValueId = attributesValuesByAttributeId.get(property)[measureDimensionIndex];
-            EnumeratedAttributeValue attribute = getAttributeValueByAttributeIdAndValueId(property, unitMeasureAttributeValueId);
-            if (attribute != null) {
-                value = attribute.getName();
-            }
+    private InternationalString extractUnitCode(MeasureQuantity measureQuantity, InternationalString unitMeasureName, InternationalString unitMultiplierName) {
+        if (unitMeasureName == null && measureQuantity != null && measureQuantity.getUnitCode() != null) {
+            unitMeasureName = measureQuantity.getUnitCode().getName();
         }
-        return value;
+        if (unitMultiplierName == null && measureQuantity != null && measureQuantity.getUnitMultiplier() != null) {
+            unitMultiplierName = measureQuantity.getUnitMultiplier().getName();
+        }
+        return prepareQuantityInternationalString(unitMeasureName, unitMultiplierName);
     }
 
-    // TODO: This and the next method should behave like attributesAtPermutation() method
-    private EnumeratedAttributeValue getAttributeValueByAttributeIdAndValueId(String attributeId, String valueId) {
-        for (Attribute attribute : attributes.getAttributes()) {
-            if (attribute.getId().equals(attributeId)) {
-                for (EnumeratedAttributeValue value : ((EnumeratedAttributeValues) attribute.getAttributeValues()).getValues()) {
-                    if (value.getId().equals(valueId)) {
-                        return value;
-                    }
-                }
-            }
+    private InternationalString getAttributeByDimensionValue(String attributeKey, Integer offset) {
+        if (!attributesValuesByAttributeId.containsKey(attributeKey)) {
+            return null;
         }
-        return null;
+        String attributeValue = attributesValuesByAttributeId.get(attributeKey)[offset];
+        return attributesValuesLabels.get(attributeKey).get(attributeValue);
     }
 
-    // TODO: This and the previous method should behave like attributesAtPermutation() method
-    private int getIndexMeasureDimensionById(String id) {
-        if (datasetSelection != null && this.datasetSelection.getDimensions() != null) {
-            for (DatasetSelectionDimension dimension : datasetSelection.getDimensions()) {
-                if (dimension.getSelectedDimensionValues() != null) {
-                    for (int i = 0; i < dimension.getSelectedDimensionValues().size(); i++) {
-                        String dimensionValue = dimension.getSelectedDimensionValues().get(i);
-                        if (dimensionValue.equals(id)) {
-                            return i;
-                        }
-                    }
-                }
-            }
+    private Integer calculateOffsetDimensionValueId(String dimensionValueId, String attributeKey) {
+        Integer offset = null;
+        if (multipliersByAttribute.containsKey(attributeKey)) {
+            Map<String, String> permutation = new HashMap<>();
+            permutation.put(measureDimension.getId(), dimensionValueId);
+            offset = calculateOffsetAtPermutation(permutation, multipliersByAttribute.get(attributeKey));
         }
-        return -1;
+        return offset;
     }
 
     public boolean existsContVariable() {

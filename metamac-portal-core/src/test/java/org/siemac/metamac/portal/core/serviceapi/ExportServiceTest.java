@@ -32,7 +32,6 @@ import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacadeImpl;
 import org.siemac.metamac.portal.core.serviceapi.utils.Asserts;
 import org.siemac.metamac.portal.core.serviceapi.utils.AssertsUtils;
 import org.siemac.metamac.portal.core.serviceapi.utils.DatasetMockBuilder;
@@ -76,9 +75,6 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Spy
     private PortalConfiguration              portalConfiguration;
 
-    @Mock
-    private SrmRestExternalFacadeImpl        srmRestExternalFacade;
-
     @InjectMocks
     private ExportServiceImpl                exportService;
 
@@ -90,7 +86,6 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        resetMocks();
     }
 
     @Override
@@ -1403,7 +1398,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1423,7 +1418,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1443,7 +1438,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1469,7 +1464,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1489,7 +1484,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes);
                 outObservations.close();
                 outAttributes.close();
@@ -1508,7 +1503,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes);
 
                 outObservations.close();
@@ -1536,7 +1531,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1550,7 +1545,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1564,7 +1559,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, query, null, datasetSelection, "es", "es");
+                ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1584,7 +1579,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -1598,7 +1593,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations);
                 outObservations.close();
 
@@ -1611,7 +1606,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 File tmpFileObservations = tempFolder.newFile();
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
-                ResourceAccess resourceAccess = new ResourceAccess(srmRestExternalFacade, dataset, datasetSelection, "es", null);
+                ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
                 exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations);
 
                 outObservations.close();
@@ -2161,34 +2156,6 @@ public class ExportServiceTest implements ExportServiceTestBase {
 
     private BufferedReader createBufferedReader(File file, String encoding) throws Exception {
         return new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
-    }
-
-    private void resetMocks() {
-        mockSrmRestExternalFacade();
-    }
-
-    private void mockSrmRestExternalFacade() {
-        Mockito.when(srmRestExternalFacade.retrieveConceptByUrn(Mockito.any(String.class))).thenAnswer(new Answer<Concept>() {
-
-            @Override
-            public Concept answer(InvocationOnMock invocation) throws Throwable {
-                Concept concept = new Concept();
-                concept.setUrn((String) invocation.getArguments()[0]);
-                Quantity quantity = new Quantity();
-
-                ItemResource unitMultiplier = new ItemResource();
-                InternationalString internationalString = new InternationalString();
-                LocalisedString localisedString = new LocalisedString();
-                localisedString.setLang("es");
-                localisedString.setValue("Unidades");
-                internationalString.getTexts().add(localisedString);
-                unitMultiplier.setName(internationalString);
-
-                quantity.setUnitMultiplier(unitMultiplier);
-                concept.setQuantity(quantity);
-                return concept;
-            }
-        });
     }
 
 }
