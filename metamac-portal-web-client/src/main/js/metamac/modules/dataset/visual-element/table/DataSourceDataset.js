@@ -125,14 +125,14 @@
         },
 
         formatMeasureUnit: function (permutation, dimensionsAttributes) {
-            var attribute = this.getUnitMeasureDimensionOrDatasetAttribute(dimensionsAttributes, App.config.unitMeasure);
-            return attribute ? attribute.value : this.data.metadata.measureUnitForSelection(permutation);
+            var unitMeasureAtribute = this.getUnitMeasureFromDimensionOrAttribute(dimensionsAttributes, App.config.unitMeasure);
+            return unitMeasureAtribute ? unitMeasureAtribute.value : this.data.metadata.measureUnitForSelection(permutation);
         },
 
         formatUnitMultiplier: function (permutation, dimensionsAttributes) {
-            var attribute = this.getUnitMeasureDimensionOrDatasetAttribute(dimensionsAttributes, App.config.unitMeasureMultiplier);
-            if (attribute) {
-                return attribute;
+            var unitMultiplierAttribute = this.getUnitMeasureFromDimensionOrAttribute(dimensionsAttributes, App.config.unitMeasureMultiplier);
+            if (unitMultiplierAttribute) {
+                return unitMultiplierAttribute;
             } else {
                 var unitMultiplier = this.data.metadata.unitMultiplierForSelection(permutation);
                 if (unitMultiplier) {
@@ -141,15 +141,15 @@
             }
         },
 
-        getUnitMeasureDimensionOrDatasetAttribute(dimensionsAttributes, propertyKey) {
+        getUnitMeasureFromDimensionOrAttribute(dimensionsAttributes, unitMeasureAttributeKey) {
             var attribute;
             if (dimensionsAttributes.length > 0) {
-                attribute = _.findWhere(dimensionsAttributes, {attributeId: propertyKey});
+                attribute = _.findWhere(dimensionsAttributes, {attributeId: unitMeasureAttributeKey});
                 if (attribute && attribute.value != '') {
                     return {value: attribute.value, urn: attribute.valueUrn};
                 }
             } else {
-                attribute = _.findWhere(this.datasetAttributes(), {id: propertyKey});
+                attribute = _.findWhere(this.datasetAttributes(), {id: unitMeasureAttributeKey});
                 if (attribute && attribute.attributeValues) {
                     var attributeValue = attribute.attributeValues.value[0];
                     return {value: App.InternationalizationUtils.localizeLabel(attributeValue.name.text), urn: attributeValue.urn};
