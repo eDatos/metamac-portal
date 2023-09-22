@@ -16,7 +16,7 @@
         initialize: function (options) {
             this.data = options.data;
             this.filterDimensions = options.filterDimensions;
-            this.dataSource = new App.DataSourceDataset({ data: this.data, filterDimensions: this.filterDimensions });
+            this.dataSource = new App.DataSourceDataset({data: this.data, filterDimensions: this.filterDimensions});
             this.optionsModel = options.optionsModel;
             this.buttons = options.buttons;
 
@@ -180,26 +180,22 @@
             var modalContentView = null;
             var modal = null;
             var title = I18n.t("filter.button.share");
-            if (this.isInternalPortal()) {
-                modalContentView = new DisabledFeatureInternalPortalView();
-            } else {
-                if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
-                    var self = this;
-                    modalContentView = new App.components.modal.PermalinkConfigModalView({
-                        filterDimensions: this.filterDimensions,
-                        onSubmit: function (permalink) {
-                            modal.close();
+            if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
+                var self = this;
+                modalContentView = new App.components.modal.PermalinkConfigModalView({
+                    filterDimensions: this.filterDimensions,
+                    onSubmit: function (permalink) {
+                        modal.close();
 
-                            modalContentView = new App.modules.dataset.DatasetShareView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions });
-                            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
-                            modal.show();
-                        },
-                    });
-                } else {
-                    modalContentView = new App.modules.dataset.DatasetShareView({ permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions });
-                }
+                        modalContentView = new App.modules.dataset.DatasetShareView({permalinkId: permalink.id, filterDimensions: self.filterDimensions});
+                        modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                        modal.show();
+                    },
+                });
+            } else {
+                modalContentView = new App.modules.dataset.DatasetShareView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
             }
-            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
             modal.show();
         },
 
@@ -208,11 +204,11 @@
             if (this.isInternalPortal()) {
                 var modalContentView = new DisabledFeatureInternalPortalView();
                 var title = I18n.t("filter.button.save");
-                var modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
                 modal.show();
             } else {
                 var self = this;
-                Edatos.UserManagement.getAccount().then(function(val) {
+                Edatos.UserManagement.getAccount().then(function (val) {
                     var modal;
                     var title = I18n.t("filter.save.modal.title");
                     if (DatasetPermalink.needsPermalink(self.filterDimensions)) {
@@ -221,17 +217,21 @@
                             onSubmit: function (permalink) {
                                 modal.close();
 
-                                modalContentView = new App.modules.dataset.DatasetSaveView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val });
-                                modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                                modalContentView = new App.modules.dataset.DatasetSaveView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val});
+                                modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
                                 modal.show();
                             },
                         });
                     } else {
-                        modalContentView = new App.modules.dataset.DatasetSaveView({ permalinkId: DatasetPermalink.getExistingPermalinkId(self.filterDimensions), filterDimensions: self.filterDimensions, user: val });
+                        modalContentView = new App.modules.dataset.DatasetSaveView({
+                            permalinkId: DatasetPermalink.getExistingPermalinkId(self.filterDimensions),
+                            filterDimensions: self.filterDimensions,
+                            user: val
+                        });
                     }
-                    modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
                     modal.show();
-                }).catch(function() {
+                }).catch(function () {
                     var modal;
                     var modalContentView = new App.components.modal.ConfirmationModalView({
                         question: I18n.t("modal.information.loginRequired.message"),
@@ -244,7 +244,7 @@
                         },
                     });
                     var title = I18n.t("modal.information.loginRequired.title");
-                    modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
                     modal.show();
                 });
             }
@@ -255,9 +255,6 @@
             var modalContentView = null;
             var modal = null;
             var title = I18n.t("filter.button.embed");
-            if (this.isInternalPortal()) {
-                modalContentView = new DisabledFeatureInternalPortalView();
-            } else {
                 if (DatasetPermalink.needsPermalink(this.filterDimensions)) {
                     var self = this;
                     modalContentView = new App.components.modal.EmbedConfigModalView({
@@ -265,46 +262,41 @@
                         onSubmit: function (permalink, embedConfigExtraData) {
                             modal.close();
 
-                            modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title });
-                            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+                            modalContentView = new App.modules.dataset.DatasetEmbedView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title});
+                            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
                             modal.show();
                         },
                     });
                 } else {
-                    modalContentView = new App.modules.dataset.DatasetEmbedView({ permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions });
+                    modalContentView = new App.modules.dataset.DatasetEmbedView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
                 }
-            }
-            modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
             modal.show();
         },
 
         clickDownload: function (e) {
             e.preventDefault();
             var modalContentView = null;
-            if (this.isInternalPortal() && !this._isExportableImage()) {
-                modalContentView = new DisabledFeatureInternalPortalView();
-            } else {
-                modalContentView = new App.modules.dataset.DatasetDownloadView({ 
-                    filterDimensions: this.filterDimensions, 
-                    estimatedNumberOfCells: {
-                        all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest
-                        selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
+            modalContentView = new App.modules.dataset.DatasetDownloadView({
+                filterDimensions: this.filterDimensions,
+                estimatedNumberOfCells: {
+                    all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest
+                    selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
+                },
+                numberOfObservations: {
+                    all: {
+                        total: this.data.getDataObservationsCount(),
+                        tableSize: this.data.getDataTableSize()
                     },
-                    numberOfObservations: {
-                        all: {
-                            total: this.data.getDataObservationsCount(),
-                            tableSize: this.data.getDataTableSize()
-                        },
-                        selection: {
-                            total: this.dataSource.getSelectionObservationsCount(),
-                            tableSize: this.filterDimensions.getTableInfo().getTableSize()
-                        }
-                    },
-                    optionsModel: this.optionsModel
-                });
-            }
+                    selection: {
+                        total: this.dataSource.getSelectionObservationsCount(),
+                        tableSize: this.filterDimensions.getTableInfo().getTableSize()
+                    }
+                },
+                optionsModel: this.optionsModel
+            });
             var title = I18n.t("filter.download.modal.title");
-            var modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
             modal.show();
         },
 

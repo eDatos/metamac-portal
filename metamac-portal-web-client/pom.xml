@@ -25,11 +25,16 @@
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-statistical-resources</groupId>
-            <artifactId>metamac-statistical-resources-rest-internal-api</artifactId>
-        </dependency> 
+            <artifactId>metamac-statistical-resources-rest-api-common</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-rest-external-api</artifactId>            
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-portal</groupId>
+            <artifactId>metamac-portal-rest-common-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
