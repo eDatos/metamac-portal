@@ -32,6 +32,7 @@ UNITS="";
 UNITS("�ndice de ocupaci�n de plazas")="Porcentaje";
 CONTACT("�ndice de ocupaci�n de plazas")="Instituto Canario de Estad�stica";
 SOURCE="Instituto Canario de Estad�stica";
+SURVEY="Encuesta de Alojamiento Tur�stico en Establecimientos Hoteleros (C00031A)";
 LINK="";
 NOTE="�ndice censal de ocupaci�n seg�n indicadores por islas, provincias y comunidades";
 CELLNOTE("Canarias","1, 2 y 3 estrellas","*","*")="Libre (F)";
