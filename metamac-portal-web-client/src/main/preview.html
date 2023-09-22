@@ -11,8 +11,16 @@
 
     <script src="//estadisticas.arte-consultores.com/external-users-external/api/captcha/authentication.js"></script>
     <!--<script src="http://localhost:8084/api/captcha/authentication.js"></script> ruta de external-users-->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-501fc6f600bacbe9"></script>
     <script type="text/javascript" src="../../target/metamac.js"></script>
+
+    <script>
+        async function importAuthentication() {
+            const resp = await fetch("https://estadisticas.arte-consultores.com/apps/includes/edatos-user-management.jsp?enableAuthentication");
+            const html = await resp.text();
+            const divFragment = document.createRange().createContextualFragment(html);
+            document.getElementById('authentication').prepend(divFragment);
+        }
+    </script>
 
     
 </head>
@@ -28,6 +36,7 @@
                     title="Página principal del Instituto Canario de Estadística (ISTAC) - Opciones de accesibilidad (tecla de acceso: i)"
                     accesskey="i">Instituto Canario de Estadística</a>
             </h1>
+            <div id="authentication"></div>
         </div>
 
 
@@ -139,6 +148,12 @@
         // Multidataset con query
         App.queryParams = { "agency": "ISTAC", "identifier": "CONSULTA_NUEVO_VERSIONADO", "type": "query", "multidatasetId": "ISTAC:C00031A_000003" };
 
+        // EDATOS-4060
+        App.queryParams = { "agency": "ISTAC", "identifier": "C00031A_000002", "version": "~latest", "type": "dataset" };
+
+        // EDATOS-4218 Error al mostrar widgets generados con filtros de actualización automática ( filtros dinámicos , dynamicSelection)
+        App.queryParams = { "agency": "ISTAC", "identifier": "C00031A_000010", "version": "~latest", "type": "dataset", "permalink": "15wz5y2ivtdfmsvy1w7lfopr51" };
+
         // Vista widget
         // App.config.widget = true;
         App.config["geographicalGranularityUrn"] = "urn:sdmx:org.sdmx.infomodel.codelist.Codelist=ISTAC:CL_GEO_GRANULARITIES(01.006)";
@@ -148,7 +163,8 @@
         App.config["enableGraphColors"] = true;
         App.config["helpUrl"] = "http://www.gobiernodecanarias.org/istac/galerias/documentos/pec-2018-2022.pdf";
         App.config["cellThreshold"] = 250_000;
-        
+        App.config["unitMeasure"] = "UNIDAD_MEDIDA";
+        App.config["unitMeasureMultiplier"] = "MULTIPLICADOR_UNIDAD";
 
         var ENABLE_IBESTAT = true;
         if (ENABLE_IBESTAT) {
@@ -205,9 +221,14 @@
             // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000007&version=1.0#visualization/column
             // https://iestadis.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IECM&resourceId=003_000018&version=1.0#visualization/column
             App.queryParams = { "agency": "IECM", "identifier": "003_000007", "version": "1.0", "type": "dataset" };
+
+            // EDATOS-4218 Error al mostrar widgets generados con filtros de actualización automática ( filtros dinámicos , dynamicSelection)
+            App.queryParams = { "agency": "IECM", "identifier": "029_000003", "version": "1.1", "type": "dataset", "permalinkId": "1zt20l1aezffbt0zad8ghdriy" };
         }
 
         App.start();
+
+        importAuthentication();
     </script>
 
 </body>

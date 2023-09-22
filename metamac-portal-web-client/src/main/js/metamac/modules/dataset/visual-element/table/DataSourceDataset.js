@@ -32,6 +32,10 @@
             return this.filterDimensions.getTableInfo().left.representationsMeasureUnits;
         },
 
+        leftHeaderUnitMultipliersByDimension: function () {
+            return this.filterDimensions.getTableInfo().left.representationsUnitMultipliers;
+        },
+
         leftHeaderDimensionsLengths: function () {
             return this.filterDimensions.getTableInfo().left.representationsLengths;
         },
@@ -58,6 +62,10 @@
 
         topHeaderMeasureUnits: function () {
             return this.filterDimensions.getTableInfo().top.representationsMeasureUnits;
+        },
+
+        topHeaderUnitMultipliers: function () {
+            return this.filterDimensions.getTableInfo().top.representationsUnitMultipliers;
         },
 
         cellAtIndex: function (cell) {
@@ -105,13 +113,48 @@
         cellInfoAtIndex: function (cell) {
             var categoryValues = this.filterDimensions.getTableInfo().getCategoryValuesForCell(cell);
             var formattedCategories = this._formatCategories(categoryValues);
+            var attributes = this.cellAttributesAtIndex(cell);
             var permutation = this.filterDimensions.getTableInfo().getCategoryIdsForCell(cell);
             return {
-                attributes: this.cellAttributesAtIndex(cell),
+                attributes: attributes,
                 categories: formattedCategories,
                 cellValue: this.data.getStringData({ids: permutation}),
-                measureUnit: this.data.metadata.measureUnitForSelection(permutation)
+                measureUnit: this.formatMeasureUnit(permutation, attributes.dimensionsAttributes),
+                unitMultiplier: this.formatUnitMultiplier(permutation, attributes.dimensionsAttributes)
             };
+        },
+
+        formatMeasureUnit: function (permutation, dimensionsAttributes) {
+            var unitMeasureAtribute = this.getUnitMeasureFromDimensionOrAttribute(dimensionsAttributes, App.config.unitMeasure);
+            return unitMeasureAtribute ? unitMeasureAtribute.value : this.data.metadata.measureUnitForSelection(permutation);
+        },
+
+        formatUnitMultiplier: function (permutation, dimensionsAttributes) {
+            var unitMultiplierAttribute = this.getUnitMeasureFromDimensionOrAttribute(dimensionsAttributes, App.config.unitMeasureMultiplier);
+            if (unitMultiplierAttribute) {
+                return unitMultiplierAttribute;
+            } else {
+                var unitMultiplier = this.data.metadata.unitMultiplierForSelection(permutation);
+                if (unitMultiplier) {
+                    return {value: App.InternationalizationUtils.localizeLabel(unitMultiplier.name.text), urn: unitMultiplier.urn};
+                }
+            }
+        },
+
+        getUnitMeasureFromDimensionOrAttribute(dimensionsAttributes, unitMeasureAttributeKey) {
+            var attribute;
+            if (dimensionsAttributes.length > 0) {
+                attribute = _.findWhere(dimensionsAttributes, {attributeId: unitMeasureAttributeKey});
+                if (attribute && attribute.value != '') {
+                    return {value: attribute.value, urn: attribute.valueUrn};
+                }
+            } else {
+                attribute = _.findWhere(this.datasetAttributes(), {id: unitMeasureAttributeKey});
+                if (attribute && attribute.attributeValues) {
+                    var attributeValue = attribute.attributeValues.value[0];
+                    return {value: App.InternationalizationUtils.localizeLabel(attributeValue.name.text), urn: attributeValue.urn};
+                }
+            }
         },
 
         canDrawLineVisualizations: function () {
@@ -209,7 +252,7 @@
          * @returns {Array}
          */
         topHeaderTooltipValues: function () {
-            return this._generateTooltipValues(this.topHeaderValues(), this.topHeaderDescriptions(), this.topHeaderMeasureUnits(), this.filterDimensions.getTableInfo().top.ids);
+            return this._generateTooltipValues(this.topHeaderValues(), this.topHeaderDescriptions(), this.topHeaderMeasureUnits(), this.topHeaderUnitMultipliers(), this.filterDimensions.getTableInfo().top.ids);
         },
 
         /**
@@ -218,7 +261,7 @@
          * @returns {Array}
          */
         leftHeaderTooltipValues: function () {
-            var leftHeaderTooltipValuesByDimension = this._generateTooltipValues(this.leftHeaderValuesByDimension(), this.leftHeaderDescriptionsByDimension(), this.leftHeaderMeasureUnitsByDimension(), this.filterDimensions.getTableInfo().left.ids);
+            var leftHeaderTooltipValuesByDimension = this._generateTooltipValues(this.leftHeaderValuesByDimension(), this.leftHeaderDescriptionsByDimension(), this.leftHeaderMeasureUnitsByDimension(), this.leftHeaderUnitMultipliersByDimension(), this.filterDimensions.getTableInfo().left.ids);
 
             return this._compressLeftHeaderValuesByDimension(leftHeaderTooltipValuesByDimension);
         },
@@ -232,7 +275,7 @@
             }, memo, this))];
         },
 
-        _generateTooltipValues: function (titlesByDimension, descriptionsByDimension, measureUnitsByDimension, dimensionIds) {
+        _generateTooltipValues: function (titlesByDimension, descriptionsByDimension, measureUnitsByDimension, unitMultipliersByDimension, dimensionIds) {
             var result = [];
 
             _.each(titlesByDimension, function (titles, dimensionIndex) {
@@ -242,6 +285,7 @@
                             title: title,
                             description: descriptionsByDimension[dimensionIndex][titleIndex],
                             measureUnit: measureUnitsByDimension[dimensionIndex][titleIndex],
+                            unitMultiplier: unitMultipliersByDimension[dimensionIndex][titleIndex],
                             dimensionId: dimensionIds[dimensionIndex]
                         }
                     })

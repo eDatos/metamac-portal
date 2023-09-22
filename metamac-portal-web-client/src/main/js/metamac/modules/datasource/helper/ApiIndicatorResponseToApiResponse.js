@@ -154,8 +154,8 @@
                 total: 0
             };
 
-            response.name = response.title;
-            response.description = response.conceptDescription;
+            response.name = this.localisedStringToInternationalString(response.title);
+            response.description = this.localisedStringToInternationalString(response.conceptDescription);
 
             response.metadata = {
                 version: response.version,
@@ -219,9 +219,7 @@
         },
 
         localisedStringToInternationalString: function (localisedString) {
-            return _.filter(localisedString, function (value, key) {
-                return key != DEFAULT;
-            }).map(function (value, key) {
+            return Object.entries(_.omit(localisedString, "__default__")).map(function([key, value]) {
                 return {
                     lang: key,
                     value: value

@@ -44,18 +44,20 @@
         savePermalink: function (content, el) {
             var requestFunction = function (url) {
                 return new Promise(function (resolve, reject) {
-                    $.ajax({
+                    var baseAjaxSettings = {
                         url: url,
                         method: "POST",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({content: content}),
-                        beforeSend: Edatos.UserManagement.prepareRequestWithEdatosUserAuthentication
-                    }).fail(function (jqXHR) {
-                        reject(jqXHR)
-                    }).done(function (val) {
-                        resolve(val)
-                    });
+                        data: JSON.stringify({content: content})
+                    };
+                    if (window.Edatos && Edatos.UserManagement) {
+                        Edatos.UserManagement.prepareRequestWithEdatosAuthentication(baseAjaxSettings).then(ajaxSettings => {
+                            $.ajax(ajaxSettings).done(resolve).fail(reject);
+                        });
+                    } else {
+                        $.ajax(baseAjaxSettings).done(resolve).fail(reject);
+                    }
                 });
             };
             if (typeof requestWithCaptcha !== 'undefined') {
@@ -67,7 +69,7 @@
                         action: "portal_permalink",
                         buttonText: I18n.t("captcha.button.text"),
                         labelText: I18n.t("captcha.label.text"),
-                        withButton: true
+                        withButton: false
                     }
                 );
             } else {

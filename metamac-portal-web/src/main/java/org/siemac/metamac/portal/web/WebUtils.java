@@ -64,6 +64,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     analyticsGoogleTrackingId         = null;
     protected static String     helpUrl                           = null;
     private static Integer      cellThreshold                     = null;
+    protected static String     unitMeasure                       = null;
+    protected static String     unitMeasureMultiplier             = null;
 
     public static String getInstallationType() {
         return installationType;
@@ -324,6 +326,22 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static Integer getCellThreshold() {
         return cellThreshold;
+    }
+
+    public static String getUnitMeasure() {
+        return unitMeasure;
+    }
+
+    public static void setUnitMeasure(String unitMeasure) {
+        WebUtils.unitMeasure = unitMeasure;
+    }
+
+    public static String getUnitMeasureMultiplier() {
+        return unitMeasureMultiplier;
+    }
+
+    public static void setUnitMeasureMultiplier(String unitMeasureMultiplier) {
+        WebUtils.unitMeasureMultiplier = unitMeasureMultiplier;
     }
 
     public static String buildPageTitle(String organisation, String resourceName, String lang) {

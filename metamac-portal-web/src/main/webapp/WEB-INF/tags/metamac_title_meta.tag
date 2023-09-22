@@ -52,6 +52,7 @@
 		Boolean internalPortal = null;
 		String ORGANISATION = "";
         String INTERNATIONALIZATION_COOKIE_ID = "";
+        String DEFAULT_INTERNATIONALIZATION_LANGUAGE = "";
 
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
@@ -63,21 +64,13 @@
 			request.setAttribute("Organisation", ORGANISATION);
             
 			request.setAttribute("analyticsGoogleTrackingId", configurationService.retrieveAnalyticsGoogleTrackingId());
-			
-            String analyticsAddthisCode = configurationService.retrieveAnalyticsAddthisCode();
-            if (analyticsAddthisCode != null && !analyticsAddthisCode.isEmpty()) {                    
-                request.setAttribute("AddthisCode","#pubid=" + analyticsAddthisCode);
-            }
-			
+
 		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
 		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
             EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
-            try {
-                INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
-            } catch (MetamacException ignored) {
-                INTERNATIONALIZATION_COOKIE_ID = "error";
-            }
+            INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
+            DEFAULT_INTERNATIONALIZATION_LANGUAGE = configurationService.retrieveDefaultInternationalizationLanguage();
             try {
                 // We group this try catch because all of them are served from external-users
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();
@@ -111,6 +104,7 @@
             request.setAttribute("organisationUrn", configurationService.retrieveOrganisationUrn());
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
             request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
+            request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
 
 		} catch (MetamacException e) {
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
@@ -126,6 +120,7 @@
 		 	request.setAttribute("organisationUrn", "error");
 		 	request.setAttribute("geographicalGranularityUrn", "error");
             request.setAttribute("internationalizationCookie", "error");
+            request.setAttribute("defaultInternationalizationLanguage", "error");
 
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
@@ -158,7 +153,8 @@
     %>
 	<%
         Cookie[] cookies = request.getCookies();
-        String locale = request.getLocale().getLanguage();
+        String defaultLocale = DEFAULT_INTERNATIONALIZATION_LANGUAGE;
+        String locale = defaultLocale;
         if (cookies != null && !"error".equals(INTERNATIONALIZATION_COOKIE_ID)) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(INTERNATIONALIZATION_COOKIE_ID)) {
@@ -168,7 +164,7 @@
         }
         request.setAttribute("currentLocale", locale);
         
-        Helpers helper = new Helpers(locale);
+        Helpers helper = new Helpers(locale, defaultLocale);
 
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);
         String resourceId = request.getParameter(Helpers.PARAMETER_RESOURCE_ID);
@@ -278,6 +274,8 @@
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
        request.setAttribute("helpUrl", WebUtils.getHelpUrl());
        request.setAttribute("cellThreshold", WebUtils.getCellThreshold());
+       request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
+       request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
        request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
 
 	%>	

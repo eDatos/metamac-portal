@@ -511,6 +511,14 @@
             if (bodyCellAtPoint) {
                 return this.dataSource.getCellTimeSerieAtIndex(bodyCellAtPoint);
             }
+        },
+
+        getCellInfoUnitMeasureMultiplier: function (absolutePoint) {
+            var bodyCellAtPoint = this.cellAtPoint(absolutePoint);
+            if (bodyCellAtPoint) {
+                var cellInfo = this.dataSource.cellInfoAtIndex(bodyCellAtPoint);
+                return App.DimensionsUtils.getUnitMultiplierAndUnitMeasureLabel(cellInfo.measureUnit, cellInfo.unitMultiplier);
+            } 
         }
 
     }

@@ -74,6 +74,7 @@
             var selectedModelId = selectedModel ? selectedModel.id : undefined;
             this.selectionModel.set(this.name, selectedModelId);
             this.trigger('select', selectedModel);
+            this.trigger('changeSelect', this);
         }
 
     });
