@@ -69,16 +69,22 @@
 }
 
 .modal-content {
-    text-align: left;
-    padding: 10px 10px 20px 10px;
-    border-radius: 0;
-    width: inherit;
+  text-align: left;
+  padding: 10px 10px 20px 10px;
+  border-radius: 0;
+  width: inherit;
 
-    h3 {
-        margin: 0 0 10px 4px;
-        text-align: left;
-        font-size: 13px;
+  &, > div:first-child {
+    &, > form {
+      min-width: min-content;
     }
+  }
+
+  h3 {
+      margin: 0 0 10px 4px;
+      text-align: left;
+      font-size: 13px;
+  }
 
   .modal-info {
     font-size: 12px;
@@ -118,6 +124,10 @@
   padding: 5px;
   fieldset, #modal-permalink-captcha {
     margin-bottom: 10px;
+  }
+  #modal-permalink-captcha {
+    display: flex;
+    justify-content: center;
   }
   .form-buttons {
     display: flex;
