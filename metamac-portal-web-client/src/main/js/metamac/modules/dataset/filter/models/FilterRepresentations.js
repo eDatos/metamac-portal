@@ -136,7 +136,14 @@
         },
 
         getSelectedRepresentations: function () {
-            return this.where({ selected: true });
+            var selected = this.where({ selected: true });
+            return selected;
+        },
+
+        getSelectedGeographicRepresentations : function() {
+            var selected = this.where({ selected: true });
+            var childWithChildrenSelected = selected.filter(child => child.children.where({ selected: true }).length > 1);
+            return childWithChildrenSelected;
         },
 
         getDrawableRepresentations: function () {
@@ -187,7 +194,7 @@
         },
 
         getSelectedGeographicLevels: function () {
-            return _(this.getSelectedRepresentations()).invoke("get", "level");
+            return _(this.getSelectedGeographicRepresentations()).invoke("get", "level");
         },
 
         setSelectedTemporalGranularity: function(temporalGranularity) {
