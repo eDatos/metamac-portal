@@ -146,10 +146,10 @@
 
         canDrawMapVisualizations: function () {
             var checkGeographicDimensionsWithTwoElements = true;
-            var geographicDimension = this.where({ type : "GEOGRAPHIC_DIMENSION" })[0].attributes.representations.models;
-            if (geographicDimension) {
-                var geographicDimensionsWithTwoElements = geographicDimension.filter(child => child.children.where({ selected: true }).length > 1);
-                checkGeographicDimensionsWithTwoElements = geographicDimensionsWithTwoElements.length > 0;
+            var geoDimensionObject = this.models.find(item => item.attributes.type === "GEOGRAPHIC_DIMENSION");
+            if (geoDimensionObject && geoDimensionObject.attributes.representations.models) {
+                var geographicDimensions = geoDimensionObject.attributes.representations.models;
+                checkGeographicDimensionsWithTwoElements = geographicDimensions.some(child => new App.modules.dataset.filter.models.FilterRepresentations().hasMoreThanOneSelected(child.children));
             }
             return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
                 && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE && checkGeographicDimensionsWithTwoElements;

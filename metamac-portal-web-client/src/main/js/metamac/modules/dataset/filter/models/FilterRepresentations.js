@@ -136,14 +136,15 @@
         },
 
         getSelectedRepresentations: function () {
-            var selected = this.where({ selected: true });
-            return selected;
+            return this.where({ selected: true });
         },
 
         getSelectedGeographicRepresentations : function() {
-            var selected = this.where({ selected: true });
-            var childWithChildrenSelected = selected.filter(child => child.children.where({ selected: true }).length > 1);
-            return childWithChildrenSelected;
+            return this.where({ selected: true }).filter(child => this.hasMoreThanOneSelected(child.children));
+        },
+
+        hasMoreThanOneSelected : function(children) {
+            return children.where({ selected: true }).length > 1
         },
 
         getDrawableRepresentations: function () {
