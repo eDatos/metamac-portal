@@ -145,8 +145,14 @@
         },
 
         canDrawMapVisualizations: function () {
+            var checkGeographicDimensionsWithTwoElements = true;
+            var geoDimensionObject = this.findWhere( { type : "GEOGRAPHIC_DIMENSION" } );
+            if (geoDimensionObject) {
+                var geographicDimensions = geoDimensionObject.get("representations");
+                checkGeographicDimensionsWithTwoElements = geographicDimensions.some(child => child.hasMoreThanOneSelected());
+            }
             return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
-                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE;
+                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE && checkGeographicDimensionsWithTwoElements;
         },
 
         preprocessSelectionWithDynamicSelection: function(selection, dynamicSelection) {

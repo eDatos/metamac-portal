@@ -139,6 +139,10 @@
             return this.where({ selected: true });
         },
 
+        getSelectedGeographicRepresentations : function() {
+            return this.where({ selected: true }).filter(child => child.hasMoreThanOneSelected());
+        },
+
         getDrawableRepresentations: function () {
             return this.where({ drawable: true });
         },
@@ -187,7 +191,7 @@
         },
 
         getSelectedGeographicLevels: function () {
-            return _(this.getSelectedRepresentations()).invoke("get", "level");
+            return _(this.getSelectedGeographicRepresentations()).invoke("get", "level");
         },
 
         setSelectedTemporalGranularity: function(temporalGranularity) {
