@@ -140,11 +140,7 @@
         },
 
         getSelectedGeographicRepresentations : function() {
-            return this.where({ selected: true }).filter(child => this.hasMoreThanOneSelected(child.children));
-        },
-
-        hasMoreThanOneSelected : function(children) {
-            return children.where({ selected: true }).length > 1
+            return this.where({ selected: true }).filter(child => child.hasMoreThanOneSelected());
         },
 
         getDrawableRepresentations: function () {
