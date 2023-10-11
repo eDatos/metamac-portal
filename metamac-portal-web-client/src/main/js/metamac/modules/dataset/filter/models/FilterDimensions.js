@@ -147,8 +147,8 @@
         canDrawMapVisualizations: function () {
             var checkGeographicDimensionsWithTwoElements = true;
             var geoDimensionObject = this.findWhere( { type : "GEOGRAPHIC_DIMENSION" } );
-            if (geoDimensionObject && geoDimensionObject.attributes.representations.models) {
-                var geographicDimensions = geoDimensionObject.attributes.representations.models;
+            if (geoDimensionObject) {
+                var geographicDimensions = geoDimensionObject.get("representations");
                 checkGeographicDimensionsWithTwoElements = geographicDimensions.some(child => child.hasMoreThanOneSelected());
             }
             return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
