@@ -29,6 +29,11 @@
             this.listenTo(this, 'change:open', this._onChangeOpen);
             this.listenTo(this, 'change:drawable change:zone change:visibleLabelType', this._invalidateTableInfo);
             this.listenTo(this, 'reverse', this._invalidateTableInfo);
+            this.listenTo(this, 'change:selected', this.changeRepresentationSelected);
+        },
+
+        changeRepresentationSelected: function() {
+            this.trigger('change');
         },
 
         _initializeZones: function () {
