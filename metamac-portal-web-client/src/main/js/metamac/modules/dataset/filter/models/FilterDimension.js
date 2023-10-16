@@ -62,12 +62,7 @@
         parse: function (attributes) {
             attributes.representations = App.modules.dataset.filter.models.FilterRepresentations.initializeWithRepresentations(attributes.representations);
             this.listenTo(attributes.representations, 'change:drawable', this._onRepresentationDrawableEvent);
-            this.listenTo(attributes.representations, 'change:selected', this.changeRepresentationSelected);
             return attributes;
-        },
-
-        changeRepresentationSelected: function() {
-            this.trigger('change:selected');
         },
 
         _onRepresentationDrawableEvent: function (model, collection, options) {
