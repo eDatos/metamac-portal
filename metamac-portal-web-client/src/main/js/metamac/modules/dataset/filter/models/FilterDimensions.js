@@ -32,10 +32,6 @@
             this.listenTo(this, 'change:selected', this.changeRepresentationSelected);
         },
 
-        changeRepresentationSelected: function() {
-            this.trigger('change');
-        },
-
         _initializeZones: function () {
             this.zones = App.modules.dataset.filter.models.FilterZones.initialize(this, this.metadata.getDimensionsPosition());
         },
