@@ -105,22 +105,10 @@
             this.listenTo(this.fullScreen, "didEnterFullScreen", this._onDidEnterFullScreen);
             this.listenTo(this.fullScreen, "didExitFullScreen", this._onDidExitFullScreen);
             this.listenTo(this.optionsModel, "change:type", this._onSelectChartType);
-            this.listenTo(this.filterDimensions, 'change', this.updateView);
 
             if (this.optionsModel.get('widget')) {
                 this.listenTo(this.optionsModel, "change:filter", this._updateDimensionsHeight);
             }
-        },
-
-        updateView: function () {
-            // Options bar
-            this.optionsView = new App.modules.dataset.OptionsView({
-                data: this.data,
-                filterDimensions: this.filterDimensions,
-                optionsModel: this.optionsModel,
-                buttons: this.visualElements
-            });
-            this.onRender();
         },
 
         _updateDimensionsHeight: function () {
