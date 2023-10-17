@@ -207,6 +207,7 @@ I18n.translations.en = {
             mediators: "Mediators",
             replaces: "Replaces",
             isReplacedBy: "Is replaced by",
+            relatedResources: "Related resources",
             rightsHolder: "Rights holder",
             copyrightDate: "Copyright date",
             license: "License",
@@ -249,6 +250,14 @@ I18n.translations.en = {
                     NO_UPDATES: "No updates",
                     SCHEDULED_UPDATE: "Scheduled update"
                 }
+            }
+        },
+        kind: {
+            types: {
+                collection: "Collections",
+                dataset: "Datasets",
+                query: "Queries",
+                multidataset: "Multidatasets"
             }
         },
         observation: {
