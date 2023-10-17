@@ -59,9 +59,9 @@
 
         parse: function (response) {
             var attributes = {};
-            attributes.name = App.i18n.localizeText(response.metadata.filteringDimension);
-            attributes.description = App.i18n.localizeText(response.description);
             this.set('nodes', App.modules.multidataset.MultidatasetNode.parseNodes(response.data.nodes, this.multidatasetIdentifier, this.filterDimensions.metadata.identifier()));
+            attributes.name = App.InternationalizationUtils.localizeLabel(response.metadata.filteringDimension);
+            attributes.description = App.InternationalizationUtils.localizeLabel(response.description);
             return attributes;
         },
 

@@ -17,8 +17,8 @@
             var multidatasetIdentifier = options.multidatasetIdentifier;
             var resourceIdentifier = options.resourceIdentifier;
 
-            attributes.name = App.i18n.localizeText(node.name);
-            attributes.description = node.description ? App.i18n.localizeText(node.description) : attributes.name;        
+            attributes.nodeName = App.InternationalizationUtils.localizeLabel(node.name);
+            attributes.description = node.description ? App.InternationalizationUtils.localizeLabel(node.description) : attributes.name;        
 
             if (node.query) {
                 attributes.type = 'query';

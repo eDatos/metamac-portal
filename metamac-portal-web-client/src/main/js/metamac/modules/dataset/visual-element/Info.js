@@ -84,7 +84,7 @@
                         var dimensionConcept = _.findWhere(dimensionsConcepts, { id: dimension.conceptIdentity.id });
                         dimension.conceptIdentity = dimensionConcept;
                         dimension.conceptName = App.DimensionsUtils.getDimensionLabel(dimensionConcept);
-                        dimension.conceptDescription = App.i18n.localizeText(dimensionConcept.description);
+                        dimension.conceptDescription = App.InternationalizationUtils.localizeLabel(dimensionConcept.description);
                         return dimension;
                     });
                     self.updateDimensions(parsedDimensions);
@@ -109,12 +109,12 @@
             var self = this;
             this.api.getMeasureConcepts(function (error, concepts) {
                 var parsedConcepts = _.map(concepts, function (concept) {
-                    concept.name = App.i18n.localizeText(concept.name);
-                    concept.description = App.i18n.localizeText(concept.description);
+                    concept.name = App.InternationalizationUtils.localizeLabel(concept.name);
+                    concept.description = App.InternationalizationUtils.localizeLabel(concept.description);
                     concept.annotations = concept.annotations ? _.map(concept.annotations.annotation, function (annotation) {
                         return {
                             href: annotation.url,
-                            name: App.i18n.localizeText(annotation.text)
+                            name: App.InternationalizationUtils.localizeLabel(annotation.text)
                         };
                     }) : [];
                     return concept;
