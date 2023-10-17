@@ -140,7 +140,14 @@
         },
 
         getSelectedGeographicRepresentations : function() {
-            return this.where({ selected: true }).filter(child => child.hasMoreThanOneSelected());
+            return this.filter(item => {
+                // Filter selected elements
+                if (item.get('selected')) {
+                  // check that there are more items selected in your level
+                  return this.filter(subItem => subItem.get('level') === item.get('level') && subItem.get('selected')) > 1;
+                }
+                return false;
+              });
         },
 
         getDrawableRepresentations: function () {
