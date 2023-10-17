@@ -139,8 +139,15 @@
             return this.where({ selected: true });
         },
 
-        getSelectedGeographicRepresentations : function() {
-            return this.where({ selected: true }).filter(child => child.hasMoreThanOneSelected());
+        getGeographicRepresentationsWithMoreThanOneElementSelected : function() {
+            return this.filter(item => {
+                // Filter selected elements
+                if (item.get('selected')) {
+                  // check that there are more items selected in your level
+                  return this.filter(subItem => subItem.get('level') === item.get('level') && subItem.get('selected')).length > 1;
+                }
+                return false;
+              });
         },
 
         getDrawableRepresentations: function () {
@@ -191,7 +198,7 @@
         },
 
         getSelectedGeographicLevels: function () {
-            return _(this.getSelectedGeographicRepresentations()).invoke("get", "level");
+            return _(this.getGeographicRepresentationsWithMoreThanOneElementSelected()).invoke("get", "level");
         },
 
         setSelectedTemporalGranularity: function(temporalGranularity) {
