@@ -132,6 +132,7 @@
         },
 
         getDimensions: function () {
+            if (!this.metadata.dimensions) { return; }
             var dimensions = this.metadata.dimensions.dimension;
             return _.map(dimensions, function (dimension) {
                 return {
@@ -176,6 +177,7 @@
 
         getRepresentations: function (dimensionId) {
             var self = this;
+            if (!this.metadata.dimensions) { return; }
             var dimensions = this.metadata.dimensions.dimension;
             var dimension = _.findWhere(dimensions, { id: dimensionId });
             var representations = [];
