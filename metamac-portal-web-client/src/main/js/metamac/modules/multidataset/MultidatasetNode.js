@@ -21,8 +21,8 @@
             attributes.description = node.description ? App.InternationalizationUtils.localizeLabel(node.description) : attributes.name;        
 
             if (node.query) {
+                attributes = _.extend({}, node.query, attributes);
                 attributes.type = 'query';
-                attributes.urn = node.query.urn;
                 var queryIdentifier = _.last(attributes.urn.split('='));
                 var urlPartMatches = queryIdentifier.match(/(.*):(.*)/);
                 attributes.agency = urlPartMatches[1];
@@ -31,8 +31,8 @@
             }
 
             if (node.dataset) {
+                attributes = _.extend({}, node.dataset, attributes);
                 attributes.type = 'dataset';
-                attributes.urn = node.dataset.urn;
                 var datasetIdentifier = _.last(attributes.urn.split('='));
                 var urlPartMatches = datasetIdentifier.match(/(.*):(.*)\(([^\)]*?)\)/);
                 attributes.agency = urlPartMatches[1];
