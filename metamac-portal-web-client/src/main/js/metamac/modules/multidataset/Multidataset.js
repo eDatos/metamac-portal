@@ -41,7 +41,6 @@
                 model.set({ open: false }, { trigger: false });
             });
 
-            var matchedElement = {};
             nodes.each(function (model) {
                 var matchIndex = this._cleanFilterQuery(model.get('name')).indexOf(filterQuery);
                 var match = matchIndex !== -1;
