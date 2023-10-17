@@ -20,6 +20,7 @@
             this.getMeasureConcepts();
             this.getMetadataFromRelatedDataset();
             this.getDatasetAttributes();
+            this.getMultidataset();
             this._getSelectionApiUrl();
             this._bindEvents();
             this.render();
@@ -57,6 +58,19 @@
 
         getDatasetAttributes: function () {
             this.datasetAttributes = this.data.getDatasetAttributes();
+        },
+
+        getMultidataset: function() {
+            var multidatasetId = this.filterDimensions.getMultidatasetId();
+            if (!multidatasetId) { return; }
+            var self = this;
+            self.multidataset = new App.modules.multidataset.Multidataset({
+                multidatasetIdentifier: multidatasetId,
+                filterDimensions: self.filterDimensions
+            });
+            self.multidataset.fetch().then(function() {
+                self.render();
+            })
         },
 
         _updateSelectionApiUrl: function () {
@@ -234,6 +248,14 @@
 
         _combineRelatedResources: function() {
             var relatedResources = this.data.metadata.getRelatedResources();
+            if (this.multidataset) {
+                if (this.multidataset.get('nodes')) {
+                    relatedResources = relatedResources.concat(this.multidataset.get('nodes').toJSON());
+                }
+                if (this.multidataset.get('metadata')) {
+                    relatedResources = relatedResources.concat(this.multidataset.get('metadata').getRelatedResources());
+                }
+            };
             return this._parseRelatedResources(relatedResources);
         },
         
