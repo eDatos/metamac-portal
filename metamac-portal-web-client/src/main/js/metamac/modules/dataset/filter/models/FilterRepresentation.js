@@ -142,11 +142,7 @@
 
         checkAnyChildVisible: function () {
             return this.children.findWhere({visible: true});
-        },
-
-        hasMoreThanOneSelected : function() {
-            return this.children.where({ selected: true }).length > 1
-        },
+        }
 
     });
 

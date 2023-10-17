@@ -149,7 +149,7 @@
             var geoDimensionObject = this.findWhere( { type : "GEOGRAPHIC_DIMENSION" } );
             if (geoDimensionObject) {
                 var geographicDimensions = geoDimensionObject.get("representations");
-                checkGeographicDimensionsWithTwoElements = geographicDimensions.some(child => child.hasMoreThanOneSelected());
+                checkGeographicDimensionsWithTwoElements = geographicDimensions.getGeographicRepresentationsWithMoreThanOneElementSelected().length > 0;
             }
             return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
                 && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE && checkGeographicDimensionsWithTwoElements;

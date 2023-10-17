@@ -139,12 +139,12 @@
             return this.where({ selected: true });
         },
 
-        getSelectedGeographicRepresentations : function() {
+        getGeographicRepresentationsWithMoreThanOneElementSelected : function() {
             return this.filter(item => {
                 // Filter selected elements
                 if (item.get('selected')) {
                   // check that there are more items selected in your level
-                  return this.filter(subItem => subItem.get('level') === item.get('level') && subItem.get('selected')) > 1;
+                  return this.filter(subItem => subItem.get('level') === item.get('level') && subItem.get('selected')).length > 1;
                 }
                 return false;
               });
@@ -198,7 +198,7 @@
         },
 
         getSelectedGeographicLevels: function () {
-            return _(this.getSelectedGeographicRepresentations()).invoke("get", "level");
+            return _(this.getGeographicRepresentationsWithMoreThanOneElementSelected()).invoke("get", "level");
         },
 
         setSelectedTemporalGranularity: function(temporalGranularity) {
