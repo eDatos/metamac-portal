@@ -615,6 +615,9 @@
                 if (this.metadata.isPartOf && this.metadata.isPartOf.resource) {
                     relatedResources = relatedResources.concat(this.metadata.isPartOf.resource);
                 }
+                if (this.metadata.isRequiredBy && this.metadata.isRequiredBy.resource) {
+                    relatedResources = relatedResources.concat(this.metadata.isRequiredBy.resource);
+                }
                 return relatedResources;
             }
         },
