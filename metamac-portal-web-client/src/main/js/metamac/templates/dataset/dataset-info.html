@@ -97,13 +97,13 @@
     {{/if}}
 
 
-    {{#if metadata.relatedResources}}
+    {{#if relatedResources}}
     <div class="field metadata-accordion">
         <div class="metadata-title">
             <div>{{message "entity.dataset.relatedResources"}}</div>
         </div>
         <div class="metadata-value">
-            {{#ulList metadata.relatedResources }} 
+            {{#ulList relatedResources }} 
             {{ fieldOutput label "" "text" false true ""}}
             <div class="field">
                     {{#ulList group }}<span class="metadata-value">{{ resourceOutput this }}</span>{{/ulList}}

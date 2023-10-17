@@ -154,6 +154,7 @@
             if (!this.$el) { return; }
 
             var context = {
+                relatedResources: this._combineRelatedResources(),
                 metadata: this._getMetadata(),
                 datasetAttributes: this.datasetAttributes,
                 dimensionLikeAttributes: this.dimensionLikeAttributes,
@@ -229,7 +230,36 @@
 
         _isQuery: function () {
             return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
-        }
+        },
+
+        _combineRelatedResources: function() {
+            var relatedResources = this.data.metadata.getRelatedResources();
+            return this._parseRelatedResources(relatedResources);
+        },
+        
+        _parseRelatedResources: function(relatedResources) {
+            return _.chain(relatedResources)
+                .uniq(function(resource) {
+                    // This uniq is mainly for queries and collections, that don't keep visible versions to user
+                    return resource.urn;
+                })
+                .map(function (resource) { 
+                    var type = resource.kind && resource.kind.split('#').length > 1 ? resource.kind.split('#')[1] : ''; 
+                    return {
+                        href: resource.visualizerHtmlLink,
+                        name: App.InternationalizationUtils.localizeLabel(resource.name),
+                        type: type                            
+                    }                        
+                })
+                .groupBy('type')
+                .map(function(group, type) {
+                    return {
+                        label: type ? I18n.t('entity.kind.types.' + type ) : '',
+                        group: group,
+                    }
+                })
+                .value();
+        },
     });
 
 }());

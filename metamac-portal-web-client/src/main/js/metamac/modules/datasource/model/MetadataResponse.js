@@ -615,23 +615,7 @@
                 if (this.metadata.isPartOf && this.metadata.isPartOf.resource) {
                     relatedResources = relatedResources.concat(this.metadata.isPartOf.resource);
                 }
-                return _.chain(relatedResources)
-                    .map(function (resource) { 
-                        var type = resource.kind && resource.kind.split('#').length > 1 ? resource.kind.split('#')[1] : ''; 
-                        return {
-                            href: resource.visualizerHtmlLink,
-                            name: App.InternationalizationUtils.localizeLabel(resource.name),
-                            type: type                            
-                        }                        
-                    })
-                    .groupBy('type')
-                    .map(function(group, type) {
-                        return {
-                            label: type ? I18n.t('entity.kind.type.' + type ) : '',
-                            group: group,
-                        }
-                    })
-                    .value();
+                return relatedResources;
             }
         },
 
