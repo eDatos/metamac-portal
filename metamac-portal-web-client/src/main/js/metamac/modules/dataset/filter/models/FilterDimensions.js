@@ -145,14 +145,17 @@
         },
 
         canDrawMapVisualizations: function () {
-            var checkGeographicDimensionsWithTwoElements = true;
+            return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
+                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE && this.checkGeographicDimensionsWithTwoElements();
+        },
+
+        checkGeographicDimensionsWithTwoElements: function() {
             var geoDimensionObject = this.findWhere( { type : "GEOGRAPHIC_DIMENSION" } );
             if (geoDimensionObject) {
                 var geographicDimensions = geoDimensionObject.get("representations");
-                checkGeographicDimensionsWithTwoElements = geographicDimensions.getGeographicRepresentationsWithMoreThanOneElementSelected().length > 0;
+                return geographicDimensions.getGeographicRepresentationsWithMoreThanOneElementSelected().length > 0;
             }
-            return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
-                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE && checkGeographicDimensionsWithTwoElements;
+            return false;
         },
 
         preprocessSelectionWithDynamicSelection: function(selection, dynamicSelection) {
