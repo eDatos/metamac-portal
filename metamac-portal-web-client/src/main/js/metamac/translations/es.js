@@ -169,7 +169,7 @@ I18n.translations.es = {
         mapbubble: {
             nomap: "Mapa no disponible"
         },
-        noSelection: "Debe sDeleccionar al menos una categoría en cada dimensión",
+        noSelection: "Debe seleccionar al menos una categoría en cada dimensión",
 
         selectAtLeastTwoItems: "Debes seleccionar al menos dos valores en el mismo nivel",
 
