@@ -56,6 +56,7 @@
         request.setAttribute("StatisticalVisualizerBase", WebUtils.getPortalBaseUrl());
         request.setAttribute("ApiUrlStatisticalResources", STATISTICAL_RESOURCES_API_URL_BASE);
         request.setAttribute("ApiUrlStructuralResources", WebUtils.getSrmApiBaseUrl());
+        request.setAttribute("ApiUrlCaptcha", WebUtils.getCaptchaExternalApiUrlBase());
         request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
         request.setAttribute("ApiUrlExport", WebUtils.getExportApiBaseUrl());
         request.setAttribute("ApiUrlIndicators", WebUtils.getIndicatorsApiBaseUrl());
@@ -140,6 +141,7 @@
 
         App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
         App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";
+        App.endpoints["captcha"] = "${ApiUrlCaptcha}";
         App.endpoints["permalinks"] = "${ApiUrlPermalinks}/v1.0";
         App.endpoints["export"] = "${ApiUrlExport}/v1.0";
         App.endpoints["statistical-visualizer"] = "${StatisticalVisualizerBase}";
@@ -148,7 +150,7 @@
 
         App.start();
 
-        LazyLoad.js("${ApiUrlStatisticalVisualizer}/js/authentication.js?d=${jsDate}");
+        LazyLoad.js("${ApiUrlCaptcha}/captcha.js?d=${jsDate}");
 
     });
 </script>
