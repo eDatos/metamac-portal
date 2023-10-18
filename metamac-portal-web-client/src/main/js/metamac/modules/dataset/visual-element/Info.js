@@ -20,6 +20,7 @@
             this.getMeasureConcepts();
             this.getMetadataFromRelatedDataset();
             this.getDatasetAttributes();
+            this.getMultidataset();
             this._getSelectionApiUrl();
             this._bindEvents();
             this.render();
@@ -59,6 +60,19 @@
             this.datasetAttributes = this.data.getDatasetAttributes();
         },
 
+        getMultidataset: function() {
+            var multidatasetId = this.filterDimensions.getMultidatasetId();
+            if (!multidatasetId) { return; }
+            var self = this;
+            self.multidataset = new App.modules.multidataset.Multidataset({
+                multidatasetIdentifier: multidatasetId,
+                filterDimensions: self.filterDimensions
+            });
+            self.multidataset.fetch().then(function() {
+                self.render();
+            })
+        },
+
         _updateSelectionApiUrl: function () {
             this._getSelectionApiUrl();
             this.render();
@@ -84,7 +98,7 @@
                         var dimensionConcept = _.findWhere(dimensionsConcepts, { id: dimension.conceptIdentity.id });
                         dimension.conceptIdentity = dimensionConcept;
                         dimension.conceptName = App.DimensionsUtils.getDimensionLabel(dimensionConcept);
-                        dimension.conceptDescription = App.i18n.localizeText(dimensionConcept.description);
+                        dimension.conceptDescription = App.InternationalizationUtils.localizeLabel(dimensionConcept.description);
                         return dimension;
                     });
                     self.updateDimensions(parsedDimensions);
@@ -109,12 +123,12 @@
             var self = this;
             this.api.getMeasureConcepts(function (error, concepts) {
                 var parsedConcepts = _.map(concepts, function (concept) {
-                    concept.name = App.i18n.localizeText(concept.name);
-                    concept.description = App.i18n.localizeText(concept.description);
+                    concept.name = App.InternationalizationUtils.localizeLabel(concept.name);
+                    concept.description = App.InternationalizationUtils.localizeLabel(concept.description);
                     concept.annotations = concept.annotations ? _.map(concept.annotations.annotation, function (annotation) {
                         return {
                             href: annotation.url,
-                            name: App.i18n.localizeText(annotation.text)
+                            name: App.InternationalizationUtils.localizeLabel(annotation.text)
                         };
                     }) : [];
                     return concept;
@@ -154,6 +168,7 @@
             if (!this.$el) { return; }
 
             var context = {
+                relatedResources: this._combineRelatedResources(),
                 metadata: this._getMetadata(),
                 datasetAttributes: this.datasetAttributes,
                 dimensionLikeAttributes: this.dimensionLikeAttributes,
@@ -229,7 +244,44 @@
 
         _isQuery: function () {
             return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
-        }
+        },
+
+        _combineRelatedResources: function() {
+            var relatedResources = this.data.metadata.getRelatedResources();
+            if (this.multidataset) {
+                if (this.multidataset.get('nodes')) {
+                    relatedResources = relatedResources.concat(this.multidataset.get('nodes').toJSON());
+                }
+                if (this.multidataset.get('metadata')) {
+                    relatedResources = relatedResources.concat(this.multidataset.get('metadata').getRelatedResources());
+                }
+            };
+            return this._parseRelatedResources(relatedResources);
+        },
+        
+        _parseRelatedResources: function(relatedResources) {
+            return _.chain(relatedResources)
+                .uniq(function(resource) {
+                    // This uniq is mainly for queries and collections, that don't keep visible versions to user
+                    return resource.urn;
+                })
+                .map(function (resource) { 
+                    var type = resource.kind && resource.kind.split('#').length > 1 ? resource.kind.split('#')[1] : ''; 
+                    return {
+                        href: resource.visualizerHtmlLink,
+                        name: App.InternationalizationUtils.localizeLabel(resource.name),
+                        type: type                            
+                    }                        
+                })
+                .groupBy('type')
+                .map(function(group, type) {
+                    return {
+                        label: type ? I18n.t('entity.kind.types.' + type ) : '',
+                        group: group,
+                    }
+                })
+                .value();
+        },
     });
 
 }());

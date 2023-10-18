@@ -207,6 +207,7 @@ I18n.translations.pt = {
             mediators: "Mediadores",
             replaces: "Substitui",
             isReplacedBy: "Substituído por",
+            relatedResources: "Recursos relacionados",
             rightsHolder: "Titular dos direitos",
             copyrightDate: "Data de copyright",
             license: "Licença",
@@ -249,6 +250,14 @@ I18n.translations.pt = {
                     NO_UPDATES: "Sem atualizações",
                     SCHEDULED_UPDATE: "Atualização agendada"
                 }
+            }
+        },
+        kind: {
+            types: {
+                collection: "Publicações",
+                dataset: "Datasets",
+                query: "Consultas",
+                multidataset: "Multidatasets"
             }
         },
         observation: {

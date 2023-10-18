@@ -42,6 +42,13 @@
 
                 return label;
             }
+        },
+
+        // Required for catala contractions
+        startsWithVowelOrH: function(string) {
+            var vowelAndHRegex = '^[aieouhAIEOUH].*';
+            return string.match(vowelAndHRegex);
         }
+
     };
 }());
