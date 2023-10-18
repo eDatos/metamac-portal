@@ -45,7 +45,7 @@ public class CaptchaFilter implements RequestHandler {
                 // If the captchaExternalApiUrlBase is not available (for example, if external-users is not installed) we don´t check for captchas
                 return null;
             }
-            urlBuilder.path("validate");
+            urlBuilder.path("api/validate");
             for (Object paramKey : Collections.list(request.getParameterNames())) {
                 urlBuilder.queryParam(paramKey.toString(), request.getParameter(paramKey.toString()));
             }
