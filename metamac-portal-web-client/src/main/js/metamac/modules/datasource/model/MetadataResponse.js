@@ -609,19 +609,17 @@
         },
 
         getRelatedResources: function () {
-            if (this.metadata.isPartOf || this.metadata.relatedDataset) {
-                var relatedResources = [];
-                if (this.metadata.relatedDataset) {
-                    relatedResources.push(this.metadata.relatedDataset);
-                }
-                if (this.metadata.isPartOf && this.metadata.isPartOf.resource) {
-                    relatedResources = relatedResources.concat(this.metadata.isPartOf.resource);
-                }
-                if (this.metadata.isRequiredBy && this.metadata.isRequiredBy.resource) {
-                    relatedResources = relatedResources.concat(this.metadata.isRequiredBy.resource);
-                }
-                return relatedResources;
+            var relatedResources = [];
+            if (this.metadata.relatedDataset) {
+                relatedResources.push(this.metadata.relatedDataset);
             }
+            if (this.metadata.isPartOf && this.metadata.isPartOf.resource) {
+                relatedResources = relatedResources.concat(this.metadata.isPartOf.resource);
+            }
+            if (this.metadata.isRequiredBy && this.metadata.isRequiredBy.resource) {
+                relatedResources = relatedResources.concat(this.metadata.isRequiredBy.resource);
+            }
+            return relatedResources;
         },
 
         getRightsHolder: function () {
