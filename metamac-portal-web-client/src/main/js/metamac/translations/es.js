@@ -170,6 +170,9 @@ I18n.translations.es = {
             nomap: "Mapa no disponible"
         },
         noSelection: "Debe seleccionar al menos una categoría en cada dimensión",
+
+        selectAtLeastTwoItems: "Debes seleccionar al menos dos valores en el mismo nivel",
+
         loading: "Cargando datos..."
     },
 
