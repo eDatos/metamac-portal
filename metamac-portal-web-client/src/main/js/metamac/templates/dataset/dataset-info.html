@@ -7,7 +7,9 @@
         </div>
         <div class="metadata-value">
             <ul>
+                {{#if hasMultidataset }}<li>{{ fieldOutput "entity.dataset.title" metadata.title "text" }}</li> {{/if}}
                 <li>{{ fieldOutput "entity.dataset.subtitle" metadata.subtitle "text" }}</li>
+                {{#if hasMultidataset }}<li>{{ fieldOutput "entity.dataset.description" metadata.description "text" }}</li> {{/if}}
                 <li>{{ fieldOutput "entity.dataset.abstract" metadata.abstract "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.statisticalOperation" metadata.statisticalOperation "text"}}</li>
                 <li>{{ fieldOutput "entity.dataset.subjectAreas" metadata.subjectAreas "text" }}</li>
@@ -97,18 +99,35 @@
     {{/if}}
 
 
-    {{#if relatedResources}}
+    {{#if relatedResources.hasAnyRelatedResources}}
     <div class="field metadata-accordion">
         <div class="metadata-title">
-            <div>{{message "entity.dataset.relatedResources"}}</div>
+            <div>{{message "entity.dataset.relatedResources.title"}}</div>
         </div>
         <div class="metadata-value">
-            {{#ulList relatedResources }} 
-            {{ fieldOutput label "" "text" false true ""}}
-            <div class="field">
-                    {{#ulList group }}<span class="metadata-value">{{ resourceOutput this }}</span>{{/ulList}}
-            </div>
-            {{/ulList}}
+            {{#if relatedResources.dataset}}
+                {{#ulList relatedResources.dataset }} 
+                {{ fieldOutput label "" "text" false true ""}}
+                <div class="field">
+                        {{#ulList group }}<span class="metadata-value">{{ resourceOutput this }}</span>{{/ulList}}
+                </div>
+                {{/ulList}}
+            {{/if}}
+            {{#if relatedResources.multidataset}}
+                <ul>
+                    <li>
+                        <div class="metadata-title">
+                            <div>{{message "entity.dataset.relatedResources.multidataset"}}</div>
+                        </div>
+                    </li>                    
+                    {{#ulList relatedResources.multidataset }} 
+                    {{ fieldOutput label "" "text" false true ""}}
+                    <div class="field">
+                            {{#ulList group }}<span class="metadata-value">{{ resourceOutput this }}</span>{{/ulList}}
+                    </div>
+                    {{/ulList}}
+                </ul>
+            {{/if}}
         </div>
     </div>
     {{/if}}

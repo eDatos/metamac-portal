@@ -177,6 +177,7 @@ I18n.translations.ca = {
     entity: {
         dataset: {
             title: "Títol",
+            description: "Descripció",
             subtitle: "Subtítol",
             abstract: "Resum",
             measureDimensionCoverageConcepts: "Conceptes que formen el cobriment de la unitat de mesura",
@@ -208,7 +209,10 @@ I18n.translations.ca = {
             mediators: "Mediadors",
             replaces: "Reemplaça ",
             isReplacedBy: "És reemplaçat per",
-            relatedResources: "Recursos relacionats",
+            relatedResources: {
+                title: "Recursos relacionats",
+                multidataset: "Relacionats amb el multidataset"
+            },
             rightsHolder: "Titular dels drets",
             copyrightDate: "Data de copyright",
             license: "Llicència",

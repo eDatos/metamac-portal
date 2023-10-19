@@ -177,6 +177,7 @@ I18n.translations.en = {
     entity: {
         dataset: {
             title: "Title",
+            description: "Description",
             subtitle: "Subtitle",
             abstract: "Abstract",
             measureDimensionCoverageConcepts: "Measure dimension coverage concepts",
@@ -208,7 +209,10 @@ I18n.translations.en = {
             mediators: "Mediators",
             replaces: "Replaces",
             isReplacedBy: "Is replaced by",
-            relatedResources: "Related resources",
+            relatedResources: {
+                title: "Related resources",
+                multidataset: "Related to multidataset"
+            },
             rightsHolder: "Rights holder",
             copyrightDate: "Copyright date",
             license: "License",
