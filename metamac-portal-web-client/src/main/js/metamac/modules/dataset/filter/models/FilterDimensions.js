@@ -65,7 +65,7 @@
 
         getDimensionsWithoutSelections: function () {
             return this.filter(function (dimension) {
-                return dimension.get('representations').where({ selected: true }).length == 0;
+                return !dimension.get('singleValue') && dimension.get('representations').where({ selected: true }).length == 0;
             });
         },
 
