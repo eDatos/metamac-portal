@@ -6,6 +6,7 @@
     App.Map.MapContainerView = Backbone.View.extend({
 
         _errorTemplate: App.templateManager.get('dataset/map/map-error'),
+        _granuralitiesWithNoSelection: App.templateManager.get('dataset/granuralities-with-no-selection'),
 
         initialize: function (options) {
             this._data = options.data;
@@ -27,6 +28,14 @@
         },
 
         update: function (newDataJson, newGeoJson, newTitle) {
+            
+            if (!this._filterDimensions.checkGeographicDimensionsWithTwoElements()) {
+                this.renderNoSelectionView();
+            } else {
+                if (this.$noSelection) {
+                    this.$noSelection.hide();
+                }
+            }
             this.dataJson = newDataJson;
             this.geoJson = newGeoJson;
             this.title = newTitle;
@@ -36,6 +45,20 @@
             if (isMap) {
                 this.updateRanges();
             }
+            
+        },
+
+        renderNoSelectionView: function () {
+            this.setupNoSelectionViewIfNeeded();
+            this.$noSelection.html(this._granuralitiesWithNoSelection());
+            this.$noSelection.show();
+        },
+
+        setupNoSelectionViewIfNeeded: function () {
+            if (this.$el.find('.dataset-no-selection').length) { return; }
+            this.$noSelection = $('<div class="dataset-no-selection dataset-message"></div>');
+            this.$noSelection.hide();
+            this.$el.append(this.$noSelection);
         },
 
         render: function () {

@@ -11,7 +11,6 @@
     App.VisualElement.Base.prototype = {
 
         _noSelectionTemplate: App.templateManager.get('dataset/dataset-no-selection'),
-        _granuralitiesWithNoSelection: App.templateManager.get('dataset/granuralities-with-no-selection'),
         _loadingTemplate: App.templateManager.get('dataset/dataset-loading'),
 
         initialize: function (options) {
@@ -287,13 +286,6 @@
             this.$noSelection.show();
         },
 
-        renderGranuralitiesWithNoSelection: function() {
-            this.setupNoSelectionViewIfNeeded();
-            this.$noSelection.html(this._granuralitiesWithNoSelection());
-            this.hideTitle();
-            this.$noSelection.show();  
-        },
-
         setupNoSelectionViewIfNeeded: function () {
             if (this.$el.find('.dataset-no-selection').length) { return; }
             this.$noSelection = $('<div class="dataset-no-selection dataset-message"></div>');
@@ -302,10 +294,6 @@
         },
 
         assertAllDimensionsHaveSelections: function () {
-            if (!this.filterDimensions.checkGeographicDimensionsWithTwoElements()) {
-                this.renderGranuralitiesWithNoSelection();
-                return false;
-            }
             if (this.allDimensionsHaveSelections()) {
                 if (this.$noSelection) {
                     this.$noSelection.hide();
