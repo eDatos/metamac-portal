@@ -18,7 +18,7 @@
             var resourceIdentifier = options.resourceIdentifier;
 
             attributes.nodeName = App.InternationalizationUtils.localizeLabel(node.name);
-            attributes.description = node.description ? App.InternationalizationUtils.localizeLabel(node.description) : attributes.name;        
+            attributes.description = node.description ? App.InternationalizationUtils.localizeLabel(node.description) : attributes.nodeName;        
 
             if (node.query) {
                 attributes = _.extend({}, node.query, attributes);
