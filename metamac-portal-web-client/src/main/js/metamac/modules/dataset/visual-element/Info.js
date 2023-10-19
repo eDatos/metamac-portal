@@ -168,7 +168,11 @@
             if (!this.$el) { return; }
 
             var context = {
-                relatedResources: this._combineRelatedResources(),
+                relatedResources: {
+                    hasAnyRelatedResources: this._getRelatedResources().length || this._getMultidatasetRelatedResources().length,
+                    dataset: this._getRelatedResources(),
+                    multidataset: this._getMultidatasetRelatedResources()
+                },
                 metadata: this._getMetadata(),
                 datasetAttributes: this.datasetAttributes,
                 dimensionLikeAttributes: this.dimensionLikeAttributes,
@@ -246,8 +250,13 @@
             return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
         },
 
-        _combineRelatedResources: function() {
+        _getRelatedResources: function() {
             var relatedResources = this.data.metadata.getRelatedResources();
+            return this._parseRelatedResources(relatedResources);
+        },
+
+        _getMultidatasetRelatedResources: function() {
+            var relatedResources = [];
             if (this.multidataset) {
                 if (this.multidataset.get('nodes')) {
                     relatedResources = relatedResources.concat(this.multidataset.get('nodes').toJSON());

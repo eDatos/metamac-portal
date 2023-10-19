@@ -207,7 +207,10 @@ I18n.translations.pt = {
             mediators: "Mediadores",
             replaces: "Substitui",
             isReplacedBy: "Substituído por",
-            relatedResources: "Recursos relacionados",
+            relatedResources: {
+                title: "Recursos relacionados",
+                multidataset: "Relacionado ao multidataset"
+            },
             rightsHolder: "Titular dos direitos",
             copyrightDate: "Data de copyright",
             license: "Licença",
