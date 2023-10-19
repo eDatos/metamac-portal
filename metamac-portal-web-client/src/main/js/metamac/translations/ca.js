@@ -176,6 +176,7 @@ I18n.translations.ca = {
     entity: {
         dataset: {
             title: "Títol",
+            description: "Descripció",
             subtitle: "Subtítol",
             abstract: "Resum",
             measureDimensionCoverageConcepts: "Conceptes que formen el cobriment de la unitat de mesura",

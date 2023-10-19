@@ -7,7 +7,9 @@
         </div>
         <div class="metadata-value">
             <ul>
+                {{#if hasMultidataset }}<li>{{ fieldOutput "entity.dataset.title" metadata.title "text" }}</li> {{/if}}
                 <li>{{ fieldOutput "entity.dataset.subtitle" metadata.subtitle "text" }}</li>
+                {{#if hasMultidataset }}<li>{{ fieldOutput "entity.dataset.description" metadata.description "text" }}</li> {{/if}}
                 <li>{{ fieldOutput "entity.dataset.abstract" metadata.abstract "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.statisticalOperation" metadata.statisticalOperation "text"}}</li>
                 <li>{{ fieldOutput "entity.dataset.subjectAreas" metadata.subjectAreas "text" }}</li>

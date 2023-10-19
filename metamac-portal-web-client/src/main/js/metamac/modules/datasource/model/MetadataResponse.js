@@ -327,7 +327,8 @@
                 title: this.getTitle(),
                 description: this.getDescription(),
 
-                hasDescriptors: this.getSubtitle() || this.getAbstract() || this.getStatisticalOperation() || this.getSubjectAreas() || this.getFormatExtentObservations(),
+                hasMultidataset: this.hasMultidataset(),
+                hasDescriptors: (this.hasMultidataset() && (this.getTitle() || this.getDescription())) || this.getSubtitle() || this.getAbstract() || this.getStatisticalOperation() || this.getSubjectAreas() || this.getFormatExtentObservations(),
                 subtitle: this.getSubtitle(),
                 abstract: this.getAbstract(),
                 statisticalOperation: this.getStatisticalOperation(),

@@ -176,6 +176,7 @@ I18n.translations.es = {
     entity: {
         dataset: {
             title: "Título",
+            description: "Descripción",
             subtitle: "Subtítulo",
             abstract: "Resumen",
             measureDimensionCoverageConcepts: "Conceptos que forman el cubrimiento de la unidad de medidad",

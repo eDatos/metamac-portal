@@ -176,6 +176,7 @@ I18n.translations.en = {
     entity: {
         dataset: {
             title: "Title",
+            description: "Description",
             subtitle: "Subtitle",
             abstract: "Abstract",
             measureDimensionCoverageConcepts: "Measure dimension coverage concepts",
