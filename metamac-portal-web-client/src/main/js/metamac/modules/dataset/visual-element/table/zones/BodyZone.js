@@ -116,8 +116,9 @@
                     }
                     self.calculateIgnoredRows(rowsTree[rowKey], numberLevels, ignoredRows, rowLevel + 1, absoluteIndex);
                 } else {
-                    ignoredRows[absoluteIndexParent + rowKey + rowLevel] = {
-                        absoluteIndex: absoluteIndexParent + rowKey + rowLevel,
+                    var absoluteIndex = absoluteIndexParent + rowKey + (rowLevel? 1 : 0);
+                    ignoredRows[absoluteIndex] = {
+                        absoluteIndex: absoluteIndex,
                         indexCell: rowsTree[rowKey],
                         blank: false,
                         rowLevel: rowLevel
