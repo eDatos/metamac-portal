@@ -232,12 +232,18 @@
 
         getSingleValue: function() {
             return this.models[0];
+        },
+        
+        isSingleValue: function() {
+            return this.length == 1;
         }
 
     }, {
             initializeWithRepresentations: function (representations) {
                 var filterRepresentations = new App.modules.dataset.filter.models.FilterRepresentations(representations, { parse: true });
-                filterRepresentations.initializeHierarchy();
+                if (!filterRepresentations.isSingleValue()) {
+                    filterRepresentations.initializeHierarchy();
+                }
 
                 return filterRepresentations;
             }
