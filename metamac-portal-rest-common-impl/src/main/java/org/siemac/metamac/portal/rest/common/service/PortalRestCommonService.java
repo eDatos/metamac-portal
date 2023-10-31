@@ -5,6 +5,6 @@ import org.siemac.metamac.portal.core.domain.Permalink;
 
 public interface PortalRestCommonService {
 
-    public Permalink retrievePermalink(ServiceContext ctx, String code);
-    public Permalink createPermalink(ServiceContext ctx, Permalink permalink);
+    Permalink retrievePermalink(ServiceContext ctx, String code);
+    Permalink createPermalink(ServiceContext ctx, Permalink permalink);
 }

@@ -33,10 +33,22 @@
         <dependency>
             <groupId>org.siemac.metamac.metamac-statistical-resources</groupId>
             <artifactId>metamac-statistical-resources-rest-external-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.siemac.metamac</groupId>
+                    <artifactId>metamac-rest-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-srm</groupId>
             <artifactId>metamac-srm-rest-external-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.siemac.metamac</groupId>
+                    <artifactId>metamac-rest-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>es.gobcan.istac.indicators</groupId>            
@@ -52,6 +64,10 @@
                     <groupId>org.antlr</groupId>
                     <artifactId>antlr-runtime</artifactId>
                 </exclusion>
+                    <exclusion>
+                        <groupId>org.siemac.metamac</groupId>
+                        <artifactId>metamac-rest-api</artifactId>
+                    </exclusion>
             </exclusions>
         </dependency>
         

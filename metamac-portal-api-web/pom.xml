@@ -26,6 +26,11 @@
             <artifactId>metamac-portal-rest-external-impl</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-portal</groupId>
+            <artifactId>metamac-portal-rest-common-impl</artifactId>
+            <version>8.5.8</version>
+        </dependency>
         
         <!-- Web -->
         <dependency>
