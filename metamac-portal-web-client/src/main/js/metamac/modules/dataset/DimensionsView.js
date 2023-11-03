@@ -226,6 +226,7 @@
 
         _onChangeSelectedForGeographicRepresentations: function (dimensionId, e) {
             this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedLevel();
+            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicLevelWithMostRepeatedValue();
             this.render();
         },
 

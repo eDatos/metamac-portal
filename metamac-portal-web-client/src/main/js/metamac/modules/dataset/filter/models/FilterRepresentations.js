@@ -187,7 +187,9 @@
         },
 
         getSelectedGeographicLevel: function () {
-            this.updateSelectedGeographicLevelWithMostRepeatedValue();
+            if (this.selectedGeographicalLevel == null) {
+                this.updateSelectedGeographicLevelWithMostRepeatedValue();
+            }
             return this.selectedGeographicalLevel;
         },
 
