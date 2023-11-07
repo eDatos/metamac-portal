@@ -226,20 +226,11 @@
 
         _onChangeSelectedForGeographicRepresentations: function (dimensionId, e) {
             this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedLevel();
-            this.updateSelectedGeographicLevel(dimensionId);
+            this.updateSelectedGeographicLevelIfNoElementsInLevel(dimensionId);
             this.render();
         },
 
-        updateSelectedGeographicLevel: function(dimensionId) {
-            //take the actual SelectedGeographicalLevel
-            var level = this.filterDimensions.get(dimensionId).get('representations').getSelectedGeographicLevel();
-            //take the representations of the current level that have more than one element selected
-            var filterRepresentations = this.filterDimensions.get(dimensionId).get('representations').getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('level').toString() === level);
-            //If there are no elements selected, then we perform the update
-            if (filterRepresentations.length == 0) {
-                this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicLevelWithMostRepeatedValue();
-            }
-        },
+        
 
         _onChangeSelectedForTemporalRepresentations: function (dimensionId, e) {
             this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedGranularity();
