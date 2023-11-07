@@ -226,7 +226,7 @@
 
         _onChangeSelectedForGeographicRepresentations: function (dimensionId, e) {
             this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedLevel();
-            this.updateSelectedGeographicLevelIfNoElementsInLevel(dimensionId);
+            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicLevelIfNoElementsInLevel(dimensionId);
             this.render();
         },
 
