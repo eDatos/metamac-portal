@@ -150,7 +150,7 @@
               });
         },
 
-        updateSelectedGeographicLevelIfNoElementsInLevel: function(dimensionId) {
+        updateSelectedGeographicLevelIfNoElementsInLevel: function() {
             //take the actual SelectedGeographicalLevel
             var level = this.getSelectedGeographicLevel();
             //take the representations of the current level that have more than one element selected
