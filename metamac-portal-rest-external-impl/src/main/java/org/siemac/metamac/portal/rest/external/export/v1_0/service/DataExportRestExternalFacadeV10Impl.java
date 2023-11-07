@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.ss.SpreadsheetVersion;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -180,6 +181,13 @@ public class DataExportRestExternalFacadeV10Impl implements DataExportV1_0 {
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
+
+            Long dimensionRows = Long.valueOf(datasetSelection.getRows());
+            Long dimensionCols = Long.valueOf(datasetSelection.getColumns());
+            if (dimensionRows > SpreadsheetVersion.EXCEL2007.getMaxRows() || dimensionCols > SpreadsheetVersion.EXCEL2007.getMaxColumns()) {
+                org.siemac.metamac.rest.common.v1_0.domain.Exception exception = RestExceptionUtils.getException(RestServiceExceptionType.DATASET_OBSERVATIONS_EXCEED_MAX_FOR_XLSX, dataset.getUrn());
+                throw new RestException(exception, Status.NOT_FOUND);
+            }
 
             return exportDatasetToExcel(dataset, datasetSelection, lang, filename);
         } catch (Exception e) {
