@@ -33,7 +33,7 @@ import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacadeImpl;
+import org.siemac.metamac.portal.core.invocation.external.SrmRestExternalFacadeImpl;
 import org.siemac.metamac.portal.core.serviceapi.utils.Asserts;
 import org.siemac.metamac.portal.core.serviceapi.utils.AssertsUtils;
 import org.siemac.metamac.portal.core.serviceapi.utils.DatasetMockBuilder;

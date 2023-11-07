@@ -20,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
+import org.siemac.metamac.portal.core.invocation.external.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;

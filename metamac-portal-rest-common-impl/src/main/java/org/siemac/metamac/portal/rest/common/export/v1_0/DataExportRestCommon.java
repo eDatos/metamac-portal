@@ -38,8 +38,8 @@ import org.siemac.metamac.portal.rest.common.service.utils.PortalRestUtils;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -57,10 +57,10 @@ public abstract class DataExportRestCommon {
     private JacksonJsonProvider                    jacksonJsonProvider;
 
 
-    protected abstract Dataset retrieveDataset(String agencyID, String resourceID, String version, String lang, String dimensionSelection) throws MetamacException;
-    protected abstract Dataset retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection);
-    protected abstract Dataset retrieveDatasetFromIndicator(String resourceID, String dimensionSelection);
-    protected abstract Query retrieveQuery(String agencyID, String resourceID, String lang, String dimensionSelection) throws MetamacException;
+    protected abstract DatasetBase retrieveDataset(String agencyID, String resourceID, String version, String lang, String dimensionSelection) throws MetamacException;
+    protected abstract DatasetBase retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection);
+    protected abstract DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection);
+    protected abstract QueryBase retrieveQuery(String agencyID, String resourceID, String lang, String dimensionSelection) throws MetamacException;
 
 
     public Response exportDatasetToTsv(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
@@ -136,7 +136,7 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".xlsx", exportationBody, ResourceType.DATASET.getName(), agencyID, resourceID, version);
             }
 
-            Dataset dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
+            DatasetBase dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -156,8 +156,8 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".xlsx", exportationBody, ResourceType.QUERY.getName(), agencyID, resourceID);
             }
 
-            Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
-            Dataset relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
+            QueryBase query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
+            DatasetBase relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
                     query.getMetadata().getRelatedDsd(), exportationBody);
@@ -180,7 +180,7 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".xlsx", exportationBody, ResourceType.INDICATOR.getName(), resourceID);
             }
 
-            Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
+            DatasetBase dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -200,7 +200,7 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".xlsx", exportationBody, ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
             }
 
-            Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
+            DatasetBase dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -211,7 +211,7 @@ public abstract class DataExportRestCommon {
         }
     }
 
-    private Response exportDatasetToExcel(ServiceContext ctx, Dataset dataset, DatasetSelection datasetSelection, String lang, String filename) {
+    private Response exportDatasetToExcel(ServiceContext ctx, DatasetBase dataset, DatasetSelection datasetSelection, String lang, String filename) {
         FileOutputStream outputStream = null;
         try {
             final File tmpFile = File.createTempFile("metamac", "xlsx");
@@ -226,7 +226,7 @@ public abstract class DataExportRestCommon {
         }
     }
 
-    private Response exportQueryToExcel(ServiceContext serviceContext, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String filename) {
+    private Response exportQueryToExcel(ServiceContext serviceContext, QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, String filename) {
         FileOutputStream outputStream = null;
         try {
             final File tmpFile = File.createTempFile("metamac", "xlsx");
@@ -288,7 +288,7 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".px", exportationBody, ResourceType.DATASET.getName(), agencyID, resourceID, version);
             }
 
-            Dataset dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
+            DatasetBase dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -309,7 +309,7 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".px", exportationBody, ResourceType.INDICATOR.getName(), resourceID);
             }
 
-            Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
+            DatasetBase dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -330,7 +330,7 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".px", exportationBody, ResourceType.INDICATOR_INSTANCE.getName(), indicatorSystemCode, resourceID);
             }
 
-            Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
+            DatasetBase dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -341,7 +341,7 @@ public abstract class DataExportRestCommon {
         }
     }
 
-    private Response exportDatasetToPx(ServiceContext ctx, Dataset dataset, DatasetSelection datasetSelection, String lang, String filename) {
+    private Response exportDatasetToPx(ServiceContext ctx, DatasetBase dataset, DatasetSelection datasetSelection, String lang, String filename) {
         FileOutputStream outputStream = null;
         try {
             // Export
@@ -367,8 +367,8 @@ public abstract class DataExportRestCommon {
                 filename = ExportUtils.buildExportFilename(".px", exportationBody, ResourceType.QUERY.getName(), agencyID, resourceID);
             }
 
-            Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
-            Dataset relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
+            QueryBase query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
+            DatasetBase relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
                     query.getMetadata().getRelatedDsd(), exportationBody);
@@ -379,7 +379,7 @@ public abstract class DataExportRestCommon {
         }
     }
 
-    private Response exportQueryToPx(ServiceContext ctx, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String filename) {
+    private Response exportQueryToPx(ServiceContext ctx, QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String filename) {
         FileOutputStream outputStream = null;
         try {
             // Export
@@ -435,7 +435,7 @@ public abstract class DataExportRestCommon {
         return exportSvgToImage(ctx, svg, filename, width, mimeType);
     }
 
-    private Dataset retrieveDataset(String urn, String lang, String dimensionSelection) throws MetamacException {
+    private DatasetBase retrieveDataset(String urn, String lang, String dimensionSelection) throws MetamacException {
         String[] urnSplited = UrnUtils.splitUrnStructure(urn);
         String agencyID = urnSplited[0];
         String resourceID = urnSplited[1];
@@ -565,7 +565,7 @@ public abstract class DataExportRestCommon {
             String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
-            Dataset dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
+            DatasetBase dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -586,7 +586,7 @@ public abstract class DataExportRestCommon {
             String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
-            Query query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
+            QueryBase query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
                     query.getMetadata().getRelatedDsd(), exportationBody);
@@ -608,7 +608,7 @@ public abstract class DataExportRestCommon {
             String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
-            Dataset dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
+            DatasetBase dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
@@ -626,7 +626,7 @@ public abstract class DataExportRestCommon {
             String dimensionSelection = DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter(exportationBody);
 
             // Retrieve dataset
-            Dataset dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
+            DatasetBase dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
             DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);

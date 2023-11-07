@@ -9,11 +9,11 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 
 import org.siemac.metamac.core.common.exception.MetamacException;
-import org.siemac.metamac.portal.core.invocation.IndicatorsRestExternalFacade;
-import org.siemac.metamac.portal.core.invocation.IndicatorsSystemsRestExternalFacade;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
-import org.siemac.metamac.portal.core.invocation.StatisticalResourcesRestExternalFacade;
-import org.siemac.metamac.portal.core.invocation.mapper.IndicatorsRestExternalMapper;
+import org.siemac.metamac.portal.core.invocation.external.IndicatorsRestExternalFacade;
+import org.siemac.metamac.portal.core.invocation.external.IndicatorsSystemsRestExternalFacade;
+import org.siemac.metamac.portal.core.invocation.external.SrmRestExternalFacade;
+import org.siemac.metamac.portal.core.invocation.external.StatisticalResourcesRestExternalFacade;
+import org.siemac.metamac.portal.core.invocation.external.mapper.IndicatorsRestExternalMapper;
 import org.siemac.metamac.portal.rest.common.export.v1_0.DataExportRestCommon;
 import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;

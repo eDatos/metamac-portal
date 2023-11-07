@@ -43,7 +43,6 @@ import org.siemac.metamac.portal.core.error.ServiceExceptionType;
 import org.siemac.metamac.portal.core.exporters.px.PxKeysEnum;
 import org.siemac.metamac.portal.core.exporters.px.PxLineContainer;
 import org.siemac.metamac.portal.core.exporters.px.PxLineContainerBuilder;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;

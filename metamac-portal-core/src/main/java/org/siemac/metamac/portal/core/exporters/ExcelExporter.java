@@ -36,7 +36,6 @@ import org.siemac.metamac.portal.core.domain.DatasetSelectionDimension;
 import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
-import org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
@@ -44,7 +43,6 @@ import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Contact;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
@@ -54,7 +52,6 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBas
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

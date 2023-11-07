@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.portal.core.domain.Permalink;
+import org.siemac.metamac.portal.rest.common.permalink.v1_0.mapper.PermalinksDo2RestMapperV10;
 import org.siemac.metamac.portal.rest.external.RestExternalConstants;
 import org.siemac.metamac.portal.rest.external.permalink.v1_0.service.utils.PermalinksDoMocks;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Rest endpoints</comment>
+
+    <entry key="metamac.statistical_resources.rest.external">http://data.istac.es/apis/statistical-resources</entry>
+    <entry key="metamac.portal.rest.external.permalinks">http://portal.istac.es/apis/permalinks</entry>
+    <entry key="metamac.portal.rest.external.export">http://portal.istac.es/apis/export</entry>
+
+</properties>

@@ -259,8 +259,18 @@
                 <version>${metamac-statistical-resources.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.siemac.metamac.metamac-statistical-resources</groupId>
+                <artifactId>metamac-statistical-resources-rest-internal-api</artifactId>
+                <version>${metamac-statistical-resources.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.siemac.metamac.metamac-srm</groupId>
                 <artifactId>metamac-srm-rest-external-api</artifactId>
+                <version>${metamac-srm-rest-external-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.siemac.metamac.metamac-srm</groupId>
+                <artifactId>metamac-srm-rest-internal-api</artifactId>
                 <version>${metamac-srm-rest-external-api.version}</version>
             </dependency>
             <dependency>

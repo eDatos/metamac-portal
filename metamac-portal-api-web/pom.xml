@@ -28,8 +28,13 @@
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
+            <artifactId>metamac-portal-rest-internal-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-rest-common-impl</artifactId>
-            <version>8.5.8</version>
+            <version>${project.version}</version>
         </dependency>
         
         <!-- Web -->

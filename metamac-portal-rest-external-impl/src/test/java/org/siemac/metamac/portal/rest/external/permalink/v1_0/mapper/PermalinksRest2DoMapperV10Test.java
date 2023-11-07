@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.portal.core.domain.Permalink;
+import org.siemac.metamac.portal.rest.common.permalink.v1_0.mapper.PermalinksRest2DoMapperV10;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
