@@ -150,6 +150,17 @@
               });
         },
 
+        updateSelectedGeographicLevelIfNoElementsInLevel: function() {
+            //take the actual SelectedGeographicalLevel
+            var level = this.getSelectedGeographicLevel();
+            //take the representations of the current level that have more than one element selected
+            var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('level').toString() === level);
+            //If there are no elements selected, then we perform the update
+            if (filterRepresentations.length == 0) {
+                this.updateSelectedGeographicLevelWithMostRepeatedValue();
+            }
+        },
+
         getDrawableRepresentations: function () {
             return this.where({ drawable: true });
         },
