@@ -154,7 +154,7 @@
             //take the actual SelectedGeographicalLevel
             var level = this.getSelectedGeographicLevel();
             //take the representations of the current level that have more than one element selected
-            this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('level').toString() === level);
+            var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('level').toString() === level);
             //If there are no elements selected, then we perform the update
             if (filterRepresentations.length == 0) {
                 this.updateSelectedGeographicLevelWithMostRepeatedValue();
