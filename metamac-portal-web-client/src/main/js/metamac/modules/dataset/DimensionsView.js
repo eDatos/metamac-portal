@@ -226,9 +226,11 @@
 
         _onChangeSelectedForGeographicRepresentations: function (dimensionId, e) {
             this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedLevel();
-            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicLevelWithMostRepeatedValue();
+            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicLevelIfNoElementsInLevel();
             this.render();
         },
+
+        
 
         _onChangeSelectedForTemporalRepresentations: function (dimensionId, e) {
             this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedGranularity();
