@@ -60,6 +60,7 @@ public class ExcelExporter {
 
     // https://andriymz.github.io/misc/apache-poi-slow-excel-generation/
     private static final int       ROW_ACCESS_WINDOW_SIZE         = 100;
+    private static final int       HEURISTIC_ROWS                 = 75;
 
     private static final XSSFColor COLOR_WHITE                    = getXSSFColor("FFFFFF");
     private static final XSSFColor COLOR_BLACK                    = getXSSFColor("000000");
@@ -132,7 +133,7 @@ public class ExcelExporter {
 
         Long dimensionRows = Long.valueOf(datasetSelection.getRows());
         Long dimensionCols = Long.valueOf(datasetSelection.getColumns());
-        if (dimensionRows > SpreadsheetVersion.EXCEL2007.getMaxRows() || dimensionCols > SpreadsheetVersion.EXCEL2007.getMaxColumns()) {
+        if ((dimensionRows + HEURISTIC_ROWS) > SpreadsheetVersion.EXCEL2007.getMaxRows() || dimensionCols > SpreadsheetVersion.EXCEL2007.getMaxColumns()) {
             throw new MetamacException(ServiceExceptionType.DATASET_OBSERVATIONS_EXCEED_MAX_FOR_XLSX, urn);
         }
     }
