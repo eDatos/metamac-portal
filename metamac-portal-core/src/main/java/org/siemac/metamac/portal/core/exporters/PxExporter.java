@@ -51,15 +51,15 @@ import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedAttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NextVersionType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,15 +79,18 @@ public class PxExporter {
     private String                 unitMeasure              = "UNIDAD_MEDIDA";
     private String                 unitMultiplier           = "MULTIPLICADOR_UNIDAD";
 
-    public PxExporter(Dataset dataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
-        datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langDefault);
+
+    public PxExporter(DatasetBase dataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
+        datasetAccess = new ResourceAccess( dataset, datasetSelection, lang, langDefault);
+
         this.datasetSelection = datasetSelection;
         this.unitMeasure = unitMeasure;
         this.unitMultiplier = unitMultiplier;
     }
 
-    public PxExporter(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
-        datasetAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langDefault);
+    public PxExporter(QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
+        datasetAccess = new ResourceAccess( query, relatedDataset, datasetSelection, lang, langDefault);
+
         this.datasetSelection = datasetSelection;
         this.unitMeasure = unitMeasure;
         this.unitMultiplier = unitMultiplier;

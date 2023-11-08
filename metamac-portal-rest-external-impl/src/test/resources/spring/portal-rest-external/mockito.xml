@@ -13,19 +13,19 @@
     </bean>
     
     <bean id="statisticalResourcesRestExternal" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="org.siemac.metamac.portal.core.invocation.StatisticalResourcesRestExternalFacade" />
+        <constructor-arg value="org.siemac.metamac.portal.core.invocation.external.StatisticalResourcesRestExternalFacade" />
     </bean>
     
     <bean id="srmRestExternalFacade" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="org.siemac.metamac.portal.core.invocation.SrmRestExternalFacade" />
+        <constructor-arg value="org.siemac.metamac.portal.core.invocation.external.SrmRestExternalFacade" />
     </bean>
             
     <bean id="indicatorsRestExternalFacade" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="org.siemac.metamac.portal.core.invocation.IndicatorsRestExternalFacade" />
+        <constructor-arg value="org.siemac.metamac.portal.core.invocation.external.IndicatorsRestExternalFacade" />
     </bean>
         
     <bean id="indicatorsSystemsRestExternalFacade" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="org.siemac.metamac.portal.core.invocation.IndicatorsSystemsRestExternalFacade" />
+        <constructor-arg value="org.siemac.metamac.portal.core.invocation.external.IndicatorsSystemsRestExternalFacade" />
     </bean>
     
         

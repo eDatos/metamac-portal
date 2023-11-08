@@ -21,6 +21,7 @@
     <import resource="classpath:/spring/portal/applicationContext.xml" />
     <!-- Rest -->
     <import resource="classpath:/spring/portal-rest-external/applicationContext.xml" />
+    <import resource="classpath:/spring/portal-rest-internal/applicationContext.xml" />
     
 </beans>
 
