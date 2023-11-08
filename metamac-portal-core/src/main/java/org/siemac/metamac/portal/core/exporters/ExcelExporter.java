@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -96,7 +97,7 @@ public class ExcelExporter {
         this.cellThreshold = cellThreshold;
         this.unitMeasure = unitMeasure;
         this.unitMultiplier = unitMultiplier;
-        enableHighPerformanceModeIfNeeded();
+        enableHighPerformanceModeIfNeeded(dataset.getUrn());
     }
 
     public ExcelExporter(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold, String unitMeasure, String unitMultiplier)
@@ -106,7 +107,7 @@ public class ExcelExporter {
         this.cellThreshold = cellThreshold;
         this.unitMeasure = unitMeasure;
         this.unitMultiplier = unitMultiplier;
-        enableHighPerformanceModeIfNeeded();
+        enableHighPerformanceModeIfNeeded(relatedDataset.getUrn());
     }
 
     /*
@@ -121,12 +122,18 @@ public class ExcelExporter {
      * they could be drawn on the same cell
      * This way of calculate the number of comment cells is subject to change when the attributes at other levels are implemented
      */
-    private void enableHighPerformanceModeIfNeeded() {
+    private void enableHighPerformanceModeIfNeeded(String urn) throws MetamacException {
         highPerformanceMode = resourceAccess.getPrimaryMeasureAttributesCount() > cellThreshold;
         if (highPerformanceMode) {
             log.info("Excel export enabled high performance mode; Aproximate number of non empty cells: "
                     + String.valueOf(resourceAccess.getPrimaryMeasureAttributesCount() + ", thresholdSize : " + cellThreshold));
             datasetSelection.moveTopDimensionsToLeft();
+        }
+
+        Long dimensionRows = Long.valueOf(datasetSelection.getRows());
+        Long dimensionCols = Long.valueOf(datasetSelection.getColumns());
+        if (dimensionRows > SpreadsheetVersion.EXCEL2007.getMaxRows() || dimensionCols > SpreadsheetVersion.EXCEL2007.getMaxColumns()) {
+            throw new MetamacException(ServiceExceptionType.DATASET_OBSERVATIONS_EXCEED_MAX_FOR_XLSX, urn);
         }
     }
 
