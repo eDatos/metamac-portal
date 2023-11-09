@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-portal</groupId>
         <artifactId>metamac-portal-parent</artifactId>
-        <version>8.5.4-SNAPSHOT</version>
+        <version>8.5.5-SNAPSHOT</version>
         <relativePath>../metamac-portal-parent/pom.xml</relativePath>
     </parent>
 
@@ -20,17 +20,12 @@
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-rest-internal-api</artifactId>
-            <version>8.5.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.siemac.metamac.metamac-portal</groupId>
-            <artifactId>metamac-portal-rest-common-api</artifactId>
-            <version>8.5.8</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-rest-common-impl</artifactId>
-            <version>${project.version}</version>
+            <version>8.5.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>

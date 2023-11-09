@@ -12,7 +12,7 @@ import es.gobcan.istac.indicators.rest.types.DataType;
 import es.gobcan.istac.indicators.rest.types.IndicatorInstanceType;
 import es.gobcan.istac.indicators.rest.types.IndicatorsSystemType;
 
-@Component("indicatorsSystemRestExternalFacade")
+@Component("indicatorsSystemRestInternalFacade")
 public class IndicatorsSystemsRestInternalFacadeImpl implements IndicatorsSystemsRestInternalFacade {
 
     private final Logger       logger       = LoggerFactory.getLogger(IndicatorsSystemsRestInternalFacadeImpl.class);

@@ -6,7 +6,7 @@ import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.core.common.util.urlrewrite.AbstractRewriteMatch;
-import org.siemac.metamac.portal.rest.external.RestExternalConstants;
+import org.siemac.metamac.portal.rest.common.RestCommonConstants;
 
 class PortalRewriteMatch extends AbstractRewriteMatch {
 
@@ -22,7 +22,7 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
 
     @Override
     protected String getLatestApiVersion() {
-        return RestExternalConstants.API_VERSION_1_0;
+        return RestCommonConstants.API_VERSION_1_0;
     }
 
     @Override

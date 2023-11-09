@@ -57,9 +57,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-@RunWith(SpringJUnit4ClassRunner.class) @ContextConfiguration(locations = {
-        "classpath:spring/portal/applicationContext-test.xml"}) @TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true) @Transactional @DirtiesContext(classMode = ClassMode.AFTER_CLASS) @Ignore public class ExportServiceTest
-        implements ExportServiceTestBase {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:spring/portal/applicationContext-test.xml"})
+@TransactionConfiguration(transactionManager = "txManagerCore", defaultRollback = true)
+@Transactional
+@DirtiesContext(classMode = ClassMode.AFTER_CLASS)
+public class ExportServiceTest implements ExportServiceTestBase {
 
     @Autowired
     @Spy
@@ -67,18 +70,16 @@ import org.springframework.transaction.annotation.Transactional;
 
     @Autowired
     @Spy
-    private PortalConfiguration portalConfiguration;
-
-    @Mock
-    private SrmRestExternalFacadeImpl srmRestExternalFacade;
+    private PortalConfiguration              portalConfiguration;
 
     @InjectMocks
-    private ExportServiceImpl exportService;
+    private ExportServiceImpl                exportService;
 
     @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    public TemporaryFolder                   tempFolder = new TemporaryFolder();
 
-    private final ServiceContext ctx = getServiceContext();
+    private final ServiceContext             ctx        = getServiceContext();
+
 
     @Before
     public void setUp() throws Exception {
@@ -165,7 +166,7 @@ import org.springframework.transaction.annotation.Transactional;
         FileOutputStream out = new FileOutputStream(tmpFile);
 
         Dataset dataset = buildDatasetWithMeasureDimensionToExport();
-        //exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
+        exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
 
@@ -191,7 +192,7 @@ import org.springframework.transaction.annotation.Transactional;
         FileOutputStream out = new FileOutputStream(tmpFile);
 
         Dataset dataset = buildDatasetToExport();
-        //  exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
+        exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
 
@@ -217,7 +218,7 @@ import org.springframework.transaction.annotation.Transactional;
         FileOutputStream out = new FileOutputStream(tmpFile);
 
         Dataset dataset = buildDatasetToExport();
-        // exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
+        exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
 
@@ -2180,25 +2181,4 @@ import org.springframework.transaction.annotation.Transactional;
     private BufferedReader createBufferedReader(File file, String encoding) throws Exception {
         return new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
     }
-
-    private void resetMocks() {
-        mockSrmRestExternalFacade();
-    }
-
-    private void mockSrmRestExternalFacade() {
-        Mockito.when(srmRestExternalFacade.retrieveConceptByUrn(Mockito.any(String.class))).thenAnswer(new Answer<Concept>() {
-
-            @Override
-            public Concept answer(InvocationOnMock invocation) throws Throwable {
-                Concept concept = new Concept();
-                concept.setUrn((String) invocation.getArguments()[0]);
-                Quantity a = new Quantity();
-                a.setUnitMultiplier(null);
-                concept.setQuantity(a);
-                return concept;
-            }
-            ;
-        });
-    }
-
 }

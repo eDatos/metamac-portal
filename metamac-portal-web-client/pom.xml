@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
-            <artifactId>metamac-portal-rest-external-api</artifactId>            
+            <artifactId>metamac-portal-rest-external-api</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-rest-internal-api</artifactId>
-            <version>8.5.8</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.siemac.metamac</groupId>
@@ -58,7 +58,7 @@
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-rest-common-api</artifactId>
-            <version>8.5.8</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.siemac.metamac</groupId>
