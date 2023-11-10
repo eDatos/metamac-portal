@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.siemac.metamac.portal.core.domain.Permalink;
 import org.siemac.metamac.portal.rest.common.RestCommonConstants;
-import org.siemac.metamac.portal.rest.common.permalink.v1_0.mapper.PermalinksDo2RestMapperV10;
 import org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.utils.PermalinksDoMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class PermalinksDo2RestMapperV10Test {
 
     @Autowired
-    private PermalinksDo2RestMapperV10 permalinksDo2RestMapperV10;
+    private PermalinksDo2RestMapperV10Impl permalinksDo2RestMapperV10;
 
     @Test
     public void testToPermalink() throws Exception {

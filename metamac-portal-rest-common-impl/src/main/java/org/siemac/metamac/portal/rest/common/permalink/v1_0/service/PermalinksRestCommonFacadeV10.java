@@ -3,7 +3,7 @@ package org.siemac.metamac.portal.rest.common.permalink.v1_0.service;
 import javax.ws.rs.core.Response;
 
 import org.fornax.cartridges.sculptor.framework.errorhandling.ServiceContext;
-import org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink;
+import org.siemac.metamac.portal.core.domain.Permalink;
 
 public interface PermalinksRestCommonFacadeV10 {
 
@@ -11,5 +11,5 @@ public interface PermalinksRestCommonFacadeV10 {
 
     Response retrievePermalinkByIdJson(String id, ServiceContext serviceContext);
 
-    Permalink createPermalink(Permalink permalink, ServiceContext serviceContext);
+    Permalink createPermalink(org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink permalink, ServiceContext serviceContext);
 }

@@ -15,8 +15,6 @@ public class PermalinksDo2RestMapperV10Impl extends PermalinksDo2RestMapperV10 {
     @Autowired
     private ConfigurationService configurationService;
 
-    private String               permalinksApiExternalEndpointV10;
-
     @PostConstruct
     public void init() throws Exception {
         // ENDPOINTS

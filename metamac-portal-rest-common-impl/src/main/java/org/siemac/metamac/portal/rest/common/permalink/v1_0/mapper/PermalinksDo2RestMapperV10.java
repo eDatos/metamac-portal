@@ -1,18 +1,13 @@
 package org.siemac.metamac.portal.rest.common.permalink.v1_0.mapper;
 
-import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.portal.rest.common.RestCommonConstants;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink;
 import org.siemac.metamac.rest.utils.RestUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class PermalinksDo2RestMapperV10 {
 
-    @Autowired
-    private ConfigurationService configurationService;
-
-    private String               permalinksApiExternalEndpointV10;
+    public String               permalinksApiExternalEndpointV10;
 
     public Permalink toPermalink(org.siemac.metamac.portal.core.domain.Permalink source) throws Exception {
         if (source == null) {
