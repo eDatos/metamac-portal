@@ -138,8 +138,10 @@
             result[this._dataAxis] = {
                 data: _.invoke(dataAxisDimensionSelectedCategories, 'get', 'visibleLabel'),
                 axisLine: {
-                    width: Constants.charts.dataAxisWidth,
-                    color: Constants.colors.istacGreyDark
+                    lineStyle: {
+                        width: Constants.charts.dataAxisWidth,
+                        color: Constants.colors.istacGreyMedium
+                    }
                 }
             };
 

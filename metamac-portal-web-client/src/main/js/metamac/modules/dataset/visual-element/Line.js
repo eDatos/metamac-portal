@@ -20,8 +20,10 @@
             },
             xAxis: {
                 axisLine: {
-                    width: Constants.charts.dataAxisWidth,
-                    color: Constants.colors.istacGreyDark
+                    lineStyle: {
+                        width: Constants.charts.dataAxisWidth,
+                        color: Constants.colors.istacGreyMedium
+                    }
                 },
                 axisLabel: {
                     interval: function (categoryIndex) {
