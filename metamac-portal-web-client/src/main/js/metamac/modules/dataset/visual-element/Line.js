@@ -37,6 +37,7 @@
             },
             dataZoom: {
                 type: 'slider',
+                showDetail: false,
                 left: 'center',
                 height: Constants.charts.lines.dataZoom.height,
                 bottom: 0,
