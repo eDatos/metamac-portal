@@ -62,6 +62,30 @@
                 OBSERVATION: "OBSERVATION",
                 REPRESENTATION: "REPRESENTATION"
             }
+        },
+
+        charts: {
+            gap: 5,
+            dataAxisWidth: 1.5,
+            grid: {
+              margin: 5
+            },
+            lines: {
+                xAxisTicks: 6,
+                dataZoom: {
+                    height: 80,
+                    end: 100,
+                    partialEnd: 48
+                }
+            },
+            legend: {
+                fontSize: 12,
+                padding: 5,
+                itemHeight: 15
+            },
+            title: {
+                fontSize: 9
+            }
         }
     };
 

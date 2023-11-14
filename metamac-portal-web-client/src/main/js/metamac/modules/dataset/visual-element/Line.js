@@ -9,137 +9,46 @@
         this.initialize(options);
         this._type = 'line';
 
-        this._masterOptions = {
-            chart: {
-                animation: false,
-                renderTo: '',
-                type: 'line',
-                borderWidth: 0,
-                backgroundColor: null,
-                marginLeft: 5,
-                marginRight: 5
-            },
-            credits: {
-                enabled: false
-            },
+        var self = this;
+        var titleBottom = Constants.charts.lines.dataZoom.height + Constants.charts.gap;
+        var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
+        this._extendChartOptions({
             tooltip: {
-                formatter: function () {
-                    return false;
-                }
+                position: 'top',
+                trigger: "item",
+                triggerOn: "none"
             },
             xAxis: {
-                labels: {
-                    formatter: function () {
-                        return this.value.substring(0, 8);
+                axisLine: {
+                    width: Constants.charts.dataAxisWidth,
+                    color: Constants.colors.istacGreyDark
+                },
+                axisLabel: {
+                    interval: function (categoryIndex) {
+                        if (self.chart) {
+                            var dataZoom = self.chart.getOption().dataZoom[0];
+                            var interval = Math.ceil((dataZoom.endValue - dataZoom.startValue + 1) / Constants.charts.lines.xAxisTicks);
+                            return ((categoryIndex - dataZoom.startValue) % interval) === 0;
+                        } else {
+                            return true;
+                        }
                     }
-                },
-                tickInterval: 1
+                }
             },
-            yAxis: {
-                gridLineWidth: 0,
-                labels: {
-                    enabled: false
-                },
-                title: {
-                    text: null
-                },
-                showFirstLabel: false
+            dataZoom: {
+                type: 'slider',
+                left: 'center',
+                height: Constants.charts.lines.dataZoom.height,
+                bottom: 0,
+                end: (this.data.metadata.getTimeDimensions().length > 0) ? Constants.charts.lines.dataZoom.end : Constants.charts.lines.dataZoom.partialEnd
             },
             title: {
-                text: ''
+                bottom: titleBottom
             },
             legend: {
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    animation: false,
-                    turboThreshold: 1200
-                },
-                line: {
-                    lineWidth: 1,
-                    marker: {
-                        enabled: false
-                    }
-                }
-            },
-            exporting: {
-                enabled: false
-            }
-        };
-        _.extend(this._chartOptions, {
-            chart: {
-                animation: false,
-                renderTo: '',
-                type: 'line',
-                borderWidth: 0,
-                backgroundColor: Constants.colors.istacWhite,
-                marginRight: 0
-            },
-            title: {
-                text: '',
-                style: {
-                    color: App.Constants.colors.hiddenText,
-                    fontSize: App.Constants.font.title.size
-                }
-            },
-            subtitle: {
-                text: '',
-                style: {
-                    color: App.Constants.colors.hiddenText
-                }
-            },
-            credits: {
-                position: {
-                    y: -5,
-                    x: -10
-                }
-            },
-            tooltip: {
-                formatter: this.tooltipFormatter
-            },
-            xAxis: {
-                labels: {}
-            },
-            yAxis: {
-                title: {
-                    text: ""
-                },
-                plotLines: [
-                    {
-                        value: 0,
-                        width: 1,
-                        color: Constants.colors.istacGreyDark
-                    }
-                ]
-            },
-            plotOptions: {
-                line: {
-                    lineWidth: 1.5,
-                    marker: {
-                        radius: 3
-                    }
-                },
-                series: {
-                    animation: false,
-                    turboThreshold: 1200
-                }
+                bottom: legendBottom
             }
         });
-
-        this._element = null;
-
-        this.config = {
-            masterHeight: 80,
-            xAxisTicks: 6
-        };
-
-        var hasTimeDimensions = this.data.metadata.getTimeDimensions().length > 0;
-        var detailZoomModelStart = hasTimeDimensions ? 0 : 0;
-        var detailZoomModelStop = hasTimeDimensions ? 1 : 0.48;
-
-        this.detailZoomModel = new App.VisualElement.line.DetailZoomModel({ start: detailZoomModelStart, stop: detailZoomModelStop });
-        this.detailZoomModel.on("change", _.debounce(this._updateDetail, 300), this);
     };
 
     App.VisualElement.LineChart.prototype = new App.VisualElement.Base();
@@ -160,13 +69,9 @@
         destroy: function () {
             this._unbindEvents();
 
-            if (this.masterChart) {
-                this.masterChart.destroy();
-                this.masterChart = null;
-            }
-            if (this.detailChart) {
-                this.detailChart.destroy();
-                this.detailChart = null;
+            if (this.chart) {
+                this.chart.dispose();
+                this.chart = null;
             }
         },
 
@@ -214,79 +119,62 @@
             this._preselectMostPopulatedTemporalGranularityRepresentations();
         },
 
-        tooltipFormatter: function () {
-            var seriesName = "";
-            if (this.series.name != "") {
-                seriesName = this.series.name + ', ';
-            }
-            return '<strong>' + seriesName + this.x + '</strong>:<br/>' + this.point.name;
-        },
-
         render: function () {
             this.$el.empty();
             this.$title = $('<h3></h3>');
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._renderContainers();
-            this._renderMaster();
-            this._renderDetail();
+            this.$chartContainer = $('<div id="line-chart-container">');
+            this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
+            this.$el.append(this.$chartContainer);
+
+            this.chart = echarts.init(this.$chartContainer[0]);
+            this._setChartMouseEvent();
+
+            this._extendChartOptions(this.getData());
+            this.chart.setOption(this._chartOptions, true);
         },
 
-        _renderContainers: function () {
-            var detailHeight = this.$el.height() - this.config.masterHeight - this.$title.height() - this.getRightsHolderHeight();
-            this.$detailContainer = $('<div id="detail-container">')
-                .css({ height: detailHeight })
-                .appendTo(this.$el);
-
-            this.$masterContainer = $('<div id="master-container">')
-                .css({ position: 'absolute', bottom: 0, height: this.config.masterHeight, width: '100%' })
-                .appendTo(this.$el);
-        },
-
-        _renderMaster: function () {
-            this.getData();
-
-            this.detailZoomModel.set('step', 1 / this.processedData.xAxis.length);
-
-            this._masterOptions.chart.renderTo = this.$masterContainer[0];
-            this._masterOptions.series = this.processedData.series;
-            this._masterOptions.xAxis.categories = this.processedData.xAxis;
-            this._masterOptions.xAxis.tickInterval = Math.ceil(this.processedData.xAxis.length / this.config.xAxisTicks);
-            this.masterChart = new Highcharts.Chart(this._masterOptions);
-
-            this.detailZoomView = new App.VisualElement.line.DetailZoomView({ model: this.detailZoomModel, "$targetEl": this.$masterContainer });
-            this.detailZoomView.render();
-        },
-
-        _renderDetail: function () {
-            var detailData = this.getDetailData();
-
-            this._chartOptions.chart.renderTo = this.$detailContainer[0];
-            this._chartOptions.series = detailData.series;
-            this._chartOptions.xAxis.categories = detailData.xAxis;
-            this._chartOptions.xAxis.min = detailData.min;
-            this._chartOptions.xAxis.max = detailData.max;
-            this._chartOptions.xAxis.tickInterval = detailData.tickInterval;
-
-            this._chartOptions.credits.text = this.getRightsHolderText();
-            this._chartOptions.credits.position.y = 0;
-            if (!this.showRightsHolderText()) {
-                this._chartOptions.credits.style = {
-                    color: App.Constants.colors.hiddenText
+        _setChartMouseEvent: function () {
+            this.chart.getZr().on("mousemove", (p) => {
+                var mouseCartesianCoords = this.chart.convertFromPixel('grid', [p.offsetX, p.offsetY]);
+                var dataIndex = mouseCartesianCoords[0];
+                var y = mouseCartesianCoords[1];
+                if (y >= 0 && dataIndex >= 0 && dataIndex < this._chartOptions.xAxis.data.length) {
+                    var seriesIndex = this._getClosestSerieToCoordinates(dataIndex, y);
+                    this.chart.dispatchAction({type: 'showTip', seriesIndex: seriesIndex, dataIndex: dataIndex});
+                    this.chart.dispatchAction({type: 'highlight', seriesIndex: seriesIndex});
+                } else {
+                    this.chart.dispatchAction({type: 'hideTip'});
+                    this.chart.dispatchAction({type: 'highlight'});
                 }
-            }
+            });
 
-            this.detailChart = new Highcharts.Chart(this._chartOptions);
+            this.chart.on("globalout", () => {
+                this.chart.dispatchAction({type: 'hideTip'});
+                this.chart.dispatchAction({type: 'highlight'});
+            });
+        },
+
+        _getClosestSerieToCoordinates: function (x, y) {
+            var series = this.chart.getOption().series;
+            return series.reduce(function (closestSerie, serie, serieIndex) {
+                if (closestSerie === null) {
+                    return serieIndex;
+                }
+                var currentSerieIsCloser = Math.abs(serie.data[x].value - y) < Math.abs(series[closestSerie].data[x].value - y);
+                return currentSerieIsCloser ? serieIndex : closestSerie
+            }, null);
         },
 
         _updateSize: function () {
-            var detailHeight = this.$el.height() - this.config.masterHeight - this.$title.height();
-            this.$detailContainer.css({ height: detailHeight });
-
-            this.detailChart.setSize(this.$detailContainer.width(), this.$detailContainer.height(), false);
-            this.masterChart.setSize(this.$masterContainer.width(), this.$masterContainer.height(), false);
-            this.detailZoomView.updateSize();
+            var newHeight = this.$el.height() - this.$title.outerHeight(true);
+            this.$chartContainer.height(newHeight);
+            this.chart.resize({
+                width: this.$chartContainer.width(),
+                height: this.$chartContainer.height()
+            });
         },
 
         update: function () {
@@ -294,130 +182,95 @@
                 return;
             }
 
-            if (!this.masterChart || !this.detailChart) {
+            if (!this.chart) {
                 this.load();
-                return;
+            } else {
+                this.updateTitle();
+
+                this._extendChartOptions(this.getData());
+                this.chart.setOption(this._chartOptions, true);
             }
-
-            this.updateTitle();
-            this._updateMaster();
-            this._updateDetail();
-        },
-
-        _updateMaster: function () {
-            var data = this.getData();
-            this.replaceSeries(this.masterChart, data.series);
-            this.masterChart.xAxis[0].setCategories(data.xAxis, false);
-            this.masterChart.redraw();
-        },
-
-        _updateDetail: function () {
-            if (!this.detailChart) {
-                return;
-            }
-            
-            var detailData = this.getDetailData();
-            this.replaceSeries(this.detailChart, detailData.series);
-
-            this.detailChart.xAxis[0].update(
-                {
-                    categories: detailData.xAxis,
-                    min: detailData.min,
-                    max: detailData.max,
-                    tickInterval: detailData.tickInterval
-                },
-                false
-            );
-
-            this.detailChart.redraw(false);
         },
 
         getData: function () {
-            var self = this;
+            var dataAxisDimension = this.getDataAxisDimension();
+            var linesDimension = this.getSeriesDimension();
+            var dataAxisDimensionCategories = this._getDataAxisDimensionCategories(dataAxisDimension);
+            var linesDimensionSelectedCategories = this._getLinesDimensionCategories(linesDimension);
 
-            var result = {};
-            var fixedPermutation = this.getFixedPermutation();
-
-            var horizontalDimension = this.filterDimensions.dimensionsAtZone('left').at(0);
-            var columnsDimension = this.filterDimensions.dimensionsAtZone('top').at(0);
-            if (!columnsDimension) {
-                columnsDimension = this.filterDimensions.dimensionsAtZone('fixed').at(0);
-            }
-            if (!columnsDimension) {
-                columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
-            }
-
-            var selectedTemporalGranularity = horizontalDimension.get("representations").getSelectedTemporalGranularity();
-            var horizontalDimensionCategories = horizontalDimension.get('representations').where({ temporalGranularity: selectedTemporalGranularity });
-            horizontalDimensionCategories = _.sortBy(horizontalDimensionCategories, function (representation) {
-                return representation.normCode;
-            }).reverse();
-            
-            var columnsDimensionSelectedCategories = this.getDrawableRepresentations(columnsDimension);
-
-            var listSeries = [];
-            _.each(columnsDimensionSelectedCategories, function (columnCategory) {
-                var serie = {};
-                serie.data = [];
-                serie.name = "";
-                // `undefined` is returned in case colors object is empty, so default values are used instead
-                serie.color = self.data.colors[columnCategory.get('urn')];
-
-                _.each(horizontalDimensionCategories, function (horizontalCategory) {
-                    var currentPermutation = {};
-                    currentPermutation[horizontalDimension.id] = horizontalCategory.id;
-                    currentPermutation[columnsDimension.id] = columnCategory.id;
-                    _.extend(currentPermutation, fixedPermutation);
-
-                    var y = null;
-                    if (horizontalCategory.get("drawable")) {
-                        y = self.data.getNumberData({ ids: currentPermutation });
-                    }
-                    var name = self.data.getStringData({ ids: currentPermutation });
-                    serie.data.push({ y: y, name: name });
-                });
-
-                serie.name = columnCategory.get('visibleLabel');
-                if (columnsDimension.get('singleValue')) {
-                    serie.showInLegend = false;
-                    serie.name = "";
+            var showLegend = !linesDimension.get('singleValue');
+            return {
+                legend: {
+                    show: showLegend
+                },
+                grid: {
+                    bottom: this._chartOptions.legend.bottom + (showLegend ? this._getLegendHeight() + Constants.charts.gap : 0)
+                },
+                series: this._getSeries(linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension),
+                xAxis: {
+                    data: _.invoke(dataAxisDimensionCategories, 'get', 'visibleLabel')
                 }
-                listSeries.push(serie);
-            });
-
-            var xaxis = _.invoke(horizontalDimensionCategories, 'get', 'visibleLabel');
-
-            // Changing the options of the chart
-            result.series = listSeries;
-            result.xAxis = xaxis;
-
-            this.processedData = result;
-
-            return result;
+            };
         },
 
-        getDetailData: function () {
-            var total = this.processedData.xAxis.length;
-            var indexStart = Math.round(total * this.detailZoomModel.get('start'));
-            var indexStop = Math.round(total * this.detailZoomModel.get('stop'));
+        _getDataAxisDimensionCategories: function (dataAxisDimension) {
+            var selectedTemporalGranularity = dataAxisDimension.get("representations").getSelectedTemporalGranularity();
+            var dataAxisDimensionCategories = dataAxisDimension.get('representations').where({
+                temporalGranularity: selectedTemporalGranularity
+            });
+            dataAxisDimensionCategories = _.sortBy(dataAxisDimensionCategories, function (representation) {
+                return representation.normCode;
+            }).reverse();
+            return dataAxisDimensionCategories;
+        },
 
-            var marginIndexStart = Math.max(0, indexStart - 1);
-            var marginIndexStop = Math.min(total, indexStop + 1);
+        _getLinesDimensionCategories: function (linesDimension) {
+            return this.getDrawableRepresentations(linesDimension);
+        },
+        
+        _getSeries(linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension) {
+            var series = [];
 
-            var tickInterval = 1;
-            if (this.filterDimensions.dimensionsAtZone('left').at(0).isTimeDimension()) {
-                var filteredTotal = marginIndexStop - marginIndexStart;
-                tickInterval = Math.ceil(filteredTotal / this.config.xAxisTicks);
-            }
+            var self = this;
+            var fixedPermutation = this.getFixedPermutation();
+            _.each(linesDimensionSelectedCategories, function (linesCategory) {
+                // `undefined` is returned in case colors object is empty, so default values are used instead
+                var lineColor = self.data.colors[linesCategory.get('urn')];
+                var serie = {
+                    type: "line",
+                    lineStyle: {
+                        width: 1.5,
+                        color: lineColor
+                    },
+                    itemStyle: {
+                        color: lineColor
+                    },
+                    symbolSize: 3,
+                    largeThreshold: 1200,
+                    animation: false,
+                    name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
+                    emphasis: {
+                        focus: "series"
+                    },
+                    data: []
+                };
 
-            var result = {
-                series: this.processedData.series,
-                xAxis: this.processedData.xAxis,
-                min: indexStart,
-                max: indexStop - 1,
-                tickInterval: tickInterval
-            };
-            return result;
+                _.each(dataAxisDimensionCategories, function (dataAxisCategory) {
+                    var currentPermutation = {};
+                    currentPermutation[dataAxisDimension.id] = dataAxisCategory.id;
+                    currentPermutation[linesDimension.id] = linesCategory.id;
+                    _.extend(currentPermutation, fixedPermutation);
+
+                    serie.data.push({
+                        value: dataAxisCategory.get("drawable") ? self.data.getNumberData({ ids: currentPermutation }) : null,
+                        name: self.data.getStringData({ ids: currentPermutation })
+                    });
+                });
+
+                series.push(serie);
+            });
+
+            return series;
         }
 
     });

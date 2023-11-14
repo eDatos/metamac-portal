@@ -1,15 +1,36 @@
 (function () {
     "use strict";
 
+    var Constants = App.Constants;
+
     App.namespace("App.VisualElement.RectangularBars");
 
     App.VisualElement.RectangularBars = function (options) {
         this.initialize(options);
+        this._dataAxis = 'xAxis';
     };
 
     App.VisualElement.RectangularBars.prototype = new App.VisualElement.Base();
 
     _.extend(App.VisualElement.RectangularBars.prototype, {
+
+        initializeRectangularBars: function (options) {
+            this.initialize(options);
+
+            var titleBottom = Constants.charts.gap;
+            var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
+            this._extendChartOptions({
+                tooltip: {
+                    position: this._dataAxis === "xAxis" ? 'top' : 'right'
+                },
+                title: {
+                    bottom: titleBottom
+                },
+                legend: {
+                    bottom: legendBottom
+                }
+            });
+        },
 
         load: function () {
             this._bindEvents();
@@ -25,8 +46,8 @@
         destroy: function () {
             this._unbindEvents();
 
-            if (this.chart && this.chart.renderTo) {
-                this.chart.destroy();
+            if (this.chart) {
+                this.chart.dispose();
                 this.chart = null;
             }
         },
@@ -89,194 +110,126 @@
 
             this.$el.append(this.$chartContainer);
 
+            this.chart = echarts.init(this.$chartContainer[0]);
+
             var data = this.getData();
-            this._chartOptions.series = data.series;
-            this._chartOptions.xAxis.categories = data.xAxis;
-            this._chartOptions.chart.renderTo = this.$chartContainer[0];
-
-            this._chartOptions.credits.text = this.getRightsHolderText();
-            this._chartOptions.credits.position.y = 0;
-            if (!this.showRightsHolderText()) {
-                this._chartOptions.credits.style = {
-                    color: App.Constants.colors.hiddenText
-                }
-            }
-
-            this.chart = new Highcharts.Chart(this._chartOptions);
+            this._extendChartOptions(data);
+            this.chart.setOption(this._chartOptions, true);
 
             this.$el.on("resize", function () { });
         },
 
         resizeFullScreen: function () { },
 
-        tooltipFormatter: function () {
-            var seriesName = "";
-            if (this.series.name != "") {
-                seriesName = this.series.name + ', ';
-            }
-            return '<strong>' + seriesName + this.x + '</strong>:<br/>' + this.point.name;
-        },
-
         getData: function () {
-            var self = this;
-
-            var result = {};
-            var fixedPermutation = this.getFixedPermutation();
-
-            var horizontalDimension = this.filterDimensions.dimensionsAtZone('left').at(0);
-            var columnsDimension = this.filterDimensions.dimensionsAtZone('top').at(0);
-            if (!columnsDimension) {
-                columnsDimension = this.filterDimensions.dimensionsAtZone('fixed').at(0);
-            }
-            if (!columnsDimension) {
-                columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
-            }
-            var horizontalDimensionSelectedCategories = this.getDrawableRepresentations(horizontalDimension);
-            var horizontalDimensionIsTemporal = horizontalDimension.isTimeDimension();
+            var dataAxisDimension = this.getDataAxisDimension();
+            var columnsDimension = this.getSeriesDimension();
+            var dataAxisDimensionSelectedCategories = this.getDrawableRepresentations(dataAxisDimension);
             var columnsDimensionSelectedCategories = this.getDrawableRepresentations(columnsDimension);
 
-            var listSeries = [];
-            var horizontalAxisCategories = [];
-            var columnAxisCategories = [];
-            _.each(horizontalDimensionSelectedCategories, function (horizontalCategory, horizontalCategoryIndex) {
-
-                var columnSeries = [];
-                _.each(columnsDimensionSelectedCategories, function (columnCategory, columnCategoryIndex) {
-                    var serie = {};
-                    var currentPermutation = {};
-                    currentPermutation[horizontalDimension.id] = horizontalCategory.id;
-                    currentPermutation[columnsDimension.id] = columnCategory.id;
-                    _.extend(currentPermutation, fixedPermutation);
-
-                    var y = self.data.getNumberData({ ids: currentPermutation });
-                    var name = self.data.getStringData({ ids: currentPermutation });
-                    // Instead of saving the data as an array on the same serie, we create as many series as needed so we can sort them independtly
-                    // `undefined` is returned in case colors object is empty, so default values are used instead
-                    serie.data = [{ y: y, name: name, x: horizontalCategoryIndex }];
-                    if (columnsDimensionSelectedCategories.length === 1) {
-                        serie.data[0].color = self.data.colors[horizontalCategory.get('urn')]
-                    } else {
-                        serie.data[0].color = self.data.colors[columnCategory.get('urn')]
-                    }
-                    serie.name = columnCategory.get('visibleLabel');
-
-                    // We keep track on the categories assigned to each serie, so later we can assign the proper x (order) and column color
-                    serie.horizontalCategory = horizontalCategoryIndex;
-                    serie.columnCategory = columnCategoryIndex;
-                    
-                    // Used for sorting later
-                    serie.id = columnCategory.get('id');
-
-                    // We cheat Highcharts, stacking columns with the same columnCategory with themselves, so we get the proper width
-                    serie.stack = columnCategory.get('id');
-                    serie.stacking = true;
-
-                    var order = null;
-                    switch (horizontalDimension.get('sortBy')) {
-                        case App.Constants.dimension.sortBy.OBSERVATION:
-                            order = y;
-                            break;
-                        case App.Constants.dimension.sortBy.REPRESENTATION:
-                            if (horizontalDimensionIsTemporal) {
-                                order = horizontalCategoryIndex;
-                            } else {
-                                order = -horizontalCategoryIndex;
-                            }
-                            break;
-                        default:
-                            console.error("sortBy unsupported ", horizontalDimension.get('sortBy'));
-                            order = y;
-                            break;
-                    }
-
-                    // Instead of checking if we are working with nested columns or not, we simply store the last order.
-                    // In the case of not nested columns, the x axis will be sorted properly
-                    horizontalAxisCategories[horizontalCategoryIndex] = { horizontalCategoryIndex: horizontalCategoryIndex, order: order };
-
-                    columnSeries.push(serie);
-                });
-
-
-                var columnSortBy = columnsDimension.get('sortBy');
-                var columnDimensionIsTemporal = columnsDimension.get('type') == "TIME_DIMENSION";
-                columnSeries = _.chain(columnSeries)
-                    .map(function(serie) {
-                        if (columnsDimension.get('singleValue')) {
-                            serie.showInLegend = false;
-                            serie.name = "";
-                        }
-                        return serie;
-                    })
-                    .sortBy(function (serie) {
-                        switch (columnSortBy) {
-                            case App.Constants.dimension.sortBy.OBSERVATION:
-                                return -serie.data[0].y;
-                            case App.Constants.dimension.sortBy.REPRESENTATION:
-                                if (columnDimensionIsTemporal) {
-                                    return serie.id;
-                                } else {
-                                    return -serie.id;
-                                }
-                            default:
-                                console.error("sortBy unsupported ", columnSortBy);
-                                return -serie.data[0].y;
-                        }
-
-                    })
-                    .value();
-
-                listSeries = [].concat(listSeries, columnSeries);
-            });
-
-            // Normalize horizontal axis order so the columns are contiguous
-            horizontalAxisCategories = _.indexBy(_.sortBy(horizontalAxisCategories, function (horizontalAxisCategory) {
-                return -horizontalAxisCategory.order;
-            }).map(function (horizontalAxisCategory, index) {
-                horizontalAxisCategory.order = index;
-                return horizontalAxisCategory;
-            }), 'horizontalCategoryIndex');
-
-            // Build and order xaxis
-            var xaxis = _.invoke(horizontalDimensionSelectedCategories, 'get', 'visibleLabel');
-            xaxis = _.sortBy(xaxis, function (label, horizontalDimensionSelectedCategoryIndex) {
-                return horizontalAxisCategories[horizontalDimensionSelectedCategoryIndex].order;
-            });
-
-            // We need to reprocess the series so we assign each column each proper sorted color and x value
-            result.series = _.map(listSeries, function (serie, index) {
-                // We decide the colors the first time we get the value, because that will be the same value they will use on the legend
-                if (!columnAxisCategories[serie.columnCategory]) {
-                    var totalColors = Highcharts.getOptions().colors.length;
-                    if (serie.data[0].color) {
-                        columnAxisCategories[serie.columnCategory] = serie.data[0].color;
-                    } else {
-                        columnAxisCategories[serie.columnCategory] = Highcharts.getOptions().colors[index % totalColors];
-                    }
-                    serie.color = columnAxisCategories[serie.columnCategory];
-                    if (columnsDimensionSelectedCategories.length === 1) {
-                        serie.showInLegend = false;
-                    }
-                } else { // Else, we don´t have to show the label on the legend
-                    serie.showInLegend = false;
-                    serie.dataLabels = {
-                        enabled: false
-                    };
+            var result = {};
+            result.legend = {
+                show: !columnsDimension.get('singleValue') && columnsDimensionSelectedCategories.length !== 1
+            };
+            result.grid = {
+                bottom: this._chartOptions.legend.bottom + (result.legend.show ? this._getLegendHeight() + Constants.charts.gap : 0)
+            }
+            result.series = this._getSeries(columnsDimensionSelectedCategories, columnsDimension, dataAxisDimensionSelectedCategories, dataAxisDimension);
+            result[this._dataAxis] = {
+                data: _.invoke(dataAxisDimensionSelectedCategories, 'get', 'visibleLabel'),
+                axisLine: {
+                    width: Constants.charts.dataAxisWidth,
+                    color: Constants.colors.istacGreyDark
                 }
-                serie.data[0].x = horizontalAxisCategories[serie.horizontalCategory].order;
-                if (!serie.data[0].color) {
-                    serie.data[0].color = columnAxisCategories[serie.columnCategory];
-                }
-                return serie;
-            });
+            };
 
-            result.xAxis = xaxis;
-
-            result = this.removeIgnoredValuesFromSeries(result);
+            this._removeIgnoredValuesFromSeries(result);
+            this._sortSeriesAndDataAxis(result, dataAxisDimension, columnsDimension);
 
             return result;
         },
+        
+        _getSeries: function (columnsDimensionSelectedCategories, columnsDimension, dataAxisDimensionSelectedCategories, dataAxisDimension) {
+            var self = this;
 
-        removeIgnoredValuesFromSeries: function (result) {
+            var series = [];
+            var fixedPermutation = this.getFixedPermutation();
+            _.each(columnsDimensionSelectedCategories, function (columnCategory) {
+                var serie = {};
+                serie.id = columnCategory.get('id');
+                serie.type = 'bar';
+                serie.name = columnCategory.get('visibleLabel');
+                serie.data = [];
+
+                _.each(dataAxisDimensionSelectedCategories, function (dataAxisCategory, dataAxisCategoryIndex) {
+                    var currentPermutation = {};
+                    currentPermutation[dataAxisDimension.id] = dataAxisCategory.id;
+                    currentPermutation[columnsDimension.id] = columnCategory.id;
+                    _.extend(currentPermutation, fixedPermutation);
+
+                    serie.data.push({
+                        value: self.data.getNumberData({ ids: currentPermutation }),
+                        name: self.data.getStringData({ ids: currentPermutation }),
+                        itemStyle: {
+                            // `undefined` is returned in case colors object is empty, so default values are used instead
+                            color: (columnsDimensionSelectedCategories.length === 1)
+                                ? self.data.colors[dataAxisCategory.get('urn')]
+                                : self.data.colors[columnCategory.get('urn')]
+                        },
+                        groupId: dataAxisCategoryIndex
+                    });
+                });
+
+                series.push(serie);
+            });
+            
+            return series;
+        },
+
+        _sortSeriesAndDataAxis: function (result, dataAxisDimension, columnsDimension) {
+            // Instead of checking if we are working with nested columns or not, we simply store the last serie order.
+            // In the case of not nested columns, the x axis will be sorted properly
+            var dataAxisSortBy = dataAxisDimension.get('sortBy');
+            var dataAxisDimensionIsTemporal = dataAxisDimension.isTimeDimension();
+            var dataAxisOrderMap = _.sortBy(result.series[result.series.length - 1].data, function (lastSerieDataItem, index) {
+
+                switch (dataAxisSortBy) {
+                    case App.Constants.dimension.sortBy.OBSERVATION:
+                        return lastSerieDataItem.value;
+                    case App.Constants.dimension.sortBy.REPRESENTATION:
+                        return dataAxisDimensionIsTemporal ? index : -index;
+                    default:
+                        console.error("sortBy unsupported ", dataAxisSortBy);
+                        return lastSerieDataItem.value;
+                }
+            }).map(function (order) {
+                return order.groupId;
+            });
+            if (this._dataAxis === "xAxis") {
+                dataAxisOrderMap.reverse();
+            }
+
+            result[this._dataAxis].data = dataAxisOrderMap.map(i => result[this._dataAxis].data[i]);
+
+            var columnSortBy = columnsDimension.get('sortBy');
+            var columnDimensionIsTemporal = columnsDimension.get('type') === "TIME_DIMENSION";
+            result.series = _.sortBy(result.series, function (serie) {
+                switch (columnSortBy) {
+                    case App.Constants.dimension.sortBy.OBSERVATION:
+                        return -serie.data[0].value;
+                    case App.Constants.dimension.sortBy.REPRESENTATION:
+                        return columnDimensionIsTemporal ? serie.id : -serie.id;
+                    default:
+                        console.error("sortBy unsupported ", columnSortBy);
+                        return -serie.data[0].value;
+                }
+            }).map(function (serie) {
+                serie.data = dataAxisOrderMap.map(i => serie.data[i]);
+                return serie;
+            });
+        },
+
+        _removeIgnoredValuesFromSeries: function (result) {
             var toRemove = [];
 
             if (this.filterDimensions.getValuesToIgnoreStatus().NULL) {
@@ -290,35 +243,17 @@
                 return result;
             }
 
-            var filteredSeries = [];
-            var filteredXAxis = [];
-
-            for (var [i, xAxis] of result.xAxis.entries()) {
-                var series = result.series.filter(serie => serie.data[0].x === i);
-
-                if (series.every(serie => toRemove.includes(serie.data[0].y))) {
-                    // if all the values of the serie are to be removed
-                    // then the entire category must be removed too from the graph
-                    continue;
+            var axisIndex = 0;
+            while (axisIndex < result[this._dataAxis].data.length) {
+                if (result.series.every(serie => toRemove.includes(serie.data[axisIndex].value))) {
+                    result[this._dataAxis].data.splice(axisIndex, 1);
+                    result.series.forEach(function (serie) {
+                        serie.data.splice(axisIndex, 1);
+                    });
+                } else {
+                    axisIndex++;
                 }
-
-                for (const serie of series) {
-                    // update the category of the serie in case other before has been deleted
-                    serie.data[0].x = filteredXAxis.length;
-                }
-
-                filteredSeries.push(...series);
-                filteredXAxis.push(xAxis);
             }
-
-            filteredSeries = filteredSeries.sort((a, b) => {
-                return result.series.indexOf(a) - result.series.indexOf(b);
-            });
-
-            return {
-                series: filteredSeries,
-                xAxis: filteredXAxis
-            };
         },
 
         update: function () {
@@ -334,18 +269,17 @@
             this.updateTitle();
             var data = this.getData();
 
-            this.replaceSeries(this.chart, data.series);
-            this.chart.xAxis[0].setCategories(data.xAxis, false);
-            this.chart.redraw(false);
+            this._extendChartOptions(data);
+            this.chart.setOption(this._chartOptions, true);
         },
 
         _updateSize: function () {
             var newHeight = this.$el.height() - this.$title.height() - this.getRightsHolderHeight();
             this.$chartContainer.height(newHeight);
-            this.chart.setSize(this.$chartContainer.width(), this.$chartContainer.height(), false);
-
-            // Necesario para evitar error en el dibujado tras cambiar a stacked columns     
-            this.chart.xAxis[0].update();
+            this.chart.resize({
+                width: this.$chartContainer.width(),
+                height: this.$chartContainer.height()
+            });
         }
 
     });
