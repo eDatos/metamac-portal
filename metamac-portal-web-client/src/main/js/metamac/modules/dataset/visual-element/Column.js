@@ -1,8 +1,6 @@
 (function () {
     "use strict";
 
-    var Constants = App.Constants;
-
     App.namespace("App.VisualElement.ColumnChart");
 
     App.VisualElement.ColumnChart = function (options) {
