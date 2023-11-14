@@ -419,19 +419,8 @@
         },
 
         _extendChartOptions: function (options) {
-            this._deepObject(this._chartOptions, options);
-        },
-
-        _deepObject: function (target, source) {
-            for (const key in source) {
-                if ($.isPlainObject(source[key]) && key in target && $.isPlainObject(target[key])) {
-                    this._deepObject(target[key], source[key]);
-                } else {
-                    target[key] = source[key];
-                }
-            }
+            App.util.ObjectUtils.deepExtend(this._chartOptions, options);
         }
-
     };
 
     _.extend(App.VisualElement.Base.prototype, Backbone.Events);

@@ -120,6 +120,7 @@ module.exports = (grunt) ->
 
                 # Util
                 paths.js + "/metamac/modules/util/NumberFormatter.js"
+                paths.js + "/metamac/modules/util/ObjectUtils.js"
 
                 # Utils
                 paths.js + "/metamac/modules/dataset/utils/FullScreen.js"
