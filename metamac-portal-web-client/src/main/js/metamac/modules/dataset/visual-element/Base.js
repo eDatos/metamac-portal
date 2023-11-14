@@ -117,7 +117,7 @@
                     text: this.getRightsHolderText(),
                     right: 10,
                     padding: 0,
-                    show: !!this.getRightsHolderText(),
+                    show: this.showRightsHolderText(),
                     textStyle: {
                         fontSize: Constants.charts.title.fontSize,
                         color: Constants.colors.istacGreyDark
