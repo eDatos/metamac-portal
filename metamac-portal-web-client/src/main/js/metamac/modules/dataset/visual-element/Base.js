@@ -124,7 +124,8 @@
                     }
                 },
                 tooltip: {
-                    formatter: this.getTooltipFormatterFunction()
+                    formatter: this.getTooltipFormatterFunction(),
+                    confine: true
                 }
             };
         },
