@@ -105,8 +105,7 @@
             this.$el.append(this.$title);
 
             this.$chartContainer = $('<div></div>');
-            var newHeight = this.$el.height() - this.$title.height() - this.getRightsHolderHeight();
-            this.$chartContainer.height(newHeight);
+            this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
 
             this.$el.append(this.$chartContainer);
 
@@ -275,7 +274,7 @@
         },
 
         _updateSize: function () {
-            var newHeight = this.$el.height() - this.$title.height() - this.getRightsHolderHeight();
+            var newHeight = this.$el.height() - this.$title.outerHeight(true);
             this.$chartContainer.height(newHeight);
             this.chart.resize({
                 width: this.$chartContainer.width(),

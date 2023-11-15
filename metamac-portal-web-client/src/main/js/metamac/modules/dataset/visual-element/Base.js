@@ -73,8 +73,9 @@
                 animation: false,
                 backgroundColor: Constants.colors.istacWhite,
                 grid: {
-                    left: Constants.charts.grid.margin,
-                    right: Constants.charts.grid.margin,
+                    left: Constants.charts.grid.horizontalMargin,
+                    right: Constants.charts.grid.horizontalMargin,
+                    top: Constants.charts.grid.topMargin,
                     containLabel: true
                 },
                 legend: {

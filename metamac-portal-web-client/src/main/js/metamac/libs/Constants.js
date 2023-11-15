@@ -68,7 +68,8 @@
             gap: 5,
             dataAxisWidth: 1.5,
             grid: {
-              margin: 5
+                horizontalMargin: 5,
+                topMargin: 10
             },
             lines: {
                 xAxisTicks: 6,

@@ -128,7 +128,7 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this.$chartContainer = $('<div id="line-chart-container">');
+            this.$chartContainer = $('<div>');
             this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
             this.$el.append(this.$chartContainer);
 
