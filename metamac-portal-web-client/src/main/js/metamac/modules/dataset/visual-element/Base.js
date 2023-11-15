@@ -106,11 +106,17 @@
                 xAxis: {
                     axisTick: {
                         show: false
+                    },
+                    axisLabel: {
+                        color: Constants.colors.istacBlack
                     }
                 },
                 yAxis: {
                     axisTick: {
                         show: false
+                    },
+                    axisLabel: {
+                        color: Constants.colors.istacBlack
                     }
                 },
                 title: {
