@@ -248,7 +248,8 @@
                     itemStyle: {
                         color: lineColor
                     },
-                    symbolSize: 3,
+                    symbolSize: 5,
+                    symbol: 'circle',
                     largeThreshold: 1200,
                     animation: false,
                     name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
