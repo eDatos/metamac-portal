@@ -177,8 +177,7 @@
                             color: (columnsDimensionSelectedCategories.length === 1)
                                 ? self.data.colors[dataAxisCategory.get('urn')]
                                 : self.data.colors[columnCategory.get('urn')]
-                        },
-                        groupId: dataAxisCategoryIndex
+                        }
                     });
                 });
 
@@ -194,7 +193,7 @@
             var dataAxisSortBy = dataAxisDimension.get('sortBy');
             var dataAxisDimensionIsTemporal = dataAxisDimension.isTimeDimension();
             var dataAxisOrderMap = _.sortBy(result.series[result.series.length - 1].data, function (lastSerieDataItem, index) {
-
+                lastSerieDataItem.originalOrder = index;
                 switch (dataAxisSortBy) {
                     case App.Constants.dimension.sortBy.OBSERVATION:
                         return lastSerieDataItem.value;
@@ -204,8 +203,8 @@
                         console.error("sortBy unsupported ", dataAxisSortBy);
                         return lastSerieDataItem.value;
                 }
-            }).map(function (order) {
-                return order.groupId;
+            }).map(function (lastSerieDataItem) {
+                return lastSerieDataItem.originalOrder;
             });
             if (this._dataAxis === "xAxis") {
                 dataAxisOrderMap.reverse();
