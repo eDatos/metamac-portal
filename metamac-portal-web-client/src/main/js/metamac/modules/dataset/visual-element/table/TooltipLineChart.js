@@ -15,71 +15,35 @@
         this._setPermutation(options.permutation);
 
         this._chartOptions = {
-            chart: {
-                animation: false,
-                renderTo: '',
-                type: 'line',
-                borderWidth: 0,
-                backgroundColor: Constants.colors.istacWhite,
-                marginRight: 0
+            grid: {
+                left: Constants.charts.grid.horizontalMargin,
+                right: Constants.charts.grid.horizontalMargin,
+                bottom: Constants.charts.grid.topMargin,
+                top: Constants.charts.grid.topMargin,
+                containLabel: true
             },
             tooltip: {
-                formatter: this.tooltipFormatter
+                position: 'top',
+                trigger: "item",
+                triggerOn: "none",
+                formatter: this.getTooltipFormatterFunction()
             },
-            yAxis: {
-                title: {
-                    text: ""
-                },
-                plotLines: [
-                    {
-                        value: 0,
-                        width: 1,
-                        color: Constants.colors.istacGreyDark
-                    }
-                ],
-                minPadding: 0,
-                maxPadding: 0
-            },
-            plotOptions: {
-                line: {
-                    lineWidth: 1.5,
-                    marker: {
-                        enabled: false
-                    }
-                },
-                series: {
-                    animation: false,
-                    turboThreshold: 1200,
-                    marker: {
-                        states: {
-                            hover: {
-                                fillColor: Constants.colors.istacGreyDark
-                            }
-                        }
-                    }
-                }
-            },
-            title: {
-                text: undefined
-            },
-            subtitle: {
-                text: '',
-                style: {
-                    color: App.Constants.colors.hiddenText
-                }
-            },
-            credits: {
-                enabled: false
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
+            animation: false,
             xAxis: {
-                visible: false
-            }
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        width: Constants.charts.dataAxisWidth,
+                        color: Constants.colors.istacGreyMedium
+                    }
+                }
+            },
+            yAxis: {}
         };
     };
 
@@ -89,26 +53,29 @@
             this.permutation = permutation;
         },
 
-        tooltipFormatter: function () {
-            return this.point.name + '<br/>' + this.x;
+        getTooltipFormatterFunction: function () {
+            var self = this;
+            return function (tooltipFormatterParams) {
+                return tooltipFormatterParams.name + '<br/>' + self._chartOptions.xAxis.data[tooltipFormatterParams.dataIndex];
+            }
         },
 
         destroy: function () {
-            if (this.detailChart) {
-                this.detailChart.destroy();
-                this.detailChart = null;
+            if (this.chart) {
+                this.chart.dispose();
+                this.chart = null;
             }
         },
 
         render: function () {
             this.$el.css({ height: HEIGHT, width: WIDTH });
-            this._chartOptions.chart.renderTo = this.$el[0];
-            
-            var data = this._getData();
-            this._chartOptions.series = [data.serie];
-            this._chartOptions.xAxis.categories = data.xAxis;
 
-            this.detailChart = new Highcharts.Chart(this._chartOptions);
+            this.chart = echarts.init(this.$el[0]);
+            App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
+
+            var data = this._getData();
+            App.util.ObjectUtils.deepExtend(this._chartOptions, data);
+            this.chart.setOption(this._chartOptions, true);
             this._checkVisibility(data);
         },
 
@@ -116,15 +83,14 @@
             this._setPermutation(permutation);
             this.measureUnit = measureUnit;
 
-            this.detailChart.series[0].remove(false);
             var data = this._getData();
-            this.detailChart.addSeries(data.serie, true, false);
-            this.detailChart.xAxis[0].setCategories(data.xAxis);
+            App.util.ObjectUtils.deepExtend(this._chartOptions, data);
+            this.chart.setOption(this._chartOptions, true);
             this._checkVisibility(data);
         },
 
         _emptyData: function(data) {
-            return !Array.isArray(data.serie.data) || data.serie.data.every(function(value) { return value.y == null; });
+            return !Array.isArray(data.series.data) || data.series.data.every(function(serieData) { return serieData.value == null; });
         },
 
         _checkVisibility: function(data) {
@@ -133,45 +99,55 @@
             }
             else {
                 this.$el.show()
-            };
+            }
         },
 
         _getData: function () {
+            var series = {
+                type: 'line',
+                animation: false,
+                symbol: 'circle',
+                symbolSize: 8,
+                largeThreshold: 1200,
+                lineStyle: {
+                    width: 1.5
+                },
+                data: []
+            };
+            var xAxis = {
+                data: []
+            };
+
+            var self = this;
             var temporalGranularityForPermutation = this._findTemporalGranularityForPermutation();
             var timeDimensionCategories = this.timeDimension.get('representations').where({ temporalGranularity: temporalGranularityForPermutation });
             timeDimensionCategories = _.sortBy(timeDimensionCategories, function (representation) {
                 return representation.normCode;
             }).reverse();
-
-            var fixedPermutation = this.permutation;
-            
-            var serie = {};
-            serie.data = [];
-            var xAxis = [];
-
-            var self = this;
             _.each(timeDimensionCategories, function (timeCategory) {
                 var currentPermutation = {};
                 currentPermutation[self.timeDimension.id] = timeCategory.id;
-                currentPermutation = _.extend({}, fixedPermutation, currentPermutation);
+                currentPermutation = _.extend({}, self.permutation, currentPermutation);
 
-                var y = self.data.getNumberData({ ids: currentPermutation });
-                var name = self.data.getStringData({ ids: currentPermutation });
-                name = name + " " + self.measureUnit;
-                
-                var point = { y: y, name: name };
+                series.data.push({
+                    value: self.data.getNumberData({ ids: currentPermutation }),
+                    name: self.data.getStringData({ ids: currentPermutation })+ " " + self.measureUnit,
+                    itemStyle: {
+                        opacity: self.permutation[self.timeDimension.id] === timeCategory.id
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: Constants.colors.istacGreyDark,
+                            opacity: 1
+                        }
+                    }
+                });
 
-                if (self.permutation[self.timeDimension.id] === timeCategory.id) {
-                    point.marker = { enabled: true, radius: 5 };
-                }
-
-                serie.data.push(point);
-
-                xAxis.push(timeCategory.get("visibleLabel"));
+                xAxis.data.push(timeCategory.get("visibleLabel"));
             });
 
             return {
-                serie: serie,
+                series: series,
                 xAxis: xAxis
             };
         },

@@ -133,42 +133,10 @@
             this.$el.append(this.$chartContainer);
 
             this.chart = echarts.init(this.$chartContainer[0]);
-            this._setChartMouseEvent();
+            App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
 
             this._extendChartOptions(this.getData());
             this.chart.setOption(this._chartOptions, true);
-        },
-
-        _setChartMouseEvent: function () {
-            this.chart.getZr().on("mousemove", (p) => {
-                var mouseCartesianCoords = this.chart.convertFromPixel('grid', [p.offsetX, p.offsetY]);
-                var dataIndex = mouseCartesianCoords[0];
-                var y = mouseCartesianCoords[1];
-                if (y >= 0 && dataIndex >= 0 && dataIndex < this._chartOptions.xAxis.data.length) {
-                    var seriesIndex = this._getClosestSerieToCoordinates(dataIndex, y);
-                    this.chart.dispatchAction({type: 'showTip', seriesIndex: seriesIndex, dataIndex: dataIndex});
-                    this.chart.dispatchAction({type: 'highlight', seriesIndex: seriesIndex});
-                } else {
-                    this.chart.dispatchAction({type: 'hideTip'});
-                    this.chart.dispatchAction({type: 'highlight'});
-                }
-            });
-
-            this.chart.on("globalout", () => {
-                this.chart.dispatchAction({type: 'hideTip'});
-                this.chart.dispatchAction({type: 'highlight'});
-            });
-        },
-
-        _getClosestSerieToCoordinates: function (x, y) {
-            var series = this.chart.getOption().series;
-            return series.reduce(function (closestSerie, serie, serieIndex) {
-                if (closestSerie === null) {
-                    return serieIndex;
-                }
-                var currentSerieIsCloser = Math.abs(serie.data[x].value - y) < Math.abs(series[closestSerie].data[x].value - y);
-                return currentSerieIsCloser ? serieIndex : closestSerie
-            }, null);
         },
 
         _updateSize: function () {
