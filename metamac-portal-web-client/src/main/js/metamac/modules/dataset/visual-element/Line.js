@@ -132,7 +132,7 @@
             this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
             this.$el.append(this.$chartContainer);
 
-            this.chart = echarts.init(this.$chartContainer[0]);
+            this.chart = this._initializeChart(this.$chartContainer[0]);
             App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
 
             this._extendChartOptions(this.getData());

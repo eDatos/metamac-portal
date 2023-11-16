@@ -70,7 +70,7 @@
         render: function () {
             this.$el.css({ height: HEIGHT, width: WIDTH });
 
-            this.chart = echarts.init(this.$el[0]);
+            this.chart = echarts.init(this.$el[0], null, { renderer: 'svg' });
             App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
 
             var data = this._getData();

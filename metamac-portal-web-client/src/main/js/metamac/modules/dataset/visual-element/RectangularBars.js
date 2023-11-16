@@ -109,7 +109,7 @@
 
             this.$el.append(this.$chartContainer);
 
-            this.chart = echarts.init(this.$chartContainer[0]);
+            this.chart = this._initializeChart(this.$chartContainer[0]);
 
             var data = this.getData();
             this._extendChartOptions(data);

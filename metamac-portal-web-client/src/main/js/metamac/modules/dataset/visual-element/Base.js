@@ -68,6 +68,10 @@
             this.load();
         },
 
+        _initializeChart: function (renderTo) {
+            return echarts.init(renderTo, null, { renderer: 'svg' });
+        },
+
         _initializeChartOptions: function () {
             this._chartOptions = {
                 animation: false,
