@@ -28,6 +28,11 @@
                 },
                 legend: {
                     bottom: legendBottom
+                },
+                xAxis: {
+                    axisLabel: {
+                        align: this._dataAxis === "xAxis" ? 'center' : 'right'
+                    }
                 }
             });
         },
