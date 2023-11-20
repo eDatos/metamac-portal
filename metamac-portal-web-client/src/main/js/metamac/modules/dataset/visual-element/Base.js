@@ -113,7 +113,8 @@
                         show: false
                     },
                     axisLabel: {
-                        color: Constants.colors.istacBlack
+                        color: Constants.colors.istacBlack,
+                        formatter: this.axisLabelFormatter
                     }
                 },
                 yAxis: {
@@ -121,7 +122,8 @@
                         show: false
                     },
                     axisLabel: {
-                        color: Constants.colors.istacBlack
+                        color: Constants.colors.istacBlack,
+                        formatter: this.axisLabelFormatter
                     }
                 },
                 title: {
@@ -148,6 +150,10 @@
                 var axisCategoryName = self._chartOptions[self._dataAxis || 'xAxis'].data[tooltipFormatterParams.dataIndex];
                 return '<strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name;
             }
+        },
+
+        axisLabelFormatter: function (value) {
+            return (typeof value === 'number') ? App.util.NumberFormatter.strNumberToLocalizedString(value.toString()) : value;
         },
 
         _getLegendHeight: function () {

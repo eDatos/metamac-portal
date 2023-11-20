@@ -229,7 +229,6 @@
                     }
                 }
             };
-            Highcharts.setOptions(optionsOnInit);
             Highmaps.setOptions(optionsOnInit);
         },
 

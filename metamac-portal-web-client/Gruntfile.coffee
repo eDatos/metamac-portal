@@ -52,7 +52,6 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/TemplateManager.js"
                 paths.js + "/libs/highmaps.js"
                 paths.js + "/libs/highmaps.no-conflict.js"
-                paths.js + "/libs/highcharts.js"
                 paths.js + "/libs/echarts.js"
                 paths.js + "/libs/jquery.mousewheel.js"
                 paths.js + "/libs/jquery.ba-resize.js"
