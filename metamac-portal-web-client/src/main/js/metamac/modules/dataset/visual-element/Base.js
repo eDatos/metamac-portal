@@ -136,7 +136,7 @@
                 },
                 tooltip: {
                     formatter: this.getTooltipFormatterFunction(),
-                    confine: true
+                    className: Constants.charts.tooltip.className
                 }
             };
         },

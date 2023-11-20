@@ -14,9 +14,22 @@
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
-                position: 'top',
                 trigger: "item",
-                triggerOn: "none"
+                triggerOn: "none",
+                appendToBody: true,
+                position: function (point, params, domEl) {
+                    var tooltipItemXCoord = point[0] + self.$chartContainer[0].getBoundingClientRect().x;
+                    if (((domEl.getBoundingClientRect().width / 2) + tooltipItemXCoord) > window.innerWidth) {
+                        document.getElementsByClassName("chart-tooltip")[0].className = Constants.charts.tooltip.className + " left";
+                        return 'left';
+                    } else if ((tooltipItemXCoord - (domEl.getBoundingClientRect().width / 2)) < 0) {
+                        document.getElementsByClassName("chart-tooltip")[0].className = Constants.charts.tooltip.className + " right";
+                        return 'right';
+                    } else {
+                        document.getElementsByClassName("chart-tooltip")[0].className = Constants.charts.tooltip.className + " top";
+                        return 'top';
+                    }
+                },
             },
             xAxis: {
                 axisLine: {

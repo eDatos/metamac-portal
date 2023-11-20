@@ -86,6 +86,9 @@
             },
             title: {
                 fontSize: 9
+            },
+            tooltip: {
+                className: 'chart-tooltip'
             }
         }
     };
