@@ -340,38 +340,6 @@
             
     .dataset-visualization-visual-element {
         padding-top: @dimensionsBarTypeDefault;
-
-        .chart-tooltip {
-            &.left #chart-tooltip-arrow {
-                top: 50%;
-                right: -4.21px;
-                transform: translateY(-50%) rotate(45deg);
-                border-bottom: 0 !important;
-                border-left: 0 !important;
-            }
-            &.top #chart-tooltip-arrow {
-                left: 50%;
-                bottom: -4.21px;
-                transform: translateX(-50%) rotate(45deg);
-                border-top: 0 !important;
-                border-left: 0 !important;
-            }
-            &.bottom #chart-tooltip-arrow {
-                left: 50%;
-                top: -4.21px;
-                transform: translateX(-50%) rotate(45deg);
-                border-top: 0 !important;
-                border-left: 0 !important;
-            }
-            &.right #chart-tooltip-arrow {
-                top: 50%;
-                left: -4.21px;
-                transform: translateY(-50%) rotate(45deg);
-                border-right: 0 !important;
-                border-top: 0 !important;
-            }
-        }
-
     }
 }
 
@@ -668,5 +636,36 @@
         height: 240px;
         border: 1px solid @istacBlack;
         .box-sizing(border-box);
+    }
+}
+
+.chart-tooltip {
+    &.left #chart-tooltip-arrow {
+        top: 50%;
+        right: -4.21px;
+        transform: translateY(-50%) rotate(45deg);
+        border-bottom: 0 !important;
+        border-left: 0 !important;
+    }
+    &.top #chart-tooltip-arrow {
+        left: 50%;
+        bottom: -4.21px;
+        transform: translateX(-50%) rotate(45deg);
+        border-top: 0 !important;
+        border-left: 0 !important;
+    }
+    &.bottom #chart-tooltip-arrow {
+        left: 50%;
+        top: -4.21px;
+        transform: translateX(-50%) rotate(45deg);
+        border-top: 0 !important;
+        border-left: 0 !important;
+    }
+    &.right #chart-tooltip-arrow {
+        top: 50%;
+        left: -4.21px;
+        transform: translateY(-50%) rotate(45deg);
+        border-right: 0 !important;
+        border-top: 0 !important;
     }
 }
