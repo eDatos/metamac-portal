@@ -639,31 +639,32 @@
     }
 }
 
+$tooltip-arrow-position: -4.21px;
 .chart-tooltip {
     &.left #chart-tooltip-arrow {
         top: 50%;
-        right: -4.21px;
+        right: $tooltip-arrow-position;
         transform: translateY(-50%) rotate(45deg);
         border-bottom: 0 !important;
         border-left: 0 !important;
     }
     &.top #chart-tooltip-arrow {
         left: 50%;
-        bottom: -4.21px;
+        bottom: $tooltip-arrow-position;
         transform: translateX(-50%) rotate(45deg);
         border-top: 0 !important;
         border-left: 0 !important;
     }
     &.bottom #chart-tooltip-arrow {
         left: 50%;
-        top: -4.21px;
+        top: $tooltip-arrow-position;
         transform: translateX(-50%) rotate(45deg);
         border-top: 0 !important;
         border-left: 0 !important;
     }
     &.right #chart-tooltip-arrow {
         top: 50%;
-        left: -4.21px;
+        left: $tooltip-arrow-position;
         transform: translateY(-50%) rotate(45deg);
         border-right: 0 !important;
         border-top: 0 !important;
