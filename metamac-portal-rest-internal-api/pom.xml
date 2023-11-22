@@ -120,7 +120,7 @@
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/../etc/rest/internal</directory>
+                                    <directory>${basedir}/../etc/rest/common</directory>
                                     <targetPath>META-INF/rest/internal</targetPath>
                                     <includes>
                                         <include>**/*</include>
@@ -182,7 +182,7 @@
                                 </episode>
                             </episodes>
                             <bindingFiles>
-                                <bindingFile>${basedir}/../etc/rest/internal/binding.xjb</bindingFile>
+                                <bindingFile>${basedir}/../etc/rest/common/binding.xjb</bindingFile>
                             </bindingFiles>
                             <generateDirectory>${basedir}/src/generated/java</generateDirectory>
                             <forceRegenerate>true</forceRegenerate>
