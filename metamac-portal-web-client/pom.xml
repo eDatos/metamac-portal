@@ -98,7 +98,7 @@
         <dependency>
             <groupId>org.siemac.metamac.metamac-statistical-resources</groupId>
             <artifactId>metamac-statistical-resources-rest-internal-api</artifactId>
-            <version>8.0.0</version>
+            <version>${metamac-statistical-resources.version}</version>
         </dependency>
     </dependencies>
  
