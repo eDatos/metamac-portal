@@ -60,10 +60,6 @@
                     <groupId>org.antlr</groupId>
                     <artifactId>antlr-runtime</artifactId>
                 </exclusion>
-                    <exclusion>
-                        <groupId>org.siemac.metamac</groupId>
-                        <artifactId>metamac-rest-api</artifactId>
-                    </exclusion>
             </exclusions>
         </dependency>
         
