@@ -63,7 +63,6 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/user/UserUtils.js"
 
                 # Metamac libs
-                paths.js + "/metamac/libs/i18n.js"
                 paths.js + "/metamac/libs/DB.js"
 
                 paths.js + "/metamac/libs/BrowsersCompatibility.js"
@@ -109,6 +108,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/datasource/helper/IndicatorHelper.js"
                 paths.js + "/metamac/modules/datasource/helper/IndicatorSystemHelper.js"
                 paths.js + "/metamac/modules/datasource/helper/QueryHelper.js"
+                paths.js + "/metamac/modules/datasource/helper/MultidatasetHelper.js"
                 paths.js + "/metamac/modules/datasource/helper/DatasourceHelperFactory.js"
                 paths.js + "/metamac/modules/datasource/model/Attributes.js"
                 paths.js + "/metamac/modules/datasource/model/MetadataResponse.js"
@@ -123,10 +123,10 @@ module.exports = (grunt) ->
                 # Utils
                 paths.js + "/metamac/modules/dataset/utils/FullScreen.js"
                 paths.js + "/metamac/modules/dataset/utils/URNUtils.js"
+                paths.js + "/metamac/modules/dataset/utils/InternationalizationUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/DimensionsUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/QueryParamsUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/TemporalUtils.js"
-                paths.js + "/metamac/modules/dataset/utils/InternationalizationUtils.js"
 
                 # data
                 paths.js + "/metamac/modules/dataset/model/StructuralResourcesApi.js"

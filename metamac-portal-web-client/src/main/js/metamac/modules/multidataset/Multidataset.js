@@ -41,7 +41,6 @@
                 model.set({ open: false }, { trigger: false });
             });
 
-            var matchedElement = {};
             nodes.each(function (model) {
                 var matchIndex = this._cleanFilterQuery(model.get('name')).indexOf(filterQuery);
                 var match = matchIndex !== -1;
@@ -59,9 +58,12 @@
 
         parse: function (response) {
             var attributes = {};
-            attributes.name = App.i18n.localizeText(response.metadata.filteringDimension);
-            attributes.description = App.i18n.localizeText(response.description);
-            this.set('nodes', App.modules.multidataset.MultidatasetNode.parseNodes(response.data.nodes, this.multidatasetIdentifier, this.filterDimensions.metadata.identifier()));
+            attributes.name = App.InternationalizationUtils.localizeLabel(response.metadata.filteringDimension);
+            attributes.description = App.InternationalizationUtils.localizeLabel(response.description);
+            var multidatasetIdentifier = App.datasource.DatasourceIdentifier.initializeWithUrn(response.urn);
+            var helper = App.datasource.helper.DatasourceHelperFactory.getHelper(multidatasetIdentifier.getIdentifier().type);
+            attributes.metadata = new App.datasource.model.MetadataResponse({ datasourceIdentifier: multidatasetIdentifier, datasourceHelper: helper, response: response });
+            attributes.nodes = App.modules.multidataset.MultidatasetNode.parseNodes(response.data.nodes, this.multidatasetIdentifier, this.filterDimensions.metadata.identifier());
             return attributes;
         },
 

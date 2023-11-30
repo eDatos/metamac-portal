@@ -144,8 +144,6 @@
 
         formatCellInfo: function (cellInfo) {
             var formattedCellAttributes = this.formatCellAttributes(cellInfo.attributes);
-            cellInfo.measureUnit = this.formatMeasureUnit(cellInfo.measureUnit, cellInfo.attributes.dimensionsAttributes);
-            cellInfo.unitMultiplier = this.formatUnitMultiplier(cellInfo.unitMultiplier, cellInfo.attributes.dimensionsAttributes);
 
             var template = App.templateManager.get("dataset/dataset-cell-info");
             var context = {

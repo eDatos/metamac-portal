@@ -32,6 +32,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     statisticalVisualizerBaseUrl      = null;
     protected static String     statisticalResourcesApiBaseUrl    = null;
     protected static String     srmApiBaseUrl                     = null;
+    protected static String     captchaExternalApiUrlBase         = null;
     protected static String     permalinksApiBaseUrl              = null;
     protected static String     exportApiBaseUrl                  = null;
     protected static String     indicatorsApiBaseUrl              = null;
@@ -105,6 +106,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static void setSrmApiBaseUrl(String srmApiBaseUrl) {
         WebUtils.srmApiBaseUrl = srmApiBaseUrl;
+    }
+
+    public static String getCaptchaExternalApiUrlBase() {
+        return captchaExternalApiUrlBase;
+    }
+
+    public static void setCaptchaExternalApiUrlBase(String captchaExternalApiUrlBase) {
+        WebUtils.captchaExternalApiUrlBase = captchaExternalApiUrlBase;
     }
 
     public static String getPermalinksApiBaseUrl() {

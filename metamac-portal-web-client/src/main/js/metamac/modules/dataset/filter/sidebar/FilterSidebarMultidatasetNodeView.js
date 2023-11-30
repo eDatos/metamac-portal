@@ -78,7 +78,7 @@
                 this.$el.removeClass('hide');
                 var stateClass = this._stateClass();
                 var multidatasetNode = this.multidatasetNode.toJSON();
-                var label = this._strongZone(multidatasetNode.name, multidatasetNode.matchIndexBegin, multidatasetNode.matchIndexEnd);
+                var label = this._strongZone(multidatasetNode.nodeName, multidatasetNode.matchIndexBegin, multidatasetNode.matchIndexEnd);
 
                 var context = {
                     multidatasetNode: multidatasetNode,

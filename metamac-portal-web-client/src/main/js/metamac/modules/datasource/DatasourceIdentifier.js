@@ -37,7 +37,7 @@
         var resourcePrefix = splittedUrn[0];
         var statisticalResource = splittedUrn[1];
 
-        var statisticalResourceRegex = /(\w+):([a-z_0-9]+)\(([0-9\.]+)\)/i;
+        var statisticalResourceRegex = /(\w+):([a-z_0-9]+)(?:\(([0-9\.]+)\))?/i;
         var statisticalResourceMatchs = statisticalResourceRegex.exec(statisticalResource);
 
         return new App.datasource.DatasourceIdentifier({

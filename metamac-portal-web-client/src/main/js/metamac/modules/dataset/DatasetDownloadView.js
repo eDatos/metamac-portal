@@ -164,8 +164,10 @@
             // org.apache.poi.ss.SpreadsheetVersion.getLastRowIndex()
             var MAX_EXCEL_ROWS = 2**20; // ~ 1 million
             var MAX_EXCEL_COLUMNS = 2**14; // ~ 16K
+            // Heuristic for rows
+            var HEURISTIC_ROWS = 75;
             
-            if (rows > MAX_EXCEL_ROWS) { return true; }
+            if ((rows + HEURISTIC_ROWS) > MAX_EXCEL_ROWS) { return true; }
             if (columns > MAX_EXCEL_COLUMNS) { return true; }
             
             var highPerformanceMode = estimatedNumberOfCells > App.config.cellThreshold;
