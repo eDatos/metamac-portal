@@ -216,5 +216,10 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Excel
         checkRequiredProperty(PortalConfigurationConstants.PORTAL_EXPORT_EXCEL_CELL_THRESHOLD);
+
+        // Unit measure
+        checkOptionalProperty(PortalConfigurationConstants.UNIT_MEASURE);
+        checkOptionalProperty(PortalConfigurationConstants.UNIT_MEASURE_MULTIPLIER);
     }
+
 }
