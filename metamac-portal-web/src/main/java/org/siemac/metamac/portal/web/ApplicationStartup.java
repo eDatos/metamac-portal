@@ -31,6 +31,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
             throw new RuntimeException(e);
         }
         super.contextInitialized(sce);
+
+        // Initialize required properties
         try {
             String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
             WebUtils.setInstallationType(INSTALLATION_TYPE);
@@ -51,7 +53,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setStatisticalVisualizerBaseUrl(configurationService.retrievePortalExternalUrlBase());
             WebUtils.setStatisticalResourcesApiBaseUrl(configurationService.retrieveStatisticalResourcesExternalApiUrlBase());
             WebUtils.setSrmApiBaseUrl(configurationService.retrieveSrmExternalApiUrlBase());
-            WebUtils.setCaptchaExternalApiUrlBase(configurationService.retrieveCaptchaExternalApiUrlBase());
             WebUtils.setPermalinksApiBaseUrl(configurationService.retrievePortalExternalApisPermalinksUrlBase());
             WebUtils.setExportApiBaseUrl(configurationService.retrievePortalExternalApisExportUrlBase());
             WebUtils.setIndicatorsApiBaseUrl(configurationService.retrieveIndicatorsExternalApiUrlBase());
@@ -63,17 +64,30 @@ public class ApplicationStartup extends ApplicationStartupListener {
             log.error("Error retrieving application configuration", e);
         }
 
+        // Initialize optional properties
         setPortalDefaultStyleCss();
         setPortalAgricultureStyles();
         setPortalEnvironmentStyles();
         setPortalTourismStyles();
         setPortalPublicServiceStyles();
         setPortalCustomStyles();
+
         setSocialTwitterVia();
         setPortalGraphColorsEnabled();
         setHelpUrl();
+
+        setExternalUsersIntegration();
+
         setUnitMeasure();
         setUnitMeasureMultiplier();
+    }
+
+    private void setExternalUsersIntegration() {
+        try {
+            WebUtils.setCaptchaExternalApiUrlBase(configurationService.retrieveCaptchaExternalApiUrlBase());
+        } catch (MetamacException e) {
+            log.debug("Error retrieving external users configuration", e);
+        }
     }
 
     private void setPortalDefaultStyleCss() {
@@ -220,6 +234,9 @@ public class ApplicationStartup extends ApplicationStartupListener {
         // Unit measure
         checkOptionalProperty(PortalConfigurationConstants.UNIT_MEASURE);
         checkOptionalProperty(PortalConfigurationConstants.UNIT_MEASURE_MULTIPLIER);
+
+        // Captcha
+        checkOptionalProperty(PortalConfigurationConstants.ENDPOINT_EXTERNAL_CAPTCHA_API);
     }
 
 }
