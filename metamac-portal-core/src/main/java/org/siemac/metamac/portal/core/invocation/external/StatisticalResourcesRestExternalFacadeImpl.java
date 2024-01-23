@@ -7,6 +7,8 @@ import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class StatisticalResourcesRestExternalFacadeImpl implements StatisticalRe
     private MetamacApisLocator restApiLocator;
 
     @Override
-    public Dataset retrieveDataset(String agencyID, String resourceID, String version, List<String> lang, String fields, String dimensionSelection) {
+    public DatasetBase retrieveDataset(String agencyID, String resourceID, String version, List<String> lang, String fields, String dimensionSelection) {
         try {
             return restApiLocator.getStatisticalResourcesV1_0().retrieveDataset(agencyID, resourceID, version, lang, fields, null, dimensionSelection);
         } catch (Exception e) {
@@ -32,7 +34,7 @@ public class StatisticalResourcesRestExternalFacadeImpl implements StatisticalRe
     }
 
     @Override
-    public Query retrieveQuery(String agencyID, String resourceID, List<String> lang, String fields, String dimensionSelection) {
+    public QueryBase retrieveQuery(String agencyID, String resourceID, List<String> lang, String fields, String dimensionSelection) {
         try {
             return restApiLocator.getStatisticalResourcesV1_0().retrieveQuery(agencyID, resourceID, lang, fields, null, dimensionSelection);
         } catch (Exception e) {

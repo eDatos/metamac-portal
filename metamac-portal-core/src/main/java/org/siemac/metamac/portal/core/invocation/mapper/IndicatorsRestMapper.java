@@ -1,4 +1,4 @@
-package org.siemac.metamac.portal.core.invocation.internal.mapper;
+package org.siemac.metamac.portal.core.invocation.mapper;
 
 import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.DEFAULT;
 import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.PROP_ATTRIBUTE_OBS_CONF;
@@ -15,8 +15,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation;
+import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
@@ -27,8 +26,8 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttributes;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentations;
@@ -40,7 +39,6 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Enumerat
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
-
 
 import es.gobcan.istac.indicators.rest.types.AttributeAttachmentLevelEnumType;
 import es.gobcan.istac.indicators.rest.types.AttributeType;
@@ -59,7 +57,7 @@ import es.gobcan.istac.indicators.rest.types.QuantityType;
 /**
  * Don't map all the fields, only the ones needed to export
  */
-public class IndicatorsRestInternalMapper {
+public class IndicatorsRestMapper {
 
     private static final String                                                                  DATASET_OBSERVATIONS_SEPARATOR     = " | ";
 
@@ -70,45 +68,45 @@ public class IndicatorsRestInternalMapper {
         ATTRIBUTE_ATTACHMENT_LEVEL_MAPPING.put(AttributeAttachmentLevelEnumType.OBSERVATION, AttributeAttachmentLevelType.PRIMARY_MEASURE);
     }
 
-    public static Dataset indicatorToDatasetMapper(IndicatorType indicator, DataType data, Agency organisation) {
-        Dataset dataset = indicatorToDatasetBaseMapper(indicator.getId(), indicator.getTitle(), data);
+    public static DatasetBase indicatorToDatasetMapper(IndicatorType indicator, DataType data, org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation) {
+        DatasetBase dataset = indicatorToDatasetBaseMapper(indicator.getId(), indicator.getTitle(), data);
         dataset.setMetadata(indicatorMetadataToDatasetMetadata(indicator, organisation));
         return dataset;
     }
 
-    public static Dataset indicatorInstanceToDatasetMapper(IndicatorInstanceType indicatorInstance, DataType data, Agency organisation, IndicatorsSystemType indicatorSystem) {
-        Dataset dataset = indicatorToDatasetBaseMapper(indicatorInstance.getId(), indicatorInstance.getTitle(), data);
+    public static DatasetBase indicatorInstanceToDatasetMapper(IndicatorInstanceType indicatorInstance, DataType data, org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation, IndicatorsSystemType indicatorSystem) {
+        DatasetBase dataset = indicatorToDatasetBaseMapper(indicatorInstance.getId(), indicatorInstance.getTitle(), data);
         dataset.setMetadata(indicatorInstanceMetadataToDatasetMetadata(indicatorInstance, organisation, indicatorSystem));
         return dataset;
     }
 
-    private static Dataset indicatorToDatasetBaseMapper(String id, Map<String, String> title, DataType data) {
-        Dataset dataset = new Dataset();
+    private static DatasetBase indicatorToDatasetBaseMapper(String id, Map<String, String> title, DataType data) {
+        DatasetBase dataset = new DatasetBase();
         dataset.setId(PxExporter.generateMatrixFromString(id));
         dataset.setName(localisedStringsToInternationalString(title));
         dataset.setData(indicatorDataToDatasetData(data));
         return dataset;
     }
 
-    private static DatasetMetadata indicatorInstanceMetadataToDatasetMetadata(IndicatorInstanceType indicatorInstance, Agency organisation, IndicatorsSystemType indicatorSystem) {
+    private static DatasetMetadataBase indicatorInstanceMetadataToDatasetMetadata(IndicatorInstanceType indicatorInstance, org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation, IndicatorsSystemType indicatorSystem) {
         return indicatorBaseMetadataToDatasetMetadata(null, indicatorInstance.getDimension(), indicatorInstance.getDecimalPlaces(), indicatorInstance.getTitle(), organisation, indicatorSystem, null);
     }
 
-    private static DatasetMetadata indicatorMetadataToDatasetMetadata(IndicatorType indicator, Agency organisation) {
+    private static DatasetMetadataBase indicatorMetadataToDatasetMetadata(IndicatorType indicator, org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation) {
         return indicatorBaseMetadataToDatasetMetadata(indicator.getVersion(), indicator.getDimension(), indicator.getDecimalPlaces(), indicator.getTitle(), organisation, null,
                 indicator.getAttribute());
     }
 
-    private static DatasetMetadata indicatorBaseMetadataToDatasetMetadata(String version, Map<String, MetadataDimensionType> dimension, Integer decimalPlaces, Map<String, String> title,
-            Agency organisation, IndicatorsSystemType indicatorSystem, Map<String, MetadataAttributeType> attributes) {
-        DatasetMetadata datasetMetadata = new DatasetMetadata();
+    private static DatasetMetadataBase indicatorBaseMetadataToDatasetMetadata(String version, Map<String, MetadataDimensionType> dimension, Integer decimalPlaces, Map<String, String> title,
+            org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation, IndicatorsSystemType indicatorSystem, Map<String, MetadataAttributeType> attributes) {
+        DatasetMetadataBase datasetMetadata = new DatasetMetadataBase();
         List<String> languages = calculateLanguagesFromIndicatorLocalisedString(title);
         datasetMetadata.setVersion(version);
         datasetMetadata.setDimensions(indicatorMetadataDimensionsToDatasetMetadataDimensions(dimension, languages));
-        datasetMetadata.setRightsHolder(organisationToResource(organisation));
+        datasetMetadata.setRightsHolder(organisation);
         datasetMetadata.setLanguages(buildPartialDatasetLanguageResourceFromIndicatorLanguages(languages));
         datasetMetadata.setRelatedDsd(buildRelatedDsd(decimalPlaces));
-        datasetMetadata.setPublishers(organisationToResources(organisation));
+        datasetMetadata.setPublishers(organisationToResourceBase(organisation));
         datasetMetadata.setStatisticalOperation(indicatorSystemToStatisticalOperation(indicatorSystem));
         datasetMetadata.setAttributes(indicatorMetadataAttributesToDatasetMetadataAttributes(attributes));
         return datasetMetadata;
@@ -154,13 +152,25 @@ public class IndicatorsRestInternalMapper {
         return resourceLink;
     }
 
-    private static ResourcesStatisticalResourceBase organisationToResources(Organisation organisation) {
+    private static ResourcesStatisticalResourceBase organisationToResourceBase(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation) {
         ResourcesStatisticalResourceBase publishers = new ResourcesStatisticalResourceBase();
-        publishers.getResources().add(organisationToResource(organisation));
+        publishers.getResources().add(organisation);
         return publishers;
     }
 
-    private static org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisationToResource(Organisation organisation) {
+    public static org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisationSrmExternalToResource(Organisation organisation) {
+        org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organization = new org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation();
+        organization.setName(organisation.getName()); // The only one currently used on the export
+        organization.setId(organisation.getId());
+        organization.setKind(organisation.getKind());
+        organization.setNestedId(organisation.getNestedId());
+        organization.setSelfLink(organisation.getSelfLink());
+        organization.setUrn(organisation.getUrn());
+        return organization;
+    }
+
+    public static org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisationSrmInternalToResource(
+            org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Organisation organisation) {
         org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organization = new org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation();
         organization.setName(organisation.getName()); // The only one currently used on the export
         organization.setId(organisation.getId());
@@ -201,7 +211,7 @@ public class IndicatorsRestInternalMapper {
     /**
      * This will be later used on writeLanguages. We don´t need the full resource, only the id, so we´ll build a partial one for it
      *
-     * @see org.siemac.metamac.portal.core.exporters.PxExporter.writeLanguages
+     * @see PxExporter.writeLanguages
      */
     private static ResourcesStatisticalResourceBase buildPartialDatasetLanguageResourceFromIndicatorLanguages(List<String> languagesIds) {
         ResourcesStatisticalResourceBase languages = new ResourcesStatisticalResourceBase();
@@ -229,7 +239,7 @@ public class IndicatorsRestInternalMapper {
 
     private static Dimensions indicatorMetadataDimensionsToDatasetMetadataDimensions(Map<String, MetadataDimensionType> metadataDimensions, List<String> languages) {
         Dimensions datasetMetadataDimensions = new Dimensions();
-        for (Map.Entry<String, MetadataDimensionType> entry : metadataDimensions.entrySet()) {
+        for (Entry<String, MetadataDimensionType> entry : metadataDimensions.entrySet()) {
             datasetMetadataDimensions.getDimensions().add(indicatorMetadataDimensionToDatasetMetadataDimension(entry.getKey(), entry.getValue(), languages));
         }
         datasetMetadataDimensions.setTotal(BigInteger.valueOf(metadataDimensions.size()));
@@ -338,7 +348,7 @@ public class IndicatorsRestInternalMapper {
         }
         DimensionRepresentations dimensionRepresentations = new DimensionRepresentations();
 
-        for (Map.Entry<String, DataDimensionType> entry : dataDimensions.entrySet()) {
+        for (Entry<String, DataDimensionType> entry : dataDimensions.entrySet()) {
             dimensionRepresentations.getDimensions().add(indicatorDataDimensionToDatasetDimensionRepresentation(entry.getKey(), entry.getValue()));
         }
         return dimensionRepresentations;
@@ -354,7 +364,7 @@ public class IndicatorsRestInternalMapper {
     private static CodeRepresentations indicatorDataDimensionTypeToDatasetCodeRepresentations(DataDimensionType dataDimension) {
         CodeRepresentations codeRepresentations = new CodeRepresentations();
         codeRepresentations.setTotal(BigInteger.valueOf(dataDimension.getRepresentation().getSize()));
-        for (Map.Entry<String, Integer> entry : dataDimension.getRepresentation().getIndex().entrySet()) {
+        for (Entry<String, Integer> entry : dataDimension.getRepresentation().getIndex().entrySet()) {
             CodeRepresentation codeRepresentation = new CodeRepresentation();
             codeRepresentation.setCode(entry.getKey());
             codeRepresentation.setIndex(entry.getValue());

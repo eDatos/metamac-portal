@@ -43,12 +43,11 @@ import org.siemac.metamac.portal.core.serviceapi.utils.XMLUtils;
 import org.siemac.metamac.portal.core.serviceapi.validators.ExportServiceInvocationValidator;
 import org.siemac.metamac.portal.core.serviceimpl.ExportServiceImpl;
 import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Concept;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Quantity;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -123,7 +122,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         // tmpFile = new File("W:/temp/Excel_TEST/testExportDatasetToExcelWithCodes.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
-        Dataset dataset = buildDatasetToExport();
+        DatasetBase dataset = buildDatasetToExport();
         //  exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
@@ -165,7 +164,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         // tmpFile = new File("W:/temp/Excel_TEST/testExportDatasetWithMeasureDimensionToExcelWithCodes.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
-        Dataset dataset = buildDatasetWithMeasureDimensionToExport();
+        DatasetBase dataset = buildDatasetWithMeasureDimensionToExport();
         exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
@@ -191,7 +190,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         // tmpFile = new File("W:/temp/Excel_TEST/testExportDatasetToExcelWithLabels.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
-        Dataset dataset = buildDatasetToExport();
+        DatasetBase dataset = buildDatasetToExport();
         exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
@@ -217,7 +216,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         // tmpFile = new File("W:/temp/Excel_TEST/testExportDatasetToExcelWithLabelsAndCodes.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
-        Dataset dataset = buildDatasetToExport();
+        DatasetBase dataset = buildDatasetToExport();
         exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
@@ -265,8 +264,8 @@ public class ExportServiceTest implements ExportServiceTestBase {
         // tmpFile = new File("W:/temp/Excel_TEST/testExportQueryToExcelWithCodes.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
-        Query query = buildQueryToExport();
-        Dataset relatedDataset = buildDatasetToExport();
+        QueryBase query = buildQueryToExport();
+        DatasetBase relatedDataset = buildDatasetToExport();
         exportService.exportQueryToExcel(ctx, query, relatedDataset, datasetSelection, "es", out);
 
         out.close();
@@ -292,8 +291,8 @@ public class ExportServiceTest implements ExportServiceTestBase {
         // tmpFile = new File("W:/temp/Excel_TEST/testExportQueryToExcelWithLabels.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
-        Query query = buildQueryToExport();
-        Dataset relatedDataset = buildDatasetToExport();
+        QueryBase query = buildQueryToExport();
+        DatasetBase relatedDataset = buildDatasetToExport();
         exportService.exportQueryToExcel(ctx, query, relatedDataset, datasetSelection, "es", out);
 
         out.close();
@@ -319,8 +318,8 @@ public class ExportServiceTest implements ExportServiceTestBase {
         // tmpFile = new File("W:/temp/Excel_TEST/testExportQueryToExcelWithLabelsAndCodes.xlsx");
         FileOutputStream out = new FileOutputStream(tmpFile);
 
-        Query query = buildQueryToExport();
-        Dataset relatedDataset = buildDatasetToExport();
+        QueryBase query = buildQueryToExport();
+        DatasetBase relatedDataset = buildDatasetToExport();
         exportService.exportQueryToExcel(ctx, query, relatedDataset, datasetSelection, "es", out);
 
         out.close();
@@ -349,7 +348,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportDatasetToPlainTextWithCodes() throws Exception {
 
-        Dataset dataset = buildDatasetToExport();
+        DatasetBase dataset = buildDatasetToExport();
 
         DatasetSelection datasetSelection = buildDatasetSelection2();
 
@@ -539,7 +538,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportDatasetToPlainTextWithLabels() throws Exception {
 
-        Dataset dataset = buildDatasetToExport();
+        DatasetBase dataset = buildDatasetToExport();
 
         //@formatter:off
         DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
@@ -775,7 +774,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportDatasetToPlainTextWithCodesAndLabels() throws Exception {
 
-        Dataset dataset = buildDatasetToExport();
+        DatasetBase dataset = buildDatasetToExport();
 
         //@formatter:off
         DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
@@ -1130,7 +1129,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportQueryToPlainTextWithCodes() throws Exception {
 
-        Query query = buildQueryToExport();
+        QueryBase query = buildQueryToExport();
 
         DatasetSelection datasetSelection = buildDatasetSelection2();
 
@@ -1192,7 +1191,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportQueryWithSelectionToPlainTextWithCodes() throws Exception {
 
-        Query query = buildQueryToExport();
+        QueryBase query = buildQueryToExport();
 
         DatasetSelection datasetSelection = buildDatasetSelection3();
 
@@ -1254,7 +1253,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportQueryToPlainTextWithCodesAndLabels() throws Exception {
 
-        Query query = buildQueryToExport();
+        QueryBase query = buildQueryToExport();
 
         //@formatter:off
         DatasetSelection datasetSelection = DatasetSelectionMockBuilder.create()
@@ -1339,7 +1338,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportQueryToPlainTextWithCodesAndSomeLabels() throws Exception {
 
-        Query query = buildQueryToExport();
+        QueryBase query = buildQueryToExport();
 
         DatasetSelection datasetSelection = buildDatasetSelection1();
 
@@ -1402,7 +1401,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportResourceToPlainText() throws Exception {
         {
-            Query query = buildQueryToExport();
+            QueryBase query = buildQueryToExport();
 
             DatasetSelection datasetSelection = buildDatasetSelection1();
 
@@ -1538,7 +1537,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportResourceToPlainTextWithoutAttributes() throws Exception {
         {
-            Query query = buildQueryToExport();
+            QueryBase query = buildQueryToExport();
 
             DatasetSelection datasetSelection = buildDatasetSelection1();
 
@@ -1642,8 +1641,8 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 .dimension("CATEGORIA_ALOJAMIENTO", 0, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("TOTAL").dimension("TIME_PERIOD", 21, LabelVisualisationModeEnum.CODE_AND_LABEL)
                 .dimensionValues("2013", "2012").dimension("INDICADORES", 20, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("INDICE_OCUPACION_PLAZAS").build();
         {
-            Query query = XMLUtils.getQuery(XMLUtils.class.getResourceAsStream("/resources/INDICADORES_OCUPACION.xml"));
-            Dataset relatedDataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000001.xml"));
+            QueryBase query = XMLUtils.getQuery(XMLUtils.class.getResourceAsStream("/resources/INDICADORES_OCUPACION.xml"));
+            DatasetBase relatedDataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000001.xml"));
 
             File tmpFile = tempFolder.newFile();
             // tmpFile = new File("W:/temp/Px_TEST/query-ISTAC-INDICADORES_OCUPACION.px");
@@ -1935,15 +1934,15 @@ public class ExportServiceTest implements ExportServiceTestBase {
         return new ServiceContext("junit", "junit", "app");
     }
 
-    private Dataset buildDatasetWithMeasureDimensionToExport() {
+    private DatasetBase buildDatasetWithMeasureDimensionToExport() {
         return buildDatasetToExport(DimensionType.MEASURE_DIMENSION);
     }
 
-    private Dataset buildDatasetToExport() {
+    private DatasetBase buildDatasetToExport() {
         return buildDatasetToExport(DimensionType.DIMENSION);
     }
 
-    private Dataset buildDatasetToExport(DimensionType dimensionType) {
+    private DatasetBase buildDatasetToExport(DimensionType dimensionType) {
         //@formatter:off
         return DatasetMockBuilder.create()
                 // DIMENSIONS DEFINITIONS
@@ -2016,7 +2015,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         //@formatter:on
     }
 
-    private Query buildQueryToExport() {
+    private QueryBase buildQueryToExport() {
         //@formatter:off
         return QueryMockBuilder.create()
                 // DIMENSIONS DEFINITIONS

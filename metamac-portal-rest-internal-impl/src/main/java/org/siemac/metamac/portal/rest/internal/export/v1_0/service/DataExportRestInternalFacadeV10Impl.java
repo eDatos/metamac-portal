@@ -13,12 +13,12 @@ import org.siemac.metamac.portal.core.invocation.internal.IndicatorsRestInternal
 import org.siemac.metamac.portal.core.invocation.internal.IndicatorsSystemsRestInternalFacade;
 import org.siemac.metamac.portal.core.invocation.internal.SrmRestInternalFacade;
 import org.siemac.metamac.portal.core.invocation.internal.StatisticalResourcesRestInternalFacade;
-import org.siemac.metamac.portal.core.invocation.internal.mapper.IndicatorsRestInternalMapper;
+import org.siemac.metamac.portal.core.invocation.mapper.IndicatorsRestMapper;
 import org.siemac.metamac.portal.rest.common.export.v1_0.DataExportRestCommon;
 import org.siemac.metamac.portal.rest.common.export.v1_0.service.DataExportV1_0;
 import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
-import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -213,16 +213,16 @@ public class DataExportRestInternalFacadeV10Impl extends DataExportRestCommon im
         DataType indicatorInstanceData = indicatorsSystemsRestInternalFacade.retrieveIndicatorInstanceDataByCode(indicatorSystemCode, resourceID, dimensionSelection);
         IndicatorInstanceType indicatorInstance = indicatorsSystemsRestInternalFacade.retrieveIndicatorInstanceByCode(indicatorSystemCode, resourceID);
         IndicatorsSystemType indicatorSystem = indicatorsSystemsRestInternalFacade.retrieveIndicatorsSystem(indicatorSystemCode);
-        Agency organisation = srmRestInternalFacade.retrieveOrganization();
-        return IndicatorsRestInternalMapper.indicatorInstanceToDatasetMapper(indicatorInstance, indicatorInstanceData, organisation, indicatorSystem);
+        Organisation organisation = IndicatorsRestMapper.organisationSrmInternalToResource(srmRestInternalFacade.retrieveOrganization());
+        return IndicatorsRestMapper.indicatorInstanceToDatasetMapper(indicatorInstance, indicatorInstanceData, organisation, indicatorSystem);
     }
 
     @Override
     public DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) {
         DataType indicatorData = indicatorsRestInternalFacade.retrieveIndicatorData(resourceID, dimensionSelection);
         IndicatorType indicator = indicatorsRestInternalFacade.retrieveIndicator(resourceID);
-        Agency organisation = srmRestInternalFacade.retrieveOrganization();
-        return IndicatorsRestInternalMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
+        Organisation organisation = IndicatorsRestMapper.organisationSrmInternalToResource(srmRestInternalFacade.retrieveOrganization());
+        return IndicatorsRestMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
     }
 
     @Override

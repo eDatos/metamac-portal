@@ -13,12 +13,12 @@ import org.siemac.metamac.portal.core.invocation.external.IndicatorsRestExternal
 import org.siemac.metamac.portal.core.invocation.external.IndicatorsSystemsRestExternalFacade;
 import org.siemac.metamac.portal.core.invocation.external.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.invocation.external.StatisticalResourcesRestExternalFacade;
-import org.siemac.metamac.portal.core.invocation.external.mapper.IndicatorsRestExternalMapper;
+import org.siemac.metamac.portal.core.invocation.mapper.IndicatorsRestMapper;
 import org.siemac.metamac.portal.rest.common.export.v1_0.DataExportRestCommon;
 import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.structural_resources.v1_0.domain.Agency;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -195,7 +195,7 @@ public class DataExportRestExternalFacadeV10Impl extends DataExportRestCommon im
     }
 
     @Override
-    public Dataset retrieveDataset(String agencyID, String resourceID, String version, String lang, String dimensionSelection) throws MetamacException {
+    public DatasetBase retrieveDataset(String agencyID, String resourceID, String version, String lang, String dimensionSelection) throws MetamacException {
         List<String> langs = new ArrayList<String>();
         String langAlternative = portalConfiguration.retrieveLanguageDefault();
         if (lang != null) {
@@ -208,24 +208,23 @@ public class DataExportRestExternalFacadeV10Impl extends DataExportRestCommon im
     }
 
     @Override
-    public Dataset retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection) {
+    public DatasetBase retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection) {
         DataType indicatorInstanceData = indicatorsSystemsRestExternal.retrieveIndicatorInstanceDataByCode(indicatorSystemCode, resourceID, dimensionSelection);
         IndicatorInstanceType indicatorInstance = indicatorsSystemsRestExternal.retrieveIndicatorInstanceByCode(indicatorSystemCode, resourceID);
         IndicatorsSystemType indicatorSystem = indicatorsSystemsRestExternal.retrieveIndicatorsSystem(indicatorSystemCode);
-        Agency organisation = srmRestExternal.retrieveOrganization();
-        return IndicatorsRestExternalMapper.indicatorInstanceToDatasetMapper(indicatorInstance, indicatorInstanceData, organisation, indicatorSystem);
+        Organisation organisation = IndicatorsRestMapper.organisationSrmExternalToResource(srmRestExternal.retrieveOrganization());
+        return IndicatorsRestMapper.indicatorInstanceToDatasetMapper(indicatorInstance, indicatorInstanceData, organisation, indicatorSystem);
     }
 
     @Override
-    public Dataset retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) {
+    public DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) {
         DataType indicatorData = indicatorsRestExternal.retrieveIndicatorData(resourceID, dimensionSelection);
         IndicatorType indicator = indicatorsRestExternal.retrieveIndicator(resourceID);
-        Agency organisation = srmRestExternal.retrieveOrganization();
-        return IndicatorsRestExternalMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
+z        return IndicatorsRestMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
     }
 
     @Override
-    public Query retrieveQuery(String agencyID, String resourceID, String lang, String dimensionSelection) throws MetamacException {
+    public QueryBase retrieveQuery(String agencyID, String resourceID, String lang, String dimensionSelection) throws MetamacException {
         List<String> langs = new ArrayList<String>();
         String langAlternative = portalConfiguration.retrieveLanguageDefault();
         if (lang != null) {

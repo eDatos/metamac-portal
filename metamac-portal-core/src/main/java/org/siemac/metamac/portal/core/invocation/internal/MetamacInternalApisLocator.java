@@ -17,6 +17,7 @@ public class MetamacInternalApisLocator {
     private ConfigurationService     configurationService;
 
     private StatisticalResourcesV1_0 statisticalResourcesV1_0             = null;
+
     private SrmRestInternalFacadeV10 srmRestInternalFacadeV10             = null;
     private String                   indicatorsRestInternalFacadeEndpoint = null;
     private String                   organisationUrn                      = null;
