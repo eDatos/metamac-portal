@@ -30,7 +30,7 @@ public class DatasetAccessTest {
         datasetAccessForExcel = new ResourceAccess(dataset, null, "es", "es");
     }
 
-    //@Test
+    @Test
     public void testObservationAtPermutation() throws Exception {
         Map<String, String> p1 = new HashMap<String, String>();
         p1.put("DIM_A", "DIM_A_0");
@@ -48,7 +48,7 @@ public class DatasetAccessTest {
         assertEquals(null, datasetAccessForExcel.observationAtPermutation(p3));
     }
 
-    //@Test
+    @Test
     public void testRepresentationLabel() {
         assertEquals("Representation A0", datasetAccessForExcel.getDimensionValueLabelCurrentLocale("DIM_A", "DIM_A_0"));
         assertEquals("Representation B1", datasetAccessForExcel.getDimensionValueLabelCurrentLocale("DIM_B", "DIM_B_1"));

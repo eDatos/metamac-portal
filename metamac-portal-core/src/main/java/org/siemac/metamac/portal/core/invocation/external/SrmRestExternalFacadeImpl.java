@@ -2,6 +2,7 @@ package org.siemac.metamac.portal.core.invocation.external;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.portal.core.invocation.MetamacApisLocator;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Agency;
@@ -22,7 +23,7 @@ public class SrmRestExternalFacadeImpl implements SrmRestExternalFacade {
     private final Logger       logger = LoggerFactory.getLogger(SrmRestExternalFacadeImpl.class);
 
     @Autowired
-    @Qualifier("metamacApisLocatorRestExternal")
+    @Qualifier("metamacApisLocatorRest")
     private MetamacApisLocator restApiLocator;
 
     @Override

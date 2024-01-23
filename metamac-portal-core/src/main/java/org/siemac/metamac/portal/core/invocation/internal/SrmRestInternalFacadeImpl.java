@@ -2,6 +2,7 @@ package org.siemac.metamac.portal.core.invocation.internal;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.siemac.metamac.core.common.util.shared.UrnUtils;
+import org.siemac.metamac.portal.core.invocation.MetamacApisLocator;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
 import org.siemac.metamac.rest.structural_resources_internal.v1_0.domain.Agency;
@@ -22,8 +23,8 @@ public class SrmRestInternalFacadeImpl implements SrmRestInternalFacade {
     private final Logger       logger = LoggerFactory.getLogger(SrmRestInternalFacadeImpl.class);
 
     @Autowired
-    @Qualifier("metamacInternalApisLocatorRestExternal")
-    private MetamacInternalApisLocator restApiLocator;
+    @Qualifier("metamacApisLocatorRest")
+    private MetamacApisLocator restApiLocator;
 
     @Override
     public DataStructure retrieveDataStructureByUrn(String urn) {

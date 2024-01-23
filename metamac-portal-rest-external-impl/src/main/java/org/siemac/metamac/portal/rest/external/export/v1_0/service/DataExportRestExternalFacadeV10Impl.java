@@ -220,7 +220,8 @@ public class DataExportRestExternalFacadeV10Impl extends DataExportRestCommon im
     public DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) {
         DataType indicatorData = indicatorsRestExternal.retrieveIndicatorData(resourceID, dimensionSelection);
         IndicatorType indicator = indicatorsRestExternal.retrieveIndicator(resourceID);
-z        return IndicatorsRestMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
+        Organisation organisation = IndicatorsRestMapper.organisationSrmExternalToResource(srmRestExternal.retrieveOrganization());
+        return IndicatorsRestMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
     }
 
     @Override

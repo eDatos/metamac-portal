@@ -3,10 +3,9 @@ package org.siemac.metamac.portal.core.invocation.external;
 import java.util.List;
 
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.siemac.metamac.portal.core.invocation.MetamacApisLocator;
 import org.siemac.metamac.rest.exception.RestException;
 import org.siemac.metamac.rest.exception.utils.RestExceptionUtils;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.slf4j.Logger;
@@ -21,7 +20,7 @@ public class StatisticalResourcesRestExternalFacadeImpl implements StatisticalRe
     private final Logger       logger = LoggerFactory.getLogger(StatisticalResourcesRestExternalFacadeImpl.class);
 
     @Autowired
-    @Qualifier("metamacApisLocatorRestExternal")
+    @Qualifier("metamacApisLocatorRest")
     private MetamacApisLocator restApiLocator;
 
     @Override
