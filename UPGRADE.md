@@ -61,13 +61,16 @@ etc/changes-from-release/7.1.3/db/common-metadata/postgresql/*.sql
 ```
 
 ## 7.0.0 a 7.0.1
-* La dependencia de edatos-external-users pasa de obligatoria a opcional. El modo de indicarlo es que las siguientes propiedades no estén inicializadas. 
-
-* Debido a que la funcionalidad del captcha se ha movido a external-users, dicha funcionalidad estará deshabilitada si edatos-external-users no está instalado.
+* La dependencia de edatos-external-users pasa de obligatoria a opcional. El modo de indicarlo es que las siguientes propiedades, usadas desde la cabecera servida por complementos-apps, no estén inicializadas. 
 
 ```
     metamac.edatos_external_users.rest.external
     metamac.edatos_external_users.web.external.url
+```
+    
+* Debido a que la funcionalidad del captcha se ha movido a external-users, dicha funcionalidad estará deshabilitada si edatos-external-users no está instalado. Este comportamiento es controlado por la siguiente propiedad opcional.
+
+```
     metamac.portal.rest.external.authentication.captcha.url
 ```
 
