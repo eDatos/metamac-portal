@@ -492,7 +492,7 @@ public class ResourceAccess {
             int offset = 0;
             String attributeId = attribute.getId();
             // unit multiplier and unit measure attributes wont appear here because they must appear elsewhere, in units
-            if (unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
+            if ((unitMeasure != null && unitMeasure.equals(attributeId)) || (unitMultiplier != null && unitMultiplier.equals(attributeId))) {
                 continue;
             }
             // Observation level attributes (body cell)
