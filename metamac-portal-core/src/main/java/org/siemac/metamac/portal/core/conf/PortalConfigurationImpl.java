@@ -93,7 +93,7 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
         try {
             unitMeasure = retrieveUnitMeasure();
         } catch (MetamacException e) {
-            log.debug("Error retrieving application unit measure property", e);
+            log.debug("Optional property Unit measure is empty", e);
         }
         return unitMeasure;
     }
@@ -104,7 +104,7 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
         try {
             unitMeasureMultiplier = retrieveUnitMeasureMultiplier();
         } catch (MetamacException e) {
-            log.debug("Error retrieving application unit measure multiplier property", e);
+            log.debug("Optional property Unit measure multiplier is empty", e);
         }
         return unitMeasureMultiplier;
     }
