@@ -42,7 +42,6 @@ import org.siemac.metamac.portal.core.serviceapi.utils.QueryMockBuilder;
 import org.siemac.metamac.portal.core.serviceapi.utils.XMLUtils;
 import org.siemac.metamac.portal.core.serviceapi.validators.ExportServiceInvocationValidator;
 import org.siemac.metamac.portal.core.serviceimpl.ExportServiceImpl;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
@@ -123,7 +122,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         FileOutputStream out = new FileOutputStream(tmpFile);
 
         DatasetBase dataset = buildDatasetToExport();
-        //  exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
+        exportService.exportDatasetToExcel(ctx, dataset, datasetSelection, "es", out);
 
         out.close();
 
@@ -1052,7 +1051,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
     @Test
     public void testExportDatasetToPlainTextWithCodesAndSomeLabels() throws Exception {
 
-        Dataset dataset = buildDatasetToExport();
+        DatasetBase dataset = buildDatasetToExport();
 
         DatasetSelection datasetSelection = buildDatasetSelection1();
 
@@ -1467,7 +1466,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         }
         {
 
-            Dataset dataset = buildDatasetToExport();
+            DatasetBase dataset = buildDatasetToExport();
 
             DatasetSelection datasetSelection = buildDatasetSelection2();
 
@@ -1585,7 +1584,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
         }
         {
 
-            Dataset dataset = buildDatasetToExport();
+            DatasetBase dataset = buildDatasetToExport();
 
             DatasetSelection datasetSelection = buildDatasetSelection2();
 
@@ -1843,12 +1842,12 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 .dimension("TIME_PERIOD", 20, LabelVisualisationModeEnum.CODE_AND_LABEL).dimensionValues("2013", "2012").dimension("INDICADORES", 21, LabelVisualisationModeEnum.CODE_AND_LABEL)
                 .dimensionValues("INDICE_OCUPACION_PLAZAS").build();
         {
-            Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002.xml"));
+            DatasetBase dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002.xml"));
 
             File tmpFile = tempFolder.newFile();
             // tmpFile = new File("W:/temp/Px_TEST/archivo.px");
             FileOutputStream out = new FileOutputStream(tmpFile);
-            //   exportService.exportDatasetToPx(ctx, dataset, datasetSelection, null, out);
+            exportService.exportDatasetToPx(ctx, dataset, datasetSelection, null, out);
             out.close();
 
             // Check checksum
@@ -1857,12 +1856,12 @@ public class ExportServiceTest implements ExportServiceTestBase {
         }
 
         {
-            Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000003.xml"));
+            DatasetBase dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000003.xml"));
 
             File tmpFile = tempFolder.newFile();
             // tmpFile = new File("W:/temp/Px_TEST/testExportDatasetToPxEnglish.px");
             FileOutputStream out = new FileOutputStream(tmpFile);
-            //    exportService.exportDatasetToPx(ctx, dataset, datasetSelection, "en", out);
+            exportService.exportDatasetToPx(ctx, dataset, datasetSelection, "en", out);
             out.close();
 
             // Check checksum
@@ -1871,12 +1870,12 @@ public class ExportServiceTest implements ExportServiceTestBase {
         }
 
         {
-            Dataset dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002_ATTR_MEASURE.xml"));
+            DatasetBase dataset = XMLUtils.getDataset(XMLUtils.class.getResourceAsStream("/resources/C00031A_000002_ATTR_MEASURE.xml"));
 
             File tmpFile = tempFolder.newFile();
             // tmpFile = new File("W:/temp/Px_TEST/ContVariable.px");
             FileOutputStream out = new FileOutputStream(tmpFile);
-            //  exportService.exportDatasetToPx(ctx, dataset, datasetSelection, null, out);
+            exportService.exportDatasetToPx(ctx, dataset, datasetSelection, null, out);
             out.close();
 
             // Check checksum
