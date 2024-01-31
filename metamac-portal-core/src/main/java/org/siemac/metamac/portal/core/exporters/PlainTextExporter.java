@@ -16,10 +16,10 @@ import org.siemac.metamac.portal.core.domain.ResourceAccess;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.enume.PlainTextTypeEnum;
 import org.siemac.metamac.portal.core.error.ServiceExceptionType;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 
 public class PlainTextExporter {
 
@@ -45,7 +45,9 @@ public class PlainTextExporter {
         }
     }
 
-    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+
+    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, DatasetBase dataset, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
         datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.plainTextTypeEnum = plainTextTypeEnum;
@@ -54,7 +56,9 @@ public class PlainTextExporter {
         }
     }
 
-    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, Query query, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+
+    public PlainTextExporter( PlainTextTypeEnum plainTextTypeEnum, QueryBase query, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
         datasetAccess = new ResourceAccess(query, null, datasetSelection, lang, langAlternative);
         this.datasetSelection = datasetSelection;
         this.plainTextTypeEnum = plainTextTypeEnum;

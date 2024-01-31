@@ -24,6 +24,16 @@
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
+            <artifactId>metamac-portal-rest-common-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-portal</groupId>
+            <artifactId>metamac-portal-rest-common-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-core</artifactId>
             <classifier>client</classifier>
             <version>${project.version}</version>

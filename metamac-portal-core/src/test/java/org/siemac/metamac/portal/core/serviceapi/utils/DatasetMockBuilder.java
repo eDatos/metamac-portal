@@ -3,8 +3,6 @@ package org.siemac.metamac.portal.core.serviceapi.utils;
 import java.math.BigInteger;
 
 import org.joda.time.DateTime;
-import org.siemac.metamac.rest.common.v1_0.domain.Resources;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
@@ -18,8 +16,8 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Contacts
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttributes;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.DatasetMetadata;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentations;
@@ -35,25 +33,26 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NonEnume
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NonEnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NonEnumeratedDimensionValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
 
 public class DatasetMockBuilder extends ResourceMockBuilder {
 
-    private final Dataset           dataset;
-    private Dimension               lastDimensionMetadata;
-    private DimensionRepresentation lastDimensionData;
+    private final DatasetBase             dataset;
+    private       Dimension               lastDimensionMetadata;
+    private       DimensionRepresentation lastDimensionData;
 
-    private Attribute               lastAttributeMetadata;
+    private Attribute lastAttributeMetadata;
 
     public static DatasetMockBuilder create() {
         return new DatasetMockBuilder();
     }
 
     private DatasetMockBuilder() {
-        dataset = new Dataset();
+        dataset = new DatasetBase();
         dataset.setId("C00031A_000001");
         dataset.setName(internationalString("title"));
         dataset.setDescription(internationalString("description"));
-        dataset.setMetadata(new DatasetMetadata());
+        dataset.setMetadata(new DatasetMetadataBase());
         dataset.getMetadata().setStatisticalOperation(mockResource("C00000A"));
         dataset.getMetadata().setLanguages(new ResourcesStatisticalResourceBase());
         dataset.getMetadata().getLanguages().getResources().add(mockResource("es"));
@@ -273,7 +272,7 @@ public class DatasetMockBuilder extends ResourceMockBuilder {
         return this;
     }
 
-    public Dataset build() {
+    public DatasetBase build() {
         return dataset;
     }
 }
