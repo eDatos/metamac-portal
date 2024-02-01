@@ -1,8 +1,9 @@
 package org.siemac.metamac.portal.rest.internal.permalink.v1_0.mapper;
 
-import javax.annotation.PostConstruct;
-
+import org.checkerframework.checker.units.qual.A;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.metamac.portal.core.conf.PortalConfiguration;
+import org.siemac.metamac.portal.core.domain.Permalink;
 import org.siemac.metamac.portal.rest.common.RestCommonConstants;
 import org.siemac.metamac.portal.rest.common.permalink.v1_0.mapper.PermalinksDo2RestMapperV10;
 import org.siemac.metamac.rest.utils.RestUtils;
@@ -13,14 +14,26 @@ import org.springframework.stereotype.Component;
 public class PermalinksDo2RestMapperV10Impl extends PermalinksDo2RestMapperV10 {
 
     @Autowired
-    private ConfigurationService configurationService;
+    private PortalConfiguration portalConfiguration;
 
-    @PostConstruct
-    public void init() throws Exception {
+    @Override
+    public void initPermalink() throws Exception {
         // ENDPOINTS
-        // Permalinks internal Api V1.0
-        String permalinksApiExternalEndpoint = configurationService.retrievePortalExternalApisPermalinksUrlBase();
+        // Permalinks external Api V1.0
+        String permalinksApiExternalEndpoint = portalConfiguration.retrievePortalInternalApisPermalinksUrlBase();
         permalinksApiExternalEndpointV10 = RestUtils.createLink(permalinksApiExternalEndpoint, RestCommonConstants.API_VERSION_1_0);
     }
 
+    @Override
+    public org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink toPermalink(org.siemac.metamac.portal.core.domain.Permalink source) throws Exception {
+        if (source == null) {
+            return null;
+        }
+        org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink target = new org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink();
+        target.setKind(RestCommonConstants.KIND_PERMALINK);
+        target.setId(source.getCode());
+        target.setContent(source.getContent());
+        target.setSelfLink(toPermalinkSelfLink(source));
+        return target;
+    }
 }

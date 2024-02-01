@@ -30,7 +30,7 @@ public class PermalinksDo2RestMapperV10Test {
         assertEquals(RestCommonConstants.KIND_PERMALINK, target.getKind());
         assertEquals("permalink01", target.getId());
         assertEquals("content of permalink01", target.getContent());
-        assertEquals("http://portal.istac.es/apis/permalinks/v1.0/permalinks/permalink01", target.getSelfLink().getHref());
+        assertEquals("http://portal.istac.es/apis/permalinks-internal/v1.0/permalinks/permalink01", target.getSelfLink().getHref());
         assertEquals(target.getKind(), target.getSelfLink().getKind());
     }
 }
