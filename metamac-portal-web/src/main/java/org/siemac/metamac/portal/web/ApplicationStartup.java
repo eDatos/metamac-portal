@@ -38,8 +38,12 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setInstallationType(INSTALLATION_TYPE);
             if (INSTALLATION_TYPE.equals("EXTERNAL")) {
                 WebUtils.setAppsBaseUrl(configurationService.retrieveAppsExternalWebApplicationUrlBase());
+                WebUtils.setPermalinksApiBaseUrl(configurationService.retrievePortalExternalApisPermalinksUrlBase());
+                WebUtils.setExportApiBaseUrl(configurationService.retrievePortalExternalApisExportUrlBase());
             } else if (INSTALLATION_TYPE.equals("INTERNAL")) {
                 WebUtils.setAppsBaseUrl(configurationService.retrieveAppsInternalWebApplicationUrlBase());
+                WebUtils.setPermalinksApiBaseUrl(portalConfigurationService.retrievePortalInternalApisPermalinksUrlBase());
+                WebUtils.setExportApiBaseUrl(portalConfigurationService.retrievePortalInternalApisExportUrlBase());
             }
 
             WebUtils.setApiStyleHeaderUrl(configurationService.retrieveApiStyleHeaderUrl());
@@ -53,8 +57,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setStatisticalVisualizerBaseUrl(configurationService.retrievePortalExternalUrlBase());
             WebUtils.setStatisticalResourcesApiBaseUrl(configurationService.retrieveStatisticalResourcesExternalApiUrlBase());
             WebUtils.setSrmApiBaseUrl(configurationService.retrieveSrmExternalApiUrlBase());
-            WebUtils.setPermalinksApiBaseUrl(configurationService.retrievePortalExternalApisPermalinksUrlBase());
-            WebUtils.setExportApiBaseUrl(configurationService.retrievePortalExternalApisExportUrlBase());
             WebUtils.setIndicatorsApiBaseUrl(configurationService.retrieveIndicatorsExternalApiUrlBase());
             WebUtils.setOrganisationUrn(configurationService.retrieveOrganisationUrn());
             WebUtils.setGeographicalGranularityUrn(configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());

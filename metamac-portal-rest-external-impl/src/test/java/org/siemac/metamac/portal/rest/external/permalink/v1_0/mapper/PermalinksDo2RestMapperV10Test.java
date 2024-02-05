@@ -15,10 +15,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath:spring/portal-rest-external/applicationContext-test.xml"})
 public class PermalinksDo2RestMapperV10Test {
 
-    @Autowired
-    private PermalinksDo2RestMapperV10Impl permalinksDo2RestMapperV10;
+   @Autowired
+   private PermalinksDo2RestMapperV10Impl permalinksDo2RestMapperV10;
 
-    @Test
+   @Test
     public void testToPermalink() throws Exception {
 
         Permalink source = PermalinksDoMocks.mockPermalink("permalink01", "content of permalink01");
