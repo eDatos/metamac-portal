@@ -141,7 +141,6 @@
 
         App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
         App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";
-        App.endpoints["captcha"] = "${ApiUrlCaptcha}";
         App.endpoints["permalinks"] = "${ApiUrlPermalinks}/v1.0";
         App.endpoints["export"] = "${ApiUrlExport}/v1.0";
         App.endpoints["statistical-visualizer"] = "${StatisticalVisualizerBase}";
@@ -150,7 +149,9 @@
 
         App.start();
 
-        LazyLoad.js("${ApiUrlCaptcha}/captcha.js?d=${jsDate}");
+        if(${ApiUrlCaptcha != null}) {
+            LazyLoad.js("${ApiUrlCaptcha}/captcha.js");
+        }
 
     });
 </script>
