@@ -93,7 +93,7 @@
 		                    App.start();
 
                             if(${ApiUrlCaptcha != "error"}) {
-                                LazyLoad.js("${ApiUrlCaptcha}/authentication.js");
+                                LazyLoad.js("${ApiUrlCaptcha}/captcha.js");
                             }
 		                });
 		            });

@@ -132,6 +132,7 @@
         },
 
         getDimensions: function () {
+            if (!this.metadata.dimensions) { return; }
             var dimensions = this.metadata.dimensions.dimension;
             return _.map(dimensions, function (dimension) {
                 return {
@@ -176,6 +177,7 @@
 
         getRepresentations: function (dimensionId) {
             var self = this;
+            if (!this.metadata.dimensions) { return; }
             var dimensions = this.metadata.dimensions.dimension;
             var dimension = _.findWhere(dimensions, { id: dimensionId });
             var representations = [];
@@ -282,10 +284,24 @@
                         type: attribute.type,
                         hierarchy: false,
                         isAttribute: true,
-                        representations: self.getRepresentationsForAttributeDimension(attribute.id)
+                        representations: self.getRepresentationsForAttributeDimension(attribute.id),
+                        measureUnit: self.getUnitMeasureValueForAttributeDimension(attribute),
+                        unitMultiplier: self.getUnitMultiplierValueForAttributeDimension(attribute)
                     }
                 })
                 .value();
+        },
+
+        getUnitMeasureValueForAttributeDimension: function (attribute) {
+            if (attribute.attributeValues && attribute.attributeValues.value[0] && attribute.attributeValues.value[0].measureQuantity) {
+                return App.InternationalizationUtils.localizeLabel(attribute.attributeValues.value[0].measureQuantity.unitCode.name.text);
+            }
+        },
+
+        getUnitMultiplierValueForAttributeDimension: function (attribute) {
+            if (attribute.attributeValues && attribute.attributeValues.value[0] && attribute.attributeValues.value[0].measureQuantity) {
+                return attribute.attributeValues.value[0].measureQuantity.unitMultiplier;
+            }
         },
 
         getMeasureDimension: function () {
@@ -311,7 +327,8 @@
                 title: this.getTitle(),
                 description: this.getDescription(),
 
-                hasDescriptors: this.getSubtitle() || this.getAbstract() || this.getStatisticalOperation() || this.getSubjectAreas() || this.getFormatExtentObservations(),
+                hasMultidataset: this.hasMultidataset(),
+                hasDescriptors: (this.hasMultidataset() && (this.getTitle() || this.getDescription())) || this.getSubtitle() || this.getAbstract() || this.getStatisticalOperation() || this.getSubjectAreas() || this.getFormatExtentObservations(),
                 subtitle: this.getSubtitle(),
                 abstract: this.getAbstract(),
                 statisticalOperation: this.getStatisticalOperation(),
@@ -338,6 +355,7 @@
                 publishers: this.getPublishers(),
                 contributors: this.getContributors(),
                 mediators: this.getMediators(),
+                relatedResources: this.getRelatedResources(),
                 rightsHolder: this.getRightsHolder(),
                 copyrightDate: this.getCopyrightDate(),
                 license: this.getLicense(),
@@ -419,6 +437,8 @@
             var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
             if (selectedDimValue) {
                 return selectedDimValue.measureUnit;
+            } else {
+                return this._findMeasureAttributeValue().measureUnit;
             }
         },
 
@@ -426,6 +446,15 @@
             var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
             if (selectedDimValue) {
                 return selectedDimValue.unitMultiplier;
+            } else {
+                return this._findMeasureAttributeValue().unitMultiplier;
+            }
+        },
+
+        _findMeasureAttributeValue: function () {
+            var measureAttributes = _.where(this.getAttributesLikeDimensions(), { type: "MEASURE" });
+            if (measureAttributes) {
+                return measureAttributes[0];
             }
         },
 
@@ -578,6 +607,20 @@
             if (this.metadata.mediators) {
                 return _.map(this.metadata.mediators.resource, function (resource) { return App.InternationalizationUtils.localizeLabel(resource.name); });
             }
+        },
+
+        getRelatedResources: function () {
+            var relatedResources = [];
+            if (this.metadata.relatedDataset) {
+                relatedResources.push(this.metadata.relatedDataset);
+            }
+            if (this.metadata.isPartOf && this.metadata.isPartOf.resource) {
+                relatedResources = relatedResources.concat(this.metadata.isPartOf.resource);
+            }
+            if (this.metadata.isRequiredBy && this.metadata.isRequiredBy.resource) {
+                relatedResources = relatedResources.concat(this.metadata.isRequiredBy.resource);
+            }
+            return relatedResources;
         },
 
         getRightsHolder: function () {

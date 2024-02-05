@@ -139,6 +139,28 @@
             return this.where({ selected: true });
         },
 
+        getGeographicRepresentationsWithMoreThanOneElementSelected : function() {
+            return this.filter(item => {
+                // Filter selected elements
+                if (item.get('selected')) {
+                  // check that there are more items selected in your level
+                  return this.filter(subItem => subItem.get('level') === item.get('level') && subItem.get('selected')).length > 1;
+                }
+                return false;
+              });
+        },
+
+        updateSelectedGeographicLevelIfNoElementsInLevel: function() {
+            //take the actual SelectedGeographicalLevel
+            var level = this.getSelectedGeographicLevel();
+            //take the representations of the current level that have more than one element selected
+            var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('level').toString() === level);
+            //If there are no elements selected, then we perform the update
+            if (filterRepresentations.length == 0) {
+                this.updateSelectedGeographicLevelWithMostRepeatedValue();
+            }
+        },
+
         getDrawableRepresentations: function () {
             return this.where({ drawable: true });
         },
@@ -187,7 +209,7 @@
         },
 
         getSelectedGeographicLevels: function () {
-            return _(this.getSelectedRepresentations()).invoke("get", "level");
+            return _(this.getGeographicRepresentationsWithMoreThanOneElementSelected()).invoke("get", "level");
         },
 
         setSelectedTemporalGranularity: function(temporalGranularity) {
@@ -221,12 +243,18 @@
 
         getSingleValue: function() {
             return this.models[0];
+        },
+        
+        isSingleValue: function() {
+            return this.length == 1;
         }
 
     }, {
             initializeWithRepresentations: function (representations) {
                 var filterRepresentations = new App.modules.dataset.filter.models.FilterRepresentations(representations, { parse: true });
-                filterRepresentations.initializeHierarchy();
+                if (!filterRepresentations.isSingleValue()) {
+                    filterRepresentations.initializeHierarchy();
+                }
 
                 return filterRepresentations;
             }

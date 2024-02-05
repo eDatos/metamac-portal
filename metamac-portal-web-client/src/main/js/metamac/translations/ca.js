@@ -170,12 +170,14 @@ I18n.translations.ca = {
             nomap: "Mapa no disponible"
         },
         noSelection: "Seleccioni almenys una categoria en cada dimensió",
+        selectAtLeastTwoItems: "Seleccioni almenys dos valors al mateix nivell",
         loading: "Carregant dades..."
     },
 
     entity: {
         dataset: {
             title: "Títol",
+            description: "Descripció",
             subtitle: "Subtítol",
             abstract: "Resum",
             measureDimensionCoverageConcepts: "Conceptes que formen el cobriment de la unitat de mesura",
@@ -207,6 +209,10 @@ I18n.translations.ca = {
             mediators: "Mediadors",
             replaces: "Reemplaça ",
             isReplacedBy: "És reemplaçat per",
+            relatedResources: {
+                title: "Recursos relacionats",
+                multidataset: "Relacionats amb el multidataset"
+            },
             rightsHolder: "Titular dels drets",
             copyrightDate: "Data de copyright",
             license: "Llicència",
@@ -249,6 +255,14 @@ I18n.translations.ca = {
                     NO_UPDATES: "Sense actualitzacions",
                     SCHEDULED_UPDATE: "Actualització programada"
                 }
+            }
+        },
+        kind: {
+            types: {
+                collection: "Publicacions",
+                dataset: "Datasets",
+                query: "Consultes",
+                multidataset: "Multidatasets"
             }
         },
         observation: {

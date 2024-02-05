@@ -7,7 +7,8 @@
         "dataset": new App.datasource.helper.DatasetHelper(),
         "query": new App.datasource.helper.QueryHelper(),
         "indicator": new App.datasource.helper.IndicatorHelper(),
-        "indicatorInstance": new App.datasource.helper.IndicatorSystemHelper()
+        "indicatorInstance": new App.datasource.helper.IndicatorSystemHelper(),
+        "multidataset": new App.datasource.helper.MultidatasetHelper()
     };
 
     App.datasource.helper.DatasourceHelperFactory = {

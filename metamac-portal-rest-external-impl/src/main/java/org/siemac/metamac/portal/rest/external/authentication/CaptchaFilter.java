@@ -7,6 +7,7 @@ import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
@@ -16,8 +17,7 @@ import org.apache.cxf.message.Message;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class CaptchaFilter implements RequestHandler {
@@ -45,21 +45,17 @@ public class CaptchaFilter implements RequestHandler {
                 // If the captchaExternalApiUrlBase is not available (for example, if external-users is not installed) we don´t check for captchas
                 return null;
             }
-            urlBuilder.path("validate");
+            urlBuilder.path("api/validate");
             for (Object paramKey : Collections.list(request.getParameterNames())) {
                 urlBuilder.queryParam(paramKey.toString(), request.getParameter(paramKey.toString()));
             }
             URI url = urlBuilder.build();
 
-            ResponseEntity<Boolean> response = restTemplate.getForEntity(url, boolean.class);
-            if (response.getStatusCode() == HttpStatus.OK) {
-                if (response.getBody()) {
-                    return null;
-                } else {
-                    return Response.status(Response.Status.UNAUTHORIZED).build();
-                }
-            } else {
-                return Response.status(response.getStatusCode().value()).build();
+            try {
+                restTemplate.getForEntity(url, Object.class);
+                return null;
+            } catch (HttpClientErrorException e) {
+                return Response.status(e.getStatusCode().value()).type(MediaType.APPLICATION_JSON_TYPE).entity(e.getResponseBodyAsString()).build();
             }
         } else {
             return null;

@@ -176,6 +176,7 @@ I18n.translations.pt = {
     entity: {
         dataset: {
             title: "Título",
+            description: "Descrição",
             subtitle: "Legenda",
             abstract: "Abstrato",
             measureDimensionCoverageConcepts: "Measure dimension coverage concepts",
@@ -207,6 +208,10 @@ I18n.translations.pt = {
             mediators: "Mediadores",
             replaces: "Substitui",
             isReplacedBy: "Substituído por",
+            relatedResources: {
+                title: "Recursos relacionados",
+                multidataset: "Relacionado ao multidataset"
+            },
             rightsHolder: "Titular dos direitos",
             copyrightDate: "Data de copyright",
             license: "Licença",
@@ -249,6 +254,14 @@ I18n.translations.pt = {
                     NO_UPDATES: "Sem atualizações",
                     SCHEDULED_UPDATE: "Atualização agendada"
                 }
+            }
+        },
+        kind: {
+            types: {
+                collection: "Publicações",
+                dataset: "Datasets",
+                query: "Consultas",
+                multidataset: "Multidatasets"
             }
         },
         observation: {
