@@ -1,9 +1,6 @@
 package org.siemac.metamac.portal.rest.internal.permalink.v1_0.mapper;
 
-import org.checkerframework.checker.units.qual.A;
-import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
-import org.siemac.metamac.portal.core.domain.Permalink;
 import org.siemac.metamac.portal.rest.common.RestCommonConstants;
 import org.siemac.metamac.portal.rest.common.permalink.v1_0.mapper.PermalinksDo2RestMapperV10;
 import org.siemac.metamac.rest.utils.RestUtils;
@@ -11,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PermalinksDo2RestMapperV10Impl extends PermalinksDo2RestMapperV10 {
+public class PermalinksDo2RestInternalMapperV10Impl extends PermalinksDo2RestMapperV10 {
 
     @Autowired
     private PortalConfiguration portalConfiguration;

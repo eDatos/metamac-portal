@@ -6,7 +6,7 @@ import javax.ws.rs.core.Response;
 
 import org.siemac.metamac.portal.rest.common.permalink.v1_0.service.PermalinksRestCommonFacadeV10;
 import org.siemac.metamac.portal.rest.common.service.utils.PortalRestUtils;
-import org.siemac.metamac.portal.rest.internal.permalink.v1_0.mapper.PermalinksDo2RestMapperV10Impl;
+import org.siemac.metamac.portal.rest.internal.permalink.v1_0.mapper.PermalinksDo2RestInternalMapperV10Impl;
 import org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class PermalinksRestInternalFacadeV10Impl implements PermalinksV1_0 {
     private PermalinksRestCommonFacadeV10 permalinksRestCommonFacadeV10;
 
     @Autowired
-    private PermalinksDo2RestMapperV10Impl permalinksDo2RestMapperV10;
+    private PermalinksDo2RestInternalMapperV10Impl permalinksDo2RestMapperV10;
 
 
     @Override
