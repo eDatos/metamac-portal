@@ -53,7 +53,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setStatisticalVisualizerBaseUrl(configurationService.retrievePortalExternalUrlBase());
             WebUtils.setStatisticalResourcesApiBaseUrl(configurationService.retrieveStatisticalResourcesExternalApiUrlBase());
             WebUtils.setSrmApiBaseUrl(configurationService.retrieveSrmExternalApiUrlBase());
-            WebUtils.setCaptchaExternalApiUrlBase(configurationService.retrieveCaptchaExternalApiUrlBase());
             WebUtils.setPermalinksApiBaseUrl(configurationService.retrievePortalExternalApisPermalinksUrlBase());
             WebUtils.setExportApiBaseUrl(configurationService.retrievePortalExternalApisExportUrlBase());
             WebUtils.setIndicatorsApiBaseUrl(configurationService.retrieveIndicatorsExternalApiUrlBase());
