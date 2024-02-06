@@ -25,7 +25,7 @@
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
             <artifactId>metamac-portal-rest-common-impl</artifactId>
-            <version>8.6.2-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
