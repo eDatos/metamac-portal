@@ -42,7 +42,7 @@
             this.listenTo(this.optionsModel, "change:type", this.render);
             this.listenTo(this.optionsModel, "change:fullScreen", this.updateFullscreenButton);
             this.listenTo(this.optionsModel, "change:filter", this.updateFilterButton);
-            this.listenTo(this.filterDimensions, "change:drawable", this.updateView);
+            this.listenTo(this.filterDimensions, "change:drawable", _.debounce(this.updateView, 400));
 
             this.delegateEvents();
         },
