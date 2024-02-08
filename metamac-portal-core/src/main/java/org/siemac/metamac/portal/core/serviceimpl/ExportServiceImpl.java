@@ -38,8 +38,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         ExcelExporter exporter = new ExcelExporter(dataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
@@ -100,8 +100,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         PxExporter exporter = new PxExporter(dataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
@@ -117,8 +117,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         ExcelExporter exporter = new ExcelExporter(query, relatedDataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
@@ -164,8 +164,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         PxExporter exporter = new PxExporter(query, relatedDataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
