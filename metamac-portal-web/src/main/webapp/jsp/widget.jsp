@@ -47,6 +47,8 @@
 
         PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
         request.setAttribute("defaultLocale", configurationService.retrieveDefaultInternationalizationLanguage());
+        String INSTALLATION_TYPE = configurationService.retrieveInstallationType();
+        Boolean internalPortal = INSTALLATION_TYPE.equals("INTERNAL");
     %>
     <%
         String STATISTICAL_RESOURCES_API_URL_BASE = WebUtils.getStatisticalResourcesApiBaseUrl();
@@ -74,7 +76,7 @@
         String sharedVisualizerUrl = request.getParameter("sharedVisualizerUrl");
 		String title = request.getParameter("title");
         if (permalinkId != null && !permalinkId.isEmpty()) {
-            Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId);
+            Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
             response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, locale, title));
         }
     %>
@@ -83,7 +85,7 @@
         ResourceType resourceType = resourceTypeValue != null ? ResourceType.fromValue(resourceTypeValue) : null;
         String multidatasetId = request.getParameter(Helpers.PARAMETER_MULTIDATASET_ID);
         if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
-            Boolean internalPortal = false; // Widgets sólo externos
+            internalPortal = false; // Widgets sólo externos
             Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
             response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale, title));
         }
@@ -141,7 +143,6 @@
 
         App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
         App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";
-        App.endpoints["captcha"] = "${ApiUrlCaptcha}";
         App.endpoints["permalinks"] = "${ApiUrlPermalinks}/v1.0";
         App.endpoints["export"] = "${ApiUrlExport}/v1.0";
         App.endpoints["statistical-visualizer"] = "${StatisticalVisualizerBase}";
@@ -150,7 +151,9 @@
 
         App.start();
 
-        LazyLoad.js("${ApiUrlCaptcha}/captcha.js?d=${jsDate}");
+        if(${ApiUrlCaptcha != null}) {
+            LazyLoad.js("${ApiUrlCaptcha}/captcha.js");
+        }
 
     });
 </script>

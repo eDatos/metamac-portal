@@ -6,7 +6,8 @@ import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.core.common.util.urlrewrite.AbstractRewriteMatch;
-import org.siemac.metamac.portal.rest.external.RestExternalConstants;
+import org.siemac.metamac.portal.core.conf.PortalConfiguration;
+import org.siemac.metamac.portal.rest.common.RestCommonConstants;
 
 class PortalRewriteMatch extends AbstractRewriteMatch {
 
@@ -15,6 +16,8 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
 
     private ConfigurationService configurationService  = null;
 
+    private PortalConfiguration portalConfigurationService;
+
     @Override
     protected String[] getAcceptedApiPrefixes() {
         return new String[]{EXPORT_API_PREFIX, PERMALINKS_API_PREFIX};
@@ -22,15 +25,23 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
 
     @Override
     protected String getLatestApiVersion() {
-        return RestExternalConstants.API_VERSION_1_0;
+        return RestCommonConstants.API_VERSION_1_0;
     }
 
     @Override
     protected String getApiBaseUrl() throws ServletException {
         try {
-            return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
-                    ? getConfigurationService().retrievePortalExternalApisPermalinksUrlBase()
-                    : getConfigurationService().retrievePortalExternalApisExportUrlBase();
+            String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
+            if (INSTALLATION_TYPE.equals("EXTERNAL")) {
+                return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
+                        ? getConfigurationService().retrievePortalExternalApisPermalinksUrlBase()
+                        : getConfigurationService().retrievePortalExternalApisExportUrlBase();
+            } else if (INSTALLATION_TYPE.equals("INTERNAL")) {
+                return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
+                        ? portalConfigurationService.retrievePortalInternalApisPermalinksUrlBase()
+                        : portalConfigurationService.retrievePortalInternalApisExportUrlBase();
+            }
+            return null;
         } catch (MetamacException e) {
             throw new ServletException("Error retrieving configuration property of the external API URL base", e);
         }

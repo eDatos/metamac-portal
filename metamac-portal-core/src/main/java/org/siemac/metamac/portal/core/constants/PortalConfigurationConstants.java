@@ -30,4 +30,9 @@ public class PortalConfigurationConstants extends ConfigurationConstants {
     public static final String PORTAL_CUSTOM_STYLE_BASE_URL           = "metamac.portal.custom.style.base.url";
 
     public static final String PORTAL_EXPORT_EXCEL_CELL_THRESHOLD     = "metamac.portal.export.excel.cell_threshold";
+
+    public static final String PORTAL_INTERNAL_EXPORT     = "metamac.portal.rest.internal.export";
+
+    public static final String PORTAL_INTERNAL_PERMALINK     = "metamac.portal.rest.internal.permalinks";
+
 }

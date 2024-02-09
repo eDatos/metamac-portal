@@ -8,7 +8,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.siemac.metamac.portal.core.serviceapi.utils.DatasetMockBuilder;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
 
 public class DatasetAccessTest {
 
@@ -17,7 +17,7 @@ public class DatasetAccessTest {
     @Before
     public void before() throws Exception {
         //@formatter:off
-        Dataset dataset = DatasetMockBuilder.create()
+        DatasetBase dataset = DatasetMockBuilder.create()
                 .observations("1.35 | 2.24 |  | 4.5")
                 .dimension("DIM_A", "Dimension A")
                 .dimensionValue("DIM_A_0", "Representation A0")

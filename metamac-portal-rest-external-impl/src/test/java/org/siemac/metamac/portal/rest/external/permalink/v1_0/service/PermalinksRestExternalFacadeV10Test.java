@@ -25,8 +25,8 @@ import org.siemac.metamac.common.test.utils.MetamacMocks;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.portal.core.serviceapi.PermalinksService;
-import org.siemac.metamac.portal.rest.external.RestExternalConstants;
-import org.siemac.metamac.portal.rest.external.exception.RestServiceExceptionType;
+import org.siemac.metamac.portal.rest.common.RestCommonConstants;
+import org.siemac.metamac.portal.rest.common.exception.RestServiceExceptionType;
 import org.siemac.metamac.portal.rest.external.permalink.v1_0.service.utils.PermalinksDoMocks;
 import org.siemac.metamac.rest.common.test.MetamacRestBaseTest;
 import org.siemac.metamac.rest.common.test.ServerResource;
@@ -77,7 +77,7 @@ public class PermalinksRestExternalFacadeV10Test extends MetamacRestBaseTest {
 
         assertEquals(PERMALINK_01, permalink.getId());
         assertEquals("content of permalink01", permalink.getContent());
-        assertEquals(RestExternalConstants.KIND_PERMALINK, permalink.getKind());
+        assertEquals(RestCommonConstants.KIND_PERMALINK, permalink.getKind());
     }
 
     @Test
@@ -129,13 +129,13 @@ public class PermalinksRestExternalFacadeV10Test extends MetamacRestBaseTest {
 
         assertNotNull(permalinkCreated.getId());
         assertEquals(permalink.getContent(), permalinkCreated.getContent());
-        assertEquals(RestExternalConstants.KIND_PERMALINK, permalinkCreated.getKind());
+        assertEquals(RestCommonConstants.KIND_PERMALINK, permalinkCreated.getKind());
         assertEquals("http://portal.istac.es/apis/permalinks/v1.0/permalinks/" + permalinkCreated.getId(), permalinkCreated.getSelfLink().getHref());
-        assertEquals(RestExternalConstants.KIND_PERMALINK, permalinkCreated.getSelfLink().getKind());
+        assertEquals(RestCommonConstants.KIND_PERMALINK, permalinkCreated.getSelfLink().getKind());
     }
 
     public String getRetrievePermalinkUri(String code) throws Exception {
-        String uri = RestUtils.createLink(baseApi, RestExternalConstants.LINK_SUBPATH_PERMALINK);
+        String uri = RestUtils.createLink(baseApi, RestCommonConstants.LINK_SUBPATH_PERMALINK);
         if (code != null) {
             uri = RestUtils.createLink(uri, code);
         }
