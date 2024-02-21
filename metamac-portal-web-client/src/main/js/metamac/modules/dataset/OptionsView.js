@@ -31,6 +31,7 @@
             "click .visual-element-options-share": "clickShare",
             "click .visual-element-options-save": "clickSave",
             "click .visual-element-options-download": "clickDownload",
+            "click .visual-element-options-api-download": "clickApiDownload",
             "click .visual-element-options-embed": "clickEmbed",
         },
 
@@ -93,6 +94,7 @@
             var fullScreenActive = this.isFullScreen();
             var filterActive = this.isFilter();
             var optionsEnabled = this.isOptions();
+            var isDataset = this.filterDimensions.metadata.datasourceIdentifier.identifier.type === App.Constants.visualization.type.DATASET;
 
             if (optionsEnabled) {
                 var buttons = this.buttons;
@@ -112,7 +114,7 @@
                         active: filterActive,
                         btnClass: filterActive ? 'active' : ''
                     },
-
+                    apiDownload: isDataset,
                     fullScreen: {
                         visible: fullScreenVisible,
                         active: fullScreenActive,
@@ -303,6 +305,20 @@
             });
             var title = I18n.t("filter.download.modal.title");
             var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+            modal.show();
+        },
+
+        clickApiDownload: function (e) {
+            e.preventDefault();
+            var modalContentView = null;
+            var modal = null;
+            var title = I18n.t("filter.apiDownload.modal.title");
+
+            modalContentView = new App.modules.dataset.DatasetApiDownloadView({
+                filterDimensions: this.filterDimensions
+            });
+
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
             modal.show();
         },
 

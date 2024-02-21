@@ -23,6 +23,7 @@ I18n.translations.ca = {
             helpUrl: "Ajuda",
             share: "Compartir",
             download: "Descàrrega",
+            apiDownload: "API",
             save: "Guardar",
             accept: "Acceptar",
             cancel: "Cancel·lar",
@@ -51,6 +52,12 @@ I18n.translations.ca = {
                     question: "Voleu incloure els atributs a la descàrrega?"
                 }
             }
+        },
+        apiDownload: {
+            modal: {
+                title: "Descarregar via API",
+                info: "Per a més informació consulteu l'apartat de 'Reutilització i informació per a desenvolupadors'"
+            },
         },
         share: {
             permanent: "Enllaç permanent:"

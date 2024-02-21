@@ -23,6 +23,7 @@ I18n.translations.es = {
             helpUrl: "Ayuda",
             share: "Compartir",
             download: "Descarga",
+            apiDownload: "API",
             save: "Guardar",
             accept: "Aceptar",
             cancel: "Cancelar",
@@ -51,6 +52,12 @@ I18n.translations.es = {
                     question: "¿Desea incluir los atributos en la descarga?"
                 }
             }
+        },
+        apiDownload: {
+            modal: {
+                title: "Descarga vía API",
+                info: "Para más información consultar el apartado de 'Reutilización e información para desarrolladores'"
+            },
         },
         share: {
             permanent: "Enlace permanente:"
@@ -248,6 +255,7 @@ I18n.translations.es = {
 
             apiDocumentationUrl: "Acceso a la documentación de la API",
             apiUrl: "Acceso al recurso en la API",
+            apiDownloadUrl: "Acceso a los distintos formatos de respuesta del recurso en la API",
             selectionApiUrl: "Acceso a la selección actual en la API",
 
             nextVersion: {

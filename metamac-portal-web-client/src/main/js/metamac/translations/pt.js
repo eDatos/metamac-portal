@@ -23,6 +23,7 @@ I18n.translations.pt = {
             helpUrl: "Ajuda",
             share: "Partilhar",
             download: "Download",
+            apiDownload: "API",
             save: "Salvar",
             accept: "Aceitar",
             cancel: "Cancelar",
@@ -51,6 +52,12 @@ I18n.translations.pt = {
                     question: "Deseja incluir os atributos no download?"
                 }
             }
+        },
+        apiDownload: {
+            modal: {
+                title: "Baixar via API",
+                info: "Para obter mais informações, consulte a seção 'Reutilização e informações para desenvolvedores'"
+            },
         },
         share: {
             permanent: "Ligação permanente:"

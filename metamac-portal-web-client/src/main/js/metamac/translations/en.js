@@ -23,6 +23,7 @@ I18n.translations.en = {
             helpUrl: "Help",
             share: "Share",
             download: "Download",
+            apiDownload: "API",
             save: "Save",
             accept: "Accept",
             cancel: "Cancel",
@@ -51,6 +52,12 @@ I18n.translations.en = {
                     question: "Would you like to include the attributes on the download?"
                 }
             }
+        },
+        apiDownload: {
+            modal: {
+                title: "Download via API",
+                info: "For more information see the 'Reutilization and info for developers' section"
+            },
         },
         share: {
             permanent: "Permanent link:"
