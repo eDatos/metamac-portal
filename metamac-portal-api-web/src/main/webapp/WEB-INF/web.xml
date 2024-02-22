@@ -9,10 +9,9 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/config/spring/applicationContext.xml </param-value>
 	</context-param>
-    
-    <!-- LISTENER -->
+
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<listener-class>org.siemac.metamac.portal.web.diffusion.InstallationTypeContextLoaderListener</listener-class>
 	</listener>
 
 	<listener>
