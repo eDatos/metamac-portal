@@ -11,7 +11,7 @@
 	</context-param>
 
 	<listener>
-		<listener-class>org.siemac.metamac.portal.web.diffusion.InstallationTypeContextLoaderListener</listener-class>
+		<listener-class>org.siemac.metamac.portal.web.diffusion.EnvironmentContextLoaderListener</listener-class>
 	</listener>
 
 	<listener>

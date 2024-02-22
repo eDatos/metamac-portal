@@ -21,7 +21,7 @@
     <import resource="classpath:/spring/portal/applicationContext.xml" />
 
     <!-- Rest -->
-    <import resource="${portal-rest-installation-type}" />
+    <import resource="classpath:/spring/portal-rest-${environment.metamac.portal.installation_type}/applicationContext.xml" />
     
 </beans>
 

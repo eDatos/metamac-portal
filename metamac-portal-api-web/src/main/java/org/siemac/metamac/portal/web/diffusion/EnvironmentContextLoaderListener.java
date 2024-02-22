@@ -5,10 +5,9 @@ import java.util.Properties;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.web.context.ContextLoaderListener;
 
-public class InstallationTypeContextLoaderListener extends ContextLoaderListener {
+public class EnvironmentContextLoaderListener extends ContextLoaderListener {
     public void contextInitialized(javax.servlet.ServletContextEvent event) {
         Resource resource = new ClassPathResource("metamac/environment.xml");
         Properties props = new Properties();
@@ -17,8 +16,8 @@ public class InstallationTypeContextLoaderListener extends ContextLoaderListener
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String environmentType = props.getProperty("environment.metamac.portal.installation_type");
-        System.setProperty("portal-rest-installation-type", "classpath:/spring/portal-rest-"+ environmentType.toLowerCase() +"/applicationContext.xml");
+
+        System.setProperty("environment.metamac.portal.installation_type", props.getProperty("environment.metamac.portal.installation_type").toLowerCase());
         super.contextInitialized(event);
     }
 }
