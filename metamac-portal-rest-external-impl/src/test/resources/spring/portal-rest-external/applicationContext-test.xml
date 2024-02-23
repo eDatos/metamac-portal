@@ -25,5 +25,5 @@
     </bean>
 
     <!-- Includes -->
-    <import resource="classpath:/spring/portal-rest-external/include/rest-server.xml" />
+    <import resource="classpath:/spring/portal-rest-EXTERNAL/include/rest-server.xml" />
 </beans>
