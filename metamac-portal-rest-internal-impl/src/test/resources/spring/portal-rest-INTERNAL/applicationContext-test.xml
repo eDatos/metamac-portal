@@ -7,7 +7,7 @@
     <bean id="applicationContextProvider" class="org.siemac.metamac.core.common.util.ApplicationContextProvider" />
 
     <!-- Mockito -->
-    <import resource="classpath:/spring/portal-rest-internal/mockito.xml" />
+    <import resource="classpath:/spring/portal-rest-INTERNAL/mockito.xml" />
 
     <!-- activates annotation-based bean configuration -->
     <context:annotation-config />
@@ -25,5 +25,5 @@
     </bean>
 
     <!-- Includes -->
-    <import resource="classpath:/spring/portal-rest-internal/include/rest-server.xml" />
+    <import resource="classpath:/spring/portal-rest-INTERNAL/include/rest-server.xml" />
 </beans>

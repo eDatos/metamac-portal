@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/portal-rest-external/applicationContext-test.xml"})
+@ContextConfiguration(locations = {"classpath:spring/portal-rest-EXTERNAL/applicationContext-test.xml"})
 public class PermalinksDo2RestMapperV10Test {
 
    @Autowired
