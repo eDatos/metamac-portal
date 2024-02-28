@@ -38,7 +38,8 @@ public class MetamacApisLocator {
         srmRestExternalFacadeV10 = JAXRSClientFactory.create(srmExternalApiUrlBase, SrmRestExternalFacadeV10.class, null, true);
         indicatorsRestExternalFacadeEndpoint = configurationService.retrieveIndicatorsExternalApiUrlBase();
 
-        statisticalResourcesInternalV1_0 = JAXRSClientFactory.create(statisticalResourcesEndpoint, org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0.class, null, true);
+        String statisticalResourcesInternalEndpoint = configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
+        statisticalResourcesInternalV1_0 = JAXRSClientFactory.create(statisticalResourcesInternalEndpoint, org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0.class, null, true);
         String srmInternalApiUrlBase = configurationService.retrieveSrmInternalApiUrlBase();
         srmRestInternalFacadeV10 = JAXRSClientFactory.create(srmInternalApiUrlBase, SrmRestInternalFacadeV10.class, null, true);
         indicatorsRestInternalFacadeEndpoint = configurationService.retrieveIndicatorsInternalApiUrlBase();
