@@ -13,9 +13,6 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
 
     private static final String  EXPORT_API_PREFIX     = "export";
     private static final String  PERMALINKS_API_PREFIX = "permalinks";
-
-    private ConfigurationService configurationService  = null;
-
     private PortalConfiguration portalConfigurationService = null;
 
     @Override
@@ -34,8 +31,8 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
             String INSTALLATION_TYPE = getPortalConfigurationService().retrieveInstallationType();
             if (INSTALLATION_TYPE.equals("EXTERNAL")) {
                 return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
-                        ? getConfigurationService().retrievePortalExternalApisPermalinksUrlBase()
-                        : getConfigurationService().retrievePortalExternalApisExportUrlBase();
+                        ? getPortalConfigurationService().retrievePortalExternalApisPermalinksUrlBase()
+                        : getPortalConfigurationService().retrievePortalExternalApisExportUrlBase();
             } else if (INSTALLATION_TYPE.equals("INTERNAL")) {
                 return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
                         ? getPortalConfigurationService().retrievePortalInternalApisPermalinksUrlBase()
@@ -45,13 +42,6 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
         } catch (MetamacException e) {
             throw new ServletException("Error retrieving configuration property of the external API URL base", e);
         }
-    }
-
-    private ConfigurationService getConfigurationService() {
-        if (configurationService == null) {
-            configurationService = ApplicationContextProvider.getApplicationContext().getBean(ConfigurationService.class);
-        }
-        return configurationService;
     }
 
     private PortalConfiguration getPortalConfigurationService() {
