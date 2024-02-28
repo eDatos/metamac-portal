@@ -16,7 +16,7 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
 
     private ConfigurationService configurationService  = null;
 
-    private PortalConfiguration portalConfigurationService;
+    private PortalConfiguration portalConfigurationService = null;
 
     @Override
     protected String[] getAcceptedApiPrefixes() {
@@ -31,15 +31,15 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
     @Override
     protected String getApiBaseUrl() throws ServletException {
         try {
-            String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
+            String INSTALLATION_TYPE = getPortalConfigurationService().retrieveInstallationType();
             if (INSTALLATION_TYPE.equals("EXTERNAL")) {
                 return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
                         ? getConfigurationService().retrievePortalExternalApisPermalinksUrlBase()
                         : getConfigurationService().retrievePortalExternalApisExportUrlBase();
             } else if (INSTALLATION_TYPE.equals("INTERNAL")) {
                 return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
-                        ? portalConfigurationService.retrievePortalInternalApisPermalinksUrlBase()
-                        : portalConfigurationService.retrievePortalInternalApisExportUrlBase();
+                        ? getPortalConfigurationService().retrievePortalInternalApisPermalinksUrlBase()
+                        : getPortalConfigurationService().retrievePortalInternalApisExportUrlBase();
             }
             return null;
         } catch (MetamacException e) {
@@ -52,6 +52,13 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
             configurationService = ApplicationContextProvider.getApplicationContext().getBean(ConfigurationService.class);
         }
         return configurationService;
+    }
+
+    private PortalConfiguration getPortalConfigurationService() {
+        if (portalConfigurationService == null) {
+            portalConfigurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
+        }
+        return portalConfigurationService;
     }
 
     @Override
