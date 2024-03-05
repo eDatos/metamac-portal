@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.siemac.metamac.common.test.utils.MetamacAsserts;
 import org.siemac.metamac.portal.core.domain.DatasetSelection;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
+import org.siemac.metamac.portal.rest.common.export.v1_0.mapper.DatasetSelectionMapper;
 import org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttribute;
 import org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionAttributes;
 import org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension;

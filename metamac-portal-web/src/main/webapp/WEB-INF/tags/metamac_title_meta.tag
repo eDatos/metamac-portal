@@ -65,10 +65,7 @@
             
 			request.setAttribute("analyticsGoogleTrackingId", configurationService.retrieveAnalyticsGoogleTrackingId());
 
-		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
-		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
-            EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
             INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
             DEFAULT_INTERNATIONALIZATION_LANGUAGE = configurationService.retrieveDefaultInternationalizationLanguage();
             try {
@@ -82,13 +79,19 @@
                 EXTERNAL_CAPTCHA_URL_BASE = "error";
             }
             if (INSTALLATION_TYPE.equals("INTERNAL")) {
+                PORTAL_URL_BASE = configurationService.retrievePortalInternalWebApplicationUrlBase();
 		        STATISTICAL_RESOURCES_API_URL_BASE = configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
 		        SRM_API_URL_BASE = configurationService.retrieveSrmInternalApiUrlBase();
 		        INDICATORS_API_URL_BASE = configurationService.retrieveIndicatorsInternalApiUrlBase();
-		    } else if (INSTALLATION_TYPE.equals("EXTERNAL")) {	        
+                PERMALINKS_API_URL_BASE = configurationService.retrievePortalInternalApisPermalinksUrlBase();
+                EXPORT_API_URL_BASE = configurationService.retrievePortalInternalApisExportUrlBase();
+		    } else if (INSTALLATION_TYPE.equals("EXTERNAL")) {
+                PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		        STATISTICAL_RESOURCES_API_URL_BASE = configurationService.retrieveStatisticalResourcesExternalApiUrlBase();
 		        SRM_API_URL_BASE = configurationService.retrieveSrmExternalApiUrlBase();
 		        INDICATORS_API_URL_BASE = configurationService.retrieveIndicatorsExternalApiUrlBase();
+                PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
+                EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
 			}
 			
 			request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
@@ -133,7 +136,7 @@
     <%
         String permalinkId = request.getParameter("permalink");
         if (permalinkId != null && !permalinkId.isEmpty()) {
-            Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId);
+            Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
             response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl));   
         }        
     %>

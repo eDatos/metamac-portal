@@ -15,8 +15,12 @@
     <modules>
         <module>metamac-portal-parent</module>
         <module>metamac-portal-core</module>
+        <module>metamac-portal-rest-common-api</module>
+        <module>metamac-portal-rest-common-impl</module>
         <module>metamac-portal-rest-external-api</module>
         <module>metamac-portal-rest-external-impl</module>
+        <module>metamac-portal-rest-internal-api</module>
+        <module>metamac-portal-rest-internal-impl</module>
         <module>metamac-portal-web-client</module>
         <module>metamac-portal-web</module>
         <module>metamac-portal-api-web</module>
@@ -28,7 +32,6 @@
         <url>https://git.arte-consultores.com/istac/metamac-portal</url>
         <tag>HEAD</tag>
     </scm>
-
     <build>
         <plugins>
             <plugin>

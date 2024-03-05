@@ -31,4 +31,8 @@ public interface PortalConfiguration extends ConfigurationService {
     String retrieveOptionalUnitMeasure();
     String retrieveOptionalUnitMeasureMultiplier();
 
+    String retrievePortalInternalApisPermalinksUrlBase() throws MetamacException;
+
+    String retrievePortalInternalApisExportUrlBase() throws MetamacException;
+
 }

@@ -7,7 +7,10 @@ La aplicación no tiene página principal, por lo que hay que acceder directamen
 
 	src/main/preview.html#selection
 	src/main/preview.html#visualization/table
-	
+
+Haciendo uso de una terminal nos situamos en el paquete o módulo de metamac-portal-web-client y escribimos el comando : **npm start**
+En el fichero preview.html se encuentran una serie de valores para los endpoints se deberán modificar según la necesidad de usar local o un endpoint de demo, pre, etc.
+
 ## API
 La aplicación de conecta a diferentes apis para consumir los datos. Las peticiones que hay que realizar son
 
