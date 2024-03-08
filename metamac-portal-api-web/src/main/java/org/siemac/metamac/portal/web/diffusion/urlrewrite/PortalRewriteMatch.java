@@ -13,10 +13,7 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
 
     private static final String  EXPORT_API_PREFIX     = "export";
     private static final String  PERMALINKS_API_PREFIX = "permalinks";
-
-    private ConfigurationService configurationService  = null;
-
-    private PortalConfiguration portalConfigurationService;
+    private PortalConfiguration portalConfigurationService = null;
 
     @Override
     protected String[] getAcceptedApiPrefixes() {
@@ -31,15 +28,15 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
     @Override
     protected String getApiBaseUrl() throws ServletException {
         try {
-            String INSTALLATION_TYPE = portalConfigurationService.retrieveInstallationType();
+            String INSTALLATION_TYPE = getPortalConfigurationService().retrieveInstallationType();
             if (INSTALLATION_TYPE.equals("EXTERNAL")) {
                 return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
-                        ? getConfigurationService().retrievePortalExternalApisPermalinksUrlBase()
-                        : getConfigurationService().retrievePortalExternalApisExportUrlBase();
+                        ? getPortalConfigurationService().retrievePortalExternalApisPermalinksUrlBase()
+                        : getPortalConfigurationService().retrievePortalExternalApisExportUrlBase();
             } else if (INSTALLATION_TYPE.equals("INTERNAL")) {
                 return PERMALINKS_API_PREFIX.equals(getCurrentApiPrefix())
-                        ? portalConfigurationService.retrievePortalInternalApisPermalinksUrlBase()
-                        : portalConfigurationService.retrievePortalInternalApisExportUrlBase();
+                        ? getPortalConfigurationService().retrievePortalInternalApisPermalinksUrlBase()
+                        : getPortalConfigurationService().retrievePortalInternalApisExportUrlBase();
             }
             return null;
         } catch (MetamacException e) {
@@ -47,11 +44,11 @@ class PortalRewriteMatch extends AbstractRewriteMatch {
         }
     }
 
-    private ConfigurationService getConfigurationService() {
-        if (configurationService == null) {
-            configurationService = ApplicationContextProvider.getApplicationContext().getBean(ConfigurationService.class);
+    private PortalConfiguration getPortalConfigurationService() {
+        if (portalConfigurationService == null) {
+            portalConfigurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
         }
-        return configurationService;
+        return portalConfigurationService;
     }
 
     @Override
