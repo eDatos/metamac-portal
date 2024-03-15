@@ -56,7 +56,7 @@ I18n.translations.es = {
         apiDownload: {
             modal: {
                 title: "Descarga vía API",
-                info: "Para más información consultar el apartado de 'Reutilización e información para desarrolladores'"
+                info: "Para más información consultar el apartado de 'Reutilización e información para desarrolladores' donde se explica cómo construir la llamada a la API para el recurso completo y para la selección actual."
             },
         },
         share: {
@@ -254,10 +254,14 @@ I18n.translations.es = {
             language: "Idioma",
 
             apiDocumentationUrl: "Acceso a la documentación de la API",
-            apiUrl: "Acceso al recurso en la API",
-            apiDownloadUrl: "Acceso a los distintos formatos de respuesta del recurso en la API",
-            selectionApiUrl: "Acceso a la selección actual en la API",
-
+            apiUrl: {
+                title: "Acceso al recurso en la API",
+                apiDownload: "El recurso se puede obtener en los siguientes formatos: CSV, TSV, XLSX, XML, JSON y JSONSTAT. Para construir la llamada a la API basta con añadir el formato al final de la URL, por ejemplo, para construir la llamada del formato CSV se haría de la siguiente forma: URL.csv"
+            },
+            selectionApiUrl: {
+                title: "Acceso a la selección actual en la API",
+                apiDownload: "La selección también se puede obtener en diferentes formatos (CSV, TSV, XLSX, XML, JSON y JSONSTAT). En este caso, para construir la llamada a la API se debe tener en cuenta que el formato se debe indicar antes de pasar los parámetros, por ejemplo: URL.csv?PARAMETROS"
+            },
             nextVersion: {
                 title: "Próxima actualización",
                 enum: {

@@ -144,7 +144,7 @@
             result +=
                 '<div class="' + fieldClass + '" >' +
                 '<span class="metadata-title">';
-            result += localizeLabel ? I18n.t(label) : label;
+            result += localizeLabel && label ? I18n.t(label) : label;
             result += '</span>';
             result +=
                 '<div class="metadata-value">';

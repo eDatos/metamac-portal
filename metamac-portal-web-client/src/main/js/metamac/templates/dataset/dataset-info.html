@@ -150,9 +150,11 @@
                 <li>{{ fieldOutput "entity.dataset.dataProviders" metadata.dataProviders "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dataProviderAnnotations" metadata.dataProviderAnnotations "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.apiDocumentationUrl" metadata.apiDocumentationUrl "resource" }}</li>
-                <li>{{ fieldOutput "entity.dataset.apiUrl" metadata.apiUrl "resource" }}</li>
+                <li>{{ fieldOutput "entity.dataset.apiUrl.title" apiDownload "text" }}</li>
+                <li>{{ fieldOutput "" metadata.apiUrl "resource" }}</li>
                 {{#if urlParametersForDimensionSelection.isVisible}}
-                <li>{{ fieldOutput "entity.dataset.selectionApiUrl" urlParametersForDimensionSelection "resource" }}</li>
+                <li>{{ fieldOutput "entity.dataset.selectionApiUrl.title" selectionApiDownload  "text" }}</li>
+                <li>{{ fieldOutput "" urlParametersForDimensionSelection "resource" }}</li>
                 {{/if}}
             </ul>
         </div>
