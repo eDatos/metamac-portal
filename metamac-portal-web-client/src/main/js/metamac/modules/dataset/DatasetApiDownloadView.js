@@ -14,9 +14,19 @@
         },
 
         render: function () {
+            /*var infoUrl= this.filterDimensions.metadata.getVisualizerUrlForWidget() + '#visualization/info';*/
+            var message =  I18n.t("filter.apiDownload.modal.info");
+            var final = message.replace(I18n.t("entity.dataset.section.reuse"), '<a href="#">rrr</a>');
+            console.log('mesaage', final);
 
             var context = {
-                infoMessage: I18n.t("filter.apiDownload.modal.info") ,
+                infoMessage: final,
+                /*infoUrl: this.filterDimensions.metadata.getVisualizerUrlForWidget() + '#visualization/info',*/
+                /*this.filterDimensions.metadata.buildInfoVisulizerUrl(this.filterDimensions.metadata.datasourceIdentifier.identifier),*/
+                infoUrl: {
+                    href: this.filterDimensions.metadata.getVisualizerUrlForWidget() + '#visualization/info',
+                    name:  I18n.t("filter.apiDownload.modal.info")
+                },
                 url: [
                     {
                         format: 'csv',
@@ -44,11 +54,13 @@
                     }
                 ]
             };
-
+           
+            console.log('1',context.infoUrl.href, context.infoMessage);
             this.$el.html(this.template(context));
         },
 
         _buildEndpoint: function(type) {
+            console.log('this.filterDimensions.metadata', this.filterDimensions.metadata);
             var endPoint = this.filterDimensions.metadata.getApiUrl().href + "." + type;
             
             return endPoint;
