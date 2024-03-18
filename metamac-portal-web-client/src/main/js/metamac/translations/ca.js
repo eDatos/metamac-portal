@@ -56,7 +56,7 @@ I18n.translations.ca = {
         apiDownload: {
             modal: {
                 title: "Descarregar via API",
-                info: "Per a més informació consultar l'apartat de 'Reutilització i informació per a desenvolupadors' on s'explica com construir la cridada a l'API per al recurs complet i per a la selecció actual."
+                info: "Per a més informació consultar l'apartat de {{hrefTag}} on s'explica com construir la cridada a l'API per al recurs complet i per a la selecció actual."
             },
         },
         share: {

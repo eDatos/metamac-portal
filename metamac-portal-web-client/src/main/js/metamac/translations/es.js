@@ -56,7 +56,7 @@ I18n.translations.es = {
         apiDownload: {
             modal: {
                 title: "Descarga vía API",
-                info: "Para más información consultar el apartado de 'Reutilización e información para desarrolladores' donde se explica cómo construir la llamada a la API para el recurso completo y para la selección actual."
+                info: "Para más información consultar el apartado de {{hrefTag}} donde se explica cómo construir la llamada a la API para el recurso completo y para la selección actual."
             },
         },
         share: {

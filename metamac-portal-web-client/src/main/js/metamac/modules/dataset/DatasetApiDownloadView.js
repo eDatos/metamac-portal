@@ -15,8 +15,6 @@
 
         render: function () {
             var context = {
-                infoMessage: I18n.t("filter.apiDownload.modal.info"),
-                infoUrl: this.filterDimensions.metadata.getVisualizerUrlForWidget() + '#visualization/info',
                 url: [
                     {
                         format: 'csv',
@@ -45,16 +43,20 @@
                 ]
             };
 
-            var infoMessage = context.infoMessage.replace(I18n.t("entity.dataset.section.reuse"), '<a href="' + context.infoUrl +'">'+ I18n.t("entity.dataset.section.reuse") +'</a>');
+            var infoMessage = I18n.t("filter.apiDownload.modal.info", { hrefTag: this._getHrefTag() });
             this.$el.html(this.template(context));
             $('.dataset-api-download-info', this.$el).append(infoMessage);
         },
 
         _buildEndpoint: function(type) {
-            console.log('this.filterDimensions.metadata', this.filterDimensions.metadata);
-            var endPoint = this.filterDimensions.metadata.getApiUrl().href + "." + type;
+            return this.filterDimensions.metadata.getApiUrl().href + "." + type;
             
-            return endPoint;
+        },
+
+        _getHrefTag: function() {
+            var textLink = I18n.t("entity.dataset.section.reuse");
+            var href = this.filterDimensions.metadata.getVisualizerUrlForWidget() + '#visualization/info';
+            return '<a href="' + href + '">"' + textLink + '"</a>';
         }
     });
 

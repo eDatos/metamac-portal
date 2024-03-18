@@ -56,7 +56,7 @@ I18n.translations.en = {
         apiDownload: {
             modal: {
                 title: "Download via API",
-                info: "For more information, see the 'Reutilization and info for developers' section, which explains how to construct the API call for the entire resource and for the current selection."
+                info: "For more information, see the {{hrefTag}} section, which explains how to construct the API call for the entire resource and for the current selection."
             },
         },
         share: {

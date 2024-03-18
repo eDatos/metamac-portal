@@ -56,7 +56,7 @@ I18n.translations.pt = {
         apiDownload: {
             modal: {
                 title: "Baixar via API",
-                info: "Para obter mais informações, consulte a seção 'Reutilização e informações para desenvolvedores', que explica como construir a chamada de API para todo o recurso e para a seleção atual."
+                info: "Para obter mais informações, consulte a seção {{hrefTag}}, que explica como construir a chamada de API para todo o recurso e para a seleção atual."
             },
         },
         share: {
