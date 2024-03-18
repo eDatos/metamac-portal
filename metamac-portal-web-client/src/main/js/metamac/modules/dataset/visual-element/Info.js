@@ -180,9 +180,7 @@
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,
-                rightsHolder: this._getContextRightsHolder(),
-                apiDownload: I18n.t("entity.dataset.apiUrl.apiDownload") ,
-                selectionApiDownload: I18n.t("entity.dataset.selectionApiUrl.apiDownload") ,
+                rightsHolder: this._getContextRightsHolder()
 
             };
             this.$el.html(this.template(context));
