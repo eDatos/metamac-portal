@@ -181,8 +181,8 @@
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,
                 rightsHolder: this._getContextRightsHolder()
-            };
 
+            };
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
             scrollGroup.perfectScrollbar();
@@ -219,7 +219,6 @@
                     metadata.hasVersionInfo = !!metadata.nextVersion;
                 }
             }
-
             return metadata;
         },
 

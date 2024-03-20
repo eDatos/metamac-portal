@@ -483,6 +483,11 @@
     .icon-download;
 }
 
+.dataset-options-api-download {
+    .dataset-options-type-icon;
+    .icon-link;
+}
+
 .dataset-options-visualize {
     .dataset-options-type-icon;
     .icon-visualize;
@@ -522,6 +527,38 @@
         }
     }
 
+}
+
+.dataset-api-download {
+    padding: 10px;
+    .dataset-api-resources-format {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .resource-format-label {
+            color: @istacGreyDark;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            span:first-child {
+                font-weight: bold;
+                text-transform: uppercase;
+                min-width: 50px;
+                text-align: center;
+            }
+        }
+    }
+    .dataset-api-download-info {
+        font-size: 13px;
+        color: @istacGreyDark;
+        padding: 15px 0 10px;
+        margin-left: -5px;
+        a {
+            color: @istacGreyDark;
+        }
+    }
 }
 
 .dataset-share {

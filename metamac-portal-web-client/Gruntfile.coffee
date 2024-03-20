@@ -100,6 +100,7 @@ module.exports = (grunt) ->
                 paths.modules + "/dataset/DatasetShareView.js"
                 paths.modules + "/dataset/DatasetSaveView.js"
                 paths.modules + "/dataset/DatasetDownloadView.js"
+                paths.modules + "/dataset/DatasetApiDownloadView.js"
                 paths.modules + "/dataset/DatasetEmbedView.js"
 
                 # Datasource
