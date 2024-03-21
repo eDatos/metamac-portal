@@ -151,11 +151,15 @@
                 <li>{{ fieldOutput "entity.dataset.dataProviderAnnotations" metadata.dataProviderAnnotations "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.apiDocumentationUrl" metadata.apiDocumentationUrl "resource" }}</li>
                 <li>{{ fieldOutput "entity.dataset.apiUrl.title" "" "text" true true "" }}</li>
+                {{#if isDataset}}
                 <li>{{ message "entity.dataset.apiUrl.apiDownload" }}</li>
+                {{/if}}
                 <li>{{ fieldOutput "" metadata.apiUrl "resource" false }}</li>
                 {{#if urlParametersForDimensionSelection.isVisible}}
                 <li>{{ fieldOutput "entity.dataset.selectionApiUrl.title" "" "text" true true "" }}</li>
+                {{#if isDataset}}
                 <li>{{message "entity.dataset.selectionApiUrl.apiDownload"}}</li>
+                {{/if}}
                 <li>{{ fieldOutput "" urlParametersForDimensionSelection "resource" false }}</li>
                 {{/if}}
             </ul>
