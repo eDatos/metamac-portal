@@ -119,20 +119,21 @@
                     return "";
                 }
                 for (const key in attribute) {
+                    const translatedValue = self.getTranslatedString(attribute[key].value);
                     if (reducedObj.hasOwnProperty(key)) {
-                        reducedObj[key].push(self.getTranslatedString(attribute[key].value));
+                        reducedObj[key].push(translatedValue);
                     } else {
-                        reducedObj[key] = [self.getTranslatedString(attribute[key].value)];
+                        reducedObj[key] = [translatedValue];
                     }
                 }
             }
 
-            const mappedAttributes = _.mapObject(reducedObj, (value, key) => {
-                return {
+            const mappedAttributes = _.mapObject(reducedObj, (value, key) =>
+                ({
                     id: key,
                     value: value.join(" | ")
-                }
-            });
+                })
+            );
 
             return {
                 attribute: mappedAttributes,
@@ -199,19 +200,20 @@
             return response;
         },
 
-        indicatorMetadataAttributesToMetadataAttributes: function (attribute) {
-            if (!attribute) { return null; }
+        indicatorMetadataAttributesToMetadataAttributes: function (attributes) {
+            if (!attributes) { return null; }
+            const attributesList = Object.values(_.mapObject(attributes, (value, _) => {
+                return {
+                    id: value.code,
+                    name: {
+                        text: this.localisedStringToInternationalString(value.title),
+                    },
+                    attachmentLevel: this.indicatorAttachmentLevelToDatasetAttachmentLevel(value.attachmentLevel)
+                }
+            }));
             return {
-                attribute: [
-                    {
-                        id: attribute[ATTRIBUTE_OBS_CONF].code,
-                        name: {
-                            text: this.localisedStringToInternationalString(attribute[ATTRIBUTE_OBS_CONF].title)
-                        },
-                        attachmentLevel: this.indicatorAttachmentLevelToDatasetAttachmentLevel(attribute[ATTRIBUTE_OBS_CONF].attachmentLevel)
-                    }
-                ],
-                total: 1
+                attribute: attributesList,
+                total: attributesList.length
             }
         },
 
