@@ -112,21 +112,31 @@
         indicatorDataAttributesToDataAttributes: function (attributes) {
             if (!attributes) { return; }
             var self = this;
-            var values = _.map(attributes, function (attribute) {
+
+            const reducedObj = {};
+            for (const attribute of attributes) {
                 if (!attribute) {
                     return "";
-                } else {
-                    return self.getTranslatedString(attribute[ATTRIBUTE_OBS_CONF].value);
                 }
-            }).join(" | ");
-            return {
-                attribute: [
-                    {
-                        value: values,
-                        id: ATTRIBUTE_OBS_CONF
+                for (const key in attribute) {
+                    if (reducedObj.hasOwnProperty(key)) {
+                        reducedObj[key].push(self.getTranslatedString(attribute[key].value));
+                    } else {
+                        reducedObj[key] = [self.getTranslatedString(attribute[key].value)];
                     }
-                ],
-                total: 1
+                }
+            }
+
+            const mappedAttributes = _.mapObject(reducedObj, (value, key) => {
+                return {
+                    id: key,
+                    value: value.join(" | ")
+                }
+            });
+
+            return {
+                attribute: mappedAttributes,
+                total: Object.keys(mappedAttributes).length,
             };
         },
 
