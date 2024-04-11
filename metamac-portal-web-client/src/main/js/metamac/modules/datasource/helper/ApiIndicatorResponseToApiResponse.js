@@ -109,24 +109,45 @@
             return parsedDimensions;
         },
 
+        /**
+         * @param attributes {Array} Array of attributes, each value in the array corresponds to the attributes of a value
+         * of the indicator
+         * @return {{total: number, attribute: {}}}
+         */
         indicatorDataAttributesToDataAttributes: function (attributes) {
             if (!attributes) { return; }
             var self = this;
-            var values = _.map(attributes, function (attribute) {
-                if (!attribute) {
-                    return "";
-                } else {
-                    return self.getTranslatedString(attribute[ATTRIBUTE_OBS_CONF].value);
+
+            const attributesObj = {};
+            for (const attribute of attributes) {
+                if (attribute) {
+                    _.map(attribute, (a) => a.code).forEach((code) => {
+                        attributesObj[code] = [];
+                    });
                 }
-            }).join(" | ");
-            return {
-                attribute: [
-                    {
-                        value: values,
-                        id: ATTRIBUTE_OBS_CONF
+            }
+
+            for (const attribute of attributes) {
+                for (const code of Object.keys(attributesObj)) {
+                    if (attribute && attribute[code] != null) {
+                        const translatedValue = self.getTranslatedString(attribute[code].value);
+                        attributesObj[code].push(translatedValue);
+                    } else {
+                        attributesObj[code].push("");
                     }
-                ],
-                total: 1
+                }
+            }
+
+            const mappedAttributes = _.mapObject(attributesObj, (value, key) => {
+                return {
+                    id: key,
+                    value: value.join(" | ")
+                };
+            });
+
+            return {
+                attribute: mappedAttributes,
+                total: Object.keys(mappedAttributes).length,
             };
         },
 
@@ -189,19 +210,20 @@
             return response;
         },
 
-        indicatorMetadataAttributesToMetadataAttributes: function (attribute) {
-            if (!attribute) { return null; }
+        indicatorMetadataAttributesToMetadataAttributes: function (attributes) {
+            if (!attributes) { return null; }
+            const attributesList = Object.values(_.mapObject(attributes, (value, _) => {
+                return {
+                    id: value.code,
+                    name: {
+                        text: this.localisedStringToInternationalString(value.title),
+                    },
+                    attachmentLevel: this.indicatorAttachmentLevelToDatasetAttachmentLevel(value.attachmentLevel)
+                }
+            }));
             return {
-                attribute: [
-                    {
-                        id: attribute[ATTRIBUTE_OBS_CONF].code,
-                        name: {
-                            text: this.localisedStringToInternationalString(attribute[ATTRIBUTE_OBS_CONF].title)
-                        },
-                        attachmentLevel: this.indicatorAttachmentLevelToDatasetAttachmentLevel(attribute[ATTRIBUTE_OBS_CONF].attachmentLevel)
-                    }
-                ],
-                total: 1
+                attribute: attributesList,
+                total: attributesList.length
             }
         },
 
