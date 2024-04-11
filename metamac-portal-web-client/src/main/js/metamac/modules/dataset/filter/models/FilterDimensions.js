@@ -127,14 +127,33 @@
             if (!geographicDimension || geographicDimension.length > 1) {
                 console.warn("Something went wrong, no appropiate geographicDimensions ", geographicDimension);
             } else {
-                var json = {};
                 geographicDimension = geographicDimension[0];
                 var zone = geographicDimension.get('zone');
                 var position = zoneOffsets[zone.id] + zone.get('dimensions').indexOf(geographicDimension);
+
+                var selectionArray = selection.split("|");
+                var geographicDimensionRepresentations = geographicDimension.get('representations');
+                var validatedSelectionArray = [];
+                for (var i = 0; i < selectionArray.length; i++) {
+                    var representation = geographicDimensionRepresentations.where({ variableElementId: selectionArray[i] })[0];
+                    if (representation) {
+                        validatedSelectionArray.push(selectionArray[i]);
+                        if (representation.get("parent")) {
+                            var representationParent = geographicDimensionRepresentations.where({id: representation.get("parent")})[0];
+                            selectionArray.push(representationParent.get("variableElementId"));
+                        }
+                    }
+                }
+
+                var json = {};
                 json[geographicDimension.id] = {
                     position: position,
-                    selectedCategories: selection.split("|")
-                }
+                    categories: geographicDimensionRepresentations.models.map(representation => ({
+                        id: representation.get("id"),
+                        selected: validatedSelectionArray.length === 0 || validatedSelectionArray.includes(representation.get("variableElementId")),
+                        drawable: representation.get("drawable")
+                    }))
+                };
                 this.importJSONSelection(json);
             }
         },
