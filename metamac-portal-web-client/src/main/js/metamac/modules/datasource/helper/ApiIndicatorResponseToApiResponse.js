@@ -109,31 +109,41 @@
             return parsedDimensions;
         },
 
+        /**
+         * @param attributes {Array} Array of attributes, each value in the array corresponds to the attributes of a value
+         * of the indicator
+         * @return {{total: number, attribute: {}}}
+         */
         indicatorDataAttributesToDataAttributes: function (attributes) {
             if (!attributes) { return; }
             var self = this;
 
-            const reducedObj = {};
+            const attributesObj = {};
             for (const attribute of attributes) {
-                if (!attribute) {
-                    return "";
+                if (attribute) {
+                    _.map(attribute, (a) => a.code).forEach((code) => {
+                        attributesObj[code] = [];
+                    });
                 }
-                for (const key in attribute) {
-                    const translatedValue = self.getTranslatedString(attribute[key].value);
-                    if (reducedObj.hasOwnProperty(key)) {
-                        reducedObj[key].push(translatedValue);
+            }
+
+            for (const attribute of attributes) {
+                for (const code of Object.keys(attributesObj)) {
+                    if (attribute && attribute[code] != null) {
+                        const translatedValue = self.getTranslatedString(attribute[code].value);
+                        attributesObj[code].push(translatedValue);
                     } else {
-                        reducedObj[key] = [translatedValue];
+                        attributesObj[code].push("");
                     }
                 }
             }
 
-            const mappedAttributes = _.mapObject(reducedObj, (value, key) =>
-                ({
+            const mappedAttributes = _.mapObject(attributesObj, (value, key) => {
+                return {
                     id: key,
                     value: value.join(" | ")
-                })
-            );
+                };
+            });
 
             return {
                 attribute: mappedAttributes,
