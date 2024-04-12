@@ -129,12 +129,8 @@
 
             for (const attribute of attributes) {
                 for (const code of Object.keys(attributesObj)) {
-                    if (attribute && attribute[code] != null) {
-                        const translatedValue = self.getTranslatedString(attribute[code].value);
-                        attributesObj[code].push(translatedValue);
-                    } else {
-                        attributesObj[code].push("");
-                    }
+                    const translatedValue = attribute && attribute[code] ? self.getTranslatedString(attribute[code].value) : "";
+                    attributesObj[code].push(translatedValue);
                 }
             }
 
@@ -212,13 +208,13 @@
 
         indicatorMetadataAttributesToMetadataAttributes: function (attributes) {
             if (!attributes) { return null; }
-            const attributesList = Object.values(_.mapObject(attributes, (value, _) => {
+            const attributesList = Object.values(_.mapObject(attributes, (attribute, _) => {
                 return {
-                    id: value.code,
+                    id: attribute.code,
                     name: {
-                        text: this.localisedStringToInternationalString(value.title),
+                        text: this.localisedStringToInternationalString(attribute.title),
                     },
-                    attachmentLevel: this.indicatorAttachmentLevelToDatasetAttachmentLevel(value.attachmentLevel)
+                    attachmentLevel: this.indicatorAttachmentLevelToDatasetAttachmentLevel(attribute.attachmentLevel)
                 }
             }));
             return {
