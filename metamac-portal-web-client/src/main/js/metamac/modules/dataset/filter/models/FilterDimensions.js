@@ -131,16 +131,16 @@
                 var zone = geographicDimension.get('zone');
                 var position = zoneOffsets[zone.id] + zone.get('dimensions').indexOf(geographicDimension);
 
-                var selectionArray = selection.split("|");
+                var selectedVariableElements = selection.split("|");
                 var geographicDimensionRepresentations = geographicDimension.get('representations');
-                var validatedSelectionArray = [];
-                for (var i = 0; i < selectionArray.length; i++) {
-                    var representation = geographicDimensionRepresentations.where({ variableElementId: selectionArray[i] })[0];
+                var selectedAndValidatedVariableElements = [];
+                for (var i = 0; i < selectedVariableElements.length; i++) {
+                    var representation = geographicDimensionRepresentations.where({ variableElementId: selectedVariableElements[i] })[0];
                     if (representation) {
-                        validatedSelectionArray.push(selectionArray[i]);
+                        selectedAndValidatedVariableElements.push(selectedVariableElements[i]);
                         if (representation.get("parent")) {
                             var representationParent = geographicDimensionRepresentations.where({id: representation.get("parent")})[0];
-                            selectionArray.push(representationParent.get("variableElementId"));
+                            selectedVariableElements.push(representationParent.get("variableElementId"));
                         }
                     }
                 }
@@ -150,7 +150,8 @@
                     position: position,
                     categories: geographicDimensionRepresentations.models.map(representation => ({
                         id: representation.get("id"),
-                        selected: validatedSelectionArray.length === 0 || validatedSelectionArray.includes(representation.get("variableElementId")),
+                        selected: selectedAndValidatedVariableElements.length === 0
+                            || selectedAndValidatedVariableElements.includes(representation.get("variableElementId")),
                         drawable: representation.get("drawable")
                     }))
                 };
