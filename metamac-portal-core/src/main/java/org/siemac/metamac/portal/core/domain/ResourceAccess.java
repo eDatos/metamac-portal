@@ -20,11 +20,10 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.enume.LabelVisualisationModeEnum;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
+import org.siemac.metamac.portal.core.invocation.external.SrmRestExternalFacade;
 import org.siemac.metamac.portal.core.utils.PortalUtils;
 import org.siemac.metamac.rest.common.v1_0.domain.InternationalString;
 import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimension;
@@ -34,6 +33,7 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Componen
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
@@ -43,6 +43,9 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Enumerat
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.MeasureQuantity;
+
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
+
 
 public class ResourceAccess {
 
@@ -87,7 +90,7 @@ public class ResourceAccess {
     private List<String>                                  dimensionsOrderedForData;
     private Map<String, List<String>>                     dimensionValuesOrderedForDataByDimensionId;
 
-    private Dataset                                       dataset;
+    private DatasetBase                                       dataset;
 
     private final Map<String, Integer>                    multipliers                   = new HashMap<String, Integer>();
     private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
@@ -95,7 +98,9 @@ public class ResourceAccess {
 
     private int                                           primaryMeasureAttributesCount = 0;
 
-    public ResourceAccess(Dataset dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+    private SrmRestExternalFacade srmRestExternalFacade;
+
+    public ResourceAccess(DatasetBase dataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
         data = dataset.getData();
         dimensions = dataset.getMetadata().getDimensions();
         attributes = dataset.getMetadata().getAttributes();
@@ -118,7 +123,11 @@ public class ResourceAccess {
         initialize(data, dimensions, attributes, datasetSelection, lang, langAlternative);
     }
 
-    public ResourceAccess(Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative) throws MetamacException {
+
+    public ResourceAccess(QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, String langAlternative)
+            throws MetamacException {
+        this.srmRestExternalFacade = srmRestExternalFacade;
+
         data = query.getData();
         dimensions = query.getMetadata().getDimensions();
         attributes = query.getMetadata().getAttributes();
@@ -174,10 +183,9 @@ public class ResourceAccess {
         return name;
     }
 
-    public Dataset getDataset() {
+    public DatasetBase getDataset() {
         return dataset;
     }
-
     public DatasetMetadataBase getMetadata() {
         return metadata;
     }
@@ -492,7 +500,7 @@ public class ResourceAccess {
             int offset = 0;
             String attributeId = attribute.getId();
             // unit multiplier and unit measure attributes wont appear here because they must appear elsewhere, in units
-            if (unitMeasure.equals(attributeId) || unitMultiplier.equals(attributeId)) {
+            if ((unitMeasure != null && unitMeasure.equals(attributeId)) || (unitMultiplier != null && unitMultiplier.equals(attributeId))) {
                 continue;
             }
             // Observation level attributes (body cell)

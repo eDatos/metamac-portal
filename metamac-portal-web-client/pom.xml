@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-portal</groupId>
         <artifactId>metamac-portal-parent</artifactId>
-        <version>8.6.1-SNAPSHOT</version>
+        <version>8.7.1-SNAPSHOT</version>
         <relativePath>../metamac-portal-parent/pom.xml</relativePath>
     </parent>
 
@@ -25,12 +25,46 @@
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-statistical-resources</groupId>
-            <artifactId>metamac-statistical-resources-rest-internal-api</artifactId>
-        </dependency> 
+            <artifactId>metamac-statistical-resources-rest-api-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.siemac.metamac</groupId>
+                    <artifactId>metamac-rest-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
-            <artifactId>metamac-portal-rest-external-api</artifactId>            
+            <artifactId>metamac-portal-rest-external-api</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.siemac.metamac</groupId>
+                    <artifactId>metamac-rest-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-portal</groupId>
+            <artifactId>metamac-portal-rest-internal-api</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.siemac.metamac</groupId>
+                    <artifactId>metamac-rest-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-portal</groupId>
+            <artifactId>metamac-portal-rest-common-api</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.siemac.metamac</groupId>
+                    <artifactId>metamac-rest-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.siemac.metamac.metamac-portal</groupId>
@@ -60,6 +94,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-statistical-resources</groupId>
+            <artifactId>metamac-statistical-resources-rest-internal-api</artifactId>
+            <version>${metamac-statistical-resources.version}</version>
         </dependency>
     </dependencies>
  

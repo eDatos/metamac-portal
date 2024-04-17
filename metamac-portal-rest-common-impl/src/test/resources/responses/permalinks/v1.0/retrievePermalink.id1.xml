@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:permalink xmlns:p="http://www.siemac.org/metamac/rest/permalinks/v1.0/domain" xmlns:cdomain="http://www.siemac.org/metamac/rest/common/v1.0/domain" kind="permalinks#permalink">
+    <p:id>permalink01</p:id>
+    <p:content>content of permalink01</p:content>
+    <p:selfLink kind="permalinks#permalink" href="http://portal.istac.es/apis/permalinks/v1.0/permalinks/permalink01"/>
+</p:permalink>

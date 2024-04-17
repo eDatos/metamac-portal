@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-portal</groupId>
         <artifactId>metamac-portal-parent</artifactId>
-        <version>8.6.1-SNAPSHOT</version>
+        <version>8.7.1-SNAPSHOT</version>
         <relativePath>../metamac-portal-parent/pom.xml</relativePath>
     </parent>
 
@@ -35,8 +35,16 @@
             <artifactId>metamac-statistical-resources-rest-external-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.siemac.metamac.metamac-statistical-resources</groupId>
+            <artifactId>metamac-statistical-resources-rest-internal-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.siemac.metamac.metamac-srm</groupId>
             <artifactId>metamac-srm-rest-external-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-srm</groupId>
+            <artifactId>metamac-srm-rest-internal-api</artifactId>
         </dependency>
         <dependency>
             <groupId>es.gobcan.istac.indicators</groupId>            

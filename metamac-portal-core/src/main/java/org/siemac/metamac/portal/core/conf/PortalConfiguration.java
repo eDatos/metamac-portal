@@ -28,4 +28,11 @@ public interface PortalConfiguration extends ConfigurationService {
 
     Integer retrieveExportExcelCellThreshold() throws MetamacException;
 
+    String retrieveOptionalUnitMeasure();
+    String retrieveOptionalUnitMeasureMultiplier();
+
+    String retrievePortalInternalApisPermalinksUrlBase() throws MetamacException;
+
+    String retrievePortalInternalApisExportUrlBase() throws MetamacException;
+
 }

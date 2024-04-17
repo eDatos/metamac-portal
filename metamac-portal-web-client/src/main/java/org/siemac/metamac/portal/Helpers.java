@@ -241,12 +241,19 @@ public class Helpers {
         return null;
     }
 
-    public static Permalink getPermalink(String apiUrlPermalinks, String identifier) {
+    public static Permalink getPermalink(String apiUrlPermalinks, String identifier, Boolean internalPortal) {
         Permalink permalink = new Permalink();
         try {
             permalink.setId(identifier);
 
-            String permalinkContentString = IOUtils.toString((InputStream) Helpers.getPermalinksJAXRSClient(apiUrlPermalinks).retrievePermalinkByIdJson(identifier).getEntity());
+            String permalinkContentString = null;
+
+            if (internalPortal) {
+                permalinkContentString = IOUtils.toString((InputStream) Helpers.getPermalinksInternalJAXRSClient(apiUrlPermalinks).retrievePermalinkByIdJson(identifier).getEntity());
+            } else {
+                permalinkContentString = IOUtils.toString((InputStream) Helpers.getPermalinksJAXRSClient(apiUrlPermalinks).retrievePermalinkByIdJson(identifier).getEntity());
+            }
+
             PermalinkContent permalinkContent = permalinkContentToDto(permalinkContentString);
             permalink.setContent(permalinkContent);
             return permalink;
@@ -329,6 +336,10 @@ public class Helpers {
 
     private static org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0 getPermalinksJAXRSClient(String permalinksEndpoint) {
         return JAXRSClientFactory.create(permalinksEndpoint, org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0.class, null, true);
+    }
+
+    private static org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0 getPermalinksInternalJAXRSClient(String permalinksEndpoint) {
+        return JAXRSClientFactory.create(permalinksEndpoint, org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0.class, null, true);
     }
 
     public static String html2text(String html) {

@@ -9,6 +9,10 @@
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
 
+## 8.6.2 a 8.7.0
+- Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión.
+  Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/8.6.2/db/common-metadata/postgresql/](etc/changes-from-release/8.6.2/db/common-metadata/postgresql)
+
 ## 8.5.4 a 8.6.0
 - Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión. 
   Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/8.5.4/db/common-metadata/postgresql/](etc/changes-from-release/8.5.4/db/common-metadata/postgresql)
@@ -57,13 +61,16 @@ etc/changes-from-release/7.1.3/db/common-metadata/postgresql/*.sql
 ```
 
 ## 7.0.0 a 7.0.1
-* La dependencia de edatos-external-users pasa de obligatoria a opcional. El modo de indicarlo es que las siguientes propiedades no estén inicializadas. 
-
-* Debido a que la funcionalidad del captcha se ha movido a external-users, dicha funcionalidad estará deshabilitada si edatos-external-users no está instalado.
+* La dependencia de edatos-external-users pasa de obligatoria a opcional. El modo de indicarlo es que las siguientes propiedades, usadas desde la cabecera servida por complementos-apps, no estén inicializadas. 
 
 ```
     metamac.edatos_external_users.rest.external
     metamac.edatos_external_users.web.external.url
+```
+    
+* Debido a que la funcionalidad del captcha se ha movido a external-users, dicha funcionalidad estará deshabilitada si edatos-external-users no está instalado. Este comportamiento es controlado por la siguiente propiedad opcional.
+
+```
     metamac.portal.rest.external.authentication.captcha.url
 ```
 

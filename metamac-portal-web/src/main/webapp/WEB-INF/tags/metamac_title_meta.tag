@@ -65,10 +65,7 @@
             
 			request.setAttribute("analyticsGoogleTrackingId", configurationService.retrieveAnalyticsGoogleTrackingId());
 
-		    PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
-		    PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
-            EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
             INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
             DEFAULT_INTERNATIONALIZATION_LANGUAGE = configurationService.retrieveDefaultInternationalizationLanguage();
             try {
@@ -82,13 +79,19 @@
                 EXTERNAL_CAPTCHA_URL_BASE = "error";
             }
             if (INSTALLATION_TYPE.equals("INTERNAL")) {
+                PORTAL_URL_BASE = configurationService.retrievePortalInternalWebApplicationUrlBase();
 		        STATISTICAL_RESOURCES_API_URL_BASE = configurationService.retrieveStatisticalResourcesInternalApiUrlBase();
 		        SRM_API_URL_BASE = configurationService.retrieveSrmInternalApiUrlBase();
 		        INDICATORS_API_URL_BASE = configurationService.retrieveIndicatorsInternalApiUrlBase();
-		    } else if (INSTALLATION_TYPE.equals("EXTERNAL")) {	        
+                PERMALINKS_API_URL_BASE = configurationService.retrievePortalInternalApisPermalinksUrlBase();
+                EXPORT_API_URL_BASE = configurationService.retrievePortalInternalApisExportUrlBase();
+		    } else if (INSTALLATION_TYPE.equals("EXTERNAL")) {
+                PORTAL_URL_BASE = configurationService.retrievePortalExternalWebApplicationUrlBase();
 		        STATISTICAL_RESOURCES_API_URL_BASE = configurationService.retrieveStatisticalResourcesExternalApiUrlBase();
 		        SRM_API_URL_BASE = configurationService.retrieveSrmExternalApiUrlBase();
 		        INDICATORS_API_URL_BASE = configurationService.retrieveIndicatorsExternalApiUrlBase();
+                PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
+                EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
 			}
 			
 			request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
@@ -133,7 +136,7 @@
     <%
         String permalinkId = request.getParameter("permalink");
         if (permalinkId != null && !permalinkId.isEmpty()) {
-            Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId);
+            Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
             response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl));   
         }        
     %>
@@ -277,6 +280,13 @@
        request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
        request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
        request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
+       
+       String faviconUrl = "";
+       String portalStyleHeaderUrl = (String) request.getAttribute("portalStyleHeaderUrl");       
+       if (portalStyleHeaderUrl != null) {
+           faviconUrl = portalStyleHeaderUrl.split("/header.html")[0] + "/../../" + "common/favicon.ico";
+       }
+       request.setAttribute("faviconUrl", faviconUrl);
 
 	%>	
    	<title>${pageTitle}</title>
@@ -296,6 +306,7 @@
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   	<meta name="robots" content="index, follow" />
   	<meta name="revisit-after" content="7 days" />
+  	<link rel="icon" type="image/x-icon" href="${faviconUrl}" />
 
     
     <!-- Default styles with low precedece that can be easily overwritten by custom headers -->

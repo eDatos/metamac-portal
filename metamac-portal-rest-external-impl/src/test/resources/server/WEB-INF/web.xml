@@ -6,6 +6,8 @@
 
 <!-- START SNIPPET: web.xml -->
 <web-app>
+	<display-name>Metamac Portal REST External</display-name>
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>WEB-INF/spring/applicationContext-test.xml</param-value>

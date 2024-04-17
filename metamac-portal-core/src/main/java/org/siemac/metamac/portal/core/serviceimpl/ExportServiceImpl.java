@@ -13,8 +13,8 @@ import org.siemac.metamac.portal.core.exporters.ImageExporter;
 import org.siemac.metamac.portal.core.exporters.PlainTextExporter;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.portal.core.serviceapi.validators.ExportServiceInvocationValidator;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Dataset;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
     /* Datasets */
 
     @Override
-    public void exportDatasetToExcel(ServiceContext ctx, Dataset dataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
+    public void exportDatasetToExcel(ServiceContext ctx, DatasetBase dataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportDatasetToExcel(ctx, dataset, datasetSelection, lang, resultOutputStream);
 
         String langDefault = portalConfiguration.retrieveLanguageDefault();
@@ -38,34 +38,34 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         ExcelExporter exporter = new ExcelExporter(dataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
     @Override
-    public void exportDatasetToTsv(ServiceContext ctx, Dataset dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    public void exportDatasetToTsv(ServiceContext ctx, DatasetBase dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportDatasetToTsv(ctx, dataset, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
         exportDatasetToPlainText(PlainTextTypeEnum.TSV, dataset, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
     }
 
     @Override
-    public void exportDatasetToCsvCommaSeparated(ServiceContext ctx, Dataset dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    public void exportDatasetToCsvCommaSeparated(ServiceContext ctx, DatasetBase dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportDatasetToCsvCommaSeparated(ctx, dataset, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
         exportDatasetToPlainText(PlainTextTypeEnum.CSV_COMMA, dataset, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
     }
 
     @Override
-    public void exportDatasetToCsvSemicolonSeparated(ServiceContext ctx, Dataset dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    public void exportDatasetToCsvSemicolonSeparated(ServiceContext ctx, DatasetBase dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportDatasetToCsvSemicolonSeparated(ctx, dataset, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
         exportDatasetToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, dataset, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
     }
 
-    private void exportDatasetToPlainText(PlainTextTypeEnum plainTextTypeEnum, Dataset dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    private void exportDatasetToPlainText(PlainTextTypeEnum plainTextTypeEnum, DatasetBase dataset, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         String langDefault = portalConfiguration.retrieveLanguageDefault();
         if (lang == null) {
@@ -92,7 +92,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
     }
 
     @Override
-    public void exportDatasetToPx(ServiceContext ctx, Dataset dataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
+    public void exportDatasetToPx(ServiceContext ctx, DatasetBase dataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportDatasetToPx(ctx, dataset, datasetSelection, lang, resultOutputStream);
 
         String langDefault = portalConfiguration.retrieveLanguageDefault();
@@ -100,8 +100,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         PxExporter exporter = new PxExporter(dataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
@@ -109,7 +109,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
     /* Queries */
 
     @Override
-    public void exportQueryToExcel(ServiceContext ctx, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
+    public void exportQueryToExcel(ServiceContext ctx, QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportQueryToExcel(ctx, query, relatedDataset, datasetSelection, lang, resultOutputStream);
 
         String langDefault = portalConfiguration.retrieveLanguageDefault();
@@ -117,34 +117,34 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
         Integer cellThreshold = portalConfiguration.retrieveExportExcelCellThreshold();
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         ExcelExporter exporter = new ExcelExporter(query, relatedDataset, datasetSelection, lang, langDefault, cellThreshold, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }
 
     @Override
-    public void exportQueryToTsv(ServiceContext ctx, Query query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    public void exportQueryToTsv(ServiceContext ctx, QueryBase query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportQueryToTsv(ctx, query, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
         exportQueryToPlainText(PlainTextTypeEnum.TSV, query, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
     }
 
     @Override
-    public void exportQueryToCsvCommaSeparated(ServiceContext ctx, Query query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    public void exportQueryToCsvCommaSeparated(ServiceContext ctx, QueryBase query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportQueryToCsvCommaSeparated(ctx, query, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
         exportQueryToPlainText(PlainTextTypeEnum.CSV_COMMA, query, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
     }
 
     @Override
-    public void exportQueryToCsvSemicolonSeparated(ServiceContext ctx, Query query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    public void exportQueryToCsvSemicolonSeparated(ServiceContext ctx, QueryBase query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportQueryToCsvSemicolonSeparated(ctx, query, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
         exportQueryToPlainText(PlainTextTypeEnum.CSV_SEMICOLON, query, datasetSelection, lang, resultObservationsOutputStream, resultAttributesOutputStream);
     }
 
-    private void exportQueryToPlainText(PlainTextTypeEnum plainTextTypeEnum, Query query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
+    private void exportQueryToPlainText(PlainTextTypeEnum plainTextTypeEnum, QueryBase query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream,
             OutputStream resultAttributesOutputStream) throws MetamacException {
         String langDefault = portalConfiguration.retrieveLanguageDefault();
         if (lang == null) {
@@ -156,7 +156,7 @@ public class ExportServiceImpl extends ExportServiceImplBase {
     }
 
     @Override
-    public void exportQueryToPx(ServiceContext ctx, Query query, Dataset relatedDataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
+    public void exportQueryToPx(ServiceContext ctx, QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException {
         exportServiceInvocationValidator.checkExportQueryToPx(ctx, query, relatedDataset, datasetSelection, lang, resultOutputStream);
 
         String langDefault = portalConfiguration.retrieveLanguageDefault();
@@ -164,8 +164,8 @@ public class ExportServiceImpl extends ExportServiceImplBase {
             lang = langDefault;
         }
 
-        String unitMeasureProperty = portalConfiguration.retrieveUnitMeasure();
-        String unitMultiplierProperty = portalConfiguration.retrieveUnitMeasureMultiplier();
+        String unitMeasureProperty = portalConfiguration.retrieveOptionalUnitMeasure();
+        String unitMultiplierProperty = portalConfiguration.retrieveOptionalUnitMeasureMultiplier();
         PxExporter exporter = new PxExporter(query, relatedDataset, datasetSelection, lang, langDefault, unitMeasureProperty, unitMultiplierProperty);
         exporter.write(resultOutputStream);
     }

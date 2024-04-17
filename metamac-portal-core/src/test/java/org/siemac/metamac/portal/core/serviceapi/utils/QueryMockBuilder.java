@@ -24,14 +24,14 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NonEnume
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NonEnumeratedAttributeValues;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NonEnumeratedDimensionValue;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.NonEnumeratedDimensionValues;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query;
-import org.siemac.metamac.rest.statistical_resources.v1_0.domain.QueryMetadata;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryMetadataBase;
 
 public class QueryMockBuilder extends ResourceMockBuilder {
 
-    private final Query             query;
-    private Dimension               lastDimensionMetadata;
-    private DimensionRepresentation lastDimensionData;
+    private final QueryBase               query;
+    private       Dimension               lastDimensionMetadata;
+    private       DimensionRepresentation lastDimensionData;
 
     private Attribute               lastAttributeMetadata;
 
@@ -40,11 +40,11 @@ public class QueryMockBuilder extends ResourceMockBuilder {
     }
 
     private QueryMockBuilder() {
-        query = new Query();
+        query = new QueryBase();
         query.setId("C00031A_000001");
         query.setName(internationalString("title"));
         query.setDescription(internationalString("description"));
-        query.setMetadata(new QueryMetadata());
+        query.setMetadata(new QueryMetadataBase());
         query.getMetadata().setStatisticalOperation(mockResource("C00000A"));
         query.getMetadata().setRelatedDsd(mockDataStructureDefinition());
         query.getMetadata().setDimensions(new Dimensions());
@@ -214,7 +214,7 @@ public class QueryMockBuilder extends ResourceMockBuilder {
         return this;
     }
 
-    public Query build() {
+    public QueryBase build() {
         return query;
     }
 }

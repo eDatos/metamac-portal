@@ -23,6 +23,7 @@ I18n.translations.en = {
             helpUrl: "Help",
             share: "Share",
             download: "Download",
+            apiDownload: "API",
             save: "Save",
             accept: "Accept",
             cancel: "Cancel",
@@ -51,6 +52,12 @@ I18n.translations.en = {
                     question: "Would you like to include the attributes on the download?"
                 }
             }
+        },
+        apiDownload: {
+            modal: {
+                title: "Download via API",
+                info: "For more information, see the {{hrefTag}} section, which explains how to construct the API call for the entire resource and for the current selection."
+            },
         },
         share: {
             permanent: "Permanent link:"
@@ -245,9 +252,14 @@ I18n.translations.en = {
             language: "Language",
 
             apiDocumentationUrl: "API documentation access",
-            apiUrl: "API access to the resource",
-            selectionApiUrl: "Access to the current selection in the API",
-
+            apiUrl: {
+                title: "API access to the resource",
+                apiDownload: "The resource can be obtained in the following formats: CSV, TSV, XLSX, XML, JSON and JSONSTAT. To build the API call, just add the format to the end of the URL. For example, to build the call in CSV format it would be done as follows: URL.csv"
+            },
+            selectionApiUrl: {
+                title: "Access to the current selection in the API",
+                apiDownload: "The selection can also be obtained in different formats (CSV, TSV, XLSX, XML, JSON and JSONSTAT). In this case, to build the API call it must be taken into account that the format must be indicated before passing the parameters, for example: URL.csv?PARAMETERS"
+            },
             nextVersion: {
                 title: "Next update",
                 enum: {

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.siemac.metamac.metamac-portal</groupId>
 		<artifactId>metamac-portal-parent</artifactId>
-		<version>8.6.1-SNAPSHOT</version>
+		<version>8.7.1-SNAPSHOT</version>
 		<relativePath>../metamac-portal-parent/pom.xml</relativePath>
 	</parent>
 
@@ -119,7 +119,7 @@
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/../etc/rest/external</directory>
+                                    <directory>${basedir}/../etc/rest/common</directory>
                                     <targetPath>META-INF/rest/external</targetPath>
                                     <includes>
                                         <include>**/*</include>
@@ -181,7 +181,7 @@
                                 </episode>
                             </episodes>
                             <bindingFiles>
-                                <bindingFile>${basedir}/../etc/rest/external/binding.xjb</bindingFile>
+                                <bindingFile>${basedir}/../etc/rest/common/binding.xjb</bindingFile>
                             </bindingFiles>
                             <generateDirectory>${basedir}/src/generated/java</generateDirectory>
                             <forceRegenerate>true</forceRegenerate>

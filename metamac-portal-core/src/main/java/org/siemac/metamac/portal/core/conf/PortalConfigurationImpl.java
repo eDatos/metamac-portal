@@ -3,10 +3,14 @@ package org.siemac.metamac.portal.core.conf;
 import org.siemac.metamac.core.common.conf.ConfigurationServiceImpl;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.portal.core.constants.PortalConfigurationConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PortalConfigurationImpl extends ConfigurationServiceImpl implements PortalConfiguration {
 
     private static final String ENVIROMENT_CONF_INSTALLATION_TYPE = "environment.metamac.portal.installation_type";
+
+    private static Logger       log                               = LoggerFactory.getLogger(PortalConfigurationImpl.class);
 
     @Override
     public String retrieveInstallationType() throws MetamacException {
@@ -81,6 +85,36 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
     @Override
     public Integer retrieveExportExcelCellThreshold() throws MetamacException {
         return Integer.valueOf(retrieveProperty(PortalConfigurationConstants.PORTAL_EXPORT_EXCEL_CELL_THRESHOLD));
+    }
+
+    @Override
+    public String retrieveOptionalUnitMeasure() {
+        String unitMeasure = null;
+        try {
+            unitMeasure = retrieveUnitMeasure();
+        } catch (MetamacException e) {
+            log.debug("Optional property Unit measure is empty", e);
+        }
+        return unitMeasure;
+    }
+
+    @Override
+    public String retrieveOptionalUnitMeasureMultiplier() {
+        String unitMeasureMultiplier = null;
+        try {
+            unitMeasureMultiplier = retrieveUnitMeasureMultiplier();
+        } catch (MetamacException e) {
+            log.debug("Optional property Unit measure multiplier is empty", e);
+        }
+        return unitMeasureMultiplier;
+    }
+    @Override
+    public String retrievePortalInternalApisPermalinksUrlBase() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_PERMALINK);
+    }
+    @Override
+    public String retrievePortalInternalApisExportUrlBase() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_EXPORT);
     }
 
     @Override
