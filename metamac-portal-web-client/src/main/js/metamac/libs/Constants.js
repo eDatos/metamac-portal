@@ -74,9 +74,16 @@
             lines: {
                 xAxisTicks: 6,
                 dataZoom: {
-                    height: 80,
-                    end: 100,
-                    partialEnd: 48
+                    horizontal: {
+                        height: 80,
+                        end: 100,
+                        partialEnd: 48
+                    },
+                    vertical: {
+                        width: 80,
+                        bottomMargin: 20,
+                        topMargin: 8
+                    }
                 }
             },
             legend: {

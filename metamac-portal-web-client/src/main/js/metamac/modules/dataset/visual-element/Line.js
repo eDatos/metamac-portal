@@ -10,7 +10,7 @@
         this._type = 'line';
 
         var self = this;
-        var titleBottom = Constants.charts.lines.dataZoom.height + Constants.charts.gap;
+        var titleBottom = Constants.charts.lines.dataZoom.horizontal.height + Constants.charts.gap;
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
@@ -50,19 +50,15 @@
                     }
                 }
             },
-            dataZoom: {
-                type: 'slider',
-                showDetail: false,
-                left: 'center',
-                height: Constants.charts.lines.dataZoom.height,
-                bottom: 0,
-                end: (this.data.metadata.getTimeDimensions().length > 0) ? Constants.charts.lines.dataZoom.end : Constants.charts.lines.dataZoom.partialEnd
-            },
+            dataZoom: this._getDataZooms(0),
             title: {
                 bottom: titleBottom
             },
             legend: {
                 bottom: legendBottom
+            },
+            grid: {
+                right: Constants.charts.lines.dataZoom.vertical.width + Constants.charts.gap
             }
         });
     };
@@ -183,18 +179,43 @@
             var linesDimensionSelectedCategories = this._getLinesDimensionCategories(linesDimension);
 
             var showLegend = !linesDimension.get('singleValue');
+            var gridBottom = this._chartOptions.legend.bottom + (showLegend ? this._getLegendHeight() + Constants.charts.gap : 0);
             return {
                 legend: {
                     show: showLegend
                 },
                 grid: {
-                    bottom: this._chartOptions.legend.bottom + (showLegend ? this._getLegendHeight() + Constants.charts.gap : 0)
+                    bottom: gridBottom
                 },
                 series: this._getSeries(linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension),
                 xAxis: {
                     data: _.invoke(dataAxisDimensionCategories, 'get', 'visibleLabel')
-                }
+                },
+                dataZoom: this._getDataZooms(gridBottom)
             };
+        },
+
+        _getDataZooms: function(gridBottom) {
+            return [
+                {
+                    type: 'slider',
+                    xAxisIndex: [0],
+                    showDetail: false,
+                    left: 'center',
+                    height: Constants.charts.lines.dataZoom.horizontal.height,
+                    bottom: 0,
+                    end: (this.data.metadata.getTimeDimensions().length > 0) ? Constants.charts.lines.dataZoom.horizontal.end : Constants.charts.lines.dataZoom.horizontal.partialEnd
+                },
+                {
+                    type: 'slider',
+                    yAxisIndex: [0],
+                    showDetail: false,
+                    right: 0,
+                    width: Constants.charts.lines.dataZoom.vertical.width,
+                    top: Constants.charts.lines.dataZoom.vertical.topMargin,
+                    bottom: gridBottom + Constants.charts.lines.dataZoom.vertical.bottomMargin
+                }
+            ];
         },
 
         _getDataAxisDimensionCategories: function (dataAxisDimension) {
