@@ -11,6 +11,7 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
+            this.onClickInfoLink = this.options.onClickInfoLink;
         },
         events: {
             "click .button-link": "clickInfoLink",
@@ -63,7 +64,10 @@
         },
 
         clickInfoLink: function () {
-            App.router.visualizationInfo();
+            if (this.filterDimensions.metadata.metadataResponse.visualizationType !== "info") {
+                App.router.visualizationInfo();
+            }
+            this.onClickInfoLink();
         },
     });
 
