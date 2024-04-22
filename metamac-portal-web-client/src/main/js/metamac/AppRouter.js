@@ -52,7 +52,7 @@
         },
 
         visualizationInfo: function () {
-            this.datasetController.showDatasetVisualizationInfo(App.queryParams);
+            this.datasetController.showDatasetVisualization(App.queryParams, "info");
         },
 
         visualizationPermalink: function () {
