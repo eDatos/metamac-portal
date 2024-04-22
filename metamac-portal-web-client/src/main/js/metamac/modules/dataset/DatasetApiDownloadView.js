@@ -11,6 +11,10 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
+            this.onClickInfoLink = this.options.onClickInfoLink || (function() {});
+        },
+        events: {
+            "click .button-link": "clickInfoLink",
         },
 
         render: function () {
@@ -55,9 +59,14 @@
 
         _getHrefTag: function() {
             var textLink = I18n.t("entity.dataset.section.reuse");
-            var href = this.filterDimensions.metadata.getVisualizerUrlForWidget() + '#visualization/info';
-            return '<a href="' + href + '">"' + textLink + '"</a>';
-        }
+            
+            return '<button class="button-link">"'+ textLink + '"</button>';
+        },
+
+        clickInfoLink: function () {
+            App.router.visualizationInfo();
+            this.onClickInfoLink();
+        },
     });
 
 }());

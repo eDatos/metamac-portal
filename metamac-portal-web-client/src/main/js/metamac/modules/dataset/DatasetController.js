@@ -62,6 +62,22 @@
                 self.visualizationView.showChart(options);
             });
         },
+        showDatasetVisualizationInfo: function(options) {
+            options.visualizationType = "info";
+            var link = this._linkToDatasetVisualization(options);
+            this.router.navigate(link);
+            var self = this;
+            var datasetIdentifier = _.pick(options, "type", "agency", "identifier", "version", "permalinkId", "indicatorSystem", "geo", "multidatasetId", "widgetTitle");
+            if (this.visualizationView) {
+                this.visualizationView.showLoading();
+            }
+            this._loadMetadataAndData(datasetIdentifier).then(function () {
+                if (self.region.currentView !== self.visualizationView) {
+                    self.region.show(self.visualizationView);
+                }
+                self.visualizationView.showChart(options);
+            });
+        },
 
         changeDatasetVisualization: function (options) {
             var link = this._linkToDatasetVisualization(options);
