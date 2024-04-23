@@ -316,6 +316,7 @@
 
             modalContentView = new App.modules.dataset.DatasetApiDownloadView({
                 filterDimensions: this.filterDimensions,
+                optionsModel: this.optionsModel,
                 onClickInfoLink: function () {
                     modal.close();
                 },

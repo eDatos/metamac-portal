@@ -14,7 +14,6 @@
             "selection/permalink/:permalinkId": "selectionPermalink",
 
             "visualization": "visualization",
-            "visualization/info": "visualizationInfo",
             "visualization/permalink/:permalinkId": "visualizationPermalink",
 
             "visualization/:visualizationType": "visualizationType",
@@ -49,10 +48,6 @@
 
         visualization: function () {
             this.datasetController.showDatasetVisualization(App.queryParams);
-        },
-
-        visualizationInfo: function () {
-            this.datasetController.showDatasetVisualization(App.queryParams, "info");
         },
 
         visualizationPermalink: function () {

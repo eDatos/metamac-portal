@@ -11,7 +11,9 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
+            this.optionsModel = this.options.optionsModel;
             this.onClickInfoLink = this.options.onClickInfoLink;
+            this.visualizationType = this.optionsModel.get('type');
         },
         events: {
             "click .button-link": "clickInfoLink",
@@ -64,8 +66,11 @@
         },
 
         clickInfoLink: function () {
-            if (this.filterDimensions.metadata.metadataResponse.visualizationType !== "info") {
-                App.router.visualizationInfo();
+            if (!this.visualizationType) {
+                var params = this.filterDimensions.metadata.identifier();
+                App.datasetController.showDatasetVisualization(params, 'info');
+            } else if (this.visualizationType !== "info") {
+                this.optionsModel.set('type', 'info');
             }
             this.onClickInfoLink();
         },
