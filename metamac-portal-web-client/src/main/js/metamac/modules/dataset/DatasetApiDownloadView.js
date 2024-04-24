@@ -11,6 +11,12 @@
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
+            this.optionsModel = this.options.optionsModel;
+            this.onClickInfoLink = this.options.onClickInfoLink;
+            this.visualizationType = this.optionsModel.get('type');
+        },
+        events: {
+            "click .button-link": "clickInfoLink",
         },
 
         render: function () {
@@ -55,9 +61,19 @@
 
         _getHrefTag: function() {
             var textLink = I18n.t("entity.dataset.section.reuse");
-            var href = this.filterDimensions.metadata.getVisualizerUrlForWidget() + '#visualization/info';
-            return '<a href="' + href + '">"' + textLink + '"</a>';
-        }
+            
+            return '<button class="button-link">"'+ textLink + '"</button>';
+        },
+
+        clickInfoLink: function () {
+            if (!this.visualizationType) {
+                var params = this.filterDimensions.metadata.identifier();
+                App.datasetController.showDatasetVisualization(params, 'info');
+            } else if (this.visualizationType !== "info") {
+                this.optionsModel.set('type', 'info');
+            }
+            this.onClickInfoLink();
+        },
     });
 
 }());

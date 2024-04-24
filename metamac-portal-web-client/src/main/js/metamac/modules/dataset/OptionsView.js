@@ -315,7 +315,11 @@
             var title = I18n.t("filter.apiDownload.modal.title");
 
             modalContentView = new App.modules.dataset.DatasetApiDownloadView({
-                filterDimensions: this.filterDimensions
+                filterDimensions: this.filterDimensions,
+                optionsModel: this.optionsModel,
+                onClickInfoLink: function () {
+                    modal.close();
+                },
             });
 
             modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
