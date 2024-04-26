@@ -1,3 +1,9 @@
+-- --------------------------------------------------------------------------------------------------
+-- [EDATOS-3827] - Realizar la migración de permalinks para adaptarse a los cambios de esta tarea. Se migrarán los códigos geográficos del permalinks a sus elementos de variable asociadas.
+-- Crear funciones de apoyo a la migración
+-- --------------------------------------------------------------------------------------------------
+
+
 CREATE OR REPLACE FUNCTION json_object_set_path(json json, key_path text[], value_to_set json)
  RETURNS json
  LANGUAGE sql
