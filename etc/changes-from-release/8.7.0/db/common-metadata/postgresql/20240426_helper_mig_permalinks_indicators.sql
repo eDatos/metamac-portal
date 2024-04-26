@@ -33,7 +33,8 @@ from temp_mig_permalinks tempP
 where tempP.code = p.code;
 
 
---8) Borrar los elementos de migración. La tabla "temp_mig_permalinks" se dejará un tiempo ya que contiene el json original y servirá como copia de seguridad.
+--8) Borrar los elementos de migración. La tabla "temp_mig_permalinks" se dejará un tiempo ya que contiene el json original y servirá como copia de seguridad. 
+--La tarea asociada a la tarea donde se borrarán todos los elementos de migración en release posterior es EDATOS-4345
 drop function json_object_set_path;
 drop function json_object_update_key;
 drop function temp_convert_geographical_codes_not_filter_dimension;
