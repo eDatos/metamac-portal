@@ -3,6 +3,27 @@
 -- Crear funciones de apoyo a la migración
 -- --------------------------------------------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION "json_object_update_key"(
+  "json"          json,
+  "key_to_set"    TEXT,
+  "value_to_set"  json
+)
+  RETURNS json
+  LANGUAGE sql
+  IMMUTABLE
+  STRICT
+AS $function$
+SELECT CASE
+  WHEN ("json" -> "key_to_set") IS NULL THEN '1'::json--"json"
+  ELSE (SELECT concat('{', string_agg(to_json("key") || ':' || "value", ','), '}')
+          FROM (SELECT *
+                  FROM json_each("json")
+                 WHERE "key" <> "key_to_set"
+                 UNION ALL
+                SELECT "key_to_set", to_json("value_to_set")) AS "fields")::json
+END
+$function$;
+
 
 CREATE OR REPLACE FUNCTION json_object_set_path(json json, key_path text[], value_to_set json)
  RETURNS json
@@ -25,29 +46,6 @@ SELECT CASE COALESCE(array_length("key_path", 1), 0)
   FROM array_lower("key_path", 1) l,
        array_upper("key_path", 1) u
 $function$;
-
-
-CREATE OR REPLACE FUNCTION "json_object_update_key"(
-  "json"          json,
-  "key_to_set"    TEXT,
-  "value_to_set"  json
-)
-  RETURNS json
-  LANGUAGE sql
-  IMMUTABLE
-  STRICT
-AS $function$
-SELECT CASE
-  WHEN ("json" -> "key_to_set") IS NULL THEN '1'::json--"json"
-  ELSE (SELECT concat('{', string_agg(to_json("key") || ':' || "value", ','), '}')
-          FROM (SELECT *
-                  FROM json_each("json")
-                 WHERE "key" <> "key_to_set"
-                 UNION ALL
-                SELECT "key_to_set", to_json("value_to_set")) AS "fields")::json
-END
-$function$;
-
 
 ----------------------------------
 -- function to migrate geographical codes to variable elements when the geopgrahical dimension is not the filter dimension in the visualizer.
