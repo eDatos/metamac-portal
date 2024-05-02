@@ -19,9 +19,43 @@
 
             var titleBottom = Constants.charts.gap;
             var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
+            var self = this;
             this._extendChartOptions({
                 tooltip: {
-                    position: this._dataAxis === "xAxis" ? 'top' : 'right'
+                    trigger: "item",
+                    appendToBody: true,
+                    position: function (point, params, domEl, rect) {
+                        var tooltipArrow = document.getElementById('chart-tooltip-arrow');
+                        if (!tooltipArrow) {
+                            tooltipArrow = document.createElement("div");
+                            tooltipArrow.id = 'chart-tooltip-arrow';
+                            document.getElementsByClassName("chart-tooltip")[0].appendChild(tooltipArrow);
+                        }
+                        tooltipArrow.style.border = self.chart.getVisual({seriesIndex: params.seriesIndex} , 'color') + ' solid 1px';
+
+                        if (self._dataAxis === "xAxis") {
+                            var tooltipItemXCoord = self.$chartContainer[0].getBoundingClientRect().x + rect.x + (rect.width / 2);
+                            if (((domEl.getBoundingClientRect().width / 2) + tooltipItemXCoord) > window.innerWidth) {
+                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " left";
+                                return 'left';
+                            } else if ((tooltipItemXCoord - (domEl.getBoundingClientRect().width / 2)) < 0) {
+                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " right";
+                                return 'right';
+                            } else {
+                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " top";
+                                return 'top';
+                            }
+                        } else {
+                            var tooltipItemXCoord = self.$chartContainer[0].getBoundingClientRect().x + rect.x + rect.width;
+                            if ((domEl.getBoundingClientRect().width + tooltipItemXCoord + Constants.charts.bigGap) > window.innerWidth) {
+                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " left";
+                                return [rect.x + rect.width - domEl.getBoundingClientRect().width - Constants.charts.bigGap, rect.y + (rect.height - domEl.getBoundingClientRect().height)/2];
+                            } else {
+                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " right";
+                                return 'right';
+                            }
+                        }
+                    },
                 },
                 title: {
                     bottom: titleBottom
