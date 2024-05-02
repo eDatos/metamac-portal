@@ -47,7 +47,13 @@
                         } else {
                             return true;
                         }
-                    }
+                    },
+                    align: 'right',
+                    hideOverlap: true,
+                    rotate: 70,
+                    verticalAlign: "top",
+                    width: '200',
+                    overflow: 'truncate'
                 }
             },
             dataZoom: this._getDataZooms(0),

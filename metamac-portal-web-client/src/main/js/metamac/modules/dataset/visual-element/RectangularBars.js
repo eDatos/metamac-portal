@@ -65,10 +65,24 @@
                 },
                 xAxis: {
                     axisLabel: {
-                        align: this._dataAxis === "xAxis" ? 'center' : 'right'
+                        align: 'right',
+                        hideOverlap: true,
+                        interval: 0
                     }
                 }
             });
+            if (this._dataAxis === 'xAxis') {
+                this._extendChartOptions({
+                    xAxis: {
+                        axisLabel: {
+                            rotate: 70,
+                            verticalAlign: "top",
+                            width: '200',
+                            overflow: 'truncate'
+                        }
+                    }
+                });
+            }
         },
 
         load: function () {
@@ -173,7 +187,7 @@
                 show: !columnsDimension.get('singleValue') && columnsDimensionSelectedCategories.length !== 1
             };
             result.grid = {
-                bottom: this._chartOptions.legend.bottom + (result.legend.show ? this._getLegendHeight() + Constants.charts.gap : 0)
+                bottom: this._chartOptions.legend.bottom + (result.legend.show ? this._getLegendHeight() : 0) + Constants.charts.bigGap
             }
             result.series = this._getSeries(columnsDimensionSelectedCategories, columnsDimension, dataAxisDimensionSelectedCategories, dataAxisDimension);
             result[this._dataAxis] = {
