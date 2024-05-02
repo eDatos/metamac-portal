@@ -112,10 +112,13 @@
             this.$chartContainer = $('<div></div>');
             this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
 
+            this.$exportChartContainer = $('<div style="position: absolute; visibility: hidden; overflow: hidden; height: 0;width: 0;"></div>');
+
             this.$el.append(this.$chartContainer);
+            $("body").append(this.$exportChartContainer);
 
             this.chart = this._initializeChart(this.$chartContainer[0]);
-
+            this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
             var data = this.getData();
             this._extendChartOptions(data);
             this.chart.setOption(this._chartOptions, true);
@@ -154,7 +157,38 @@
 
             return result;
         },
-        
+
+        getExportChartSvg: function () {
+            var exportChartOptions = {};
+            App.util.ObjectUtils.deepExtend(exportChartOptions, this._chartOptions);
+            var gridHeight = this.$chartContainer.height() - this._chartOptions.grid.bottom - this._chartOptions.grid.top;
+            App.util.ObjectUtils.deepExtend(exportChartOptions, {
+                dataZoom: undefined,
+                title: undefined,
+                legend: {
+                    type: 'plain',
+                    top: this._chartOptions.grid.top + Constants.charts.bigGap + gridHeight + Constants.charts.gap,
+                    width: '95%',
+                    padding: Constants.charts.bigGap,
+                    itemGap: Constants.charts.bigGap,
+                },
+                grid: {
+                    left: this._chartOptions.grid.left + Constants.charts.bigGap,
+                    right: Constants.charts.grid.horizontalMargin + Constants.charts.bigGap,
+                    top: this._chartOptions.grid.top + Constants.charts.bigGap,
+                    height: gridHeight
+                }
+            });
+
+            this.exportChart.setOption(exportChartOptions, true);
+            this.exportChart.resize({
+                width: this.$chartContainer.width(),
+                height: this.$exportChartContainer[0].firstChild.firstChild.getBBox().height + Constants.charts.bigGap
+            });
+
+            return decodeURIComponent(this.exportChart.getDataURL()).match(/<svg(.|\s)*<[/]svg>/g)[0];
+        },
+
         _getSeries: function (columnsDimensionSelectedCategories, columnsDimension, dataAxisDimensionSelectedCategories, dataAxisDimension) {
             var self = this;
 

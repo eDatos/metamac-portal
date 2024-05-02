@@ -282,10 +282,15 @@
             modal.show();
         },
 
+        setCurrentVe: function (currentVe) {
+            this.currentVe = currentVe;
+        },
+
         clickDownload: function (e) {
             e.preventDefault();
             var modalContentView = null;
             modalContentView = new App.modules.dataset.DatasetDownloadView({
+                currentVe: this.currentVe,
                 filterDimensions: this.filterDimensions,
                 estimatedNumberOfCells: {
                     all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest

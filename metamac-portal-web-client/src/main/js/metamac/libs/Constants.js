@@ -66,6 +66,7 @@
 
         charts: {
             gap: 5,
+            bigGap: 15,
             dataAxisWidth: 1.5,
             grid: {
                 horizontalMargin: 15,

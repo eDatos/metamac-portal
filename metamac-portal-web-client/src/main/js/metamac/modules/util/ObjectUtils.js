@@ -13,7 +13,10 @@
     * */
     App.util.ObjectUtils.deepExtend = function (target, source) {
         for (const key in source) {
-            if ($.isPlainObject(source[key]) && key in target && $.isPlainObject(target[key])) {
+            if ($.isPlainObject(source[key])) {
+                if (!(key in target) || !$.isPlainObject(target[key])) {
+                    target[key] = {};
+                }
                 this.deepExtend(target[key], source[key]);
             } else {
                 target[key] = source[key];

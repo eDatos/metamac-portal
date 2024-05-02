@@ -188,6 +188,7 @@
                 controllerParams.visualizationType = type;
                 this.controller.changeDatasetVisualization(controllerParams);
             }
+            this.optionsView.setCurrentVe(this.visualizationView._getCurrentVe());
         },
 
         _toggleClassByChartType: function (type) {
