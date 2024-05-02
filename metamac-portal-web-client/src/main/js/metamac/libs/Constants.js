@@ -62,6 +62,42 @@
                 OBSERVATION: "OBSERVATION",
                 REPRESENTATION: "REPRESENTATION"
             }
+        },
+
+        charts: {
+            gap: 5,
+            bigGap: 15,
+            dataAxisWidth: 1.5,
+            grid: {
+                horizontalMargin: 15,
+                topMargin: 10
+            },
+            lines: {
+                xAxisTicks: 6,
+                dataZoom: {
+                    horizontal: {
+                        height: 80,
+                        end: 100,
+                        partialEnd: 48
+                    },
+                    vertical: {
+                        width: 80,
+                        bottomMargin: 20,
+                        topMargin: 8
+                    }
+                }
+            },
+            legend: {
+                fontSize: 12,
+                padding: 5,
+                itemHeight: 15
+            },
+            title: {
+                fontSize: 9
+            },
+            tooltip: {
+                className: 'chart-tooltip'
+            }
         }
     };
 

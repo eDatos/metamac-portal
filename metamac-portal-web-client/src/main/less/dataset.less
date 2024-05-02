@@ -340,13 +340,7 @@
     }
             
     .dataset-visualization-visual-element {
-        padding-top: @dimensionsBarTypeDefault;            
-    }
-
-    &.dataset-visualization-type-line {
-        #detail-container {
-            padding-right: 10px;
-        }
+        padding-top: @dimensionsBarTypeDefault;
     }
 }
 
@@ -681,5 +675,50 @@
         height: 240px;
         border: 1px solid @istacBlack;
         .box-sizing(border-box);
+    }
+}
+
+@tooltip-arrow-position: -4.21px;
+.chart-tooltip {
+    word-break: break-word;
+    max-width: 300px;
+    strong {
+        white-space: pre-wrap;
+    }
+    #chart-tooltip-arrow {
+        content: '';
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        z-index: -1;
+        background-color: #fff;
+    }
+    &.left #chart-tooltip-arrow {
+        top: 50%;
+        right: @tooltip-arrow-position;
+        transform: translateY(-50%) rotate(45deg);
+        border-bottom: 0 !important;
+        border-left: 0 !important;
+    }
+    &.top #chart-tooltip-arrow {
+        left: 50%;
+        bottom: @tooltip-arrow-position;
+        transform: translateX(-50%) rotate(45deg);
+        border-top: 0 !important;
+        border-left: 0 !important;
+    }
+    &.bottom #chart-tooltip-arrow {
+        left: 50%;
+        top: @tooltip-arrow-position;
+        transform: translateX(-50%) rotate(45deg);
+        border-top: 0 !important;
+        border-left: 0 !important;
+    }
+    &.right #chart-tooltip-arrow {
+        top: 50%;
+        left: @tooltip-arrow-position;
+        transform: translateY(-50%) rotate(45deg);
+        border-right: 0 !important;
+        border-top: 0 !important;
     }
 }

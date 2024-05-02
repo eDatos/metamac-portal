@@ -23,6 +23,7 @@
         },
 
         initialize: function () {
+            this.currentVe = this.options.currentVe;
             this.optionsModel = this.options.optionsModel;
             var self = this;
             this.pageshowListener = function () {
@@ -76,7 +77,8 @@
 
             if (this._exportableImage()) {
                 var self = this;
-                svgExporter.addStyleAsync(svgExporter.sanitizeSvgElement($(SVG_SELECTOR))).done(function (svg) {
+                var sanitized = this._getVisualizationType() === 'graph' ? svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg()) : svgExporter.sanitizeSvgElement($(SVG_SELECTOR));
+                svgExporter.addStyleAsync(sanitized).done(function (svg) {
                     self.svg = svg;
                     self.$el.html(self.template(context));
                 });

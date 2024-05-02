@@ -188,6 +188,7 @@
                 controllerParams.visualizationType = type;
                 this.controller.changeDatasetVisualization(controllerParams);
             }
+            this.optionsView.setCurrentVe(this.visualizationView._getCurrentVe());
         },
 
         _toggleClassByChartType: function (type) {
@@ -213,7 +214,7 @@
             this.optionsModel.set('fullScreen', false);
 
             if (this.optionsModel.get('widget')) {
-                this._updateSidebarHeight($('html').height());
+                this._updateSidebarHeight($('body').height());
             }
         },
 
@@ -229,13 +230,12 @@
                     }
                 }
             };
-            Highcharts.setOptions(optionsOnInit);
             Highmaps.setOptions(optionsOnInit);
         },
 
         _initializeWidget: function () {
             this.content.$el.addClass('dataset-widget');
-            this._updateSidebarHeight($('html').height());
+            this._updateSidebarHeight($('body').height());
         },
         _updateSidebarHeight: function (height) {
             this.content.$el.outerHeight(height);

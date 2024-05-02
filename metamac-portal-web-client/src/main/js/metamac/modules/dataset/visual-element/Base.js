@@ -68,41 +68,96 @@
             this.load();
         },
 
+        _initializeChart: function (renderTo) {
+            return echarts.init(renderTo, null, { renderer: 'svg' });
+        },
+
         _initializeChartOptions: function () {
             this._chartOptions = {
-                title: {
-                    text: null
-                },
-                credits: {
-                    position: {
-                        y: -10,
-                        x: -10
-                    }
+                animation: false,
+                backgroundColor: Constants.colors.istacWhite,
+                grid: {
+                    left: Constants.charts.grid.horizontalMargin,
+                    right: Constants.charts.grid.horizontalMargin,
+                    top: Constants.charts.grid.topMargin,
+                    containLabel: true
                 },
                 legend: {
-                    layout: 'horizontal',
+                    show: true,
+                    selectedMode: false,
+                    type: 'scroll',
+                    width: '90%',
                     backgroundColor: Constants.colors.istacWhite,
-                    x: 5,
-                    y: 0,
+                    left: 'center',
+                    top: null,
                     borderWidth: 1,
                     borderColor: Constants.colors.istacGreyMedium,
-                    floating: false,
-                    navigation: {
-                        activeColor: Constants.colors.istacBlueMedium,
-                        animation: true,
-                        arrowSize: 12,
-                        inactiveColor: Constants.colors.istacGreyMedium,
-                        style: {
-                            fontWeight: 'bold',
-                            color: Constants.colors.istacBlack,
-                            fontSize: '12px'
-                        }
+                    pageIconColor: Constants.colors.istacBlueMedium,
+                    pageIconInactiveColor: Constants.colors.istacGreyMedium,
+                    pageIconSize: Constants.charts.legend.fontSize,
+                    animation: true,
+                    orient: 'horizontal',
+                    pageTextStyle: {
+                        color: Constants.colors.istacBlack,
+                        fontSize: Constants.charts.legend.fontSize,
+                        fontWeight: 'bold'
+                    },
+                    itemHeight: Constants.charts.legend.itemHeight,
+                    padding: Constants.charts.legend.padding,
+                    textStyle: {
+                        fontSize: Constants.charts.legend.fontSize
                     }
                 },
-                exporting: {
-                    enabled: false
+                xAxis: {
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        color: Constants.colors.istacBlack,
+                        formatter: this.axisLabelFormatter
+                    }
+                },
+                yAxis: {
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        color: Constants.colors.istacBlack,
+                        formatter: this.axisLabelFormatter
+                    }
+                },
+                title: {
+                    text: this.getRightsHolderText(),
+                    right: 10,
+                    padding: 0,
+                    show: this.showRightsHolderText(),
+                    textStyle: {
+                        fontSize: Constants.charts.title.fontSize,
+                        color: Constants.colors.istacGreyDark
+                    }
+                },
+                tooltip: {
+                    formatter: this.getTooltipFormatterFunction(),
+                    className: Constants.charts.tooltip.className
                 }
             };
+        },
+
+        getTooltipFormatterFunction: function () {
+            var self = this;
+            return function (tooltipFormatterParams) {
+                var seriesName = tooltipFormatterParams.seriesName ? (tooltipFormatterParams.seriesName + ', ') : '';
+                var axisCategoryName = self._chartOptions[self._dataAxis || 'xAxis'].data[tooltipFormatterParams.dataIndex];
+                return '<strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name;
+            }
+        },
+
+        axisLabelFormatter: function (value) {
+            return (typeof value === 'number') ? App.util.NumberFormatter.strNumberToLocalizedString(value.toString()) : value;
+        },
+
+        _getLegendHeight: function () {
+            return Constants.charts.legend.itemHeight + Constants.charts.legend.padding * 2;
         },
 
         updateTitle: function () {
@@ -119,15 +174,6 @@
 
         showTitle: function () {
             if (this.$title) { this.$title.show(); }
-        },
-
-        replaceSeries: function (chart, series) {
-            while (chart.series.length > 0) {
-                chart.series[0].remove(false);
-            }
-            _.each(series, function (serie) {
-                chart.addSeries(serie, false, false);
-            });
         },
 
         setEl: function (el) {
@@ -267,6 +313,21 @@
             return document.referrer && (new URL(document.referrer)).hostname === App.Helpers.getHostname(App.endpoints["statistical-visualizer"]);
         },
 
+        getDataAxisDimension: function () {
+            return this.filterDimensions.dimensionsAtZone('left').at(0);
+        },
+
+        getSeriesDimension: function () {
+            var seriesDimension = this.filterDimensions.dimensionsAtZone('top').at(0);
+            if (!seriesDimension) {
+                seriesDimension = this.filterDimensions.dimensionsAtZone('fixed').at(0);
+            }
+            if (!seriesDimension) {
+                seriesDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
+            }
+            return seriesDimension;
+        },
+
         getDrawableRepresentations: function (dimension) {
             return dimension.getDrawableRepresentations();
         },
@@ -374,6 +435,9 @@
             return this.data && App.config["enableGraphColors"];
         },
 
+        _extendChartOptions: function (options) {
+            App.util.ObjectUtils.deepExtend(this._chartOptions, options);
+        }
     };
 
     _.extend(App.VisualElement.Base.prototype, Backbone.Events);
