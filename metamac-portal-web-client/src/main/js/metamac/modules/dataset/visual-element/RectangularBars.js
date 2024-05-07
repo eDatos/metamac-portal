@@ -103,6 +103,10 @@
                 this.chart.dispose();
                 this.chart = null;
             }
+            if (this.exportChart) {
+                this.exportChart.dispose();
+                this.exportChart = null;
+            }
         },
 
         _bindEvents: function () {
@@ -160,10 +164,13 @@
             this.$chartContainer = $('<div></div>');
             this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
 
-            this.$exportChartContainer = $('<div style="position: absolute; visibility: hidden; overflow: hidden; height: 0;width: 0;"></div>');
+            this.$exportChartContainer = $("#export-chart");
+            if (this.$exportChartContainer.length === 0) {
+                this.$exportChartContainer = $('<div id="export-chart"></div>');
+                $("body").append(this.$exportChartContainer);
+            }
 
             this.$el.append(this.$chartContainer);
-            $("body").append(this.$exportChartContainer);
 
             this.chart = this._initializeChart(this.$chartContainer[0]);
             this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
