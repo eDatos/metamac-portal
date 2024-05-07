@@ -685,36 +685,38 @@
     strong {
         white-space: pre-wrap;
     }
-    #chart-tooltip-arrow {
+    &::after {
         content: '';
         position: absolute;
         width: 6px;
         height: 6px;
         z-index: -1;
         background-color: #fff;
+        border-width: 1px;
+        border-style: solid;
     }
-    &.left #chart-tooltip-arrow {
+    &.left::after {
         top: 50%;
         right: @tooltip-arrow-position;
         transform: translateY(-50%) rotate(45deg);
         border-bottom: 0 !important;
         border-left: 0 !important;
     }
-    &.top #chart-tooltip-arrow {
+    &.top::after {
         left: 50%;
         bottom: @tooltip-arrow-position;
         transform: translateX(-50%) rotate(45deg);
         border-top: 0 !important;
         border-left: 0 !important;
     }
-    &.bottom #chart-tooltip-arrow {
+    &.bottom::after {
         left: 50%;
         top: @tooltip-arrow-position;
         transform: translateX(-50%) rotate(45deg);
         border-top: 0 !important;
         border-left: 0 !important;
     }
-    &.right #chart-tooltip-arrow {
+    &.right::after {
         top: 50%;
         left: @tooltip-arrow-position;
         transform: translateY(-50%) rotate(45deg);

@@ -25,14 +25,6 @@
                     trigger: "item",
                     appendToBody: true,
                     position: function (point, params, domEl, rect) {
-                        var tooltipArrow = document.getElementById('chart-tooltip-arrow');
-                        if (!tooltipArrow) {
-                            tooltipArrow = document.createElement("div");
-                            tooltipArrow.id = 'chart-tooltip-arrow';
-                            document.getElementsByClassName("chart-tooltip")[0].appendChild(tooltipArrow);
-                        }
-                        tooltipArrow.style.border = self.chart.getVisual({seriesIndex: params.seriesIndex} , 'color') + ' solid 1px';
-
                         if (self._dataAxis === "xAxis") {
                             var tooltipItemXCoord = self.$chartContainer[0].getBoundingClientRect().x + rect.x + (rect.width / 2);
                             if (((domEl.getBoundingClientRect().width / 2) + tooltipItemXCoord) > window.innerWidth) {

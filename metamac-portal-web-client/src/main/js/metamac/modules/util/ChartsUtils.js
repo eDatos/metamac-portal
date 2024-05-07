@@ -15,22 +15,6 @@
                 chart.dispatchAction({type: 'downplay'});
                 chart.dispatchAction({type: 'showTip', seriesIndex: seriesIndex, dataIndex: dataIndex});
                 chart.dispatchAction({type: 'highlight', seriesIndex: seriesIndex, dataIndex: dataIndex});
-
-                var tooltipArrowBorder = chart.getVisual({seriesIndex: seriesIndex} , 'color') + ' solid 1px';
-                var tooltipArrow = document.createElement("div");
-                tooltipArrow.id = 'chart-tooltip-arrow';
-                tooltipArrow.style.content = '';
-                tooltipArrow.style.position= 'absolute';
-                tooltipArrow.style.width = '6px';
-                tooltipArrow.style.height = '6px';
-                tooltipArrow.style.zIndex = '-1';
-                tooltipArrow.style.borderBottom = tooltipArrowBorder;
-                tooltipArrow.style.borderRight = tooltipArrowBorder;
-                tooltipArrow.style.borderTop = tooltipArrowBorder;
-                tooltipArrow.style.borderLeft = tooltipArrowBorder;
-                tooltipArrow.style.backgroundColor = '#fff';
-
-                document.getElementsByClassName("chart-tooltip")[0].appendChild(tooltipArrow)
             } else {
                 chart.dispatchAction({type: 'hideTip'});
                 chart.dispatchAction({type: 'downplay'});
