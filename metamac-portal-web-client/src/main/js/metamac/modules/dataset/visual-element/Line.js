@@ -91,6 +91,10 @@
                 this.chart.dispose();
                 this.chart = null;
             }
+            if (this.exportChart) {
+                this.exportChart.dispose();
+                this.exportChart = null;
+            }
         },
 
         _bindEvents: function () {
@@ -147,11 +151,14 @@
             this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
             this.$el.append(this.$chartContainer);
 
-            this.$exportChartContainer = $('<div style="position: absolute; visibility: hidden; overflow: hidden; height: 0;width: 0;"></div>');
-            $("body").append(this.$exportChartContainer);
+            this.$exportChartContainer = $("#export-chart");
+            if (this.$exportChartContainer.length === 0) {
+                this.$exportChartContainer = $('<div id="export-chart"></div>');
+                $("body").append(this.$exportChartContainer);
+            }
 
             this.chart = this._initializeChart(this.$chartContainer[0]);
-            this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });;
+            this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
             App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
 
             this._extendChartOptions(this.getData());
