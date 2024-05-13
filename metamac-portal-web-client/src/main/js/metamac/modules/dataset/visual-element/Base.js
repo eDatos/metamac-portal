@@ -138,7 +138,10 @@
                 },
                 tooltip: {
                     formatter: this.getTooltipFormatterFunction(),
-                    className: Constants.charts.tooltip.className
+                    className: Constants.charts.tooltip.className,
+                    trigger: "item",
+                    appendToBody: true,
+                    confine: true
                 }
             };
         },
@@ -148,7 +151,7 @@
             return function (tooltipFormatterParams) {
                 var seriesName = tooltipFormatterParams.seriesName ? (tooltipFormatterParams.seriesName + ', ') : '';
                 var axisCategoryName = self._chartOptions[self._dataAxis || 'xAxis'].data[tooltipFormatterParams.dataIndex];
-                return '<strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name;
+                return '<div class="chart-tooltip-container" style="max-width: ' + self.$chartContainer.width() + 'px"><strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name + '</div>';
             }
         },
 
@@ -437,6 +440,25 @@
 
         _extendChartOptions: function (options) {
             App.util.ObjectUtils.deepExtend(this._chartOptions, options);
+        },
+
+        _setTooltipObserver: function () {
+            this.tooltipEl = document.querySelector('.chart-tooltip');
+            var self = this;
+            this.tooltipObserver = new MutationObserver(function () {
+                var tooltipLeft = self.tooltipEl.getBoundingClientRect().left;
+                var tooltipRight = self.tooltipEl.getBoundingClientRect().right;
+                var tooltipTop = self.tooltipEl.getBoundingClientRect().top;
+                var tooltipBottom = self.tooltipEl.getBoundingClientRect().bottom;
+
+                var arrowLeft = Math.min(tooltipRight, Math.max(self.coordsTooltipPointsTo[0], tooltipLeft)) - tooltipLeft;
+                var arrowTop = Math.min(tooltipBottom, Math.max(self.coordsTooltipPointsTo[1], tooltipTop)) - tooltipTop;
+
+                var tooltipContainer = self.tooltipEl.getElementsByClassName("chart-tooltip-container")[0];
+                tooltipContainer.style.setProperty('--left', (arrowLeft - 3) + 'px');
+                tooltipContainer.style.setProperty('--top', (arrowTop - 5) + 'px');
+            });
+            this.tooltipObserver.observe(this.tooltipEl, {childList: true, attributes: true, attributeFilter: ['style']});
         }
     };
 

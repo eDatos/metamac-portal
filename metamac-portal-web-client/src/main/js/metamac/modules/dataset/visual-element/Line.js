@@ -14,21 +14,12 @@
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
-                trigger: "item",
-                triggerOn: "none",
-                appendToBody: true,
-                position: function (point, params, domEl) {
-                    var tooltipItemXCoord = point[0] + self.$chartContainer[0].getBoundingClientRect().x;
-                    if (((domEl.getBoundingClientRect().width / 2) + tooltipItemXCoord) > window.innerWidth) {
-                        document.getElementsByClassName("chart-tooltip")[0].className = Constants.charts.tooltip.className + " left";
-                        return 'left';
-                    } else if ((tooltipItemXCoord - (domEl.getBoundingClientRect().width / 2)) < 0) {
-                        document.getElementsByClassName("chart-tooltip")[0].className = Constants.charts.tooltip.className + " right";
-                        return 'right';
-                    } else {
-                        document.getElementsByClassName("chart-tooltip")[0].className = Constants.charts.tooltip.className + " top";
-                        return 'top';
-                    }
+                position: function (point, params, domEl, rect) {
+                    self.coordsTooltipPointsTo = [
+                        rect.x + (rect.width / 2) + self.$chartContainer[0].getBoundingClientRect().x,
+                        rect.y + (rect.height / 2) + self.$chartContainer[0].getBoundingClientRect().y
+                    ];
+                    return 'top';
                 },
             },
             xAxis: {
@@ -163,6 +154,7 @@
 
             this._extendChartOptions(this.getData());
             this.chart.setOption(this._chartOptions, true);
+            this._setTooltipObserver();
         },
 
         _updateSize: function () {
@@ -186,6 +178,7 @@
 
                 this._extendChartOptions(this.getData());
                 this.chart.setOption(this._chartOptions, true);
+                this._setTooltipObserver();
             }
         },
 
