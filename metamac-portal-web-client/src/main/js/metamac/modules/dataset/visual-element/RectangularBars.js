@@ -22,31 +22,12 @@
             var self = this;
             this._extendChartOptions({
                 tooltip: {
-                    trigger: "item",
-                    appendToBody: true,
                     position: function (point, params, domEl, rect) {
-                        if (self._dataAxis === "xAxis") {
-                            var tooltipItemXCoord = self.$chartContainer[0].getBoundingClientRect().x + rect.x + (rect.width / 2);
-                            if (((domEl.getBoundingClientRect().width / 2) + tooltipItemXCoord) > window.innerWidth) {
-                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " left";
-                                return 'left';
-                            } else if ((tooltipItemXCoord - (domEl.getBoundingClientRect().width / 2)) < 0) {
-                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " right";
-                                return 'right';
-                            } else {
-                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " top";
-                                return 'top';
-                            }
-                        } else {
-                            var tooltipItemXCoord = self.$chartContainer[0].getBoundingClientRect().x + rect.x + rect.width;
-                            if ((domEl.getBoundingClientRect().width + tooltipItemXCoord + Constants.charts.bigGap) > window.innerWidth) {
-                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " left";
-                                return [rect.x + rect.width - domEl.getBoundingClientRect().width - Constants.charts.bigGap, rect.y + (rect.height - domEl.getBoundingClientRect().height)/2];
-                            } else {
-                                document.getElementsByClassName(Constants.charts.tooltip.className)[0].className = Constants.charts.tooltip.className + " right";
-                                return 'right';
-                            }
-                        }
+                        self.coordsTooltipPointsTo = [
+                            rect.x + (rect.width / 2) + self.$chartContainer[0].getBoundingClientRect().x,
+                            rect.y + (rect.height / 2) + self.$chartContainer[0].getBoundingClientRect().y
+                        ];
+                        return self._dataAxis === "xAxis" ? 'top' : 'right';
                     },
                 },
                 title: {
@@ -169,6 +150,7 @@
             var data = this.getData();
             this._extendChartOptions(data);
             this.chart.setOption(this._chartOptions, true);
+            this._setTooltipObserver();
 
             this.$el.on("resize", function () { });
         },
@@ -357,6 +339,7 @@
 
             this._extendChartOptions(data);
             this.chart.setOption(this._chartOptions, true);
+            this._setTooltipObserver();
         },
 
         _updateSize: function () {
