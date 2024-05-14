@@ -194,6 +194,10 @@
             App.util.ObjectUtils.deepExtend(exportChartOptions, {
                 dataZoom: undefined,
                 title: undefined,
+                animation: false,
+                tooltip: {
+                    show: false
+                },
                 legend: {
                     type: 'plain',
                     top: this._chartOptions.grid.top + Constants.charts.bigGap + gridHeight + Constants.charts.gap,
@@ -209,10 +213,12 @@
                 }
             });
 
+            this.exportChart.resize({
+                width: this.$chartContainer.width()
+            });
             this.exportChart.setOption(exportChartOptions, true);
             this.exportChart.resize({
-                width: this.$chartContainer.width(),
-                height: this.$exportChartContainer[0].firstChild.firstChild.getBBox().height + Constants.charts.bigGap
+                height: this.$exportChartContainer[0].querySelector("svg > g").getBBox().height + (Constants.charts.bigGap * 2)
             });
 
             return decodeURIComponent(this.exportChart.getDataURL()).match(/<svg(.|\s)*<[/]svg>/g)[0];
