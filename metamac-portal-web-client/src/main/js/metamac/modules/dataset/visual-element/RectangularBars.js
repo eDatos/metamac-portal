@@ -213,6 +213,10 @@
                 }
             });
 
+            /*
+             * The width must be changed before the height because height is set to the minimum necessary (getBBox) and
+             * that depends on the width and the options.
+             */
             this.exportChart.resize({
                 width: this.$chartContainer.width()
             });
