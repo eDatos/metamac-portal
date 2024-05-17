@@ -230,6 +230,7 @@
 
                     if (isGeographic) {
                         representation.normCode = self.getGeographicDimensionNormCode(dimensionValue);
+                        representation.variableElementId = dimensionValue.variableElement ? dimensionValue.variableElement.id : undefined;
                     }
 
                     if (isMeasureDimension) {
