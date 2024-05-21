@@ -14,13 +14,14 @@
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
+                triggerOn: "none",
                 position: function (point, params, domEl, rect) {
                     self.coordsTooltipPointsTo = [
                         rect.x + (rect.width / 2) + self.$chartContainer[0].getBoundingClientRect().x,
                         rect.y + (rect.height / 2) + self.$chartContainer[0].getBoundingClientRect().y
                     ];
                     return 'top';
-                },
+                }
             },
             xAxis: {
                 axisLine: {
@@ -279,7 +280,7 @@
 
             var self = this;
             var fixedPermutation = this.getFixedPermutation();
-            _.each(linesDimensionSelectedCategories, function (linesCategory) {
+            _.each(linesDimensionSelectedCategories, function (linesCategory, i) {
                 // `undefined` is returned in case colors object is empty, so default values are used instead
                 var lineColor = self.data.colors[linesCategory.get('urn')];
                 var serie = {
@@ -288,8 +289,10 @@
                         width: 1.5,
                         color: lineColor
                     },
+                    silent: true,
                     itemStyle: {
-                        color: lineColor
+                        color: lineColor,
+                        opacity: 0
                     },
                     symbolSize: 5,
                     symbol: 'circle',
@@ -297,12 +300,21 @@
                     animation: false,
                     name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
                     emphasis: {
-                        focus: "series"
+                        disabled: true // Disabled until this issue is fixed: https://github.com/apache/echarts/issues/19958
                     },
+                    select: {
+                        disabled: false,
+                        itemStyle: {
+                            color: lineColor,
+                            opacity: 1
+                        }
+                    },
+                    selectedMode: 'single',
+                    showAllSymbol: true, // https://github.com/apache/echarts/issues/19608#issuecomment-1937838187 , tooltip and emphasis have problems without this and itemStyle.opacity
                     data: []
                 };
 
-                _.each(dataAxisDimensionCategories, function (dataAxisCategory) {
+                _.each(dataAxisDimensionCategories, function (dataAxisCategory, j) {
                     var currentPermutation = {};
                     currentPermutation[dataAxisDimension.id] = dataAxisCategory.id;
                     currentPermutation[linesDimension.id] = linesCategory.id;
@@ -310,7 +322,13 @@
 
                     serie.data.push({
                         value: dataAxisCategory.get("drawable") ? self.data.getNumberData({ ids: currentPermutation }) : null,
-                        name: self.data.getStringData({ ids: currentPermutation })
+                        name: 'data-name-' + i + '-' + j, // https://github.com/apache/echarts/issues/15260#issuecomment-870518002
+                        tooltip: {
+                            formatter: _.bind(function (tooltipFormatterParams) {
+                                tooltipFormatterParams.name = this.data.getStringData({ ids: currentPermutation });
+                                return this.getTooltipFormatterFunction(tooltipFormatterParams);
+                            }, self)
+                        }
                     });
                 });
 
