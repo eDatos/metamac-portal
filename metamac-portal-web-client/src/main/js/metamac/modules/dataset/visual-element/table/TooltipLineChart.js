@@ -105,7 +105,6 @@
                 animation: false,
                 symbol: 'circle',
                 symbolSize: 8,
-                largeThreshold: 1200,
                 silent: true,
                 itemStyle: {
                     opacity: 0
