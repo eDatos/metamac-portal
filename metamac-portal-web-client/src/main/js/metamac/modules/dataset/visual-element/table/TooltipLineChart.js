@@ -26,7 +26,7 @@
                 position: 'top',
                 trigger: "item",
                 triggerOn: "none",
-                formatter: this.getTooltipFormatterFunction()
+                formatter: _.bind(this.getTooltipFormatterFunction, this)
             },
             animation: false,
             xAxis: {
@@ -53,11 +53,8 @@
             this.permutation = permutation;
         },
 
-        getTooltipFormatterFunction: function () {
-            var self = this;
-            return function (tooltipFormatterParams) {
-                return tooltipFormatterParams.name + '<br/>' + self._chartOptions.xAxis.data[tooltipFormatterParams.dataIndex];
-            }
+        getTooltipFormatterFunction: function (tooltipFormatterParams) {
+            return tooltipFormatterParams.name + '<br/>' + this._chartOptions.xAxis.data[tooltipFormatterParams.dataIndex];
         },
 
         destroy: function () {
@@ -109,9 +106,24 @@
                 symbol: 'circle',
                 symbolSize: 8,
                 largeThreshold: 1200,
+                silent: true,
+                itemStyle: {
+                    opacity: 0
+                },
                 lineStyle: {
                     width: 1.5
                 },
+                emphasis: {
+                    disabled: true
+                },
+                select: {
+                    disabled: false,
+                    itemStyle: {
+                        opacity: 1
+                    }
+                },
+                selectedMode: 'single',
+                showAllSymbol: true, // https://github.com/apache/echarts/issues/19608#issuecomment-1937838187 , tooltip and emphasis have problems without this and itemStyle.opacity
                 data: []
             };
             var xAxis = {
@@ -124,14 +136,20 @@
             timeDimensionCategories = _.sortBy(timeDimensionCategories, function (representation) {
                 return representation.normCode;
             }).reverse();
-            _.each(timeDimensionCategories, function (timeCategory) {
+            _.each(timeDimensionCategories, function (timeCategory, i) {
                 var currentPermutation = {};
                 currentPermutation[self.timeDimension.id] = timeCategory.id;
                 currentPermutation = _.extend({}, self.permutation, currentPermutation);
 
                 series.data.push({
                     value: self.data.getNumberData({ ids: currentPermutation }),
-                    name: self.data.getStringData({ ids: currentPermutation })+ " " + self.measureUnit,
+                    name: 'data-name-' + i, // https://github.com/apache/echarts/issues/15260#issuecomment-870518002
+                    tooltip: {
+                        formatter: _.bind(function (tooltipFormatterParams) {
+                            tooltipFormatterParams.name = this.data.getStringData({ ids: currentPermutation })+ " " + this.measureUnit;
+                            return this.getTooltipFormatterFunction(tooltipFormatterParams);
+                        }, self)
+                    },
                     itemStyle: {
                         opacity: self.permutation[self.timeDimension.id] === timeCategory.id
                     },
