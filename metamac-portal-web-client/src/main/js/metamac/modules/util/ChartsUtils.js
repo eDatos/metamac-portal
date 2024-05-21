@@ -14,20 +14,22 @@
             var y = mouseCartesianCoords[1];
             if (y >= 0 && dataIndex >= 0 && dataIndex < chart.getOption().xAxis[0].data.length) {
                 var seriesIndex = this._getClosestSerieToCoordinatesOfLinesChart(chart, dataIndex, y);
-                chart.dispatchAction({type: 'showTip', seriesIndex: seriesIndex, dataIndex: dataIndex});
-                chart.dispatchAction({type: 'highlight', seriesIndex: seriesIndex, dataIndex: dataIndex});
-                chart.dispatchAction({type: 'downplay', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
-                previousSeriesIndex = seriesIndex;
-                previousDataIndex = dataIndex;
+                if (seriesIndex !== previousSeriesIndex || dataIndex !== previousDataIndex) {
+                    chart.dispatchAction({type: 'unselect', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
+                    chart.dispatchAction({type: 'select', seriesIndex: seriesIndex, dataIndex: dataIndex});
+                    chart.dispatchAction({type: 'showTip', seriesIndex: seriesIndex, dataIndex: dataIndex});
+                    previousSeriesIndex = seriesIndex;
+                    previousDataIndex = dataIndex;
+                }
             } else {
                 chart.dispatchAction({type: 'hideTip'});
-                chart.dispatchAction({type: 'downplay', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
+                chart.dispatchAction({type: 'unselect', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
             }
         });
 
         chart.on("globalout", () => {
             chart.dispatchAction({type: 'hideTip'});
-            chart.dispatchAction({type: 'downplay', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
+            chart.dispatchAction({type: 'unselect', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
         });
     };
 

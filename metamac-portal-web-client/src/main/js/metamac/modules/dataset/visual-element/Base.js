@@ -137,7 +137,7 @@
                     }
                 },
                 tooltip: {
-                    formatter: this.getTooltipFormatterFunction(),
+                    formatter: _.bind(this.getTooltipFormatterFunction, this),
                     className: Constants.charts.tooltip.className,
                     trigger: "item",
                     appendToBody: true,
@@ -146,13 +146,10 @@
             };
         },
 
-        getTooltipFormatterFunction: function () {
-            var self = this;
-            return function (tooltipFormatterParams) {
-                var seriesName = tooltipFormatterParams.seriesName ? (tooltipFormatterParams.seriesName + ', ') : '';
-                var axisCategoryName = self._chartOptions[self._dataAxis || 'xAxis'].data[tooltipFormatterParams.dataIndex];
-                return '<div class="chart-tooltip-container" style="max-width: ' + self.$chartContainer.width() + 'px"><strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name + '</div>';
-            }
+        getTooltipFormatterFunction: function (tooltipFormatterParams) {
+            var seriesName = tooltipFormatterParams.seriesName ? (tooltipFormatterParams.seriesName + ', ') : '';
+            var axisCategoryName = this._chartOptions[this._dataAxis || 'xAxis'].data[tooltipFormatterParams.dataIndex];
+            return '<div class="chart-tooltip-container" style="max-width: ' + this.$chartContainer.width() + 'px"><strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name + '</div>';
         },
 
         axisLabelFormatter: function (value) {
