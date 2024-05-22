@@ -296,7 +296,6 @@
                     },
                     symbolSize: 5,
                     symbol: 'circle',
-                    largeThreshold: 1200,
                     animation: false,
                     name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
                     emphasis: {
