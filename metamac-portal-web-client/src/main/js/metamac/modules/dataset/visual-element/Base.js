@@ -58,6 +58,19 @@
         },
 
         destroy: function () {
+            this._unbindEvents();
+
+            if (this.chart) {
+                this.chart.dispose();
+                this.chart = null;
+            }
+            if (this.exportChart) {
+                this.exportChart.dispose();
+                this.exportChart = null;
+            }
+        },
+
+        _unbindEvents: function () {
         },
 
         updatingDimensionPositions: function () {
@@ -68,8 +81,35 @@
             this.load();
         },
 
-        _initializeChart: function (renderTo) {
-            return echarts.init(renderTo, null, { renderer: 'svg' });
+        _updateSize: function () {
+            var newHeight = this.$el.height() - this.$title.outerHeight(true);
+            this.$chartContainer.height(newHeight);
+            this.chart.resize({
+                width: this.$chartContainer.width(),
+                height: this.$chartContainer.height()
+            });
+        },
+
+        _initializeChart: function () {
+            this.$chartContainer = $('<div></div>');
+            this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
+            this.$el.append(this.$chartContainer);
+            this.chart = echarts.init(this.$chartContainer[0], null, { renderer: 'svg' });
+
+            this.$exportChartContainer = $("#export-chart");
+            if (this.$exportChartContainer.length === 0) {
+                this.$exportChartContainer = $('<div id="export-chart"></div>');
+                $("body").append(this.$exportChartContainer);
+            }
+            this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
+        },
+
+        _getChart: function () {
+            return this.chart;
+        },
+
+        _getChartDomEl: function () {
+            return this.$chartContainer ? this.$chartContainer[0] : undefined;
         },
 
         _initializeChartOptions: function () {
@@ -456,6 +496,47 @@
                 tooltipContainer.style.setProperty('--top', (arrowTop - 5) + 'px');
             });
             this.tooltipObserver.observe(this.tooltipEl, {childList: true, attributes: true, attributeFilter: ['style']});
+        },
+
+        getExportChartSvg: function () {
+            var exportChartOptions = {};
+            App.util.ObjectUtils.deepExtend(exportChartOptions, this._chartOptions);
+            var gridHeight = this.$chartContainer.height() - this._chartOptions.grid.bottom - this._chartOptions.grid.top;
+            App.util.ObjectUtils.deepExtend(exportChartOptions, {
+                dataZoom: undefined,
+                title: undefined,
+                animation: false,
+                tooltip: {
+                    show: false
+                },
+                legend: {
+                    type: 'plain',
+                    top: this._chartOptions.grid.top + Constants.charts.bigGap + gridHeight + Constants.charts.gap,
+                    width: '95%',
+                    padding: Constants.charts.bigGap,
+                    itemGap: Constants.charts.bigGap,
+                },
+                grid: {
+                    left: this._chartOptions.grid.left + Constants.charts.bigGap,
+                    right: Constants.charts.grid.horizontalMargin + Constants.charts.bigGap,
+                    top: this._chartOptions.grid.top + Constants.charts.bigGap,
+                    height: gridHeight
+                }
+            });
+
+            /*
+             * The width must be changed before the height because height is set to the minimum necessary (getBBox) and
+             * that depends on the width and the options.
+             */
+            this.exportChart.resize({
+                width: this.$chartContainer.width()
+            });
+            this.exportChart.setOption(exportChartOptions, true);
+            this.exportChart.resize({
+                height: this.$exportChartContainer[0].querySelector("svg > g").getBBox().height + (Constants.charts.bigGap * 2)
+            });
+
+            return decodeURIComponent(this.exportChart.getDataURL()).match(/<svg(.|\s)*<[/]svg>/g)[0];
         }
     };
 
