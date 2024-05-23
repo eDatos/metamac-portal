@@ -42,8 +42,11 @@
             });
         },
 
-        showDatasetVisualization: function (options, type) {
-            options.visualizationType = type !== undefined ? type : "table";
+        showDatasetVisualization: function (options) {
+            options = _.defaults(options, {
+                visualizationType: "table",
+                fullScreen: false
+            });
             var link = this._linkToDatasetVisualization(options);
             this.router.navigate(link);
 
@@ -53,9 +56,6 @@
                 this.visualizationView.showLoading();
             }
             this._loadMetadataAndData(datasetIdentifier).then(function () {
-                options = _.defaults(options, {
-                    fullScreen: false
-                });
                 if (self.region.currentView !== self.visualizationView) {
                     self.region.show(self.visualizationView);
                 }
