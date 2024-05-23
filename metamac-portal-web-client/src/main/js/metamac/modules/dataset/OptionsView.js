@@ -319,10 +319,14 @@
             var modal = null;
             var title = I18n.t("filter.apiDownload.modal.title");
 
+            var self = this;
             modalContentView = new App.modules.dataset.DatasetApiDownloadView({
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
                 onClickInfoLink: function () {
+                    if (self.isFilter()) {
+                        $(document).trigger('closeFilter');
+                    }
                     modal.close();
                 },
             });

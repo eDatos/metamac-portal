@@ -42,8 +42,10 @@
             });
         },
 
-        showDatasetVisualization: function (options, type) {
-            options.visualizationType = type !== undefined ? type : "table";
+        showDatasetVisualization: function (options) {
+            options = _.defaults(options, {
+                visualizationType: "table"
+            });
             var link = this._linkToDatasetVisualization(options);
             this.router.navigate(link);
 

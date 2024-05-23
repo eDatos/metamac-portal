@@ -67,8 +67,9 @@
 
         clickInfoLink: function () {
             if (!this.visualizationType) {
-                var params = this.filterDimensions.metadata.identifier();
-                App.datasetController.showDatasetVisualization(params, 'info');
+                var params = _.clone(this.filterDimensions.metadata.identifier());
+                params.visualizationType = 'info';
+                App.datasetController.showDatasetVisualization(params);
             } else if (this.visualizationType !== "info") {
                 this.optionsModel.set('type', 'info');
             }
