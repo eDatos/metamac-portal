@@ -6,16 +6,16 @@
     App.namespace("App.VisualElement.RectangularBars");
 
     App.VisualElement.RectangularBars = function (options) {
-        this.initialize(options);
         this._dataAxis = 'xAxis';
+        this.initializeRectangularBars(options);
     };
 
-    App.VisualElement.RectangularBars.prototype = new App.VisualElement.Base();
+    App.VisualElement.RectangularBars.prototype = new App.VisualElement.Chart();
 
     _.extend(App.VisualElement.RectangularBars.prototype, {
 
         initializeRectangularBars: function (options) {
-            this.initialize(options);
+            this._initializeChartVisualElement(options);
 
             var titleBottom = Constants.charts.gap;
             var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);

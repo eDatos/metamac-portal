@@ -6,7 +6,7 @@
     App.namespace("App.VisualElement.LineChart");
 
     App.VisualElement.LineChart = function (options) {
-        this.initialize(options);
+        this._initializeChartVisualElement(options);
         this._type = 'line';
 
         var self = this;
@@ -61,7 +61,7 @@
         });
     };
 
-    App.VisualElement.LineChart.prototype = new App.VisualElement.Base();
+    App.VisualElement.LineChart.prototype = new App.VisualElement.Chart();
 
     _.extend(App.VisualElement.LineChart.prototype, {
 
