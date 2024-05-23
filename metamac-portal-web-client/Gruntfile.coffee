@@ -177,6 +177,7 @@ module.exports = (grunt) ->
 
                 # visual elements
                 paths.js + "/metamac/modules/dataset/visual-element/Base.js"
+                paths.js + "/metamac/modules/dataset/visual-element/Chart.js"
                 paths.js + "/metamac/modules/dataset/visual-element/RectangularBars.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Info.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Column.js"

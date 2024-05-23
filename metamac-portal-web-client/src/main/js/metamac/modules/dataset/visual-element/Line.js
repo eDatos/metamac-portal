@@ -6,7 +6,7 @@
     App.namespace("App.VisualElement.LineChart");
 
     App.VisualElement.LineChart = function (options) {
-        this.initialize(options);
+        this._initializeChartVisualElement(options);
         this._type = 'line';
 
         var self = this;
@@ -17,8 +17,8 @@
                 triggerOn: "none",
                 position: function (point, params, domEl, rect) {
                     self.coordsTooltipPointsTo = [
-                        rect.x + (rect.width / 2) + self.$chartContainer[0].getBoundingClientRect().x,
-                        rect.y + (rect.height / 2) + self.$chartContainer[0].getBoundingClientRect().y
+                        rect.x + (rect.width / 2) + self._getChartDomEl().getBoundingClientRect().x,
+                        rect.y + (rect.height / 2) + self._getChartDomEl().getBoundingClientRect().y
                     ];
                     return 'top';
                 }
@@ -32,8 +32,8 @@
                 },
                 axisLabel: {
                     interval: function (categoryIndex) {
-                        if (self.chart) {
-                            var dataZoom = self.chart.getOption().dataZoom[0];
+                        if (self._getChart()) {
+                            var dataZoom = self._getChart().getOption().dataZoom[0];
                             var interval = Math.ceil((dataZoom.endValue - dataZoom.startValue + 1) / Constants.charts.lines.xAxisTicks);
                             return ((categoryIndex - dataZoom.startValue) % interval) === 0;
                         } else {
@@ -61,7 +61,7 @@
         });
     };
 
-    App.VisualElement.LineChart.prototype = new App.VisualElement.Base();
+    App.VisualElement.LineChart.prototype = new App.VisualElement.Chart();
 
     _.extend(App.VisualElement.LineChart.prototype, {
 
@@ -73,19 +73,6 @@
             this.render();
             if (!this.colorsLoaded()) {
                 this.loadColors();
-            }
-        },
-
-        destroy: function () {
-            this._unbindEvents();
-
-            if (this.chart) {
-                this.chart.dispose();
-                this.chart = null;
-            }
-            if (this.exportChart) {
-                this.exportChart.dispose();
-                this.exportChart = null;
             }
         },
 
@@ -139,32 +126,12 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this.$chartContainer = $('<div>');
-            this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
-            this.$el.append(this.$chartContainer);
-
-            this.$exportChartContainer = $("#export-chart");
-            if (this.$exportChartContainer.length === 0) {
-                this.$exportChartContainer = $('<div id="export-chart"></div>');
-                $("body").append(this.$exportChartContainer);
-            }
-
-            this.chart = this._initializeChart(this.$chartContainer[0]);
-            this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
-            App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
+            this._initializeChart();
+            App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
 
             this._extendChartOptions(this.getData());
-            this.chart.setOption(this._chartOptions, true);
+            this._getChart().setOption(this._chartOptions, true);
             this._setTooltipObserver();
-        },
-
-        _updateSize: function () {
-            var newHeight = this.$el.height() - this.$title.outerHeight(true);
-            this.$chartContainer.height(newHeight);
-            this.chart.resize({
-                width: this.$chartContainer.width(),
-                height: this.$chartContainer.height()
-            });
         },
 
         update: function () {
@@ -172,13 +139,13 @@
                 return;
             }
 
-            if (!this.chart) {
+            if (!this._getChart()) {
                 this.load();
             } else {
                 this.updateTitle();
 
                 this._extendChartOptions(this.getData());
-                this.chart.setOption(this._chartOptions, true);
+                this._getChart().setOption(this._chartOptions, true);
                 this._setTooltipObserver();
             }
         },
@@ -204,37 +171,6 @@
                 },
                 dataZoom: this._getDataZooms(gridBottom)
             };
-        },
-
-        getExportChartSvg: function () {
-            var exportChartOptions = {};
-            App.util.ObjectUtils.deepExtend(exportChartOptions, this._chartOptions);
-            var gridHeight = this.$chartContainer.height() - this._chartOptions.grid.bottom - this._chartOptions.grid.top;
-            App.util.ObjectUtils.deepExtend(exportChartOptions, {
-                dataZoom: undefined,
-                title: undefined,
-                legend: {
-                    type: 'plain',
-                    top: this._chartOptions.grid.top + Constants.charts.bigGap + gridHeight + Constants.charts.gap,
-                    width: '95%',
-                    padding: Constants.charts.bigGap,
-                    itemGap: Constants.charts.bigGap,
-                },
-                grid: {
-                    left: this._chartOptions.grid.left + Constants.charts.bigGap,
-                    right: Constants.charts.grid.horizontalMargin + Constants.charts.bigGap,
-                    top: this._chartOptions.grid.top + Constants.charts.bigGap,
-                    height: gridHeight
-                }
-            });
-
-            this.exportChart.setOption(exportChartOptions, true);
-            this.exportChart.resize({
-                width: this.$chartContainer.width(),
-                height: this.$exportChartContainer[0].firstChild.firstChild.getBBox().height + Constants.charts.bigGap
-            });
-
-            return decodeURIComponent(this.exportChart.getDataURL()).match(/<svg(.|\s)*<[/]svg>/g)[0];
         },
 
         _getDataZooms: function(gridBottom) {
