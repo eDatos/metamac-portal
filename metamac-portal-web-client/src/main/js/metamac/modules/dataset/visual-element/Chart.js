@@ -78,7 +78,8 @@
                     },
                     axisLabel: {
                         color: Constants.colors.istacBlack,
-                        formatter: this.axisLabelFormatter
+                        formatter: this.axisLabelFormatter,
+                        hideOverlap: true
                     }
                 },
                 yAxis: {
@@ -87,7 +88,8 @@
                     },
                     axisLabel: {
                         color: Constants.colors.istacBlack,
-                        formatter: this.axisLabelFormatter
+                        formatter: this.axisLabelFormatter,
+                        hideOverlap: true
                     }
                 },
                 title: {

@@ -41,7 +41,6 @@
                         }
                     },
                     align: 'right',
-                    hideOverlap: true,
                     rotate: 70,
                     verticalAlign: "top",
                     width: '200',
