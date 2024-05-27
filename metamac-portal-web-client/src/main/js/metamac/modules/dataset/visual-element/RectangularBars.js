@@ -39,7 +39,6 @@
                 xAxis: {
                     axisLabel: {
                         align: 'right',
-                        hideOverlap: true,
                         interval: 0
                     }
                 }
