@@ -34,6 +34,9 @@
 
         _initializeChartOptions: function () {
             this._chartOptions = {
+                textStyle: {
+                    fontFamily: "Helvetica, Arial, sans-serif"
+                },
                 animation: false,
                 backgroundColor: Constants.colors.istacWhite,
                 grid: {
@@ -65,7 +68,8 @@
                     itemHeight: Constants.charts.legend.itemHeight,
                     padding: Constants.charts.legend.padding,
                     textStyle: {
-                        fontSize: Constants.charts.legend.fontSize
+                        fontSize: Constants.charts.legend.fontSize,
+                        color: Constants.colors.istacBlack
                     }
                 },
                 xAxis: {
@@ -179,7 +183,9 @@
             var gridHeight = this.$chartContainer.height() - this._chartOptions.grid.bottom - this._chartOptions.grid.top;
             App.util.ObjectUtils.deepExtend(exportChartOptions, {
                 dataZoom: undefined,
-                title: undefined,
+                title: {
+                    show: true
+                },
                 animation: false,
                 tooltip: {
                     show: false
@@ -190,6 +196,9 @@
                     width: '95%',
                     padding: Constants.charts.bigGap,
                     itemGap: Constants.charts.bigGap,
+                    textStyle: {
+                        fontSize: Constants.charts.legend.exportFontSize
+                    }
                 },
                 grid: {
                     left: this._chartOptions.grid.left + Constants.charts.bigGap,
