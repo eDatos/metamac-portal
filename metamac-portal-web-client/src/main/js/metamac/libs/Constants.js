@@ -89,6 +89,7 @@
             },
             legend: {
                 fontSize: 12,
+                exportFontSize: 10,
                 padding: 5,
                 itemHeight: 15
             },
