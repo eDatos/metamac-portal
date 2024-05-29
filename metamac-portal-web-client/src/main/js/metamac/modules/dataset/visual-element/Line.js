@@ -78,11 +78,16 @@
         _bindEvents: function () {
             this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", _.debounce(this.update, 100));
 
-            var resize = _.debounce(_.bind(this._updateSize, this), 200);
+            var resize = _.debounce(_.bind(this._onResizeEvent, this), 200);
             this.$el.on("resize", function (e) {
                 e.stopPropagation();
                 resize();
             });
+        },
+
+        _onResizeEvent: function () {
+            this._updateSize();
+            this._updatePointsVisibility();
         },
 
         _unbindEvents: function () {
@@ -127,10 +132,52 @@
 
             this._initializeChart();
             App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
+            var self = this;
+            this._getChart().on('datazoom', function (params) {
+                if (params.dataZoomId === Constants.charts.lines.dataZoom.horizontal.id) {
+                    self.xAxisDataZoomStart = params.start;
+                    self.xAxisDataZoomEnd = params.end;
+                    self._updatePointsVisibility();
+                }
+            });
 
             this._extendChartOptions(this.getData());
             this._getChart().setOption(this._chartOptions, true);
+            this._updatePointsVisibility();
             this._setTooltipObserver();
+        },
+
+        _updatePointsVisibility: function () {
+            var newPointsVisibility = this._shouldPointsBeVisible();
+            if (newPointsVisibility !== this.pointsVisibility) {
+                this.pointsVisibility = newPointsVisibility;
+                this._chartOptions.series = this._chartOptions.series.map(serie => {
+                    serie.itemStyle.opacity = (this.pointsVisibility ? 1 : 0);
+                    return serie;
+                });
+                this._chartOptions.dataZoom = this._getDataZooms(this._chartOptions.grid.bottom, this.xAxisDataZoomStart, this.xAxisDataZoomEnd);
+                this._getChart().setOption(this._chartOptions, true);
+                this._setTooltipObserver();
+            }
+        },
+
+        _shouldPointsBeVisible: function () {
+            var numberOfPoints = this._getNumberOfPointsInGridPerSerie();
+            var gridWidth = this._getChartDomEl().clientWidth - this._chartOptions.grid.left - this._chartOptions.grid.right;
+            var symbolGap = 1;
+            var pointsThatFitsInGrid = gridWidth / (Constants.charts.lines.symbol.size + symbolGap);
+            return pointsThatFitsInGrid >= numberOfPoints;
+        },
+
+        _getNumberOfPointsInGridPerSerie: function () {
+            var series = this._chartOptions.series;
+            if (!series || series.length === 0) {
+                return 0;
+            }
+
+            var xAxisDataZoomStart = this.xAxisDataZoomStart || 0;
+            var xAxisDataZoomEnd = this.xAxisDataZoomEnd || 100;
+            return (xAxisDataZoomEnd - xAxisDataZoomStart)/100 * series[0].data.length;
         },
 
         update: function () {
@@ -145,6 +192,7 @@
 
                 this._extendChartOptions(this.getData());
                 this._getChart().setOption(this._chartOptions, true);
+                this._updatePointsVisibility();
                 this._setTooltipObserver();
             }
         },
@@ -172,19 +220,28 @@
             };
         },
 
-        _getDataZooms: function(gridBottom) {
+        _getDataZooms: function(gridBottom, xAxisDataZoomStart, xAxisDataZoomEnd) {
+            this.xAxisDataZoomStart = xAxisDataZoomStart || 0;
+            this.xAxisDataZoomEnd = xAxisDataZoomEnd || (
+                this.data.metadata.getTimeDimensions().length > 0 
+                ? Constants.charts.lines.dataZoom.horizontal.end 
+                : Constants.charts.lines.dataZoom.horizontal.partialEnd
+            );
             return [
                 {
                     type: 'slider',
+                    id: Constants.charts.lines.dataZoom.horizontal.id,
                     xAxisIndex: [0],
                     showDetail: false,
                     left: 'center',
                     height: Constants.charts.lines.dataZoom.horizontal.height,
                     bottom: 0,
-                    end: (this.data.metadata.getTimeDimensions().length > 0) ? Constants.charts.lines.dataZoom.horizontal.end : Constants.charts.lines.dataZoom.horizontal.partialEnd
+                    start: this.xAxisDataZoomStart,
+                    end: this.xAxisDataZoomEnd
                 },
                 {
                     type: 'slider',
+                    id: Constants.charts.lines.dataZoom.vertical.id,
                     yAxisIndex: [0],
                     showDetail: false,
                     right: 0,
@@ -227,9 +284,9 @@
                     silent: true,
                     itemStyle: {
                         color: lineColor,
-                        opacity: 0
+                        opacity: (this.pointsVisibility ? 1 : 0)
                     },
-                    symbolSize: 5,
+                    symbolSize: Constants.charts.lines.symbol.size,
                     symbol: 'circle',
                     animation: false,
                     name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
@@ -240,7 +297,9 @@
                         disabled: false,
                         itemStyle: {
                             color: lineColor,
-                            opacity: 1
+                            opacity: 1,
+                            borderWidth: Constants.charts.lines.highlight.point.border.width,
+                            borderColor: Constants.charts.lines.highlight.point.border.color
                         }
                     },
                     selectedMode: 'single',

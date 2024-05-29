@@ -73,17 +73,30 @@
                 topMargin: 10
             },
             lines: {
+                symbol: {
+                    size: 5
+                },
                 xAxisTicks: 6,
                 dataZoom: {
                     horizontal: {
+                        id: "xAxisDataZoom",
                         height: 80,
                         end: 100,
                         partialEnd: 48
                     },
                     vertical: {
+                        id: "yAxisDataZoom",
                         width: 80,
                         bottomMargin: 20,
                         topMargin: 8
+                    }
+                },
+                highlight: {
+                    point: {
+                        border: {
+                            width: 7,
+                            color: "#ACACAC88"
+                        }
                     }
                 }
             },
