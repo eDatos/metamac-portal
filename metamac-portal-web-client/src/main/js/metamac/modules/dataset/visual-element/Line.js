@@ -142,9 +142,7 @@
             });
 
             this._extendChartOptions(this.getData());
-            this._getChart().setOption(this._chartOptions, true);
-            this._updatePointsVisibility();
-            this._setTooltipObserver();
+            this._updateChartOptions();
         },
 
         _updatePointsVisibility: function () {
@@ -191,9 +189,7 @@
                 this.updateTitle();
 
                 this._extendChartOptions(this.getData());
-                this._getChart().setOption(this._chartOptions, true);
-                this._updatePointsVisibility();
-                this._setTooltipObserver();
+                this._updateChartOptions();
             }
         },
 
@@ -214,10 +210,31 @@
                 },
                 series: this._getSeries(linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension),
                 xAxis: {
-                    data: _.invoke(dataAxisDimensionCategories, 'get', 'visibleLabel')
+                    data: _.invoke(dataAxisDimensionCategories, 'get', 'visibleLabel'),
+                    axisLabel: {
+                        width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - gridBottom - this._chartOptions.grid.top)
+                    }
                 },
                 dataZoom: this._getDataZooms(gridBottom)
             };
+        },
+
+        _onHeightUpdated: function () {
+            this._extendChartOptions({
+                xAxis: {
+                    axisLabel: {
+                        width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - this._chartOptions.grid.bottom - this._chartOptions.grid.top)
+                    }
+                },
+                dataZoom: this._getDataZooms(this._chartOptions.grid.bottom, this.xAxisDataZoomStart, this.xAxisDataZoomEnd)
+            });
+            this._updateChartOptions();
+        },
+        
+        _updateChartOptions: function() {
+            this._getChart().setOption(this._chartOptions, true);
+            this._updatePointsVisibility();
+            this._setTooltipObserver();
         },
 
         _getDataZooms: function(gridBottom, xAxisDataZoomStart, xAxisDataZoomEnd) {

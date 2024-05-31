@@ -123,8 +123,7 @@
             this._initializeChart();
             var data = this.getData();
             this._extendChartOptions(data);
-            this._getChart().setOption(this._chartOptions, true);
-            this._setTooltipObserver();
+            this.__updateChartOptions();
 
             this.$el.on("resize", function () { });
         },
@@ -141,8 +140,14 @@
             result.legend = {
                 show: !columnsDimension.get('singleValue') && columnsDimensionSelectedCategories.length !== 1
             };
+            var gridBottom = this._chartOptions.legend.bottom + (result.legend.show ? this._getLegendHeight() : 0) + Constants.charts.bigGap;
             result.grid = {
-                bottom: this._chartOptions.legend.bottom + (result.legend.show ? this._getLegendHeight() : 0) + Constants.charts.bigGap
+                bottom: gridBottom,
+            }
+            result.axisLabel = {
+                axisLabel: {
+                    width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - gridBottom - this._chartOptions.grid.top)
+                }
             }
             result.series = this._getSeries(columnsDimensionSelectedCategories, columnsDimension, dataAxisDimensionSelectedCategories, dataAxisDimension);
             result[this._dataAxis] = {
@@ -159,6 +164,22 @@
             this._sortSeriesAndDataAxis(result, dataAxisDimension, columnsDimension);
 
             return result;
+        },
+
+        _onHeightUpdated: function () {
+            this._extendChartOptions({
+                xAxis: {
+                    axisLabel: {
+                        width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - this._chartOptions.grid.bottom - this._chartOptions.grid.top)
+                    }
+                }
+            });
+            this.__updateChartOptions();
+        },
+
+        __updateChartOptions: function() {
+            this._getChart().setOption(this._chartOptions, true);
+            this._setTooltipObserver();
         },
 
         _getSeries: function (columnsDimensionSelectedCategories, columnsDimension, dataAxisDimensionSelectedCategories, dataAxisDimension) {
@@ -281,8 +302,7 @@
             var data = this.getData();
 
             this._extendChartOptions(data);
-            this._getChart().setOption(this._chartOptions, true);
-            this._setTooltipObserver();
+            this.__updateChartOptions();
         }
     });
 
