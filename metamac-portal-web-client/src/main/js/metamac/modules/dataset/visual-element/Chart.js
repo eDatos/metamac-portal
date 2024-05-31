@@ -77,7 +77,8 @@
                         show: false
                     },
                     axisLabel: {
-                        color: Constants.colors.istacBlack,
+                        fontSize: Constants.charts.axis.fontSize,
+                        color: Constants.colors.istacGreyDark,
                         formatter: this.axisLabelFormatter,
                         hideOverlap: true
                     }
@@ -87,7 +88,8 @@
                         show: false
                     },
                     axisLabel: {
-                        color: Constants.colors.istacBlack,
+                        fontSize: Constants.charts.axis.fontSize,
+                        color: Constants.colors.istacGreyDark,
                         formatter: this.axisLabelFormatter,
                         hideOverlap: true
                     }
@@ -107,7 +109,12 @@
                     className: Constants.charts.tooltip.className,
                     trigger: "item",
                     appendToBody: true,
-                    confine: true
+                    confine: true,
+                    padding: Constants.charts.tooltip.padding,
+                    textStyle: {
+                        fontSize: Constants.charts.tooltip.fontSize,
+                        color: Constants.colors.istacBlack
+                    }
                 }
             };
         },
@@ -138,10 +145,20 @@
         _updateSize: function () {
             var newHeight = this.$el.height() - this.$title.outerHeight(true);
             this.$chartContainer.height(newHeight);
+            if (newHeight !== this.chart.getHeight()) {
+                this._onHeightUpdated();
+            }
             this.chart.resize({
                 width: this.$chartContainer.width(),
                 height: this.$chartContainer.height()
             });
+        },
+
+        _onHeightUpdated: function () {
+        },
+        
+        _getXAxisLabelWidth: function (gridHeight) {
+            return Math.min(Constants.charts.axis.maxWidth, (gridHeight)/4);
         },
 
         _getChart: function () {

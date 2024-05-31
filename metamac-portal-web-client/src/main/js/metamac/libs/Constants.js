@@ -68,6 +68,10 @@
             gap: 5,
             bigGap: 15,
             dataAxisWidth: 1.5,
+            axis: {
+                fontSize: 11,
+                maxWidth: 190
+            },
             grid: {
                 horizontalMargin: 15,
                 topMargin: 10
@@ -110,7 +114,9 @@
                 fontSize: 9
             },
             tooltip: {
-                className: 'chart-tooltip'
+                className: 'chart-tooltip',
+                padding: 7,
+                fontSize: 12
             }
         }
     };
