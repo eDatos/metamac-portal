@@ -148,6 +148,9 @@
             if (newHeight !== this.chart.getHeight()) {
                 this._onHeightUpdated();
             }
+            if (this.$chartContainer.width() !== this.chart.getWidth()) {
+                this._onWidthUpdated();
+            }
             this.chart.resize({
                 width: this.$chartContainer.width(),
                 height: this.$chartContainer.height()
@@ -156,9 +159,16 @@
 
         _onHeightUpdated: function () {
         },
+
+        _onWidthUpdated: function () {
+        },
         
         _getXAxisLabelWidth: function (gridHeight) {
             return Math.min(Constants.charts.axis.maxWidth, (gridHeight)/4);
+        },
+
+        _getYAxisLabelWidth: function (gridWidth) {
+            return Math.min(Constants.charts.axis.maxWidth, (gridWidth)/4);
         },
 
         _getChart: function () {
