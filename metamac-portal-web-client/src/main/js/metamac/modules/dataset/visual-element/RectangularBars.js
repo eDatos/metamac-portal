@@ -123,7 +123,7 @@
             this._initializeChart();
             var data = this.getData();
             this._extendChartOptions(data);
-            this.__updateChartOptions();
+            this._updateChartOptions();
 
             this.$el.on("resize", function () { });
         },
@@ -144,7 +144,7 @@
             result.grid = {
                 bottom: gridBottom,
             }
-            result.axisLabel = {
+            result.xAxis = {
                 axisLabel: {
                     width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - gridBottom - this._chartOptions.grid.top)
                 }
@@ -174,10 +174,10 @@
                     }
                 }
             });
-            this.__updateChartOptions();
+            this._updateChartOptions();
         },
 
-        __updateChartOptions: function() {
+        _updateChartOptions: function() {
             this._getChart().setOption(this._chartOptions, true);
             this._setTooltipObserver();
         },
@@ -302,7 +302,7 @@
             var data = this.getData();
 
             this._extendChartOptions(data);
-            this.__updateChartOptions();
+            this._updateChartOptions();
         }
     });
 
