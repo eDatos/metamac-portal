@@ -39,7 +39,13 @@
                 xAxis: {
                     axisLabel: {
                         align: 'right',
-                        interval: 0
+                        interval: 0,
+                        overflow: 'truncate'
+                    }
+                },
+                yAxis: {
+                    axisLabel: {
+                        overflow: 'truncate'
                     }
                 }
             });
@@ -48,9 +54,7 @@
                     xAxis: {
                         axisLabel: {
                             rotate: 70,
-                            verticalAlign: "top",
-                            width: '200',
-                            overflow: 'truncate'
+                            verticalAlign: "top"
                         }
                     }
                 });
@@ -144,11 +148,6 @@
             result.grid = {
                 bottom: gridBottom,
             }
-            result.xAxis = {
-                axisLabel: {
-                    width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - gridBottom - this._chartOptions.grid.top)
-                }
-            }
             result.series = this._getSeries(columnsDimensionSelectedCategories, columnsDimension, dataAxisDimensionSelectedCategories, dataAxisDimension);
             result[this._dataAxis] = {
                 data: _.invoke(dataAxisDimensionSelectedCategories, 'get', 'visibleLabel'),
@@ -157,6 +156,11 @@
                         width: Constants.charts.dataAxisWidth,
                         color: Constants.colors.istacGreyMedium
                     }
+                },
+                axisLabel: {
+                    width: (this._dataAxis === 'xAxis')
+                        ? this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - gridBottom - this._chartOptions.grid.top)
+                        : this._getYAxisLabelWidth(this._getChartDomEl().clientWidth - this._chartOptions.grid.left - this._chartOptions.grid.right)
                 }
             };
 
@@ -167,14 +171,29 @@
         },
 
         _onHeightUpdated: function () {
-            this._extendChartOptions({
-                xAxis: {
-                    axisLabel: {
-                        width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - this._chartOptions.grid.bottom - this._chartOptions.grid.top)
+            if (this._dataAxis === 'xAxis') {
+                this._extendChartOptions({
+                    xAxis: {
+                        axisLabel: {
+                            width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - this._chartOptions.grid.bottom - this._chartOptions.grid.top)
+                        }
                     }
-                }
-            });
-            this._updateChartOptions();
+                });
+                this._updateChartOptions();
+            }
+        },
+
+        _onWidthUpdated: function () {
+            if (this._dataAxis === 'yAxis') {
+                this._extendChartOptions({
+                    yAxis: {
+                        axisLabel: {
+                            width: this._getYAxisLabelWidth(this._getChartDomEl().clientWidth - this._chartOptions.grid.left - this._chartOptions.grid.right)
+                        }
+                    }
+                });
+                this._updateChartOptions();
+            }
         },
 
         _updateChartOptions: function() {
