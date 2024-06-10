@@ -217,7 +217,8 @@
                 },
                 animation: false,
                 tooltip: {
-                    show: false
+                    show: false,
+                    className: "export-chart-tooltip"
                 },
                 legend: {
                     type: 'plain',
