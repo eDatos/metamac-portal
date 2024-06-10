@@ -115,6 +115,7 @@
             },
             tooltip: {
                 className: 'chart-tooltip',
+                exportClassName: 'export-chart-tooltip',
                 padding: 7,
                 fontSize: 12
             }
