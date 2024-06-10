@@ -24,12 +24,16 @@
             } else {
                 chart.dispatchAction({type: 'hideTip'});
                 chart.dispatchAction({type: 'unselect', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
+                previousSeriesIndex = null;
+                previousDataIndex = null;
             }
         });
 
         chart.on("globalout", () => {
             chart.dispatchAction({type: 'hideTip'});
             chart.dispatchAction({type: 'unselect', seriesIndex: previousSeriesIndex, dataIndex: previousDataIndex});
+            previousSeriesIndex = null;
+            previousDataIndex = null;
         });
     };
 
