@@ -210,10 +210,14 @@
             var exportChartOptions = {};
             App.util.ObjectUtils.deepExtend(exportChartOptions, this._chartOptions);
             var gridHeight = this.$chartContainer.height() - this._chartOptions.grid.bottom - this._chartOptions.grid.top;
+            var gridTop = this._chartOptions.grid.top + Constants.charts.bigGap;
+            var titleTop = gridTop + gridHeight + Constants.charts.bigGap;
             App.util.ObjectUtils.deepExtend(exportChartOptions, {
                 dataZoom: undefined,
                 title: {
-                    show: true
+                    show: true,
+                    right: this._chartOptions.title.right + Constants.charts.bigGap,
+                    top: titleTop
                 },
                 animation: false,
                 tooltip: {
@@ -222,7 +226,7 @@
                 },
                 legend: {
                     type: 'plain',
-                    top: this._chartOptions.grid.top + Constants.charts.bigGap + gridHeight + Constants.charts.gap,
+                    top: titleTop + Constants.charts.bigGap,
                     width: '95%',
                     padding: Constants.charts.bigGap,
                     itemGap: Constants.charts.bigGap,
@@ -233,7 +237,7 @@
                 grid: {
                     left: this._chartOptions.grid.left + Constants.charts.bigGap,
                     right: Constants.charts.grid.horizontalMargin + Constants.charts.bigGap,
-                    top: this._chartOptions.grid.top + Constants.charts.bigGap,
+                    top: gridTop,
                     height: gridHeight
                 }
             });
