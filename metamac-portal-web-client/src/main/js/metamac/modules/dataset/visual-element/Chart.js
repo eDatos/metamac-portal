@@ -217,7 +217,8 @@
                 },
                 animation: false,
                 tooltip: {
-                    show: false
+                    show: false,
+                    className: Constants.charts.tooltip.exportClassName
                 },
                 legend: {
                     type: 'plain',
