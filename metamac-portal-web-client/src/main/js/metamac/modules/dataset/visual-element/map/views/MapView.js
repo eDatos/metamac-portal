@@ -110,6 +110,7 @@
             this.title = options.title;
             this.rightsHolder = options.rightsHolder;
             this.showRightsHolder = options.showRightsHolder;
+            this.metadata = options.metadata;
 
             this.tooltipDelegate = new App.Map.TooltipDelegate(options);
 
@@ -122,8 +123,8 @@
             this._defaultMapOptions.chart.events = { load: options.callback, redraw: options.callback };
 
             this._defaultMapOptions.legend.labelFormatter = function () {
-                var fromString = App.util.NumberFormatter.strNumberToLocalizedString(this.from.toString(), {decimals: 2});
-                var toString = App.util.NumberFormatter.strNumberToLocalizedString(this.to.toString(), {decimals: 2});
+                var fromString = App.util.NumberFormatter.strNumberToLocalizedString(this.from.toString(), {decimals: options.metadata.getMaxDecimals()});
+                var toString = App.util.NumberFormatter.strNumberToLocalizedString(this.to.toString(), {decimals: options.metadata.getMaxDecimals()});
                 return `${fromString} - ${toString}`;
             };
         },
@@ -344,7 +345,7 @@
 
         _generateDataClasses: function () {
             var dataClasses = [];
-            var rangeLimits = this.model.createRangeLimits();
+            var rangeLimits = this.model.createRangeLimits(this.metadata.getMaxDecimals());
             for (var i = 0; i < rangeLimits.length - 1; i++) {
                 dataClasses[i] = { from: rangeLimits[i], to: rangeLimits[i + 1] };
             }
