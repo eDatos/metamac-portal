@@ -109,8 +109,9 @@
             self.values = _.sortBy(values);
             self.currentRangesNum = currentRangesNum;
             return _.map(_.range(1, currentRangesNum), function (value, key, list) {
-                if (value != 0) {
-                    return self._quantile(self.values, value / self.currentRangesNum);
+                if (value !== 0) {
+                    var quantile = self._quantile(self.values, value / self.currentRangesNum);
+                    return Math.round((quantile + Number.EPSILON) * 100) / 100;
                 }
             }, self);
         },
