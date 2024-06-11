@@ -59,7 +59,8 @@
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
                 veElements: this.visualElements,
-                optionsView: this.optionsView
+                optionsView: this.optionsView,
+                metadata: this.metadata
             });
 
             this.dimensionsView = new App.modules.dataset.DimensionsView({

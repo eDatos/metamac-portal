@@ -23,6 +23,7 @@
             this.rightsHolder = options.rightsHolder;
             this.showRightsHolder = options.showRightsHolder;
             this.callback = options.callback;
+            this.metadata = options.metadata;
             this.$el.empty();
             this._initInternalViews();
         },
@@ -117,7 +118,8 @@
                 title: this.title,
                 rightsHolder: this.rightsHolder,
                 showRightsHolder: this.showRightsHolder,
-                callback: this.callback
+                callback: this.callback,
+                metadata: this.metadata
             });
         },
 
