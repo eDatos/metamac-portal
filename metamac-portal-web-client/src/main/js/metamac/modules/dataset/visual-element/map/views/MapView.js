@@ -122,7 +122,9 @@
             this._defaultMapOptions.chart.events = { load: options.callback, redraw: options.callback };
 
             this._defaultMapOptions.legend.labelFormatter = function () {
-                return App.util.NumberFormatter.strNumberToLocalizedString(this.from.toString()) + ' - ' + App.util.NumberFormatter.strNumberToLocalizedString(this.to.toString());
+                var fromString = App.util.NumberFormatter.strNumberToLocalizedString(this.from.toString(), {decimals: 2});
+                var toString = App.util.NumberFormatter.strNumberToLocalizedString(this.to.toString(), {decimals: 2});
+                return fromString + ' - ' + toString;
             };
         },
 
