@@ -125,7 +125,7 @@
             this._defaultMapOptions.legend.labelFormatter = function () {
                 var fromString = App.util.NumberFormatter.strNumberToLocalizedString(this.from.toString(), {decimals: options.metadata.getMaxDecimals()});
                 var toString = App.util.NumberFormatter.strNumberToLocalizedString(this.to.toString(), {decimals: options.metadata.getMaxDecimals()});
-                return `${fromString} - ${toString}`;
+                return fromString + " - " + toString;
             };
         },
 
