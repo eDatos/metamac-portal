@@ -301,7 +301,7 @@
                     silent: true,
                     itemStyle: {
                         color: lineColor,
-                        opacity: (this.pointsVisibility ? 1 : 0)
+                        opacity: (self.pointsVisibility ? 1 : 0)
                     },
                     symbolSize: Constants.charts.lines.symbol.size,
                     symbol: 'circle',
