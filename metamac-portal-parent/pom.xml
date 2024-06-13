@@ -41,7 +41,6 @@
         
         <frontend-maven-plugin.version>1.11.3</frontend-maven-plugin.version>
         <node.version>v20.14.0</node.version>
-        <npm.version>10.7.0</npm.version>
         
         <!-- WEB -->
         <freemarker.version>2.3.18</freemarker.version>
