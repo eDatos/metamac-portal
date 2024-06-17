@@ -284,7 +284,7 @@
             return this.getDrawableRepresentations(linesDimension);
         },
         
-        _getSeries(linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension) {
+        _getSeries: function (linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension) {
             var series = [];
 
             var self = this;
@@ -346,8 +346,16 @@
             });
 
             return series;
-        }
+        },
 
+        _getExtraExportOptions: function () {
+            return {
+                dataZoom: this._getDataZooms(this._chartOptions.grid.bottom, this.xAxisDataZoomStart, this.xAxisDataZoomEnd).map(function (datazoom) {
+                    datazoom.show = false;
+                    return datazoom;
+                })
+            }
+        }
     });
 
 }());
