@@ -138,6 +138,9 @@
                     self.xAxisDataZoomStart = params.start;
                     self.xAxisDataZoomEnd = params.end;
                     self._updatePointsVisibility();
+                } else {
+                    self.yAxisDataZoomStart = params.start;
+                    self.yAxisDataZoomEnd = params.end;
                 }
             });
 
@@ -153,7 +156,13 @@
                     serie.itemStyle.opacity = (this.pointsVisibility ? 1 : 0);
                     return serie;
                 });
-                this._chartOptions.dataZoom = this._getDataZooms(this._chartOptions.grid.bottom, this.xAxisDataZoomStart, this.xAxisDataZoomEnd);
+                this._chartOptions.dataZoom = this._getDataZooms(
+                    this._chartOptions.grid.bottom,
+                    this.xAxisDataZoomStart,
+                    this.xAxisDataZoomEnd,
+                    this.yAxisDataZoomStart,
+                    this.yAxisDataZoomEnd
+                );
                 this._getChart().setOption(this._chartOptions, true);
                 this._setTooltipObserver();
             }
@@ -226,7 +235,13 @@
                         width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - this._chartOptions.grid.bottom - this._chartOptions.grid.top)
                     }
                 },
-                dataZoom: this._getDataZooms(this._chartOptions.grid.bottom, this.xAxisDataZoomStart, this.xAxisDataZoomEnd)
+                dataZoom: this._getDataZooms(
+                    this._chartOptions.grid.bottom,
+                    this.xAxisDataZoomStart,
+                    this.xAxisDataZoomEnd,
+                    this.yAxisDataZoomStart,
+                    this.yAxisDataZoomEnd
+                )
             });
             this._updateChartOptions();
         },
@@ -237,13 +252,15 @@
             this._setTooltipObserver();
         },
 
-        _getDataZooms: function(gridBottom, xAxisDataZoomStart, xAxisDataZoomEnd) {
+        _getDataZooms: function(gridBottom, xAxisDataZoomStart, xAxisDataZoomEnd, yAxisDataZoomStart, yAxisDataZoomEnd) {
             this.xAxisDataZoomStart = xAxisDataZoomStart || 0;
             this.xAxisDataZoomEnd = xAxisDataZoomEnd || (
                 this.data.metadata.getTimeDimensions().length > 0 
                 ? Constants.charts.lines.dataZoom.horizontal.end 
                 : Constants.charts.lines.dataZoom.horizontal.partialEnd
             );
+            this.yAxisDataZoomStart = yAxisDataZoomStart || 0;
+            this.yAxisDataZoomEnd = yAxisDataZoomEnd || Constants.charts.lines.dataZoom.vertical.end;
             return [
                 {
                     type: 'slider',
@@ -264,7 +281,9 @@
                     right: 0,
                     width: Constants.charts.lines.dataZoom.vertical.width,
                     top: Constants.charts.lines.dataZoom.vertical.topMargin,
-                    bottom: gridBottom + Constants.charts.lines.dataZoom.vertical.bottomMargin
+                    bottom: gridBottom + Constants.charts.lines.dataZoom.vertical.bottomMargin,
+                    start: this.yAxisDataZoomStart,
+                    end: this.yAxisDataZoomEnd
                 }
             ];
         },
@@ -350,7 +369,13 @@
 
         _getExtraExportOptions: function () {
             return {
-                dataZoom: this._getDataZooms(this._chartOptions.grid.bottom, this.xAxisDataZoomStart, this.xAxisDataZoomEnd).map(function (datazoom) {
+                dataZoom: this._getDataZooms(
+                    0,
+                    this.xAxisDataZoomStart,
+                    this.xAxisDataZoomEnd,
+                    this.yAxisDataZoomStart,
+                    this.yAxisDataZoomEnd
+                ).map(function (datazoom) {
                     datazoom.show = false;
                     return datazoom;
                 })
