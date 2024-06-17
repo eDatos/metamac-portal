@@ -92,7 +92,8 @@
                         id: "yAxisDataZoom",
                         width: 80,
                         bottomMargin: 20,
-                        topMargin: 8
+                        topMargin: 8,
+                        end: 100
                     }
                 },
                 highlight: {
