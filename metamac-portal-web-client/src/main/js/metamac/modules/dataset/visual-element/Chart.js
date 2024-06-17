@@ -241,6 +241,7 @@
                     height: gridHeight
                 }
             });
+            App.util.ObjectUtils.deepExtend(exportChartOptions, this._getExtraExportOptions());
 
             /*
              * The width must be changed before the height because height is set to the minimum necessary (getBBox) and
@@ -255,6 +256,9 @@
             });
 
             return decodeURIComponent(this.exportChart.getDataURL()).match(/<svg(.|\s)*<[/]svg>/g)[0];
+        },
+
+        _getExtraExportOptions: function () {
         },
 
         _forceMeasureDimensionInZone: function (zone) {
