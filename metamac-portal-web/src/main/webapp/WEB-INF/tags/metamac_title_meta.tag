@@ -93,7 +93,8 @@
                 PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
                 EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
 			}
-			
+
+            request.setAttribute("installationType", INSTALLATION_TYPE);
 			request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
             request.setAttribute("StatisticalVisualizerBase", PORTAL_URL_BASE);
             request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
@@ -110,6 +111,7 @@
             request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
 
 		} catch (MetamacException e) {
+            request.setAttribute("installationType", "error");
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
 		 	request.setAttribute("StatisticalVisualizerBase", "error");
 		 	request.setAttribute("ApiUrlPermalinks", "error");
