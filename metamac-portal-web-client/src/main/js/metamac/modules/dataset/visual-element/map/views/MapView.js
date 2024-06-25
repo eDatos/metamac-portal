@@ -163,6 +163,7 @@
                         name: this.title,
                         type: 'map',
                         geoIndex: 0,
+                        selectedMode: false,
                         emphasis: {
                             itemStyle: {
                                 areaColor: Constants.colors.istacYellow
@@ -182,8 +183,12 @@
             this._defaultMapOptions.geo = {
                 map: 'map',
                 roam: 'move',
-                nameProperty: 'code',
                 boundingCoords: this._getCenteredAndZoomedCoords(),
+                emphasis: {
+                    label: {
+                        show: false
+                    }
+                },
                 regions: [
                     ...this.containerMapData.features.map(function (feature) {
                         return {
@@ -253,7 +258,7 @@
 
         _getMapDataFromGeoJson: function (geoJson) {
             geoJson.features = _.map(geoJson.features, function (item) {
-                item.properties.code = item.id;
+                item.properties.name = item.id;
                 return item;
             });
             return geoJson;
@@ -316,7 +321,7 @@
         _filterShapesWithoutData: function (mapData, data) {
             var dataCodes = _.pluck(data, 'name');
             mapData.features = _.filter(mapData.features, function (mapDataEntry) {
-                return _.contains(dataCodes, mapDataEntry.properties.code);
+                return _.contains(dataCodes, mapDataEntry.properties.name);
             });
             return mapData;
         },
