@@ -97,7 +97,6 @@
         _initInternalViews: function () {
             this._initMapView();
             this._initZoomView();
-            this._initLeyendView();
             this._initRangesView();
         },
 
@@ -131,9 +130,6 @@
                 width: this._width,
                 height: this._height
             });
-        },
-
-        _initLeyendView: function () {
         },
 
         _initRangesView: function () {

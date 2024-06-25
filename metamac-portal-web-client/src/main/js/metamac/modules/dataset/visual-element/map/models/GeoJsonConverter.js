@@ -35,6 +35,15 @@
 
             return result;
         },
+        
+        geoJsonListToGeoJson: function (geoJsonList) {
+            var result = {
+                type : "FeatureCollection"
+            };
+
+            result.features = geoJsonList.flatMap(function (geoJson) { return geoJson.features; });
+            return result;
+        },
 
         featureHasGeometry : function (feature) {
             return !_.isUndefined(feature.geometry)

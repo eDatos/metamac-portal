@@ -109,10 +109,12 @@
                 fontSize: 12,
                 exportFontSize: 10,
                 padding: 5,
-                itemHeight: 15
+                itemHeight: 15,
+                gap: 6
             },
             title: {
-                fontSize: 9
+                fontSize: 9,
+                marginRight: 10
             },
             tooltip: {
                 className: 'chart-tooltip',
