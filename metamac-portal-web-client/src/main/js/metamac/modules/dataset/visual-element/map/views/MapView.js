@@ -50,6 +50,8 @@
         },
 
         _initializeMapOptions: function () {
+            var rangesContainerBottom = 7;
+            var rangesContainerHeight = 12;
             return {
                 animation: false,
                     tooltip: {
@@ -60,7 +62,7 @@
                         showLabel: true,
                         hoverLink: false,
                         left: 'center',
-                        bottom: 5,
+                        bottom: Constants.charts.gap + rangesContainerBottom + rangesContainerHeight,
                         orient: 'horizontal',
                         inRange: {
                         color: [
@@ -369,9 +371,10 @@
         },
 
         _onResize: function () {
+            var jQueryEl = $(this.el);
             this.map.resize({
-                width: this.el.clientWidth,
-                height: this.el.clientHeight
+                width: jQueryEl.width(),
+                height: jQueryEl.height()
             });
         },
 
