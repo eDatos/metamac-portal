@@ -9,48 +9,6 @@
 
     App.Map.MapView = Backbone.View.extend({
 
-        // Esta fontFamily debe ser siempre equivalente a @istacFontFamilySansSerifFamily
-        _defaultMapOptions: {
-            animation: false,
-            tooltip: {
-                show: false
-            },
-            visualMap: {
-                type: "piecewise",
-                showLabel: true,
-                hoverLink: false,
-                left: 'center',
-                bottom: 5,
-                orient: 'horizontal',
-                inRange: {
-                    color: [
-                        Constants.colors.istacBlueWhite,
-                        Constants.colors.istacBlueDark
-                    ]
-                },
-                text: null,
-                itemSymbol: 'circle',
-                borderColor: Constants.colors.istacGreyMedium,
-                borderWidth: 1,
-                textStyle: {
-                    fontSize: Constants.charts.legend.fontSize,
-                    symbolSize: Constants.charts.legend.fontSize
-                },
-                backgroundColor: Constants.colors.istacWhite,
-                padding: Constants.charts.legend.padding,
-                textGap: Constants.charts.legend.gap,
-                itemGap: Constants.charts.legend.gap
-            },
-            title: {
-                right: Constants.charts.title.marginRight,
-                padding: 0,
-                textStyle: {
-                    fontSize: Constants.charts.title.fontSize,
-                    color: Constants.colors.istacGreyDark
-                }
-            }
-        },
-
         initialize: function (options) {
             this._data = options.data;
             this._filterDimensions = options.filterDimensions;
@@ -70,17 +28,18 @@
             this._onResize = _.debounce(_.bind(this._onResize, this), 200);
             this._updateDataClasses = _.debounce(_.bind(this._updateDataClasses, this), 100);
 
-            this._defaultMapOptions.title.text = options.rightsHolder;
-            this._defaultMapOptions.title.show = options.showRightsHolder;
+            this.mapOptions = this._initializeMapOptions();
+            this.mapOptions.title.text = options.rightsHolder;
+            this.mapOptions.title.show = options.showRightsHolder;
             if (this.mapType === 'map') {
-                this._defaultMapOptions.visualMap.formatter = function (min, max) {
+                this.mapOptions.visualMap.formatter = function (min, max) {
                     var metadataMaxDecimals = options.metadata.getMaxDecimals();
                     var minString = App.util.NumberFormatter.strNumberToLocalizedString(min.toString(), {decimals: metadataMaxDecimals});
                     var maxString = App.util.NumberFormatter.strNumberToLocalizedString(max.toString(), {decimals: metadataMaxDecimals});
                     return minString + " - " + maxString;
                 }
             } else {
-                this._defaultMapOptions.visualMap = undefined;
+                this.mapOptions.visualMap = undefined;
             }
         },
 
@@ -88,6 +47,49 @@
             "mousewheel": "_handleMousewheel",
             "dblclick": "_handleDblclick",
             "resize": "_onResize"
+        },
+
+        _initializeMapOptions: function () {
+            return {
+                animation: false,
+                    tooltip: {
+                    show: false
+                },
+                visualMap: {
+                    type: "piecewise",
+                        showLabel: true,
+                        hoverLink: false,
+                        left: 'center',
+                        bottom: 5,
+                        orient: 'horizontal',
+                        inRange: {
+                        color: [
+                            Constants.colors.istacBlueWhite,
+                            Constants.colors.istacBlueDark
+                        ]
+                    },
+                    text: null,
+                        itemSymbol: 'circle',
+                        borderColor: Constants.colors.istacGreyMedium,
+                        borderWidth: 1,
+                        textStyle: {
+                        fontSize: Constants.charts.legend.fontSize,
+                            symbolSize: Constants.charts.legend.fontSize
+                    },
+                    backgroundColor: Constants.colors.istacWhite,
+                        padding: Constants.charts.legend.padding,
+                        textGap: Constants.charts.legend.gap,
+                        itemGap: Constants.charts.legend.gap
+                },
+                title: {
+                    right: Constants.charts.title.marginRight,
+                        padding: 0,
+                        textStyle: {
+                        fontSize: Constants.charts.title.fontSize,
+                            color: Constants.colors.istacGreyDark
+                    }
+                }
+            };
         },
 
         update: function (newDataJson, newShapeList, newTitle, redraw) {
@@ -100,9 +102,9 @@
             this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
             echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
 
-            this._defaultMapOptions.series[DATA_SERIE_INDEX].data = data;
-            this._defaultMapOptions.series[DATA_SERIE_INDEX].name = this.title;
-            this.map.setOption({series: this._defaultMapOptions.series});
+            this.mapOptions.series[DATA_SERIE_INDEX].data = data;
+            this.mapOptions.series[DATA_SERIE_INDEX].name = this.title;
+            this.map.setOption({series: this.mapOptions.series});
         },
 
         render: function () {
@@ -128,8 +130,8 @@
         },
 
         zoomExit: function () {
-            this._defaultMapOptions.geo.boundingCoords = this._getCenteredAndZoomedCoords();
-            this.map.setOption(this._defaultMapOptions.geo);
+            this.mapOptions.geo.boundingCoords = this._getCenteredAndZoomedCoords();
+            this.map.setOption(this.mapOptions.geo);
         },
 
         updateRanges: function () {
@@ -158,7 +160,7 @@
             this.containerMapData = this._getMapDataFromGeoJson(containerGeoJson);
             echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
 
-            this._defaultMapOptions.series = [];
+            this.mapOptions.series = [];
             var self = this;
             switch (this.mapType) {
                 case 'map':
@@ -179,7 +181,7 @@
                         data: data
                     };
 
-                    this._defaultMapOptions.series.push(choroplethDataSerie);
+                    this.mapOptions.series.push(choroplethDataSerie);
                     break;
                 case 'mapbubble':
                     var bubbleDataSerie = {
@@ -196,14 +198,14 @@
                         data: data
                     };
 
-                    this._defaultMapOptions.series.push(bubbleDataSerie);
+                    this.mapOptions.series.push(bubbleDataSerie);
                     break;
             }
 
-            if (this._defaultMapOptions.visualMap) {
-                this._defaultMapOptions.visualMap.pieces = this._generateDataClasses();
+            if (this.mapOptions.visualMap) {
+                this.mapOptions.visualMap.pieces = this._generateDataClasses();
             }
-            this._defaultMapOptions.geo = {
+            this.mapOptions.geo = {
                 map: 'map',
                 roam: 'move',
                 boundingCoords: this._getCenteredAndZoomedCoords(),
@@ -252,7 +254,7 @@
             this.map.on('finished', function () {
                 self._callback();
             });
-            this.map.setOption(this._defaultMapOptions, true);
+            this.map.setOption(this.mapOptions, true);
         },
 
         _geOptimalCoordsForBubble: function (regionFeature) {
@@ -312,14 +314,14 @@
         },
 
         _updateDataClasses: function () {
-            if (this.model.get('mapType') !== 'map' || !this.map || !this._defaultMapOptions.visualMap) {
+            if (this.model.get('mapType') !== 'map' || !this.map || !this.mapOptions.visualMap) {
                 return;
             }
 
-            this._defaultMapOptions.visualMap.pieces = this._generateDataClasses();
+            this.mapOptions.visualMap.pieces = this._generateDataClasses();
             this.map.setOption({
                 visualMap: {
-                    pieces: this._defaultMapOptions.visualMap.pieces
+                    pieces: this.mapOptions.visualMap.pieces
                 }
             });
         },
