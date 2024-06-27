@@ -58,6 +58,8 @@ module.exports = (grunt) ->
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
                 paths.js + "/libs/select2.min.js"
                 paths.js + "/libs/moment.min.js"
+                paths.js + "/libs/tinyqueue.min.js"
+                paths.js + "/libs/polylabel.js"
 
                 # User
                 paths.js + "/metamac/modules/user/UserUtils.js"

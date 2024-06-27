@@ -72,12 +72,15 @@
 
             this._defaultMapOptions.title.text = options.rightsHolder;
             this._defaultMapOptions.title.show = options.showRightsHolder;
-            this._defaultMapOptions.visualMap.show = (this.mapType === 'map');
-            this._defaultMapOptions.visualMap.formatter = function(min, max) {
-                var metadataMaxDecimals = options.metadata.getMaxDecimals();
-                var minString = App.util.NumberFormatter.strNumberToLocalizedString(min.toString(), {decimals: metadataMaxDecimals});
-                var maxString = App.util.NumberFormatter.strNumberToLocalizedString(max.toString(), {decimals: metadataMaxDecimals});
-                return minString + " - " + maxString;
+            if (this.mapType === 'map') {
+                this._defaultMapOptions.visualMap.formatter = function (min, max) {
+                    var metadataMaxDecimals = options.metadata.getMaxDecimals();
+                    var minString = App.util.NumberFormatter.strNumberToLocalizedString(min.toString(), {decimals: metadataMaxDecimals});
+                    var maxString = App.util.NumberFormatter.strNumberToLocalizedString(max.toString(), {decimals: metadataMaxDecimals});
+                    return minString + " - " + maxString;
+                }
+            } else {
+                this._defaultMapOptions.visualMap = undefined;
             }
         },
 
@@ -93,7 +96,7 @@
             this.title = newTitle;
 
             var geoJson = GeoJsonConverter.shapeListToGeoJson(this._shapeListOrderByHierarchy());
-            var data = this._getData();
+            var data = this._getData(geoJson);
             this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
             echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
 
@@ -148,7 +151,7 @@
             var baseGeoJson = GeoJsonConverter.shapeListToGeoJson(this._baseShapeList, { contour: true });
             var containerGeoJson = GeoJsonConverter.shapeListToGeoJson([this._container], { contour: true });
 
-            var data = this._getData();
+            var data = this._getData(geoJson);
 
             this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
             this.baseMapData = this._getMapDataFromGeoJson(baseGeoJson);
@@ -156,6 +159,7 @@
             echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
 
             this._defaultMapOptions.series = [];
+            var self = this;
             switch (this.mapType) {
                 case 'map':
                     var choroplethDataSerie = {
@@ -177,9 +181,28 @@
 
                     this._defaultMapOptions.series.push(choroplethDataSerie);
                     break;
+                case 'mapbubble':
+                    var bubbleDataSerie = {
+                        id: "bubbleDataSerie",
+                        name: this.title,
+                        type: 'scatter',
+                        geoIndex: 0,
+                        coordinateSystem: 'geo',
+                        symbolSize: function (data) {
+                            var maxSymbolSize = 0.2 * Math.min(self.el.clientWidth, self.el.clientHeight);
+                            var dataValue = data[2];
+                            return (dataValue / self.maxDataValue) * maxSymbolSize;
+                        },
+                        data: data
+                    };
+
+                    this._defaultMapOptions.series.push(bubbleDataSerie);
+                    break;
             }
 
-            this._defaultMapOptions.visualMap.pieces = this._generateDataClasses();
+            if (this._defaultMapOptions.visualMap) {
+                this._defaultMapOptions.visualMap.pieces = this._generateDataClasses();
+            }
             this._defaultMapOptions.geo = {
                 map: 'map',
                 roam: 'move',
@@ -223,7 +246,6 @@
                 ]
             };
 
-            var self = this;
             this.map = echarts.init(this.el, null, { renderer: 'svg' });
             this.map.on('finished', function () {
                 self._callback();
@@ -231,12 +253,32 @@
             this.map.setOption(this._defaultMapOptions, true);
         },
 
-        _getData: function () {
+        _geOptimalCoordsForBubble: function (regionFeature) {
+            var optimalCoordsForBubble = [];
+            var regionCoords = regionFeature.geometry.coordinates;
+            if (regionFeature.geometry.type === "Polygon") {
+                optimalCoordsForBubble = polylabel(regionCoords);
+            } else if (regionFeature.geometry.type === "MultiPolygon" && regionCoords.length > 0) {
+                var mostComplexPolygonCoords = regionCoords.reduce(function (mostComplexPolygonCoords, regionPolygonCoords) {
+                    return mostComplexPolygonCoords.length > regionPolygonCoords.length ? mostComplexPolygonCoords : regionPolygonCoords[0];
+                });
+                optimalCoordsForBubble = polylabel(mostComplexPolygonCoords);
+            }
+            return optimalCoordsForBubble;
+        },
+
+        _getData: function (mapData) {
             var geographicDimension = this._filterDimensions.where({ type: "GEOGRAPHIC_DIMENSION" })[0];
             var self = this;
-            return _.map(_.pairs(this._dataJson), function (item) {
-                var dataNormCode = item[0];
-                var dataValue = item[1].value;
+            return mapData.features.reduce(function (data, feature) {
+                var dataJsonItem = self._dataJson[feature.id];
+                if (!dataJsonItem) {
+                    return data;
+                }
+
+                var dataNormCode = feature.id;
+                var dataValue = dataJsonItem.value;
+                self.maxDataValue = self.maxDataValue ? Math.max(dataValue, self.maxDataValue) : dataValue;
                 var geographicRepresentationId = geographicDimension.get("representations").where({ normCode: dataNormCode })[0].id;
                 var currentPermutation = self._filterDimensions.models.reduce((dimensionsPermutation, filterDimension) => {
                     dimensionsPermutation[filterDimension.id] = (filterDimension.get("type") === "GEOGRAPHIC_DIMENSION")
@@ -244,16 +286,18 @@
                         : filterDimension.getDrawableRepresentations()[0].id;
                     return dimensionsPermutation;
                 }, {});
-                return {
-                    value: dataValue,
+
+                data.push({
+                    value: (self.mapType === 'mapbubble') ? [...self._geOptimalCoordsForBubble(feature), dataValue] : dataValue,
                     name: dataNormCode,
                     tooltip: {
                         formatter: function () {
                             return self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
                         }
                     }
-                };
-            });
+                });
+                return data;
+            }, []);
         },
 
         _getMapDataFromGeoJson: function (geoJson) {
@@ -265,7 +309,7 @@
         },
 
         _updateDataClasses: function () {
-            if (this.model.get('mapType') !== 'map' || !this.map) {
+            if (this.model.get('mapType') !== 'map' || !this.map || !this._defaultMapOptions.visualMap) {
                 return;
             }
 
