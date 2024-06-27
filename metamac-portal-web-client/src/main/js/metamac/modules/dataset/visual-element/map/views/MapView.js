@@ -13,7 +13,7 @@
         _defaultMapOptions: {
             animation: false,
             tooltip: {
-                show: true
+                show: false
             },
             visualMap: {
                 type: "piecewise",
@@ -208,10 +208,12 @@
                 roam: 'move',
                 boundingCoords: this._getCenteredAndZoomedCoords(),
                 emphasis: {
+                    disabled: this.mapType === "mapbubble",
                     label: {
                         show: false
                     }
                 },
+                tooltip: this.mapType === "mapbubble" ? {show: false} : {}, // It is not equal to: {show: this.mapType !== "mapbubble"}
                 regions: [
                     ...this.containerMapData.features.map(function (feature) {
                         return {
@@ -291,6 +293,7 @@
                     value: (self.mapType === 'mapbubble') ? [...self._geOptimalCoordsForBubble(feature), dataValue] : dataValue,
                     name: dataNormCode,
                     tooltip: {
+                        show: true,
                         formatter: function () {
                             return self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
                         }
