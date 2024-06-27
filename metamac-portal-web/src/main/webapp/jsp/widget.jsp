@@ -52,7 +52,7 @@
         Boolean internalPortal = INSTALLATION_TYPE.equals("INTERNAL");
         String analyticsUrl = (internalPortal ? configurationService.retrieveAppsInternalWebApplicationUrlBase() :
                                                 configurationService.retrieveAppsExternalWebApplicationUrlBase()) +
-                                                "/includes/analytics.jsp";
+                                                "/includes/analytics.js";
     %>
     <%
         String STATISTICAL_RESOURCES_API_URL_BASE = WebUtils.getStatisticalResourcesApiBaseUrl();
@@ -95,9 +95,7 @@
             response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale, title));
         }
     %>
-    <c:import url="${analyticsUrl}">
-        <c:param name="appId" value="statistical-visualizer-${installationType}-widget" />
-    </c:import>
+    <script type="application/javascript" src="${analyticsUrl}" appId="statistical-visualizer-${installationType}-widget"></script>
 </head>
 <body>
 
