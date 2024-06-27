@@ -99,8 +99,12 @@
 
             var geoJson = GeoJsonConverter.shapeListToGeoJson(this._shapeListOrderByHierarchy());
             var data = this._getData(geoJson);
-            this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
-            echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
+            if (this.mapType === "map") {
+                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
+            } else {
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
+            }
 
             this.mapOptions.series[DATA_SERIE_INDEX].data = data;
             this.mapOptions.series[DATA_SERIE_INDEX].name = this.title;
@@ -155,10 +159,14 @@
 
             var data = this._getData(geoJson);
 
-            this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
             this.baseMapData = this._getMapDataFromGeoJson(baseGeoJson);
             this.containerMapData = this._getMapDataFromGeoJson(containerGeoJson);
-            echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
+            if (this.mapType === "map") {
+                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
+            } else {
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
+            }
 
             this.mapOptions.series = [];
             var self = this;
@@ -328,7 +336,7 @@
 
         _getCenteredAndZoomedCoords: function () {
             if (!this.boundingCoords) {
-                this.boundingCoords = this._getMinMaxCoordinates(this.mapData);
+                this.boundingCoords = this._getMinMaxCoordinates(this.mapData || this.baseMapData);
             }
             return this.boundingCoords;
         },
