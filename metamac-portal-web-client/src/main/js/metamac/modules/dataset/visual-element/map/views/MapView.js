@@ -54,41 +54,41 @@
             var rangesContainerHeight = 12;
             return {
                 animation: false,
-                    tooltip: {
+                tooltip: {
                     show: false
                 },
                 visualMap: {
                     type: "piecewise",
-                        showLabel: true,
-                        hoverLink: false,
-                        left: 'center',
-                        bottom: Constants.charts.gap + rangesContainerBottom + rangesContainerHeight,
-                        orient: 'horizontal',
-                        inRange: {
+                    showLabel: true,
+                    hoverLink: false,
+                    left: 'center',
+                    bottom: Constants.charts.gap + rangesContainerBottom + rangesContainerHeight,
+                    orient: 'horizontal',
+                    inRange: {
                         color: [
                             Constants.colors.istacBlueWhite,
                             Constants.colors.istacBlueDark
                         ]
                     },
                     text: null,
-                        itemSymbol: 'circle',
-                        borderColor: Constants.colors.istacGreyMedium,
-                        borderWidth: 1,
-                        textStyle: {
+                    itemSymbol: 'circle',
+                    borderColor: Constants.colors.istacGreyMedium,
+                    borderWidth: 1,
+                    textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
-                            symbolSize: Constants.charts.legend.fontSize
+                        symbolSize: Constants.charts.legend.fontSize
                     },
                     backgroundColor: Constants.colors.istacWhite,
-                        padding: Constants.charts.legend.padding,
-                        textGap: Constants.charts.legend.gap,
-                        itemGap: Constants.charts.legend.gap
+                    padding: Constants.charts.legend.padding,
+                    textGap: Constants.charts.legend.gap,
+                    itemGap: Constants.charts.legend.gap
                 },
                 title: {
                     right: Constants.charts.title.marginRight,
-                        padding: 0,
-                        textStyle: {
+                    padding: 0,
+                    textStyle: {
                         fontSize: Constants.charts.title.fontSize,
-                            color: Constants.colors.istacGreyDark
+                        color: Constants.colors.istacGreyDark
                     }
                 }
             };
