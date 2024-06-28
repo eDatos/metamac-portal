@@ -10,11 +10,12 @@
         this.initializeRectangularBars(options);
     };
 
-    App.VisualElement.RectangularBars.prototype = new App.VisualElement.Chart();
-
+    App.VisualElement.RectangularBars.prototype = new App.VisualElement.Base();
+    _.extend(App.VisualElement.RectangularBars.prototype, new App.VisualElement.Chart());
     _.extend(App.VisualElement.RectangularBars.prototype, {
 
         initializeRectangularBars: function (options) {
+            this.initialize(options);
             this._initializeChartVisualElement(options);
 
             var titleBottom = Constants.charts.gap;
@@ -31,6 +32,8 @@
                     },
                 },
                 title: {
+                    text: this.getRightsHolderText(),
+                    show: this.showRightsHolderText(),
                     bottom: titleBottom
                 },
                 legend: {

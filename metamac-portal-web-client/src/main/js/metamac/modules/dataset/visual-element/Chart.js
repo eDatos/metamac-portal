@@ -9,12 +9,9 @@
         this._initializeChartVisualElement(options);
     };
 
-    App.VisualElement.Chart.prototype = new App.VisualElement.Base();
+    App.VisualElement.Chart.prototype = {
 
-    _.extend(App.VisualElement.Chart.prototype, {
-
-        _initializeChartVisualElement: function (options) {
-            this.initialize(options);
+        _initializeChartVisualElement: function () {
             this._initializeChartOptions();
         },
 
@@ -95,10 +92,8 @@
                     }
                 },
                 title: {
-                    text: this.getRightsHolderText(),
                     right: 10,
                     padding: 0,
-                    show: this.showRightsHolderText(),
                     textStyle: {
                         fontSize: Constants.charts.title.fontSize,
                         color: Constants.colors.istacGreyDark
@@ -351,6 +346,5 @@
         graphColorsEnabled: function () {
             return this.data && App.config["enableGraphColors"];
         }
-    });
-
+    };
 }());

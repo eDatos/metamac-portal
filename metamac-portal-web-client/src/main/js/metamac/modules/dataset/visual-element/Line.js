@@ -6,7 +6,8 @@
     App.namespace("App.VisualElement.LineChart");
 
     App.VisualElement.LineChart = function (options) {
-        this._initializeChartVisualElement(options);
+        this.initialize(options);
+        this._initializeChartVisualElement();
         this._type = 'line';
 
         var self = this;
@@ -49,6 +50,8 @@
             },
             dataZoom: this._getDataZooms(0),
             title: {
+                text: this.getRightsHolderText(),
+                show: this.showRightsHolderText(),
                 bottom: titleBottom
             },
             legend: {
@@ -60,8 +63,8 @@
         });
     };
 
-    App.VisualElement.LineChart.prototype = new App.VisualElement.Chart();
-
+    App.VisualElement.LineChart.prototype = new App.VisualElement.Base();
+    _.extend(App.VisualElement.LineChart.prototype, new App.VisualElement.Chart());
     _.extend(App.VisualElement.LineChart.prototype, {
 
         load: function () {
