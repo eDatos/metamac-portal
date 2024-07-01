@@ -7,7 +7,7 @@
 
     App.VisualElement.LineChart = function (options) {
         this.initialize(options);
-        this._initializeChartVisualElement();
+        this._initializeChartVisualElement(options);
         this._type = 'line';
 
         var self = this;
@@ -74,7 +74,7 @@
             }
             this.render();
             if (!this.colorsLoaded()) {
-                this.loadColors();
+                this.loadColors(_.bind(this.showLoading, this), _.bind(this.hideLoading, this));
             }
         },
 
@@ -89,13 +89,17 @@
         },
 
         _onResizeEvent: function () {
-            this._updateSize();
+            this._updateSize(this.$el, this.$title);
             this._updatePointsVisibility();
         },
 
         _unbindEvents: function () {
             this.stopListening();
             this.$el.off("resize");
+        },
+
+        _onChartDestroy: function () {
+            this._unbindEvents();
         },
 
         updatingDimensionPositions: function () {
@@ -133,7 +137,7 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._initializeChart();
+            this._initializeChart(this.$el, this.$title);
             App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
             var self = this;
             this._getChart().on('datazoom', function (params) {

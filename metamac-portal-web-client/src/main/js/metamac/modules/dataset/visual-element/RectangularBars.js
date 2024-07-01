@@ -5,9 +5,8 @@
 
     App.namespace("App.VisualElement.RectangularBars");
 
-    App.VisualElement.RectangularBars = function (options) {
+    App.VisualElement.RectangularBars = function () {
         this._dataAxis = 'xAxis';
-        this.initializeRectangularBars(options);
     };
 
     App.VisualElement.RectangularBars.prototype = new App.VisualElement.Base();
@@ -71,7 +70,7 @@
             }
             this.render();
             if (!this.colorsLoaded()) {
-                this.loadColors();
+                this.loadColors(_.bind(this.showLoading, this), _.bind(this.hideLoading, this));
             }
         },
 
@@ -81,15 +80,20 @@
             this.listenTo(this.filterDimensions, "change:valuesToIgnore", debounceUpdate);
 
             var resize = _.debounce(_.bind(this._updateSize, this), 200);
+            var self = this;
             this.$el.on("resize", function (e) {
                 e.stopPropagation();
-                resize();
+                resize(self.$el, self.$title);
             });
         },
 
         _unbindEvents: function () {
             this.stopListening();
             this.$el.off("resize");
+        },
+
+        _onChartDestroy: function () {
+            this._unbindEvents();
         },
 
         updatingDimensionPositions: function () {
@@ -127,7 +131,7 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._initializeChart();
+            this._initializeChart(this.$el, this.$title);
             var data = this.getData();
             this._extendChartOptions(data);
             this._updateChartOptions();

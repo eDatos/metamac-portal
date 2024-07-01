@@ -5,20 +5,21 @@
 
     App.namespace("App.VisualElement.Chart");
 
-    App.VisualElement.Chart = function (options) {
-        this._initializeChartVisualElement(options);
+    App.VisualElement.Chart = function () {
     };
 
     App.VisualElement.Chart.prototype = {
 
-        _initializeChartVisualElement: function () {
+        _initializeChartVisualElement: function (options) {
+            this.data = options.data;
+            this.filterDimensions = options.filterDimensions;
             this._initializeChartOptions();
         },
 
-        _initializeChart: function () {
+        _initializeChart: function ($el, $title) {
             this.$chartContainer = $('<div></div>');
-            this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
-            this.$el.append(this.$chartContainer);
+            this.$chartContainer.height($el.height() - $title.outerHeight(true));
+            $el.append(this.$chartContainer);
             this.chart = echarts.init(this.$chartContainer[0], null, { renderer: 'svg' });
 
             this.$exportChartContainer = $("#export-chart");
@@ -125,7 +126,7 @@
         },
 
         destroy: function () {
-            this._unbindEvents();
+            this._onChartDestroy();
 
             if (this.chart) {
                 this.chart.dispose();
@@ -137,8 +138,11 @@
             }
         },
 
-        _updateSize: function () {
-            var newHeight = this.$el.height() - this.$title.outerHeight(true);
+        _onChartDestroy: function () {
+        },
+
+        _updateSize: function ($el, $title) {
+            var newHeight = $el.height() - $title.outerHeight(true);
             this.$chartContainer.height(newHeight);
             if (newHeight !== this.chart.getHeight()) {
                 this._onHeightUpdated();
@@ -256,14 +260,6 @@
         _getExtraExportOptions: function () {
         },
 
-        _forceMeasureDimensionInZone: function (zone) {
-            this._forceDimensionTypeInZone("MEASURE_DIMENSION", zone);
-        },
-
-        _forceTimeDimensionInZone: function (zone) {
-            this._forceDimensionTypeInZone("TIME_DIMENSION", zone);
-        },
-
         _preselectBiggestHierarchyGeographicValue: function () {
             var fixedGeographicDimensions = this.filterDimensions.getAllFixedDimensionsCopyByType("GEOGRAPHIC_DIMENSION");
             _(fixedGeographicDimensions).each(function (geographicDimension) {
@@ -300,11 +296,13 @@
             return seriesDimension;
         },
 
-        loadColors: function () {
+        loadColors: function (showLoading, hideLoading) {
             if (this.graphColorsEnabled()) {
                 var self = this;
 
-                self.showLoading();
+                if (showLoading) {
+                    showLoading();
+                }
                 self.api = new App.dataset.StructuralResourcesApi(self.data);
                 self.api.getCodelists(function (codelists) {
                     var filteredCodelistsWithVariableElements = [];
@@ -330,13 +328,20 @@
                             }
 
                             self.update();
-                            self.hideLoading();
+                            if (hideLoading) {
+                                hideLoading();
+                            }
                         });
                     } else {
-                        self.hideLoading();
+                        if (hideLoading) {
+                            hideLoading();
+                        }
                     }
                 });
             }
+        },
+
+        update: function () {
         },
 
         colorsLoaded: function() {
