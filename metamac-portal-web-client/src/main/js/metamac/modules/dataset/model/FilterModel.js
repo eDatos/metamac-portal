@@ -10,6 +10,7 @@
             this.name = attributes.name;
             this.notes = attributes.notes;
             this.permalink = attributes.permalink;
+            this.externalOperationCode = attributes.externalOperationCode;
             this.userId = attributes.userId;
         },
 
@@ -20,6 +21,7 @@
                 resourceName: this.resourceName,
                 externalUser: { id: this.userId },
                 permalink: this.permalink,
+                externalOperationCode: this.externalOperationCode,
                 notes: this.notes
             })
         }
