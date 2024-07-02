@@ -65,7 +65,7 @@
                     return identifier.indicatorSystem;
                 case "indicator":
                 default:
-                    return undefined;
+                    return null;
             }
         }
     });
