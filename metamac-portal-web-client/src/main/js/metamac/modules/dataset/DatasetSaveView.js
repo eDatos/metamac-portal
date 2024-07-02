@@ -27,6 +27,7 @@
                 name: this.$("#name").val() || null,
                 notes: this.$("#notes").val(),
                 permalink: this.permalinkId,
+                externalOperationCode: this.filterDimensions.metadata.metadata.statisticalOperation.id,
                 userId: this.user.id
             });
             var self = this;
