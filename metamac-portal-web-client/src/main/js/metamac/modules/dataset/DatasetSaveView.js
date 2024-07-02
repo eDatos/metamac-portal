@@ -27,7 +27,7 @@
                 name: this.$("#name").val() || null,
                 notes: this.$("#notes").val(),
                 permalink: this.permalinkId,
-                externalOperationCode: this.filterDimensions.metadata.metadata.statisticalOperation.id,
+                externalOperationCode: this.getExternalOperationCode(),
                 userId: this.user.id
             });
             var self = this;
@@ -51,6 +51,22 @@
 
         getResourceTitle: function () {
             return this.filterDimensions.metadata.getTitle() || App.datasource.helper.ApiIndicatorResponseToApiResponse.getTranslatedString(this.filterDimensions.metadata.metadataResponse.name);
+        },
+
+        getExternalOperationCode: function () {
+            var metadata = this.filterDimensions.metadata;
+            var identifier = metadata.datasourceIdentifier.getIdentifier();
+            switch (identifier.type) {
+                case "dataset":
+                case "query":
+                case "multidataset":
+                    return metadata.metadata.statisticalOperation.id;
+                case "indicatorInstance":
+                    return identifier.indicatorSystem;
+                case "indicator":
+                default:
+                    return;
+            }
         }
     });
 
