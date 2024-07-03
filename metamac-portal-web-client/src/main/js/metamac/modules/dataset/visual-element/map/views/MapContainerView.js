@@ -43,10 +43,6 @@
 
             var isMap = this.mapType === 'map';
             this.mapView.update(this.dataJson, this.geoJson, this.title, !isMap);
-            if (isMap) {
-                this.updateRanges();
-            }
-            
         },
 
         renderNoSelectionView: function () {
@@ -65,9 +61,6 @@
         render: function () {
             if (this.mapView.canRender()) {
                 this.zoomView.render();
-                if (this.mapType === 'map') {
-                    this.rangesView.render();
-                }
                 this.mapView.render();
             } else {
                 this.$el.html(this._errorTemplate());
@@ -77,17 +70,11 @@
         destroy: function () {
             this.mapView.destroy();
             this.zoomView.destroy();
-            this.rangesView.destroy();
         },
 
         transform: function () {
             this.mapView.transform();
             this.zoomView.transform();
-        },
-
-        updateRanges: function () {
-            this.mapView.updateRanges();
-            this.rangesView.updateRanges();
         },
 
         zoomExit: function () {
@@ -97,7 +84,6 @@
         _initInternalViews: function () {
             this._initMapView();
             this._initZoomView();
-            this._initRangesView();
         },
 
         _initMapView: function () {
@@ -130,18 +116,7 @@
                 width: this._width,
                 height: this._height
             });
-        },
-
-        _initRangesView: function () {
-            var $elRanges = $('<div id="ranges-container"/>').appendTo(this.$el);
-            this.rangesView = new App.Map.RangesView({
-                el: $elRanges.get(0),
-                model: this._mapModel,
-                width: this._width,
-                height: this._height
-            });
         }
-
     });
 
 })();

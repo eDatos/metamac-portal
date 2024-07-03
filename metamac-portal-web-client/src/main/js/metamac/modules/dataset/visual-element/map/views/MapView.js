@@ -26,17 +26,14 @@
             this.tooltipDelegate = new App.Map.TooltipDelegate(options);
 
             this._onResize = _.debounce(_.bind(this._onResize, this), 200);
-            this._updateDataClasses = _.debounce(_.bind(this._updateDataClasses, this), 100);
 
             this.mapOptions = this._initializeMapOptions();
             this.mapOptions.title.text = options.rightsHolder;
             this.mapOptions.title.show = options.showRightsHolder;
             if (this.mapType === 'map') {
-                this.mapOptions.visualMap.formatter = function (min, max) {
+                this.mapOptions.visualMap.formatter = function (value) {
                     var metadataMaxDecimals = options.metadata.getMaxDecimals();
-                    var minString = App.util.NumberFormatter.strNumberToLocalizedString(min.toString(), {decimals: metadataMaxDecimals});
-                    var maxString = App.util.NumberFormatter.strNumberToLocalizedString(max.toString(), {decimals: metadataMaxDecimals});
-                    return minString + " - " + maxString;
+                    return App.util.NumberFormatter.strNumberToLocalizedString(value.toString(), {decimals: metadataMaxDecimals});
                 }
             } else {
                 this.mapOptions.visualMap = undefined;
@@ -50,19 +47,25 @@
         },
 
         _initializeMapOptions: function () {
-            var rangesContainerBottom = 7;
-            var rangesContainerHeight = 12;
             return {
                 animation: false,
                 tooltip: {
                     show: false
                 },
                 visualMap: {
-                    type: "piecewise",
-                    showLabel: true,
+                    /*
+                     * TODO the type should be piecewise but with that type the width can't be controlled so it doesn't fit in the container.
+                     * Fix when one of theses issues are closed: https://github.com/apache/echarts/issues/13759 , https://github.com/apache/echarts/issues/17659
+                     * In order to change it, check the commit in which this comment was added.
+                    */
+                    type: "continuous",
+                    realtime: false,
+                    min: this.model.get("minValue"),
+                    max: this.model.get("maxValue"),
+                    calculable: true,
                     hoverLink: false,
                     left: 'center',
-                    bottom: Constants.charts.gap + rangesContainerBottom + rangesContainerHeight,
+                    bottom: Constants.charts.gap,
                     orient: 'horizontal',
                     inRange: {
                         color: [
@@ -71,17 +74,10 @@
                         ]
                     },
                     text: null,
-                    itemSymbol: 'circle',
-                    borderColor: Constants.colors.istacGreyMedium,
-                    borderWidth: 1,
                     textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
                         symbolSize: Constants.charts.legend.fontSize
-                    },
-                    backgroundColor: Constants.colors.istacWhite,
-                    padding: Constants.charts.legend.padding,
-                    textGap: Constants.charts.legend.gap,
-                    itemGap: Constants.charts.legend.gap
+                    }
                 },
                 title: {
                     right: Constants.charts.title.marginRight,
@@ -138,10 +134,6 @@
         zoomExit: function () {
             this.mapOptions.geo.boundingCoords = this._getCenteredAndZoomedCoords();
             this.map.setOption(this.mapOptions.geo);
-        },
-
-        updateRanges: function () {
-            this._updateDataClasses();
         },
 
         canRender: function () {
@@ -212,9 +204,6 @@
                     break;
             }
 
-            if (this.mapOptions.visualMap) {
-                this.mapOptions.visualMap.pieces = this._generateDataClasses();
-            }
             this.mapOptions.geo = {
                 map: 'map',
                 roam: 'move',
@@ -323,33 +312,11 @@
             return geoJson;
         },
 
-        _updateDataClasses: function () {
-            if (this.model.get('mapType') !== 'map' || !this.map || !this.mapOptions.visualMap) {
-                return;
-            }
-
-            this.mapOptions.visualMap.pieces = this._generateDataClasses();
-            this.map.setOption({
-                visualMap: {
-                    pieces: this.mapOptions.visualMap.pieces
-                }
-            });
-        },
-
         _getCenteredAndZoomedCoords: function () {
             if (!this.boundingCoords) {
                 this.boundingCoords = this._getMinMaxCoordinates(this.mapData || this.baseMapData);
             }
             return this.boundingCoords;
-        },
-
-        _generateDataClasses: function () {
-            var dataClasses = [];
-            var rangeLimits = this.model.createRangeLimits(this.metadata.getMaxDecimals());
-            for (var i = 0; i < rangeLimits.length - 1; i++) {
-                dataClasses[i] = { min: rangeLimits[i], max: rangeLimits[i + 1] };
-            }
-            return dataClasses;
         },
 
         _offsetFromMouseEvent: function (e) {

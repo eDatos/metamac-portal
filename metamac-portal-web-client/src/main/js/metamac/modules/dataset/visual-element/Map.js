@@ -54,7 +54,6 @@
 
             if (this._mapModel) {
                 this._mapModel.off('change', this._handleTransform);
-                this._mapModel.off('change:currentRangesNum', this._handleRangesNum);
                 this._mapModel.off('zoomExit', this._handleZoomExit);
             }
         },
@@ -136,7 +135,6 @@
         _initModel: function () {
             this._mapModel = new App.Map.MapModel();
             this._mapModel.on('change:currentScale', this._handleTransform, this);
-            this._mapModel.on('change:currentRangesNum', this._handleRangesNum, this);
             this._mapModel.on('zoomExit', this._handleZoomExit, this);
             this._calculateAndSetRanges();
         },
@@ -250,10 +248,6 @@
 
         _handleTransform: function () {
             this._mapContainerView.transform();
-        },
-
-        _handleRangesNum: function () {
-            this._mapContainerView.updateRanges();
         },
 
         _handleZoomExit: function () {
