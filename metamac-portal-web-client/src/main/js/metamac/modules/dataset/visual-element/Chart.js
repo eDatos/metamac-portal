@@ -118,7 +118,12 @@
         getTooltipFormatterFunction: function (tooltipFormatterParams) {
             var seriesName = tooltipFormatterParams.seriesName ? (tooltipFormatterParams.seriesName + ', ') : '';
             var axisCategoryName = this._chartOptions[this._dataAxis || 'xAxis'].data[tooltipFormatterParams.dataIndex];
-            return '<div class="chart-tooltip-container" style="max-width: ' + this.$chartContainer.width() + 'px"><strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name + '</div>';
+            var tooltipContent = '<strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name;
+            return this._getWrappedTooltipContent(tooltipContent);
+        },
+
+        _getWrappedTooltipContent: function (content) {
+            return '<div class="chart-tooltip-container" style="max-width: ' + this.$chartContainer.width() + 'px">' + content + '</div>';
         },
 
         axisLabelFormatter: function (value) {
