@@ -73,6 +73,9 @@
                             Constants.colors.istacBlueDark
                         ]
                     },
+                    outOfRange: {
+                        color: ['transparent']
+                    },
                     text: null,
                     textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
@@ -91,6 +94,9 @@
                 geo: {
                     map: 'map',
                     roam: 'move',
+                    itemStyle: {
+                        borderWidth: 0
+                    },
                     emphasis: {
                         disabled: this.mapType === "mapbubble",
                         label: {
