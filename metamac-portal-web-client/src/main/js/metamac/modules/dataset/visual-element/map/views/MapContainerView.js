@@ -24,6 +24,7 @@
             this.showRightsHolder = options.showRightsHolder;
             this.callback = options.callback;
             this.metadata = options.metadata;
+            this.$title = options.$title;
             this.$el.empty();
             this._initInternalViews();
         },
@@ -104,7 +105,8 @@
                 rightsHolder: this.rightsHolder,
                 showRightsHolder: this.showRightsHolder,
                 callback: this.callback,
-                metadata: this.metadata
+                metadata: this.metadata,
+                $title: this.$title
             });
         },
 
@@ -116,6 +118,10 @@
                 width: this._width,
                 height: this._height
             });
+        },
+
+        getExportChartSvg: function () {
+            return this.mapView.getExportChartSvg();
         }
     });
 

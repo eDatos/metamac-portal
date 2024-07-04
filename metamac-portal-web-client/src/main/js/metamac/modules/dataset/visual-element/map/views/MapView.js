@@ -3,13 +3,14 @@
 
     var GeoJsonConverter = App.Map.GeoJsonConverter;
     var Constants = App.Constants;
-    var DATA_SERIE_INDEX = 0;
 
     App.namespace('App.Map.MapView');
 
-    App.Map.MapView = Backbone.View.extend({
+    App.Map.MapView = Backbone.View.extend(new App.VisualElement.Chart()).extend({
 
         initialize: function (options) {
+            this._initializeChartVisualElement(options);
+
             this._data = options.data;
             this._filterDimensions = options.filterDimensions;
             this._width = options.width;
@@ -22,22 +23,15 @@
             this.mapType = options.mapType;
             this.title = options.title;
             this.metadata = options.metadata;
+            this.$title = options.$title;
+            this.rightsHolder = options.rightsHolder;
+            this.showRightsHolder = options.showRightsHolder;
+
+            this._initializeMapOptions();
 
             this.tooltipDelegate = new App.Map.TooltipDelegate(options);
 
             this._onResize = _.debounce(_.bind(this._onResize, this), 200);
-
-            this.mapOptions = this._initializeMapOptions();
-            this.mapOptions.title.text = options.rightsHolder;
-            this.mapOptions.title.show = options.showRightsHolder;
-            if (this.mapType === 'map') {
-                this.mapOptions.visualMap.formatter = function (value) {
-                    var metadataMaxDecimals = options.metadata.getMaxDecimals();
-                    return App.util.NumberFormatter.strNumberToLocalizedString(value.toString(), {decimals: metadataMaxDecimals});
-                }
-            } else {
-                this.mapOptions.visualMap = undefined;
-            }
         },
 
         events: {
@@ -47,12 +41,18 @@
         },
 
         _initializeMapOptions: function () {
-            return {
+            var self = this;
+            this._extendChartOptions({
                 animation: false,
                 tooltip: {
                     show: false
                 },
-                visualMap: {
+                legend: {
+                    show: false
+                },
+                xAxis: undefined,
+                yAxis: undefined,
+                visualMap: (this.mapType === 'mapbubble') ? undefined : {
                     /*
                      * TODO the type should be piecewise but with that type the width can't be controlled so it doesn't fit in the container.
                      * Fix when one of theses issues are closed: https://github.com/apache/echarts/issues/13759 , https://github.com/apache/echarts/issues/17659
@@ -65,7 +65,7 @@
                     calculable: true,
                     hoverLink: false,
                     left: 'center',
-                    bottom: Constants.charts.gap,
+                    bottom: Constants.charts.title.fontSize + (Constants.charts.gap * 2),
                     orient: 'horizontal',
                     inRange: {
                         color: [
@@ -77,17 +77,29 @@
                     textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
                         symbolSize: Constants.charts.legend.fontSize
+                    },
+                    formatter: function (value) {
+                        var metadataMaxDecimals = self.metadata.getMaxDecimals();
+                        return App.util.NumberFormatter.strNumberToLocalizedString(value.toString(), {decimals: metadataMaxDecimals});
                     }
                 },
                 title: {
-                    right: Constants.charts.title.marginRight,
-                    padding: 0,
-                    textStyle: {
-                        fontSize: Constants.charts.title.fontSize,
-                        color: Constants.colors.istacGreyDark
-                    }
+                    text: this.rightsHolder,
+                    show: this.showRightsHolder,
+                    bottom: Constants.charts.gap
+                },
+                geo: {
+                    map: 'map',
+                    roam: 'move',
+                    emphasis: {
+                        disabled: this.mapType === "mapbubble",
+                        label: {
+                            show: false
+                        }
+                    },
+                    tooltip: this.mapType === "mapbubble" ? {show: false} : {}, // It is not equal to: {show: this.mapType !== "mapbubble"}
                 }
-            };
+            });
         },
 
         update: function (newDataJson, newShapeList, newTitle, redraw) {
@@ -104,9 +116,10 @@
                 echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
             }
 
-            this.mapOptions.series[DATA_SERIE_INDEX].data = data;
-            this.mapOptions.series[DATA_SERIE_INDEX].name = this.title;
-            this.map.setOption({series: this.mapOptions.series});
+            this._extendChartOptions({
+                series: this._createMapSeries(data)
+            });
+            this._getChart().setOption({series: this._chartOptions.series});
         },
 
         render: function () {
@@ -114,26 +127,26 @@
             this.delegateEvents();
         },
 
-        destroy: function () {
-            if (this.map) {
-                this.map.dispose();
-                this.map = null;
-            }
-
+        _onChartDestroy: function () {
             this.undelegateEvents();
         },
 
         transform: function () {
-            this.map.setOption({
+            this._extendChartOptions({
                 geo: {
                     zoom: this.model.get("currentScale")
                 }
             });
+            this._getChart().setOption({ geo: this._chartOptions.geo });
         },
 
         zoomExit: function () {
-            this.mapOptions.geo.boundingCoords = this._getCenteredAndZoomedCoords();
-            this.map.setOption(this.mapOptions.geo);
+            this._extendChartOptions({
+                geo: {
+                    boundingCoords: this._getCenteredAndZoomedCoords()
+                }
+            });
+            this._getChart().setOption({ geo: this._chartOptions.geo });
         },
 
         canRender: function () {
@@ -162,7 +175,59 @@
                 echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
             }
 
-            this.mapOptions.series = [];
+            var self = this;
+            this._initializeChart(this.$el, this.$title);
+            this._getChart().on('finished', function () {
+                self._callback();
+            });
+
+            this._extendChartOptions({
+                series: this._createMapSeries(data),
+                geo: {
+                    boundingCoords: this._getCenteredAndZoomedCoords(),
+                    regions: this._createSpecialRegionsOptions()
+                }
+            });
+            this._getChart().setOption(this._chartOptions, true);
+        },
+
+        _createSpecialRegionsOptions: function () {
+            return [
+                ...this.containerMapData.features.map(function (feature) {
+                    return {
+                        name: feature.id,
+                        itemStyle: {
+                            borderWidth: 0,
+                            areaColor: Constants.colors.istacGreyLight
+                        },
+                        emphasis: {
+                            disabled: true
+                        },
+                        tooltip: {
+                            show: false
+                        }
+                    };
+                }),
+                ...this.baseMapData.features.map(function (feature) {
+                    return {
+                        name: feature.id,
+                        itemStyle: {
+                            borderWidth: 0,
+                            areaColor: Constants.colors.istacGreyMedium
+                        },
+                        emphasis: {
+                            disabled: true
+                        },
+                        tooltip: {
+                            show: false
+                        }
+                    };
+                })
+            ];
+        },
+
+        _createMapSeries: function (data) {
+            var series = [];
             var self = this;
             switch (this.mapType) {
                 case 'map':
@@ -183,7 +248,7 @@
                         data: data
                     };
 
-                    this.mapOptions.series.push(choroplethDataSerie);
+                    series.push(choroplethDataSerie);
                     break;
                 case 'mapbubble':
                     var bubbleDataSerie = {
@@ -200,60 +265,11 @@
                         data: data
                     };
 
-                    this.mapOptions.series.push(bubbleDataSerie);
+                    series.push(bubbleDataSerie);
                     break;
             }
 
-            this.mapOptions.geo = {
-                map: 'map',
-                roam: 'move',
-                boundingCoords: this._getCenteredAndZoomedCoords(),
-                emphasis: {
-                    disabled: this.mapType === "mapbubble",
-                    label: {
-                        show: false
-                    }
-                },
-                tooltip: this.mapType === "mapbubble" ? {show: false} : {}, // It is not equal to: {show: this.mapType !== "mapbubble"}
-                regions: [
-                    ...this.containerMapData.features.map(function (feature) {
-                        return {
-                            name: feature.id,
-                            itemStyle: {
-                                borderWidth: 0,
-                                areaColor: Constants.colors.istacGreyLight
-                            },
-                            emphasis: {
-                                disabled: true
-                            },
-                            tooltip: {
-                                show: false
-                            }
-                        };
-                    }),
-                    ...this.baseMapData.features.map(function (feature) {
-                        return {
-                            name: feature.id,
-                            itemStyle: {
-                                borderWidth: 0,
-                                areaColor: Constants.colors.istacGreyMedium
-                            },
-                            emphasis: {
-                                disabled: true
-                            },
-                            tooltip: {
-                                show: false
-                            }
-                        };
-                    })
-                ]
-            };
-
-            this.map = echarts.init(this.el, null, { renderer: 'svg' });
-            this.map.on('finished', function () {
-                self._callback();
-            });
-            this.map.setOption(this.mapOptions, true);
+            return series;
         },
 
         _geOptimalCoordsForBubble: function (regionFeature) {
@@ -338,11 +354,7 @@
         },
 
         _onResize: function () {
-            var jQueryEl = $(this.el);
-            this.map.resize({
-                width: jQueryEl.width(),
-                height: jQueryEl.height()
-            });
+            this._updateSize(this.$el, this.$title);
         },
 
         _filterShapesWithoutData: function (mapData, data) {
@@ -383,6 +395,23 @@
                 }
             }
             return [[maxX, minY], [minX, maxY]];
+        },
+
+        _getExportChartHeight: function () {
+            return this.$chartContainer.height();
+        },
+
+        _getExtraExportOptions: function () {
+            return {
+                geo: this._getChart().getOption().geo,
+                visualMap: (this.mapType === "mapbubble") ? undefined : {
+                    bottom: Constants.charts.gap,
+                    range: this._getChart().getOption().visualMap[0].range
+                },
+                title: {
+                    top: 'auto'
+                },
+            };
         }
     });
 

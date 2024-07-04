@@ -77,7 +77,7 @@
 
             if (this._exportableImage()) {
                 var self = this;
-                var sanitized = this._getVisualizationType() === 'graph' ? svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg()) : svgExporter.sanitizeSvgElement($(SVG_SELECTOR));
+                var sanitized = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
                 svgExporter.addStyleAsync(sanitized).done(function (svg) {
                     self.svg = svg;
                     self.$el.html(self.template(context));

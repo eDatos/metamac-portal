@@ -93,7 +93,7 @@
                     }
                 },
                 title: {
-                    right: 10,
+                    right: Constants.charts.title.marginRight,
                     padding: 0,
                     textStyle: {
                         fontSize: Constants.charts.title.fontSize,
@@ -215,7 +215,6 @@
                 dataZoom: undefined,
                 title: {
                     show: true,
-                    right: this._chartOptions.title.right + Constants.charts.bigGap,
                     top: titleTop
                 },
                 animation: false,
@@ -251,10 +250,15 @@
             });
             this.exportChart.setOption(exportChartOptions, true);
             this.exportChart.resize({
-                height: this.$exportChartContainer[0].querySelector("svg > g").getBBox().height + (Constants.charts.bigGap * 2)
+                height: this._getExportChartHeight()
             });
 
-            return decodeURIComponent(this.exportChart.getDataURL()).match(/<svg(.|\s)*<[/]svg>/g)[0];
+            var dataUrl = decodeURIComponent(this.exportChart.getDataURL());
+            return dataUrl.substring(dataUrl.indexOf("<svg"));
+        },
+
+        _getExportChartHeight: function () {
+            return this.$exportChartContainer[0].querySelector("svg > g").getBBox().height + (Constants.charts.bigGap * 2);
         },
 
         _getExtraExportOptions: function () {

@@ -29,9 +29,9 @@
                 self._getData();
 
                 self._initModel();
-                self._initContainerView();
-                
                 self._initTitleView();
+                self._initContainerView();
+
                 self.showTitle();
                 self.render();
             });
@@ -165,7 +165,8 @@
                 rightsHolder: this.getRightsHolderText(),
                 showRightsHolder: this.showRightsHolderText(),
                 callback: _.bind(this.hideLoading, this),
-                metadata: this.metadata
+                metadata: this.metadata,
+                $title: this.$title
             });
         },
 
@@ -252,8 +253,11 @@
 
         _handleZoomExit: function () {
             this._mapContainerView.zoomExit();
-        }
+        },
 
+        getExportChartSvg: function () {
+            return this._mapContainerView.getExportChartSvg();
+        }
     });
 
 }());
