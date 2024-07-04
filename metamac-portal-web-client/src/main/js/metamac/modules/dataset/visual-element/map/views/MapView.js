@@ -312,18 +312,16 @@
                     return dimensionsPermutation;
                 }, {});
 
-                var tooltipOptions = self._chartOptions.tooltip;
-                App.util.ObjectUtils.deepExtend(tooltipOptions, {
-                    show: true,
-                    formatter: function () {
-                        var tooltipContent = self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
-                        return self._getWrappedTooltipContent(tooltipContent);
-                    }
-                });
                 data.push({
                     value: (self.mapType === 'mapbubble') ? [...self._geOptimalCoordsForBubble(feature), dataValue] : dataValue,
                     name: dataNormCode,
-                    tooltip: tooltipOptions
+                    tooltip: {
+                        show: true,
+                        formatter: function () {
+                            var tooltipContent = self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
+                            return self._getWrappedTooltipContent(tooltipContent);
+                        }
+                    }
                 });
                 return data;
             }, []);
