@@ -10,7 +10,7 @@
 
     <groupId>org.siemac.metamac.metamac-portal</groupId>
     <artifactId>metamac-portal-parent</artifactId>
-    <version>8.7.2-SNAPSHOT</version>
+    <version>8.7.2</version>
     <packaging>pom</packaging>
     <name>METAMAC :: PORTAL :: PARENT</name>
     <description>METAMAC :: PORTAL :: PARENT</description>
@@ -364,4 +364,8 @@
             </plugins>
         </pluginManagement>
     </build>
+
+  <scm>
+    <tag>20240704-1128-v8.7.2</tag>
+  </scm>
 </project>
