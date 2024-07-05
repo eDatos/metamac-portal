@@ -158,7 +158,8 @@
         zoomExit: function () {
             this._extendChartOptions({
                 geo: {
-                    boundingCoords: this._getCenteredAndZoomedCoords()
+                    boundingCoords: this._getCenteredAndZoomedCoords(),
+                    center: undefined
                 }
             });
             this._getChart().setOption({ geo: this._chartOptions.geo });

@@ -21,7 +21,7 @@
         },
 
         zoomExit: function () {
-            this.set({ currentScale: 2, x: 0, y: 0, animationDelay: 1000 });
+            this.set({ currentScale: 1, x: 0, y: 0, animationDelay: 1000 });
             this.trigger('zoomExit');
         },
 
