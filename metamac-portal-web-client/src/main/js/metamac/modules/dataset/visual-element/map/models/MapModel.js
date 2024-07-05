@@ -47,6 +47,12 @@
             }
         },
 
+        zoomTo: function (newScale) {
+            if (newScale <= this.get("maxScale") && newScale >= this.get("minScale")) {
+                this.set({ currentScale: newScale, oldScale: this.get("currentScale"), animationDelay: 500 });
+            }
+        },
+
         zoomMouseWheel: function (options) {
             var currentScale = this.get("currentScale");
             var newScale = Math.pow(2, options.delta) * currentScale;

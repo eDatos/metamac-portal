@@ -35,7 +35,6 @@
         },
 
         events: {
-            "mousewheel": "_handleMousewheel",
             "dblclick": "_handleDblclick",
             "resize": "_onResize"
         },
@@ -93,9 +92,13 @@
                 },
                 geo: {
                     map: 'map',
-                    roam: 'move',
+                    roam: true,
                     itemStyle: {
                         borderWidth: 0
+                    },
+                    scaleLimit: {
+                        min: this.model.get("minScale"),
+                        max: this.model.get("maxScale")
                     },
                     emphasis: {
                         disabled: this.mapType === "mapbubble",
@@ -138,12 +141,18 @@
         },
 
         transform: function () {
-            this._extendChartOptions({
-                geo: {
-                    zoom: this.model.get("currentScale")
-                }
-            });
-            this._getChart().setOption({ geo: this._chartOptions.geo });
+            if (this.model.get("currentScale") !== this._getChart().getOption().geo[0].zoom) {
+                this._extendChartOptions({
+                    geo: {
+                        zoom: this.model.get("currentScale")
+                    }
+                });
+                this._getChart().setOption({
+                    geo: {
+                        zoom: this._chartOptions.geo.zoom
+                    }
+                });
+            }
         },
 
         zoomExit: function () {
@@ -183,6 +192,11 @@
 
             var self = this;
             this._initializeChart(this.$el, this.$title);
+            this._getChart().on('georoam', function (roamParams) {
+                if (roamParams.zoom) {
+                    self.model.zoomTo(self._getChart().getOption().geo[0].zoom);
+                }
+            });
             this._getChart().on('finished', function () {
                 self._callback();
             });
@@ -347,12 +361,6 @@
             var xOffset = e.pageX - (offset.left + this._width / 2);
             var yOffset = e.pageY - (offset.top + this._height / 2);
             return { left: xOffset, top: yOffset };
-        },
-
-        _handleMousewheel: function (e, delta, deltaX, deltaY) {
-            var offset = this._offsetFromMouseEvent(e);
-            this.model.zoomMouseWheel({ delta: deltaY, xOffset: offset.left, yOffset: offset.top });
-            return false;
         },
 
         _handleDblclick: function (e) {
