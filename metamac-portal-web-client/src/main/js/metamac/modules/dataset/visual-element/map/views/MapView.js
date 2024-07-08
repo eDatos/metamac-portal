@@ -320,6 +320,7 @@
         _getData: function (mapData) {
             var geographicDimension = this._filterDimensions.where({ type: "GEOGRAPHIC_DIMENSION" })[0];
             var self = this;
+            self.maxDataValue = -Infinity;
             return mapData.features.reduce(function (data, feature) {
                 var dataJsonItem = self._dataJson[feature.id];
                 if (!dataJsonItem) {
@@ -328,7 +329,7 @@
 
                 var dataNormCode = feature.id;
                 var dataValue = dataJsonItem.value;
-                self.maxDataValue = self.maxDataValue ? Math.max(dataValue, self.maxDataValue) : dataValue;
+                self.maxDataValue = Math.max(dataValue, self.maxDataValue);
                 var geographicRepresentationId = geographicDimension.get("representations").where({ normCode: dataNormCode })[0].id;
                 var currentPermutation = self._filterDimensions.models.reduce((dimensionsPermutation, filterDimension) => {
                     dimensionsPermutation[filterDimension.id] = (filterDimension.get("type") === "GEOGRAPHIC_DIMENSION")
