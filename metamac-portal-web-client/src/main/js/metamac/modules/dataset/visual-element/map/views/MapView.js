@@ -111,7 +111,7 @@
             });
         },
 
-        update: function (newDataJson, newShapeList, newTitle, redraw) {
+        update: function (newDataJson, newShapeList, newTitle) {
             this._dataJson = newDataJson;
             this._shapeList = newShapeList;
             this.title = newTitle;

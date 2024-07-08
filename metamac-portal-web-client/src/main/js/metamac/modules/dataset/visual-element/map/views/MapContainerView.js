@@ -42,9 +42,8 @@
             this.geoJson = newGeoJson;
             this.title = newTitle;
 
-            var isMap = this.mapType === 'map';
-            this.mapView.update(this.dataJson, this.geoJson, this.title, !isMap);
-            if (isMap) {
+            this.mapView.update(this.dataJson, this.geoJson, this.title);
+            if (this.mapType === 'map') {
                 this.mapView.updateRanges();
             }
         },
