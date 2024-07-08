@@ -118,6 +118,10 @@
 
             var geoJson = GeoJsonConverter.shapeListToGeoJson(this._shapeListOrderByHierarchy());
             var data = this._getData(geoJson);
+            // INFO
+            // This condition was added because eCharts doesn't need the mapData for the bubble/scatter chart.
+            // Also, before this condition we were showing mapData the same color as baseMapData for the bubble chart, so visually it is the same as before.
+            // Therefore, we can avoid the additional calculation and simply display the basemap.
             if (this.mapType === "map") {
                 this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
                 echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
