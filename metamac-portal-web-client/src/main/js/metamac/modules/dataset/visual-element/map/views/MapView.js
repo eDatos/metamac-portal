@@ -131,7 +131,6 @@
             this._getChart().setOption({series: this._chartOptions.series});
         },
 
-        // TODO: comprobar que en el update se actualiza el rango de valores en el visualMap
         render: function () {
             this._createMapContent();
             this.delegateEvents();
