@@ -52,11 +52,10 @@
                 xAxis: undefined,
                 yAxis: undefined,
                 visualMap: (this.mapType === 'mapbubble') ? undefined : {
-                    /*
-                     * TODO the type should be piecewise but with that type the width can't be controlled so it doesn't fit in the container.
-                     * Fix when one of theses issues are closed: https://github.com/apache/echarts/issues/13759 , https://github.com/apache/echarts/issues/17659
-                     * In order to change it, check the commit in which this comment was added.
-                    */
+                    // INFO
+                    // The type should be piecewise but with that type the width can't be controlled so it doesn't fit in the container.
+                    // Fix when one of theses issues are closed: https://github.com/apache/echarts/issues/13759 , https://github.com/apache/echarts/issues/17659
+                    // In order to change it, check the commit in which this comment was added.
                     type: "continuous",
                     realtime: false,
                     min: this.model.get("minValue"),
