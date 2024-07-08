@@ -165,6 +165,16 @@
             this._getChart().setOption({ geo: this._chartOptions.geo });
         },
 
+        updateRanges: function () {
+            this._extendChartOptions({
+                visualMap: (this.mapType === 'mapbubble') ? undefined : {
+                    min: this.model.get("minValue"),
+                    max: this.model.get("maxValue")
+                }
+            });
+            this._getChart().setOption({ visualMap: this._chartOptions.visualMap });
+        },
+
         canRender: function () {
             return this._shapeListOrderByHierarchy().length > 0;
         },

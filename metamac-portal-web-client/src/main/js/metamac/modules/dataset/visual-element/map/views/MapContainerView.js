@@ -44,6 +44,9 @@
 
             var isMap = this.mapType === 'map';
             this.mapView.update(this.dataJson, this.geoJson, this.title, !isMap);
+            if (isMap) {
+                this.mapView.updateRanges();
+            }
         },
 
         renderNoSelectionView: function () {

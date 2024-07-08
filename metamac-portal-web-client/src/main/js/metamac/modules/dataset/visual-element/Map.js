@@ -199,7 +199,7 @@
         },
 
         _mapExists: function() {
-            return this._mapContainerView && this._mapContainerView.mapView && this._mapContainerView.mapView.map;
+            return this._mapContainerView && this._mapContainerView.mapView && this._mapContainerView.mapView._getChart();
         },
 
         updatingDimensionPositions: function (oldElement) {
