@@ -131,6 +131,7 @@
             this._getChart().setOption({series: this._chartOptions.series});
         },
 
+        // TODO: comprobar que en el update se actualiza el rango de valores en el visualMap
         render: function () {
             this._createMapContent();
             this.delegateEvents();
@@ -332,6 +333,7 @@
                     name: dataNormCode,
                     tooltip: {
                         show: true,
+                        showDelay: 250,
                         formatter: function () {
                             var tooltipContent = self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
                             return self._getWrappedTooltipContent(tooltipContent);
