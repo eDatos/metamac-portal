@@ -4,7 +4,6 @@
     App.namespace('App.modules.dataset.DatasetDownloadView');
 
     var svgExporter = new App.svg.Exporter();
-    var SVG_SELECTOR = '.dataset-visualization-visual-element svg';
 
     App.modules.dataset.DatasetDownloadView = Backbone.View.extend({
 
@@ -107,7 +106,7 @@
         },
 
         _hasExportableImage: function (visualizationSupertype) {
-            return _.contains(['graph', 'map'], visualizationSupertype) && $(SVG_SELECTOR).exists();
+            return _.contains(['graph', 'map'], visualizationSupertype);
         },
 
         _exportableImage: function () {
@@ -185,7 +184,6 @@
             var params = '?';
             params += 'filename=' + encodeURIComponent(filename);
             params += '&type=' + encodeURIComponent(mime);
-            params += '&width=' + $(SVG_SELECTOR).width();
             params += '&scale=2';
 
             return params;
