@@ -97,7 +97,8 @@
                     padding: 0,
                     textStyle: {
                         fontSize: Constants.charts.title.fontSize,
-                        color: Constants.colors.istacGreyDark
+                        color: Constants.colors.istacGreyMedium,
+                        fontWeight: 'normal'
                     }
                 },
                 tooltip: {

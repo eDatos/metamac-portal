@@ -75,15 +75,9 @@
             };
 
             if (this._exportableImage()) {
-                var self = this;
-                var sanitized = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
-                svgExporter.addStyleAsync(sanitized).done(function (svg) {
-                    self.svg = svg;
-                    self.$el.html(self.template(context));
-                });
-            } else {
-                this.$el.html(this.template(context));
+                this.svg = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
             }
+            this.$el.html(this.template(context));
         },
 
         _getVisualizationType: function () {
