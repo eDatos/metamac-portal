@@ -123,7 +123,10 @@
         },
 
         _getWrappedTooltipContent: function (content) {
-            return '<div class="chart-tooltip-container" style="max-width: ' + this.$chartContainer.width() + 'px">' + content + '</div>';
+            var tooltipPadding = Constants.charts.tooltip.padding;
+            var tooltipBorderWidth = Constants.charts.tooltip.borderWidth;
+            var tooltipMaxWidth = Math.min(Constants.charts.tooltip.maxWidth, this.$chartContainer.width() - ((tooltipPadding + tooltipBorderWidth) * 2));
+            return '<div class="chart-tooltip-container" style="padding: ' + tooltipPadding + 'px;max-width: ' + tooltipMaxWidth + 'px">' + content + '</div>';
         },
 
         axisLabelFormatter: function (value) {

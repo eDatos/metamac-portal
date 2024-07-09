@@ -120,7 +120,9 @@
                 className: 'chart-tooltip',
                 exportClassName: 'export-chart-tooltip',
                 padding: 7,
-                fontSize: 12
+                fontSize: 12,
+                maxWidth: 300,
+                borderWidth: 1
             }
         }
     };

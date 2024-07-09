@@ -436,7 +436,6 @@
             return {
                 geo: this._getChart().getOption().geo,
                 visualMap: (this.mapType === "mapbubble") ? undefined : {
-                    bottom: Constants.charts.gap,
                     range: this._getChart().getOption().visualMap[0].range
                 },
                 title: {
