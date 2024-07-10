@@ -291,6 +291,9 @@
                         type: 'scatter',
                         geoIndex: 0,
                         coordinateSystem: 'geo',
+                        itemStyle: {
+                            color: Constants.colors.istacYellow
+                        },
                         symbolSize: function (data) {
                             var maxSymbolSize = 0.2 * Math.min(self.el.clientWidth, self.el.clientHeight);
                             var dataValue = data[2];
