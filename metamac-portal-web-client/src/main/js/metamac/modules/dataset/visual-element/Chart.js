@@ -212,8 +212,17 @@
                 var tooltipRight = self.tooltipEl.getBoundingClientRect().right;
                 var tooltipTop = self.tooltipEl.getBoundingClientRect().top;
                 var tooltipBottom = self.tooltipEl.getBoundingClientRect().bottom;
+                var chartLeft = self._getChartDomEl().getBoundingClientRect().x;
+                var chartRight = chartLeft + self._getChartDomEl().getBoundingClientRect().width;
+                var safeDistanceToCorner = 8;
 
-                var arrowLeft = Math.min(tooltipRight, Math.max(self.coordsTooltipPointsTo[0], tooltipLeft)) - tooltipLeft;
+                if ((self.coordsTooltipPointsTo[0] - safeDistanceToCorner) < chartLeft) {
+                    arrowLeft = safeDistanceToCorner;
+                } else if ((self.coordsTooltipPointsTo[0] + safeDistanceToCorner) > chartRight) {
+                    arrowLeft = tooltipRight - tooltipLeft - safeDistanceToCorner;
+                } else {
+                    var arrowLeft = Math.min(tooltipRight, Math.max(self.coordsTooltipPointsTo[0], tooltipLeft)) - tooltipLeft;
+                }
                 var arrowTop = Math.min(tooltipBottom, Math.max(self.coordsTooltipPointsTo[1], tooltipTop)) - tooltipTop;
 
                 var tooltipContainer = self.tooltipEl.getElementsByClassName("chart-tooltip-container")[0];
