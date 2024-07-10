@@ -15,14 +15,7 @@
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
-                triggerOn: "none",
-                position: function (point, params, domEl, rect) {
-                    self.coordsTooltipPointsTo = [
-                        rect.x + (rect.width / 2) + self._getChartDomEl().getBoundingClientRect().x,
-                        rect.y + (rect.height / 2) + self._getChartDomEl().getBoundingClientRect().y
-                    ];
-                    return 'top';
-                }
+                triggerOn: "none"
             },
             xAxis: {
                 axisLine: {

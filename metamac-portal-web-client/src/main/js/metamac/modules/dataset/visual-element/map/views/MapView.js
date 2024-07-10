@@ -223,6 +223,7 @@
                 }
             });
             this._getChart().setOption(this._chartOptions, true);
+            this._setTooltipObserver();
         },
 
         _createSpecialRegionsOptions: function () {

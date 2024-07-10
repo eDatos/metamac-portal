@@ -31,6 +31,8 @@
         },
 
         _initializeChartOptions: function () {
+            var self = this;
+            self.tooltipPosition = "top";
             this._chartOptions = {
                 textStyle: {
                     fontFamily: "Helvetica, Arial, sans-serif"
@@ -111,6 +113,13 @@
                     textStyle: {
                         fontSize: Constants.charts.tooltip.fontSize,
                         color: Constants.colors.istacBlack
+                    },
+                    position: function (point, params, domEl, rect) {
+                        self.coordsTooltipPointsTo = [
+                            rect.x + (rect.width / 2) + self._getChartDomEl().getBoundingClientRect().x,
+                            rect.y + (rect.height / 2) + self._getChartDomEl().getBoundingClientRect().y
+                        ];
+                        return self.tooltipPosition;
                     }
                 }
             };

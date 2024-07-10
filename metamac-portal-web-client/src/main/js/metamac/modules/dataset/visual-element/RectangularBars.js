@@ -16,20 +16,11 @@
         initializeRectangularBars: function (options) {
             this.initialize(options);
             this._initializeChartVisualElement(options);
+            this.tooltipPosition = (this._dataAxis === "xAxis") ? 'top' : 'right';
 
             var titleBottom = Constants.charts.gap;
             var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
-            var self = this;
             this._extendChartOptions({
-                tooltip: {
-                    position: function (point, params, domEl, rect) {
-                        self.coordsTooltipPointsTo = [
-                            rect.x + (rect.width / 2) + self._getChartDomEl().getBoundingClientRect().x,
-                            rect.y + (rect.height / 2) + self._getChartDomEl().getBoundingClientRect().y
-                        ];
-                        return self._dataAxis === "xAxis" ? 'top' : 'right';
-                    },
-                },
                 title: {
                     text: this.getRightsHolderText(),
                     show: this.showRightsHolderText(),
