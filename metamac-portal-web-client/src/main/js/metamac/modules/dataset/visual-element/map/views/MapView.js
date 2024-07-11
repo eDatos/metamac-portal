@@ -74,14 +74,22 @@
                     outOfRange: {
                         color: ['transparent']
                     },
+                    controller: {
+                        outOfRange: {
+                            color: [Constants.colors.istacGreyMedium]
+                        }
+                    },
                     text: null,
                     textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
                         symbolSize: Constants.charts.legend.fontSize
                     },
                     formatter: function (value) {
-                        var metadataMaxDecimals = self.metadata.getMaxDecimals();
-                        return App.util.NumberFormatter.strNumberToLocalizedString(value.toString(), {decimals: metadataMaxDecimals});
+                        var breaksToShowValueUnderVisualMap = "\n\n\n\n\n\n\n\n";
+                        var formattedValue = App.util.NumberFormatter.strNumberToLocalizedString(value.toString(), {decimals: self.metadata.getMaxDecimals()});
+
+                        self.isVisualMapFormattingMin = !self.isVisualMapFormattingMin;
+                        return (self.isVisualMapFormattingMin ? breaksToShowValueUnderVisualMap : "") + formattedValue;
                     }
                 },
                 title: {
