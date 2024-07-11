@@ -218,7 +218,12 @@
             this._getChart().on('georoam', function (roamParams) {
                 if (roamParams.zoom) {
                     self.model.zoomTo(self._getChart().getOption().geo[0].zoom);
+                } else {
+                    self.$chartContainer.find("canvas").addClass("grabbing");
                 }
+            });
+            this._getChart().getZr().on('mouseup', function () {
+                self.$chartContainer.find("canvas").removeClass("grabbing");
             });
             this._getChart().on('finished', function () {
                 self._callback();
