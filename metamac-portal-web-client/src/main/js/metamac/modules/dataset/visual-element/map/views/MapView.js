@@ -181,7 +181,8 @@
             this._extendChartOptions({
                 visualMap: (this.mapType === 'mapbubble') ? undefined : {
                     min: this.model.get("minValue"),
-                    max: this.model.get("maxValue")
+                    max: this.model.get("maxValue"),
+                    range: [this.model.get("minValue"), this.model.get("maxValue")]
                 }
             });
             this._getChart().setOption({ visualMap: this._chartOptions.visualMap });
