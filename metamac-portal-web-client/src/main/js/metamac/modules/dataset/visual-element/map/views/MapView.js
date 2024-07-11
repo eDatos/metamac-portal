@@ -101,7 +101,8 @@
                     map: 'map',
                     roam: true,
                     itemStyle: {
-                        borderWidth: 0
+                        borderWidth: 0.02,
+                        borderColor: Constants.colors.istacWhite
                     },
                     scaleLimit: {
                         min: this.model.get("minScale"),
