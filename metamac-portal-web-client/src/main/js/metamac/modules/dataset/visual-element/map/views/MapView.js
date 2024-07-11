@@ -101,7 +101,7 @@
                     map: 'map',
                     roam: true,
                     itemStyle: {
-                        borderWidth: 0.02,
+                        borderWidth: 0.1,
                         borderColor: Constants.colors.istacWhite
                     },
                     scaleLimit: {
