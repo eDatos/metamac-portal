@@ -58,8 +58,8 @@
                     // In order to change it, check the commit in which this comment was added.
                     type: "continuous",
                     realtime: false,
-                    min: this.model.get("minValue"),
-                    max: this.model.get("maxValue"),
+                    min: this._getVisualMapMin(),
+                    max: this._getVisualMapMax(),
                     calculable: true,
                     hoverLink: false,
                     left: 'center',
@@ -178,14 +178,24 @@
         },
 
         updateRanges: function () {
+            var visualMapMin = this._getVisualMapMin();
+            var visualMapMax = this._getVisualMapMax();
             this._extendChartOptions({
                 visualMap: (this.mapType === 'mapbubble') ? undefined : {
-                    min: this.model.get("minValue"),
-                    max: this.model.get("maxValue"),
-                    range: [this.model.get("minValue"), this.model.get("maxValue")]
+                    min: visualMapMin,
+                    max: visualMapMax,
+                    range: [visualMapMin, visualMapMax]
                 }
             });
             this._getChart().setOption({ visualMap: this._chartOptions.visualMap });
+        },
+
+        _getVisualMapMin: function () {
+            return (this.model.get("minValue") === this.model.get("maxValue")) ? this.model.get("minValue") - 1 : this.model.get("minValue");
+        },
+
+        _getVisualMapMax: function () {
+            return (this.model.get("minValue") === this.model.get("maxValue")) ? this.model.get("maxValue") + 1 : this.model.get("maxValue");
         },
 
         canRender: function () {
