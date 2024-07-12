@@ -375,7 +375,6 @@
                     name: dataNormCode,
                     tooltip: {
                         show: true,
-                        showDelay: 250,
                         formatter: function () {
                             var tooltipContent = self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
                             return self._getWrappedTooltipContent(tooltipContent);
