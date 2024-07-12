@@ -82,7 +82,8 @@
                     text: null,
                     textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
-                        symbolSize: Constants.charts.legend.fontSize
+                        symbolSize: Constants.charts.legend.fontSize,
+                        fontWeight: 'bold'
                     },
                     formatter: function (value) {
                         var breaksToShowValueUnderVisualMap = "\n\n\n\n\n\n\n\n";

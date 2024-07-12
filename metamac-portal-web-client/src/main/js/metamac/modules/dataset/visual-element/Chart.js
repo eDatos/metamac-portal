@@ -99,7 +99,7 @@
                     padding: 0,
                     textStyle: {
                         fontSize: Constants.charts.title.fontSize,
-                        color: Constants.colors.istacGreyMedium,
+                        color: Constants.colors.istacBlack,
                         fontWeight: 'normal'
                     }
                 },
