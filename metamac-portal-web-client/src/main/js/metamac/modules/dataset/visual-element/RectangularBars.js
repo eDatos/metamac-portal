@@ -212,7 +212,7 @@
                 serie.type = 'bar';
                 serie.name = columnCategory.get('visibleLabel');
                 serie.data = [];
-                serie.barWidth = "35%";
+                serie.barMaxWidth = "35%";
                 serie.barCategoryGap = "10%";
 
                 _.each(dataAxisDimensionSelectedCategories, function (dataAxisCategory, dataAxisCategoryIndex) {
