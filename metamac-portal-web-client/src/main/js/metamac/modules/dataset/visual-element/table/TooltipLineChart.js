@@ -152,10 +152,11 @@
                     itemStyle: {
                         opacity: self.permutation[self.timeDimension.id] === timeCategory.id
                     },
-                    emphasis: {
+                    select: {
                         itemStyle: {
                             color: Constants.colors.istacGreyDark,
-                            opacity: 1
+                            borderWidth: Constants.charts.lines.highlight.point.border.width,
+                            borderColor: Constants.charts.lines.highlight.point.border.color
                         }
                     }
                 });
