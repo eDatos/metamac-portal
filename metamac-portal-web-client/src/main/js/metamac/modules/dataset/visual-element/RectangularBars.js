@@ -213,7 +213,7 @@
                 serie.name = columnCategory.get('visibleLabel');
                 serie.data = [];
                 serie.barMaxWidth = "35%";
-                serie.barCategoryGap = "10%";
+                serie.barCategoryGap = "50%";
 
                 _.each(dataAxisDimensionSelectedCategories, function (dataAxisCategory, dataAxisCategoryIndex) {
                     var currentPermutation = {};
