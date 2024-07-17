@@ -214,6 +214,12 @@
                 serie.data = [];
                 serie.barMaxWidth = "35%";
                 serie.barCategoryGap = "50%";
+                serie.emphasis = {
+                    itemStyle: {
+                        color: "inherit",
+                        opacity: 0.75
+                    }
+                };
 
                 _.each(dataAxisDimensionSelectedCategories, function (dataAxisCategory, dataAxisCategoryIndex) {
                     var currentPermutation = {};
