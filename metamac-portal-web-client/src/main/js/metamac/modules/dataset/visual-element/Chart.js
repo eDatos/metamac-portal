@@ -49,6 +49,7 @@
                     show: true,
                     selectedMode: false,
                     type: 'scroll',
+                    animationDurationUpdate: 100,
                     width: '90%',
                     backgroundColor: Constants.colors.istacWhite,
                     left: 'center',
