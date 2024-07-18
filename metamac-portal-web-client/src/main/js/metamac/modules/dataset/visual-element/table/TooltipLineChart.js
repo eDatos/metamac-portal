@@ -26,6 +26,9 @@
                 position: 'top',
                 trigger: "item",
                 triggerOn: "none",
+                textStyle: {
+                    fontSize: Constants.charts.tooltipLines.tooltip.fontSize
+                },
                 formatter: _.bind(this.getTooltipFormatterFunction, this)
             },
             animation: false,
