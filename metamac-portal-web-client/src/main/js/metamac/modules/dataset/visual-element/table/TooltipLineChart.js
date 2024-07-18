@@ -43,7 +43,11 @@
                     }
                 }
             },
-            yAxis: {}
+            yAxis: {
+                axisLabel: {
+                    formatter: this.axisLabelFormatter
+                }
+            }
         };
     };
 
@@ -55,6 +59,10 @@
 
         getTooltipFormatterFunction: function (tooltipFormatterParams) {
             return tooltipFormatterParams.name + '<br/>' + this._chartOptions.xAxis.data[tooltipFormatterParams.dataIndex];
+        },
+
+        axisLabelFormatter: function (value) {
+            return (typeof value === 'number') ? App.util.NumberFormatter.strNumberToLocalizedString(value.toString()) : value;
         },
 
         destroy: function () {
