@@ -212,6 +212,14 @@
                 serie.type = 'bar';
                 serie.name = columnCategory.get('visibleLabel');
                 serie.data = [];
+                serie.barMaxWidth = "35%";
+                serie.barCategoryGap = "50%";
+                serie.emphasis = {
+                    itemStyle: {
+                        color: "inherit",
+                        opacity: 0.75
+                    }
+                };
 
                 _.each(dataAxisDimensionSelectedCategories, function (dataAxisCategory, dataAxisCategoryIndex) {
                     var currentPermutation = {};
@@ -246,17 +254,17 @@
                 lastSerieDataItem.originalOrder = index;
                 switch (dataAxisSortBy) {
                     case App.Constants.dimension.sortBy.OBSERVATION:
-                        return lastSerieDataItem.value;
+                        return -lastSerieDataItem.value;
                     case App.Constants.dimension.sortBy.REPRESENTATION:
-                        return dataAxisDimensionIsTemporal ? index : -index;
+                        return dataAxisDimensionIsTemporal ? -index : index;
                     default:
                         console.error("sortBy unsupported ", dataAxisSortBy);
-                        return lastSerieDataItem.value;
+                        return -lastSerieDataItem.value;
                 }
             }).map(function (lastSerieDataItem) {
                 return lastSerieDataItem.originalOrder;
             });
-            if (this._dataAxis === "xAxis") {
+            if (this._dataAxis === "yAxis") {
                 dataAxisOrderMap.reverse();
             }
 
