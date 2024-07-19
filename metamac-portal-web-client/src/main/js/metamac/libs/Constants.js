@@ -107,7 +107,7 @@
             },
             tooltipLines: {
                 tooltip: {
-                    fontSize: 12
+                    fontSize: 11
                 }
             },
             legend: {
