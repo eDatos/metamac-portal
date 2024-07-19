@@ -26,8 +26,10 @@
                 position: 'top',
                 trigger: "item",
                 triggerOn: "none",
+                appendToBody: true,
                 textStyle: {
-                    fontSize: Constants.charts.tooltipLines.tooltip.fontSize
+                    fontSize: Constants.charts.tooltipLines.tooltip.fontSize,
+                    color: Constants.colors.istacBlack
                 },
                 formatter: _.bind(this.getTooltipFormatterFunction, this)
             },
