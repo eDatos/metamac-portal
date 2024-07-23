@@ -52,7 +52,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/TemplateManager.js"
                 paths.js + "/libs/highmaps.js"
                 paths.js + "/libs/highmaps.no-conflict.js"
-                paths.js + "/libs/highcharts.js"
+                paths.js + "/libs/echarts.js"
                 paths.js + "/libs/jquery.mousewheel.js"
                 paths.js + "/libs/jquery.ba-resize.js"
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
@@ -100,6 +100,7 @@ module.exports = (grunt) ->
                 paths.modules + "/dataset/DatasetShareView.js"
                 paths.modules + "/dataset/DatasetSaveView.js"
                 paths.modules + "/dataset/DatasetDownloadView.js"
+                paths.modules + "/dataset/DatasetApiDownloadView.js"
                 paths.modules + "/dataset/DatasetEmbedView.js"
 
                 # Datasource
@@ -119,6 +120,8 @@ module.exports = (grunt) ->
 
                 # Util
                 paths.js + "/metamac/modules/util/NumberFormatter.js"
+                paths.js + "/metamac/modules/util/ObjectUtils.js"
+                paths.js + "/metamac/modules/util/ChartsUtils.js"
 
                 # Utils
                 paths.js + "/metamac/modules/dataset/utils/FullScreen.js"
@@ -174,14 +177,13 @@ module.exports = (grunt) ->
 
                 # visual elements
                 paths.js + "/metamac/modules/dataset/visual-element/Base.js"
+                paths.js + "/metamac/modules/dataset/visual-element/Chart.js"
                 paths.js + "/metamac/modules/dataset/visual-element/RectangularBars.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Info.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Column.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Bar.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Line.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Table.js"
-                paths.js + "/metamac/modules/dataset/visual-element/line/DetailZoomModel.js"
-                paths.js + "/metamac/modules/dataset/visual-element/line/DetailZoomView.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Map.js"
                 paths.js + "/metamac/modules/dataset/ErrorView.js"
                 # canvas table

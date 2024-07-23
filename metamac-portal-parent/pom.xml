@@ -36,7 +36,8 @@
         <commons-io.version>2.11.0</commons-io.version>
         
         <commons-lang3.version>3.0.1</commons-lang3.version>
-        <batik-core.version>1.7</batik-core.version> <!-- Error al subir a batik 1.10. Ver METAMAC-2921 -->
+        <batik-core.version>1.17</batik-core.version>
+        <fop.version>2.9</fop.version>
         <jsoup.version>1.7.2</jsoup.version>
         
         <frontend-maven-plugin.version>1.11.3</frontend-maven-plugin.version>

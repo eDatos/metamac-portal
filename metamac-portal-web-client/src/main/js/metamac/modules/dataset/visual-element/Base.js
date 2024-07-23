@@ -1,7 +1,5 @@
 (function () {
 
-    var Constants = App.Constants;
-
     App.namespace("App.VisualElement");
 
     App.VisualElement.Base = function (options) {
@@ -16,14 +14,13 @@
         initialize: function (options) {
             options = options || {};
             this.data = options.data;
+            this.metadata = options.metadata;
 
             this.filterOptions = options.filterOptions; //deprecated
             this.filterDimensions = options.filterDimensions;
             this.optionsModel = options.optionsModel;
 
             this.el = options.el;
-
-            this._initializeChartOptions();
         },
 
         getFixedPermutation: function () {
@@ -60,49 +57,15 @@
         destroy: function () {
         },
 
+        _unbindEvents: function () {
+        },
+
         updatingDimensionPositions: function () {
         },
 
         resizeFullScreen: function () {
             this.destroy();
             this.load();
-        },
-
-        _initializeChartOptions: function () {
-            this._chartOptions = {
-                title: {
-                    text: null
-                },
-                credits: {
-                    position: {
-                        y: -10,
-                        x: -10
-                    }
-                },
-                legend: {
-                    layout: 'horizontal',
-                    backgroundColor: Constants.colors.istacWhite,
-                    x: 5,
-                    y: 0,
-                    borderWidth: 1,
-                    borderColor: Constants.colors.istacGreyMedium,
-                    floating: false,
-                    navigation: {
-                        activeColor: Constants.colors.istacBlueMedium,
-                        animation: true,
-                        arrowSize: 12,
-                        inactiveColor: Constants.colors.istacGreyMedium,
-                        style: {
-                            fontWeight: 'bold',
-                            color: Constants.colors.istacBlack,
-                            fontSize: '12px'
-                        }
-                    }
-                },
-                exporting: {
-                    enabled: false
-                }
-            };
         },
 
         updateTitle: function () {
@@ -119,15 +82,6 @@
 
         showTitle: function () {
             if (this.$title) { this.$title.show(); }
-        },
-
-        replaceSeries: function (chart, series) {
-            while (chart.series.length > 0) {
-                chart.series[0].remove(false);
-            }
-            _.each(series, function (serie) {
-                chart.addSeries(serie, false, false);
-            });
         },
 
         setEl: function (el) {
@@ -174,14 +128,6 @@
             });
         },
 
-        _forceMeasureDimensionInZone: function (zone) {
-            this._forceDimensionTypeInZone("MEASURE_DIMENSION", zone);
-        },
-
-        _forceTimeDimensionInZone: function (zone) {
-            this._forceDimensionTypeInZone("TIME_DIMENSION", zone);
-        },
-
         _forceGeographicDimensionInZone: function (zone) {
             this._forceDimensionTypeInZone("GEOGRAPHIC_DIMENSION", zone);
         },
@@ -195,32 +141,6 @@
             });
         },
 
-        _preselectBiggestHierarchyGeographicValue: function () {
-            var fixedGeographicDimensions = this.filterDimensions.getAllFixedDimensionsCopyByType("GEOGRAPHIC_DIMENSION");
-            _(fixedGeographicDimensions).each(function (geographicDimension) {
-                var selectedRepresentations = geographicDimension.get('representations').getSelectedRepresentations();
-                var biggestHierarchyGeographicValue = _(selectedRepresentations).min(function (representation) {
-                    return representation.get("level");
-                });
-                if (biggestHierarchyGeographicValue != Infinity) {
-                    biggestHierarchyGeographicValue.set({ drawable: true });
-                }
-            });
-        },
-
-        _preselectBiggestHierarchyGeographicValue: function () {
-            var fixedGeographicDimensions = this.filterDimensions.getAllFixedDimensionsCopyByType("GEOGRAPHIC_DIMENSION");
-            _(fixedGeographicDimensions).each(function (geographicDimension) {
-                var selectedRepresentations = geographicDimension.get('representations').getSelectedRepresentations();
-                var biggestHierarchyGeographicValue = _(selectedRepresentations).min(function (representation) {
-                    return representation.get("level");
-                });
-                if (biggestHierarchyGeographicValue != Infinity) {
-                    biggestHierarchyGeographicValue.set({ drawable: true });
-                }
-            });
-        },
-
         _preselectMostRecentTimeRepresentation: function () {
             var fixedTimeDimensions = this.filterDimensions.getAllFixedDimensionsCopyByType("TIME_DIMENSION");
             _(fixedTimeDimensions).each(function (timeDimension) {
@@ -229,14 +149,6 @@
                     ? _(selectedRepresentations).last()
                     : _(selectedRepresentations).first();
                 mostRecentTimeRepresentation.set({ drawable: true });
-            });
-        },
-
-        _preselectMostPopulatedTemporalGranularityRepresentations: function () {
-            var fixedTimeDimensions = this.filterDimensions.getAllNonFixedDimensionsCopyByType("TIME_DIMENSION");
-            _(fixedTimeDimensions).each(function (timeDimension) {
-                timeDimension.get('representations').updateSelectedTemporalGranularityWithMostRepeatedValue();
-                timeDimension.get('representations').updateDrawablesBySelectedGranularity();
             });
         },
 
@@ -269,10 +181,6 @@
 
         getDrawableRepresentations: function (dimension) {
             return dimension.getDrawableRepresentations();
-        },
-
-        getRightsHolderHeight: function () {
-            return 30;
         },
 
         allDimensionsHaveSelections: function () {
@@ -325,55 +233,7 @@
                 this.$loading.hide();
                 this.showTitle();
             }
-        },
-
-        loadColors: function () {
-            if (this.graphColorsEnabled()) {
-                var self = this;
-
-                self.showLoading();
-                self.api = new App.dataset.StructuralResourcesApi(self.data);
-                self.api.getCodelists(function (codelists) {
-                    var filteredCodelistsWithVariableElements = [];
-                    for (var codelist of codelists) {
-                        var filteredCodelist = codelist.code.filter((item) => item.hasOwnProperty("variableElement"))
-                        if (filteredCodelist.length > 0) {
-                            filteredCodelistsWithVariableElements.push(filteredCodelist);
-                        }
-                    }
-
-                    if (filteredCodelistsWithVariableElements.length > 0) {
-                        var variableUrls = _.map(filteredCodelistsWithVariableElements, function (codelist) {
-                            return codelist[0].variableElement.selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+renderingColor");
-                        });
-                        self.api.getVariableElements(variableUrls, function (variableElements) {
-                            var flattenedCodelists = _.flatten(filteredCodelistsWithVariableElements);
-                            var flattenedVariableElements = _.flatten(_.map(variableElements, function (variab) {
-                                return variab.variableElement;
-                            }));
-
-                            for (var code of flattenedCodelists) {
-                                self.data.colors[code.urn] = flattenedVariableElements.find(elem => elem.urn === code.variableElement.urn).renderingColor;
-                            }
-
-                            self.update();
-                            self.hideLoading();
-                        });
-                    } else {
-                        self.hideLoading();
-                    }
-                });
-            }
-        },
-
-        colorsLoaded: function() {
-            return this.data && this.data.colors && !_.isEmpty(this.data.colors);
-        },
-
-        graphColorsEnabled: function () {
-            return this.data && App.config["enableGraphColors"];
-        },
-
+        }
     };
 
     _.extend(App.VisualElement.Base.prototype, Backbone.Events);

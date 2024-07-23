@@ -166,7 +166,8 @@
                 title: this.getTitle(),
                 rightsHolder: this.getRightsHolderText(),
                 showRightsHolder: this.showRightsHolderText(),
-                callback: _.bind(this.hideLoading, this)
+                callback: _.bind(this.hideLoading, this),
+                metadata: this.metadata
             });
         },
 

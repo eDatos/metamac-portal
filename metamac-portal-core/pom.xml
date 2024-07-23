@@ -303,6 +303,12 @@
             <version>${batik-core.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>${fop.version}</version>
+        </dependency>
+
         <!-- TESTS -->
         <dependency>
             <groupId>org.siemac.metamac</groupId>

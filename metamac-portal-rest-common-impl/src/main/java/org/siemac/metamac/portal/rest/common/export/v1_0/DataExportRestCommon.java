@@ -525,8 +525,10 @@ public abstract class DataExportRestCommon {
 
         FileOutputStream outputStreamObservations = null;
         FileOutputStream outputStreamAttributes = null;
+        File tmpFileAttributes = null;
+        File tmpFileObservations = null;
         try {
-            final File tmpFileObservations = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
+            tmpFileObservations = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
             outputStreamObservations = new FileOutputStream(tmpFileObservations);
 
             Set<String> parsedFields = PortalRestUtils.parseFieldsParameter(fields);
@@ -540,7 +542,7 @@ public abstract class DataExportRestCommon {
                 return buildResponseOkWithFile(tmpFileObservations, filename, plainTextTypeEnum.getMimeType());
             } else {
                 // Zip
-                final File tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
+                tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
                 outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
                 exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, outputStreamAttributes);
 
@@ -554,6 +556,12 @@ public abstract class DataExportRestCommon {
         } finally {
             IOUtils.closeQuietly(outputStreamObservations);
             IOUtils.closeQuietly(outputStreamAttributes);
+            if (tmpFileAttributes != null && tmpFileAttributes.exists()) {
+                tmpFileAttributes.delete();
+            }
+            if (tmpFileObservations != null && tmpFileObservations.exists()) {
+                tmpFileObservations.delete();
+            }
         }
 
     }

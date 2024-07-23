@@ -104,21 +104,23 @@
             return e ? v + e * (values[h] - v) : v;
         },
 
-        _createQuantiles: function (values, currentRangesNum) {
+        _createQuantiles: function (values, currentRangesNum, numberOfDecimals) {
             var self = this;
             self.values = _.sortBy(values);
             self.currentRangesNum = currentRangesNum;
             return _.map(_.range(1, currentRangesNum), function (value, key, list) {
-                if (value != 0) {
-                    return self._quantile(self.values, value / self.currentRangesNum);
+                if (value !== 0) {
+                    var quantile = self._quantile(self.values, value / self.currentRangesNum);
+                    var decimalMultiplier =  Math.pow(10, numberOfDecimals);
+                    return Math.round((quantile + Number.EPSILON) * decimalMultiplier) / decimalMultiplier;
                 }
             }, self);
         },
 
-        createRangeLimits: function () {
+        createRangeLimits: function (numberOfDecimals) {
             var minValue = this.get("minValue");
             var maxValue = this.get("maxValue");
-            var quantiles = this._createQuantiles(this.get("values"), this.get("currentRangesNum"));
+            var quantiles = this._createQuantiles(this.get("values"), this.get("currentRangesNum"), numberOfDecimals);
 
             var rangeLimits = _.flatten([minValue, quantiles, maxValue], true);
             return rangeLimits;

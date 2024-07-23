@@ -23,6 +23,7 @@
         <c:when test="${!empty portalStyleHeaderUrl}">
 			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
 				<c:param name="${internationalizationCookie}" value="${currentLocale}" />
+				<c:param name="appId" value="statistical-visualizer-${installationType}" />
 			</c:import>
         </c:when>
         <c:otherwise>

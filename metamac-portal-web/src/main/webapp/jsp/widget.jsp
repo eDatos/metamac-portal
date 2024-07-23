@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="org.siemac.metamac.portal.core.conf.PortalConfiguration" %>
 <%@ page import="org.siemac.metamac.core.common.util.ApplicationContextProvider" %>
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
@@ -49,6 +50,9 @@
         request.setAttribute("defaultLocale", configurationService.retrieveDefaultInternationalizationLanguage());
         String INSTALLATION_TYPE = configurationService.retrieveInstallationType();
         Boolean internalPortal = INSTALLATION_TYPE.equals("INTERNAL");
+        String analyticsUrl = (internalPortal ? configurationService.retrieveAppsInternalWebApplicationUrlBase() :
+                                                configurationService.retrieveAppsExternalWebApplicationUrlBase()) +
+                                                "/includes/analytics.js";
     %>
     <%
         String STATISTICAL_RESOURCES_API_URL_BASE = WebUtils.getStatisticalResourcesApiBaseUrl();
@@ -70,6 +74,7 @@
         request.setAttribute("analyticsGoogleTrackingId", WebUtils.getAnalyticsGoogleTrackingId());
         request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
         request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
+        request.setAttribute("analyticsUrl", analyticsUrl);
     %>
     <%
         String permalinkId = request.getParameter("permalink");
@@ -90,6 +95,7 @@
             response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale, title));
         }
     %>
+    <script type="application/javascript" src="${analyticsUrl}" appId="statistical-visualizer-${installationType}-widget"></script>
 </head>
 <body>
 

@@ -6,143 +6,61 @@
     App.namespace("App.VisualElement.LineChart");
 
     App.VisualElement.LineChart = function (options) {
-        this.initialize(options);
+        this._initializeChartVisualElement(options);
         this._type = 'line';
 
-        this._masterOptions = {
-            chart: {
-                animation: false,
-                renderTo: '',
-                type: 'line',
-                borderWidth: 0,
-                backgroundColor: null,
-                marginLeft: 5,
-                marginRight: 5
-            },
-            credits: {
-                enabled: false
-            },
+        var self = this;
+        var titleBottom = Constants.charts.lines.dataZoom.horizontal.height + Constants.charts.gap;
+        var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
+        this._extendChartOptions({
             tooltip: {
-                formatter: function () {
-                    return false;
+                triggerOn: "none",
+                position: function (point, params, domEl, rect) {
+                    self.coordsTooltipPointsTo = [
+                        rect.x + (rect.width / 2) + self._getChartDomEl().getBoundingClientRect().x,
+                        rect.y + (rect.height / 2) + self._getChartDomEl().getBoundingClientRect().y
+                    ];
+                    return 'top';
                 }
             },
             xAxis: {
-                labels: {
-                    formatter: function () {
-                        return this.value.substring(0, 8);
+                axisLine: {
+                    lineStyle: {
+                        width: Constants.charts.dataAxisWidth,
+                        color: Constants.colors.istacGreyMedium
                     }
                 },
-                tickInterval: 1
+                axisLabel: {
+                    interval: function (categoryIndex) {
+                        if (self._getChart()) {
+                            var dataZoom = self._getChart().getOption().dataZoom[0];
+                            var interval = Math.ceil((dataZoom.endValue - dataZoom.startValue + 1) / Constants.charts.lines.xAxisTicks);
+                            return ((categoryIndex - dataZoom.startValue) % interval) === 0;
+                        } else {
+                            return true;
+                        }
+                    },
+                    align: 'right',
+                    rotate: 70,
+                    verticalAlign: "top",
+                    width: '200',
+                    overflow: 'truncate'
+                }
             },
-            yAxis: {
-                gridLineWidth: 0,
-                labels: {
-                    enabled: false
-                },
-                title: {
-                    text: null
-                },
-                showFirstLabel: false
-            },
+            dataZoom: this._getDataZooms(0),
             title: {
-                text: ''
+                bottom: titleBottom
             },
             legend: {
-                enabled: false
+                bottom: legendBottom
             },
-            plotOptions: {
-                series: {
-                    animation: false,
-                    turboThreshold: 1200
-                },
-                line: {
-                    lineWidth: 1,
-                    marker: {
-                        enabled: false
-                    }
-                }
-            },
-            exporting: {
-                enabled: false
-            }
-        };
-        _.extend(this._chartOptions, {
-            chart: {
-                animation: false,
-                renderTo: '',
-                type: 'line',
-                borderWidth: 0,
-                backgroundColor: Constants.colors.istacWhite,
-                marginRight: 0
-            },
-            title: {
-                text: '',
-                style: {
-                    color: App.Constants.colors.hiddenText,
-                    fontSize: App.Constants.font.title.size
-                }
-            },
-            subtitle: {
-                text: '',
-                style: {
-                    color: App.Constants.colors.hiddenText
-                }
-            },
-            credits: {
-                position: {
-                    y: -5,
-                    x: -10
-                }
-            },
-            tooltip: {
-                formatter: this.tooltipFormatter
-            },
-            xAxis: {
-                labels: {}
-            },
-            yAxis: {
-                title: {
-                    text: ""
-                },
-                plotLines: [
-                    {
-                        value: 0,
-                        width: 1,
-                        color: Constants.colors.istacGreyDark
-                    }
-                ]
-            },
-            plotOptions: {
-                line: {
-                    lineWidth: 1.5,
-                    marker: {
-                        radius: 3
-                    }
-                },
-                series: {
-                    animation: false,
-                    turboThreshold: 1200
-                }
+            grid: {
+                right: Constants.charts.lines.dataZoom.vertical.width + Constants.charts.gap
             }
         });
-
-        this._element = null;
-
-        this.config = {
-            masterHeight: 80,
-            xAxisTicks: 6
-        };
-
-        var hasTimeDimensions = this.data.metadata.getTimeDimensions().length > 0;
-        var detailZoomModelStart = hasTimeDimensions ? 0 : 0;
-        var detailZoomModelStop = hasTimeDimensions ? 1 : 0.48;
-
-        this.detailZoomModel = new App.VisualElement.line.DetailZoomModel({ start: detailZoomModelStart, stop: detailZoomModelStop });
-        this.detailZoomModel.on("change", _.debounce(this._updateDetail, 300), this);
     };
 
-    App.VisualElement.LineChart.prototype = new App.VisualElement.Base();
+    App.VisualElement.LineChart.prototype = new App.VisualElement.Chart();
 
     _.extend(App.VisualElement.LineChart.prototype, {
 
@@ -157,27 +75,19 @@
             }
         },
 
-        destroy: function () {
-            this._unbindEvents();
-
-            if (this.masterChart) {
-                this.masterChart.destroy();
-                this.masterChart = null;
-            }
-            if (this.detailChart) {
-                this.detailChart.destroy();
-                this.detailChart = null;
-            }
-        },
-
         _bindEvents: function () {
             this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", _.debounce(this.update, 100));
 
-            var resize = _.debounce(_.bind(this._updateSize, this), 200);
+            var resize = _.debounce(_.bind(this._onResizeEvent, this), 200);
             this.$el.on("resize", function (e) {
                 e.stopPropagation();
                 resize();
             });
+        },
+
+        _onResizeEvent: function () {
+            this._updateSize();
+            this._updatePointsVisibility();
         },
 
         _unbindEvents: function () {
@@ -214,79 +124,67 @@
             this._preselectMostPopulatedTemporalGranularityRepresentations();
         },
 
-        tooltipFormatter: function () {
-            var seriesName = "";
-            if (this.series.name != "") {
-                seriesName = this.series.name + ', ';
-            }
-            return '<strong>' + seriesName + this.x + '</strong>:<br/>' + this.point.name;
-        },
-
         render: function () {
             this.$el.empty();
             this.$title = $('<h3></h3>');
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._renderContainers();
-            this._renderMaster();
-            this._renderDetail();
-        },
-
-        _renderContainers: function () {
-            var detailHeight = this.$el.height() - this.config.masterHeight - this.$title.height() - this.getRightsHolderHeight();
-            this.$detailContainer = $('<div id="detail-container">')
-                .css({ height: detailHeight })
-                .appendTo(this.$el);
-
-            this.$masterContainer = $('<div id="master-container">')
-                .css({ position: 'absolute', bottom: 0, height: this.config.masterHeight, width: '100%' })
-                .appendTo(this.$el);
-        },
-
-        _renderMaster: function () {
-            this.getData();
-
-            this.detailZoomModel.set('step', 1 / this.processedData.xAxis.length);
-
-            this._masterOptions.chart.renderTo = this.$masterContainer[0];
-            this._masterOptions.series = this.processedData.series;
-            this._masterOptions.xAxis.categories = this.processedData.xAxis;
-            this._masterOptions.xAxis.tickInterval = Math.ceil(this.processedData.xAxis.length / this.config.xAxisTicks);
-            this.masterChart = new Highcharts.Chart(this._masterOptions);
-
-            this.detailZoomView = new App.VisualElement.line.DetailZoomView({ model: this.detailZoomModel, "$targetEl": this.$masterContainer });
-            this.detailZoomView.render();
-        },
-
-        _renderDetail: function () {
-            var detailData = this.getDetailData();
-
-            this._chartOptions.chart.renderTo = this.$detailContainer[0];
-            this._chartOptions.series = detailData.series;
-            this._chartOptions.xAxis.categories = detailData.xAxis;
-            this._chartOptions.xAxis.min = detailData.min;
-            this._chartOptions.xAxis.max = detailData.max;
-            this._chartOptions.xAxis.tickInterval = detailData.tickInterval;
-
-            this._chartOptions.credits.text = this.getRightsHolderText();
-            this._chartOptions.credits.position.y = 0;
-            if (!this.showRightsHolderText()) {
-                this._chartOptions.credits.style = {
-                    color: App.Constants.colors.hiddenText
+            this._initializeChart();
+            App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
+            var self = this;
+            this._getChart().on('datazoom', function (params) {
+                if (params.dataZoomId === Constants.charts.lines.dataZoom.horizontal.id) {
+                    self.xAxisDataZoomStart = params.start;
+                    self.xAxisDataZoomEnd = params.end;
+                    self._updatePointsVisibility();
+                } else {
+                    self.yAxisDataZoomStart = params.start;
+                    self.yAxisDataZoomEnd = params.end;
                 }
+            });
+
+            this._extendChartOptions(this.getData());
+            this._updateChartOptions();
+        },
+
+        _updatePointsVisibility: function () {
+            var newPointsVisibility = this._shouldPointsBeVisible();
+            if (newPointsVisibility !== this.pointsVisibility) {
+                this.pointsVisibility = newPointsVisibility;
+                this._chartOptions.series = this._chartOptions.series.map(serie => {
+                    serie.itemStyle.opacity = (this.pointsVisibility ? 1 : 0);
+                    return serie;
+                });
+                this._chartOptions.dataZoom = this._getDataZooms(
+                    this._chartOptions.grid.bottom,
+                    this.xAxisDataZoomStart,
+                    this.xAxisDataZoomEnd,
+                    this.yAxisDataZoomStart,
+                    this.yAxisDataZoomEnd
+                );
+                this._getChart().setOption(this._chartOptions, true);
+                this._setTooltipObserver();
+            }
+        },
+
+        _shouldPointsBeVisible: function () {
+            var numberOfPoints = this._getNumberOfPointsInGridPerSerie();
+            var gridWidth = this._getChartDomEl().clientWidth - this._chartOptions.grid.left - this._chartOptions.grid.right;
+            var symbolGap = 1;
+            var pointsThatFitsInGrid = gridWidth / (Constants.charts.lines.symbol.size + symbolGap);
+            return pointsThatFitsInGrid >= numberOfPoints;
+        },
+
+        _getNumberOfPointsInGridPerSerie: function () {
+            var series = this._chartOptions.series;
+            if (!series || series.length === 0) {
+                return 0;
             }
 
-            this.detailChart = new Highcharts.Chart(this._chartOptions);
-        },
-
-        _updateSize: function () {
-            var detailHeight = this.$el.height() - this.config.masterHeight - this.$title.height();
-            this.$detailContainer.css({ height: detailHeight });
-
-            this.detailChart.setSize(this.$detailContainer.width(), this.$detailContainer.height(), false);
-            this.masterChart.setSize(this.$masterContainer.width(), this.$masterContainer.height(), false);
-            this.detailZoomView.updateSize();
+            var xAxisDataZoomStart = this.xAxisDataZoomStart || 0;
+            var xAxisDataZoomEnd = this.xAxisDataZoomEnd || 100;
+            return (xAxisDataZoomEnd - xAxisDataZoomStart)/100 * series[0].data.length;
         },
 
         update: function () {
@@ -294,132 +192,195 @@
                 return;
             }
 
-            if (!this.masterChart || !this.detailChart) {
+            if (!this._getChart()) {
                 this.load();
-                return;
+            } else {
+                this.updateTitle();
+
+                this._extendChartOptions(this.getData());
+                this._updateChartOptions();
             }
-
-            this.updateTitle();
-            this._updateMaster();
-            this._updateDetail();
-        },
-
-        _updateMaster: function () {
-            var data = this.getData();
-            this.replaceSeries(this.masterChart, data.series);
-            this.masterChart.xAxis[0].setCategories(data.xAxis, false);
-            this.masterChart.redraw();
-        },
-
-        _updateDetail: function () {
-            if (!this.detailChart) {
-                return;
-            }
-            
-            var detailData = this.getDetailData();
-            this.replaceSeries(this.detailChart, detailData.series);
-
-            this.detailChart.xAxis[0].update(
-                {
-                    categories: detailData.xAxis,
-                    min: detailData.min,
-                    max: detailData.max,
-                    tickInterval: detailData.tickInterval
-                },
-                false
-            );
-
-            this.detailChart.redraw(false);
         },
 
         getData: function () {
-            var self = this;
+            var dataAxisDimension = this.getDataAxisDimension();
+            var linesDimension = this.getSeriesDimension();
+            var dataAxisDimensionCategories = this._getDataAxisDimensionCategories(dataAxisDimension);
+            var linesDimensionSelectedCategories = this._getLinesDimensionCategories(linesDimension);
 
-            var result = {};
-            var fixedPermutation = this.getFixedPermutation();
-
-            var horizontalDimension = this.filterDimensions.dimensionsAtZone('left').at(0);
-            var columnsDimension = this.filterDimensions.dimensionsAtZone('top').at(0);
-            if (!columnsDimension) {
-                columnsDimension = this.filterDimensions.dimensionsAtZone('fixed').at(0);
-            }
-            if (!columnsDimension) {
-                columnsDimension = this.filterDimensions.dimensionsAtZone('axisy').at(0);
-            }
-
-            var selectedTemporalGranularity = horizontalDimension.get("representations").getSelectedTemporalGranularity();
-            var horizontalDimensionCategories = horizontalDimension.get('representations').where({ temporalGranularity: selectedTemporalGranularity });
-            horizontalDimensionCategories = _.sortBy(horizontalDimensionCategories, function (representation) {
-                return representation.normCode;
-            }).reverse();
-            
-            var columnsDimensionSelectedCategories = this.getDrawableRepresentations(columnsDimension);
-
-            var listSeries = [];
-            _.each(columnsDimensionSelectedCategories, function (columnCategory) {
-                var serie = {};
-                serie.data = [];
-                serie.name = "";
-                // `undefined` is returned in case colors object is empty, so default values are used instead
-                serie.color = self.data.colors[columnCategory.get('urn')];
-
-                _.each(horizontalDimensionCategories, function (horizontalCategory) {
-                    var currentPermutation = {};
-                    currentPermutation[horizontalDimension.id] = horizontalCategory.id;
-                    currentPermutation[columnsDimension.id] = columnCategory.id;
-                    _.extend(currentPermutation, fixedPermutation);
-
-                    var y = null;
-                    if (horizontalCategory.get("drawable")) {
-                        y = self.data.getNumberData({ ids: currentPermutation });
+            var showLegend = !linesDimension.get('singleValue');
+            var gridBottom = this._chartOptions.legend.bottom + (showLegend ? this._getLegendHeight() + Constants.charts.gap : 0);
+            return {
+                legend: {
+                    show: showLegend
+                },
+                grid: {
+                    bottom: gridBottom
+                },
+                series: this._getSeries(linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension),
+                xAxis: {
+                    data: _.invoke(dataAxisDimensionCategories, 'get', 'visibleLabel'),
+                    axisLabel: {
+                        width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - gridBottom - this._chartOptions.grid.top)
                     }
-                    var name = self.data.getStringData({ ids: currentPermutation });
-                    serie.data.push({ y: y, name: name });
-                });
-
-                serie.name = columnCategory.get('visibleLabel');
-                if (columnsDimension.get('singleValue')) {
-                    serie.showInLegend = false;
-                    serie.name = "";
-                }
-                listSeries.push(serie);
-            });
-
-            var xaxis = _.invoke(horizontalDimensionCategories, 'get', 'visibleLabel');
-
-            // Changing the options of the chart
-            result.series = listSeries;
-            result.xAxis = xaxis;
-
-            this.processedData = result;
-
-            return result;
+                },
+                dataZoom: this._getDataZooms(gridBottom)
+            };
         },
 
-        getDetailData: function () {
-            var total = this.processedData.xAxis.length;
-            var indexStart = Math.round(total * this.detailZoomModel.get('start'));
-            var indexStop = Math.round(total * this.detailZoomModel.get('stop'));
+        _onHeightUpdated: function () {
+            this._extendChartOptions({
+                xAxis: {
+                    axisLabel: {
+                        width: this._getXAxisLabelWidth(this._getChartDomEl().clientHeight - this._chartOptions.grid.bottom - this._chartOptions.grid.top)
+                    }
+                },
+                dataZoom: this._getDataZooms(
+                    this._chartOptions.grid.bottom,
+                    this.xAxisDataZoomStart,
+                    this.xAxisDataZoomEnd,
+                    this.yAxisDataZoomStart,
+                    this.yAxisDataZoomEnd
+                )
+            });
+            this._updateChartOptions();
+        },
+        
+        _updateChartOptions: function() {
+            this._getChart().setOption(this._chartOptions, true);
+            this._updatePointsVisibility();
+            this._setTooltipObserver();
+        },
 
-            var marginIndexStart = Math.max(0, indexStart - 1);
-            var marginIndexStop = Math.min(total, indexStop + 1);
+        _getDataZooms: function(gridBottom, xAxisDataZoomStart, xAxisDataZoomEnd, yAxisDataZoomStart, yAxisDataZoomEnd) {
+            this.xAxisDataZoomStart = xAxisDataZoomStart || 0;
+            this.xAxisDataZoomEnd = xAxisDataZoomEnd || (
+                this.data.metadata.getTimeDimensions().length > 0 
+                ? Constants.charts.lines.dataZoom.horizontal.end 
+                : Constants.charts.lines.dataZoom.horizontal.partialEnd
+            );
+            this.yAxisDataZoomStart = yAxisDataZoomStart || 0;
+            this.yAxisDataZoomEnd = yAxisDataZoomEnd || Constants.charts.lines.dataZoom.vertical.end;
+            return [
+                {
+                    type: 'slider',
+                    id: Constants.charts.lines.dataZoom.horizontal.id,
+                    xAxisIndex: [0],
+                    showDetail: false,
+                    left: 'center',
+                    height: Constants.charts.lines.dataZoom.horizontal.height,
+                    bottom: 0,
+                    start: this.xAxisDataZoomStart,
+                    end: this.xAxisDataZoomEnd
+                },
+                {
+                    type: 'slider',
+                    id: Constants.charts.lines.dataZoom.vertical.id,
+                    yAxisIndex: [0],
+                    showDetail: false,
+                    right: 0,
+                    width: Constants.charts.lines.dataZoom.vertical.width,
+                    top: Constants.charts.lines.dataZoom.vertical.topMargin,
+                    bottom: gridBottom + Constants.charts.lines.dataZoom.vertical.bottomMargin,
+                    start: this.yAxisDataZoomStart,
+                    end: this.yAxisDataZoomEnd
+                }
+            ];
+        },
 
-            var tickInterval = 1;
-            if (this.filterDimensions.dimensionsAtZone('left').at(0).isTimeDimension()) {
-                var filteredTotal = marginIndexStop - marginIndexStart;
-                tickInterval = Math.ceil(filteredTotal / this.config.xAxisTicks);
+        _getDataAxisDimensionCategories: function (dataAxisDimension) {
+            var selectedTemporalGranularity = dataAxisDimension.get("representations").getSelectedTemporalGranularity();
+            var dataAxisDimensionCategories = dataAxisDimension.get('representations').where({
+                temporalGranularity: selectedTemporalGranularity
+            });
+            dataAxisDimensionCategories = _.sortBy(dataAxisDimensionCategories, function (representation) {
+                return representation.normCode;
+            }).reverse();
+            return dataAxisDimensionCategories;
+        },
+
+        _getLinesDimensionCategories: function (linesDimension) {
+            return this.getDrawableRepresentations(linesDimension);
+        },
+        
+        _getSeries: function (linesDimensionSelectedCategories, linesDimension, dataAxisDimensionCategories, dataAxisDimension) {
+            var series = [];
+
+            var self = this;
+            var fixedPermutation = this.getFixedPermutation();
+            _.each(linesDimensionSelectedCategories, function (linesCategory, i) {
+                // `undefined` is returned in case colors object is empty, so default values are used instead
+                var lineColor = self.data.colors[linesCategory.get('urn')];
+                var serie = {
+                    type: "line",
+                    lineStyle: {
+                        width: 1.5,
+                        color: lineColor
+                    },
+                    silent: true,
+                    itemStyle: {
+                        color: lineColor,
+                        opacity: (self.pointsVisibility ? 1 : 0)
+                    },
+                    symbolSize: Constants.charts.lines.symbol.size,
+                    symbol: 'circle',
+                    animation: false,
+                    name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
+                    emphasis: {
+                        disabled: true // Disabled until this issue is fixed: https://github.com/apache/echarts/issues/19958
+                    },
+                    select: {
+                        disabled: false,
+                        itemStyle: {
+                            color: lineColor,
+                            opacity: 1,
+                            borderWidth: Constants.charts.lines.highlight.point.border.width,
+                            borderColor: Constants.charts.lines.highlight.point.border.color
+                        }
+                    },
+                    selectedMode: 'single',
+                    showAllSymbol: true, // https://github.com/apache/echarts/issues/19608#issuecomment-1937838187 , tooltip and emphasis have problems without this and itemStyle.opacity
+                    data: []
+                };
+
+                _.each(dataAxisDimensionCategories, function (dataAxisCategory, j) {
+                    var currentPermutation = {};
+                    currentPermutation[dataAxisDimension.id] = dataAxisCategory.id;
+                    currentPermutation[linesDimension.id] = linesCategory.id;
+                    _.extend(currentPermutation, fixedPermutation);
+
+                    serie.data.push({
+                        value: dataAxisCategory.get("drawable") ? self.data.getNumberData({ ids: currentPermutation }) : null,
+                        name: 'data-name-' + i + '-' + j, // https://github.com/apache/echarts/issues/15260#issuecomment-870518002
+                        tooltip: {
+                            formatter: _.bind(function (tooltipFormatterParams) {
+                                tooltipFormatterParams.name = this.data.getStringData({ ids: currentPermutation });
+                                return this.getTooltipFormatterFunction(tooltipFormatterParams);
+                            }, self)
+                        }
+                    });
+                });
+
+                series.push(serie);
+            });
+
+            return series;
+        },
+
+        _getExtraExportOptions: function () {
+            return {
+                dataZoom: this._getDataZooms(
+                    0,
+                    this.xAxisDataZoomStart,
+                    this.xAxisDataZoomEnd,
+                    this.yAxisDataZoomStart,
+                    this.yAxisDataZoomEnd
+                ).map(function (datazoom) {
+                    datazoom.show = false;
+                    return datazoom;
+                })
             }
-
-            var result = {
-                series: this.processedData.series,
-                xAxis: this.processedData.xAxis,
-                min: indexStart,
-                max: indexStop - 1,
-                tickInterval: tickInterval
-            };
-            return result;
         }
-
     });
 
 }());

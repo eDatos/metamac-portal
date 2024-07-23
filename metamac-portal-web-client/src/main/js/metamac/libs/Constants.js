@@ -62,6 +62,69 @@
                 OBSERVATION: "OBSERVATION",
                 REPRESENTATION: "REPRESENTATION"
             }
+        },
+
+        charts: {
+            gap: 5,
+            bigGap: 15,
+            dataAxisWidth: 1.5,
+            axis: {
+                fontSize: 11,
+                maxWidth: 190
+            },
+            grid: {
+                horizontalMargin: 15,
+                topMargin: 10
+            },
+            lines: {
+                symbol: {
+                    size: 5
+                },
+                xAxisTicks: 6,
+                dataZoom: {
+                    horizontal: {
+                        id: "xAxisDataZoom",
+                        height: 80,
+                        end: 100,
+                        partialEnd: 48
+                    },
+                    vertical: {
+                        id: "yAxisDataZoom",
+                        width: 80,
+                        bottomMargin: 20,
+                        topMargin: 8,
+                        end: 100
+                    }
+                },
+                highlight: {
+                    point: {
+                        border: {
+                            width: 7,
+                            color: "#ACACAC88"
+                        }
+                    }
+                }
+            },
+            tooltipLines: {
+                tooltip: {
+                    fontSize: 11
+                }
+            },
+            legend: {
+                fontSize: 12,
+                exportFontSize: 10,
+                padding: 5,
+                itemHeight: 15
+            },
+            title: {
+                fontSize: 9
+            },
+            tooltip: {
+                className: 'chart-tooltip',
+                exportClassName: 'export-chart-tooltip',
+                padding: 7,
+                fontSize: 12
+            }
         }
     };
 

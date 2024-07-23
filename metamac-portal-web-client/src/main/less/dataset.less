@@ -340,13 +340,7 @@
     }
             
     .dataset-visualization-visual-element {
-        padding-top: @dimensionsBarTypeDefault;            
-    }
-
-    &.dataset-visualization-type-line {
-        #detail-container {
-            padding-right: 10px;
-        }
+        padding-top: @dimensionsBarTypeDefault;
     }
 }
 
@@ -483,6 +477,11 @@
     .icon-download;
 }
 
+.dataset-options-api-download {
+    .dataset-options-type-icon;
+    .icon-link;
+}
+
 .dataset-options-visualize {
     .dataset-options-type-icon;
     .icon-visualize;
@@ -522,6 +521,39 @@
         }
     }
 
+}
+
+.dataset-api-download {
+    padding: 10px;
+    .dataset-api-resources-format {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .resource-format-label {
+            color: @istacGreyDark;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            align-items: center;
+            span:first-child {
+                font-weight: bold;
+                text-transform: uppercase;
+                min-width: 55px;
+                text-align: center;
+            }
+        }
+    }
+    .dataset-api-download-info {
+        font-size: 13px;
+        color: @istacGreyDark;
+        padding: 15px 0 10px;
+        margin-left: -5px;
+        a {
+            color: @istacGreyDark;
+            text-decoration: underline;
+        }
+    }
 }
 
 .dataset-share {
@@ -644,4 +676,45 @@
         border: 1px solid @istacBlack;
         .box-sizing(border-box);
     }
+}
+
+.chart-tooltip {
+    word-break: break-word;
+    max-width: 300px;
+    padding: 0 !important;
+    transition: none !important;
+
+    .chart-tooltip-container {
+        background: inherit;
+        border-radius: inherit;
+        border-color: inherit;
+        padding: 10px;
+
+        strong {
+            white-space: pre-wrap;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            z-index: -1;
+            background-color: inherit;
+            border-color: inherit;
+            border-width: 1px;
+            border-style: solid;
+            top: var(--top);
+            left: var(--left);
+            transform: rotate(45deg);
+        }
+    }
+}
+
+#export-chart {
+    position: absolute;
+    visibility: hidden;
+    overflow: hidden;
+    height: 0;
+    width: 0;
 }

@@ -93,7 +93,8 @@
                 PERMALINKS_API_URL_BASE = configurationService.retrievePortalExternalApisPermalinksUrlBase();
                 EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
 			}
-			
+
+            request.setAttribute("installationType", INSTALLATION_TYPE);
 			request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
             request.setAttribute("StatisticalVisualizerBase", PORTAL_URL_BASE);
             request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
@@ -110,6 +111,7 @@
             request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
 
 		} catch (MetamacException e) {
+            request.setAttribute("installationType", "error");
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
 		 	request.setAttribute("StatisticalVisualizerBase", "error");
 		 	request.setAttribute("ApiUrlPermalinks", "error");
@@ -280,6 +282,13 @@
        request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
        request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
        request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
+       
+       String faviconUrl = "";
+       String portalStyleHeaderUrl = (String) request.getAttribute("portalStyleHeaderUrl");       
+       if (portalStyleHeaderUrl != null) {
+           faviconUrl = portalStyleHeaderUrl.split("/header.html")[0] + "/../../" + "common/favicon.ico";
+       }
+       request.setAttribute("faviconUrl", faviconUrl);
 
 	%>	
    	<title>${pageTitle}</title>
@@ -299,6 +308,7 @@
   	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   	<meta name="robots" content="index, follow" />
   	<meta name="revisit-after" content="7 days" />
+  	<link rel="icon" type="image/x-icon" href="${faviconUrl}" />
 
     
     <!-- Default styles with low precedece that can be easily overwritten by custom headers -->

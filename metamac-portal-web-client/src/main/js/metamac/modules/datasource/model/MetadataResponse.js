@@ -230,6 +230,7 @@
 
                     if (isGeographic) {
                         representation.normCode = self.getGeographicDimensionNormCode(dimensionValue);
+                        representation.variableElementId = dimensionValue.variableElement ? dimensionValue.variableElement.id : undefined;
                     }
 
                     if (isMeasureDimension) {
@@ -431,6 +432,12 @@
                 return selectedDimValue.decimals;
             }
             return this.getDefaultDecimals();
+        },
+
+        getMaxDecimals: function () {
+            return this.getMeasureDimension().representations.reduce(function (maxValue, representation) {
+                return Math.max(maxValue, representation.decimals);
+            }, 0);
         },
 
         measureUnitForSelection: function (selection) {

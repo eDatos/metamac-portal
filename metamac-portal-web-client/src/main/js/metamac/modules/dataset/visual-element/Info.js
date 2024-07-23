@@ -180,9 +180,10 @@
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,
-                rightsHolder: this._getContextRightsHolder()
-            };
+                rightsHolder: this._getContextRightsHolder(),
+                isDataset: this._isDataset()
 
+            };
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
             scrollGroup.perfectScrollbar();
@@ -219,7 +220,6 @@
                     metadata.hasVersionInfo = !!metadata.nextVersion;
                 }
             }
-
             return metadata;
         },
 
@@ -248,6 +248,10 @@
 
         _isQuery: function () {
             return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
+        },
+
+        _isDataset: function () {
+            return App.Constants.visualization.type.DATASET === this.data.metadata.identifier().type;
         },
 
         _getRelatedResources: function() {

@@ -110,6 +110,7 @@
             this.title = options.title;
             this.rightsHolder = options.rightsHolder;
             this.showRightsHolder = options.showRightsHolder;
+            this.metadata = options.metadata;
 
             this.tooltipDelegate = new App.Map.TooltipDelegate(options);
 
@@ -117,9 +118,15 @@
             this._updateDataClasses = _.debounce(_.bind(this._updateDataClasses, this), 100);
 
             this._defaultMapOptions.tooltip.formatter = _.partial(function (formatter, mapView) {
-                return mapView.tooltipDelegate._getLabelFromNormCode(this.point.code) + ': ' + this.point.value;
+                return mapView.tooltipDelegate._getLabelFromNormCode(this.point.code) + ': ' + this.point.label;
             }, _, this);
             this._defaultMapOptions.chart.events = { load: options.callback, redraw: options.callback };
+
+            this._defaultMapOptions.legend.labelFormatter = function () {
+                var fromString = App.util.NumberFormatter.strNumberToLocalizedString(this.from.toString(), {decimals: options.metadata.getMaxDecimals()});
+                var toString = App.util.NumberFormatter.strNumberToLocalizedString(this.to.toString(), {decimals: options.metadata.getMaxDecimals()});
+                return fromString + " - " + toString;
+            };
         },
 
         events: {
@@ -273,8 +280,17 @@
         },
 
         _getData: function () {
+            var geographicDimension = this._filterDimensions.where({ type: "GEOGRAPHIC_DIMENSION" })[0];
+            var self = this;
             return _.map(_.pairs(this._dataJson), function (item) {
-                return { "code": item[0], "value": item[1].value, "z": item[1].value };
+                var geographicRepresentationId = geographicDimension.get("representations").where({ normCode: item[0] })[0].id;
+                var currentPermutation = self._filterDimensions.models.reduce((dimensionsPermutation, filterDimension) => {
+                    dimensionsPermutation[filterDimension.id] = (filterDimension.get("type") === "GEOGRAPHIC_DIMENSION")
+                        ? geographicRepresentationId
+                        : filterDimension.getDrawableRepresentations()[0].id;
+                    return dimensionsPermutation;
+                }, {});
+                return { "code": item[0], "value": item[1].value, "z": item[1].value, "label": self._data.getStringData({ ids: currentPermutation })};
             });
         },
 
@@ -329,7 +345,7 @@
 
         _generateDataClasses: function () {
             var dataClasses = [];
-            var rangeLimits = this.model.createRangeLimits();
+            var rangeLimits = this.model.createRangeLimits(this.metadata.getMaxDecimals());
             for (var i = 0; i < rangeLimits.length - 1; i++) {
                 dataClasses[i] = { from: rangeLimits[i], to: rangeLimits[i + 1] };
             }
