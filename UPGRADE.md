@@ -8,7 +8,7 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 8.7.2 a 8.7.3-SNAPSHOT
+## 8.7.2 a 9.0.0
 - Se requiere la migración de los permalinks asociados a indicadores para sustituir los valores geográficos por sus elementos de variable asociados.
   Para ello seguir los pasos indicados en el fichero : [etc/changes-from-release/8.7.2/db/common-metadata/postgresql/20240426_helper_mig_permalinks_indicators.sql]
 
