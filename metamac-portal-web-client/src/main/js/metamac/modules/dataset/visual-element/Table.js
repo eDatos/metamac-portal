@@ -40,7 +40,6 @@
             this.tableScrollManager = null;
             this.keyboardManager = null;
 
-            this.dataSource = null;
             this.delegate = null;
 
             if (this.view) { this.view.destroy(); }
@@ -85,7 +84,6 @@
         },
 
         render: function () {
-            this.dataSource = new App.DataSourceDataset({ data: this.data, filterDimensions: this.filterDimensions });
             this.delegate = new App.Table.Delegate();
 
             this.$el.empty();
