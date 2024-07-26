@@ -11,8 +11,7 @@
     <%
         String locale = (String) request.getAttribute("currentLocale");
         String defaultLocale = (String) request.getAttribute("defaultInternationalizationLanguage");
-        String apiKey = (String) request.getAttribute("apiKey");
-    	Helpers helper = new Helpers(locale, defaultLocale, apiKey);
+    	Helpers helper = new Helpers(locale, defaultLocale);
         Integer nodeDepth = (Integer)request.getAttribute("nodeDepth");
         if (nodeDepth == null) {
             nodeDepth = 1;
