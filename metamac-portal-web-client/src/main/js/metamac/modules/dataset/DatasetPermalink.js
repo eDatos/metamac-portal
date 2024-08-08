@@ -41,7 +41,7 @@
             });
         },
 
-        savePermalink: function (content, el) {
+        savePermalink: function (content, el, captchaOptions) {
             var requestFunction = function (url) {
                 return new Promise(function (resolve, reject) {
                     var baseAjaxSettings = {
@@ -61,17 +61,7 @@
                 });
             };
             if (typeof requestWithCaptcha !== 'undefined') {
-                return requestWithCaptcha(
-                    requestFunction,
-                    this.baseUrl(),
-                    {
-                        captchaEl: el,
-                        action: "portal_permalink",
-                        buttonText: I18n.t("captcha.button.text"),
-                        labelText: I18n.t("captcha.label.text"),
-                        withButton: false
-                    }
-                );
+                return requestWithCaptcha(requestFunction, this.baseUrl(), captchaOptions);
             } else {
                 return requestFunction(this.baseUrl());
             }            

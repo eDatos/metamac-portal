@@ -57,7 +57,17 @@
                 this.filterDimensions,
                 dynamicSelectionBuilder.build(),
                 this.isLastVersionSelected());
-            return DatasetPermalink.savePermalink(permalinkContent, this.$el.find("#modal-permalink-captcha")[0]);
+            return DatasetPermalink.savePermalink(permalinkContent, this.$el.find("#modal-permalink-captcha")[0], this._getCaptchaOptions());
+        },
+
+        _getCaptchaOptions: function () {
+            return {
+                captchaEl: this.$el.find("#modal-permalink-captcha")[0],
+                action: "portal_permalink",
+                buttonText: I18n.t("captcha.button.text"),
+                labelText: I18n.t("captcha.label.text"),
+                withButton: false
+            };
         },
 
         isLastVersionSelected: function () {
@@ -149,6 +159,12 @@
             }));
 
             this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
+            if (typeof showCaptcha !== 'undefined') {
+                var captchaOptions = this._getCaptchaOptions();
+                Edatos.UserManagement.getAccount().catch(function () {
+                    showCaptcha(captchaOptions);
+                });
+            }
         },
 
         getExtraDataForSubmit: function () {

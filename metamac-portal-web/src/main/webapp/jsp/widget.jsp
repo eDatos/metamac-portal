@@ -62,7 +62,6 @@
         request.setAttribute("StatisticalVisualizerBase", WebUtils.getPortalBaseUrl());
         request.setAttribute("ApiUrlStatisticalResources", STATISTICAL_RESOURCES_API_URL_BASE);
         request.setAttribute("ApiUrlStructuralResources", WebUtils.getSrmApiBaseUrl());
-        request.setAttribute("ApiUrlCaptcha", WebUtils.getCaptchaExternalApiUrlBase());
         request.setAttribute("ApiUrlPermalinks", PERMALINKS_API_URL_BASE);
         request.setAttribute("ApiUrlExport", WebUtils.getExportApiBaseUrl());
         request.setAttribute("ApiUrlIndicators", WebUtils.getIndicatorsApiBaseUrl());
@@ -156,11 +155,6 @@
         App.endpoints["indicators"] = "${ApiUrlIndicators}/v1.0";
 
         App.start();
-
-        if(${ApiUrlCaptcha != null}) {
-            LazyLoad.js("${ApiUrlCaptcha}/captcha.js");
-        }
-
     });
 </script>
     <script>
