@@ -277,7 +277,7 @@
                     type: 'slider',
                     id: Constants.charts.lines.dataZoom.vertical.id,
                     yAxisIndex: [0],
-                    filterMode: 'empty',
+                    filterMode: 'none',
                     showDetail: false,
                     right: 0,
                     width: Constants.charts.lines.dataZoom.vertical.width,
