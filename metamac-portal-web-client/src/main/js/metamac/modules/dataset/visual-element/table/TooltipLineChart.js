@@ -26,7 +26,7 @@
                 position: 'top',
                 trigger: "item",
                 triggerOn: "none",
-                appendToBody: true,
+                appendTo: this.$el[0],
                 textStyle: {
                     fontSize: Constants.charts.tooltipLines.tooltip.fontSize,
                     color: Constants.colors.istacBlack

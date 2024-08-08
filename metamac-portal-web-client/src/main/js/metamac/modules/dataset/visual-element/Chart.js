@@ -30,6 +30,8 @@
                 $("body").append(this.$exportChartContainer);
             }
             this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
+
+            this._extendChartOptions({ tooltip: { appendTo: this.$chartContainer[0] }});
         },
 
         _initializeChartOptions: function () {
@@ -109,7 +111,6 @@
                     formatter: _.bind(this.getTooltipFormatterFunction, this),
                     className: Constants.charts.tooltip.className,
                     trigger: "item",
-                    appendToBody: true,
                     confine: true,
                     padding: Constants.charts.tooltip.padding,
                     textStyle: {
