@@ -440,7 +440,7 @@
                 return this.getDefaultDecimals();
             }
 
-            return this.getMeasureDimension().representations.reduce(function (maxValue, representation) {
+            return measureDimension.representations.reduce(function (maxValue, representation) {
                 return Math.max(maxValue, representation.decimals);
             }, 0);
         },
