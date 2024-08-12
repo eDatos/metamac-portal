@@ -159,10 +159,10 @@
             }));
 
             this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
-            if (typeof showCaptcha !== 'undefined') {
+            if (typeof Edatos !== 'undefined' && Edatos.captcha) {
                 var captchaOptions = this._getCaptchaOptions();
                 Edatos.UserManagement.getAccount().catch(function () {
-                    showCaptcha(captchaOptions);
+                    Edatos.captcha.showCaptcha(captchaOptions);
                 });
             }
         },

@@ -60,8 +60,8 @@
                     }
                 });
             };
-            if (typeof requestWithCaptcha !== 'undefined') {
-                return requestWithCaptcha(requestFunction, this.baseUrl(), captchaOptions);
+            if (typeof Edatos !== 'undefined' && Edatos.captcha) {
+                return Edatos.captcha.requestWithCaptcha(requestFunction, this.baseUrl(), captchaOptions);
             } else {
                 return requestFunction(this.baseUrl());
             }            
