@@ -17,7 +17,7 @@
 		</c:otherwise>
 	</c:choose>
 </head>
-<body>
+<body class="statistical-visualizer">
 	<!-- begin: #cabecera -->
     <c:choose>
         <c:when test="${!empty portalStyleHeaderUrl}">
