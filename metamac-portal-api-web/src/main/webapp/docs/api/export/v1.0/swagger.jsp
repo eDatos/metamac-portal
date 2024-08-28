@@ -378,7 +378,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -402,7 +402,7 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}${msg['api.doc.swagger.paths.any.post.parameters.filename.plainFile']}"
           },
           {
             "name": "lang",
@@ -447,7 +447,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -516,7 +516,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -579,7 +579,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -636,7 +636,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },         
           {
             "name": "resourceID",
@@ -687,7 +687,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },         
           {
             "name": "indicatorSystemCode",
@@ -795,7 +795,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -858,7 +858,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -915,7 +915,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },          
           {
             "name": "resourceID",
@@ -967,7 +967,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "indicatorSystemCode",
@@ -1025,7 +1025,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -1049,7 +1049,7 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "REVISAR" 
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}${msg['api.doc.swagger.paths.any.post.parameters.filename.plainFile']}"
           },
           {
             "name": "lang",
@@ -1095,7 +1095,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "agencyID",
@@ -1113,7 +1113,7 @@
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "REVISAR" 
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}${msg['api.doc.swagger.paths.any.post.parameters.filename.plainFile']}"
           },
           {
             "name": "lang",
@@ -1159,7 +1159,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "resourceID",
@@ -1217,7 +1217,7 @@
             "name": "jsonBody",
             "in": "formData",
             "type": "string",
-            "description": "REVISAR"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
           },
           {
             "name": "indicatorSystemCode",
