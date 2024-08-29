@@ -35,6 +35,7 @@
     	<c:import charEncoding="UTF-8" url="${apiStyleHeaderUrl}">
     		<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
+    		<c:param name="appId" value="permalinks"/>
     	</c:import>
     </c:if>
     
