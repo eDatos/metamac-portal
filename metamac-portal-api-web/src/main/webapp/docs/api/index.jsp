@@ -37,8 +37,6 @@
   <!-- Some basic translations -->
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lang/translator.js" type='text/javascript'></script>
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lang/<%= locale %>.js" type='text/javascript'></script>
-  
-  <c:set var="apiStyleCssUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleCssUrl()%>" />
 
   <c:if test="${!empty apiStyleCssUrl}">
     <link href="<c:out value='${apiStyleCssUrl}'/>" media='screen' rel='stylesheet' type='text/css' />

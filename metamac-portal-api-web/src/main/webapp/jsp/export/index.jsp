@@ -17,8 +17,6 @@
   <title><%=rs.getString("app.name") %></title>
  
   <link href="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getFavicon()%>" rel="shortcut icon"/>
-  
-  <c:set var="apiStyleCssUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleCssUrl()%>" />
 
   <c:if test="${!empty apiStyleCssUrl}">
     <link href="<c:out value='${apiStyleCssUrl}'/>" media='screen' rel='stylesheet' type='text/css' />
