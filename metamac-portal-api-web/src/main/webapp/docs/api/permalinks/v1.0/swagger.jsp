@@ -240,7 +240,8 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":"${msg['api.doc.swagger.paths.permalinks.id.get.parameters.id']}"
+                  "description":"${msg['api.doc.swagger.paths.permalinks.id.get.parameters.id']}",
+                  "required":true
                }
             ],
             "responses":{
@@ -282,7 +283,8 @@
                   "name":"id",
                   "in":"path",
                   "type":"string",
-                  "description":"${msg['api.doc.swagger.paths.permalinks.id.get.parameters.id']}"
+                  "description":"${msg['api.doc.swagger.paths.permalinks.id.get.parameters.id']}",
+                  "required":true
                }
             ],
             "responses":{

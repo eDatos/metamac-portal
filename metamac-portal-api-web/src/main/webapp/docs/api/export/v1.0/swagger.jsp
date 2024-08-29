@@ -370,6 +370,9 @@
         ],
         "description": "${msg['api.doc.swagger.paths.csv_comma.datasets.agencyID.resourceID.version.post']}",
         "operationId": "resource__v1.0_csv_comma__datasets__agencyID__resourceID__version__exportDatasetToCsvComma_POST",
+        "consumes": [
+           "multipart/form-data"
+        ],
         "produces": [
           "text/csv"
         ],
@@ -384,19 +387,22 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -442,6 +448,9 @@
         "produces": [
           "text/csv"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -453,19 +462,22 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -511,6 +523,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -522,19 +537,22 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -574,6 +592,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -585,13 +606,15 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -631,6 +654,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -642,7 +668,8 @@
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },         
           {
             "name": "filename",
@@ -682,6 +709,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [           
           {
             "name": "jsonBody",
@@ -693,13 +723,15 @@
             "name": "indicatorSystemCode",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },         
           {
             "name": "filename",
@@ -738,6 +770,9 @@
         "operationId": "resource__v1.0_image_exportSvgToImageForm_POST",
         "produces": [
           "application/xml"
+        ],
+        "consumes": [
+           "multipart/form-data"
         ],
         "parameters": [
           {
@@ -790,6 +825,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -801,19 +839,22 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -853,6 +894,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -864,13 +908,15 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -910,6 +956,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -921,7 +970,8 @@
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },        
           {
             "name": "filename",
@@ -962,6 +1012,9 @@
         "produces": [
           "application/xml"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -973,13 +1026,15 @@
             "name": "indicatorSystemCode",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -1020,6 +1075,9 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -1031,19 +1089,22 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -1090,6 +1151,9 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -1101,13 +1165,15 @@
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -1154,6 +1220,9 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -1165,7 +1234,8 @@
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
@@ -1212,6 +1282,9 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
+        "consumes": [
+           "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "jsonBody",
@@ -1223,13 +1296,15 @@
             "name": "indicatorSystemCode",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}"
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
