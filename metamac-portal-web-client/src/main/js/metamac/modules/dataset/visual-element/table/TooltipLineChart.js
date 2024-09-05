@@ -26,6 +26,11 @@
                 position: 'top',
                 trigger: "item",
                 triggerOn: "none",
+                appendTo: this.$el[0],
+                textStyle: {
+                    fontSize: Constants.charts.tooltipLines.tooltip.fontSize,
+                    color: Constants.colors.istacBlack
+                },
                 formatter: _.bind(this.getTooltipFormatterFunction, this)
             },
             animation: false,
@@ -43,7 +48,11 @@
                     }
                 }
             },
-            yAxis: {}
+            yAxis: {
+                axisLabel: {
+                    formatter: this.axisLabelFormatter
+                }
+            }
         };
     };
 
@@ -55,6 +64,10 @@
 
         getTooltipFormatterFunction: function (tooltipFormatterParams) {
             return tooltipFormatterParams.name + '<br/>' + this._chartOptions.xAxis.data[tooltipFormatterParams.dataIndex];
+        },
+
+        axisLabelFormatter: function (value) {
+            return (typeof value === 'number') ? App.util.NumberFormatter.strNumberToLocalizedString(value.toString()) : value;
         },
 
         destroy: function () {
@@ -152,10 +165,11 @@
                     itemStyle: {
                         opacity: self.permutation[self.timeDimension.id] === timeCategory.id
                     },
-                    emphasis: {
+                    select: {
                         itemStyle: {
                             color: Constants.colors.istacGreyDark,
-                            opacity: 1
+                            borderWidth: Constants.charts.lines.highlight.point.border.width,
+                            borderColor: Constants.charts.lines.highlight.point.border.color
                         }
                     }
                 });

@@ -105,6 +105,11 @@
                     }
                 }
             },
+            tooltipLines: {
+                tooltip: {
+                    fontSize: 11
+                }
+            },
             legend: {
                 fontSize: 12,
                 exportFontSize: 10,
