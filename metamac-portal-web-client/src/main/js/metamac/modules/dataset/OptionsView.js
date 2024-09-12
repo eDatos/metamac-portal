@@ -16,7 +16,7 @@
         initialize: function (options) {
             this.data = options.data;
             this.filterDimensions = options.filterDimensions;
-            this.dataSource = new App.DataSourceDataset({data: this.data, filterDimensions: this.filterDimensions});
+            this.dataSource = options.dataSource;
             this.optionsModel = options.optionsModel;
             this.buttons = options.buttons;
 

@@ -355,7 +355,7 @@
                         name: 'data-name-' + i + '-' + j, // https://github.com/apache/echarts/issues/15260#issuecomment-870518002
                         tooltip: {
                             formatter: _.bind(function (tooltipFormatterParams) {
-                                tooltipFormatterParams.name = this.data.getStringData({ ids: currentPermutation });
+                                tooltipFormatterParams.name = this.data.getStringData({ ids: currentPermutation }) + " " + this._getDataUnit(currentPermutation);
                                 return this.getTooltipFormatterFunction(tooltipFormatterParams);
                             }, self)
                         }
