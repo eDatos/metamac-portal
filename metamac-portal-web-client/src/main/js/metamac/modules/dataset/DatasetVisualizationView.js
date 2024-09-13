@@ -10,6 +10,7 @@
         initialize: function (options) {
             this.container = options.container;
             this.data = options.data;
+            this.dataSource = options.dataSource;
             this.metadata = options.metadata;
             this.data.colors = {};
 
@@ -29,7 +30,8 @@
                 filterDimensions: this.filterDimensions,
                 animation: this.options.animation,
                 optionsModel: this.optionsModel,
-                metadata: this.metadata
+                metadata: this.metadata,
+                dataSource: this.dataSource
             };
             this.ve = {
                 info: new App.VisualElement.Info(options),
