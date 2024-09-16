@@ -8,6 +8,14 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
+## 9.1.0 a 9.1.1-SNAPSHOT
+
+### Breaking changes
+
+* A partir de esta vesión se utiliza la nueva forma de acceder a los métodos del captcha. Por lo tanto, edatos-external-users, donde se encuentra centralizado el comportamiento del captcha, debería estar actualizado al menos a la versión 2.3.2-SNAPSHOT. 
+  
+  Hasta ahora se accedía con métodos globales pero ahora esos métodos se encuentran dentro del objeto `Edatos.captcha`. Más información sobre todo lo relacionado con el captcha aquí: https://confluence.arte.dev/display/ISTAC/Consumir+del+captcha .
+
 ## 8.7.2 a 9.0.0
 - Se requiere la migración de los permalinks asociados a indicadores para sustituir los valores geográficos por sus elementos de variable asociados.
   Para ello seguir los pasos indicados en el fichero : [etc/changes-from-release/8.7.2/db/common-metadata/postgresql/20240426_helper_mig_permalinks_indicators.sql]
