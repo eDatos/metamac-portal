@@ -40,10 +40,6 @@
   <!-- Some basic translations -->
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lang/translator.js" type='text/javascript'></script>
   <script src="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/lang/<%= locale %>.js" type='text/javascript'></script>
-
-  <c:if test="${!empty apiStyleCssUrl}">
-    <link href="<c:out value='${apiStyleCssUrl}'/>" media='screen' rel='stylesheet' type='text/css' />
-  </c:if>
   
   <style>
     .swagger-section .swagger-ui-wrap table.fullwidth {
