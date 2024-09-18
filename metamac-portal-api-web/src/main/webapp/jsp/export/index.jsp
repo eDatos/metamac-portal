@@ -21,10 +21,6 @@
  
   <link href="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getFavicon()%>" rel="shortcut icon"/>
 
-  <c:if test="${!empty apiStyleCssUrl}">
-    <link href="<c:out value='${apiStyleCssUrl}'/>" media='screen' rel='stylesheet' type='text/css' />
-  </c:if>
-  
 </head>
 <body>
     <c:set var="apiStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleHeaderUrl()%>" />
