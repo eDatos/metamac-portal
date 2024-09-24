@@ -57,7 +57,7 @@
                 this.filterDimensions,
                 dynamicSelectionBuilder.build(),
                 this.isLastVersionSelected());
-            return DatasetPermalink.savePermalink(permalinkContent, this.$el.find("#modal-permalink-captcha")[0]);
+            return DatasetPermalink.savePermalink(permalinkContent, this.$el.find("#modal-permalink-captcha")[0], this._captchaOptions);
         },
 
         isLastVersionSelected: function () {
@@ -148,7 +148,21 @@
                 dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes })
             }));
 
+            this._captchaOptions = {
+                captchaEl: this.$el.find("#modal-permalink-captcha")[0],
+                action: "portal_permalink",
+                buttonText: I18n.t("captcha.button.text"),
+                labelText: I18n.t("captcha.label.text"),
+                withButton: false
+            };
+
             this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
+            if (typeof Edatos !== 'undefined' && Edatos.captcha) {
+                var self = this;
+                Edatos.UserManagement.getAccount().catch(function () {
+                    Edatos.captcha.showCaptcha(self._captchaOptions);
+                });
+            }
         },
 
         getExtraDataForSubmit: function () {
