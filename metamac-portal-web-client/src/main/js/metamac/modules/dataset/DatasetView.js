@@ -20,6 +20,10 @@
             this.filterDimensions = options.filterDimensions;
             this.metadata = options.metadata;
             this.data = options.data;
+            this.dataSource = new App.DataSourceDataset({
+                data: this.data,
+                filterDimensions: this.filterDimensions
+            });
 
             this.optionsModel = new App.modules.dataset.OptionsModel({
                 widget: App.config.widget,
@@ -50,7 +54,8 @@
                 data: this.data,
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
-                buttons: this.visualElements
+                buttons: this.visualElements,
+                dataSource: this.dataSource
             });
 
             // visualization
@@ -60,7 +65,8 @@
                 optionsModel: this.optionsModel,
                 veElements: this.visualElements,
                 optionsView: this.optionsView,
-                metadata: this.metadata
+                metadata: this.metadata,
+                dataSource: this.dataSource
             });
 
             this.dimensionsView = new App.modules.dataset.DimensionsView({

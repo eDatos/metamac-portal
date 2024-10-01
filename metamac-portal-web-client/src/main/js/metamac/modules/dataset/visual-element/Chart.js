@@ -127,6 +127,14 @@
             return '<div class="chart-tooltip-container" style="max-width: ' + this.$chartContainer.width() + 'px"><strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name + '</div>';
         },
 
+        _getDataUnit: function (permutation) {
+            var attributes = this.data.getDataById(permutation).attributes;
+            return App.DimensionsUtils.getUnitMultiplierAndUnitMeasureLabel(
+                this.dataSource.formatMeasureUnit(permutation, attributes.dimensionsAttributes),
+                this.dataSource.formatUnitMultiplier(permutation, attributes.dimensionsAttributes)
+            );
+        },
+
         axisLabelFormatter: function (value) {
             return (typeof value === 'number') ? App.util.NumberFormatter.strNumberToLocalizedString(value.toString()) : value;
         },

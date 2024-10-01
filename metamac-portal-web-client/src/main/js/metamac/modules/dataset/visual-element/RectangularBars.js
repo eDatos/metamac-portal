@@ -235,7 +235,7 @@
 
                     serie.data.push({
                         value: self.data.getNumberData({ ids: currentPermutation }),
-                        name: self.data.getStringData({ ids: currentPermutation }),
+                        name: self.data.getStringData({ ids: currentPermutation }) + " " + self._getDataUnit(currentPermutation),
                         itemStyle: {
                             // `undefined` is returned in case colors object is empty, so default values are used instead
                             color: (columnsDimensionSelectedCategories.length === 1)  ? self.data.colors[dataAxisCategory.get('urn')] : undefined

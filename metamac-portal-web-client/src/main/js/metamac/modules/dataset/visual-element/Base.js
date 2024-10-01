@@ -14,6 +14,7 @@
         initialize: function (options) {
             options = options || {};
             this.data = options.data;
+            this.dataSource = options.dataSource;
             this.metadata = options.metadata;
 
             this.filterOptions = options.filterOptions; //deprecated
