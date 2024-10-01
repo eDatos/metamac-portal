@@ -8,9 +8,9 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 9.1.0 a 9.1.1-SNAPSHOT
+## 9.1.0 a 9.2.0
 
-* A partir de esta vesión se utiliza la nueva forma de acceder a los métodos del captcha. Por lo tanto, edatos-external-users, donde se encuentra centralizado el comportamiento del captcha, debería estar actualizado al menos a la versión 2.3.2-SNAPSHOT. 
+* A partir de esta vesión se utiliza la nueva forma de acceder a los métodos del captcha. Por lo tanto, edatos-external-users, donde se encuentra centralizado el comportamiento del captcha, debería estar actualizado al menos a la versión 3.0.0. 
 
 ## 8.7.2 a 9.0.0
 - Se requiere la migración de los permalinks asociados a indicadores para sustituir los valores geográficos por sus elementos de variable asociados.
