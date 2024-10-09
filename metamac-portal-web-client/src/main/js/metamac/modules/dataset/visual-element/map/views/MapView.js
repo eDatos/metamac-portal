@@ -396,7 +396,7 @@
 
         _getCenteredAndZoomedCoords: function () {
             if (!this.boundingCoords) {
-                this.boundingCoords = this._getMinMaxCoordinates(this.mapData || this.baseMapData);
+                this.boundingCoords = this._getMinMaxCoordinates(this.baseMapData);
             }
             return this.boundingCoords;
         },
