@@ -16,6 +16,7 @@
                 .replace(/<text([^>]*text-anchor="start"[^>]*)y="([0-9.]+)"/g, function (match, otherAttributes, yValue) {
                     return '<text' + otherAttributes + 'y="' + (+yValue + 2) + '"';
                 })
+                .replaceAll(" fill=\"transparent\"", " fill=\"none\"");
             return svg;
         },
 
