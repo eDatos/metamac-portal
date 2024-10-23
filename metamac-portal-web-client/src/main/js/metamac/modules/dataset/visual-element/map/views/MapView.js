@@ -8,6 +8,10 @@
 
     App.Map.MapView = Backbone.View.extend(new App.VisualElement.Chart()).extend({
 
+        BASE_MAP_FEATURE_ID_PREFIX: "BASE.",
+        CONTAINER_MAP_FEATURE_ID_PREFIX: "CONTAINER.",
+        DATA_MAP_FEATURE_ID_PREFIX: "DATA.",
+
         initialize: function (options) {
             this._initializeChartVisualElement(options);
 
@@ -132,7 +136,7 @@
             // Also, before this condition we were showing mapData the same color as baseMapData for the bubble chart, so visually it is the same as before.
             // Therefore, we can avoid the additional calculation and simply display the basemap.
             if (this.mapType === "map") {
-                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
+                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson, this.DATA_MAP_FEATURE_ID_PREFIX), data);
                 echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
             } else {
                 echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
@@ -216,10 +220,10 @@
 
             var data = this._getData(geoJson);
 
-            this.baseMapData = this._getMapDataFromGeoJson(baseGeoJson);
-            this.containerMapData = this._getMapDataFromGeoJson(containerGeoJson);
+            this.baseMapData = this._getMapDataFromGeoJson(baseGeoJson, this.BASE_MAP_FEATURE_ID_PREFIX);
+            this.containerMapData = this._getMapDataFromGeoJson(containerGeoJson, this.CONTAINER_MAP_FEATURE_ID_PREFIX);
             if (this.mapType === "map") {
-                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
+                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson, this.DATA_MAP_FEATURE_ID_PREFIX), data);
                 echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
             } else {
                 echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
@@ -373,7 +377,7 @@
 
                 data.push({
                     value: (self.mapType === 'mapbubble') ? [...self._geOptimalCoordsForBubble(feature), dataValue] : dataValue,
-                    name: dataNormCode,
+                    name: self.DATA_MAP_FEATURE_ID_PREFIX + dataNormCode,
                     tooltip: {
                         show: true,
                         formatter: function () {
@@ -386,10 +390,11 @@
             }, []);
         },
 
-        _getMapDataFromGeoJson: function (geoJson) {
-            geoJson.features = _.map(geoJson.features, function (item) {
-                item.properties.name = item.id;
-                return item;
+        _getMapDataFromGeoJson: function (geoJson, featureIdPrefix) {
+            geoJson.features = _.map(geoJson.features, function (feature) {
+                feature.id = featureIdPrefix + feature.id;
+                feature.properties.name = feature.id;
+                return feature;
             });
             return geoJson;
         },
