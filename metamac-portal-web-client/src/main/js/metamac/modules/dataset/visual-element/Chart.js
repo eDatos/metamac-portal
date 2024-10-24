@@ -214,7 +214,7 @@
             App.util.ObjectUtils.deepExtend(this._chartOptions, options);
         },
 
-        _setTooltipObserver: function () { // HERE
+        _setTooltipObserver: function () {
             this.tooltipEl = document.querySelector('.chart-tooltip');
             var self = this;
             this.tooltipObserver = new MutationObserver(function () {
