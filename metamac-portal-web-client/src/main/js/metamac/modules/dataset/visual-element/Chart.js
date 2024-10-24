@@ -290,8 +290,7 @@
                 height: this._getExportChartHeight()
             });
 
-            var dataUrl = decodeURIComponent(this.exportChart.getDataURL());
-            return dataUrl.substring(dataUrl.indexOf("<svg"));
+            return this.$exportChartContainer[0].querySelector("svg").outerHTML;
         },
 
         _getExportChartHeight: function () {
