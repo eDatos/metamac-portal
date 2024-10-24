@@ -214,7 +214,7 @@
             App.util.ObjectUtils.deepExtend(this._chartOptions, options);
         },
 
-        _setTooltipObserver: function () {
+        _setTooltipObserver: function () { // HERE
             this.tooltipEl = document.querySelector('.chart-tooltip');
             var self = this;
             this.tooltipObserver = new MutationObserver(function () {
@@ -226,18 +226,22 @@
                 var chartRight = chartLeft + self._getChartDomEl().getBoundingClientRect().width;
                 var safeDistanceToCorner = 8;
 
+                var arrowLeft;
                 if ((self.coordsTooltipPointsTo[0] - safeDistanceToCorner) < chartLeft) {
                     arrowLeft = safeDistanceToCorner;
                 } else if ((self.coordsTooltipPointsTo[0] + safeDistanceToCorner) > chartRight) {
                     arrowLeft = tooltipRight - tooltipLeft - safeDistanceToCorner;
                 } else {
-                    var arrowLeft = Math.min(tooltipRight, Math.max(self.coordsTooltipPointsTo[0], tooltipLeft)) - tooltipLeft;
+                    arrowLeft = Math.min(tooltipRight, Math.max(self.coordsTooltipPointsTo[0], tooltipLeft)) - tooltipLeft;
                 }
+                arrowLeft = arrowLeft - 5 - (arrowLeft === (tooltipRight - tooltipLeft)) + (arrowLeft === 0);
+
                 var arrowTop = Math.min(tooltipBottom, Math.max(self.coordsTooltipPointsTo[1], tooltipTop)) - tooltipTop;
+                arrowTop = arrowTop - 6 - (arrowTop === (tooltipBottom - tooltipTop)) + (arrowTop === 0);
 
                 var tooltipContainer = self.tooltipEl.getElementsByClassName("chart-tooltip-container")[0];
-                tooltipContainer.style.setProperty('--left', (arrowLeft - 3) + 'px');
-                tooltipContainer.style.setProperty('--top', (arrowTop - 5) + 'px');
+                tooltipContainer.style.setProperty('--left', Math.round(arrowLeft) + 'px');
+                tooltipContainer.style.setProperty('--top', Math.round(arrowTop) + 'px');
             });
             this.tooltipObserver.observe(this.tooltipEl, {childList: true, attributes: true, attributeFilter: ['style']});
         },
