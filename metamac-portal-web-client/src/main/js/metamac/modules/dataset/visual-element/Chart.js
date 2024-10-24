@@ -237,7 +237,7 @@
                 arrowLeft = arrowLeft - 5 - (arrowLeft === (tooltipRight - tooltipLeft)) + (arrowLeft === 0);
 
                 var arrowTop = Math.min(tooltipBottom, Math.max(self.coordsTooltipPointsTo[1], tooltipTop)) - tooltipTop;
-                arrowTop = arrowTop - 6 - (arrowTop === (tooltipBottom - tooltipTop)) + (arrowTop === 0);
+                arrowTop = arrowTop - 5 - (arrowTop === (tooltipBottom - tooltipTop)) + (arrowTop === 0);
 
                 var tooltipContainer = self.tooltipEl.getElementsByClassName("chart-tooltip-container")[0];
                 tooltipContainer.style.setProperty('--left', Math.round(arrowLeft) + 'px');
