@@ -28,7 +28,8 @@ public class CaptchaFilter implements RequestHandler {
     @Autowired
     private PortalConfiguration portalConfiguration;
 
-    RestTemplate                restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate        restTemplate;
 
     @Override
     public Response handleRequest(Message m, ClassResourceInfo resourceClass) {

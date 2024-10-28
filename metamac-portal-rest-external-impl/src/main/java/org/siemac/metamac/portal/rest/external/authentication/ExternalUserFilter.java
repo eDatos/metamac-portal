@@ -30,7 +30,8 @@ public class ExternalUserFilter implements RequestHandler {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalUserFilter.class);
     private static final String AUTH_COOKIE_NAME = "authenticationtoken";
 
-    RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Context
     private HttpServletRequest  request;
