@@ -181,8 +181,8 @@
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,
                 rightsHolder: this._getContextRightsHolder(),
-                isDataset: this._isDataset()
-
+                apiDownloadMessage: this._getApiDownloadMessage(),
+                selectionApiDownloadMessage: this._getApiDownloadMessage(true)
             };
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
@@ -252,6 +252,24 @@
 
         _isDataset: function () {
             return App.Constants.visualization.type.DATASET === this.data.metadata.identifier().type;
+        },
+
+        _getApiDownloadMessage: function(selection) {
+            var formats = this._getApiDownloadFormats();
+            var formatExample = formats.indexOf(",") !== -1 ? formats.substring(0, formats.indexOf(",")) : formats;
+            return selection ? 
+                I18n.t("entity.dataset.selectionApiUrl.apiDownload", { formats: formats, formatExampleLowercase: formatExample.toLowerCase() }) 
+                : I18n.t("entity.dataset.apiUrl.apiDownload", { formats: formats, formatExample: formatExample, formatExampleLowercase: formatExample.toLowerCase() });
+        },
+
+        _getApiDownloadFormats: function() {
+            if (this._isQuery()) {
+                return "XML, JSON, JSONSTAT";
+            } else if (this._isIndicator()) {
+                return "JSONSTAT";
+            } else {
+                return "CSV, TSV, XLSX, XML, JSON, JSONSTAT";
+            }
         },
 
         _getRelatedResources: function() {

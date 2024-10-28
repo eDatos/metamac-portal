@@ -94,7 +94,6 @@
             var fullScreenActive = this.isFullScreen();
             var filterActive = this.isFilter();
             var optionsEnabled = this.isOptions();
-            var isDataset = this.filterDimensions.metadata.datasourceIdentifier.identifier.type === App.Constants.visualization.type.DATASET;
 
             if (optionsEnabled) {
                 var buttons = this.buttons;
@@ -114,7 +113,6 @@
                         active: filterActive,
                         btnClass: filterActive ? 'active' : ''
                     },
-                    apiDownload: isDataset,
                     fullScreen: {
                         visible: fullScreenVisible,
                         active: fullScreenActive,
@@ -323,6 +321,7 @@
             modalContentView = new App.modules.dataset.DatasetApiDownloadView({
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
+                visualizationType: this.filterDimensions.metadata.datasourceIdentifier.identifier.type,
                 onClickInfoLink: function () {
                     if (self.isFilter()) {
                         $(document).trigger('closeFilter');

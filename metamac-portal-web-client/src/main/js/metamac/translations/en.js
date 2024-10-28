@@ -254,11 +254,11 @@ I18n.translations.en = {
             apiDocumentationUrl: "API documentation access",
             apiUrl: {
                 title: "API access to the resource",
-                apiDownload: "The resource can be obtained in the following formats: CSV, TSV, XLSX, XML, JSON and JSONSTAT. To build the API call, just add the format to the end of the URL. For example, to build the call in CSV format it would be done as follows: URL.csv"
+                apiDownload: "The resource can be obtained in the following formats: {{formats}}. To build the API call, just add the format to the end of the URL. For example, to build the call in {{formatExample}} format it would be done as follows: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Access to the current selection in the API",
-                apiDownload: "The selection can also be obtained in different formats (CSV, TSV, XLSX, XML, JSON and JSONSTAT). In this case, to build the API call it must be taken into account that the format must be indicated before passing the parameters, for example: URL.csv?PARAMETERS"
+                apiDownload: "The selection can also be obtained in different formats ({{formats}}). In this case, to build the API call it must be taken into account that the format must be indicated before passing the parameters, for example: URL.{{formatExampleLowercase}}?PARAMETERS"
             },
             nextVersion: {
                 title: "Next update",
