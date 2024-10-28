@@ -15,6 +15,7 @@ import org.apache.cxf.jaxrs.ext.RequestHandler;
 import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.message.Message;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.HttpClientErrorException;
@@ -27,9 +28,6 @@ public class CaptchaFilter implements RequestHandler {
 
     @Autowired
     private PortalConfiguration portalConfiguration;
-
-    @Autowired
-    private RestTemplate        restTemplate;
 
     @Override
     public Response handleRequest(Message m, ClassResourceInfo resourceClass) {
@@ -53,6 +51,7 @@ public class CaptchaFilter implements RequestHandler {
             URI url = urlBuilder.build();
 
             try {
+                RestTemplate restTemplate = ApplicationContextProvider.getApplicationContext().getBean(RestTemplate.class);
                 restTemplate.getForEntity(url, Object.class);
                 return null;
             } catch (HttpClientErrorException e) {
