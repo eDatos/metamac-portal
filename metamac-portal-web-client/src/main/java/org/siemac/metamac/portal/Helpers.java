@@ -225,9 +225,9 @@ public class Helpers {
         return multidataset;
     }
 
-    public static RestTemplate getRestTemplate() {
+    private static RestTemplate getRestTemplate() {
         if (restTemplate == null) {
-            RestTemplate restTemplate = new RestTemplate();
+            restTemplate = new RestTemplate();
             for (HttpMessageConverter<?> messageConverter : restTemplate.getMessageConverters()) {
                 if (messageConverter instanceof MappingJacksonHttpMessageConverter) {
                     ((MappingJacksonHttpMessageConverter) messageConverter).getObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
