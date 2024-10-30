@@ -134,7 +134,7 @@
                         if (!window.location.hash.includes(result.permalink.hash)) {
                             self.visualizationView.optionsModel.set('mustApplyVisualizationRestrictions', true);
                         }
-                    } else if (datasetIdentifier.geo && self.filterDimensions.where({ type: "GEOGRAPHIC_DIMENSION" })?.length !== 0) {
+                    } else if (datasetIdentifier.geo) {
                         self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
                     }
                     deferred.resolve();
