@@ -13,7 +13,8 @@
             this.filterDimensions = this.options.filterDimensions;
             this.optionsModel = this.options.optionsModel;
             this.onClickInfoLink = this.options.onClickInfoLink;
-            this.visualizationType = this.options.visualizationType;
+            this.identifierType = this.options.identifierType;
+            this.visualizationType = this.optionsModel.get('type');
         },
         events: {
             "click .button-link": "clickInfoLink",
@@ -25,27 +26,27 @@
                     {
                         format: 'csv',
                         href: this._buildEndpoint('csv'),
-                        show: this.visualizationType === App.Constants.visualization.type.DATASET
+                        show: this.identifierType === App.Constants.visualization.type.DATASET
                     },
                     {
                         format: 'tsv',
                         href: this._buildEndpoint('tsv'),
-                        show: this.visualizationType === App.Constants.visualization.type.DATASET
+                        show: this.identifierType === App.Constants.visualization.type.DATASET
                     },
                     {
                         format: 'xlsx',
                         href: this._buildEndpoint('xlsx'),
-                        show: this.visualizationType === App.Constants.visualization.type.DATASET
+                        show: this.identifierType === App.Constants.visualization.type.DATASET
                     },
                     {
                         format: 'xml',
                         href: this._buildEndpoint('xml'),
-                        show: this.visualizationType === App.Constants.visualization.type.DATASET || this.visualizationType === App.Constants.visualization.type.QUERY
+                        show: this.identifierType === App.Constants.visualization.type.DATASET || this.identifierType === App.Constants.visualization.type.QUERY
                     },
                     {
                         format: 'json',
                         href: this._buildEndpoint('json'),
-                        show: this.visualizationType === App.Constants.visualization.type.DATASET || this.visualizationType === App.Constants.visualization.type.QUERY
+                        show: this.identifierType === App.Constants.visualization.type.DATASET || this.identifierType === App.Constants.visualization.type.QUERY
                     },
                     {
                         format: 'jsonstat',

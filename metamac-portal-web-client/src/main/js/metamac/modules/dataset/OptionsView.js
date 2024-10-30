@@ -321,7 +321,7 @@
             modalContentView = new App.modules.dataset.DatasetApiDownloadView({
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
-                visualizationType: this.filterDimensions.metadata.datasourceIdentifier.identifier.type,
+                identifierType: this.filterDimensions.metadata.datasourceIdentifier.identifier.type,
                 onClickInfoLink: function () {
                     if (self.isFilter()) {
                         $(document).trigger('closeFilter');
