@@ -27,16 +27,22 @@
 
         initializeHierarchy: function () {
             var hasHierarchy = false;
+            let originalLevel = this.models[0].get('level');
+            let hasDifferentLevels = false;
+
             var modelsSortedByLevelReversed = _.sortBy(this.models, function (representation) {
+                hasDifferentLevels = originalLevel !== representation.get('level') || hasDifferentLevels;
                 return representation.get('level');
             }).reverse();
 
             _.each(modelsSortedByLevelReversed, function (representation) {
-                var children = this.where({ parent: representation.id });
-                if (children.length) {
-                    hasHierarchy = true;
-                    representation.initChildren(children);
-                    representation._onChangeOpenInit();
+                if (hasDifferentLevels) {
+                    var children = this.where({parent: representation.id});
+                    if (children.length) {
+                        hasHierarchy = true;
+                        representation.initChildren(children);
+                        representation._onChangeOpenInit();
+                    }
                 } else {
                     representation.initNodesWithoutChildren();
                 }
