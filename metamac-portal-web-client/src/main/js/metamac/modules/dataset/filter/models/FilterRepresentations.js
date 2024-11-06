@@ -31,6 +31,7 @@
 
             const self = this;
             const modelsSortedByLevelReversed = _.sortBy(this.models, function (representation) {
+                // updating this here is ugly, but efficient
                 self.hasHierarchy = originalLevel !== representation.get('level') || self.hasHierarchy;
                 return representation.get('level');
             }).reverse();
