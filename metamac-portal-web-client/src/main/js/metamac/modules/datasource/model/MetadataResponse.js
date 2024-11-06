@@ -12,7 +12,6 @@
         initialize: function (options) {
             this.datasourceIdentifier = options.datasourceIdentifier;
             this.datasourceHelper = options.datasourceHelper;
-            this.representationsObj = {};
             this.parse(options.response);
         },
 
@@ -176,7 +175,7 @@
             return null;
         },
 
-        _getMemoizedRepresentations(dimension, self) {
+        getMemoizedRepresentations: _.memoize(function (dimension, self) {
             var isMeasureDimension = dimension.type === "MEASURE_DIMENSION";
             var isGeographic = dimension.type === "GEOGRAPHIC_DIMENSION";
             var isTemporal = dimension.type === 'TIME_DIMENSION';
@@ -232,33 +231,23 @@
                 }
                 return representation;
             });
-        },
-
-        getMemoizedRepresentations(dimension, self) {
-            if (this.representationsObj[dimension.id]) {
-                return this.representationsObj[dimension.id];
-            }
-
-            const getMemoizedRepresentations = this._getMemoizedRepresentations(dimension, self);
-            this.representationsObj[dimension.id] = getMemoizedRepresentations;
-            return getMemoizedRepresentations;
-        },
+        }, function (dimension) {
+            // memoize hasher, sets key for memoization
+            return dimension.id;
+        }),
 
         getRepresentations: function (dimensionId) {
-            var self = this;
             if (!this.metadata.dimensions) { return; }
             var dimensions = this.metadata.dimensions.dimension;
             var dimension = _.findWhere(dimensions, { id: dimensionId });
-            var representations = [];
 
             if (dimension && dimension.dimensionValues) {
-                representations = this.getMemoizedRepresentations(dimension, self);
-
-                //sort
-                var hasHierarchy = self._dimensionHasHierarchy(dimension);
-                representations = hasHierarchy ? self._sortHierarchyRepresentations(representations) : representations;
+                let representations = this.getMemoizedRepresentations(dimension, this);
+                const hasHierarchy = this._dimensionHasHierarchy(dimension);
+                return hasHierarchy ? this._sortHierarchyRepresentations(representations) : representations;
             }
-            return representations;
+
+            return [];
         },
 
         getRepresentationsForAttributeDimension: function (attributeId) {
