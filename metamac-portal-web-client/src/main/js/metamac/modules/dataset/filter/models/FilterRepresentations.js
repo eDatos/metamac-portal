@@ -26,20 +26,19 @@
         },
 
         initializeHierarchy: function () {
-            var hasHierarchy = false;
+            this.hasHierarchy = false;
             let originalLevel = this.models[0].get('level');
-            let hasDifferentLevels = false;
 
-            var modelsSortedByLevelReversed = _.sortBy(this.models, function (representation) {
-                hasDifferentLevels = originalLevel !== representation.get('level') || hasDifferentLevels;
+            const self = this;
+            const modelsSortedByLevelReversed = _.sortBy(this.models, function (representation) {
+                self.hasHierarchy = originalLevel !== representation.get('level') || self.hasHierarchy;
                 return representation.get('level');
             }).reverse();
 
             _.each(modelsSortedByLevelReversed, function (representation) {
-                if (hasDifferentLevels) {
+                if (self.hasHierarchy) {
                     var children = this.where({parent: representation.id});
                     if (children.length) {
-                        hasHierarchy = true;
                         representation.initChildren(children);
                         representation._onChangeOpenInit();
                     }
@@ -47,7 +46,6 @@
                     representation.initNodesWithoutChildren();
                 }
             }, this);
-            this.hasHierarchy = hasHierarchy;
         },
 
         _updateDrawables: function () {
