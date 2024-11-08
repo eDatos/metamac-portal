@@ -162,7 +162,7 @@
         },
 
         getDrawableRepresentations: function () {
-            return this.where({ drawable: true });
+            return this.filter(representation => representation.get("drawable"));
         },
 
         updateDrawablesBySelectedLevel: function () {
@@ -185,7 +185,7 @@
             }
 
             _.invoke(this.models, 'set', { drawable: false }, { silent: true });
-            _.invoke(this.getSelectedRepresentationsByCurrentGranularity(), 'set', { drawable: true });
+            _.invoke(this.getSelectedRepresentationsByCurrentGranularity(), 'set', { drawable: true }, { silent: true });
             this.trigger("change:drawable");
         },
 

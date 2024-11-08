@@ -31,15 +31,6 @@
                     }
                 },
                 axisLabel: {
-                    interval: function (categoryIndex) {
-                        if (self._getChart()) {
-                            var dataZoom = self._getChart().getOption().dataZoom[0];
-                            var interval = Math.ceil((dataZoom.endValue - dataZoom.startValue + 1) / Constants.charts.lines.xAxisTicks);
-                            return ((categoryIndex - dataZoom.startValue) % interval) === 0;
-                        } else {
-                            return true;
-                        }
-                    },
                     align: 'right',
                     rotate: 70,
                     verticalAlign: "top",
@@ -131,9 +122,9 @@
             this.$el.append(this.$title);
 
             this._initializeChart();
-            App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
             var self = this;
             this._getChart().on('datazoom', function (params) {
+                App.util.ChartsUtils._triggerTooltipOnClosestItem(self._getChart());
                 if (params.dataZoomId === Constants.charts.lines.dataZoom.horizontal.id) {
                     self.xAxisDataZoomStart = params.start;
                     self.xAxisDataZoomEnd = params.end;
@@ -248,6 +239,7 @@
         
         _updateChartOptions: function() {
             this._getChart().setOption(this._chartOptions, true);
+            App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
             this._updatePointsVisibility();
             this._setTooltipObserver();
         },
