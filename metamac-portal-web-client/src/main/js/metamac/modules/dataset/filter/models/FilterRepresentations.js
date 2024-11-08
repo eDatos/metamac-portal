@@ -27,7 +27,7 @@
 
         initializeHierarchy: function () {
             this.hasHierarchy = false;
-            let originalLevel = this.models[0].get('level');
+            let originalLevel = this.models[0]?.get('level');
 
             const self = this;
             const modelsSortedByLevelReversed = _.sortBy(this.models, function (representation) {
