@@ -63,6 +63,7 @@
         },
 
         formatUrl: function() {
+            //https://css-tricks.com/better-line-breaks-for-long-urls/
             var urls = $('.url', this.$el);
             $.each(urls, function( k, url ) {
                 var doubleSlash = url.innerHTML.split('//');
@@ -75,7 +76,7 @@
                     // Before and after an equals sign or ampersand
                     .replace(/(?<beforeAndAfter>[=&])/giu, '<wbr>$1<wbr>')
                   // Reconnect the strings with word break opportunities after double slashes
-                  ).join('//<wbr>');
+                ).join('//<wbr>');
                 return (url.innerHTML = `${formatted}<br>`);
             });
         },
