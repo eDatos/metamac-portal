@@ -254,10 +254,10 @@
             return App.Constants.visualization.type.DATASET === this.data.metadata.identifier().type;
         },
 
-        _getApiDownloadMessage: function(selection) {
+        _buildApiDownloadMessage: function(isSelection) {
             var formats = this._getApiDownloadFormats();
             var formatExample = formats.indexOf(",") !== -1 ? formats.substring(0, formats.indexOf(",")) : formats;
-            return selection ? 
+            return isSelection? 
                 I18n.t("entity.dataset.selectionApiUrl.apiDownload", { formats: formats, formatExampleLowercase: formatExample.toLowerCase() }) 
                 : I18n.t("entity.dataset.apiUrl.apiDownload", { formats: formats, formatExample: formatExample, formatExampleLowercase: formatExample.toLowerCase() });
         },
