@@ -11,7 +11,7 @@
 		},
 		formatUrl: function (url) {
 			//https://css-tricks.com/better-line-breaks-for-long-urls/
-			var doubleSlash = url.innerHTML.split('//');
+			var doubleSlash = url.split('//');
 
 			// Format the strings on either side of double slashes separately
 			var formatted = doubleSlash.map(str => {

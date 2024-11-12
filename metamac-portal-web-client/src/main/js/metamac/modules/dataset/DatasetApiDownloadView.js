@@ -25,32 +25,32 @@
                 url: [
                     {
                         format: 'csv',
-                        href: this._buildEndpoint('csv'),
+                        href: App.Helpers.formatUrl(this._buildEndpoint('csv')),
                         show: this.identifierType === App.Constants.visualization.type.DATASET
                     },
                     {
                         format: 'tsv',
-                        href: this._buildEndpoint('tsv'),
+                        href: App.Helpers.formatUrl(this._buildEndpoint('tsv')),
                         show: this.identifierType === App.Constants.visualization.type.DATASET
                     },
                     {
                         format: 'xlsx',
-                        href: this._buildEndpoint('xlsx'),
+                        href: App.Helpers.formatUrl(this._buildEndpoint('xlsx')),
                         show: this.identifierType === App.Constants.visualization.type.DATASET
                     },
                     {
                         format: 'xml',
-                        href: this._buildEndpoint('xml'),
+                        href: App.Helpers.formatUrl(this._buildEndpoint('xml')),
                         show: this.identifierType === App.Constants.visualization.type.DATASET || this.identifierType === App.Constants.visualization.type.QUERY
                     },
                     {
                         format: 'json',
-                        href: this._buildEndpoint('json'),
+                        href: App.Helpers.formatUrl(this._buildEndpoint('json')),
                         show: this.identifierType === App.Constants.visualization.type.DATASET || this.identifierType === App.Constants.visualization.type.QUERY
                     },
                     {
                         format: 'jsonstat',
-                        href: this._buildEndpoint('jsonstat'),
+                        href: App.Helpers.formatUrl(this._buildEndpoint('jsonstat')),
                         show: true
                     }
                 ]
@@ -59,15 +59,6 @@
             var infoMessage = I18n.t("filter.apiDownload.modal.info", { hrefTag: this._getHrefTag() });
             this.$el.html(this.template(context));
             $('.dataset-api-download-info', this.$el).append(infoMessage);
-            this.formatUrls();
-        },
-
-        formatUrls: function() {
-            var urls = $('.url', this.$el);
-            $.each(urls, function( k, url ) {
-                var formattedUrl = App.Helpers.formatUrl(url);
-                return (url.innerHTML = `${formattedUrl}<br>`);
-            });
         },
 
         _buildEndpoint: function(type) {
