@@ -4,7 +4,7 @@
     App.namespace('App.modules.dataset.DatasetDownloadView');
 
     var svgExporter = new App.svg.Exporter();
-    var SVG_SELECTOR = '.dataset-visualization-visual-element svg';
+    var SVG_SELECTOR = '.dataset-visualization-visual-element canvas, .dataset-visualization-visual-element svg';
 
     App.modules.dataset.DatasetDownloadView = Backbone.View.extend({
 
