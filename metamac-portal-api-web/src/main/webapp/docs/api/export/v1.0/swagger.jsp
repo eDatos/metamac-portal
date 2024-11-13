@@ -413,12 +413,7 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -484,12 +479,7 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -549,12 +539,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -608,12 +593,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -661,12 +641,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -720,12 +695,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -771,12 +741,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -836,12 +801,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -895,12 +855,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -948,12 +903,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -1008,12 +958,7 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -1080,12 +1025,7 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -1146,12 +1086,7 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -1206,12 +1141,7 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
@@ -1272,12 +1202,7 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
+          "200": {
             "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
           },
           "500":{
