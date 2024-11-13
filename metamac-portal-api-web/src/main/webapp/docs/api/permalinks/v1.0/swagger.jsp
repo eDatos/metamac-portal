@@ -190,7 +190,13 @@
                   "name":"body",
                   "in":"body",
                   "schema":{
-                     "type":"object"
+                     "type": "object",
+                     "properties":{
+                        "content":{
+                           "type": "string",
+                           "example": "permalink"
+                        }
+                     }
                   },
                   "description":""
                }
