@@ -283,9 +283,7 @@
 
         _getDataAxisDimensionCategories: function (dataAxisDimension) {
             var selectedTemporalGranularity = dataAxisDimension.get("representations").getSelectedTemporalGranularity();
-            var dataAxisDimensionCategories = dataAxisDimension.get('representations').where({
-                temporalGranularity: selectedTemporalGranularity
-            });
+            var dataAxisDimensionCategories = dataAxisDimension.getRepresentationsByTemporalGranularity(selectedTemporalGranularity);
             dataAxisDimensionCategories = _.sortBy(dataAxisDimensionCategories, function (representation) {
                 return representation.normCode;
             }).reverse();

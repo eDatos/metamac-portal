@@ -185,11 +185,33 @@
             return this.get('representations').getSelectedRepresentations();
         },
 
+        getUnelectedRepresentations: function () {
+            return this.get('representations').getUnelectedRepresentations();
+        },
+
         getDrawableRepresentations: function () {
             return this.get('representations').getDrawableRepresentations();
+        },
+
+        getRepresentationsByTemporalGranularity: function (temporalGranularity) {
+            return this.get('representations').getRepresentationsByTemporalGranularity(temporalGranularity);
+        },
+
+        getRepresentationsByLevel: function (level) {
+            return this.get('representations').getRepresentationsByLevel(level);
+        },
+
+        getRepresentationsByNormCode: function (normCode) {
+            return this.get('representations').getRepresentationsByNormCode(normCode);
+        },
+
+        getRepresentationsByVariableElementId: function (variableElementId) {
+            return this.get('representations').getRepresentationsByVariableElementId(variableElementId);
+        },
+
+        getRepresentationsById: function (id) {
+            return this.get('representations').getRepresentationsById(id);
         }
-
-
     });
 
     _.extend(App.modules.dataset.filter.models.FilterDimension.prototype, App.mixins.ToggleModel);

@@ -148,7 +148,7 @@
 
             var self = this;
             var temporalGranularityForPermutation = this._findTemporalGranularityForPermutation();
-            var timeDimensionCategories = this.timeDimension.get('representations').where({ temporalGranularity: temporalGranularityForPermutation });
+            var timeDimensionCategories = this.timeDimension.getRepresentationsByTemporalGranularity(temporalGranularityForPermutation);
             timeDimensionCategories = _.sortBy(timeDimensionCategories, function (representation) {
                 return representation.normCode;
             }).reverse();
