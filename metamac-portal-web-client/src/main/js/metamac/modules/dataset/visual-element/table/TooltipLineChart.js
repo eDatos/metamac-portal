@@ -100,7 +100,7 @@
 
         _updateChartOptions: function() {
             this.chart.setOption(this._chartOptions, true);
-            App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
+            App.util.ChartsUtils._setTooltipTriggerOnClosestItem(this.chart);
         },
 
         _emptyData: function(data) {

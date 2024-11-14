@@ -7,7 +7,9 @@
 
     var onMouseMove;
 
-    App.util.ChartsUtils._triggerTooltipOnClosestItem = function (chart) {
+    // This method is an alternative to display the tooltip at the point closest to the mouse until the issue is resolved:
+    // https://github.com/apache/echarts/issues/16675
+    App.util.ChartsUtils._setTooltipTriggerOnClosestItem = function (chart) {
         var previousSeriesIndex;
         var previousDataIndex;
         var chartOptions = chart.getOption();

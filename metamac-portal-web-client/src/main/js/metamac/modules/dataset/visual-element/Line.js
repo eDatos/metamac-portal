@@ -124,7 +124,7 @@
             this._initializeChart();
             var self = this;
             this._getChart().on('datazoom', function (params) {
-                App.util.ChartsUtils._triggerTooltipOnClosestItem(self._getChart());
+                App.util.ChartsUtils._setTooltipTriggerOnClosestItem(self._getChart());
                 if (params.dataZoomId === Constants.charts.lines.dataZoom.horizontal.id) {
                     self.xAxisDataZoomStart = params.start;
                     self.xAxisDataZoomEnd = params.end;
@@ -239,7 +239,7 @@
         
         _updateChartOptions: function() {
             this._getChart().setOption(this._chartOptions, true);
-            App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
+            App.util.ChartsUtils._setTooltipTriggerOnClosestItem(this._getChart());
             this._updatePointsVisibility();
             this._setTooltipObserver();
         },
