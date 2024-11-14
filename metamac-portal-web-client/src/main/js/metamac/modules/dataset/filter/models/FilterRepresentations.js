@@ -143,7 +143,7 @@
             return this.filter(representation => representation.get("selected") && representation.get("drawable"));
         },
 
-        getUnelectedRepresentations: function () {
+        _getUnselectedRepresentations: function () {
             return this.filter(representation => !representation.get("selected"));
         },
 

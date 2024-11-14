@@ -185,8 +185,8 @@
             return this.get('representations').getSelectedRepresentations();
         },
 
-        getUnelectedRepresentations: function () {
-            return this.get('representations').getUnelectedRepresentations();
+        _getUnselectedRepresentations: function () {
+            return this.get('representations')._getUnselectedRepresentations();
         },
 
         getDrawableRepresentations: function () {

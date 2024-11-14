@@ -71,7 +71,7 @@
 
         getDimensionsWithSomeRepresentationNotSelected: function () {
             return this.filter(function (dimension) {
-                return dimension.getUnelectedRepresentations().length > 0;
+                return dimension._getUnselectedRepresentations().length > 0;
             });
         },
 
