@@ -214,7 +214,7 @@
                   "headers":{
 
                   },
-                  "description":"${msg['api.doc.swagger.paths.responses.201']}"
+                  "description":"${msg['api.doc.swagger.paths.responses.200']}"
                },
                "401":{
                   "description":"${msg['api.doc.swagger.paths.responses.401']}"

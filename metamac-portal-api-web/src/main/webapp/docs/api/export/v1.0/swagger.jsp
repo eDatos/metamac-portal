@@ -564,7 +564,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -633,7 +633,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -696,7 +696,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -752,7 +752,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -801,7 +801,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -857,7 +857,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -905,7 +905,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -968,7 +968,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1024,7 +1024,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1073,7 +1073,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1130,7 +1130,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1200,7 +1200,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1263,7 +1263,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1319,7 +1319,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1382,7 +1382,7 @@
         ],
         "responses": {
           "200": {
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
