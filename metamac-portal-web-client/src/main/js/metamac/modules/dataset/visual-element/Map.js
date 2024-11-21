@@ -14,6 +14,8 @@
 
     _.extend(App.VisualElement.Map.prototype, {
 
+        _granularitiesWithNoSelection: App.templateManager.get('dataset/granuralities-with-no-selection'),
+
         load: function () {
             this._unbindEvents();
             this._bindEvents();
@@ -181,7 +183,7 @@
         },
 
         update: function () {
-            if (!this.assertAllDimensionsHaveSelections()) {
+            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
                 return;
             }
 
@@ -197,6 +199,16 @@
 
             this.updateTitle();
             this._mapContainerView.update(this._dataJson, this._geoJson, this.getTitle());
+        },
+
+        assertGeographicDimensionsHaveTwoElements: function () {
+            if (this.filterDimensions.checkGeographicDimensionsWithTwoElements()) {
+                this.hideWrongSelectionView();
+                return true;
+            } else {
+                this.renderWrongSelectionView(this._granularitiesWithNoSelection());
+                return false;
+            }
         },
 
         _mapExists: function() {
