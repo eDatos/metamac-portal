@@ -124,39 +124,39 @@
 
         importGeographicSelection: function (selection) {
             var geographicDimension = this.where({ type: "GEOGRAPHIC_DIMENSION" });
-            if (!geographicDimension || geographicDimension.length > 1) {
-                console.warn("Something went wrong, no appropiate geographicDimensions ", geographicDimension);
-            } else {
-                geographicDimension = geographicDimension[0];
-                var zone = geographicDimension.get('zone');
-                var position = zoneOffsets[zone.id] + zone.get('dimensions').indexOf(geographicDimension);
+            if (!geographicDimension || geographicDimension.length !== 1) {
+                console.info("No appropriate geographic dimension, maybe the dataset has attribute dimension instead");
+                return;
+            }
+            geographicDimension = geographicDimension[0];
+            var zone = geographicDimension.get('zone');
+            var position = zoneOffsets[zone.id] + zone.get('dimensions').indexOf(geographicDimension);
 
-                var selectedVariableElements = selection.split("|");
-                var geographicDimensionRepresentations = geographicDimension.get('representations');
-                var selectedAndValidatedVariableElements = [];
-                for (var i = 0; i < selectedVariableElements.length; i++) {
-                    var representation = geographicDimensionRepresentations.where({ variableElementId: selectedVariableElements[i] })[0];
-                    if (representation) {
-                        selectedAndValidatedVariableElements.push(selectedVariableElements[i]);
-                        if (representation.get("parent")) {
-                            var representationParent = geographicDimensionRepresentations.where({id: representation.get("parent")})[0];
-                            selectedVariableElements.push(representationParent.get("variableElementId"));
-                        }
+            var selectedVariableElements = selection.split("|");
+            var geographicDimensionRepresentations = geographicDimension.get('representations');
+            var selectedAndValidatedVariableElements = [];
+            for (var i = 0; i < selectedVariableElements.length; i++) {
+                var representation = geographicDimensionRepresentations.where({variableElementId: selectedVariableElements[i]})[0];
+                if (representation) {
+                    selectedAndValidatedVariableElements.push(selectedVariableElements[i]);
+                    if (representation.get("parent")) {
+                        var representationParent = geographicDimensionRepresentations.where({id: representation.get("parent")})[0];
+                        selectedVariableElements.push(representationParent.get("variableElementId"));
                     }
                 }
-
-                var json = {};
-                json[geographicDimension.id] = {
-                    position: position,
-                    categories: geographicDimensionRepresentations.models.map(representation => ({
-                        id: representation.get("id"),
-                        selected: selectedAndValidatedVariableElements.length === 0
-                            || selectedAndValidatedVariableElements.includes(representation.get("variableElementId")),
-                        drawable: representation.get("drawable")
-                    }))
-                };
-                this.importJSONSelection(json);
             }
+
+            var json = {};
+            json[geographicDimension.id] = {
+                position: position,
+                categories: geographicDimensionRepresentations.models.map(representation => ({
+                    id: representation.get("id"),
+                    selected: selectedAndValidatedVariableElements.length === 0
+                        || selectedAndValidatedVariableElements.includes(representation.get("variableElementId")),
+                    drawable: representation.get("drawable")
+                }))
+            };
+            this.importJSONSelection(json);
         },
 
         canDrawLineVisualizations: function () {

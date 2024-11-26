@@ -134,13 +134,10 @@
                         if (!window.location.hash.includes(result.permalink.hash)) {
                             self.visualizationView.optionsModel.set('mustApplyVisualizationRestrictions', true);
                         }
-                        deferred.resolve();
                     } else if (datasetIdentifier.geo) {
                         self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
-                        deferred.resolve();
-                    } else {
-                        deferred.resolve();
                     }
+                    deferred.resolve();
                 } catch (error) {
                     console.log(error);
                     self.errorView = new App.modules.dataset.ErrorView({ error : I18n.t('exception.common.unknown')});
