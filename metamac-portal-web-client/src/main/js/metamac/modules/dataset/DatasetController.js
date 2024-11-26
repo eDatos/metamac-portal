@@ -34,7 +34,7 @@
 
         showDatasetSelection: function (datasetIdentifier) {
             var link = this._linkToDatasetSelection(datasetIdentifier);
-            this.router.navigate(link);
+            this.router.navigate(link, { replace: true });
 
             var self = this;
             this._loadMetadataAndData(datasetIdentifier).then(function () {
@@ -48,7 +48,7 @@
                 fullScreen: false
             });
             var link = this._linkToDatasetVisualization(options);
-            this.router.navigate(link);
+            this.router.navigate(link, { replace: true });
 
             var self = this;
             var datasetIdentifier = _.pick(options, "type", "agency", "identifier", "version", "permalinkId", "indicatorSystem", "geo", "multidatasetId", "widgetTitle");
