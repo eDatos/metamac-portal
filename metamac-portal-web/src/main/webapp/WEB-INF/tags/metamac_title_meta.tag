@@ -54,7 +54,6 @@
         String INTERNATIONALIZATION_COOKIE_ID = "";
         String DEFAULT_INTERNATIONALIZATION_LANGUAGE = "";
         String API_KEY = "";
-        String API_KEY_WITHOUT_AUTH = "";
 
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
@@ -71,7 +70,6 @@
             INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
             DEFAULT_INTERNATIONALIZATION_LANGUAGE = configurationService.retrieveDefaultInternationalizationLanguage();
             API_KEY = configurationService.retrievePortalApiKey();
-            API_KEY_WITHOUT_AUTH = configurationService.retrievePortalApiKeyWithoutAuth();
             try {
                 // We group this try catch because all of them are served from external-users
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();
@@ -174,7 +172,7 @@
         }
         request.setAttribute("currentLocale", locale);
         
-        Helpers helper = new Helpers(locale, defaultLocale, API_KEY, API_KEY_WITHOUT_AUTH);
+        Helpers helper = new Helpers(locale, defaultLocale, API_KEY);
 
         String agencyId = request.getParameter(Helpers.PARAMETER_AGENCY_ID);
         String resourceId = request.getParameter(Helpers.PARAMETER_RESOURCE_ID);

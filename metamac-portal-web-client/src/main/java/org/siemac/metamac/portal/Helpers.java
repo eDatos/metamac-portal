@@ -83,20 +83,18 @@ public class Helpers {
     private static String       language;
     private static String       defaultLanguage;
     private static String       apiKey;
-    private static String       apiKeyWithoutAuth;
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
 
-    public Helpers(String language, String defaultLanguage, String apiKey, String apiKeyWithoutAuth) {
+    public Helpers(String language, String defaultLanguage, String apiKey) {
         this.language = language;
         this.defaultLanguage = defaultLanguage;
         this.apiKey = apiKey;
-        this.apiKeyWithoutAuth = apiKeyWithoutAuth;
     }
 
     public Helpers(String language, String defaultLanguage) {
-        this(language, defaultLanguage, null, null);
+        this(language, defaultLanguage, null);
     }
 
     public static String getPackageVersion() {
@@ -249,7 +247,7 @@ public class Helpers {
         try {
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("api-key", apiKeyWithoutAuth);
+            headers.set("api-key", apiKey);
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -267,7 +265,7 @@ public class Helpers {
         try {
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("api-key", apiKeyWithoutAuth);
+            headers.set("api-key", apiKey);
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -379,7 +377,7 @@ public class Helpers {
         org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0 statisticalResourcesV1_0 = JAXRSClientFactory.create(statisticalResourcesEndpoint,
                 org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0.class, null, true);
         WebClient.client(statisticalResourcesV1_0).reset();
-        WebClient.client(statisticalResourcesV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKeyWithoutAuth);
+        WebClient.client(statisticalResourcesV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
         return statisticalResourcesV1_0;
     }
 
@@ -387,7 +385,7 @@ public class Helpers {
         org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0 permalinksV1_0 = JAXRSClientFactory.create(permalinksEndpoint,
                 org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0.class, null, true);
         WebClient.client(permalinksV1_0).reset();
-        WebClient.client(permalinksV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKeyWithoutAuth);
+        WebClient.client(permalinksV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
         return permalinksV1_0;
     }
 
