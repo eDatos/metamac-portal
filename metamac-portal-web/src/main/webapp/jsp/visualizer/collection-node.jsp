@@ -2,6 +2,7 @@
 <%@ page import="org.siemac.metamac.portal.dto.CollectionNode" %>
 <%@ page import="org.siemac.metamac.portal.dto.Table" %>
 <%@ page import="org.siemac.metamac.rest.common.v1_0.domain.Resource" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -63,7 +64,8 @@
         
         Resource resource = table.getResource();
         String iconClass = "icon-collection-table";
-        if (resource != null && "statisticalResources#url".equals(resource.getKind())) {
+        List<String> resourcesWithIconLink = Arrays.asList("statisticalResources#url", "statisticalResources#collection");
+        if (resource != null && resourcesWithIconLink.contains(resource.getKind())) {
             iconClass = "icon-link";
         }
         request.setAttribute("iconClass", iconClass);
