@@ -1,10 +1,12 @@
 <div class="dataset-api-resources">
 	<div class="dataset-api-resources-format">
 		{{#each url}}
+		{{#if show}}
 		<div class="resource-format-label">
 			<span>{{ format }}:</span>
-			<span>{{ href }}</span>
+			<span>{{{ href }}}</span>
 		</div>
+		{{/if}}
 		{{/each}}
 	</div>
 </div>
