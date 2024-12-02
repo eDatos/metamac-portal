@@ -10,7 +10,7 @@
         this._type = 'line';
 
         var self = this;
-        var titleBottom = Constants.charts.lines.dataZoom.horizontal.height + Constants.charts.gap;
+        var titleBottom = this._getHorizontalDataZoomHeight() + Constants.charts.gap + Constants.charts.lines.dataZoom.horizontal.bottom;
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
@@ -55,7 +55,7 @@
                 bottom: legendBottom
             },
             grid: {
-                right: Constants.charts.lines.dataZoom.vertical.width + Constants.charts.gap
+                right: this._getVerticalDataZoomWidth() + Constants.charts.gap
             }
         });
     };
@@ -268,8 +268,8 @@
                     xAxisIndex: [0],
                     showDetail: false,
                     left: 'center',
-                    height: Constants.charts.lines.dataZoom.horizontal.height,
-                    bottom: 0,
+                    height: this._getHorizontalDataZoomHeight(),
+                    bottom: Constants.charts.lines.dataZoom.horizontal.bottom,
                     start: this.xAxisDataZoomStart,
                     end: this.xAxisDataZoomEnd
                 },
@@ -280,13 +280,21 @@
                     filterMode: 'none',
                     showDetail: false,
                     right: 0,
-                    width: Constants.charts.lines.dataZoom.vertical.width,
+                    width: this._getVerticalDataZoomWidth(),
                     top: Constants.charts.lines.dataZoom.vertical.topMargin,
                     bottom: gridBottom + Constants.charts.lines.dataZoom.vertical.bottomMargin,
                     start: this.yAxisDataZoomStart,
                     end: this.yAxisDataZoomEnd
                 }
             ];
+        },
+
+        _getHorizontalDataZoomHeight: function () {
+            return this.optionsModel.get("widget") ? Constants.charts.lines.dataZoom.horizontal.widgetHeight : Constants.charts.lines.dataZoom.horizontal.height;
+        },
+
+        _getVerticalDataZoomWidth: function () {
+            return this.optionsModel.get("widget") ? Constants.charts.lines.dataZoom.vertical.widgetWidth : Constants.charts.lines.dataZoom.vertical.width;
         },
 
         _getDataAxisDimensionCategories: function (dataAxisDimension) {

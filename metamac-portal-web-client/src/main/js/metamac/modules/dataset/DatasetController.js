@@ -34,7 +34,7 @@
 
         showDatasetSelection: function (datasetIdentifier) {
             var link = this._linkToDatasetSelection(datasetIdentifier);
-            this.router.navigate(link);
+            this.router.navigate(link, { replace: true });
 
             var self = this;
             this._loadMetadataAndData(datasetIdentifier).then(function () {
@@ -48,7 +48,7 @@
                 fullScreen: false
             });
             var link = this._linkToDatasetVisualization(options);
-            this.router.navigate(link);
+            this.router.navigate(link, { replace: true });
 
             var self = this;
             var datasetIdentifier = _.pick(options, "type", "agency", "identifier", "version", "permalinkId", "indicatorSystem", "geo", "multidatasetId", "widgetTitle");
@@ -134,13 +134,10 @@
                         if (!window.location.hash.includes(result.permalink.hash)) {
                             self.visualizationView.optionsModel.set('mustApplyVisualizationRestrictions', true);
                         }
-                        deferred.resolve();
                     } else if (datasetIdentifier.geo) {
                         self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
-                        deferred.resolve();
-                    } else {
-                        deferred.resolve();
                     }
+                    deferred.resolve();
                 } catch (error) {
                     console.log(error);
                     self.errorView = new App.modules.dataset.ErrorView({ error : I18n.t('exception.common.unknown')});

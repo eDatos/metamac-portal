@@ -26,29 +26,34 @@
         },
 
         initializeHierarchy: function () {
-            var hasHierarchy = false;
-            var modelsSortedByLevelReversed = _.sortBy(this.models, function (representation) {
+            this.hasHierarchy = false;
+            let originalLevel = this.models[0]?.get('level');
+
+            const self = this;
+            const modelsSortedByLevelReversed = _.sortBy(this.models, function (representation) {
+                // updating this here is ugly, but efficient
+                self.hasHierarchy = originalLevel !== representation.get('level') || self.hasHierarchy;
                 return representation.get('level');
             }).reverse();
 
             _.each(modelsSortedByLevelReversed, function (representation) {
-                var children = this.where({ parent: representation.id });
-                if (children.length) {
-                    hasHierarchy = true;
-                    representation.initChildren(children);
-                    representation._onChangeOpenInit();
+                if (self.hasHierarchy) {
+                    var children = this.where({parent: representation.id});
+                    if (children.length) {
+                        representation.initChildren(children);
+                        representation._onChangeOpenInit();
+                    }
                 } else {
                     representation.initNodesWithoutChildren();
                 }
             }, this);
-            this.hasHierarchy = hasHierarchy;
         },
 
         _updateDrawables: function () {
             var modelsToDraw = this._getModelsToDraw();
 
             _.invoke(this.models, 'set', { drawable: false }, { silent: true });
-            _.invoke(modelsToDraw, 'set', { drawable: true });
+            _.invoke(modelsToDraw, 'set', { drawable: true }, { silent: true });
             this.trigger("change:drawable");
         },
 
