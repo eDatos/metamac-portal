@@ -48,8 +48,12 @@ import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
+
+import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 public class Helpers {
 
@@ -76,6 +80,8 @@ public class Helpers {
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
+
+    private static RestTemplate restTemplate;
 
     public Helpers(String language, String defaultLanguage) {
         this.language = language;
@@ -219,11 +225,22 @@ public class Helpers {
         return multidataset;
     }
 
+    private static RestTemplate getRestTemplate() {
+        if (restTemplate == null) {
+            restTemplate = new RestTemplate();
+            for (HttpMessageConverter<?> messageConverter : restTemplate.getMessageConverters()) {
+                if (messageConverter instanceof MappingJacksonHttpMessageConverter) {
+                    ((MappingJacksonHttpMessageConverter) messageConverter).getObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+                }
+            }
+        }
+        return restTemplate;
+    }
+
     public static Indicator getIndicator(String apiUrlIndicators, Boolean internalPortal, String resourceId) {
         String indicatorsEndpoint = apiUrlIndicators;
-        RestTemplate restTemplate = new RestTemplate();
         try {
-            return restTemplate.getForObject(indicatorsEndpoint + "/v1.0/indicators/" + resourceId, Indicator.class);
+            return getRestTemplate().getForObject(indicatorsEndpoint + "/v1.0/indicators/" + resourceId, Indicator.class);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Indicador", e);
         }
@@ -232,9 +249,8 @@ public class Helpers {
 
     public static IndicatorInstance getIndicatorInstance(String apiUrlIndicators, Boolean internalPortal, String resourceId, String indicatorsSystems) {
         String indicatorsEndpoint = apiUrlIndicators;
-        RestTemplate restTemplate = new RestTemplate();
         try {
-            return restTemplate.getForObject(indicatorsEndpoint + "/v1.0/indicatorsSystems/" + indicatorsSystems + "/indicatorsInstances/" + resourceId, IndicatorInstance.class);
+            return getRestTemplate().getForObject(indicatorsEndpoint + "/v1.0/indicatorsSystems/" + indicatorsSystems + "/indicatorsInstances/" + resourceId, IndicatorInstance.class);
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el la Instancia del Indicador", e);
         }

@@ -3,21 +3,20 @@ package org.siemac.metamac.portal.core.invocation;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import es.gobcan.istac.indicators.rest.types.DataType;
-import es.gobcan.istac.indicators.rest.types.IndicatorInstanceType;
 import es.gobcan.istac.indicators.rest.types.IndicatorType;
-import es.gobcan.istac.indicators.rest.types.IndicatorsSystemType;
 
 @Component("indicatorsRestFacade")
 public abstract class AbstractIndicatorsRestFacade {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractIndicatorsRestFacade.class);
 
-    RestTemplate restTemplate = new RestTemplate();
-
+    @Autowired
+    private RestTemplate restTemplate;
 
     protected abstract String getRestApiLocatorEndpoint();
 
@@ -29,7 +28,6 @@ public abstract class AbstractIndicatorsRestFacade {
         }
         return null;
     }
-
 
     public DataType retrieveIndicatorData(String indicatorCode, String selectedRepresentations) {
         try {
