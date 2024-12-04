@@ -253,11 +253,11 @@ I18n.translations.pt = {
             apiDocumentationUrl: "Acesso à documentação API",
             apiUrl: {
                 title: "Acesso à API para desenvolvedores",
-                apiDownload: "O recurso pode ser obtido nos seguintes formatos: CSV, TSV, XLSX, XML, JSON e JSONSTAT. Para construir a chamada da API basta adicionar o formato ao final da URL, por exemplo, para construir a chamada no formato CSV seria feito da seguinte forma: URL.csv"
+                apiDownload: "O recurso pode ser obtido nos seguintes formatos: {{formats}}. Para construir a chamada da API basta adicionar o formato ao final da URL, por exemplo, para construir a chamada no formato {{formatExample}} seria feito da seguinte forma: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Acessar a seleção atual na API",
-                apiDownload: "A seleção também pode ser obtida em diversos formatos (CSV, TSV, XLSX, XML, JSON e JSONSTAT). Neste caso, para construir a chamada API deve-se levar em consideração que o formato deve ser indicado antes de passar os parâmetros, por exemplo: URL.csv?PARAMETERS"
+                apiDownload: "A seleção também pode ser obtida em diversos formatos ({{formats}}). Neste caso, para construir a chamada API deve-se levar em consideração que o formato deve ser indicado antes de passar os parâmetros, por exemplo: URL.{{formatExampleLowercase}}?PARAMETERS"
             },
             nextVersion: {
                 title: "Próxima atualização",
