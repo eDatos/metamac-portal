@@ -1,5 +1,7 @@
 package org.siemac.metamac.portal;
 
+import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -58,8 +60,6 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
 
-import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
-
 public class Helpers {
 
     public static final String  PARAMETER_RESOURCE_TYPE                           = "resourceType";
@@ -86,6 +86,8 @@ public class Helpers {
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
+
+    private static RestTemplate restTemplate;
 
     public Helpers(String language, String defaultLanguage, String apiKey) {
         this.language = language;
@@ -251,7 +253,7 @@ public class Helpers {
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<Indicator> response = restTemplate.exchange(indicatorsEndpoint + "/v1.0/indicators/" + resourceId, HttpMethod.GET, requestEntity, Indicator.class);
+            ResponseEntity<Indicator> response = getRestTemplate().exchange(indicatorsEndpoint + "/v1.0/indicators/" + resourceId, HttpMethod.GET, requestEntity, Indicator.class);
 
             return response.getBody();
         } catch (Exception e) {
@@ -269,7 +271,7 @@ public class Helpers {
 
             HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-            ResponseEntity<IndicatorInstance> response = restTemplate.exchange(indicatorsEndpoint + "/v1.0/indicatorsSystems/" + indicatorsSystems + "/indicatorsInstances/" + resourceId,
+            ResponseEntity<IndicatorInstance> response = getRestTemplate().exchange(indicatorsEndpoint + "/v1.0/indicatorsSystems/" + indicatorsSystems + "/indicatorsInstances/" + resourceId,
                     HttpMethod.GET, requestEntity, IndicatorInstance.class);
 
             return response.getBody();
