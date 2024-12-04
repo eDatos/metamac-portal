@@ -62,6 +62,7 @@ public class Collection2DtoMapper {
             target.setQuery(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getQuery());
             target.setMultidataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getMultidataset());
             target.setUrl(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getUrl());
+            target.setPublication(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getPublication());
 
             return target;
 
@@ -131,6 +132,7 @@ public class Collection2DtoMapper {
             target.setQuery(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getQuery());
             target.setMultidataset(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getMultidataset());
             target.setUrl(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getUrl());
+            target.setPublication(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Table) source).getPublication());
 
             return target;
 
