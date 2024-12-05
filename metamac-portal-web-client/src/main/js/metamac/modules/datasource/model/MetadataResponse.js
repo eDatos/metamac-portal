@@ -175,7 +175,7 @@
             return null;
         },
 
-        getRepresentations: function (dimensionId) {
+        getRepresentations: _.memoize(function (dimensionId) {
             var self = this;
             if (!this.metadata.dimensions) { return; }
             var dimensions = this.metadata.dimensions.dimension;
@@ -244,7 +244,7 @@
                 representations = hasHierarchy ? self._sortHierarchyRepresentations(representations) : representations;
             }
             return representations;
-        },
+        }),
 
         getRepresentationsForAttributeDimension: function (attributeId) {
             var attribute = _.findWhere(this.metadata.attributes.attribute, { id: attributeId });

@@ -3,6 +3,7 @@ package org.siemac.metamac.portal.core.invocation;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,8 +16,8 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
 
     private final Logger logger = LoggerFactory.getLogger(AbstractIndicatorsSystemsRestFacade.class);
 
-    RestTemplate restTemplate = new RestTemplate();
-
+    @Autowired
+    private RestTemplate restTemplate;
 
     protected abstract String getRestApiLocatorEndpoint();
     public IndicatorInstanceType retrieveIndicatorInstanceByCode(String idIndicatorSystem, String idIndicatorInstance) {
