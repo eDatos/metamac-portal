@@ -5,8 +5,6 @@
 
     App.Map.MapContainerView = Backbone.View.extend({
 
-        _errorTemplate: App.templateManager.get('dataset/map/map-error'),
-
         initialize: function (options) {
             this._data = options.data;
             this._filterDimensions = options.filterDimensions;
@@ -41,15 +39,11 @@
         },
 
         render: function () {
-            if (this.mapView.canRender()) {
-                this.zoomView.render();
-                if (this.mapType === 'map') {
-                    this.rangesView.render();
-                }
-                this.mapView.render();
-            } else {
-                this.$el.html(this._errorTemplate());
+            this.zoomView.render();
+            if (this.mapType === 'map') {
+                this.rangesView.render();
             }
+            this.mapView.render();
         },
 
         destroy: function () {
