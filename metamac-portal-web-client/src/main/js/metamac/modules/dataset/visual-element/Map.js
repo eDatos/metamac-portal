@@ -216,7 +216,7 @@
         },
 
         assertMapAvailable: function () {
-            if (this._mapContainerView.mapView.canRender()) {
+            if (this._mapContainerView.canRender()) {
                 this.hideWrongSelectionView();
                 return true;
             } else {

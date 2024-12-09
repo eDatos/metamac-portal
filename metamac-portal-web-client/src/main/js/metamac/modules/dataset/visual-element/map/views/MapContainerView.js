@@ -46,6 +46,10 @@
             this.mapView.render();
         },
 
+        canRender: function () {
+            return this.mapView.canRender();
+        },
+
         destroy: function () {
             this.mapView.destroy();
             this.zoomView.destroy();
