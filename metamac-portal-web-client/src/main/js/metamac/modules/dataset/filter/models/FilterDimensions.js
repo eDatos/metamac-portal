@@ -236,7 +236,7 @@
                         if (_.isUndefined(category.drawable) || _.isNull(category.drawable)) {
                             mustUpdateDrawables = true;
                         } else {
-                            representations.get(category.id).set({ drawable: category.drawable });
+                            representations.get(category.id).set({ drawable: category.drawable }, { silent: true });
                         }
                     }
                 });

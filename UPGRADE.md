@@ -8,6 +8,17 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
+## 9.2.3 a 9.2.4-SNAPSHOT
+- Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión. 
+  Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/9.2.3/db/common-metadata/postgresql/](etc/changes-from-release/9.2.3/db/common-metadata/postgresql)
+
+
+- Se deben eliminar tablas de migración asociadas a tarea EDATOS-3827. Para ello ejecutar script que se encuentra en :
+
+```
+etc/changes-from-release/9.2.3/db/portal/postgresql/*.sql
+```
+
 ## 9.1.0 a 9.2.0
 
 * A partir de esta vesión se utiliza la nueva forma de acceder a los métodos del captcha. Por lo tanto, edatos-external-users, donde se encuentra centralizado el comportamiento del captcha, debería estar actualizado al menos a la versión 3.0.0. 

@@ -1,5 +1,7 @@
 package org.siemac.metamac.portal;
 
+import static org.codehaus.jackson.map.DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -21,6 +23,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.siemac.edatos.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.exception.utils.TranslateExceptions;
@@ -48,6 +51,12 @@ import org.siemac.metamac.rest.common.v1_0.domain.LocalisedString;
 import org.siemac.metamac.rest.common.v1_0.domain.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
 
@@ -73,13 +82,21 @@ public class Helpers {
 
     private static String       language;
     private static String       defaultLanguage;
+    private static String       apiKey;
     private String              DEFAULT_KEY                                       = "__default__";
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
 
-    public Helpers(String language, String defaultLanguage) {
+    private static RestTemplate restTemplate;
+
+    public Helpers(String language, String defaultLanguage, String apiKey) {
         this.language = language;
         this.defaultLanguage = defaultLanguage;
+        this.apiKey = apiKey;
+    }
+
+    public Helpers(String language, String defaultLanguage) {
+        this(language, defaultLanguage, null);
     }
 
     public static String getPackageVersion() {
@@ -142,20 +159,16 @@ public class Helpers {
         try {
             LOGGGER.error(e.getMessage(), e);
             Locale locale = LocaleUtils.toLocale(language);
-            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = e.toErrorObject(WebClient.client(
-                    Helpers.getInternalJAXRSClient(apiUrlStatisticalResources)),
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = e.toErrorObject(WebClient.client(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources)),
                     org.siemac.metamac.rest.common.v1_0.domain.Exception.class);
             CommonServiceExceptionType serviceExceptionType = ServiceExceptionType.lookup(exception.getCode());
             Throwable throwable = null;
             if (agencyId == null && version == null) {
-                 throwable = new TranslateExceptions().translateException(locale,
-                        new MetamacException(serviceExceptionType, resourceId));
+                throwable = new TranslateExceptions().translateException(locale, new MetamacException(serviceExceptionType, resourceId));
             } else if (version == null) {
-                throwable = new TranslateExceptions().translateException(locale,
-                        new MetamacException(serviceExceptionType, resourceId, agencyId));
+                throwable = new TranslateExceptions().translateException(locale, new MetamacException(serviceExceptionType, resourceId, agencyId));
             } else {
-                throwable = new TranslateExceptions().translateException(locale,
-                        new MetamacException(serviceExceptionType, resourceId, agencyId, version)); 
+                throwable = new TranslateExceptions().translateException(locale, new MetamacException(serviceExceptionType, resourceId, agencyId, version));
             }
             return throwable;
         } catch (Exception ex) {
@@ -206,7 +219,7 @@ public class Helpers {
             } else {
                 multidataset = multidataset2DtoMapper.multidatasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             }
-            
+
         } catch (ServerWebApplicationException e) {
             throw getExceptionDataset(e, apiUrlStatisticalResources, null, multidatasetId, null);
         } catch (Exception e) {
@@ -219,11 +232,30 @@ public class Helpers {
         return multidataset;
     }
 
+    private static RestTemplate getRestTemplate() {
+        if (restTemplate == null) {
+            restTemplate = new RestTemplate();
+            for (HttpMessageConverter<?> messageConverter : restTemplate.getMessageConverters()) {
+                if (messageConverter instanceof MappingJacksonHttpMessageConverter) {
+                    ((MappingJacksonHttpMessageConverter) messageConverter).getObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+                }
+            }
+        }
+        return restTemplate;
+    }
+
     public static Indicator getIndicator(String apiUrlIndicators, Boolean internalPortal, String resourceId) {
         String indicatorsEndpoint = apiUrlIndicators;
-        RestTemplate restTemplate = new RestTemplate();
         try {
-            return restTemplate.getForObject(indicatorsEndpoint + "/v1.0/indicators/" + resourceId, Indicator.class);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("api-key", apiKey);
+
+            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+            ResponseEntity<Indicator> response = getRestTemplate().exchange(indicatorsEndpoint + "/v1.0/indicators/" + resourceId, HttpMethod.GET, requestEntity, Indicator.class);
+
+            return response.getBody();
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el Indicador", e);
         }
@@ -232,9 +264,18 @@ public class Helpers {
 
     public static IndicatorInstance getIndicatorInstance(String apiUrlIndicators, Boolean internalPortal, String resourceId, String indicatorsSystems) {
         String indicatorsEndpoint = apiUrlIndicators;
-        RestTemplate restTemplate = new RestTemplate();
         try {
-            return restTemplate.getForObject(indicatorsEndpoint + "/v1.0/indicatorsSystems/" + indicatorsSystems + "/indicatorsInstances/" + resourceId, IndicatorInstance.class);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("api-key", apiKey);
+
+            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+            ResponseEntity<IndicatorInstance> response = getRestTemplate().exchange(indicatorsEndpoint + "/v1.0/indicatorsSystems/" + indicatorsSystems + "/indicatorsInstances/" + resourceId,
+                    HttpMethod.GET, requestEntity, IndicatorInstance.class);
+
+            return response.getBody();
+
         } catch (Exception e) {
             LOGGGER.error("Error obteniendo el la Instancia del Indicador", e);
         }
@@ -327,19 +368,35 @@ public class Helpers {
     }
 
     private static org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0 getInternalJAXRSClient(String statisticalResourcesEndpoint) {
-        return JAXRSClientFactory.create(statisticalResourcesEndpoint, org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0.class, null, true);
+        org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0 statisticalResourcesV1_0 = JAXRSClientFactory.create(statisticalResourcesEndpoint,
+                org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0.class, null, true);
+        WebClient.client(statisticalResourcesV1_0).reset();
+        WebClient.client(statisticalResourcesV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
+        return statisticalResourcesV1_0;
     }
 
     private static org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0 getExternalJAXRSClient(String statisticalResourcesEndpoint) {
-        return JAXRSClientFactory.create(statisticalResourcesEndpoint, org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0.class, null, true);
+        org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0 statisticalResourcesV1_0 = JAXRSClientFactory.create(statisticalResourcesEndpoint,
+                org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0.class, null, true);
+        WebClient.client(statisticalResourcesV1_0).reset();
+        WebClient.client(statisticalResourcesV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
+        return statisticalResourcesV1_0;
     }
 
     private static org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0 getPermalinksJAXRSClient(String permalinksEndpoint) {
-        return JAXRSClientFactory.create(permalinksEndpoint, org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0.class, null, true);
+        org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0 permalinksV1_0 = JAXRSClientFactory.create(permalinksEndpoint,
+                org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0.class, null, true);
+        WebClient.client(permalinksV1_0).reset();
+        WebClient.client(permalinksV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
+        return permalinksV1_0;
     }
 
     private static org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0 getPermalinksInternalJAXRSClient(String permalinksEndpoint) {
-        return JAXRSClientFactory.create(permalinksEndpoint, org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0.class, null, true);
+        org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0 permalinksV1_0 = JAXRSClientFactory.create(permalinksEndpoint,
+                org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0.class, null, true);
+        WebClient.client(permalinksV1_0).reset();
+        WebClient.client(permalinksV1_0).header(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
+        return permalinksV1_0;
     }
 
     public static String html2text(String html) {

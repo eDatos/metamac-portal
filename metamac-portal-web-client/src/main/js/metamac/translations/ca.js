@@ -254,11 +254,11 @@ I18n.translations.ca = {
             apiDocumentationUrl: "Accés a la documentació de l'API",
             apiUrl: {
                 title: "Accés al recurs en l'API",
-                apiDownload: "El recurs es pot obtenir en els formats següents : CSV, TSV, XLSX, XML, JSON i JSONSTAT. Per a construir la cridad a l'API n'hi ha prou amb afegir el format al final de la URL, per exemple, per a construir la crida del format CSV es faria de la manera següent: URL.csv"
+                apiDownload: "El recurs es pot obtenir en els formats següents: {{formats}}. Per a construir la cridad a l'API n'hi ha prou amb afegir el format al final de la URL, per exemple, per a construir la crida del format {{formatExample}} es faria de la manera següent: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Accés a la selecció actual en l'API",
-                apiDownload: "La selecció també es pot obtenir en diferents formats (CSV, TSV, XLSX, XML, JSON i JSONSTAT). En aquest cas, per a construir la cridad a l'API s'ha de tenir en compte que el format s'ha d'indicar abans de passar els paràmetres, per exemple: URL.csv?PARAMETROS"
+                apiDownload: "La selecció també es pot obtenir en diferents formats ({{formats}}). En aquest cas, per a construir la cridad a l'API s'ha de tenir en compte que el format s'ha d'indicar abans de passar els paràmetres, per exemple: URL.{{formatExampleLowercase}}?PARAMETROS"
             },
             nextVersion: {
                 title: "Pròxima actualització",
