@@ -20,7 +20,7 @@
         load: function () {
             this._unbindEvents();
             this._bindEvents();
-            if (!this.assertAllDimensionsHaveSelections()) {
+            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
                 return;
             }
 
@@ -180,14 +180,13 @@
         },
 
         render: function () {
-            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements() || !this.assertMapAvailable()) {
-                return;
+            if (this.assertMapAvailable()) {
+                this._mapContainerView.render();
             }
-            this._mapContainerView.render();
         },
 
         update: function () {
-            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements() || !this.assertMapAvailable()) {
+            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
                 return;
             }
 
