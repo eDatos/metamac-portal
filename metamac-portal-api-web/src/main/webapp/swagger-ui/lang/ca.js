@@ -40,7 +40,7 @@ window.SwaggerTranslator.learn({
     "Contact the developer":"Contactar amb el desenvolupador",
     "api version":"versió de l'api",
     "Response Content Type":"Tipus de Contingut (Content Type) de la Resposta",
-    "Parameter content type":"Tipus de contingut del paràmetre",
+    "Parameter content type:":"Tipus de contingut del paràmetre",
     "fetching resource":"cercant recurs",
     "fetching resource list":"cercant llista del recurs",
     "Explore":"Explorar",
