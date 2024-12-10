@@ -334,7 +334,7 @@
                     symbolSize: Constants.charts.lines.symbol.size,
                     symbol: 'circle',
                     animation: false,
-                    name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
+                    name: self._createUniqueNameForData(linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'), i),
                     emphasis: {
                         disabled: true // Disabled until this issue is fixed: https://github.com/apache/echarts/issues/19958
                     },

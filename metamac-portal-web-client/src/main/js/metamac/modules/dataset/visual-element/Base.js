@@ -234,6 +234,11 @@
                 this.$loading.hide();
                 this.showTitle();
             }
+        },
+
+        // Patch until this issue is fixed: https://github.com/apache/echarts/issues/18242
+        _createUniqueNameForData: function (name, uniqueIndex) {
+            return name.replace(/\u200B/g, '') + '\u200B'.repeat(uniqueIndex);
         }
     };
 
