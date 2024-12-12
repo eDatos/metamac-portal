@@ -111,6 +111,7 @@
             request.setAttribute("geographicalGranularityUrn", configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
             request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
             request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
+            request.setAttribute("apiKey", API_KEY);
 
 
 		} catch (MetamacException e) {
@@ -129,6 +130,7 @@
 		 	request.setAttribute("geographicalGranularityUrn", "error");
             request.setAttribute("internationalizationCookie", "error");
             request.setAttribute("defaultInternationalizationLanguage", "error");
+            request.setAttribute("apiKey", "error");
 
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
