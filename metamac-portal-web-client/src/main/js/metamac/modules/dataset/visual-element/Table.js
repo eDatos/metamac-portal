@@ -135,8 +135,10 @@
         },
 
         _updateSize: function () {
-            var containerDimensions = this.containerDimensions();
-            this.view.resize(containerDimensions);
+            if (this.view) {
+                var containerDimensions = this.containerDimensions();
+                this.view.resize(containerDimensions);
+            }
         }
 
     });

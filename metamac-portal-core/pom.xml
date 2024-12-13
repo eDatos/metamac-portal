@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-portal</groupId>
         <artifactId>metamac-portal-parent</artifactId>
-        <version>9.2.2-SNAPSHOT</version>
+        <version>9.3.2-SNAPSHOT</version>
         <relativePath>../metamac-portal-parent/pom.xml</relativePath>
     </parent>
 
@@ -69,13 +69,6 @@
             <artifactId>jsr250-api</artifactId>
             <version>${jsr250-api.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>persistence-api</artifactId>
-            <version>${jpa.version}</version>
-            <!-- Add scope provided when deployed in jboss -->
-            <!-- <scope>provided</scope> -->
         </dependency>
         <dependency>
             <!-- Remove dependency to javax.transaction when running in a transaction supporting container (jboss etc) -->

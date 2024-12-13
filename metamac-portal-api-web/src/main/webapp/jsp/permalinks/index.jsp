@@ -12,6 +12,7 @@
     String appName = ResourceBundle.getBundle("i18n.permalinks.messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name");
     MessagesResourceBundle messagesResource = new MessagesResourceBundle(locale, "i18n.permalinks.messages");
     pageContext.setAttribute("msg", messagesResource);
+    String appVersion = ResourceBundle.getBundle("application").getString("app.version");
 %>
 <html>
 <head>
@@ -32,6 +33,7 @@
     		<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
     		<c:param name="appId" value="permalinks"/>
+    		<c:param name="appVersion" value="<%= appVersion %>" />
     	</c:import>
     </c:if>
     

@@ -6,6 +6,7 @@ import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.message.Message;
 import org.siemac.metamac.core.common.conf.ConfigurationService;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,6 @@ public class ExternalUserFilter implements RequestHandler {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalUserFilter.class);
     private static final String AUTH_COOKIE_NAME = "authenticationtoken";
 
-    RestTemplate restTemplate = new RestTemplate();
-
     @Context
     private HttpServletRequest  request;
 
@@ -47,6 +46,7 @@ public class ExternalUserFilter implements RequestHandler {
             header.add("Authorization", authToken);
             HttpEntity<String> entity = new HttpEntity<>("body", header);
             try {
+                RestTemplate restTemplate = ApplicationContextProvider.getApplicationContext().getBean(RestTemplate.class);
                 ResponseEntity<String> response = restTemplate.exchange(configurationService.retrieveExternalUsersExternalApiUrlBase() + "/api/account", HttpMethod.GET, entity, String.class);
                 if(HttpStatus.OK.equals(response.getStatusCode())) {
                     LOG.info("JSESSIONID = {}, External users response: {}", new Object[]{request.getSession().getId(), response.getStatusCode()});
