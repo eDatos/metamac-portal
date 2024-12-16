@@ -213,7 +213,8 @@
         "LABEL",
         "CODE_AND_LABEL"
       ],
-      "description": ""
+      "description": "",
+      "example": "LABEL"
     },
     "PlainTextExportation": {
       "type": "object",
@@ -360,7 +361,146 @@
         }
       ],
       "description": ""
-    }
+    },
+    "ExportationDimensionFilters": {
+      "type": "object",
+      "title": "DimensionFilters",
+      "description": "Si la dimensión es temporal, se le podrán aplicar los siguientes filtros",
+      "properties": {
+        "range": {
+          "type": "object",
+          "description": "range incluirá el listado de valores entre start y end, ambos incluidos. Si alguno de los filtros no se incluye, se considerará un rango abierto",
+          "properties": {
+            "start": {
+              "type": "string",
+              "example": "2010-M01"
+            },
+            "end": {
+              "type": "string",
+              "example": "2011-M02"
+            }
+          },
+          "last": {
+            "type": "integer",
+            "description": "range incluirá los últimos n valores de entre los disponibles",
+            "example": 4
+          },
+          "after": {
+            "type": "string",
+            "description": "after incluirá las fechas posteriores a la definida, incluida ella misma",
+            "example": "2009"
+          }
+        }
+      }
+    },
+    "ExportationDimensionValue": {
+      "type":"array",
+      "items": {
+        "type":"string",
+        "example": "INDICE_OCUPACION_PLAZAS"
+      }
+    },
+    "ExportationDimensionValues": {
+      "type": "object",
+      "description": "La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión",
+      "properties": {
+        "dimensionValue": {
+          "$ref": "#/definitions/ExportationDimensionValue"
+        }
+      }
+    },
+    "ExportationDimension": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimensionId": {
+            "type": "string",
+            "example": "TIME_PERIOD"
+          },
+          "labelVisualisationMode": {
+            "$ref": "#/definitions/LabelVisualisationMode"
+          },
+          "position": {
+            "type": "integer",
+            "description": "La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado",
+            "example": "21"
+          },
+          "dimensionValues": {
+            "$ref": "#/definitions/ExportationDimensionValues"
+          },
+          "dimensionFilters": {
+            "$ref": "#/definitions/ExportationDimensionFilters"
+          }
+        }
+      },
+      "example": [
+        {
+          "dimensionId": "INDICADORES",
+          "labelVisualisationMode": "LABEL",
+          "position": 20,
+          "dimensionValues": {
+            "dimensionValue": ["INDICE_OCUPACION_PLAZAS"]
+          }
+        },
+        {
+          "dimensionId": "TIME_PERIOD",
+          "labelVisualisationMode": "LABEL",
+          "position": 21,
+          "dimensionFilters": {
+            "range": {
+              "start": "2010-M01",
+              "end": "2011-M02"
+            },
+            "last": 4,
+            "after": "2009"
+          }
+        },
+        {
+          "dimensionId": "CATEGORIA_ALOJAMIENTO",
+          "labelVisualisationMode": "LABEL",
+          "position": 0,
+          "dimensionValues": {
+            "dimensionValue": ["TOTAL"]
+          }
+        },
+        {
+          "dimensionId": "DESTINO_ALOJAMIENTO",
+          "labelVisualisationMode": "LABEL",
+          "position": 1,
+          "dimensionValues": {
+            "dimensionValue": ["EL_HIERRO", "LA_PALMA", "LA_GOMERA", "TENERIFE", "GRAN_CANARIA", "FUERTEVENTURA", "LANZAROTE"]
+          }
+        }
+      ]
+    },
+    "Exportation": {
+      "type": "object",
+      "title": "Exportation",
+      "allOf": [
+        {
+          "properties": {
+            "datasetSelection": {
+              "type": "object",
+              "properties": {
+                "dimensions": {
+                  "type": "object",
+                  "properties": {
+                    "dimension": {
+                      "$ref": "#/definitions/ExportationDimension"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ExportationSvg": {
+      "type":"string",
+      "example": '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120"><rect x="14" y="23" width="200" height="50" fill="lime" stroke="black" /></svg>'
+    },
   },
   "paths": {
     "/v1.0/csv_comma/datasets/{agencyID}/{resourceID}/{version}": {
@@ -370,18 +510,17 @@
         ],
         "description": "${msg['api.doc.swagger.paths.csv_comma.datasets.agencyID.resourceID.version.post']}",
         "operationId": "resource__v1.0_csv_comma__datasets__agencyID__resourceID__version__exportDatasetToCsvComma_POST",
-        "consumes": [
-           "multipart/form-data"
-        ],
         "produces": [
           "text/csv"
         ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -424,13 +563,8 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -448,15 +582,14 @@
         "produces": [
           "text/csv"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -499,13 +632,8 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -523,15 +651,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -568,13 +695,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -592,15 +714,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -630,13 +751,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -654,15 +770,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },         
           {
             "name": "resourceID",
@@ -685,13 +800,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -709,15 +819,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [           
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },         
           {
             "name": "indicatorSystemCode",
@@ -747,13 +856,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -771,14 +875,13 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "svg",
-            "in": "formData",
-            "type": "string",
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/ExportationSvg"
+            },
             "description": ""
           },
           {
@@ -801,13 +904,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -825,15 +923,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -870,13 +967,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -894,15 +986,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -932,13 +1023,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -956,15 +1042,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },          
           {
             "name": "resourceID",
@@ -987,13 +1072,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1012,15 +1092,14 @@
         "produces": [
           "application/xml"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "indicatorSystemCode",
@@ -1050,13 +1129,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1075,15 +1149,14 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -1126,13 +1199,8 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1151,15 +1219,14 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
@@ -1195,13 +1262,8 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1220,15 +1282,14 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "resourceID",
@@ -1257,13 +1318,8 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
@@ -1282,15 +1338,14 @@
           "application/octet-stream",
           "text/tab-separated-values"
         ],
-        "consumes": [
-           "multipart/form-data"
-        ],
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}${msg['api.doc.swagger.paths.any.post.parameters.jsonBodyExample']}"
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "indicatorSystemCode",
@@ -1326,13 +1381,8 @@
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "${msg['api.doc.swagger.paths.responses.201']}"
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
             "description":"${msg['api.doc.swagger.paths.responses.500']}"
