@@ -43,7 +43,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
             }
 
             WebUtils.setApiStyleHeaderUrl(configurationService.retrieveApiStyleHeaderUrl());
-            WebUtils.setApiStyleCssUrl(configurationService.retrieveApiStyleCssUrl());
             WebUtils.setApiStyleFooterUrl(configurationService.retrieveApiStyleFooterUrl());
 
         } catch (MetamacException e) {
