@@ -80,12 +80,11 @@
         render: function () {
             this.$el.css({ height: HEIGHT, width: WIDTH });
 
-            this.chart = echarts.init(this.$el[0], null, { renderer: 'svg' });
-            App.util.ChartsUtils._triggerTooltipOnClosestItem(this.chart);
+            this.chart = echarts.init(this.$el[0], null, { renderer: 'canvas' });
 
             var data = this._getData();
             App.util.ObjectUtils.deepExtend(this._chartOptions, data);
-            this.chart.setOption(this._chartOptions, true);
+            this._updateChartOptions();
             this._checkVisibility(data);
         },
 
@@ -95,8 +94,13 @@
 
             var data = this._getData();
             App.util.ObjectUtils.deepExtend(this._chartOptions, data);
-            this.chart.setOption(this._chartOptions, true);
+            this._updateChartOptions();
             this._checkVisibility(data);
+        },
+
+        _updateChartOptions: function() {
+            this.chart.setOption(this._chartOptions, true);
+            App.util.ChartsUtils._setTooltipTriggerOnClosestItem(this.chart);
         },
 
         _emptyData: function(data) {
@@ -144,7 +148,7 @@
 
             var self = this;
             var temporalGranularityForPermutation = this._findTemporalGranularityForPermutation();
-            var timeDimensionCategories = this.timeDimension.get('representations').where({ temporalGranularity: temporalGranularityForPermutation });
+            var timeDimensionCategories = this.timeDimension.getRepresentationsByTemporalGranularity(temporalGranularityForPermutation);
             timeDimensionCategories = _.sortBy(timeDimensionCategories, function (representation) {
                 return representation.normCode;
             }).reverse();

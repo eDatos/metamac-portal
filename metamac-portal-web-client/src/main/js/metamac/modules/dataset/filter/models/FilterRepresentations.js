@@ -38,7 +38,7 @@
 
             _.each(modelsSortedByLevelReversed, function (representation) {
                 if (self.hasHierarchy) {
-                    var children = this.where({parent: representation.id});
+                    var children = this.filter(representation => representation.get("parent") === representation.id);
                     if (children.length) {
                         representation.initChildren(children);
                         representation._onChangeOpenInit();
@@ -71,12 +71,12 @@
         },
 
         selectVisible: function () {
-            var visibleModels = this.where({ visible: true, selected: false });
+            var visibleModels = this.filter(representation => representation.get("visible") && !representation.get("selected"));
             _.invoke(visibleModels, 'set', { selected: true });
         },
 
         deselectVisible: function () {
-            var visibleModels = this.where({ visible: true, selected: true });
+            var visibleModels = this.filter(representation => representation.get("visible") && representation.get("selected"));
             _.invoke(visibleModels, 'set', { selected: false });
         },
 
@@ -86,7 +86,7 @@
         },
 
         toggleRepresentationsVisibleRange: function (start, end, state) {
-            var visibleModels = this.where({ visible: true });
+            var visibleModels = this.filter(representation => representation.get("visible"));
             var modelsToChange = visibleModels.slice(start, end + 1);
             _.invoke(modelsToChange, 'set', { selected: state });
         },
@@ -141,7 +141,31 @@
         },
 
         getSelectedRepresentations: function () {
-            return this.where({ selected: true });
+            return this.filter(representation => representation.get("selected"));
+        },
+
+        getSelectedAndDrawableRepresentations: function () {
+            return this.filter(representation => representation.get("selected") && representation.get("drawable"));
+        },
+
+        _getUnselectedRepresentations: function () {
+            return this.filter(representation => !representation.get("selected"));
+        },
+
+        getRepresentationsByLevel: function (level) {
+            return this.filter(representation => representation.get("level") === level);
+        },
+
+        getRepresentationsByNormCode: function (normCode) {
+            return this.filter(representation => representation.get("normCode") === normCode);
+        },
+
+        getRepresentationsByVariableElementId: function (variableElementId) {
+            return this.filter(representation => representation.get("variableElementId") === variableElementId);
+        },
+
+        getRepresentationsById: function (id) {
+            return this.filter(representation => representation.get("id") === id);
         },
 
         getGeographicRepresentationsWithMoreThanOneElementSelected : function() {
@@ -167,7 +191,7 @@
         },
 
         getDrawableRepresentations: function () {
-            return this.where({ drawable: true });
+            return this.filter(representation => representation.get("drawable"));
         },
 
         updateDrawablesBySelectedLevel: function () {
@@ -181,7 +205,7 @@
         },
 
         getSelectedRepresentationsByCurrentLevel: function () {
-            return this.where({ level: parseInt(this.selectedGeographicalLevel), selected: true });
+            return this.filter(representation => representation.get("level") === parseInt(this.selectedGeographicalLevel) && representation.get("selected"));
         },
 
         updateDrawablesBySelectedGranularity: function () {
@@ -190,12 +214,16 @@
             }
 
             _.invoke(this.models, 'set', { drawable: false }, { silent: true });
-            _.invoke(this.getSelectedRepresentationsByCurrentGranularity(), 'set', { drawable: true });
+            _.invoke(this.getSelectedRepresentationsByCurrentGranularity(), 'set', { drawable: true }, { silent: true });
             this.trigger("change:drawable");
         },
 
         getSelectedRepresentationsByCurrentGranularity: function () {
-            return this.where({ temporalGranularity: this.selectedTemporalGranularity, selected: true });
+            return this.filter(representation => representation.get("temporalGranularity") === this.selectedTemporalGranularity && representation.get("selected"));
+        },
+
+        getRepresentationsByTemporalGranularity: function (temporalGranularity) {
+            return this.filter(representation => representation.get("temporalGranularity") === temporalGranularity);
         },
 
         setSelectedGeographicLevel: function (geographicalLevel) {
