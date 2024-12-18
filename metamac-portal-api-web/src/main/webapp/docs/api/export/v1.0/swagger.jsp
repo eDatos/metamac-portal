@@ -1,29 +1,36 @@
 <%@page import="org.siemac.metamac.portal.web.diffusion.SwaggerUtils"%>
 <%@page pageEncoding="UTF-8"%>
+<%@ page import="org.siemac.metamac.core.common.util.MessagesResourceBundle"%>
+<%@ page import="org.siemac.metamac.core.common.util.InternationalizationUtils" %>
+<%
+   String locale = InternationalizationUtils.getInstance().getCurrentLocale(request);
+   MessagesResourceBundle messagesResource = new MessagesResourceBundle(locale, "i18n.export.messages");
+   pageContext.setAttribute("msg", messagesResource);
+%>
 {
   "swagger": "2.0",
   "info": {
-    "description": "Realizar exportaciones de los recursos estadísticos resulta una tarea común y de gran utilidad para poder tratar en el día a día con los datos manejados por el organismo. Esta API nos provee la funcionalidad necesaria para poder exportar los recursos estadísticos en diferentes formatos.",
+    "description": "${msg['api.doc.swagger.description']}",
     "version": "1.0",
-    "title": "API de Exportaciones v1.0"
+    "title": "${msg['api.doc.swagger.title']}"
   },
   "host": "<%=SwaggerUtils.getExportApiBaseURLForSwagger()%>",
   "schemes": [],
   "tags": [
     {
-      "name": "Exportaciones a ficheros PC-Axis",
+      "name": "${msg['api.doc.swagger.tag.pc-axisFile']}",
       "description": ""
     },
     {
-      "name": "Exportaciones a ficheros de texto plano",
+      "name": "${msg['api.doc.swagger.tag.plainFile']}",
       "description": ""
     },
     {
-      "name": "Exportaciones a ficheros Excel",
+      "name": "${msg['api.doc.swagger.tag.excelFile']}",
       "description": ""
     },
     {
-      "name": "Exportaciones a imágenes",
+      "name": "${msg['api.doc.swagger.tag.image']}",
       "description": ""
     }
   ],
@@ -206,7 +213,8 @@
         "LABEL",
         "CODE_AND_LABEL"
       ],
-      "description": ""
+      "description": "",
+      "example": "LABEL"
     },
     "PlainTextExportation": {
       "type": "object",
@@ -353,15 +361,154 @@
         }
       ],
       "description": ""
-    }
+    },
+    "ExportationDimensionFilters": {
+      "type": "object",
+      "title": "DimensionFilters",
+      "description": "Si la dimensión es temporal, se le podrán aplicar los siguientes filtros",
+      "properties": {
+        "range": {
+          "type": "object",
+          "description": "range incluirá el listado de valores entre start y end, ambos incluidos. Si alguno de los filtros no se incluye, se considerará un rango abierto",
+          "properties": {
+            "start": {
+              "type": "string",
+              "example": "2010-M01"
+            },
+            "end": {
+              "type": "string",
+              "example": "2011-M02"
+            }
+          },
+          "last": {
+            "type": "integer",
+            "description": "range incluirá los últimos n valores de entre los disponibles",
+            "example": 4
+          },
+          "after": {
+            "type": "string",
+            "description": "after incluirá las fechas posteriores a la definida, incluida ella misma",
+            "example": "2009"
+          }
+        }
+      }
+    },
+    "ExportationDimensionValue": {
+      "type":"array",
+      "items": {
+        "type":"string",
+        "example": "INDICE_OCUPACION_PLAZAS"
+      }
+    },
+    "ExportationDimensionValues": {
+      "type": "object",
+      "description": "La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión",
+      "properties": {
+        "dimensionValue": {
+          "$ref": "#/definitions/ExportationDimensionValue"
+        }
+      }
+    },
+    "ExportationDimension": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimensionId": {
+            "type": "string",
+            "example": "TIME_PERIOD"
+          },
+          "labelVisualisationMode": {
+            "$ref": "#/definitions/LabelVisualisationMode"
+          },
+          "position": {
+            "type": "integer",
+            "description": "La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado",
+            "example": "21"
+          },
+          "dimensionValues": {
+            "$ref": "#/definitions/ExportationDimensionValues"
+          },
+          "dimensionFilters": {
+            "$ref": "#/definitions/ExportationDimensionFilters"
+          }
+        }
+      },
+      "example": [
+        {
+          "dimensionId": "INDICADORES",
+          "labelVisualisationMode": "LABEL",
+          "position": 20,
+          "dimensionValues": {
+            "dimensionValue": ["INDICE_OCUPACION_PLAZAS"]
+          }
+        },
+        {
+          "dimensionId": "TIME_PERIOD",
+          "labelVisualisationMode": "LABEL",
+          "position": 21,
+          "dimensionFilters": {
+            "range": {
+              "start": "2010-M01",
+              "end": "2011-M02"
+            },
+            "last": 4,
+            "after": "2009"
+          }
+        },
+        {
+          "dimensionId": "CATEGORIA_ALOJAMIENTO",
+          "labelVisualisationMode": "LABEL",
+          "position": 0,
+          "dimensionValues": {
+            "dimensionValue": ["TOTAL"]
+          }
+        },
+        {
+          "dimensionId": "DESTINO_ALOJAMIENTO",
+          "labelVisualisationMode": "LABEL",
+          "position": 1,
+          "dimensionValues": {
+            "dimensionValue": ["EL_HIERRO", "LA_PALMA", "LA_GOMERA", "TENERIFE", "GRAN_CANARIA", "FUERTEVENTURA", "LANZAROTE"]
+          }
+        }
+      ]
+    },
+    "Exportation": {
+      "type": "object",
+      "title": "Exportation",
+      "allOf": [
+        {
+          "properties": {
+            "datasetSelection": {
+              "type": "object",
+              "properties": {
+                "dimensions": {
+                  "type": "object",
+                  "properties": {
+                    "dimension": {
+                      "$ref": "#/definitions/ExportationDimension"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ExportationSvg": {
+      "type":"string",
+      "example": '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="120" height="120"><rect x="14" y="23" width="200" height="50" fill="lime" stroke="black" /></svg>'
+    },
   },
   "paths": {
     "/v1.0/csv_comma/datasets/{agencyID}/{resourceID}/{version}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros de texto plano"
+          "${msg['api.doc.swagger.tag.plainFile']}"
         ],
-        "description": "Permite realizar la exportación de un dataset en fichero CSV separado por comas.",
+        "description": "${msg['api.doc.swagger.paths.csv_comma.datasets.agencyID.resourceID.version.post']}",
         "operationId": "resource__v1.0_csv_comma__datasets__agencyID__resourceID__version__exportDatasetToCsvComma_POST",
         "produces": [
           "text/csv"
@@ -369,60 +516,58 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "Versión del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}${msg['api.doc.swagger.paths.any.post.parameters.filename.plainFile']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           },
           {
             "name":"fields",
             "in":"query",
             "type":"string",
-            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -430,9 +575,9 @@
     "/v1.0/csv_semicolon/datasets/{agencyID}/{resourceID}/{version}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros de texto plano"
+          "${msg['api.doc.swagger.tag.plainFile']}"
         ],
-        "description": "Permite realizar la exportación de un dataset en fichero CSV separado por puntos y comas.",
+        "description": "${msg['api.doc.swagger.paths.csv_semicolon.datasets.agencyID.resourceID.version.post']}",
         "operationId": "resource__v1.0_csv_semicolon__datasets__agencyID__resourceID__version__exportDatasetToCsvSemicolon_POST",
         "produces": [
           "text/csv"
@@ -440,60 +585,58 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "Versión del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}" 
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           },
           {
             "name":"fields",
             "in":"query",
             "type":"string",
-            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -501,9 +644,9 @@
     "/v1.0/excel/datasets/{agencyID}/{resourceID}/{version}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros Excel"
+          "${msg['api.doc.swagger.tag.excelFile']}"
         ],
-        "description": "Permite realizar la exportación de un dataset en fichero Excel.",
+        "description": "${msg['api.doc.swagger.paths.excel.datasets.agencyID.resourceID.version.post']}",
         "operationId": "resource__v1.0_excel__datasets__agencyID__resourceID__version__exportDatasetToExcelForm_POST",
         "produces": [
           "application/xml"
@@ -511,54 +654,52 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "Versión del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -566,9 +707,9 @@
     "/v1.0/excel/queries/{agencyID}/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros Excel"
+          "${msg['api.doc.swagger.tag.excelFile']}"
         ],
-        "description": "Permite realizar la exportación de una consulta en fichero Excel.",
+        "description": "${msg['api.doc.swagger.paths.excel.queries.agencyID.resourceID.post']}",
         "operationId": "resource__v1.0_excel__queries__agencyID__resourceID__exportQueryToExcelForm_POST",
         "produces": [
           "application/xml"
@@ -576,48 +717,45 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -625,9 +763,9 @@
     "/v1.0/excel/indicators/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros Excel"
+          "${msg['api.doc.swagger.tag.excelFile']}"
         ],
-        "description": "Permite realizar la exportación de un indicador en fichero Excel.",
+        "description": "${msg['api.doc.swagger.paths.excel.indicators.resourceID.post']}",
         "operationId": "resource__v1.0_excel__indicators__resourceID__exportIndicatorToExcelForm_POST",
         "produces": [
           "application/xml"
@@ -635,42 +773,38 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },         
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },         
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -678,9 +812,9 @@
     "/v1.0/excel/indicatorsSystems/{indicatorSystemCode}/indicatorsInstances/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros Excel"
+          "${msg['api.doc.swagger.tag.excelFile']}"
         ],
-        "description": "Permite realizar la exportación de una instancia de indicador en fichero Excel.",
+        "description": "${msg['api.doc.swagger.paths.excel.indicatorsSystems.indicatorSystemCode.indicatorsInstances.resourceID.post']}",
         "operationId": "resource__v1.0_excel__indicatorsSystems__indicatorSystemCode__indicatorsInstances__resourceID__exportIndicatorInstanceToExcelForm_POST",
         "produces": [
           "application/xml"
@@ -688,48 +822,45 @@
         "parameters": [           
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },         
           {
             "name": "indicatorSystemCode",
             "in": "path",
             "type": "string",
-            "description": "Código del sistema a obtener."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },         
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -737,9 +868,9 @@
     "/v1.0/image": {
       "post": {
         "tags": [
-          "Exportaciones a imágenes"
+          "${msg['api.doc.swagger.tag.image']}"
         ],
-        "description": "Permite realizar una exportación a una imagen SVG.",
+        "description": "${msg['api.doc.swagger.paths.image.post']}",
         "operationId": "resource__v1.0_image_exportSvgToImageForm_POST",
         "produces": [
           "application/xml"
@@ -747,15 +878,17 @@
         "parameters": [
           {
             "name": "svg",
-            "in": "formData",
-            "type": "string",
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/ExportationSvg"
+            },
             "description": ""
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "type",
@@ -771,16 +904,11 @@
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -788,9 +916,9 @@
     "/v1.0/px/datasets/{agencyID}/{resourceID}/{version}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros PC-Axis"
+          "${msg['api.doc.swagger.tag.pc-axisFile']}"
         ],
-        "description": "Permite realizar la exportación de un dataset en fichero PC-Axis (.px).",
+        "description": "${msg['api.doc.swagger.paths.px.datasets.agencyID.resourceID.version.post']}",
         "operationId": "resource__v1.0_px__datasets__agencyID__resourceID__version__exportDatasetToPxForm_POST",
         "produces": [
           "application/xml"
@@ -798,54 +926,52 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "Versión del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -853,9 +979,9 @@
     "/v1.0/px/queries/{agencyID}/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros PC-Axis"
+          "${msg['api.doc.swagger.tag.pc-axisFile']}"
         ],
-        "description": "Permite realizar la exportación de una consulta en fichero PC-Axis (.px).",
+        "description": "${msg['api.doc.swagger.paths.px.queries.agencyID.resourceID.post']}",
         "operationId": "resource__v1.0_px__queries__agencyID__resourceID__exportQueryToPxForm_POST",
         "produces": [
           "application/xml"
@@ -863,48 +989,45 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -912,9 +1035,9 @@
     "/v1.0/px/indicators/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros PC-Axis"
+          "${msg['api.doc.swagger.tag.pc-axisFile']}"
         ],
-        "description": "Permite realizar la exportación de un indicador en fichero PC-Axis (.px).",
+        "description": "${msg['api.doc.swagger.paths.px.indicators.resourceID.post']}",
         "operationId": "resource__v1.0_px__indicators__resourceid__exportIndicatorToPxForm_POST",
         "produces": [
           "application/xml"
@@ -922,42 +1045,38 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },          
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },        
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -966,9 +1085,9 @@
     "/v1.0/px/indicatorsSystems/{indicatorSystemCode}/indicatorsInstances/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros PC-Axis"
+          "${msg['api.doc.swagger.tag.pc-axisFile']}"
         ],
-        "description": "Permite realizar la exportación de una instancia de indicador en fichero PC-Axis (.px).",
+        "description": "${msg['api.doc.swagger.paths.px.indicatorsSystems.indicatorSystemCode.indicatorsInstances.resourceID.post']}",
         "operationId": "resource__v1.0_px__indicatorsSystems__indicatorSystemCode__indicatorsInstances__resourceid__exportIndicatorInstanceToPxForm_POST",
         "produces": [
           "application/xml"
@@ -976,48 +1095,45 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "indicatorSystemCode",
             "in": "path",
             "type": "string",
-            "description": "Código del sistema a obtener."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -1025,9 +1141,9 @@
     "/v1.0/tsv/datasets/{agencyID}/{resourceID}/{version}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros de texto plano"
+          "${msg['api.doc.swagger.tag.plainFile']}"
         ],
-        "description": "Permite realizar la exportación de un dataset en fichero separado por tabuladores.",
+        "description": "${msg['api.doc.swagger.paths.tsv.datasets.agencyID.resourceID.version.post']}",
         "operationId": "resource__v1.0_tsv__datasets__agencyID__resourceID__version__exportDatasetToTsv_POST",
         "produces": [
           "application/octet-stream",
@@ -1036,60 +1152,58 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "version",
             "in": "path",
             "type": "string",
-            "description": "Versión del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.version']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}${msg['api.doc.swagger.paths.any.post.parameters.filename.plainFile']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           },
           {
             "name":"fields",
             "in":"query",
             "type":"string",
-            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -1097,9 +1211,9 @@
     "/v1.0/tsv/queries/{agencyID}/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros de texto plano"
+          "${msg['api.doc.swagger.tag.plainFile']}"
         ],
-        "description": "Permite realizar la exportación de una consulta en fichero separado por tabuladores.",
+        "description": "${msg['api.doc.swagger.paths.tsv.queries.agencyID.resourceID.post']}",
         "operationId": "resource__v1.0_tsv__queries__agencyID__resourceID__exportQueryToTsv_POST",
         "produces": [
           "application/octet-stream",
@@ -1108,54 +1222,51 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "agencyID",
             "in": "path",
             "type": "string",
-            "description": "Identificador de la organización mantenedora del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.agencyID']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}${msg['api.doc.swagger.paths.any.post.parameters.filename.plainFile']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           },
           {
             "name":"fields",
             "in":"query",
             "type":"string",
-            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -1163,9 +1274,9 @@
     "/v1.0/tsv/indicators/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros de texto plano"
+          "${msg['api.doc.swagger.tag.plainFile']}"
         ],
-        "description": "Permite realizar la exportación de un indicador en fichero separado por tabuladores.",
+        "description": "${msg['api.doc.swagger.paths.tsv.indicators.resourceID.post']}",
         "operationId": "resource__v1.0_tsv__indicators__resourceId__exportIndicatorsToTsv_POST",
         "produces": [
           "application/octet-stream",
@@ -1174,48 +1285,44 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}"
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           },
           {
             "name":"fields",
             "in":"query",
             "type":"string",
-            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }
@@ -1223,9 +1330,9 @@
     "/v1.0/tsv/indicatorsSystems/{indicatorSystemCode}/indicatorsInstances/{resourceID}": {
       "post": {
         "tags": [
-          "Exportaciones a ficheros de texto plano"
+          "${msg['api.doc.swagger.tag.plainFile']}"
         ],
-        "description": "Permite realizar la exportación de una instancia de indicador en fichero separado por tabuladores.",
+        "description": "${msg['api.doc.swagger.paths.tsv.indicatorsSystems.indicatorSystemCode.indicatorsInstances.resourceID.post']}",
         "operationId": "resource__v1.0_tsv__indicatorsSystems__indicatorSystemCode__indicatorsInstances__resourceId__exportDatasetToTsv_POST",
         "produces": [
           "application/octet-stream",
@@ -1234,54 +1341,51 @@
         "parameters": [
           {
             "name": "jsonBody",
-            "in": "formData",
-            "type": "string",
-            "description": "Cuerpo del mensaje en formato json. Este cuerpo sólo es necesario utilizarlo en el caso de que se desee realizar un filtrado de los datos a exportar sobre la totalidad de los que componen el recurso. En el caso de querer realizar un filtrado deberemos definir el objeto \"datasetSelection\". Dentro de este objeto deberemos especificar los valores que queremos exportar para cada una de las dimensiones. Se presenta a continuación un ejemplo del objeto con comentarios sobre los valores posibles.
-            <%=SwaggerUtils.formatJSONInsideDescription("{\n    \"datasetSelection\": {\n        \"dimensions\": {\n            \"dimension\": [\n                {\n                    \"dimensionId\": \"INDICADORES\",\n                    /* Podemos elegir entre CODE, LABEL y CODE_AND_LABEL */\n                    \"labelVisualisationMode\": \"LABEL\",\n                    /* La propiedad position determina donde se dibuja la dimensión. Las dimensiones de lado izquierdo toman valores consecutivos empezando en 0, menores de 20. Y las dimensiones de cabecera toman valores consecutivos empezando en 20, menores de 40. Es opcional y si no se pone, tomará el valor predeterminado */\n                    \"position\": 20,\n                    /* La propiedad dimensionValues es opcional. Si no se define, tomará todos los valores posibles para la dimensión */\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"INDICE_OCUPACION_PLAZAS\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"TIME_PERIOD\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 21,\n                    /* Si la dimensión es temporal, se le podrán aplicar los siguientes filtros */\n                    \"dimensionFilters\": {\n                        \"range\": { /* range incluirá el listado de valores entre start y end, ambos incluidos */\n                            \"start\": \"2010-M01\",\n                            \"end\": \"2011-M02\" /* Si alguno de los filtros no se incluye, se considerará un rango abierto */\n                        },\n                        \"last\": 4, /* range incluirá los últimos n valores de entre los disponibles */\n                        \"after\": \"2009\" /* after incluirá las fechas posteriores a la definida, incluida ella misma */\n                    }\n                },\n                {\n                    \"dimensionId\": \"CATEGORIA_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 0,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"TOTAL\"\n                        ]\n                    }\n                },\n                {\n                    \"dimensionId\": \"DESTINO_ALOJAMIENTO\",\n                    \"labelVisualisationMode\": \"LABEL\",\n                    \"position\": 1,\n                    \"dimensionValues\": {\n                        \"dimensionValue\": [\n                            \"EL_HIERRO\",\n                            \"LA_PALMA\",\n                            \"LA_GOMERA\",\n                            \"TENERIFE\",\n                            \"GRAN_CANARIA\",\n                            \"FUERTEVENTURA\",\n                            \"LANZAROTE\"\n                        ]\n                    }\n                }\n            ]\n        }\n    }\n}")%>
-            "
+            "in": "body",
+            "schema":{
+               "$ref": "#/definitions/Exportation"
+            },
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.jsonBody']}"
           },
           {
             "name": "indicatorSystemCode",
             "in": "path",
             "type": "string",
-            "description": "Código del sistema a obtener."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.indicatorSystemCode']}",
+            "required":true
           },
           {
             "name": "resourceID",
             "in": "path",
             "type": "string",
-            "description": "Identificador del recurso a exportar."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.resourceID']}",
+            "required":true
           },
           {
             "name": "filename",
             "in": "query",
             "type": "string",
-            "description": "Nombre del fichero resultante de la exportación. Es recomendable no incluir la extensión para que la API determine la extensión apropiada." 
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.filename']}" 
           },
           {
             "name": "lang",
             "in": "query",
             "type": "string",
-            "description": "Idioma en el que se desea llevar a cabo la exportación. En caso de no especificarse ningún idioma se realizará en el idioma por defecto del organismo. Además, en el caso de que se solicite un idioma y no coincida con el idioma por defecto del organismo, éste último también se añadirá."
+            "description": "${msg['api.doc.swagger.paths.any.post.parameters.lang']}"
           },
           {
             "name":"fields",
             "in":"query",
             "type":"string",
-            "description":"Permite personalizar la respuesta mediante la exclusión o inclusión de campos de la misma. Los posibles valores son \"-attributes\".<br/>Ejemplos: <br/>\r\n- fields=-attributes"
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
          }
         ],
         "responses": {
-          "201": {
-            "schema": {
-              "description": "",
-              "type": "object"
-            },
-            "headers": {},
-            "description": "Creado. La petición se ha completado y ha dado lugar a la creación de un nuevo recurso."
+          "200": {
+            "description": "${msg['api.doc.swagger.paths.responses.200']}"
           },
           "500":{
-            "description":"Error interno del servidor. Se ha producido un error que impide que se obtenga el recurso solicitado."
+            "description":"${msg['api.doc.swagger.paths.responses.500']}"
           }
         }
       }

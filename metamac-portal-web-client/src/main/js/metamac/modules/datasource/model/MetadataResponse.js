@@ -244,6 +244,8 @@
                 representations = hasHierarchy ? self._sortHierarchyRepresentations(representations) : representations;
             }
             return representations;
+        }, function(dimensionId) {
+            return this.metadataResponse.urn + dimensionId;
         }),
 
         getRepresentationsForAttributeDimension: function (attributeId) {

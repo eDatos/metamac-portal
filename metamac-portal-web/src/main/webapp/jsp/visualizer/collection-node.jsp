@@ -8,10 +8,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <ul class="capitulos">
-    <%
+    <% 
         String locale = (String) request.getAttribute("currentLocale");
         String defaultLocale = (String) request.getAttribute("defaultInternationalizationLanguage");
-    	Helpers helper = new Helpers(locale, defaultLocale);
+        String apiKey = (String) request.getAttribute("apiKey");
+    	Helpers helper = new Helpers(locale, defaultLocale, apiKey);
         Integer nodeDepth = (Integer)request.getAttribute("nodeDepth");
         if (nodeDepth == null) {
             nodeDepth = 1;
