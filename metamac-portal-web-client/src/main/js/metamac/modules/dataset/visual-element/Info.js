@@ -232,7 +232,7 @@
 
         _getDimensionsForApiUrl: function () {
             return _.map(this.filterDimensions.getDimensionsWithSomeRepresentationNotSelected(), function (dimension) {
-                var representations = _.map(dimension.get("representations").where({ selected: true}), function(representation) {
+                var representations = _.map(dimension.getSelectedRepresentations(), function(representation) {
                     return representation.id;
                 });
                 return {

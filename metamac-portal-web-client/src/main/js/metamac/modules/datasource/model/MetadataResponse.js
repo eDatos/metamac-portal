@@ -120,7 +120,7 @@
             return result;
         },
 
-        _dimensionHasHierarchy: function (dimension) {
+        _dimensionHasHierarchy: _.memoize(function (dimension) {
             const timeDimensionWithDifferentGranularity = dimension.type === 'TIME_DIMENSION'
                 && dimension.dimensionValues.value.some((value) => value.temporalGranularity !== dimension.dimensionValues.value[0].temporalGranularity);
 
@@ -129,7 +129,7 @@
             });
 
             return timeDimensionWithDifferentGranularity || dimensionValuesHasVisualizationParents;
-        },
+        }),
 
         getDimensions: function () {
             if (!this.metadata.dimensions) { return; }

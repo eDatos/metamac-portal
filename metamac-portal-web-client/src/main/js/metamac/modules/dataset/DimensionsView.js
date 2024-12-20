@@ -458,7 +458,7 @@
                 } else if (self._isFixedZone(zoneId)) {
                     var selectedCategory = dimensionModel.get('representations').findWhere({ drawable: true });
                     dimension.selectedCategory = selectedCategory ? selectedCategory.toJSON() : null;
-                    dimension.representationsList = dimensionModel.get('representations').where({ 'selected': true }).map(function (model) { return model.toJSON(); });
+                    dimension.representationsList = dimensionModel.getSelectedRepresentations().map(function (model) { return model.toJSON(); });
                 } else if (self._getSortable(zoneId)) {
                     dimension.sortable = true;
                 }
