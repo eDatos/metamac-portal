@@ -230,6 +230,7 @@
 
                     if (isGeographic) {
                         representation.normCode = self.getGeographicDimensionNormCode(dimensionValue);
+                        representation.geographicGranularityLabel = App.InternationalizationUtils.localizeLabel(dimensionValue.geographicGranularity.name);
                         representation.variableElementId = dimensionValue.variableElement ? dimensionValue.variableElement.id : undefined;
                     }
 
