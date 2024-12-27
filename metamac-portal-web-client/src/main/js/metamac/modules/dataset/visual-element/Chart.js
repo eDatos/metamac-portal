@@ -22,7 +22,7 @@
             this.$chartContainer = $('<div></div>');
             this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
             this.$el.append(this.$chartContainer);
-            this.chart = echarts.init(this.$chartContainer[0], null, { renderer: 'svg' });
+            this.chart = echarts.init(this.$chartContainer[0], null, { renderer: 'canvas' });
 
             this.$exportChartContainer = $("#export-chart");
             if (this.$exportChartContainer.length === 0) {

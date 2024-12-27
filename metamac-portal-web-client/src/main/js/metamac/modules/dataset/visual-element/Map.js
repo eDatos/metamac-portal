@@ -102,7 +102,7 @@
         },
 
         _getBaseRepresentationNormCodes: function () {
-            var levelZeroRepresentations = this._getGeographicDimension().get('representations').where({ level: 0});
+            var levelZeroRepresentations = this._getGeographicDimension().getRepresentationsByLevel(0);
             return _.invoke(levelZeroRepresentations, "get", "normCode");
         },
 
