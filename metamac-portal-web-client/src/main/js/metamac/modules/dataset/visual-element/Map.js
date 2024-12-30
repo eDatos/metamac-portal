@@ -14,10 +14,13 @@
 
     _.extend(App.VisualElement.Map.prototype, {
 
+        _granularitiesWithNoSelection: App.templateManager.get('dataset/granuralities-with-no-selection'),
+        _errorTemplate: App.templateManager.get('dataset/map/map-error'),
+
         load: function () {
             this._unbindEvents();
             this._bindEvents();
-            if (!this.assertAllDimensionsHaveSelections()) {
+            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
                 return;
             }
 
@@ -99,7 +102,7 @@
         },
 
         _getBaseRepresentationNormCodes: function () {
-            var levelZeroRepresentations = this._getGeographicDimension().get('representations').where({ level: 0});
+            var levelZeroRepresentations = this._getGeographicDimension().getRepresentationsByLevel(0);
             return _.invoke(levelZeroRepresentations, "get", "normCode");
         },
 
@@ -177,11 +180,13 @@
         },
 
         render: function () {
-            this._mapContainerView.render();
+            if (this.assertMapAvailable()) {
+                this._mapContainerView.render();
+            }
         },
 
         update: function () {
-            if (!this.assertAllDimensionsHaveSelections()) {
+            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
                 return;
             }
 
@@ -197,6 +202,26 @@
 
             this.updateTitle();
             this._mapContainerView.update(this._dataJson, this._geoJson, this.getTitle());
+        },
+
+        assertGeographicDimensionsHaveTwoElements: function () {
+            if (this.filterDimensions.checkGeographicDimensionsWithTwoElements()) {
+                this.hideWrongSelectionView();
+                return true;
+            } else {
+                this.renderWrongSelectionView(this._granularitiesWithNoSelection());
+                return false;
+            }
+        },
+
+        assertMapAvailable: function () {
+            if (this._mapContainerView.canRender()) {
+                this.hideWrongSelectionView();
+                return true;
+            } else {
+                this.renderWrongSelectionView(this._errorTemplate());
+                return false;
+            }
         },
 
         _mapExists: function() {

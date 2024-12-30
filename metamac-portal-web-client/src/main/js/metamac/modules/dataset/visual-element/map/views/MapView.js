@@ -283,7 +283,7 @@
             var geographicDimension = this._filterDimensions.where({ type: "GEOGRAPHIC_DIMENSION" })[0];
             var self = this;
             return _.map(_.pairs(this._dataJson), function (item) {
-                var geographicRepresentationId = geographicDimension.get("representations").where({ normCode: item[0] })[0].id;
+                var geographicRepresentationId = geographicDimension.getRepresentationsByNormCode(item[0])[0].id;
                 var currentPermutation = self._filterDimensions.models.reduce((dimensionsPermutation, filterDimension) => {
                     dimensionsPermutation[filterDimension.id] = (filterDimension.get("type") === "GEOGRAPHIC_DIMENSION")
                         ? geographicRepresentationId
@@ -352,11 +352,6 @@
             return dataClasses;
         },
 
-        _redrawLegend: function () {
-            this.map.legend.destroy();
-            this.map.legend.render();
-        },
-
         _offsetFromMouseEvent: function (e) {
             var offset = this.$el.offset();
             var xOffset = e.pageX - (offset.left + this._width / 2);
@@ -376,7 +371,9 @@
         },
 
         _onResize: function () {
-            this.map.reflow();
+            if (this.map) {
+                this.map.reflow();
+            }
         },
 
         _filterShapesWithoutData: function (mapData, data) {

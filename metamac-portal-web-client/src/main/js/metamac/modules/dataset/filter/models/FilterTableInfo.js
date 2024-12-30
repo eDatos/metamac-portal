@@ -54,7 +54,7 @@
 
                 dimensions.each(function (dimension) {
                     result.ids.push(dimension.id);
-                    var representations = dimension.get('representations').where({ drawable: true });
+                    var representations = dimension.getDrawableRepresentations();
 
                     if (dimension.get('type') === "TIME_DIMENSION") {
                         var group = _.groupBy(representations, function (representation) {
@@ -103,7 +103,7 @@
 
         _initializeLeftHeaderValues: function () {
             var headerValuesGroupByDimension = this.filterDimensions.zones.get('left').get('dimensions').map(function (dimension) {
-                var selectedRepresentations = dimension.get('representations').where({ drawable: true });
+                var selectedRepresentations = dimension.getDrawableRepresentations();
                 return _.invoke(selectedRepresentations, 'pick', 'visibleLabel', 'level');
             });
 

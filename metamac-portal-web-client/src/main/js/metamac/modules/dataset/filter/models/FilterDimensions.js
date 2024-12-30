@@ -65,13 +65,13 @@
 
         getDimensionsWithoutSelections: function () {
             return this.filter(function (dimension) {
-                return !dimension.get('singleValue') && dimension.get('representations').where({ selected: true }).length == 0;
+                return !dimension.get('singleValue') && dimension.getSelectedRepresentations().length === 0;
             });
         },
 
         getDimensionsWithSomeRepresentationNotSelected: function () {
             return this.filter(function (dimension) {
-                return dimension.get('representations').where({ selected: false }).length > 0;
+                return dimension._getUnselectedRepresentations().length > 0;
             });
         },
 
@@ -133,14 +133,13 @@
             var position = zoneOffsets[zone.id] + zone.get('dimensions').indexOf(geographicDimension);
 
             var selectedVariableElements = selection.split("|");
-            var geographicDimensionRepresentations = geographicDimension.get('representations');
             var selectedAndValidatedVariableElements = [];
-            for (var i = 0; i < selectedVariableElements.length; i++) {
-                var representation = geographicDimensionRepresentations.where({variableElementId: selectedVariableElements[i]})[0];
+                for (var i = 0; i < selectedVariableElements.length; i++) {
+                    var representation = geographicDimension.getRepresentationsByVariableElementId(selectedVariableElements[i])[0];
                 if (representation) {
                     selectedAndValidatedVariableElements.push(selectedVariableElements[i]);
                     if (representation.get("parent")) {
-                        var representationParent = geographicDimensionRepresentations.where({id: representation.get("parent")})[0];
+                        var representationParent = geographicDimension.getRepresentationsById(representation.get("parent"))[0];
                         selectedVariableElements.push(representationParent.get("variableElementId"));
                     }
                 }
@@ -149,7 +148,7 @@
             var json = {};
             json[geographicDimension.id] = {
                 position: position,
-                categories: geographicDimensionRepresentations.models.map(representation => ({
+                categories: geographicDimension.get('representations').models.map(representation => ({
                     id: representation.get("id"),
                     selected: selectedAndValidatedVariableElements.length === 0
                         || selectedAndValidatedVariableElements.includes(representation.get("variableElementId")),
@@ -255,7 +254,7 @@
         },
 
         _calculateSelectedGeographicLevel: function (dimension, representations) {
-            var selectedLevels = _.uniq(_.map(representations.where({ selected: true, drawable: true }), function(representation) {
+            var selectedLevels = _.uniq(_.map(representations.getSelectedAndDrawableRepresentations(), function(representation) {
                 return representation.get('level');
             }));
             if (dimension.get('type') === "GEOGRAPHIC_DIMENSION" && selectedLevels.length === 1) {
@@ -264,7 +263,7 @@
         },
 
         _calculateSelectedTemporalGranularity: function (dimension, representations) {
-            var selectedGranularities = _.uniq(_.map(representations.where({ selected: true, drawable: true }), function(representation) {
+            var selectedGranularities = _.uniq(_.map(representations.getSelectedAndDrawableRepresentations(), function(representation) {
                 return representation.get('temporalGranularity');
             }));
             if (dimension.get('type') === "TIME_DIMENSION" && selectedGranularities.length === 1) {
