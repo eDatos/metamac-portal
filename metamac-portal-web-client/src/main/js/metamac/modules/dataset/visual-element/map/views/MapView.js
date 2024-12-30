@@ -352,11 +352,6 @@
             return dataClasses;
         },
 
-        _redrawLegend: function () {
-            this.map.legend.destroy();
-            this.map.legend.render();
-        },
-
         _offsetFromMouseEvent: function (e) {
             var offset = this.$el.offset();
             var xOffset = e.pageX - (offset.left + this._width / 2);
@@ -376,7 +371,9 @@
         },
 
         _onResize: function () {
-            this.map.reflow();
+            if (this.map) {
+                this.map.reflow();
+            }
         },
 
         _filterShapesWithoutData: function (mapData, data) {

@@ -178,7 +178,7 @@ I18n.translations.es = {
         },
         noSelection: "Debe seleccionar al menos una categoría en cada dimensión",
 
-        selectAtLeastTwoItems: "Debes seleccionar al menos dos valores en el mismo nivel",
+        selectAtLeastTwoItems: "Debe seleccionar al menos dos valores en el mismo nivel",
 
         loading: "Cargando datos..."
     },
