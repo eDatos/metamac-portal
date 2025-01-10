@@ -188,29 +188,33 @@
             return this.filterDimensions.getDimensionsWithoutSelections().length == 0;
         },
 
-        renderNoSelectionView: function () {
-            this.setupNoSelectionViewIfNeeded();
-            this.$noSelection.html(this._noSelectionTemplate());
+        renderWrongSelectionView: function (errorMessageTemplate) {
+            this.setupWrongSelectionViewIfNeeded();
+            this.$wrongSelection.html(errorMessageTemplate);
             this.hideTitle();
-            this.$noSelection.show();
+            this.$wrongSelection.show();
         },
 
-        setupNoSelectionViewIfNeeded: function () {
+        hideWrongSelectionView: function () {
+            if (this.$wrongSelection) {
+                this.$wrongSelection.hide();
+                this.showTitle();
+            }
+        },
+
+        setupWrongSelectionViewIfNeeded: function () {
             if (this.$el.find('.dataset-no-selection').length) { return; }
-            this.$noSelection = $('<div class="dataset-no-selection dataset-message"></div>');
-            this.$noSelection.hide();
-            this.$el.append(this.$noSelection);
+            this.$wrongSelection = $('<div class="dataset-no-selection dataset-message"></div>');
+            this.$wrongSelection.hide();
+            this.$el.append(this.$wrongSelection);
         },
 
         assertAllDimensionsHaveSelections: function () {
             if (this.allDimensionsHaveSelections()) {
-                if (this.$noSelection) {
-                    this.$noSelection.hide();
-                    this.showTitle();
-                }
+                this.hideWrongSelectionView();
                 return true;
             } else {
-                this.renderNoSelectionView();
+                this.renderWrongSelectionView(this._noSelectionTemplate());
                 return false;
             }
         },
@@ -234,6 +238,11 @@
                 this.$loading.hide();
                 this.showTitle();
             }
+        },
+
+        // Patch until this issue is fixed: https://github.com/apache/echarts/issues/18242
+        _createUniqueNameForData: function (name, uniqueIndex) {
+            return name.replace(/\u200B/g, '') + '\u200B'.repeat(uniqueIndex);
         }
     };
 

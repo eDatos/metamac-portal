@@ -84,7 +84,7 @@
                     multidatasetNode: multidatasetNode,
                     label: new Handlebars.SafeString(label),
                     stateClass: stateClass,
-                    title: _.compact([multidatasetNode.name, this._getTextFromHTML(multidatasetNode.description)]).join(" - ")
+                    title: _.compact([App.InternationalizationUtils.localizeLabel(multidatasetNode.name), this._getTextFromHTML(multidatasetNode.description)]).join(" - ")
                 };
                 this.$el.html(this.template(context));
             } else {

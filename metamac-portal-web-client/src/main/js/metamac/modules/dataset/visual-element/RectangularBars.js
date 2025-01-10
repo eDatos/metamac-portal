@@ -206,11 +206,11 @@
 
             var series = [];
             var fixedPermutation = this.getFixedPermutation();
-            _.each(columnsDimensionSelectedCategories, function (columnCategory) {
+            _.each(columnsDimensionSelectedCategories, function (columnCategory, i) {
                 var serie = {};
                 serie.id = columnCategory.get('id');
                 serie.type = 'bar';
-                serie.name = columnCategory.get('visibleLabel');
+                serie.name = self._createUniqueNameForData(columnCategory.get('visibleLabel'), i);
                 serie.data = [];
                 serie.barMaxWidth = "35%";
                 serie.barCategoryGap = "50%";
@@ -227,7 +227,7 @@
                     }
                 }
 
-                _.each(dataAxisDimensionSelectedCategories, function (dataAxisCategory, dataAxisCategoryIndex) {
+                _.each(dataAxisDimensionSelectedCategories, function (dataAxisCategory) {
                     var currentPermutation = {};
                     currentPermutation[dataAxisDimension.id] = dataAxisCategory.id;
                     currentPermutation[columnsDimension.id] = columnCategory.id;
