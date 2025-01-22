@@ -367,7 +367,7 @@
                 var dataNormCode = feature.id;
                 var dataValue = dataJsonItem.value;
                 self.maxDataValue = Math.max(dataValue, self.maxDataValue);
-                var geographicRepresentationId = geographicDimension.get("representations").where({ normCode: dataNormCode })[0].id;
+                var geographicRepresentationId = geographicDimension.getRepresentationsByNormCode(dataNormCode)[0].id;
                 var currentPermutation = self._filterDimensions.models.reduce((dimensionsPermutation, filterDimension) => {
                     dimensionsPermutation[filterDimension.id] = (filterDimension.get("type") === "GEOGRAPHIC_DIMENSION")
                         ? geographicRepresentationId

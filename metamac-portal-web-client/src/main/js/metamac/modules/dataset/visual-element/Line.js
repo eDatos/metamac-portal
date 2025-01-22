@@ -11,7 +11,7 @@
         this._type = 'line';
 
         var self = this;
-        var titleBottom = Constants.charts.lines.dataZoom.horizontal.height + Constants.charts.gap;
+        var titleBottom = this._getHorizontalDataZoomHeight() + Constants.charts.gap + Constants.charts.lines.dataZoom.horizontal.bottom;
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
@@ -25,15 +25,6 @@
                     }
                 },
                 axisLabel: {
-                    interval: function (categoryIndex) {
-                        if (self._getChart()) {
-                            var dataZoom = self._getChart().getOption().dataZoom[0];
-                            var interval = Math.ceil((dataZoom.endValue - dataZoom.startValue + 1) / Constants.charts.lines.xAxisTicks);
-                            return ((categoryIndex - dataZoom.startValue) % interval) === 0;
-                        } else {
-                            return true;
-                        }
-                    },
                     align: 'right',
                     rotate: 70,
                     verticalAlign: "top",
@@ -51,7 +42,7 @@
                 bottom: legendBottom
             },
             grid: {
-                right: Constants.charts.lines.dataZoom.vertical.width + Constants.charts.gap
+                right: this._getVerticalDataZoomWidth() + Constants.charts.gap
             }
         });
     };
@@ -131,9 +122,9 @@
             this.$el.append(this.$title);
 
             this._initializeChart(this.$el, this.$title);
-            App.util.ChartsUtils._triggerTooltipOnClosestItem(this._getChart());
             var self = this;
             this._getChart().on('datazoom', function (params) {
+                App.util.ChartsUtils._setTooltipTriggerOnClosestItem(self._getChart());
                 if (params.dataZoomId === Constants.charts.lines.dataZoom.horizontal.id) {
                     self.xAxisDataZoomStart = params.start;
                     self.xAxisDataZoomEnd = params.end;
@@ -248,6 +239,7 @@
         
         _updateChartOptions: function() {
             this._getChart().setOption(this._chartOptions, true);
+            App.util.ChartsUtils._setTooltipTriggerOnClosestItem(this._getChart());
             this._updatePointsVisibility();
             this._setTooltipObserver();
         },
@@ -268,8 +260,8 @@
                     xAxisIndex: [0],
                     showDetail: false,
                     left: 'center',
-                    height: Constants.charts.lines.dataZoom.horizontal.height,
-                    bottom: 0,
+                    height: this._getHorizontalDataZoomHeight(),
+                    bottom: Constants.charts.lines.dataZoom.horizontal.bottom,
                     start: this.xAxisDataZoomStart,
                     end: this.xAxisDataZoomEnd
                 },
@@ -280,7 +272,7 @@
                     filterMode: 'none',
                     showDetail: false,
                     right: 0,
-                    width: Constants.charts.lines.dataZoom.vertical.width,
+                    width: this._getVerticalDataZoomWidth(),
                     top: Constants.charts.lines.dataZoom.vertical.topMargin,
                     bottom: gridBottom + Constants.charts.lines.dataZoom.vertical.bottomMargin,
                     start: this.yAxisDataZoomStart,
@@ -289,11 +281,17 @@
             ];
         },
 
+        _getHorizontalDataZoomHeight: function () {
+            return this.optionsModel.get("widget") ? Constants.charts.lines.dataZoom.horizontal.widgetHeight : Constants.charts.lines.dataZoom.horizontal.height;
+        },
+
+        _getVerticalDataZoomWidth: function () {
+            return this.optionsModel.get("widget") ? Constants.charts.lines.dataZoom.vertical.widgetWidth : Constants.charts.lines.dataZoom.vertical.width;
+        },
+
         _getDataAxisDimensionCategories: function (dataAxisDimension) {
             var selectedTemporalGranularity = dataAxisDimension.get("representations").getSelectedTemporalGranularity();
-            var dataAxisDimensionCategories = dataAxisDimension.get('representations').where({
-                temporalGranularity: selectedTemporalGranularity
-            });
+            var dataAxisDimensionCategories = dataAxisDimension.getRepresentationsByTemporalGranularity(selectedTemporalGranularity);
             dataAxisDimensionCategories = _.sortBy(dataAxisDimensionCategories, function (representation) {
                 return representation.normCode;
             }).reverse();
@@ -326,7 +324,7 @@
                     symbolSize: Constants.charts.lines.symbol.size,
                     symbol: 'circle',
                     animation: false,
-                    name: linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'),
+                    name: self._createUniqueNameForData(linesDimension.get('singleValue') ? "" : linesCategory.get('visibleLabel'), i),
                     emphasis: {
                         disabled: true // Disabled until this issue is fixed: https://github.com/apache/echarts/issues/19958
                     },

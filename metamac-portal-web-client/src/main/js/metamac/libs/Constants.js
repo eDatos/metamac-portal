@@ -85,12 +85,15 @@
                     horizontal: {
                         id: "xAxisDataZoom",
                         height: 80,
+                        widgetHeight: 20,
                         end: 100,
-                        partialEnd: 48
+                        partialEnd: 48,
+                        bottom: 8
                     },
                     vertical: {
                         id: "yAxisDataZoom",
                         width: 80,
+                        widgetWidth: 20,
                         bottomMargin: 20,
                         topMargin: 8,
                         end: 100

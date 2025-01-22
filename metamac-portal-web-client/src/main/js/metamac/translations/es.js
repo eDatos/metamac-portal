@@ -178,7 +178,7 @@ I18n.translations.es = {
         },
         noSelection: "Debe seleccionar al menos una categoría en cada dimensión",
 
-        selectAtLeastTwoItems: "Debes seleccionar al menos dos valores en el mismo nivel",
+        selectAtLeastTwoItems: "Debe seleccionar al menos dos valores en el mismo nivel",
 
         loading: "Cargando datos..."
     },
@@ -256,11 +256,11 @@ I18n.translations.es = {
             apiDocumentationUrl: "Acceso a la documentación de la API",
             apiUrl: {
                 title: "Acceso al recurso en la API",
-                apiDownload: "El recurso se puede obtener en los siguientes formatos: CSV, TSV, XLSX, XML, JSON y JSONSTAT. Para construir la llamada a la API basta con añadir el formato al final de la URL, por ejemplo, para construir la llamada del formato CSV se haría de la siguiente forma: URL.csv"
+                apiDownload: "El recurso se puede obtener en los siguientes formatos: {{formats}}. Para construir la llamada a la API basta con añadir el formato al final de la URL, por ejemplo, para construir la llamada del formato {{formatExample}} se haría de la siguiente forma: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Acceso a la selección actual en la API",
-                apiDownload: "La selección también se puede obtener en diferentes formatos (CSV, TSV, XLSX, XML, JSON y JSONSTAT). En este caso, para construir la llamada a la API se debe tener en cuenta que el formato se debe indicar antes de pasar los parámetros, por ejemplo: URL.csv?PARAMETROS"
+                apiDownload: "La selección también se puede obtener en diferentes formatos ({{formats}}). En este caso, para construir la llamada a la API se debe tener en cuenta que el formato se debe indicar antes de pasar los parámetros, por ejemplo: URL.{{formatExampleLowercase}}?PARAMETROS"
             },
             nextVersion: {
                 title: "Próxima actualización",

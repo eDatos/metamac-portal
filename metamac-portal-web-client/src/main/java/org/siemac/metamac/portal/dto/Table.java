@@ -9,6 +9,7 @@ public class Table extends CollectionNode {
     protected ResourceStatisticalResourceBase query;
     protected ResourceStatisticalResourceBase multidataset;
     protected ResourceStatisticalResourceBase url;
+    protected ResourceStatisticalResourceBase publication;
 
     /**
      * Gets the value of the dataset property.
@@ -70,6 +71,14 @@ public class Table extends CollectionNode {
         this.url = url;
     }
 
+    public ResourceStatisticalResourceBase getPublication() {
+        return publication;
+    }
+
+    public void setPublication(ResourceStatisticalResourceBase publication) {
+        this.publication = publication;
+    }
+
     public ResourceStatisticalResourceBase getResource() {
         ResourceStatisticalResourceBase resource = null;
 
@@ -81,6 +90,8 @@ public class Table extends CollectionNode {
             resource = getMultidataset();
         } else if (getUrl() != null) {
             resource = getUrl();
+        } else if (getPublication() != null) {
+            resource = getPublication();
         }
 
         return resource;

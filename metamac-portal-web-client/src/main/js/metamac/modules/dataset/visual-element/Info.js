@@ -181,8 +181,8 @@
                 nonMeasureDimensions: this.nonMeasureDimensions,
                 urlParametersForDimensionSelection: this.selectionApiUrl,
                 rightsHolder: this._getContextRightsHolder(),
-                isDataset: this._isDataset()
-
+                apiDownloadMessage: this._buildApiDownloadMessage(),
+                selectionApiDownloadMessage: this._buildApiDownloadMessage(true)
             };
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
@@ -232,7 +232,7 @@
 
         _getDimensionsForApiUrl: function () {
             return _.map(this.filterDimensions.getDimensionsWithSomeRepresentationNotSelected(), function (dimension) {
-                var representations = _.map(dimension.get("representations").where({ selected: true}), function(representation) {
+                var representations = _.map(dimension.getSelectedRepresentations(), function(representation) {
                     return representation.id;
                 });
                 return {
@@ -252,6 +252,24 @@
 
         _isDataset: function () {
             return App.Constants.visualization.type.DATASET === this.data.metadata.identifier().type;
+        },
+
+        _buildApiDownloadMessage: function(isSelection) {
+            var formats = this._getApiDownloadFormats();
+            var formatExample = formats[0];
+            return isSelection? 
+                I18n.t("entity.dataset.selectionApiUrl.apiDownload", { formats: formats, formatExampleLowercase: formatExample.toLowerCase() }) 
+                : I18n.t("entity.dataset.apiUrl.apiDownload", { formats: formats, formatExample: formatExample, formatExampleLowercase: formatExample.toLowerCase() });
+        },
+
+        _getApiDownloadFormats: function() {
+            if (this._isQuery()) {
+                return ["XML", "JSON", "JSONSTAT"];
+            } else if (this._isIndicator()) {
+                return ["JSONSTAT"];
+            } else {
+                return ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
+            }
         },
 
         _getRelatedResources: function() {
