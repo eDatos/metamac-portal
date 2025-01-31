@@ -129,6 +129,8 @@
             });
 
             return timeDimensionWithDifferentGranularity || dimensionValuesHasVisualizationParents;
+        }, function (dimension) {
+            return dimension.id;
         }),
 
         getDimensions: function () {
