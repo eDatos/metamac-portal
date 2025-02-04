@@ -18,10 +18,9 @@
             singleValue: false
         },
 
-        initialize: function (model, options) {
+        initialize: function () {
             this._bindEvents();
             this.set('sortBy', this.isTimeDimension() ? App.Constants.dimension.sortBy.REPRESENTATION : App.Constants.dimension.sortBy.OBSERVATION);
-            this.set('singleValue', this.get('representations').length === 1 && !options.everyDimensionIsSingleValue);
         },
 
         isFixedDimension: function () {
@@ -59,8 +58,9 @@
             }
         },
 
-        parse: function (attributes) {
-            attributes.representations = App.modules.dataset.filter.models.FilterRepresentations.initializeWithRepresentations(attributes.representations);
+        parse: function (attributes, options) {
+            this.set('singleValue', attributes.representations.length === 1 && !options.everyDimensionIsSingleValue);
+            attributes.representations = App.modules.dataset.filter.models.FilterRepresentations.initializeWithRepresentations(attributes.representations, this.get("singleValue"));
             this.listenTo(attributes.representations, 'change:drawable', this._onRepresentationDrawableEvent);
             return attributes;
         },
