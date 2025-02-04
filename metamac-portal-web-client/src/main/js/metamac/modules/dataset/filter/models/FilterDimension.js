@@ -18,10 +18,10 @@
             singleValue: false
         },
 
-        initialize: function () {
+        initialize: function (model, options) {
             this._bindEvents();
             this.set('sortBy', this.isTimeDimension() ? App.Constants.dimension.sortBy.REPRESENTATION : App.Constants.dimension.sortBy.OBSERVATION);
-            this.set('singleValue', this.get('representations').length == 1);
+            this.set('singleValue', this.get('representations').length === 1 && !options.everyDimensionIsSingleValue);
         },
 
         isFixedDimension: function () {
