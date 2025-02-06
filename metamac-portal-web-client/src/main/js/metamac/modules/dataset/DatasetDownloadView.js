@@ -1,5 +1,7 @@
 (function () {
     "use strict";
+    // see org.siemac.metamac.portal.rest.common.export.v1_0.mapper.DatasetSelectionMapper#toStatisticalResourcesApiRepresentationParameter
+    const GLOBAL_CHAR_LENGTH_URL_LIMIT = 2000;
 
     App.namespace('App.modules.dataset.DatasetDownloadView');
 
@@ -60,19 +62,9 @@
         },
 
         render: function () {
-            const selection = this._getSelection(this.getDatasetSelection());
-            var jsonStatUrl = this._getJsonStatUrl();
-
             var context = {
                 buttonConfig: this._getButtonConfiguration(),
                 hasJsonstatUrl: !!this.urls.jsonstat,
-                url: {
-                    jsonstat: {
-                        href: jsonStatUrl.toString(),
-                        searchParams: [...jsonStatUrl.searchParams.entries()],
-                        selection
-                    }
-                }
             };
 
             if (this._exportableImage()) {
@@ -124,6 +116,8 @@
             var disableAnyFormat = this.optionsModel.get('isDownloading');
             var disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
             var disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
+            const param = this.toStatisticalResourcesApiRepresentationParameter(this.getDatasetSelection());
+            const disableAllSelectionFormat = param && param.length > GLOBAL_CHAR_LENGTH_URL_LIMIT && visualizationSupertype === 'data';
 
             return {
                 dataFormats: haveDataFormats,
@@ -140,14 +134,16 @@
                         infoMessage: disableAllExcel ? I18n.t("filter.download.excel.disabled") : null
                     },
                     selection: {
-                        excel: disableAnyFormat || disableSelectionExcel,
-                        tsv: disableAnyFormat,
-                        csv: disableAnyFormat,
-                        jsonstat: disableAnyFormat,
+                        excel: disableAnyFormat || disableAllSelectionFormat || disableSelectionExcel,
+                        tsv: disableAnyFormat || disableAllSelectionFormat,
+                        csv: disableAnyFormat || disableAllSelectionFormat,
+                        jsonstat: disableAnyFormat || disableAllSelectionFormat,
                         png: disableAnyFormat,
                         pdf: disableAnyFormat,
                         svg: disableAnyFormat,
-                        infoMessage: disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : null
+                        infoMessage: disableSelectionExcel ? I18n.t("filter.download.excel.disabled")
+                                    : disableAllSelectionFormat ? I18n.t("filter.download.selectionDisabled")
+                                    : null
                     }
                 },
             };
@@ -168,10 +164,10 @@
             var MAX_EXCEL_COLUMNS = 2**14; // ~ 16K
             // Heuristic for rows
             var HEURISTIC_ROWS = 75;
-            
+
             if ((rows + HEURISTIC_ROWS) > MAX_EXCEL_ROWS) { return true; }
             if (columns > MAX_EXCEL_COLUMNS) { return true; }
-            
+
             var highPerformanceMode = estimatedNumberOfCells > App.config.cellThreshold;
             if (highPerformanceMode && totalNumberOfObservations > MAX_EXCEL_ROWS) { return true; }
 
@@ -210,13 +206,13 @@
                     }
                 })
             });
-            
+
             // Remember to propagate changes made here to org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection
             return { datasetSelection: result };
         },
 
         getSelectedDimensionCategoriesIds: function (categories) {
-            var selectedCategoriesIds = []; 
+            var selectedCategoriesIds = [];
             _.each(categories, function(category) {
                 if (category.selected) {
                     selectedCategoriesIds.push(category.id);
@@ -261,16 +257,64 @@
             }
         },
 
-        redirectToFile: function (url, requestParams) {
-            this.optionsModel.set('isDownloading', true);
-
-            var formattedUrl = new URL(url);
+        createUrlWithParams(url, requestParams) {
+            const formattedUrl = new URL(url);
             if (requestParams) {
                 _.each(Object.keys(requestParams), function (key) {
                     formattedUrl.searchParams.append(key, requestParams[key]);
                 });
             }
-            window.location.href = formattedUrl.href;
+            return formattedUrl.href;
+        },
+
+        redirectToFile: function (url, requestParams) {
+            this.optionsModel.set('isDownloading', true);
+            window.location.href = this.createUrlWithParams(url, requestParams);
+        },
+
+        // see org.siemac.metamac.portal.rest.common.export.v1_0.mapper.DatasetSelectionMapper.toStatisticalResourcesApiRepresentationParameter
+        toStatisticalResourcesApiRepresentationParameter: function (exportationBody) {
+            if (!exportationBody) {
+                return null;
+            }
+            const datasetSelection = exportationBody.datasetSelection;
+            if (!datasetSelection || !datasetSelection.dimensions || !datasetSelection.dimensions.dimension) {
+                return null;
+            }
+            const dimensions = datasetSelection.dimensions.dimension;
+
+            let sb = '';
+            for (const dimension of dimensions) {
+                sb += dimension.dimensionId;
+                sb += '[';
+
+                if (dimension.dimensionFilters) {
+                    const dimensionFilters = dimension.dimensionFilters;
+                    if (dimensionFilters.after) {
+                        sb += `~after=${dimensionFilters.after}|`;
+                    }
+                    if (dimensionFilters.last) {
+                        sb += `~last=${dimensionFilters.last}|`;
+                    }
+                    if (dimensionFilters.range) {
+                        sb += `~range=${dimensionFilters.range.start};${dimensionFilters.range.end}|`;
+                    }
+                }
+                if (dimension.dimensionValues.dimensionValue && dimension.dimensionValues.dimensionValue.length > 0) {
+                    sb += dimension.dimensionValues.dimensionValue.join('|');
+                }
+                if (sb.charAt(sb.length - 1) === '|') {
+                    sb = sb.slice(0, -1); // delete last |
+                }
+
+                sb += ']';
+                sb += ':';
+            }
+            if (sb.charAt(sb.length - 1) === ':') {
+                sb = sb.slice(0, -1); // delete last :
+            }
+
+            return sb;
         },
 
         downloadFile: function (requestMethod, url, requestParams, suffixAndFileExtension, filenameCustomPrefix) {

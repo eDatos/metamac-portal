@@ -40,6 +40,7 @@ I18n.translations.en = {
         download: {
             selection: "Download selection",
             all: "Download All",
+            selectionDisabled: "The selection download has been disabled because there are too many items selected in the dimensions. To re-enable it, deselect some items.",
             modal: {
                 title: "Download info"
             },

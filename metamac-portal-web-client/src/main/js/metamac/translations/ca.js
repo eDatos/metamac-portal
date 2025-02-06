@@ -40,6 +40,7 @@ I18n.translations.ca = {
         download: {
             selection: "Descarregar selecció",
             all: "Descarregar tot",
+            selectionDisabled: "S'ha deshabilitat la descàrrega de la selecció perquè hi ha molts elements seleccionats en les dimensions. Per rehabilitar-la deseleccioneu alguns elements.",
             modal: {
                 title: "Informació de descàrrega"
             },
