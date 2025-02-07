@@ -276,21 +276,16 @@
 
         getSingleValue: function() {
             return this.models[0];
-        },
-        
-        isSingleValue: function() {
-            return this.length == 1;
         }
-
     }, {
-            initializeWithRepresentations: function (representations) {
-                var filterRepresentations = new App.modules.dataset.filter.models.FilterRepresentations(representations, { parse: true });
-                if (!filterRepresentations.isSingleValue()) {
-                    filterRepresentations.initializeHierarchy();
-                }
-
-                return filterRepresentations;
+        initializeWithRepresentations: function (representations, singleValue) {
+            var filterRepresentations = new App.modules.dataset.filter.models.FilterRepresentations(representations, {parse: true});
+            if (!singleValue) {
+                filterRepresentations.initializeHierarchy();
             }
-        });
+
+            return filterRepresentations;
+        }
+    });
 
 }());

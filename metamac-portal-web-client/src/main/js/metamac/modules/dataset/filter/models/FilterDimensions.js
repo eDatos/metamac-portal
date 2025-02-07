@@ -13,7 +13,9 @@
 
         initialize: function (models, options) {
             this.metadata = options.metadata;
-            this.reset(this.metadata.getDimensionsAndRepresentations(), _.extend({ silent: true }, options));
+            var dimensionsAndRepresentations = this.metadata.getDimensionsAndRepresentations();
+            var everyDimensionIsSingleValue = dimensionsAndRepresentations.every(dimension => dimension.representations.length <= 1);
+            this.reset(dimensionsAndRepresentations, _.extend({ silent: true, everyDimensionIsSingleValue: everyDimensionIsSingleValue }, options));
             this._initializeZones();
 
             this.where({ singleValue: false }).at(0).set('open', true); //open the first dimension
