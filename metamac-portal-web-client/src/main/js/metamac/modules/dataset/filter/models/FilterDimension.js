@@ -59,8 +59,8 @@
         },
 
         parse: function (attributes, options) {
-            this.set('singleValue', attributes.representations.length === 1 && !options.everyDimensionIsSingleValue);
-            attributes.representations = App.modules.dataset.filter.models.FilterRepresentations.initializeWithRepresentations(attributes.representations, this.get("singleValue"));
+            attributes.singleValue = attributes.representations.length === 1 && !options.everyDimensionIsSingleValue;
+            attributes.representations = App.modules.dataset.filter.models.FilterRepresentations.initializeWithRepresentations(attributes.representations, attributes.singleValue);
             this.listenTo(attributes.representations, 'change:drawable', this._onRepresentationDrawableEvent);
             return attributes;
         },
