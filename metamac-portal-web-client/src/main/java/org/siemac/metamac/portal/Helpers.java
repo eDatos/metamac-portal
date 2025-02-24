@@ -403,6 +403,10 @@ public class Helpers {
         return Jsoup.clean(html, Whitelist.none());
     }
 
+    public static String htmlToBasicText(String html) {
+        return Jsoup.clean(html, new Whitelist().addTags("b", "em", "i", "strong", "u", "br", "div"));
+    }
+
     public static int numberOfFixedDigitsInNumeration(Collection collection) {
         Integer totalIndicatorInstances = countIndicatorInstances(collection.getData().getNodes().getNodes());
         int fixedDigits = totalIndicatorInstances.toString().length();
