@@ -22,7 +22,10 @@ import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 import org.siemac.edatos.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -405,6 +408,16 @@ public class Helpers {
 
     public static String htmlToBasicText(String html) {
         return Jsoup.clean(html, new Whitelist().addTags("b", "em", "i", "strong", "u", "br", "div"));
+    }
+
+    public static String cleanText(String html) {
+        String sanitizedText = htmlToBasicText(html);
+        Document document = Jsoup.parse(sanitizedText);
+        Elements emptyDivs = document.select("div:empty, div:has(br:only-child)");
+        for (Element emptyDiv : emptyDivs) {
+            emptyDiv.remove();
+        }
+        return document.html();
     }
 
     public static int numberOfFixedDigitsInNumeration(Collection collection) {
