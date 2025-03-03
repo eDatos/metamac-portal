@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.LocaleUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
@@ -24,6 +26,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities;
+import org.jsoup.nodes.Node;
 import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 import org.siemac.edatos.core.common.constants.CoreCommonConstants;
@@ -413,11 +417,24 @@ public class Helpers {
     public static String cleanText(String html) {
         String sanitizedText = htmlToBasicText(html);
         Document document = Jsoup.parse(sanitizedText);
+
+        // remove empty divs
         Elements emptyDivs = document.select("div:empty, div:has(br:only-child)");
         for (Element emptyDiv : emptyDivs) {
             emptyDiv.remove();
         }
-        return document.html();
+
+        // put into divs paragraphs that are not already in divs
+        Element body = document.body();
+        for (Node child : body.childNodes()) {
+            if (child.nodeName().equals("#text")) {
+                Element div = document.createElement("div");
+                div.text(child.toString().trim());
+                child.replaceWith(div);
+            }
+        }
+
+        return StringEscapeUtils.unescapeHtml(document.html());
     }
 
     public static int numberOfFixedDigitsInNumeration(Collection collection) {
