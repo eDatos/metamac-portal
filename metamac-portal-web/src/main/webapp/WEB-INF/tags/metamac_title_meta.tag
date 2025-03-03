@@ -279,7 +279,7 @@
        request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale, theme));
        request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService, theme));
        request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService, theme));
-       request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService));
+       request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService, theme));
        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
        request.setAttribute("helpUrl", WebUtils.getHelpUrl());

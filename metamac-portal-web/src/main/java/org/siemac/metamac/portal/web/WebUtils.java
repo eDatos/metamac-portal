@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.StringJoiner;
 
+import org.apache.commons.lang.StringUtils;
 import org.siemac.edatos.core.common.lang.LocaleUtil;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.slf4j.Logger;
@@ -179,6 +180,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_CUSTOM:
                 return getPortalCustomBaseUrlForTheme(theme) + "/header.html" + buildHeaderQuery(lang);
             default:
+                if (StringUtils.isNotBlank(theme)) {
+                    return getPortalCustomBaseUrlForTheme(theme) + "/header.html" + buildHeaderQuery(lang);
+                }
                 return portalDefaultStyleHeaderUrl + buildHeaderQuery(lang);
         }
     }
@@ -198,6 +202,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_CUSTOM:
                 return getPortalCustomBaseUrlForTheme(theme) + "/footer.html";
             default:
+                if (StringUtils.isNotBlank(theme)) {
+                    return getPortalCustomBaseUrlForTheme(theme) + "/footer.html";
+                }
                 return portalDefaultStyleFooterUrl;
         }
     }
@@ -217,11 +224,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_CUSTOM:
                 return getPortalCustomBaseUrlForTheme(theme) + "/styles.css";
             default:
+                if (StringUtils.isNotBlank(theme)) {
+                    return getPortalCustomBaseUrlForTheme(theme) + "/styles.css";
+                }
                 return portalDefaultStyleCssUrl;
         }
     }
 
-    public static boolean getShowRightsHolder(String organizationService) {
+    public static boolean getShowRightsHolder(String organizationService, String theme) {
         switch (organizationService) {
             case SERVICE_CUSTOM:
             case SERVICE_AGRICULTURA:
@@ -231,7 +241,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_IQUA:
                 return true;
             default:
-                return false;
+                return StringUtils.isNotBlank(theme);
         }
     }
 
