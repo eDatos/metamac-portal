@@ -418,16 +418,27 @@ public class Helpers {
         String sanitizedText = htmlToBasicText(html);
         Document document = Jsoup.parse(sanitizedText);
 
+        Elements allDivs = document.select("div");
+        List<Element> divsToRemove = new ArrayList<>();
+
         // remove empty divs
-        Elements emptyDivs = document.select("div:empty, div:has(br:only-child)");
-        for (Element emptyDiv : emptyDivs) {
-            emptyDiv.remove();
+        for (Element div : allDivs) {
+            if (div.text().trim().isEmpty() &&
+                (div.children().isEmpty() ||
+                 (div.children().size() == 1 && div.child(0).tagName().equals("br")))) {
+                divsToRemove.add(div);
+            }
+        }
+
+        // Remove the identified divs
+        for (Element div : divsToRemove) {
+            div.remove();
         }
 
         // put into divs paragraphs that are not already in divs
         Element body = document.body();
         for (Node child : body.childNodes()) {
-            if (child.nodeName().equals("#text")) {
+            if (child.nodeName().equals("#text") && !child.toString().trim().isEmpty()) {
                 Element div = document.createElement("div");
                 div.text(child.toString().trim());
                 child.replaceWith(div);
