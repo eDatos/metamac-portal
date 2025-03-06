@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.CharEncoding;
 import org.apache.commons.lang.LocaleUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
@@ -22,7 +24,12 @@ import org.codehaus.jackson.map.DeserializationConfig.Feature;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities;
+import org.jsoup.nodes.Node;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.Elements;
 import org.siemac.edatos.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.exception.CommonServiceExceptionType;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -401,6 +408,44 @@ public class Helpers {
 
     public static String html2text(String html) {
         return Jsoup.clean(html, Whitelist.none());
+    }
+
+    public static String htmlToBasicText(String html) {
+        return Jsoup.clean(html, new Whitelist().addTags("b", "em", "i", "strong", "u", "br", "div"));
+    }
+
+    public static String cleanText(String html) {
+        String sanitizedText = htmlToBasicText(html);
+        Document document = Jsoup.parse(sanitizedText);
+
+        Elements allDivs = document.select("div");
+        List<Element> divsToRemove = new ArrayList<>();
+
+        // remove empty divs
+        for (Element div : allDivs) {
+            if (div.text().trim().isEmpty() &&
+                (div.children().isEmpty() ||
+                 (div.children().size() == 1 && div.child(0).tagName().equals("br")))) {
+                divsToRemove.add(div);
+            }
+        }
+
+        // Remove the identified divs
+        for (Element div : divsToRemove) {
+            div.remove();
+        }
+
+        // put into divs paragraphs that are not already in divs
+        Element body = document.body();
+        for (Node child : body.childNodes()) {
+            if (child.nodeName().equals("#text") && !child.toString().trim().isEmpty()) {
+                Element div = document.createElement("div");
+                div.text(child.toString().trim());
+                child.replaceWith(div);
+            }
+        }
+
+        return StringEscapeUtils.unescapeHtml(document.html());
     }
 
     public static int numberOfFixedDigitsInNumeration(Collection collection) {
