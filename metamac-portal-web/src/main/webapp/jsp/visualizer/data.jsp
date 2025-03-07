@@ -82,15 +82,16 @@
 							App.config["cellThreshold"] = ${cellThreshold};
 							App.config["unitMeasure"] = "${unitMeasure}";
 							App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
-		                    App.queryParams["agency"] = '${param.agencyId}';
-		                    App.queryParams["identifier"] = '${param.resourceId}';
-		                    App.queryParams["version"] = '${param.version}';
+							App.config["theme"] = '${theme}';
+							App.queryParams["agency"] = '${param.agencyId}';
+							App.queryParams["identifier"] = '${param.resourceId}';
+							App.queryParams["version"] = '${param.version}';
 							App.queryParams["type"] = '${param.resourceType}';
-                            App.queryParams["indicatorSystem"] = '${param.indicatorSystem}';
-                            App.queryParams["geo"] = '${param.geo}';
+							App.queryParams["indicatorSystem"] = '${param.indicatorSystem}';
+							App.queryParams["geo"] = '${param.geo}';
 							App.queryParams["multidatasetId"] = '${param.multidatasetId}';
-		                    console.log("starting app");
-		                    App.start();
+							console.log("starting app");
+							App.start();
 
                             if(${ApiUrlCaptcha != "error"}) {
                                 LazyLoad.js("${ApiUrlCaptcha}/captcha.js");
