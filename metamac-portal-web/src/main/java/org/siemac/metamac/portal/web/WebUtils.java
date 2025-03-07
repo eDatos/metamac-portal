@@ -3,6 +3,8 @@ package org.siemac.metamac.portal.web;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringJoiner;
 
@@ -249,6 +251,33 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         final String organisation = theme.split("/")[0];
         final String service = theme.split("/")[1];
         return portalCustomStyleBaseUrl + "/../../" + organisation + "/portal/" + service;
+    }
+
+    public static String getThemeFromOrganisationService(String organizationService) {
+        String baseUrl = "";
+        switch (organizationService) {
+            case SERVICE_AGRICULTURA:
+                baseUrl = portalAgricultureStyleHeaderUrl;
+                break;
+            case SERVICE_MEDIOAMBIENTE:
+                baseUrl = portalEnvironmentStyleHeaderUrl;
+                break;
+            case SERVICE_TURISMO:
+                baseUrl = portalTourismStyleHeaderUrl;
+                break;
+            case SERVICE_FUNCION_PUBLICA:
+                baseUrl = portalPublicServiceStyleHeaderUrl;
+                break;
+            case SERVICE_IQUA:
+                baseUrl = portalCustomStyleBaseUrl + "/" + organizationService;
+                break;
+            default:
+                return null;
+        }
+
+        ArrayList<String> baseUrlPathList = new ArrayList<>(Arrays.asList(baseUrl.split("/")));
+        int portalIndex = baseUrlPathList.indexOf("portal");
+        return baseUrlPathList.get(portalIndex - 1) + "/" + baseUrlPathList.get(portalIndex + 1);
     }
 
     public static String getHelpUrl() {

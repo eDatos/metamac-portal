@@ -1,6 +1,7 @@
 <%@ tag description="Título y meta tags" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ tag import="org.apache.commons.lang.StringUtils" %>
 <%@ tag import="org.siemac.metamac.portal.Helpers" %>
 <%@ tag import="org.siemac.metamac.portal.dto.Collection" %>
 <%@ tag import="org.siemac.metamac.portal.dto.Dataset" %>
@@ -139,12 +140,22 @@
 	%>
     <%    
 		String sharedVisualizerUrl = request.getParameter(Helpers.PARAMETER_SHARED_VISUALIZER_URL);
+        String organizationService = "";
+        String servletPath = request.getServletPath();
+        if (servletPath != null) {
+            organizationService = servletPath.split("/")[2];
+        }
+        String theme = request.getParameter(Helpers.PARAMETER_THEME); /* Must be something like organisation/service */
+        if (StringUtils.isBlank(theme) && StringUtils.isNotBlank(organizationService)) {
+            theme = WebUtils.getThemeFromOrganisationService(organizationService);
+        }
+        request.setAttribute("theme", theme);
     %>
     <%
         String permalinkId = request.getParameter("permalink");
         if (permalinkId != null && !permalinkId.isEmpty()) {
             Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
-            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl));   
+            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, theme));
         }        
     %>
     <%
@@ -154,7 +165,7 @@
         try {
            if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
                Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
-               response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl));   
+               response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, theme));
            }
         } catch(Exception e) {
             log.error(e.getMessage());
@@ -269,13 +280,6 @@
         }
 	%>
 	<%
-	
-       String organizationService = "";
-       String servletPath = request.getServletPath();       
-	   if (servletPath != null) {
-	       organizationService = servletPath.split("/")[2];
-	   }
-       String theme = request.getParameter(Helpers.PARAMETER_THEME); /* Must be something like organisation/service */
        request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale, theme));
        request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService, theme));
        request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService, theme));

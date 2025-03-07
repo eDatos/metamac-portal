@@ -8,7 +8,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <ul class="capitulos">
-    <% 
+    <%
+        String theme = (String) request.getAttribute("theme");
         String locale = (String) request.getAttribute("currentLocale");
         String defaultLocale = (String) request.getAttribute("defaultInternationalizationLanguage");
         String apiKey = (String) request.getAttribute("apiKey");
@@ -75,7 +76,7 @@
     <li>
         <i class="${iconClass}"></i>
         <span class="item-numeration">${numerationFixed}</span>
-        <a class="nouline" href="<%= Helpers.tableViewUrl(table) %>"><%= helper.localizeText(table.getName()) %>
+        <a class="nouline" href="<%= Helpers.tableViewUrl(table, theme) %>"><%= helper.localizeText(table.getName()) %>
         </a>
     </li>
 

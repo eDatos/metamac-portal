@@ -310,11 +310,11 @@ public class Helpers {
         return objectMapper.readValue(content, PermalinkContent.class);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) throws UnsupportedEncodingException {
-        return buildUrl(permalink, sharedVisualizerUrl, null, null);
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String theme) throws UnsupportedEncodingException {
+        return buildUrl(permalink, sharedVisualizerUrl, null, null, theme);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale, String title, String theme) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
 
         QueryParams queryParams = permalink.getContent().getQueryParams();
@@ -322,7 +322,7 @@ public class Helpers {
         // Permalink url must be rebuild, because you must not store the visualizer url inside the permalink stored on db in case
         // the baseUrl changes tomorrow.
         buildUrl(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
-                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title);
+                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title, theme);
 
         // Hash is the SPA route, for example #datasets/selection. Includes #
         stringBuilder.append(permalink.getContent().getHash());
@@ -331,11 +331,11 @@ public class Helpers {
         return stringBuilder.toString();
     }
 
-    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl) throws UnsupportedEncodingException {
-        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null, null);
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String theme) throws UnsupportedEncodingException {
+        return buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, null, null, theme);
     }
 
-    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
+    public static String buildUrl(Multidataset multidataset, String multidatasetId, String sharedVisualizerUrl, String locale, String title, String theme) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
         MultidatasetTable table = (MultidatasetTable) multidataset.getData().getNodes().getNodes().get(0);
         Resource resource = table.getDataset() != null ? table.getDataset() : table.getQuery();
@@ -347,13 +347,13 @@ public class Helpers {
         if (!StringUtils.isBlank(baseUrl)) {
             stringBuilder.append(baseUrl);
         }
-        buildUrl(stringBuilder, null, null, null, null, null, multidatasetId, sharedVisualizerUrl, locale, title);
+        buildUrl(stringBuilder, null, null, null, null, null, multidatasetId, sharedVisualizerUrl, locale, title, theme);
 
         return stringBuilder.toString();
     }
 
     private static void buildUrl(StringBuilder stringBuilder, String resourceType, String agency, String identifier, String version, String indicatorSystem, String multidatasetId,
-            String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
+            String sharedVisualizerUrl, String locale, String title, String theme) throws UnsupportedEncodingException {
         appendParameter(stringBuilder, PARAMETER_RESOURCE_TYPE, resourceType);
         appendParameter(stringBuilder, PARAMETER_AGENCY_ID, agency);
         appendParameter(stringBuilder, PARAMETER_RESOURCE_ID, identifier);
@@ -362,6 +362,7 @@ public class Helpers {
         appendParameter(stringBuilder, PARAMETER_MULTIDATASET_ID, multidatasetId);
         appendParameter(stringBuilder, PARAMETER_SHARED_VISUALIZER_URL, sharedVisualizerUrl);
         appendParameter(stringBuilder, PARAMETER_TITLE, UriUtils.encodeQueryParam(title, StandardCharsets.UTF_8.toString()));
+        appendParameter(stringBuilder, PARAMETER_THEME, theme);
         if (locale != null) {
             appendParameter(stringBuilder, PARAMETER_LOCALE, locale);
         }
@@ -467,12 +468,17 @@ public class Helpers {
         return arr[arr.length - i - 1];
     }
 
-    public static String tableViewUrl(Table table) {
+    public static String tableViewUrl(Table table, String theme) {
         Resource resource = table.getResource();
         if (resource == null) {
             return StringUtils.EMPTY;
+        } else if (StringUtils.isBlank(theme) || table.getUrl() != null) {
+            return resource.getVisualizerHtmlLink();
         }
-        return resource.getVisualizerHtmlLink();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(resource.getVisualizerHtmlLink());
+        appendParameter(stringBuilder, PARAMETER_THEME, theme);
+        return stringBuilder.toString();
     }
 
     private static void appendParameter(StringBuilder builder, String key, String value) {
