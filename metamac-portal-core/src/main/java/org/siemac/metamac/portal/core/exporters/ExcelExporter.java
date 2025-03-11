@@ -564,7 +564,7 @@ public class ExcelExporter {
         LabelVisualisationModeEnum labelVisualisation = resourceAccess.getDimensionLabelVisualisationMode(dimensionId);
         String dimensionValueLabel = null;
         if (labelVisualisation.isLabel() && labelVisualisation.isCode()) {
-            dimensionValueLabel = resourceAccess.getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId) + " (" + dimensionValueId + ")";
+            dimensionValueLabel = "(" + dimensionValueId + ") " + resourceAccess.getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId) ;
         } else if (labelVisualisation.isLabel()) {
             dimensionValueLabel = resourceAccess.getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
         } else if (labelVisualisation.isCode()) {
