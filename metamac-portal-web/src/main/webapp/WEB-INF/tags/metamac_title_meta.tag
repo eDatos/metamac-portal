@@ -155,7 +155,7 @@
         String permalinkId = request.getParameter("permalink");
         if (permalinkId != null && !permalinkId.isEmpty()) {
             Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
-            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, theme));
+            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl));
         }        
     %>
     <%

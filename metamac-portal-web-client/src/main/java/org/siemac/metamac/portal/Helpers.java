@@ -310,11 +310,11 @@ public class Helpers {
         return objectMapper.readValue(content, PermalinkContent.class);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String theme) throws UnsupportedEncodingException {
-        return buildUrl(permalink, sharedVisualizerUrl, null, null, theme);
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) throws UnsupportedEncodingException {
+        return buildUrl(permalink, sharedVisualizerUrl, null, null);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale, String title, String theme) throws UnsupportedEncodingException {
+    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
 
         QueryParams queryParams = permalink.getContent().getQueryParams();
@@ -322,7 +322,7 @@ public class Helpers {
         // Permalink url must be rebuild, because you must not store the visualizer url inside the permalink stored on db in case
         // the baseUrl changes tomorrow.
         buildUrl(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
-                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title, theme);
+                queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title, queryParams.getTheme());
 
         // Hash is the SPA route, for example #datasets/selection. Includes #
         stringBuilder.append(permalink.getContent().getHash());
