@@ -80,7 +80,7 @@
                     },
                     controller: {
                         outOfRange: {
-                            color: [Constants.colors.istacGreyMedium]
+                            color: [Constants.colors.istacGreyDark]
                         }
                     },
                     text: null,
