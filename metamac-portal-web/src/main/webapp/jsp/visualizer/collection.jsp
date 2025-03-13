@@ -18,7 +18,7 @@
             <c:when test="${collection != null}">
                 <div class="visualizer-header-info">
             	   <h1 class="visualizer-header-title">${resourceName}</h1>
-            	   <div class="visualizer-description">${resourceDescription}</div>
+            	   <div class="visualizer-description">${Helpers.cleanText(resourceDescription)}</div>
                 </div>                	
                 <jsp:include page="/jsp/visualizer/collection-node.jsp" />
             </c:when>
