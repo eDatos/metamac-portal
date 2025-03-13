@@ -326,9 +326,10 @@
                             color: Constants.colors.istacYellow
                         },
                         symbolSize: function (data) {
-                            var maxSymbolSize = 0.2 * Math.min(self.el.clientWidth, self.el.clientHeight);
+                            var maxSymbolSize = 0.3 * Math.min(self.el.clientWidth, self.el.clientHeight);
+                            var minSymbolSize = maxSymbolSize / 10;
                             var dataValue = data[2];
-                            return (dataValue / self.maxDataValue) * maxSymbolSize;
+                            return (dataValue / self.maxDataValue) * (maxSymbolSize - minSymbolSize) + minSymbolSize;
                         },
                         data: data
                     };
