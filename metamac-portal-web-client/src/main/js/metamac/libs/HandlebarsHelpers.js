@@ -108,20 +108,21 @@
         }
     });
 
-    Handlebars.registerHelper("resourceOutput", function (values) {
-        return new Handlebars.SafeString(resourceOutput(values));
+    Handlebars.registerHelper("resourceOutput", function (values, isWidget) {
+        return new Handlebars.SafeString(resourceOutput(values, isWidget));
     });
 
-    function resourceOutput(values) {
+    function resourceOutput(values, isWidget) {
         var result = "";
         if (!(values instanceof Array)) {
             values = [values];
         }
 
         return _.reduce(values, function (memo, value) {
+            var target = isWidget ? " target='_blank'" : "";
             var href = Handlebars.Utils.escapeExpression(value.href);
             var name = value.name;
-            result = href ? '<a href=' + href + '>' : '';
+            result = href ? '<a href=' + href + target + '>' : '';
             result += name;
             result += href ? '</a>' : '';
             memo = memo ? ", " : "";
@@ -135,7 +136,7 @@
      * usage:
      *      {{ fieldOutput "entity.dataset.title" }}
      */
-    Handlebars.registerHelper("fieldOutput", function (label, value, type, localizeLabel, allowEmptyValue, fieldClass) {
+    Handlebars.registerHelper("fieldOutput", function (label, value, type, isWidget, localizeLabel, allowEmptyValue, fieldClass) {
         label = Handlebars.Utils.escapeExpression(label);
         localizeLabel = _.isUndefined(localizeLabel) ? true : localizeLabel;
         fieldClass = _.isUndefined(fieldClass) ? "field" : fieldClass;
@@ -156,7 +157,7 @@
                 value.href = null;
                 result += resourceOutput(value);
             } else if (type === "resource") {
-                result += resourceOutput(value);
+                result += resourceOutput(value, isWidget);
             } else {
                 value = _.isArray(value) ? value.join(", ") : value;
                 value = Handlebars.Utils.escapeExpression(value);
