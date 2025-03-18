@@ -183,7 +183,7 @@
                 rightsHolder: this._getContextRightsHolder(),
                 apiDownloadMessage: this._buildApiDownloadMessage(),
                 selectionApiDownloadMessage: this._buildApiDownloadMessage(true),
-                isWidget: App.config["widget"]
+                targetBlank: App.config["widget"]
             };
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
