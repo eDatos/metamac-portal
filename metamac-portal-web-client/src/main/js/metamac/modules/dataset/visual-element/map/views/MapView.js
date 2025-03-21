@@ -348,7 +348,7 @@
                 optimalCoordsForBubble = polylabel(regionCoords);
             } else if (regionFeature.geometry.type === "MultiPolygon" && regionCoords.length > 0) {
                 var mostComplexPolygonCoords = regionCoords.reduce(function (mostComplexPolygonCoords, regionPolygonCoords) {
-                    return mostComplexPolygonCoords.length > regionPolygonCoords.length ? mostComplexPolygonCoords : regionPolygonCoords[0];
+                    return mostComplexPolygonCoords.length > regionPolygonCoords.length ? mostComplexPolygonCoords : regionPolygonCoords;
                 });
                 optimalCoordsForBubble = polylabel(mostComplexPolygonCoords);
             }
