@@ -117,12 +117,6 @@
   }
 }
 
-#dataset-widget {
-  .modal {
-    max-height: @widgetModalMaxHeight;
-  }
-}
-
 @media only screen and (min-width: 550px) {
   .modal-permalink-config {
     width: 335px;
@@ -132,6 +126,12 @@
 @media only screen and (max-width: 550px) {
   .modal-permalink-config {
     width: 230px;
+  }
+}
+
+@media only screen and (max-height: 600px) {
+  .modal:has(.dataset-api-download) {
+    max-height: @widgetModalMaxHeight;
   }
 }
 
