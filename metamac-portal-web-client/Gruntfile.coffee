@@ -50,14 +50,14 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/libs/HandlebarsHelpers.js"
                 paths.js + "/metamac/templates/HandlebarsTemplates.js"
                 paths.js + "/metamac/modules/TemplateManager.js"
-                paths.js + "/libs/highmaps.js"
-                paths.js + "/libs/highmaps.no-conflict.js"
                 paths.js + "/libs/echarts.js"
                 paths.js + "/libs/jquery.mousewheel.js"
                 paths.js + "/libs/jquery.ba-resize.js"
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
                 paths.js + "/libs/select2.min.js"
                 paths.js + "/libs/moment.min.js"
+                paths.js + "/libs/tinyqueue.min.js"
+                paths.js + "/libs/polylabel.js"
 
                 # User
                 paths.js + "/metamac/modules/user/UserUtils.js"
@@ -268,11 +268,6 @@ module.exports = (grunt) ->
                 dest: paths.assets + '/metamac.css'
                 options:
                     yuicompress: true
-            map:
-                src : paths.less + "/dataset/maps-export.less"
-                dest: paths.assets + '/map.css'
-                options:
-                    yuicompress: true
 
         handlebars:
             compile:
@@ -378,8 +373,8 @@ module.exports = (grunt) ->
         grunt.task.run('mocha:spec')
 
     grunt.registerTask 'test', ['concat','mocha:all']
-    grunt.registerTask 'dev', ['clean', 'copy', 'less:dev', 'less:map', 'handlebars', 'concat']
-    grunt.registerTask 'build', ['clean', 'copy', 'less:pro', 'less:map', 'handlebars', 'uglify']
+    grunt.registerTask 'dev', ['clean', 'copy', 'less:dev', 'handlebars', 'concat']
+    grunt.registerTask 'build', ['clean', 'copy', 'less:pro', 'handlebars', 'uglify']
 
     grunt.registerTask 'bdd', ['connect', 'open:test', 'watch' ]
     grunt.registerTask 'serve', ['connect', 'open:preview', 'watch' ]

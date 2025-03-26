@@ -3,101 +3,18 @@
 
     var GeoJsonConverter = App.Map.GeoJsonConverter;
     var Constants = App.Constants;
-    var DATA_SERIE_INDEX = 2;
 
     App.namespace('App.Map.MapView');
 
-    App.Map.MapView = Backbone.View.extend({
-        _defaultSeriesOptions: {
-            mapData: null,
-            joinBy: ['code', 'code'],
-            data: null
-        },
+    App.Map.MapView = Backbone.View.extend(new App.VisualElement.Chart()).extend({
 
-        // Esta fontFamily debe ser siempre equivalente a @istacFontFamilySansSerifFamily
-        _defaultMapOptions: {
-            chart: {
-                className: 'map',
-                animation: false
-            },
-
-            title: {
-                text: '',
-                floating: false,
-                style: {
-                    color: App.Constants.colors.hiddenText,
-                    fontSize: App.Constants.font.title.size
-                }
-            },
-
-            subtitle: {
-                text: '',
-                style: {
-                    color: App.Constants.colors.hiddenText
-                }
-            },
-
-            legend: {
-                enabled: true,
-                layout: 'horizontal',
-                floating: false,
-                // align: 'left', // don't use, bugged
-                y: -5,
-                x: 0,
-                backgroundColor: Constants.colors.istacWhite,
-                borderColor: Constants.colors.istacGreyMedium,
-                borderWidth: 1,
-                borderRadius: 5,
-                shadow: true,
-                itemStyle: {
-                    "fontWeight": "normal",
-                    "fontSize": "11px",
-
-                },
-                padding: 5,
-                margin: 5,
-                itemMarginTop: 3,
-                itemMarginBottom: 3,
-                itemDistance: 6
-            },
-
-            colorAxis: {
-                minColor: Constants.colors.istacBlueWhite,
-                maxColor: Constants.colors.istacBlueDark
-            },
-
-            plotOptions: {
-                map: {
-                    color: Constants.colors.istacYellow,
-                    states: {
-                        hover: {
-                            color: Constants.colors.istacYellow
-                        }
-                    }
-                },
-                mapbubble: {
-                    color: Constants.colors.istacYellow
-                }
-            },
-
-            series: [],
-
-            credits: {
-                position: {
-                    y: -5
-                }
-            },
-            xAxis: {
-                minRange: 0.01
-            },
-            yAxis: {
-                minRange: 0.01
-            },
-            tooltip: {}
-        },
-
+        BASE_MAP_FEATURE_ID_PREFIX: "BASE.",
+        CONTAINER_MAP_FEATURE_ID_PREFIX: "CONTAINER.",
+        DATA_MAP_FEATURE_ID_PREFIX: "DATA.",
 
         initialize: function (options) {
+            this._initializeChartVisualElement(options);
+
             this._data = options.data;
             this._filterDimensions = options.filterDimensions;
             this._width = options.width;
@@ -106,51 +23,129 @@
             this._baseShapeList = options.baseShapeList;
             this._container = options.container;
             this._dataJson = options.dataJson;
+            this._callback = options.callback;
             this.mapType = options.mapType;
             this.title = options.title;
+            this.metadata = options.metadata;
+            this.$title = options.$title;
             this.rightsHolder = options.rightsHolder;
             this.showRightsHolder = options.showRightsHolder;
-            this.metadata = options.metadata;
+
+            this._initializeMapOptions();
 
             this.tooltipDelegate = new App.Map.TooltipDelegate(options);
 
             this._onResize = _.debounce(_.bind(this._onResize, this), 200);
-            this._updateDataClasses = _.debounce(_.bind(this._updateDataClasses, this), 100);
-
-            this._defaultMapOptions.tooltip.formatter = _.partial(function (formatter, mapView) {
-                return mapView.tooltipDelegate._getLabelFromNormCode(this.point.code) + ': ' + this.point.label;
-            }, _, this);
-            this._defaultMapOptions.chart.events = { load: options.callback, redraw: options.callback };
-
-            this._defaultMapOptions.legend.labelFormatter = function () {
-                var fromString = App.util.NumberFormatter.strNumberToLocalizedString(this.from.toString(), {decimals: options.metadata.getMaxDecimals()});
-                var toString = App.util.NumberFormatter.strNumberToLocalizedString(this.to.toString(), {decimals: options.metadata.getMaxDecimals()});
-                return fromString + " - " + toString;
-            };
         },
 
         events: {
-            "mousewheel": "_handleMousewheel",
             "dblclick": "_handleDblclick",
             "resize": "_onResize"
         },
 
-        update: function (newDataJson, newShapeList, newTitle, redraw) {
+        _initializeMapOptions: function () {
+            var self = this;
+            this._extendChartOptions({
+                animation: false,
+                tooltip: {
+                    show: false
+                },
+                legend: {
+                    show: false
+                },
+                xAxis: undefined,
+                yAxis: undefined,
+                visualMap: (this.mapType === 'mapbubble') ? undefined : {
+                    // INFO
+                    // The type should be piecewise but with that type the width can't be controlled so it doesn't fit in the container.
+                    // Fix when one of theses issues are closed: https://github.com/apache/echarts/issues/13759 , https://github.com/apache/echarts/issues/17659
+                    // In order to change it, check the commit in which this comment was added.
+                    type: "continuous",
+                    realtime: false,
+                    min: this._getVisualMapMin(),
+                    max: this._getVisualMapMax(),
+                    calculable: true,
+                    hoverLink: false,
+                    left: 'center',
+                    bottom: Constants.charts.title.fontSize + (Constants.charts.gap * 2),
+                    orient: 'horizontal',
+                    inRange: {
+                        color: [
+                            Constants.colors.istacBlueWhite,
+                            Constants.colors.istacBlueDark
+                        ]
+                    },
+                    outOfRange: {
+                        color: ['transparent']
+                    },
+                    controller: {
+                        outOfRange: {
+                            color: [Constants.colors.istacGreyDark]
+                        }
+                    },
+                    text: null,
+                    textStyle: {
+                        fontSize: Constants.charts.legend.fontSize,
+                        symbolSize: Constants.charts.legend.fontSize,
+                        fontWeight: 'bold'
+                    },
+                    formatter: function (value) {
+                        var breaksToShowValueUnderVisualMap = "\n\n\n\n\n\n\n\n";
+                        var formattedValue = App.util.NumberFormatter.strNumberToLocalizedString(value.toString(), {decimals: self.metadata.getMaxDecimals()});
+
+                        self.isVisualMapFormattingMin = !self.isVisualMapFormattingMin;
+                        return (self.isVisualMapFormattingMin ? breaksToShowValueUnderVisualMap : "") + formattedValue;
+                    }
+                },
+                title: {
+                    text: this.rightsHolder,
+                    show: this.showRightsHolder,
+                    bottom: Constants.charts.gap
+                },
+                geo: {
+                    map: 'map',
+                    roam: true,
+                    itemStyle: {
+                        borderWidth: 0.1,
+                        borderColor: Constants.colors.istacWhite
+                    },
+                    scaleLimit: {
+                        min: this.model.get("minScale"),
+                        max: this.model.get("maxScale")
+                    },
+                    emphasis: {
+                        disabled: this.mapType === "mapbubble",
+                        label: {
+                            show: false
+                        }
+                    },
+                    tooltip: this.mapType === "mapbubble" ? {show: false} : {}, // It is not equal to: {show: this.mapType !== "mapbubble"}
+                }
+            });
+        },
+
+        update: function (newDataJson, newShapeList, newTitle) {
             this._dataJson = newDataJson;
             this._shapeList = newShapeList;
             this.title = newTitle;
 
             var geoJson = GeoJsonConverter.shapeListToGeoJson(this._shapeListOrderByHierarchy());
-            var data = this._getData();
-            var mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
-            
-            // Posible bug detectado
-            // Es necesario establecer 'hasDerivedData' a true puesto que si no, la variable 'keepPoints' del método 'update'
-            // siempre será verdadero y 'data' y 'mapData' no se actualizarán correctamente
-            // Issue creado: https://github.com/highcharts/highcharts/issues/11636
-            this.map.series[DATA_SERIE_INDEX].hasDerivedData = true;
+            var data = this._getData(geoJson);
+            // INFO
+            // This condition was added because eCharts doesn't need the mapData for the bubble/scatter chart.
+            // Also, before this condition we were showing mapData the same color as baseMapData for the bubble chart, so visually it is the same as before.
+            // Therefore, we can avoid the additional calculation and simply display the basemap.
+            if (this.mapType === "map") {
+                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson, this.DATA_MAP_FEATURE_ID_PREFIX), data);
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
+            } else {
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
+            }
 
-            this.map.series[DATA_SERIE_INDEX].update({data: data, mapData: mapData, name: this.title}, redraw);
+            this._extendChartOptions({
+                series: this._createMapSeries(data)
+            });
+            this._getChart().setOption({series: this._chartOptions.series});
         },
 
         render: function () {
@@ -158,31 +153,54 @@
             this.delegateEvents();
         },
 
-        destroy: function () {
-            if (this.map && this.map.renderTo) {
-                this.map.destroy();
-                this.map = null;
-            }
-
+        _onChartDestroy: function () {
             this.undelegateEvents();
         },
 
         transform: function () {
-            var currentScale = this.model.get("currentScale");
-            var oldScale = this.model.get("oldScale");
-            this.map.mapZoom(oldScale / currentScale);
-        },
-
-        _tooltipFormatter: function () {
-            return point.properties.label + ':::' + point.value;
+            if (this.model.get("currentScale") !== this._getChart().getOption().geo[0].zoom) {
+                this._extendChartOptions({
+                    geo: {
+                        zoom: this.model.get("currentScale")
+                    }
+                });
+                this._getChart().setOption({
+                    geo: {
+                        zoom: this._chartOptions.geo.zoom
+                    }
+                });
+            }
         },
 
         zoomExit: function () {
-            this._centerAndZoom();
+            this._extendChartOptions({
+                geo: {
+                    boundingCoords: this._getCenteredAndZoomedCoords(),
+                    center: undefined
+                }
+            });
+            this._getChart().setOption({ geo: this._chartOptions.geo });
         },
 
         updateRanges: function () {
-            this._updateDataClasses();
+            var visualMapMin = this._getVisualMapMin();
+            var visualMapMax = this._getVisualMapMax();
+            this._extendChartOptions({
+                visualMap: (this.mapType === 'mapbubble') ? undefined : {
+                    min: visualMapMin,
+                    max: visualMapMax,
+                    range: [visualMapMin, visualMapMax]
+                }
+            });
+            this._getChart().setOption({ visualMap: this._chartOptions.visualMap });
+        },
+
+        _getVisualMapMin: function () {
+            return (this.model.get("minValue") === this.model.get("maxValue")) ? this.model.get("minValue") - 1 : this.model.get("minValue");
+        },
+
+        _getVisualMapMax: function () {
+            return (this.model.get("minValue") === this.model.get("maxValue")) ? this.model.get("maxValue") + 1 : this.model.get("maxValue");
         },
 
         canRender: function () {
@@ -200,156 +218,193 @@
             var baseGeoJson = GeoJsonConverter.shapeListToGeoJson(this._baseShapeList, { contour: true });
             var containerGeoJson = GeoJsonConverter.shapeListToGeoJson([this._container], { contour: true });
 
-            var data = this._getData();
+            var data = this._getData(geoJson);
 
-            var mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson), data);
-            var baseMapData = this._getMapDataFromGeoJson(baseGeoJson);
-            var containerMapData = this._getMapDataFromGeoJson(containerGeoJson);
-
-            var worldContainerSerie = _.defaults(
-                {
-                    id: "worldContainerSerie",
-                    name: "WorldContainer",
-                    mapData: containerMapData,
-                    nullColor: Constants.colors.istacGreyLight
-                },
-                this._defaultSeriesOptions);
-
-            var featuresContainerSerie = _.defaults(
-                {
-                    id: "featuresContainerSerie",
-                    name: "FeaturesContainer",
-                    mapData: baseMapData,
-                    nullColor: Constants.colors.istacGreyMedium
-                },
-                this._defaultSeriesOptions);
-
-            this._defaultMapOptions.series = [];
-            this._defaultMapOptions.series.push(
-                worldContainerSerie,
-                featuresContainerSerie
-            );
-
-            switch (this.mapType) {
-                case 'map':
-                    var choroplethDataSerie = _.defaults(
-                        {
-                            id: "choroplethDataSerie",
-                            name: this.title,
-                            mapData: mapData,
-                            data: data
-                        },
-                        this._defaultSeriesOptions);
-
-                    this._defaultMapOptions.legend.enabled = true;
-
-                    this._defaultMapOptions.series.push(choroplethDataSerie);
-                    break;
-
-                case 'mapbubble':
-                    var bubbleDataSerie = _.defaults(
-                        {
-                            id: "bubbleDataSerie",
-                            name: this.title,
-                            mapData: mapData,
-                            data: data,
-                            type: 'mapbubble',
-                            showInLegend: false
-                        },
-                        this._defaultSeriesOptions);
-
-                    this._defaultMapOptions.legend.enabled = false;
-
-                    this._defaultMapOptions.series.push(bubbleDataSerie);
-                    break;
+            this.baseMapData = this._getMapDataFromGeoJson(baseGeoJson, this.BASE_MAP_FEATURE_ID_PREFIX);
+            this.containerMapData = this._getMapDataFromGeoJson(containerGeoJson, this.CONTAINER_MAP_FEATURE_ID_PREFIX);
+            if (this.mapType === "map") {
+                this.mapData = this._filterShapesWithoutData(this._getMapDataFromGeoJson(geoJson, this.DATA_MAP_FEATURE_ID_PREFIX), data);
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData, this.mapData]));
+            } else {
+                echarts.registerMap('map', GeoJsonConverter.geoJsonListToGeoJson([this.containerMapData, this.baseMapData]));
             }
 
-            this._defaultMapOptions.chart.renderTo = this.el;
-            this._defaultMapOptions.colorAxis.dataClasses = this._generateDataClasses();
-
-            this._defaultMapOptions.credits.text = this.rightsHolder;
-            if (!this.showRightsHolder) {
-                this._defaultMapOptions.credits.style = {
-                    color: App.Constants.colors.hiddenText
+            var self = this;
+            this._initializeChart(this.$el, this.$title);
+            this._getChart().on('georoam', function (roamParams) {
+                if (roamParams.zoom) {
+                    self.model.zoomTo(self._getChart().getOption().geo[0].zoom);
+                } else {
+                    self.$chartContainer.find("canvas").addClass("grabbing");
                 }
-            }
+            });
+            this._getChart().getZr().on('mouseup', function () {
+                self.$chartContainer.find("canvas").removeClass("grabbing");
+            });
+            this._getChart().on('finished', function () {
+                self._callback();
+            });
 
-            this.map = new Highmaps.Map(this._defaultMapOptions);
-
-            this._centerAndZoom();
+            this._extendChartOptions({
+                series: this._createMapSeries(data),
+                geo: {
+                    boundingCoords: this._getCenteredAndZoomedCoords(),
+                    regions: this._createSpecialRegionsOptions()
+                }
+            });
+            this._getChart().setOption(this._chartOptions, true);
+            this._setTooltipObserver();
         },
 
-        _getData: function () {
+        _createSpecialRegionsOptions: function () {
+            return [
+                ...this.containerMapData.features.map(function (feature) {
+                    return {
+                        name: feature.id,
+                        itemStyle: {
+                            borderWidth: 0,
+                            areaColor: Constants.colors.istacGreyLight
+                        },
+                        emphasis: {
+                            disabled: true
+                        },
+                        tooltip: {
+                            show: false
+                        }
+                    };
+                }),
+                ...this.baseMapData.features.map(function (feature) {
+                    return {
+                        name: feature.id,
+                        itemStyle: {
+                            borderWidth: 0,
+                            areaColor: Constants.colors.istacGreyMedium
+                        },
+                        emphasis: {
+                            disabled: true
+                        },
+                        tooltip: {
+                            show: false
+                        }
+                    };
+                })
+            ];
+        },
+
+        _createMapSeries: function (data) {
+            var series = [];
+            var self = this;
+            switch (this.mapType) {
+                case 'map':
+                    var choroplethDataSerie = {
+                        id: "choroplethDataSerie",
+                        name: this.title,
+                        type: 'map',
+                        geoIndex: 0,
+                        selectedMode: false,
+                        emphasis: {
+                            itemStyle: {
+                                areaColor: Constants.colors.istacYellow
+                            },
+                            label: {
+                                show: false
+                            }
+                        },
+                        data: data
+                    };
+
+                    series.push(choroplethDataSerie);
+                    break;
+                case 'mapbubble':
+                    var bubbleDataSerie = {
+                        id: "bubbleDataSerie",
+                        name: this.title,
+                        type: 'scatter',
+                        geoIndex: 0,
+                        coordinateSystem: 'geo',
+                        itemStyle: {
+                            color: Constants.colors.istacYellow
+                        },
+                        symbolSize: function (data) {
+                            var maxSymbolSize = 0.3 * Math.min(self.el.clientWidth, self.el.clientHeight);
+                            var minSymbolSize = maxSymbolSize / 10;
+                            var dataValue = data[2];
+                            return (dataValue / self.maxDataValue) * (maxSymbolSize - minSymbolSize) + minSymbolSize;
+                        },
+                        data: data
+                    };
+
+                    series.push(bubbleDataSerie);
+                    break;
+            }
+
+            return series;
+        },
+
+        _geOptimalCoordsForBubble: function (regionFeature) {
+            var optimalCoordsForBubble = [];
+            var regionCoords = regionFeature.geometry.coordinates;
+            if (regionFeature.geometry.type === "Polygon") {
+                optimalCoordsForBubble = polylabel(regionCoords);
+            } else if (regionFeature.geometry.type === "MultiPolygon" && regionCoords.length > 0) {
+                var mostComplexPolygonCoords = regionCoords.reduce(function (mostComplexPolygonCoords, regionPolygonCoords) {
+                    return mostComplexPolygonCoords.length > regionPolygonCoords.length ? mostComplexPolygonCoords : regionPolygonCoords;
+                });
+                optimalCoordsForBubble = polylabel(mostComplexPolygonCoords);
+            }
+            return optimalCoordsForBubble;
+        },
+
+        _getData: function (mapData) {
             var geographicDimension = this._filterDimensions.where({ type: "GEOGRAPHIC_DIMENSION" })[0];
             var self = this;
-            return _.map(_.pairs(this._dataJson), function (item) {
-                var geographicRepresentationId = geographicDimension.getRepresentationsByNormCode(item[0])[0].id;
+            self.maxDataValue = -Infinity;
+            return mapData.features.reduce(function (data, feature) {
+                var dataJsonItem = self._dataJson[feature.id];
+                if (!dataJsonItem) {
+                    return data;
+                }
+
+                var dataNormCode = feature.id;
+                var dataValue = dataJsonItem.value;
+                self.maxDataValue = Math.max(dataValue, self.maxDataValue);
+                var geographicRepresentationId = geographicDimension.getRepresentationsByNormCode(dataNormCode)[0].id;
                 var currentPermutation = self._filterDimensions.models.reduce((dimensionsPermutation, filterDimension) => {
                     dimensionsPermutation[filterDimension.id] = (filterDimension.get("type") === "GEOGRAPHIC_DIMENSION")
                         ? geographicRepresentationId
                         : filterDimension.getDrawableRepresentations()[0].id;
                     return dimensionsPermutation;
                 }, {});
-                return { "code": item[0], "value": item[1].value, "z": item[1].value, "label": self._data.getStringData({ ids: currentPermutation })};
+
+                data.push({
+                    value: (self.mapType === 'mapbubble') ? [...self._geOptimalCoordsForBubble(feature), dataValue] : dataValue,
+                    name: self.DATA_MAP_FEATURE_ID_PREFIX + dataNormCode,
+                    tooltip: {
+                        show: true,
+                        formatter: function () {
+                            var tooltipContent = self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
+                            return self._getWrappedTooltipContent(tooltipContent);
+                        }
+                    }
+                });
+                return data;
+            }, []);
+        },
+
+        _getMapDataFromGeoJson: function (geoJson, featureIdPrefix) {
+            geoJson.features = _.map(geoJson.features, function (feature) {
+                feature.id = featureIdPrefix + feature.id;
+                feature.properties.name = feature.id;
+                return feature;
             });
+            return geoJson;
         },
 
-        _getMapDataFromGeoJson: function (geoJson) {
-            var self = this;
-            var features = _.map(geoJson.features, function (item) {
-                item.properties.code = item.id;
-                return item;
-            });
-            geoJson.features = features;
-            return Highmaps.geojson(geoJson);
-        },
-
-        _updateDataClasses: function () {
-            if (this.model.get('mapType') !== 'map' || !this.map) {
-                return;
+        _getCenteredAndZoomedCoords: function () {
+            if (!this.boundingCoords) {
+                this.boundingCoords = this._getMinMaxCoordinates(this.baseMapData);
             }
-
-            var axis = this.map.colorAxis[0];
-            axis.update({ dataClasses: this._generateDataClasses() });
-        },
-
-        _centerAndZoom: function () {
-            if (this.map && this.map.get('featuresContainerSerie')) {
-                var featuresContainerSerie = this.map.get('featuresContainerSerie');
-                if (featuresContainerSerie.maxX
-                    && featuresContainerSerie.maxY
-                    && featuresContainerSerie.minX
-                    && featuresContainerSerie.minY) {
-                    // featuresContainerSerie.points[0].zoomTo();
-                    // this.map.redraw();
-
-                    this._zoomToSerie(this.map.get('featuresContainerSerie'));
-                }
-            }
-        },
-
-        _zoomToSerie: function (serie) {
-            // IDEA: Eliminate magic number
-            serie.xAxis.setExtremes(
-                serie.minX - 0.5,
-                serie.maxX + 0.5,
-                false
-            );
-            serie.yAxis.setExtremes(
-                serie.minY - 0.5,
-                serie.maxY + 0.5,
-                false
-            );
-            this.map.redraw();
-        },
-
-        _generateDataClasses: function () {
-            var dataClasses = [];
-            var rangeLimits = this.model.createRangeLimits(this.metadata.getMaxDecimals());
-            for (var i = 0; i < rangeLimits.length - 1; i++) {
-                dataClasses[i] = { from: rangeLimits[i], to: rangeLimits[i + 1] };
-            }
-            return dataClasses;
+            return this.boundingCoords;
         },
 
         _offsetFromMouseEvent: function (e) {
@@ -359,28 +414,69 @@
             return { left: xOffset, top: yOffset };
         },
 
-        _handleMousewheel: function (e, delta, deltaX, deltaY) {
-            var offset = this._offsetFromMouseEvent(e);
-            this.model.zoomMouseWheel({ delta: deltaY, xOffset: offset.left, yOffset: offset.top });
-            return false;
-        },
-
         _handleDblclick: function (e) {
             var offset = this._offsetFromMouseEvent(e);
             this.model.zoomMouseWheel({ delta: 1, xOffset: offset.left, yOffset: offset.top });
         },
 
         _onResize: function () {
-            if (this.map) {
-                this.map.reflow();
-            }
+            this._updateSize(this.$el, this.$title);
         },
 
         _filterShapesWithoutData: function (mapData, data) {
-            var dataCodes = _.pluck(data, 'code');
-            return _.filter(mapData, function (mapDataEntry) {
-                return _.contains(dataCodes, mapDataEntry.properties.code);
+            var dataCodes = _.pluck(data, 'name');
+            mapData.features = _.filter(mapData.features, function (mapDataEntry) {
+                return _.contains(dataCodes, mapDataEntry.properties.name);
             });
+            return mapData;
+        },
+
+        _getMinMaxCoordinates: function (geoJson, minX, minY, maxX, maxY) {
+            minX = minX || Infinity;
+            minY = minY || Infinity;
+            maxX = maxX || -Infinity;
+            maxY = maxY || -Infinity;
+
+            if (!geoJson) {
+                return [[maxX, minY], [minX, maxY]];
+            }
+
+            var self = this;
+            if (Array.isArray(geoJson)) {
+                if ((geoJson.length === 2) && (typeof geoJson[0] === 'number') && (typeof geoJson[1] === 'number')) {
+                    minX = Math.min(geoJson[0], minX);
+                    minY = Math.min(geoJson[1], minY);
+                    maxX = Math.max(geoJson[0], maxX);
+                    maxY = Math.max(geoJson[1], maxY);
+                } else {
+                    geoJson.forEach(function (item) {
+                        [[maxX, minY], [minX, maxY]] = self._getMinMaxCoordinates(item, minX, minY, maxX, maxY);
+                    });
+                }
+            } else if (typeof geoJson === 'object') {
+                for (const key in geoJson) {
+                    if (geoJson.hasOwnProperty(key)) {
+                        [[maxX, minY], [minX, maxY]] = this._getMinMaxCoordinates(geoJson[key], minX, minY, maxX, maxY);
+                    }
+                }
+            }
+            return [[maxX, minY], [minX, maxY]];
+        },
+
+        _getExportChartHeight: function () {
+            return this.$chartContainer.height();
+        },
+
+        _getExtraExportOptions: function () {
+            return {
+                geo: this._getChart().getOption().geo,
+                visualMap: (this.mapType === "mapbubble") ? undefined : {
+                    range: this._getChart().getOption().visualMap[0].range
+                },
+                title: {
+                    top: 'auto'
+                },
+            };
         }
     });
 

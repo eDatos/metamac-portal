@@ -32,9 +32,9 @@
                 self._getData();
 
                 self._initModel();
-                self._initContainerView();
-                
                 self._initTitleView();
+                self._initContainerView();
+
                 self.showTitle();
                 self.render();
             });
@@ -57,7 +57,6 @@
 
             if (this._mapModel) {
                 this._mapModel.off('change', this._handleTransform);
-                this._mapModel.off('change:currentRangesNum', this._handleRangesNum);
                 this._mapModel.off('zoomExit', this._handleZoomExit);
             }
         },
@@ -139,7 +138,6 @@
         _initModel: function () {
             this._mapModel = new App.Map.MapModel();
             this._mapModel.on('change:currentScale', this._handleTransform, this);
-            this._mapModel.on('change:currentRangesNum', this._handleRangesNum, this);
             this._mapModel.on('zoomExit', this._handleZoomExit, this);
             this._calculateAndSetRanges();
         },
@@ -170,7 +168,8 @@
                 rightsHolder: this.getRightsHolderText(),
                 showRightsHolder: this.showRightsHolderText(),
                 callback: _.bind(this.hideLoading, this),
-                metadata: this.metadata
+                metadata: this.metadata,
+                $title: this.$title
             });
         },
 
@@ -225,7 +224,7 @@
         },
 
         _mapExists: function() {
-            return this._mapContainerView && this._mapContainerView.mapView && this._mapContainerView.mapView.map;
+            return this._mapContainerView && this._mapContainerView.mapView && this._mapContainerView.mapView._getChart();
         },
 
         updatingDimensionPositions: function (oldElement) {
@@ -277,14 +276,13 @@
             this._mapContainerView.transform();
         },
 
-        _handleRangesNum: function () {
-            this._mapContainerView.updateRanges();
-        },
-
         _handleZoomExit: function () {
             this._mapContainerView.zoomExit();
-        }
+        },
 
+        getExportChartSvg: function () {
+            return this._mapContainerView.getExportChartSvg();
+        }
     });
 
 }());
