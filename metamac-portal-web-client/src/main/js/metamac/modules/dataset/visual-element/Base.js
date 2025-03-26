@@ -109,6 +109,14 @@
             }
         },
 
+        _forceMeasureDimensionInZone: function (zone) {
+            this._forceDimensionTypeInZone("MEASURE_DIMENSION", zone);
+        },
+
+        _forceTimeDimensionInZone: function (zone) {
+            this._forceDimensionTypeInZone("TIME_DIMENSION", zone);
+        },
+
         _forceDimensionIdInZone: function (dimensionId, zone) {
             var dimension = this.filterDimensions.get(dimensionId);
             this.filterDimensions.zones.setDimensionZone(zone, dimension, { force: true });

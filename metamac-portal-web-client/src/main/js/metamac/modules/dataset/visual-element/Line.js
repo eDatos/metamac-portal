@@ -6,6 +6,7 @@
     App.namespace("App.VisualElement.LineChart");
 
     App.VisualElement.LineChart = function (options) {
+        this.initialize(options);
         this._initializeChartVisualElement(options);
         this._type = 'line';
 
@@ -14,14 +15,7 @@
         var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
-                triggerOn: "none",
-                position: function (point, params, domEl, rect) {
-                    self.coordsTooltipPointsTo = [
-                        rect.x + (rect.width / 2) + self._getChartDomEl().getBoundingClientRect().x,
-                        rect.y + (rect.height / 2) + self._getChartDomEl().getBoundingClientRect().y
-                    ];
-                    return 'top';
-                }
+                triggerOn: "none"
             },
             xAxis: {
                 axisLine: {
@@ -40,6 +34,8 @@
             },
             dataZoom: this._getDataZooms(0),
             title: {
+                text: this.getRightsHolderText(),
+                show: this.showRightsHolderText(),
                 bottom: titleBottom
             },
             legend: {
@@ -51,8 +47,8 @@
         });
     };
 
-    App.VisualElement.LineChart.prototype = new App.VisualElement.Chart();
-
+    App.VisualElement.LineChart.prototype = new App.VisualElement.Base();
+    _.extend(App.VisualElement.LineChart.prototype, new App.VisualElement.Chart());
     _.extend(App.VisualElement.LineChart.prototype, {
 
         load: function () {
@@ -62,7 +58,7 @@
             }
             this.render();
             if (!this.colorsLoaded()) {
-                this.loadColors();
+                this.loadColors(_.bind(this.showLoading, this), _.bind(this.hideLoading, this));
             }
         },
 
@@ -77,13 +73,17 @@
         },
 
         _onResizeEvent: function () {
-            this._updateSize();
+            this._updateSize(this.$el, this.$title);
             this._updatePointsVisibility();
         },
 
         _unbindEvents: function () {
             this.stopListening();
             this.$el.off("resize");
+        },
+
+        _onChartDestroy: function () {
+            this._unbindEvents();
         },
 
         updatingDimensionPositions: function () {
@@ -121,7 +121,7 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._initializeChart();
+            this._initializeChart(this.$el, this.$title);
             var self = this;
             this._getChart().on('datazoom', function (params) {
                 App.util.ChartsUtils._setTooltipTriggerOnClosestItem(self._getChart());
