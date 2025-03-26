@@ -33,6 +33,10 @@
 
     .border-radius(@borderRadiusBig);
     border: 2px solid @istacGreyDark;
+
+    &:has(.dataset-api-download) {
+      max-height: min(@widgetModalMaxHeight, 500px);
+    }
     
     .modal-close {
 	    float: right;
@@ -126,12 +130,6 @@
 @media only screen and (max-width: 550px) {
   .modal-permalink-config {
     width: 230px;
-  }
-}
-
-@media only screen and (max-height: 550px) {
-  .modal:has(.dataset-api-download) {
-    max-height: @widgetModalMaxHeight;
   }
 }
 
