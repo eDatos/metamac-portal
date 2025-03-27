@@ -32,7 +32,7 @@ I18n.translations.ca = {
             reverseOrder: "Invertir ordre",
             close: "Tancar",
             visualize: "Consultar",
-            embed: "Widget",
+            embed: "Giny (Widget)",
             disabledFeature: {
                 internalPortal: "Aquesta característica està desactivada en el visualitzador intern"
             }
@@ -382,8 +382,8 @@ I18n.translations.ca = {
                 },
                 data: {
                     group: "Dades",
-                    update: "Actualitzar les dades amb nous períodes",
-                    selected: "Fixar les dades al període seleccionat",
+                    update: "Actualitza les dades amb nous períodes",
+                    selected: "Fixa les dades al període seleccionat",
                 },
                 dataReview: {
                     group: "Revisions de dades",
