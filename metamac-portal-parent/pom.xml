@@ -4,22 +4,22 @@
     <parent>
         <groupId>org.siemac.metamac</groupId>
         <artifactId>metamac-parent</artifactId>
-        <version>5.0.2-SNAPSHOT</version>
+        <version>5.1.0</version>
         <relativePath />
     </parent>
 
     <groupId>org.siemac.metamac.metamac-portal</groupId>
     <artifactId>metamac-portal-parent</artifactId>
-    <version>9.6.2-SNAPSHOT</version>
+    <version>9.8.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>METAMAC :: PORTAL :: PARENT</name>
     <description>METAMAC :: PORTAL :: PARENT</description>
 
     <properties>
         <metamac-rest-api.version>2.3.1</metamac-rest-api.version>
-        <metamac-rest-common.version>2.6.4-SNAPSHOT</metamac-rest-common.version>
-        <metamac-core-common.version>8.2.3-SNAPSHOT</metamac-core-common.version>
-        <metamac-statistical-resources.version>10.5.2-SNAPSHOT</metamac-statistical-resources.version>
+        <metamac-rest-common.version>2.7.0</metamac-rest-common.version>
+        <metamac-core-common.version>8.3.0</metamac-core-common.version>
+        <metamac-statistical-resources.version>10.6.0</metamac-statistical-resources.version>
         <metamac-srm-rest-external-api.version>3.2.1</metamac-srm-rest-external-api.version>
         <metamac-srm-rest-internal-api.version>3.2.1</metamac-srm-rest-internal-api.version>
         

@@ -6,34 +6,39 @@
     App.Map.GeoJsonConverter = {
 
         shapeListToGeoJson : function (shapeList, extraProperties) {
+            return {
+                type: "FeatureCollection",
+                features: _.chain(shapeList)
+                    .compact()
+                    .map(function (item) {
+                        var feature = {
+                            type : 'Feature',
+                            id : item.normCode,
+                            properties : {
+                                geographicalGranularity : item.granularity
+                            },
+                            geometry : {
+                                type : item.geometryType,
+                                coordinates : item.shape
+                            }
+                        };
 
-            var result = {
-                type : "FeatureCollection"
-            };
-
-            result.features = _.chain(shapeList)
-                .compact()
-                .map(function (item) {
-                    var feature = {
-                        type : 'Feature',
-                        id : item.normCode,
-                        properties : {
-                            geographicalGranularity : item.granularity
-                        },
-                        geometry : {
-                            type : item.geometryType,
-                            coordinates : item.shape
+                        if (extraProperties) {
+                            _.extend(feature.properties, extraProperties);
                         }
-                    };
-
-                    if (extraProperties) {
-                        _.extend(feature.properties, extraProperties);
-                    }
-                    return feature;
+                        return feature;
+                    })
+                    .value()
+            };
+        },
+        
+        geoJsonListToGeoJson: function (geoJsonList) {
+            return {
+                type: "FeatureCollection",
+                features: geoJsonList.flatMap(function (geoJson) {
+                    return geoJson.features;
                 })
-                .value();
-
-            return result;
+            };
         },
 
         featureHasGeometry : function (feature) {
@@ -54,18 +59,7 @@
                 .filter(this.featureHasGeometry)
                 .map(this.featureToShapeList, this)
                 .value();
-        },
-
-        _hierarchyByNormCode : function (normCode) {
-            var hierarchy = -1;
-            if (normCode) {
-                var hierarchies = ["WORLD", "CONTINENT", "COUNTRY", "ADM-LEVEL-1", "ADM-LEVEL-2", "ISLAND", "ADM-LEVEL-3"];
-                var hierarchyCode = normCode.substring(normCode.lastIndexOf("_") + 1);
-                hierarchy = _.indexOf(hierarchies, hierarchyCode);
-            }
-            return hierarchy;
         }
-
     };
 
 

@@ -281,7 +281,7 @@
     .box-sizing(border-box);
 
     .rights-holder {
-        font-family: @highchartsFontFamily;
+        font-family: @istacFontSansSerifFamily;
         font-size: 9px;
         color: @istacGreyMedium;
         text-align: right;
@@ -576,9 +576,9 @@
             }
 
             &.twitter {
-                .icon-twitter;
+                .icon-x;
                 &:hover:before {
-                    color: #2CA8D2;
+                    color: #000;
                 }
             }
             &.facebook {
@@ -680,7 +680,6 @@
 
 .chart-tooltip {
     word-break: break-word;
-    max-width: 300px;
     padding: 0 !important;
     transition: none !important;
     white-space: pre-wrap !important;
@@ -689,7 +688,7 @@
         background: inherit;
         border-radius: inherit;
         border-color: inherit;
-        padding: 10px;
+        white-space: normal;
 
         strong {
             white-space: pre-wrap;

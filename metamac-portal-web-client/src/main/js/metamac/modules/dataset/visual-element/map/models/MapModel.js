@@ -21,7 +21,7 @@
         },
 
         zoomExit: function () {
-            this.set({ currentScale: 2, x: 0, y: 0, animationDelay: 1000 });
+            this.set({ currentScale: 1, x: 0, y: 0, animationDelay: 1000 });
             this.trigger('zoomExit');
         },
 
@@ -44,6 +44,12 @@
 
             if (this._isRequestedZoomAllowed(-1)) {
                 this.set({ currentScale: newScale, oldScale: currentScale, animationDelay: 500 });
+            }
+        },
+
+        zoomTo: function (newScale) {
+            if (newScale <= this.get("maxScale") && newScale >= this.get("minScale")) {
+                this.set({ currentScale: newScale, oldScale: this.get("currentScale"), animationDelay: 500 });
             }
         },
 

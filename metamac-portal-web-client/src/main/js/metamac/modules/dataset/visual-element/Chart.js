@@ -5,23 +5,21 @@
 
     App.namespace("App.VisualElement.Chart");
 
-    App.VisualElement.Chart = function (options) {
-        this._initializeChartVisualElement(options);
+    App.VisualElement.Chart = function () {
     };
 
-    App.VisualElement.Chart.prototype = new App.VisualElement.Base();
-
-    _.extend(App.VisualElement.Chart.prototype, {
+    App.VisualElement.Chart.prototype = {
 
         _initializeChartVisualElement: function (options) {
-            this.initialize(options);
+            this.data = options.data;
+            this.filterDimensions = options.filterDimensions;
             this._initializeChartOptions();
         },
 
-        _initializeChart: function () {
+        _initializeChart: function ($el, $title) {
             this.$chartContainer = $('<div></div>');
-            this.$chartContainer.height(this.$el.height() - this.$title.outerHeight(true));
-            this.$el.append(this.$chartContainer);
+            this.$chartContainer.height($el.height() - $title.outerHeight(true));
+            $el.append(this.$chartContainer);
             this.chart = echarts.init(this.$chartContainer[0], null, { renderer: 'canvas' });
 
             this.$exportChartContainer = $("#export-chart");
@@ -35,6 +33,8 @@
         },
 
         _initializeChartOptions: function () {
+            var self = this;
+            self.tooltipPosition = "top";
             this._chartOptions = {
                 textStyle: {
                     fontFamily: "Helvetica, Arial, sans-serif"
@@ -98,13 +98,12 @@
                     }
                 },
                 title: {
-                    text: this.getRightsHolderText(),
-                    right: 10,
+                    right: Constants.charts.title.marginRight,
                     padding: 0,
-                    show: this.showRightsHolderText(),
                     textStyle: {
                         fontSize: Constants.charts.title.fontSize,
-                        color: Constants.colors.istacGreyDark
+                        color: Constants.colors.istacBlack,
+                        fontWeight: 'normal'
                     }
                 },
                 tooltip: {
@@ -116,6 +115,13 @@
                     textStyle: {
                         fontSize: Constants.charts.tooltip.fontSize,
                         color: Constants.colors.istacBlack
+                    },
+                    position: function (point, params, domEl, rect) {
+                        self.coordsTooltipPointsTo = [
+                            rect.x + (rect.width / 2) + self._getChartDomEl().getBoundingClientRect().x,
+                            rect.y + (rect.height / 2) + self._getChartDomEl().getBoundingClientRect().y
+                        ];
+                        return self.tooltipPosition;
                     }
                 }
             };
@@ -124,7 +130,15 @@
         getTooltipFormatterFunction: function (tooltipFormatterParams) {
             var seriesName = tooltipFormatterParams.seriesName ? (tooltipFormatterParams.seriesName + ', ') : '';
             var axisCategoryName = this._chartOptions[this._dataAxis || 'xAxis'].data[tooltipFormatterParams.dataIndex];
-            return '<div class="chart-tooltip-container" style="max-width: ' + this.$chartContainer.width() + 'px"><strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name + '</div>';
+            var tooltipContent = '<strong>' + seriesName + axisCategoryName + '</strong>:<br/>' + tooltipFormatterParams.name;
+            return this._getWrappedTooltipContent(tooltipContent);
+        },
+
+        _getWrappedTooltipContent: function (content) {
+            var tooltipPadding = Constants.charts.tooltip.padding;
+            var tooltipBorderWidth = Constants.charts.tooltip.borderWidth;
+            var tooltipMaxWidth = Math.min(Constants.charts.tooltip.maxWidth, this.$chartContainer.width() - ((tooltipPadding + tooltipBorderWidth) * 2));
+            return '<div class="chart-tooltip-container" style="padding: ' + tooltipPadding + 'px;max-width: ' + tooltipMaxWidth + 'px">' + content + '</div>';
         },
 
         _getDataUnit: function (permutation) {
@@ -140,7 +154,7 @@
         },
 
         destroy: function () {
-            this._unbindEvents();
+            this._onChartDestroy();
 
             if (this.chart) {
                 this.chart.dispose();
@@ -152,8 +166,11 @@
             }
         },
 
-        _updateSize: function () {
-            var newHeight = this.$el.height() - this.$title.outerHeight(true);
+        _onChartDestroy: function () {
+        },
+
+        _updateSize: function ($el, $title) {
+            var newHeight = $el.height() - $title.outerHeight(true);
             this.$chartContainer.height(newHeight);
             if (newHeight !== this.chart.getHeight()) {
                 this._onHeightUpdated();
@@ -205,13 +222,26 @@
                 var tooltipRight = self.tooltipEl.getBoundingClientRect().right;
                 var tooltipTop = self.tooltipEl.getBoundingClientRect().top;
                 var tooltipBottom = self.tooltipEl.getBoundingClientRect().bottom;
+                var chartLeft = self._getChartDomEl().getBoundingClientRect().x;
+                var chartRight = chartLeft + self._getChartDomEl().getBoundingClientRect().width;
+                var safeDistanceToCorner = 8;
 
-                var arrowLeft = Math.min(tooltipRight, Math.max(self.coordsTooltipPointsTo[0], tooltipLeft)) - tooltipLeft;
+                var arrowLeft;
+                if ((self.coordsTooltipPointsTo[0] - safeDistanceToCorner) < chartLeft) {
+                    arrowLeft = safeDistanceToCorner;
+                } else if ((self.coordsTooltipPointsTo[0] + safeDistanceToCorner) > chartRight) {
+                    arrowLeft = tooltipRight - tooltipLeft - safeDistanceToCorner;
+                } else {
+                    arrowLeft = Math.min(tooltipRight, Math.max(self.coordsTooltipPointsTo[0], tooltipLeft)) - tooltipLeft;
+                }
+                arrowLeft = arrowLeft - 5 - (arrowLeft === (tooltipRight - tooltipLeft)) + (arrowLeft === 0);
+
                 var arrowTop = Math.min(tooltipBottom, Math.max(self.coordsTooltipPointsTo[1], tooltipTop)) - tooltipTop;
+                arrowTop = arrowTop - 5 - (arrowTop === (tooltipBottom - tooltipTop)) + (arrowTop === 0);
 
                 var tooltipContainer = self.tooltipEl.getElementsByClassName("chart-tooltip-container")[0];
-                tooltipContainer.style.setProperty('--left', (arrowLeft - 3) + 'px');
-                tooltipContainer.style.setProperty('--top', (arrowTop - 5) + 'px');
+                tooltipContainer.style.setProperty('--left', Math.round(arrowLeft) + 'px');
+                tooltipContainer.style.setProperty('--top', Math.round(arrowTop) + 'px');
             });
             this.tooltipObserver.observe(this.tooltipEl, {childList: true, attributes: true, attributeFilter: ['style']});
         },
@@ -226,7 +256,6 @@
                 dataZoom: undefined,
                 title: {
                     show: true,
-                    right: this._chartOptions.title.right + Constants.charts.bigGap,
                     top: titleTop
                 },
                 animation: false,
@@ -262,21 +291,17 @@
             });
             this.exportChart.setOption(exportChartOptions, true);
             this.exportChart.resize({
-                height: this.$exportChartContainer[0].querySelector("svg > g").getBBox().height + (Constants.charts.bigGap * 2)
+                height: this._getExportChartHeight()
             });
 
-            return decodeURIComponent(this.exportChart.getDataURL()).match(/<svg(.|\s)*<[/]svg>/g)[0];
+            return this.$exportChartContainer[0].querySelector("svg").outerHTML;
+        },
+
+        _getExportChartHeight: function () {
+            return this.$exportChartContainer[0].querySelector("svg > g").getBBox().height + (Constants.charts.bigGap * 2);
         },
 
         _getExtraExportOptions: function () {
-        },
-
-        _forceMeasureDimensionInZone: function (zone) {
-            this._forceDimensionTypeInZone("MEASURE_DIMENSION", zone);
-        },
-
-        _forceTimeDimensionInZone: function (zone) {
-            this._forceDimensionTypeInZone("TIME_DIMENSION", zone);
         },
 
         _preselectBiggestHierarchyGeographicValue: function () {
@@ -315,11 +340,13 @@
             return seriesDimension;
         },
 
-        loadColors: function () {
+        loadColors: function (showLoading, hideLoading) {
             if (this.graphColorsEnabled()) {
                 var self = this;
 
-                self.showLoading();
+                if (showLoading) {
+                    showLoading();
+                }
                 self.api = new App.dataset.StructuralResourcesApi(self.data);
                 self.api.getCodelists(function (codelists) {
                     var filteredCodelistsWithVariableElements = [];
@@ -345,13 +372,20 @@
                             }
 
                             self.update();
-                            self.hideLoading();
+                            if (hideLoading) {
+                                hideLoading();
+                            }
                         });
                     } else {
-                        self.hideLoading();
+                        if (hideLoading) {
+                            hideLoading();
+                        }
                     }
                 });
             }
+        },
+
+        update: function () {
         },
 
         colorsLoaded: function() {
@@ -361,6 +395,5 @@
         graphColorsEnabled: function () {
             return this.data && App.config["enableGraphColors"];
         }
-    });
-
+    };
 }());
