@@ -414,6 +414,28 @@ public class Helpers {
         return Jsoup.clean(html, new Whitelist().addTags("b", "em", "i", "strong", "u", "br", "div"));
     }
 
+    private static boolean isElementEmpty(Element element) {
+        if (!element.ownText().trim().isEmpty()) {
+            // element has text
+            return false;
+        }
+        if (element.children().isEmpty()) {
+            // element has no text and no children
+            return true;
+        }
+
+        // verify if all children are empty
+        for (Element child : element.children()) {
+            if (child.tagName().equals("br")) {
+                continue;
+            }
+            if (!isElementEmpty(child)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static String cleanText(String html) {
         String sanitizedText = htmlToBasicText(html);
         Document document = Jsoup.parse(sanitizedText);
@@ -423,9 +445,7 @@ public class Helpers {
 
         // remove empty divs
         for (Element div : allDivs) {
-            if (div.text().trim().isEmpty() &&
-                (div.children().isEmpty() ||
-                 (div.children().size() == 1 && div.child(0).tagName().equals("br")))) {
+            if (isElementEmpty(div)) {
                 divsToRemove.add(div);
             }
         }
