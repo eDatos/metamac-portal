@@ -161,6 +161,7 @@
             } else {
                 value = _.isArray(value) ? value.join(", ") : value;
                 value = Handlebars.Utils.escapeExpression(value);
+                value = resourceLink(value, 0);
                 //result += Handlebars.helpers.iString(value) +
                 result += htmlDecode(value);
             }
@@ -172,6 +173,20 @@
 
         return new Handlebars.SafeString(result);
     });
+
+    function resourceLink (value, position) {
+        var hrefPosition = value.indexOf("href", position);
+        if (hrefPosition !== -1) {
+            var result = '';
+            var targetBlank = " target='_blank' ";
+            result = value.substring(0, hrefPosition - 1);
+            result += targetBlank;
+            result += value.substring(hrefPosition);
+            return resourceLink(result, hrefPosition + targetBlank.length);
+        } else {
+            return value;
+        }
+    }
 
     /**
      * Draw a <ul> with each element of the list
