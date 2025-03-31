@@ -62,7 +62,25 @@
                 if (dimension.code === "MEASURE" && _.has(representation, 'quantity') && _.has(representation.quantity, 'decimalPlaces')) {
                     parsedRepresentation.showDecimalsPrecision = representation.quantity.decimalPlaces;
                 }
-                self.setGranularityType(parsedRepresentation, representation, dimension.code)
+                self.setGranularityType(parsedRepresentation, representation, dimension.code);
+                if (representation.quantity) {
+                    parsedRepresentation.measureQuantity = {
+                        unitCode: {
+                            name: {
+                                text: self.indicatorInternationalTextToInternationalText(representation.quantity.unit)
+                            }
+                        }
+                    };
+                    if (representation.quantity.unitMultiplier) {
+                        parsedRepresentation.measureQuantity.unitMultiplier = {
+                            name: {
+                                text: self.indicatorInternationalTextToInternationalText(representation.quantity.unitMultiplier)
+                            },
+                            urn: representation.quantity.unitMultiplier["es"] === "Unidades" ? ".0" : ""
+                        };
+                    }
+
+                }
                 return parsedRepresentation;
             });
         },
