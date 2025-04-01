@@ -12,6 +12,7 @@
 
         _initializeChartVisualElement: function (options) {
             this.data = options.data;
+            this.dataSource = options.dataSource;
             this.filterDimensions = options.filterDimensions;
             this._initializeChartOptions();
         },
