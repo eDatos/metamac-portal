@@ -79,6 +79,8 @@
                             // This is necessary because in the getUnitMultiplierAndUnitMeasureLabel method of DimensionsUtils.js it is checked
                             // that the urn ends with ".0" to know that the multiplier is "units". The condition is the same as the one in the
                             // getUnit method of Dataset.js in the indicator's repository.
+                            // Take into account that unitMultiplier is one of the resources that indicator won't link with the SRM resource, so
+                            // is not planned to have the resource URN here
                             urn: representation.quantity.unitMultiplier["es"] === "Unidades" ? ".0" : ""
                         };
                     }
