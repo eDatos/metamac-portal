@@ -76,6 +76,9 @@
                             name: {
                                 text: self.indicatorInternationalTextToInternationalText(representation.quantity.unitMultiplier)
                             },
+                            // This is necessary because in the getUnitMultiplierAndUnitMeasureLabel method of DimensionsUtils.js it is checked
+                            // that the urn ends with ".0" to know that the multiplier is "units". The condition is the same as the one in the
+                            // getUnit method of Dataset.js in the indicator's repository.
                             urn: representation.quantity.unitMultiplier["es"] === "Unidades" ? ".0" : ""
                         };
                     }
