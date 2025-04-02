@@ -143,7 +143,9 @@
                     pluralLabel: App.DimensionsUtils.getDimensionLabel(dimension),
                     type: dimension.type,
                     hierarchy: this._dimensionHasHierarchy(dimension),
-                    showCode: dimension.showCode
+                    visibleLabelType: dimension.showCode
+                        ? App.modules.dataset.filter.models.FilterRepresentation.VISIBLE_LABEL_TYPES.CODE_AND_LABEL
+                        : App.modules.dataset.filter.models.FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL
                 };
             }, this);
         },
