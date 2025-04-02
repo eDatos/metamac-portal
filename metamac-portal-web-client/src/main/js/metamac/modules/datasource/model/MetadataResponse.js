@@ -142,7 +142,8 @@
                     label: App.InternationalizationUtils.localizeLabel(dimension.name),
                     pluralLabel: App.DimensionsUtils.getDimensionLabel(dimension),
                     type: dimension.type,
-                    hierarchy: this._dimensionHasHierarchy(dimension)
+                    hierarchy: this._dimensionHasHierarchy(dimension),
+                    showCode: dimension.showCode
                 };
             }, this);
         },
