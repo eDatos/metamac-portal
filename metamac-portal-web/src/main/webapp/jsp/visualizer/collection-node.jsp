@@ -37,7 +37,7 @@
         </span>
         <div class="dimension-description">
 	        <c:if test="${nodeDepth <= 2}">
-	        	<%= Helpers.cleanText(helper.localizeText(chapter.getDescription())) %>
+	        	<%= Helpers.cleanHtml(helper.localizeText(chapter.getDescription())) %>
 	        </c:if>
 	    </div>
         <% if (chapter.getNodes() != null) { 

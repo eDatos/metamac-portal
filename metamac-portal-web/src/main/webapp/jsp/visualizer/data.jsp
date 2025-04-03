@@ -33,7 +33,7 @@
 			            	<h1 class="visualizer-header-title">${resourceName}</h1>
 			            	<c:choose>
 			            		<c:when test="${resourceDescription != ''}">
-			            			<div class="visualizer-description">${Helpers.cleanText(resourceDescription)}</div>
+			            			<div class="visualizer-description">${Helpers.cleanHtml(resourceDescription)}</div>
 			            		</c:when>
 			            	</c:choose>
 			            </div>                	
