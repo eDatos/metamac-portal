@@ -108,20 +108,21 @@
         }
     });
 
-    Handlebars.registerHelper("resourceOutput", function (values) {
-        return new Handlebars.SafeString(resourceOutput(values));
+    Handlebars.registerHelper("resourceOutput", function (values, targetBlank) {
+        return new Handlebars.SafeString(resourceOutput(values, targetBlank));
     });
 
-    function resourceOutput(values) {
+    function resourceOutput(values, targetBlank) {
         var result = "";
         if (!(values instanceof Array)) {
             values = [values];
         }
-
+        
         return _.reduce(values, function (memo, value) {
+            var target = targetBlank ? " target='_blank'" : "";
             var href = Handlebars.Utils.escapeExpression(value.href);
             var name = value.name;
-            result = href ? '<a href=' + href + '>' : '';
+            result = href ? '<a href=' + href + target + '>' : '';
             result += name;
             result += href ? '</a>' : '';
             memo = memo ? ", " : "";
@@ -135,7 +136,7 @@
      * usage:
      *      {{ fieldOutput "entity.dataset.title" }}
      */
-    Handlebars.registerHelper("fieldOutput", function (label, value, type, localizeLabel, allowEmptyValue, fieldClass) {
+    Handlebars.registerHelper("fieldOutput", function (label, value, type, targetBlank, localizeLabel, allowEmptyValue, fieldClass) {
         label = Handlebars.Utils.escapeExpression(label);
         localizeLabel = _.isUndefined(localizeLabel) ? true : localizeLabel;
         fieldClass = _.isUndefined(fieldClass) ? "field" : fieldClass;
@@ -156,10 +157,11 @@
                 value.href = null;
                 result += resourceOutput(value);
             } else if (type === "resource") {
-                result += resourceOutput(value);
+                result += resourceOutput(value, targetBlank);
             } else {
                 value = _.isArray(value) ? value.join(", ") : value;
                 value = Handlebars.Utils.escapeExpression(value);
+                value = resourceLink(value, 0);
                 //result += Handlebars.helpers.iString(value) +
                 result += htmlDecode(value);
             }
@@ -171,6 +173,20 @@
 
         return new Handlebars.SafeString(result);
     });
+
+    function resourceLink (value, position) {
+        var hrefPosition = value.indexOf("href", position);
+        if (hrefPosition !== -1) {
+            var result = '';
+            var targetBlank = " target='_blank' ";
+            result = value.substring(0, hrefPosition - 1);
+            result += targetBlank;
+            result += value.substring(hrefPosition);
+            return resourceLink(result, hrefPosition + targetBlank.length);
+        } else {
+            return value;
+        }
+    }
 
     /**
      * Draw a <ul> with each element of the list

@@ -6,7 +6,6 @@
     App.namespace('App.modules.dataset.DatasetDownloadView');
 
     var svgExporter = new App.svg.Exporter();
-    var SVG_SELECTOR = '.dataset-visualization-visual-element canvas, .dataset-visualization-visual-element svg';
 
     App.modules.dataset.DatasetDownloadView = Backbone.View.extend({
 
@@ -68,15 +67,9 @@
             };
 
             if (this._exportableImage()) {
-                var self = this;
-                var sanitized = this._getVisualizationType() === 'graph' ? svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg()) : svgExporter.sanitizeSvgElement($(SVG_SELECTOR));
-                svgExporter.addStyleAsync(sanitized).done(function (svg) {
-                    self.svg = svg;
-                    self.$el.html(self.template(context));
-                });
-            } else {
-                this.$el.html(this.template(context));
+                this.svg = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
             }
+            this.$el.html(this.template(context));
         },
 
         _getVisualizationType: function () {
@@ -99,7 +92,7 @@
         },
 
         _hasExportableImage: function (visualizationSupertype) {
-            return _.contains(['graph', 'map'], visualizationSupertype) && $(SVG_SELECTOR).exists();
+            return _.contains(['graph', 'map'], visualizationSupertype);
         },
 
         _exportableImage: function () {
@@ -181,7 +174,6 @@
             var params = '?';
             params += 'filename=' + encodeURIComponent(filename);
             params += '&type=' + encodeURIComponent(mime);
-            params += '&width=' + $(SVG_SELECTOR).width();
             params += '&scale=2';
 
             return params;

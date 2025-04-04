@@ -117,16 +117,20 @@
                 fontSize: 12,
                 exportFontSize: 10,
                 padding: 5,
-                itemHeight: 15
+                itemHeight: 15,
+                gap: 6
             },
             title: {
-                fontSize: 9
+                fontSize: 9,
+                marginRight: 10
             },
             tooltip: {
                 className: 'chart-tooltip',
                 exportClassName: 'export-chart-tooltip',
                 padding: 7,
-                fontSize: 12
+                fontSize: 12,
+                maxWidth: 300,
+                borderWidth: 1
             }
         }
     };

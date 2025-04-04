@@ -21,6 +21,7 @@
             this.showRightsHolder = options.showRightsHolder;
             this.callback = options.callback;
             this.metadata = options.metadata;
+            this.$title = options.$title;
             this.$el.empty();
             this._initInternalViews();
         },
@@ -30,19 +31,14 @@
             this.geoJson = newGeoJson;
             this.title = newTitle;
 
-            var isMap = this.mapType === 'map';
-            this.mapView.update(this.dataJson, this.geoJson, this.title, !isMap);
-            if (isMap) {
-                this.updateRanges();
+            this.mapView.update(this.dataJson, this.geoJson, this.title);
+            if (this.mapType === 'map') {
+                this.mapView.updateRanges();
             }
-            
         },
 
         render: function () {
             this.zoomView.render();
-            if (this.mapType === 'map') {
-                this.rangesView.render();
-            }
             this.mapView.render();
         },
 
@@ -53,17 +49,11 @@
         destroy: function () {
             this.mapView.destroy();
             this.zoomView.destroy();
-            this.rangesView.destroy();
         },
 
         transform: function () {
             this.mapView.transform();
             this.zoomView.transform();
-        },
-
-        updateRanges: function () {
-            this.mapView.updateRanges();
-            this.rangesView.updateRanges();
         },
 
         zoomExit: function () {
@@ -73,8 +63,6 @@
         _initInternalViews: function () {
             this._initMapView();
             this._initZoomView();
-            this._initLeyendView();
-            this._initRangesView();
         },
 
         _initMapView: function () {
@@ -95,7 +83,8 @@
                 rightsHolder: this.rightsHolder,
                 showRightsHolder: this.showRightsHolder,
                 callback: this.callback,
-                metadata: this.metadata
+                metadata: this.metadata,
+                $title: this.$title
             });
         },
 
@@ -109,19 +98,9 @@
             });
         },
 
-        _initLeyendView: function () {
-        },
-
-        _initRangesView: function () {
-            var $elRanges = $('<div id="ranges-container"/>').appendTo(this.$el);
-            this.rangesView = new App.Map.RangesView({
-                el: $elRanges.get(0),
-                model: this._mapModel,
-                width: this._width,
-                height: this._height
-            });
+        getExportChartSvg: function () {
+            return this.mapView.getExportChartSvg();
         }
-
     });
 
 })();

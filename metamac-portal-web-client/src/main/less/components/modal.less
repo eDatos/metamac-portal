@@ -33,6 +33,10 @@
 
     .border-radius(@borderRadiusBig);
     border: 2px solid @istacGreyDark;
+
+    &:has(.dataset-api-download) {
+      max-height: min(@widgetModalMaxHeight, 500px);
+    }
     
     .modal-close {
 	    float: right;
@@ -61,6 +65,10 @@
     font-size: 13px;
     color: @istacGreyDark;
     text-decoration: underline;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
