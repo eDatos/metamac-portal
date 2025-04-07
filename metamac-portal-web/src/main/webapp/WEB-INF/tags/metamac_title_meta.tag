@@ -145,9 +145,9 @@
         if (servletPath != null) {
             organizationService = servletPath.split("/")[2];
         }
-        String theme = request.getParameter(Helpers.PARAMETER_THEME); /* Must be something like organisation/service */
-        if (StringUtils.isBlank(theme) && StringUtils.isNotBlank(organizationService)) {
-            theme = WebUtils.getThemeFromOrganisationService(organizationService);
+        String theme = WebUtils.getThemeFromOrganisationService(organizationService);
+        if (StringUtils.isBlank(theme)) {
+            theme = request.getParameter(Helpers.PARAMETER_THEME); /* Must be something like organisation/service */
         }
         request.setAttribute("theme", theme);
     %>
