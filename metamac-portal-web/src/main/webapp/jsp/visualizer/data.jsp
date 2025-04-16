@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="org.siemac.metamac.portal.Helpers" %>
 <%@ page import="org.siemac.metamac.core.common.exception.MetamacException"%>
 <%@ page import="org.siemac.metamac.portal.core.conf.PortalConfiguration"%>
 <%@ page import="org.siemac.metamac.core.common.util.ApplicationContextProvider"%>
@@ -32,7 +33,7 @@
 			            	<h1 class="visualizer-header-title">${resourceName}</h1>
 			            	<c:choose>
 			            		<c:when test="${resourceDescription != ''}">
-			            			<div class="visualizer-description">${resourceDescription}</div>
+			            			<div class="visualizer-description">${Helpers.cleanHtml(resourceDescription)}</div>
 			            		</c:when>
 			            	</c:choose>
 			            </div>                	
