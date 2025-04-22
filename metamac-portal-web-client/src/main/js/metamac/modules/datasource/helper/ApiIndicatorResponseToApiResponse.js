@@ -103,7 +103,8 @@
                     dimensionValues: {
                         value: self.indicatorMetadataRepresentationsToMetadataRepresentations(dimension),
                         total: dimension.representation.length
-                    }
+                    },
+                    showCode: dimension.showCode
                 }
             });
             return parsedDimensions;
