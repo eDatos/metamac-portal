@@ -382,7 +382,11 @@
                     tooltip: {
                         show: true,
                         formatter: function () {
-                            var tooltipContent = self.tooltipDelegate._getLabelFromNormCode(dataNormCode) + ': ' + self._data.getStringData({ ids: currentPermutation });
+                            var tooltipContent = self.tooltipDelegate._getLabelFromNormCode(dataNormCode)
+                                + ': '
+                                + self._data.getStringData({ ids: currentPermutation })
+                                + " "
+                                + self._getDataUnit(currentPermutation);
                             return self._getWrappedTooltipContent(tooltipContent);
                         }
                     }

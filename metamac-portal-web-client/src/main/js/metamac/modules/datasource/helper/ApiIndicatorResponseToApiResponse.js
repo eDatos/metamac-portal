@@ -62,7 +62,30 @@
                 if (dimension.code === "MEASURE" && _.has(representation, 'quantity') && _.has(representation.quantity, 'decimalPlaces')) {
                     parsedRepresentation.showDecimalsPrecision = representation.quantity.decimalPlaces;
                 }
-                self.setGranularityType(parsedRepresentation, representation, dimension.code)
+                self.setGranularityType(parsedRepresentation, representation, dimension.code);
+                if (representation.quantity) {
+                    parsedRepresentation.measureQuantity = {
+                        unitCode: {
+                            name: {
+                                text: self.indicatorInternationalTextToInternationalText(representation.quantity.unit)
+                            }
+                        }
+                    };
+                    if (representation.quantity.unitMultiplier) {
+                        parsedRepresentation.measureQuantity.unitMultiplier = {
+                            name: {
+                                text: self.indicatorInternationalTextToInternationalText(representation.quantity.unitMultiplier)
+                            },
+                            // This is necessary because in the getUnitMultiplierAndUnitMeasureLabel method of DimensionsUtils.js it is checked
+                            // that the urn ends with ".0" to know that the multiplier is "units". The condition is the same as the one in the
+                            // getUnit method of Dataset.js in the indicator's repository.
+                            // Take into account that unitMultiplier is one of the resources that indicator won't link with the SRM resource, so
+                            // is not planned to have the resource URN here
+                            urn: representation.quantity.unitMultiplier["es"] === "Unidades" ? ".0" : ""
+                        };
+                    }
+
+                }
                 return parsedRepresentation;
             });
         },
@@ -103,7 +126,8 @@
                     dimensionValues: {
                         value: self.indicatorMetadataRepresentationsToMetadataRepresentations(dimension),
                         total: dimension.representation.length
-                    }
+                    },
+                    showCode: dimension.showCode
                 }
             });
             return parsedDimensions;
