@@ -20,7 +20,7 @@
             var mouseCartesianCoords = chart.convertFromPixel('grid', [p.offsetX, p.offsetY]);
             var dataIndex = mouseCartesianCoords[0];
             var y = mouseCartesianCoords[1];
-            if (y >= 0 && dataIndex >= 0 && dataIndex < chartOptions.xAxis[0].data.length) {
+            if (dataIndex >= 0 && dataIndex < chartOptions.xAxis[0].data.length) {
                 var seriesIndex = this._getClosestSerieToCoordinatesOfLinesChart(chart, dataIndex, y, chartOptions);
                 if (seriesIndex !== previousSeriesIndex || dataIndex !== previousDataIndex) {
                     if (seriesIndex !== previousSeriesIndex) {
