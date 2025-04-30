@@ -7,7 +7,7 @@
 #
 # A continuación podremos construir la imagen ejecutando siempre desde el directorio raíz del proyecto:
 #
-# docker build -f dockerfiles/statistical-visualizer-api/Dockerfile -t statistical-visualizer-api:<version> .
+# docker build -f dockerfiles/statistical-visualizer-api/Dockerfile.api -t statistical-visualizer-api:<version> .
 #
 # Para ejecutar un contenedor asociado a esta imagen:
 # docker run -i --rm -p 8080:8080 statistical-visualizer-api:<version>
