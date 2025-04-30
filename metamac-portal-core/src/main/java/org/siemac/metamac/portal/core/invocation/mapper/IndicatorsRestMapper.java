@@ -1,16 +1,17 @@
 package org.siemac.metamac.portal.core.invocation.mapper;
 
 import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.DEFAULT;
-import static es.gobcan.istac.indicators.rest.constants.IndicatorsRestApiConstants.PROP_ATTRIBUTE_OBS_CONF;
 import static org.siemac.metamac.portal.core.utils.PortalUtils.buildInternationalStringFromSingleCode;
 import static org.siemac.metamac.portal.core.utils.PortalUtils.localisedStringsToInternationalString;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
@@ -54,7 +55,7 @@ import es.gobcan.istac.indicators.rest.types.MetadataDimensionType;
 import es.gobcan.istac.indicators.rest.types.MetadataRepresentationType;
 import es.gobcan.istac.indicators.rest.types.QuantityType;
 
-/**
+    /**
  * Don't map all the fields, only the ones needed to export
  */
 public class IndicatorsRestMapper {
@@ -318,28 +319,47 @@ public class IndicatorsRestMapper {
             return null;
         }
         DataAttributes dataAttributes = new DataAttributes();
-        dataAttributes.getAttributes().add(indicatorAttributeToDatasetAttribute(attributes));
+        dataAttributes.getAttributes().addAll(indicatorAttributeToDatasetAttribute(attributes));
         dataAttributes.setTotal(BigInteger.valueOf(attributes.size()));
         return dataAttributes;
     }
 
-    private static DataAttribute indicatorAttributeToDatasetAttribute(List<Map<String, AttributeType>> attributes) {
-        List<String> values = new ArrayList<String>();
-        for (Map<String, AttributeType> attribute : attributes) {
-            values.add(indicatorAttributeValueToDatasetAttributeValue(attribute));
+    private static List<DataAttribute> indicatorAttributeToDatasetAttribute(List<Map<String, AttributeType>> attributes) {
+        Set<String> attributeIds = new HashSet<>();
+
+        for (Map<String, AttributeType> map : attributes) {
+            if (map != null) {
+                attributeIds.addAll(map.keySet());
+            }
         }
 
-        DataAttribute dataAttribute = new DataAttribute();
-        dataAttribute.setId(PROP_ATTRIBUTE_OBS_CONF);
-        dataAttribute.setValue(String.join(DATASET_OBSERVATIONS_SEPARATOR, values));
-        return dataAttribute;
+        List<DataAttribute> dataAttributes = new ArrayList<>();
+
+        for (String attributeId : attributeIds) {
+            List<String> values = indicatorAttributeValueToDatasetAttributeValue(attributeId, attributes);
+
+            DataAttribute dataAttribute = new DataAttribute();
+            dataAttribute.setId(attributeId);
+            dataAttribute.setValue(String.join(DATASET_OBSERVATIONS_SEPARATOR, values));
+            dataAttributes.add(dataAttribute);
+        }
+
+        return dataAttributes;
     }
 
-    private static String indicatorAttributeValueToDatasetAttributeValue(Map<String, AttributeType> attribute) {
-        if (attribute == null) {
-            return StringUtils.EMPTY;
+    private static List<String> indicatorAttributeValueToDatasetAttributeValue(String attributeId, List<Map<String, AttributeType>> attributes) {
+        List<String> values = new ArrayList<>();
+
+        for (Map<String, AttributeType> attribute : attributes) {
+            if (attribute == null || !attribute.containsKey(attributeId)) {
+                values.add(StringUtils.EMPTY);
+            } else {
+                String attributeValue = localisedStringsToDefaultString(attribute.get(attributeId).getValue());
+                values.add(attributeValue);
+            }
         }
-        return localisedStringsToDefaultString(attribute.get(PROP_ATTRIBUTE_OBS_CONF).getValue());
+        
+        return values;
     }
 
     private static DimensionRepresentations indicatorDimensionsToDatasetDimensions(Map<String, DataDimensionType> dataDimensions) {
