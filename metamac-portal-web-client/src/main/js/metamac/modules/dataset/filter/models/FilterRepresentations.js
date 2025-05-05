@@ -36,15 +36,15 @@
                 return representation.get('level');
             }).reverse();
 
-            _.each(modelsSortedByLevelReversed, function (representation) {
+            _.each(modelsSortedByLevelReversed, function (parent) {
                 if (self.hasHierarchy) {
-                    var children = this.filter(representation => representation.get("parent") === representation.id);
+                    const children = this.filter(representation => representation.get("parent") === parent.id);
                     if (children.length) {
-                        representation.initChildren(children);
-                        representation._onChangeOpenInit();
+                        parent.initChildren(children);
+                        parent._onChangeOpenInit();
                     }
                 } else {
-                    representation.initNodesWithoutChildren();
+                    parent.initNodesWithoutChildren();
                 }
             }, this);
         },
