@@ -7,6 +7,7 @@
 
         initialize: function (options) {
             this._data = options.data;
+            this._dataSource = options.dataSource;
             this._filterDimensions = options.filterDimensions;
             this._mapModel = options.mapModel;
             this._width = options.width;
@@ -70,6 +71,7 @@
             this.mapView = new App.Map.MapView({
                 el: $mapContainer,
                 data: this._data,
+                dataSource: this._dataSource,
                 filterDimensions: this._filterDimensions,
                 model: this._mapModel,
                 shapeList: this.geoJson,

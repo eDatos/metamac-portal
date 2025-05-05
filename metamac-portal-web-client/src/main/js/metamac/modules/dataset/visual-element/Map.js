@@ -155,6 +155,7 @@
             this._mapContainerView = new App.Map.MapContainerView({
                 el: this.el,
                 data: this.data,
+                dataSource: this.dataSource,
                 filterDimensions: this.filterDimensions,
                 mapModel: this._mapModel,
                 geoJson: this._geoJson,
