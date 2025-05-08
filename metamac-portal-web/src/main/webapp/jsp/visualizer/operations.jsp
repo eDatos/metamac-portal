@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="requestURL">${pageContext.request.requestURL}</c:set>
@@ -9,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="${baseURL}/client/metamac.css?d=${cssDate}">
 
 <t:metamac_plantilla_1col baseURL="${baseURL}">
+<fmt:setLocale value="${currentLocale}" />
+<fmt:setBundle basename="i18n.messages" var="i18n"/>
+
 <script>
     var baseURL = "${baseURL}";
     var statisticalResourcesApi = "${ApiUrlStatisticalResources}/v1.0";
@@ -119,5 +123,5 @@
             });
         });
 </script>
-<div id="operations" class="contenido"><div class="loader">Cargando...</div></div>
+<div id="operations" class="contenido"><div class="loader"><fmt:message key="app.loading" bundle="${i18n}"/></div></div>
 </t:metamac_plantilla_1col>
