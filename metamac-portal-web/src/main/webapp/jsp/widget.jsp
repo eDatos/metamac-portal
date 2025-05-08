@@ -84,7 +84,7 @@
         request.setAttribute("theme", theme);
         if (permalinkId != null && !permalinkId.isEmpty()) {
             Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
-            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, locale, title));
+            response.sendRedirect(WebUtils.getPortalBaseUrl() + "/widget.html" + Helpers.buildUrl(permalink, sharedVisualizerUrl, locale, title));
         }
     %>
     <%
