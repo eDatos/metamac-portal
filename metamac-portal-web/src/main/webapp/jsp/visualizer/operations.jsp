@@ -11,7 +11,7 @@
 
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${currentLocale}" />
-<fmt:setBundle basename="i18n.messages" var="i18n"/>
+<fmt:setBundle basename="i18n.messages-portal" var="i18n"/>
 
 <script>
     var baseURL = "${baseURL}";
@@ -123,5 +123,5 @@
             });
         });
 </script>
-<div id="operations" class="contenido"><div class="loader"><fmt:message key="app.loading" bundle="${i18n}"/></div></div>
+<div id="operations" class="contenido"><div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div></div>
 </t:metamac_plantilla_1col>
