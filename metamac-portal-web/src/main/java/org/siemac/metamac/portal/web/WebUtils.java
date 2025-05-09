@@ -32,6 +32,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     protected static String     installationType                  = null;
     protected static String     portalBaseUrl                     = null;
+    protected static String     portalWebVisualizerUrl            = null;
     protected static String     statisticalVisualizerBaseUrl      = null;
     protected static String     statisticalResourcesApiBaseUrl    = null;
     protected static String     srmApiBaseUrl                     = null;
@@ -85,6 +86,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static void setPortalBaseUrl(String portalBaseUrl) {
         WebUtils.portalBaseUrl = portalBaseUrl;
+    }
+
+    public static String getPortalWebVisualizerUrl() {
+        return portalWebVisualizerUrl;
+    }
+
+    public static void setPortalWebVisualizerUrl(String portalWebVisualizerUrl) {
+        WebUtils.portalWebVisualizerUrl = portalWebVisualizerUrl;
     }
 
     public static String getStatisticalVisualizerBaseUrl() {
