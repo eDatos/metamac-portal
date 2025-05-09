@@ -310,18 +310,18 @@ public class Helpers {
         return objectMapper.readValue(content, PermalinkContent.class);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl) throws UnsupportedEncodingException {
-        return buildUrl(permalink, sharedVisualizerUrl, null, null);
+    public static String buildUrlParams(Permalink permalink, String sharedVisualizerUrl) throws UnsupportedEncodingException {
+        return buildUrlParams(permalink, sharedVisualizerUrl, null, null);
     }
 
-    public static String buildUrl(Permalink permalink, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
+    public static String buildUrlParams(Permalink permalink, String sharedVisualizerUrl, String locale, String title) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
 
         QueryParams queryParams = permalink.getContent().getQueryParams();
 
         // Permalink url must be rebuild, because you must not store the visualizer url inside the permalink stored on db in case
         // the baseUrl changes tomorrow.
-        buildUrl(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
+        buildUrlParams(stringBuilder, queryParams.getType(), queryParams.getAgency(), queryParams.getIdentifier(), queryParams.getVersion(), queryParams.getIndicatorSystem(),
                 queryParams.getMultidatasetId(), sharedVisualizerUrl, locale, title, queryParams.getTheme());
 
         // Hash is the SPA route, for example #datasets/selection. Includes #
@@ -347,12 +347,12 @@ public class Helpers {
         if (!StringUtils.isBlank(baseUrl)) {
             stringBuilder.append(baseUrl);
         }
-        buildUrl(stringBuilder, null, null, null, null, null, multidatasetId, sharedVisualizerUrl, locale, title, theme);
+        buildUrlParams(stringBuilder, null, null, null, null, null, multidatasetId, sharedVisualizerUrl, locale, title, theme);
 
         return stringBuilder.toString();
     }
 
-    private static void buildUrl(StringBuilder stringBuilder, String resourceType, String agency, String identifier, String version, String indicatorSystem, String multidatasetId,
+    private static void buildUrlParams(StringBuilder stringBuilder, String resourceType, String agency, String identifier, String version, String indicatorSystem, String multidatasetId,
             String sharedVisualizerUrl, String locale, String title, String theme) throws UnsupportedEncodingException {
         appendParameter(stringBuilder, PARAMETER_RESOURCE_TYPE, resourceType);
         appendParameter(stringBuilder, PARAMETER_AGENCY_ID, agency);
