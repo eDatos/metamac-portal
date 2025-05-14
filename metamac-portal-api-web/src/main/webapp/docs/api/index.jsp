@@ -117,24 +117,26 @@
   </script>
 </head>
 <body>
-	<c:set var="apiStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleHeaderUrl()%>" />
-	<c:set var="apiStyleFooterUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleFooterUrl()%>" />
+	<c:set var="appStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleHeaderUrl()%>" />
+	<c:set var="appStyleFooterUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleFooterUrl()%>" />
 	
-	<c:if test="${!empty apiStyleHeaderUrl}">
-		<c:import charEncoding="UTF-8" url="${apiStyleHeaderUrl}">
+	<c:if test="${!empty appStyleHeaderUrl}">
+		<c:import charEncoding="UTF-8" url="${appStyleHeaderUrl}">
 			<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
     		<c:param name="appVersion" value="<%= appVersion %>" />
 		</c:import>
 	</c:if>
 	
-	<div class="swagger-section">
-		<div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
-		<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+	<div class="content-wrapper edatos-wrapper edatos-swagger">
+		<div class="swagger-section">
+			<div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
+			<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+		</div>
 	</div>
 	
-	<c:if test="${!empty apiStyleFooterUrl}">
-		<c:import charEncoding="UTF-8" url="${apiStyleFooterUrl}">
+	<c:if test="${!empty appStyleFooterUrl}">
+		<c:import charEncoding="UTF-8" url="${appStyleFooterUrl}">
 			<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
 		</c:import>
