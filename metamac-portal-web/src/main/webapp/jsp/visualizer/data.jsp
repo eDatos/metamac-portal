@@ -1,9 +1,6 @@
 <%@ page pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
-<%@ page import="org.siemac.metamac.core.common.exception.MetamacException"%>
-<%@ page import="org.siemac.metamac.portal.core.conf.PortalConfiguration"%>
-<%@ page import="org.siemac.metamac.core.common.util.ApplicationContextProvider"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -12,6 +9,7 @@
 <% /* IDEA : Must ApiUrlStatisticalVisualizer and baseUrl be the same at all times? */ %>
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${currentLocale}" />
+<fmt:setBundle basename="i18n.messages-portal" var="i18n"/>
     <div class="visualizer-wrapper dataset-wrapper">
 	    <c:choose>
 		    <c:when test="${ApiUrlStatisticalResources == ''
@@ -20,8 +18,8 @@
                 || ApiUrlExport == ''
                 || StatisticalVisualizerBase == ''
 		    	|| ApiUrlStatisticalVisualizer == ''}">
-		    	<h3>Error - Propiedad no configurada</h3>
-	            <p class="justificado">Lo sentimos, alguna de las propiedades no ha sido configurada correctamente.</p>
+		    	<h3><fmt:message key="message.portal.missing_property.title" bundle="${i18n}"/></h3>
+	            <p class="justificado"><fmt:message key="message.portal.missing_property.description" bundle="${i18n}"/></p>
 	       	</c:when>
 	       	<c:when test="${internalError != null && internalError != ''}">
 	            <p class="alert-danger">${internalError}</p>
@@ -39,7 +37,7 @@
 			            </div>                	
 		            </c:when>
 		        </c:choose>		    	   
-		        <div class="metamac-container" id="metamac-container"><div class="loader">Cargando...</div></div>
+		        <div class="metamac-container" id="metamac-container"><div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div></div>
 		
 		        <script>
 		            LazyLoad=function(a){function b(b,c){var d,e=a.createElement(b);for(d in c)c.hasOwnProperty(d)&&e.setAttribute(d,c[d]);return e}function c(a){var b,c,d=j[a];d&&(b=d.callback,c=d.urls,c.shift(),k=0,c.length||(b&&b.call(d.context,d.obj),j[a]=null,l[a].length&&e(a)))}function d(){var b=navigator.userAgent;h={async:a.createElement("script").async===!0},(h.webkit=/AppleWebKit\//.test(b))||(h.ie=/MSIE|Trident/.test(b))||(h.opera=/Opera/.test(b))||(h.gecko=/Gecko\//.test(b))||(h.unknown=!0)}function e(e,k,m,n,o){var p,q,r,s,t,u,v=function(){c(e)},w="css"===e,x=[];if(h||d(),k)if(k="string"==typeof k?[k]:k.concat(),w||h.async||h.gecko||h.opera)l[e].push({urls:k,callback:m,obj:n,context:o});else for(p=0,q=k.length;q>p;++p)l[e].push({urls:[k[p]],callback:p===q-1?m:null,obj:n,context:o});if(!j[e]&&(s=j[e]=l[e].shift())){for(i||(i=a.head||a.getElementsByTagName("head")[0]),t=s.urls,p=0,q=t.length;q>p;++p)u=t[p],w?r=h.gecko?b("style"):b("link",{href:u,rel:"stylesheet"}):(r=b("script",{src:u}),r.async=!1),r.className="lazyload",r.setAttribute("charset","utf-8"),h.ie&&!w&&"onreadystatechange"in r&&!("draggable"in r)?r.onreadystatechange=function(){/loaded|complete/.test(r.readyState)&&(r.onreadystatechange=null,v())}:w&&(h.gecko||h.webkit)?h.webkit?(s.urls[p]=r.href,g()):(r.innerHTML='@import "'+u+'";',f(r)):r.onload=r.onerror=v,x.push(r);for(p=0,q=x.length;q>p;++p)i.appendChild(x[p])}}function f(a){var b;try{b=!!a.sheet.cssRules}catch(d){return k+=1,200>k?setTimeout(function(){f(a)},50):b&&c("css"),void 0}c("css")}function g(){var a,b=j.css;if(b){for(a=m.length;--a>=0;)if(m[a].href===b.urls[0]){c("css");break}k+=1,b&&(200>k?setTimeout(g,50):c("css"))}}var h,i,j={},k=0,l={css:[],js:[]},m=a.styleSheets;return{css:function(a,b,c,d){e("css",a,b,c,d)},js:function(a,b,c,d){e("js",a,b,c,d)}}}(this.document);
@@ -83,15 +81,16 @@
 							App.config["cellThreshold"] = ${cellThreshold};
 							App.config["unitMeasure"] = "${unitMeasure}";
 							App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
-		                    App.queryParams["agency"] = '${param.agencyId}';
-		                    App.queryParams["identifier"] = '${param.resourceId}';
-		                    App.queryParams["version"] = '${param.version}';
+							App.config["theme"] = '${theme}';
+							App.queryParams["agency"] = '${param.agencyId}';
+							App.queryParams["identifier"] = '${param.resourceId}';
+							App.queryParams["version"] = '${param.version}';
 							App.queryParams["type"] = '${param.resourceType}';
-                            App.queryParams["indicatorSystem"] = '${param.indicatorSystem}';
-                            App.queryParams["geo"] = '${param.geo}';
+							App.queryParams["indicatorSystem"] = '${param.indicatorSystem}';
+							App.queryParams["geo"] = '${param.geo}';
 							App.queryParams["multidatasetId"] = '${param.multidatasetId}';
-		                    console.log("starting app");
-		                    App.start();
+							console.log("starting app");
+							App.start();
 
                             if(${ApiUrlCaptcha != "error"}) {
                                 LazyLoad.js("${ApiUrlCaptcha}/captcha.js");

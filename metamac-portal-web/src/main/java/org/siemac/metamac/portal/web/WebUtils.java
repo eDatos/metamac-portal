@@ -3,9 +3,12 @@ package org.siemac.metamac.portal.web;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringJoiner;
 
+import org.apache.commons.lang.StringUtils;
 import org.siemac.edatos.core.common.lang.LocaleUtil;
 import org.siemac.metamac.portal.core.messages.MessageKeyType;
 import org.slf4j.Logger;
@@ -29,6 +32,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     protected static String     installationType                  = null;
     protected static String     portalBaseUrl                     = null;
+    protected static String     portalWebVisualizerUrl            = null;
     protected static String     statisticalVisualizerBaseUrl      = null;
     protected static String     statisticalResourcesApiBaseUrl    = null;
     protected static String     srmApiBaseUrl                     = null;
@@ -82,6 +86,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static void setPortalBaseUrl(String portalBaseUrl) {
         WebUtils.portalBaseUrl = portalBaseUrl;
+    }
+
+    public static String getPortalWebVisualizerUrl() {
+        return portalWebVisualizerUrl;
+    }
+
+    public static void setPortalWebVisualizerUrl(String portalWebVisualizerUrl) {
+        WebUtils.portalWebVisualizerUrl = portalWebVisualizerUrl;
     }
 
     public static String getStatisticalVisualizerBaseUrl() {
@@ -179,6 +191,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_CUSTOM:
                 return getPortalCustomBaseUrlForTheme(theme) + "/header.html" + buildHeaderQuery(lang);
             default:
+                if (StringUtils.isNotBlank(theme)) {
+                    return getPortalCustomBaseUrlForTheme(theme) + "/header.html" + buildHeaderQuery(lang);
+                }
                 return portalDefaultStyleHeaderUrl + buildHeaderQuery(lang);
         }
     }
@@ -198,6 +213,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_CUSTOM:
                 return getPortalCustomBaseUrlForTheme(theme) + "/footer.html";
             default:
+                if (StringUtils.isNotBlank(theme)) {
+                    return getPortalCustomBaseUrlForTheme(theme) + "/footer.html";
+                }
                 return portalDefaultStyleFooterUrl;
         }
     }
@@ -217,11 +235,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_CUSTOM:
                 return getPortalCustomBaseUrlForTheme(theme) + "/styles.css";
             default:
+                if (StringUtils.isNotBlank(theme)) {
+                    return getPortalCustomBaseUrlForTheme(theme) + "/styles.css";
+                }
                 return portalDefaultStyleCssUrl;
         }
     }
 
-    public static boolean getShowRightsHolder(String organizationService) {
+    public static boolean getShowRightsHolder(String organizationService, String theme) {
         switch (organizationService) {
             case SERVICE_CUSTOM:
             case SERVICE_AGRICULTURA:
@@ -231,7 +252,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
             case SERVICE_IQUA:
                 return true;
             default:
-                return false;
+                return StringUtils.isNotBlank(theme);
         }
     }
 
@@ -239,6 +260,33 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         final String organisation = theme.split("/")[0];
         final String service = theme.split("/")[1];
         return portalCustomStyleBaseUrl + "/../../" + organisation + "/portal/" + service;
+    }
+
+    public static String getThemeFromOrganisationService(String organizationService) {
+        String baseUrl = "";
+        switch (organizationService) {
+            case SERVICE_AGRICULTURA:
+                baseUrl = portalAgricultureStyleHeaderUrl;
+                break;
+            case SERVICE_MEDIOAMBIENTE:
+                baseUrl = portalEnvironmentStyleHeaderUrl;
+                break;
+            case SERVICE_TURISMO:
+                baseUrl = portalTourismStyleHeaderUrl;
+                break;
+            case SERVICE_FUNCION_PUBLICA:
+                baseUrl = portalPublicServiceStyleHeaderUrl;
+                break;
+            case SERVICE_IQUA:
+                baseUrl = portalCustomStyleBaseUrl + "/" + organizationService;
+                break;
+            default:
+                return null;
+        }
+
+        ArrayList<String> baseUrlPathList = new ArrayList<>(Arrays.asList(baseUrl.split("/")));
+        int portalIndex = baseUrlPathList.indexOf("portal");
+        return baseUrlPathList.get(portalIndex - 1) + "/" + baseUrlPathList.get(portalIndex + 1);
     }
 
     public static String getHelpUrl() {
