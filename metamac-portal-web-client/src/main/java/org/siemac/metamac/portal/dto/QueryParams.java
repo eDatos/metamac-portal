@@ -11,6 +11,8 @@ public class QueryParams {
 
     protected String multidatasetId;
 
+    protected String theme;
+
     public String getType() {
         return type;
     }
@@ -59,4 +61,11 @@ public class QueryParams {
         this.multidatasetId = multidatasetId;
     }
 
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 }

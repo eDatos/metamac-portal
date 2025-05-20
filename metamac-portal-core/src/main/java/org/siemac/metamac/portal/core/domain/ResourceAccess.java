@@ -497,29 +497,34 @@ public class ResourceAccess {
                 continue;
             }
 
-            int offset = 0;
+            Integer offset = null;
             String attributeId = attribute.getId();
             // unit multiplier and unit measure attributes wont appear here because they must appear elsewhere, in units
             if ((unitMeasure != null && unitMeasure.equals(attributeId)) || (unitMultiplier != null && unitMultiplier.equals(attributeId))) {
                 continue;
             }
+
+            boolean CELL_AT_HEADER = permutation.size() == 1;
+            boolean CELL_AT_BODY = permutation.size() > 1;
             // Observation level attributes (body cell)
-            if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
+            if (CELL_AT_BODY && AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
                 offset = calculateOffsetAtPermutation(permutation);
             } else if (AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel())) {
                 if (attribute.getDimensions() == null) {
                     continue;
                 }
-                boolean singleDimensionLevelAttributeForHeaderCellMatchHeaderCellDimension = permutation.size() == 1 && attribute.getDimensions().getDimensions().size() == 1
+                boolean singleDimensionLevelAttributeForHeaderCellMatchHeaderCellDimension = CELL_AT_HEADER && attribute.getDimensions().getDimensions().size() == 1
                         && permutation.get(attribute.getDimensions().getDimensions().get(0).getDimensionId()) != null;
-                boolean combinationDimensionLevelAttributeForBodyCell = permutation.size() > 1 && attribute.getDimensions().getDimensions().size() > 1;
+                boolean combinationDimensionLevelAttributeForBodyCell = CELL_AT_BODY && attribute.getDimensions().getDimensions().size() > 1;
                 if (!(singleDimensionLevelAttributeForHeaderCellMatchHeaderCellDimension || combinationDimensionLevelAttributeForBodyCell)) {
                     continue;
                 }
                 offset = calculateOffsetAtPermutation(permutation, multipliersByAttribute.get(attribute.getId()));
             }
+            if (offset != null) {
             String attributeValue = obtainAttributeValue(attributeId, offset);
             cellCommentDetails.addCommentLine(attributeValue);
+        }
         }
         return cellCommentDetails;
 

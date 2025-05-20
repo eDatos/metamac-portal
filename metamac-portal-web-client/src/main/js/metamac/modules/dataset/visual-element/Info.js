@@ -292,28 +292,38 @@
         },
         
         _parseRelatedResources: function(relatedResources) {
+            var self = this;
             return _.chain(relatedResources)
                 .uniq(function(resource) {
                     // This uniq is mainly for queries and collections, that don't keep visible versions to user
                     return resource.urn;
                 })
                 .map(function (resource) { 
-                    var type = resource.kind && resource.kind.split('#').length > 1 ? resource.kind.split('#')[1] : ''; 
+                    var type = resource.kind && resource.kind.split('#').length > 1 ? resource.kind.split('#')[1] : '';
                     return {
-                        href: resource.visualizerHtmlLink,
+                        href: type === "url" ? resource.visualizerHtmlLink : self._addThemeToUrl(resource.visualizerHtmlLink),
                         name: App.InternationalizationUtils.localizeLabel(resource.name),
                         type: type                            
-                    }                        
+                    };
                 })
                 .groupBy('type')
                 .map(function(group, type) {
                     return {
                         label: type ? I18n.t('entity.kind.types.' + type ) : '',
                         group: group,
-                    }
+                    };
                 })
                 .value();
         },
+
+        _addThemeToUrl: function(url) {
+            if (!App.config.theme) {
+                return url;
+            }
+            var urlWithTheme = new URL(url);
+            urlWithTheme.searchParams.append("theme", App.config.theme);
+            return urlWithTheme.href;
+        }
     });
 
 }());
