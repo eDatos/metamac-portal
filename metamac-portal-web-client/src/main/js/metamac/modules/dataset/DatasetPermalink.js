@@ -14,6 +14,7 @@
 
         buildPermalinkContent: function (filterDimensions, dynamicSelection, lastVersion) {
             var queryParams = JSON.parse(JSON.stringify(App.queryParams));
+            queryParams.theme = App.config.theme;
             queryParams.version = lastVersion ? "~latest" : filterDimensions.metadata.getVersion();
             return JSON.stringify({
                 queryParams: queryParams,
