@@ -80,9 +80,11 @@
         String permalinkId = request.getParameter("permalink");
         String sharedVisualizerUrl = request.getParameter("sharedVisualizerUrl");
 		String title = request.getParameter("title");
+        String theme = request.getParameter("theme");
+        request.setAttribute("theme", theme);
         if (permalinkId != null && !permalinkId.isEmpty()) {
             Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
-            response.sendRedirect(Helpers.buildUrl(permalink, sharedVisualizerUrl, locale, title));
+            response.sendRedirect(WebUtils.getPortalBaseUrl() + "/widget.html" + Helpers.buildUrlParams(permalink, sharedVisualizerUrl, locale, title));
         }
     %>
     <%
@@ -92,7 +94,7 @@
         if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
             internalPortal = false; // Widgets sólo externos
             Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
-            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale, title));
+            response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale, title, theme));
         }
     %>
     <script type="application/javascript" src="${analyticsUrl}" appId="statistical-visualizer-${installationType}-widget"></script>
@@ -146,6 +148,7 @@
         App.config["cellThreshold"] = ${cellThreshold};
 		App.config["unitMeasure"] = "${unitMeasure}";
 		App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
+        App.config["theme"] = "${theme}";
 
         App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
         App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";
