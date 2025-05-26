@@ -32,7 +32,7 @@
         retrievePermalink: function (permalinkId, callback) {
             var url = this.baseUrl() + "/" + permalinkId;
             $.getJSON(url).done(function (content) {
-                if(App.endpoints["external-users"] && App.endpoints["external-users-web"]) {
+                if(App.endpoints["external-users"] && App.endpoints["external-users-web"] && window.Edatos && Edatos.UserManagement) {
                     UserUtils.updateLastAccess(permalinkId);
                 }
                 callback(undefined, content);
