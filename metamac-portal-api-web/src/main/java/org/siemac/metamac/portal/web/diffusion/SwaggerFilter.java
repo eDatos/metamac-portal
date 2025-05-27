@@ -33,6 +33,7 @@ public class SwaggerFilter implements Filter {
         } else if (path.endsWith("swagger.jsp")) {
             Matcher matcher = swaggerVersionPattern.matcher(path);
             if (matcher.matches() && matcher.groupCount() >= 0) {
+                SwaggerUtils.setCurrentApi(matcher.group(2));
                 request.getRequestDispatcher("/docs/api" + matcher.group(1) + "swagger.jsp").forward(request, response);
             }
         } else {

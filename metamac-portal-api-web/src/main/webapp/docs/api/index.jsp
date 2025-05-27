@@ -9,10 +9,14 @@
 <%
     String internationalizationCookie = InternationalizationUtils.getInstance().getInternationalizationCookieId();
     String locale = InternationalizationUtils.getInstance().getCurrentLocale(request);
-    String appName = ResourceBundle.getBundle("i18n.permalinks.messages", LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("apps.api_catalog.name");
+    
+    String appNameExport =  ResourceBundle.getBundle("i18n.export.messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name");
+    String appNamePermalinks = ResourceBundle.getBundle("i18n.permalinks.messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name");
+    //String appName = ResourceBundle.getBundle("i18n.permalinks.messages", LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("apps.api_catalog.name");
     MessagesResourceBundle messagesResource = new MessagesResourceBundle(locale, "i18n.permalinks.messages");
     pageContext.setAttribute("msg", messagesResource);
     String appVersion = ResourceBundle.getBundle("application").getString("app.version");
+    String appName = "";
  %>
 <html>
 <head>
@@ -52,11 +56,16 @@
   
   <script type="text/javascript">
     $(function () {
+    	var currentApi = '';
+    	var appName = '';
+    	const EXPORT_API_NAME = "export";
+    	const PERMALINKS_API_NAME = "permalinks";
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
     	  var baseUrl = document.location.href;
+    	  getCurrentApi(baseUrl);
           //this removes the anchor at the end, if there is one
           baseUrl = baseUrl.substring(0, (baseUrl.indexOf("#") == -1) ? baseUrl.length : baseUrl.indexOf("#"));
           //this removes the query after the file name, if there is one
@@ -65,6 +74,21 @@
           baseUrl = baseUrl.substring(0, (baseUrl.lastIndexOf("/") == -1) ? baseUrl.length : baseUrl.lastIndexOf("/"));
 
           url = baseUrl + "/swagger.jsp";
+      }
+      
+      function getCurrentApi(url) {
+    	  var pattern = new RegExp(".*(/(" + EXPORT_API_NAME + "|" + PERMALINKS_API_NAME + ")/v\\d+\\.\\d+/)");
+    	  var match = url.match(pattern);
+    	  if (match) {
+    	      currentApi = match[2];
+    	      if (currentApi == EXPORT_API_NAME) {
+    	    	  console.log("entra1");
+    	    	  appName =  '<%=appNameExport%>';
+    	    	  console.log("entra1" + '<%=appNameExport%>');
+    	      } else if (currentApi == PERMALINKS_API_NAME) {
+    	    	  console.log("entra2");
+    	      }
+    	  }
       }
 
       // Pre load translate...
@@ -120,9 +144,11 @@
 	<c:set var="appStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleHeaderUrl()%>" />
 	<c:set var="appStyleFooterUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleFooterUrl()%>" />
 	
+	<c:set var="apiName" value='<%=org.siemac.metamac.portal.web.diffusion.SwaggerUtils.getCurrentApi() != null ? ResourceBundle.getBundle("i18n." +org.siemac.metamac.portal.web.diffusion.SwaggerUtils.getCurrentApi() + ".messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name") : ""%>' />
+	
 	<c:if test="${!empty appStyleHeaderUrl}">
 		<c:import charEncoding="UTF-8" url="${appStyleHeaderUrl}">
-			<c:param name="appName" value="<%= appName %>" />
+			<c:param name="appName" value="${not empty apiName ? apiName : appName}" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
     		<c:param name="appVersion" value="<%= appVersion %>" />
 		</c:import>
