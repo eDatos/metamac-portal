@@ -90,7 +90,7 @@ public class IndicatorsRestMapper {
     }
 
     private static DatasetMetadataBase indicatorInstanceMetadataToDatasetMetadata(IndicatorInstanceType indicatorInstance, org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation, IndicatorsSystemType indicatorSystem) {
-        return indicatorBaseMetadataToDatasetMetadata(null, indicatorInstance.getDimension(), indicatorInstance.getDecimalPlaces(), indicatorInstance.getTitle(), organisation, indicatorSystem, null);
+        return indicatorBaseMetadataToDatasetMetadata(null, indicatorInstance.getDimension(), indicatorInstance.getDecimalPlaces(), indicatorInstance.getTitle(), organisation, indicatorSystem, indicatorInstance.getAttribute());
     }
 
     private static DatasetMetadataBase indicatorMetadataToDatasetMetadata(IndicatorType indicator, org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Organisation organisation) {
