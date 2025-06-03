@@ -32,6 +32,7 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepr
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataInternationalAttribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
@@ -372,6 +373,11 @@ public class ResourceAccess {
                 for (DataAttribute dataAttribute : data.getAttributes().getAttributes()) {
                     if (dataAttribute.getId().equals(attribute.getId())) {
                         attributesValuesByAttributeId.put(attribute.getId(), dataToDataArray(dataAttribute.getValue()));
+                    }
+                }
+                for (DataInternationalAttribute dataAttribute : data.getAttributes().getInternationalAttributes()) {
+                    if (dataAttribute.getId().equals(attribute.getId())) {
+                        attributesValuesByAttributeId.put(attribute.getId(), dataToDataArray(dataAttribute.getValues(), this.getLang(), this.getLangDefault()));
                     }
                 }
             }
