@@ -159,9 +159,13 @@
             this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
             if (typeof Edatos !== 'undefined' && Edatos.captcha) {
                 var self = this;
-                Edatos.UserManagement.getAccount().catch(function () {
+                if (Edatos.UserManagement) {
+                    Edatos.UserManagement.getAccount().catch(function () {
+                        Edatos.captcha.showCaptcha(self._captchaOptions);
+                    });
+                } else {
                     Edatos.captcha.showCaptcha(self._captchaOptions);
-                });
+                }
             }
         },
 

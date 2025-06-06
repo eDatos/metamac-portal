@@ -189,18 +189,28 @@
 
             var self = this;
             _.each(selection, function (dimension, dimensionId) {
-                result.dimensions.dimension.push({
-                    dimensionId: dimensionId,
-                    labelVisualisationMode: dimension.visibleLabelType,
-                    position: dimension.position,
-                    dimensionValues: {
-                        dimensionValue: self.getSelectedDimensionCategoriesIds(dimension.categories)
-                    }
-                })
+                const selectedIds = self.getSelectedDimensionCategoriesIds(dimension.categories);
+                const totalCategories = dimension.categories.length;
+                const selectedCount = selectedIds.length;
+
+                // Only include if some (but not all) are selected
+                if (selectedCount > 0 && selectedCount < totalCategories) {
+                    result.dimensions.dimension.push({
+                        dimensionId: dimensionId,
+                        labelVisualisationMode: dimension.visibleLabelType,
+                        position: dimension.position,
+                        dimensionValues: {
+                            dimensionValue: selectedIds
+                        }
+                    });
+                }
             });
 
-            // Remember to propagate changes made here to org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection
-            return { datasetSelection: result };
+            if (result.dimensions.dimension.length === 0) {
+                return this.getEmptyDatasetSelection();
+            }
+
+            return {datasetSelection: result};
         },
 
         getSelectedDimensionCategoriesIds: function (categories) {
@@ -244,7 +254,7 @@
                     this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type, "chart");
                     break;
                 case "jsonstat":
-                    this.redirectToFile(this.urls[type], $currentTarget.hasClass('selection') ? { representation: this.jsonstatSelection } : null);
+                    this.redirectToFile(this.urls[type], $currentTarget.hasClass('selection') && this.jsonstatSelection != null ? { representation: this.jsonstatSelection } : null);
                     break;
             }
         },
@@ -401,6 +411,9 @@
         },
 
         _getSelection: function (datasetSelection) {
+            if (datasetSelection.datasetSelection === null) {
+                return null;
+            }
             const representations = [];
             for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
                 representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
