@@ -124,7 +124,8 @@
                         ];
                         return self.tooltipPosition;
                     }
-                }
+                },
+                color: Constants.charts.colors
             };
         },
 
