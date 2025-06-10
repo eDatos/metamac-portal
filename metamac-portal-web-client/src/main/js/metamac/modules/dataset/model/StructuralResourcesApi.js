@@ -13,7 +13,10 @@
                 return $.ajax({
                     url: url,
                     dataType: 'jsonp',
-                    jsonp: "_callback"
+                    jsonp: "_callback",
+                    headers: {
+                        "api-key": App.config["apiKey"]
+                    }
                 }).success(function (response) {
                     callback(null, response);
                 });
@@ -47,7 +50,10 @@
                 url: this.buildOrganisationUrl() + "?_type=json",
                 method: "GET",
                 dataType: 'jsonp',
-                jsonp: '_callback'
+                jsonp: '_callback',
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
             };
             $.ajax(requestParams).
                 done(function (response) {
@@ -80,7 +86,10 @@
                 url: this.metadata.metadata.relatedDsd.selfLink.href + "?_type=json",
                 method: "GET",
                 dataType: 'jsonp',
-                jsonp: '_callback'
+                jsonp: '_callback',
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
             };
 
             $.ajax(requestParams).
@@ -111,7 +120,10 @@
                     url: conceptItem.selfLink.href + "?_type=json",
                     method: "GET",
                     dataType: 'jsonp',
-                    jsonp: '_callback'
+                    jsonp: '_callback',
+                    headers: {
+                        "api-key": App.config["apiKey"]
+                    }
                 };
 
                 promises.push(
@@ -169,7 +181,10 @@
                 url: conceptSchemeUrl + "/concepts?_type=json&fields=+description,+annotations",
                 method: "GET",
                 dataType: 'jsonp',
-                jsonp: '_callback'
+                jsonp: '_callback',
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
             };
 
             $.ajax(requestParams)
