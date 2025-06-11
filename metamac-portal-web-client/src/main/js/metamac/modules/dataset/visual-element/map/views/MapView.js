@@ -144,7 +144,7 @@
 
             this._extendChartOptions({
                 visualMap: (this.mapType === 'mapbubble') ? undefined : {
-                    itemHeight: this.$chartContainer.width() * 0.65
+                    itemHeight: this.$chartContainer.width() * Constants.charts.visualMap.widthPercentage
                 },
                 series: this._createMapSeries(data)
             });
@@ -250,7 +250,7 @@
 
             this._extendChartOptions({
                 visualMap: (this.mapType === 'mapbubble') ? undefined : {
-                    itemHeight: this.$chartContainer.width() * 0.65
+                    itemHeight: this.$chartContainer.width() * Constants.charts.visualMap.widthPercentage
                 },
                 series: this._createMapSeries(data),
                 geo: {
@@ -434,7 +434,7 @@
             if (this.mapType === 'map') {
                 this._getChart().setOption({
                     visualMap: {
-                        itemHeight: this.$chartContainer.width() * 0.65
+                        itemHeight: this.$chartContainer.width() * Constants.charts.visualMap.widthPercentage
                     }
                 });
             }

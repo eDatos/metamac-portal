@@ -131,6 +131,9 @@
                 fontSize: 12,
                 maxWidth: 300,
                 borderWidth: 1
+            },
+            visualMap: {
+                widthPercentage: 0.65
             }
         }
     };
