@@ -143,6 +143,9 @@
             }
 
             this._extendChartOptions({
+                visualMap: (this.mapType === 'mapbubble') ? undefined : {
+                    itemHeight: this.$chartContainer.width() * 0.65
+                },
                 series: this._createMapSeries(data)
             });
             this._getChart().setOption({series: this._chartOptions.series});
