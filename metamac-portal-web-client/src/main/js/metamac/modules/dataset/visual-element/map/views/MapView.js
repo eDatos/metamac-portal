@@ -148,7 +148,12 @@
                 },
                 series: this._createMapSeries(data)
             });
-            this._getChart().setOption({series: this._chartOptions.series});
+            this._getChart().setOption({
+                series: this._chartOptions.series,
+                visualMap: {
+                    itemHeight: this._chartOptions.visualMap.itemHeight
+                }
+            });
         },
 
         render: function () {
@@ -432,9 +437,14 @@
         _onResize: function () {
             this._updateSize(this.$el, this.$title);
             if (this.mapType === 'map') {
-                this._getChart().setOption({
+                this._extendChartOptions({
                     visualMap: {
                         itemHeight: this.$chartContainer.width() * Constants.charts.visualMap.widthPercentage
+                    }
+                });
+                this._getChart().setOption({
+                    visualMap: {
+                        itemHeight: this._chartOptions.visualMap.itemHeight
                     }
                 });
             }
