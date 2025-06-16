@@ -70,7 +70,7 @@
 		    STATISTICAL_VISUALIZER_URL_BASE = configurationService.retrievePortalExternalUrlBase();
             INTERNATIONALIZATION_COOKIE_ID = configurationService.retrieveInternationalizationCookieId();
             DEFAULT_INTERNATIONALIZATION_LANGUAGE = configurationService.retrieveDefaultInternationalizationLanguage();
-            API_KEY = configurationService.retrievePortalApiKey();
+            API_KEY = internalPortal ? configurationService.retrievePortalInternalApiKey() : configurationService.retrievePortalApiKey();
             try {
                 // We group this try catch because all of them are served from external-users
                 EXTERNAL_USERS_API_URL_BASE = configurationService.retrieveExternalUsersExternalApiUrlBase();

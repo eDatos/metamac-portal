@@ -108,13 +108,20 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
         }
         return unitMeasureMultiplier;
     }
+
     @Override
     public String retrievePortalInternalApisPermalinksUrlBase() throws MetamacException {
         return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_PERMALINK);
     }
+
     @Override
     public String retrievePortalInternalApisExportUrlBase() throws MetamacException {
         return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_EXPORT);
+    }
+
+    @Override
+    public String retrievePortalInternalApiKey() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_REST_API_KEY);
     }
 
     @Override
