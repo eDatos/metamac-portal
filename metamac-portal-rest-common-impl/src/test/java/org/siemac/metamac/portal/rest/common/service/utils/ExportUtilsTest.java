@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Assert;
 import org.junit.Test;
 import org.siemac.metamac.rest.export.v1_0.domain.DatasetSelection;
+import org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension;
+import org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimensions;
+import org.siemac.metamac.rest.export.v1_0.domain.DimensionValues;
 import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
 
 public class ExportUtilsTest {
@@ -41,7 +44,16 @@ public class ExportUtilsTest {
 
     private Exportation mockExportation() {
         Exportation exportationBody = new Exportation();
-        exportationBody.setDatasetSelection(new DatasetSelection());
+        DatasetSelection datasetSelection = new DatasetSelection();
+        DatasetSelectionDimensions datasetSelectionDimensions = new DatasetSelectionDimensions();
+        DatasetSelectionDimension datasetSelectionDimension = new DatasetSelectionDimension();
+        DimensionValues dimensionValues = new DimensionValues();
+
+        dimensionValues.getDimensionValues().add("testDimensionValue");
+        datasetSelectionDimension.setDimensionValues(dimensionValues);
+        datasetSelectionDimensions.getDimensions().add(datasetSelectionDimension);
+        datasetSelection.setDimensions(datasetSelectionDimensions);
+        exportationBody.setDatasetSelection(datasetSelection);
         return exportationBody;
     }
 
