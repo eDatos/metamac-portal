@@ -37,7 +37,10 @@
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
 
+            var datasetAllSelected = this.getDatasetSelection(false);
             var datasetSelectionObject = this.getDatasetSelection();
+
+            this.datasetAllSelected = JSON.stringify(datasetAllSelected);
             this.datasetSelection = JSON.stringify(datasetSelectionObject);
             this.jsonstatSelection = this._getSelection(datasetSelectionObject);
 
@@ -179,7 +182,7 @@
             return params;
         },
 
-        getDatasetSelection: function () {
+        getDatasetSelection: function (includeSelectedCategories = true) {
             var result = {
                 dimensions: {
                     dimension: []
@@ -199,7 +202,7 @@
                 };
 
                 // Only include if some (but not all) are selected
-                if (selectedCount > 0 && selectedCount < totalCategories) {
+                if (includeSelectedCategories && selectedCount > 0 && selectedCount < totalCategories) {
                     selectedDimension.dimensionValues = {
                         dimensionValue: selectedIds
                     };
@@ -236,7 +239,7 @@
                 return;
             }
 
-            var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : JSON.stringify(this.getEmptyDatasetSelection());
+            var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : this.datasetAllSelected;
             var xlsxCsvAndTsvFilenameSuffix = $currentTarget.hasClass('selection') ? "-selection" : "";
             switch (type) {
                 case "tsv":
