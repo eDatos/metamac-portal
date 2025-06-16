@@ -138,7 +138,7 @@ public abstract class DataExportRestCommon {
 
             DatasetBase dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToExcel(ctx, dataset, datasetSelection, lang, filename);
@@ -159,7 +159,7 @@ public abstract class DataExportRestCommon {
             QueryBase query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
             DatasetBase relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(),
                     query.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportQueryToExcel(ctx, query, relatedDataset, datasetSelection, lang, filename);
@@ -182,7 +182,7 @@ public abstract class DataExportRestCommon {
 
             DatasetBase dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToExcel(ctx, dataset, datasetSelection, null, filename);
@@ -202,7 +202,7 @@ public abstract class DataExportRestCommon {
 
             DatasetBase dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToExcel(ctx, dataset, datasetSelection, null, filename);
@@ -290,7 +290,7 @@ public abstract class DataExportRestCommon {
 
             DatasetBase dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(ctx, dataset, datasetSelection, lang, filename);
@@ -311,7 +311,7 @@ public abstract class DataExportRestCommon {
 
             DatasetBase dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(ctx, dataset, datasetSelection, null, filename);
@@ -332,7 +332,7 @@ public abstract class DataExportRestCommon {
 
             DatasetBase dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportDatasetToPx(ctx, dataset, datasetSelection, null, filename);
@@ -370,7 +370,7 @@ public abstract class DataExportRestCommon {
             QueryBase query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
             DatasetBase relatedDataset = retrieveDataset(query.getMetadata().getRelatedDataset().getUrn(), lang, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(),
                     query.getMetadata().getRelatedDsd(), exportationBody);
 
             return exportQueryToPx(ctx, query, relatedDataset, datasetSelection, filename);
@@ -575,7 +575,7 @@ public abstract class DataExportRestCommon {
             // Retrieve dataset
             DatasetBase dataset = retrieveDataset(agencyID, resourceID, version, lang, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
@@ -596,7 +596,7 @@ public abstract class DataExportRestCommon {
             // Retrieve dataset
             QueryBase query = retrieveQuery(agencyID, resourceID, lang, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getData().getDimensions(), query.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(query.getMetadata().getDimensions(), query.getMetadata().getAttributes(),
                     query.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
@@ -618,7 +618,7 @@ public abstract class DataExportRestCommon {
             // Retrieve dataset
             DatasetBase dataset = retrieveDatasetFromIndicator(resourceID, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
@@ -636,7 +636,7 @@ public abstract class DataExportRestCommon {
             // Retrieve dataset
             DatasetBase dataset = retrieveDatasetFromIndicatorInstance(indicatorSystemCode, resourceID, dimensionSelection);
 
-            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getData().getDimensions(), dataset.getMetadata().getAttributes(),
+            DatasetSelection datasetSelection = DatasetSelectionMapper.datasetToDatasetSelection(dataset.getMetadata().getDimensions(), dataset.getMetadata().getAttributes(),
                     dataset.getMetadata().getRelatedDsd(), exportationBody);
 
             String langDefault = portalConfiguration.retrieveLanguageDefault();
