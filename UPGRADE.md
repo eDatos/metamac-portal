@@ -8,7 +8,7 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 9.13.0 a 9.13.1-SNAPSHOT
+## 9.13.1 a 9.13.2-SNAPSHOT
 Esta versión tiene como dependencia complementos-apps en su versión 8.12.2-SNAPSHOT
 
 ## 9.6.1 a 9.7.0
