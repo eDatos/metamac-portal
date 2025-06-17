@@ -37,7 +37,10 @@
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
 
+            var datasetAllSelected = this.getDatasetSelection(false);
             var datasetSelectionObject = this.getDatasetSelection();
+
+            this.datasetAllSelected = JSON.stringify(datasetAllSelected);
             this.datasetSelection = JSON.stringify(datasetSelectionObject);
             this.jsonstatSelection = this._getSelection(datasetSelectionObject);
 
@@ -179,7 +182,7 @@
             return params;
         },
 
-        getDatasetSelection: function () {
+        getDatasetSelection: function (includeSelectedCategories = true) {
             var result = {
                 dimensions: {
                     dimension: []
@@ -192,18 +195,19 @@
                 const selectedIds = self.getSelectedDimensionCategoriesIds(dimension.categories);
                 const totalCategories = dimension.categories.length;
                 const selectedCount = selectedIds.length;
+                const selectedDimension = {
+                    dimensionId: dimensionId,
+                    labelVisualisationMode: dimension.visibleLabelType,
+                    position: dimension.position
+                };
 
                 // Only include if some (but not all) are selected
-                if (selectedCount > 0 && selectedCount < totalCategories) {
-                    result.dimensions.dimension.push({
-                        dimensionId: dimensionId,
-                        labelVisualisationMode: dimension.visibleLabelType,
-                        position: dimension.position,
-                        dimensionValues: {
-                            dimensionValue: selectedIds
-                        }
-                    });
+                if (includeSelectedCategories && selectedCount > 0 && selectedCount < totalCategories) {
+                    selectedDimension.dimensionValues = {
+                        dimensionValue: selectedIds
+                    };
                 }
+                result.dimensions.dimension.push(selectedDimension);
             });
 
             if (result.dimensions.dimension.length === 0) {
@@ -235,7 +239,7 @@
                 return;
             }
 
-            var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : JSON.stringify(this.getEmptyDatasetSelection());
+            var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : this.datasetAllSelected;
             var xlsxCsvAndTsvFilenameSuffix = $currentTarget.hasClass('selection') ? "-selection" : "";
             switch (type) {
                 case "tsv":
@@ -302,7 +306,7 @@
                         sb += `~range=${dimensionFilters.range.start};${dimensionFilters.range.end}|`;
                     }
                 }
-                if (dimension.dimensionValues.dimensionValue && dimension.dimensionValues.dimensionValue.length > 0) {
+                if (dimension.dimensionValues && dimension.dimensionValues.dimensionValue && dimension.dimensionValues.dimensionValue.length > 0) {
                     sb += dimension.dimensionValues.dimensionValue.join('|');
                 }
                 if (sb.charAt(sb.length - 1) === '|') {
@@ -416,7 +420,9 @@
             }
             const representations = [];
             for (const dimension of datasetSelection.datasetSelection.dimensions.dimension) {
-                representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
+                if (dimension.dimensionValues) {
+                    representations.push(dimension.dimensionId + "[" + dimension.dimensionValues.dimensionValue.join("|") + "]")
+                }
             }
             return representations.join(":");
         },

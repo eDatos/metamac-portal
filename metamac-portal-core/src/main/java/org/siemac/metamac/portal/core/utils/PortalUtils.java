@@ -295,6 +295,15 @@ public class PortalUtils {
         return StringUtils.splitByWholeSeparatorPreserveAllTokens(data, StatisticalResourcesRestConstants.DATA_SEPARATOR);
     }
 
+    public static String[] dataToDataArray(List<InternationalString> data, String lang, String langDefault) {
+        List<String> list = new ArrayList<>();
+        for (InternationalString internationalString : data) {
+            String label = getLabel(internationalString, lang, langDefault);
+            list.add(label);
+        }
+        return list.toArray(new String[0]);
+    }
+
     public static boolean isDimensionWithEnumeratedRepresentation(Dimension dimension) {
         return (dimension.getDimensionValues() instanceof EnumeratedDimensionValues);
     }
