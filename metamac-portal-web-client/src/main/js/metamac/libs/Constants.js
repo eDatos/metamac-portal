@@ -132,6 +132,9 @@
                 maxWidth: 300,
                 borderWidth: 1
             },
+            visualMap: {
+                widthPercentage: 0.65
+            },
             colors: [
                 "#5470c6",
                 "#91cc75",

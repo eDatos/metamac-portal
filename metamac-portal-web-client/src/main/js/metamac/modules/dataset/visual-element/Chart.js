@@ -296,7 +296,7 @@
                 height: this._getExportChartHeight()
             });
 
-            return this.$exportChartContainer[0].querySelector("svg").outerHTML;
+            return this.exportChart.renderToSVGString();
         },
 
         _getExportChartHeight: function () {
