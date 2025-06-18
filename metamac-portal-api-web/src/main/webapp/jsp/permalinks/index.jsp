@@ -23,13 +23,13 @@
 
 </head>
 <body>
-    <c:set var="apiStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleHeaderUrl()%>" />
-    <c:set var="apiStyleFooterUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleFooterUrl()%>" />
+    <c:set var="appStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleHeaderUrl()%>" />
+    <c:set var="appStyleFooterUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleFooterUrl()%>" />
     
     <c:set var="permalinksApiBaseURL" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getPermalinksApiBaseURL()%>" />
     
-    <c:if test="${!empty apiStyleHeaderUrl}">
-    	<c:import charEncoding="UTF-8" url="${apiStyleHeaderUrl}">
+    <c:if test="${!empty appStyleHeaderUrl}">
+    	<c:import charEncoding="UTF-8" url="${appStyleHeaderUrl}">
     		<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
     		<c:param name="appId" value="permalinks"/>
@@ -37,28 +37,30 @@
     	</c:import>
     </c:if>
     
-    <div class="version-list">
-       <h1>${msg['api.doc.title']}</h1>
-       <h2>${msg['api.doc.versions']}</h2>
-       <ul>
-           <li>
-               <h3 class="version-title"><a href="${permalinksApiBaseURL}/latest">/latest</a></h3>
-               <div class="version-description">
-                   <p><strong>latest</strong> ${msg['api.doc.latest']}</p>
-               </div>
-           </li>
-           
-           <li>
-               <h3 class="version-title"><a href="${permalinksApiBaseURL}/v1.0">/v1.0</a></h3>
-               <div class="version-description">
-                    <p>${msg['api.doc.version.1_0']}</p>
-               </div>
-           </li>
-       </ul>
+    <div class="content-wrapper edatos-wrapper edatos-swagger">
+	    <div class="version-list">
+	       <h1>${msg['api.doc.title']}</h1>
+	       <h2>${msg['api.doc.versions']}</h2>
+	       <ul>
+	           <li>
+	               <h3 class="version-title"><a href="${permalinksApiBaseURL}/latest">/latest</a></h3>
+	               <div class="version-description">
+	                   <p><strong>latest</strong> ${msg['api.doc.latest']}</p>
+	               </div>
+	           </li>
+	           
+	           <li>
+	               <h3 class="version-title"><a href="${permalinksApiBaseURL}/v1.0">/v1.0</a></h3>
+	               <div class="version-description">
+	                    <p>${msg['api.doc.version.1_0']}</p>
+	               </div>
+	           </li>
+	       </ul>
+	   </div>
    </div>
 
-    <c:if test="${!empty apiStyleFooterUrl}">
-    	<c:import charEncoding="UTF-8" url="${apiStyleFooterUrl}">
+    <c:if test="${!empty appStyleFooterUrl}">
+    	<c:import charEncoding="UTF-8" url="${appStyleFooterUrl}">
     		<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
     	</c:import>
