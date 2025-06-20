@@ -139,7 +139,7 @@
                         png: disableAnyFormat,
                         pdf: disableAnyFormat,
                         svg: disableAnyFormat,
-                        infoMessage: messageExcelDisabled ? messageExcelDisabled.concat('<br>' + messageSelectionDisabled) : messageSelectionDisabled
+                        infoMessage: _.compact([messageExcelDisabled, messageSelectionDisabled]).join('<br>')
                     }
                 },
             };
