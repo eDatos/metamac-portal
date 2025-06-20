@@ -5,14 +5,34 @@
 <%@ page import="org.apache.commons.lang.LocaleUtils" %>
 <%@ page import="static java.util.ResourceBundle.Control.getNoFallbackControl" %>
 <%@ page import="org.siemac.metamac.core.common.util.MessagesResourceBundle"%>
+<%@page import="java.util.regex.Matcher" %>
+<%@page import="java.util.regex.Pattern"%>
+
 <!DOCTYPE html>
 <%
+	String EXPORT_API_NAME       = "export";
+	String PERMALINKS_API_NAME   = "permalinks";
+
     String internationalizationCookie = InternationalizationUtils.getInstance().getInternationalizationCookieId();
     String locale = InternationalizationUtils.getInstance().getCurrentLocale(request);
-    String appName = ResourceBundle.getBundle("i18n.permalinks.messages", LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("apps.api_catalog.name");
+    String appName = "";
+    String appNameExport =  ResourceBundle.getBundle("i18n.export.messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name");
+    String appNamePermalinks = ResourceBundle.getBundle("i18n.permalinks.messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name");
     MessagesResourceBundle messagesResource = new MessagesResourceBundle(locale, "i18n.permalinks.messages");
     pageContext.setAttribute("msg", messagesResource);
     String appVersion = ResourceBundle.getBundle("application").getString("app.version");
+    
+    Pattern pattern = Pattern.compile(".*/(?:(" + EXPORT_API_NAME + "|" + PERMALINKS_API_NAME + "))(?:/.*)?", Pattern.CASE_INSENSITIVE);
+    String requestHeaderUrl = request.getHeader("referer");
+    Matcher matcher = pattern.matcher(requestHeaderUrl);
+    if (matcher.matches() && matcher.groupCount() >= 0) {
+    	String currentApi = matcher.group(1);
+    	if (currentApi.equals(EXPORT_API_NAME)) {
+  	  		appName =  appNameExport;
+	    } else if ((currentApi.equals(PERMALINKS_API_NAME))) {
+	        appName =  appNamePermalinks;
+	    }
+    }
  %>
 <html>
 <head>
@@ -117,24 +137,26 @@
   </script>
 </head>
 <body>
-	<c:set var="apiStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleHeaderUrl()%>" />
-	<c:set var="apiStyleFooterUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getApiStyleFooterUrl()%>" />
+	<c:set var="appStyleHeaderUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleHeaderUrl()%>" />
+	<c:set var="appStyleFooterUrl" value="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getAppStyleFooterUrl()%>" />
 	
-	<c:if test="${!empty apiStyleHeaderUrl}">
-		<c:import charEncoding="UTF-8" url="${apiStyleHeaderUrl}">
+	<c:if test="${!empty appStyleHeaderUrl}">
+		<c:import charEncoding="UTF-8" url="${appStyleHeaderUrl}">
 			<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
     		<c:param name="appVersion" value="<%= appVersion %>" />
 		</c:import>
 	</c:if>
 	
-	<div class="swagger-section">
-		<div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
-		<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+	<div class="content-wrapper edatos-wrapper edatos-swagger">
+		<div class="swagger-section">
+			<div id="message-bar" class="swagger-ui-wrap" data-sw-translate>&nbsp;</div>
+			<div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+		</div>
 	</div>
 	
-	<c:if test="${!empty apiStyleFooterUrl}">
-		<c:import charEncoding="UTF-8" url="${apiStyleFooterUrl}">
+	<c:if test="${!empty appStyleFooterUrl}">
+		<c:import charEncoding="UTF-8" url="${appStyleFooterUrl}">
 			<c:param name="appName" value="<%= appName %>" />
     		<c:param name="<%= internationalizationCookie %>" value="<%= locale %>" />
 		</c:import>

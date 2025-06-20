@@ -143,9 +143,17 @@
             }
 
             this._extendChartOptions({
+                visualMap: (this.mapType === 'mapbubble') ? undefined : {
+                    itemHeight: this.$chartContainer.width() * Constants.charts.visualMap.widthPercentage
+                },
                 series: this._createMapSeries(data)
             });
-            this._getChart().setOption({series: this._chartOptions.series});
+            this._getChart().setOption({
+                series: this._chartOptions.series,
+                visualMap: {
+                    itemHeight: this._chartOptions.visualMap.itemHeight
+                }
+            });
         },
 
         render: function () {
@@ -246,6 +254,9 @@
             });
 
             this._extendChartOptions({
+                visualMap: (this.mapType === 'mapbubble') ? undefined : {
+                    itemHeight: this.$chartContainer.width() * Constants.charts.visualMap.widthPercentage
+                },
                 series: this._createMapSeries(data),
                 geo: {
                     boundingCoords: this._getCenteredAndZoomedCoords(),
@@ -425,6 +436,18 @@
 
         _onResize: function () {
             this._updateSize(this.$el, this.$title);
+            if (this.mapType === 'map') {
+                this._extendChartOptions({
+                    visualMap: {
+                        itemHeight: this.$chartContainer.width() * Constants.charts.visualMap.widthPercentage
+                    }
+                });
+                this._getChart().setOption({
+                    visualMap: {
+                        itemHeight: this._chartOptions.visualMap.itemHeight
+                    }
+                });
+            }
         },
 
         _filterShapesWithoutData: function (mapData, data) {
