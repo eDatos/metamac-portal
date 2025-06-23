@@ -1,6 +1,7 @@
 package org.siemac.metamac.portal.core.exporters;
 
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.exception.MetamacException;
@@ -31,7 +32,7 @@ public class ImageExporter {
             if (!SvgExportSupportedMimeType.SVG.equals(mimeType)) {
                 SVGRasterizer.getInstance().transcode(os, svg, mimeType, width);
             } else {
-                os.write(svg.getBytes());
+                os.write(svg.getBytes(StandardCharsets.UTF_8));
             }
         } catch (Exception e) {
             log.error("Error while transcoding svg file to an image", e);

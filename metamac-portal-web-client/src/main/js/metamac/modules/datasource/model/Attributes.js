@@ -14,8 +14,8 @@
         initialize: function (options) {
             this.response = options.response;
             this.metadata = options.metadata;
-            
-            this.attributesValues = !_.isUndefined(this.response.data.attributes) ? this.response.data.attributes.attribute : {};
+
+            this.attributesValues = !_.isUndefined(this.response.data.attributes) ? this.parseAttributeValues(this.response.data.attributes) : {};
             this.attributesMetadata = !_.isUndefined(this.metadata) ? this.metadata.getAttributes() : {};
             
             var attributesMetadataIndexed = _(this.attributesMetadata).indexBy("id");
@@ -27,6 +27,21 @@
             this.combinatedDimensionsAttributes = this.getCombinatedDimensionsAttributes();
             this.dimensionsAttributes = this.getDimensionsAttributes();
             this.datasetAttributes = this.getDatasetAttributes();
+        },
+
+
+        parseAttributeValues: function (attributes) {
+            if (!attributes.internationalAttribute) {
+                return attributes.attribute;
+            }
+            const i18nAttributes = attributes.internationalAttribute.map(attribute => {
+                const values = attribute.values.map(internationalString => App.InternationalizationUtils.localizeLabel(internationalString));
+                return {
+                    id: attribute.id,
+                    value: values.join(" | "),
+                };
+            });
+            return [...attributes.attribute, ...i18nAttributes];
         },
 
         // Example with attributes http://estadisticas.arte-consultores.com/statistical-resources-internal/apis/statistical-resources-internal/v1.0/datasets/ISTAC/C00031A_000002/001.006.json

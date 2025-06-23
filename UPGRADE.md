@@ -8,6 +8,9 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
+## 9.13.1 a 9.13.2-SNAPSHOT
+Esta versión tiene como dependencia complementos-apps en su versión 8.12.2-SNAPSHOT
+
 ## 9.13.0 a 9.13.1-SNAPSHOT
 - Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión.
   Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/9.13.0/db/common-metadata/postgresql/](etc/changes-from-release/9.13.0/db/common-metadata/postgresql)

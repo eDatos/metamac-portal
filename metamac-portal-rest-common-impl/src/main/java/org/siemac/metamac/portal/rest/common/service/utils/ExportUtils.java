@@ -3,6 +3,7 @@ package org.siemac.metamac.portal.rest.common.service.utils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.core.common.util.shared.ArrayUtils;
+import org.siemac.metamac.rest.export.v1_0.domain.DatasetSelectionDimension;
 import org.siemac.metamac.rest.export.v1_0.domain.Exportation;
 
 public class ExportUtils {
@@ -20,11 +21,24 @@ public class ExportUtils {
     }
 
     public static String buildExportFilename(String extension, Exportation exportationBody, String... parts) {
-        if (exportationBody != null && exportationBody.getDatasetSelection() != null) {
+        if (isSelectionDownload(exportationBody)) {
             return buildFilename(extension, ArrayUtils.addStringElementsToStringArray(parts, POSTFIX_SELECTION));
         } else {
             return buildFilename(extension, parts);
         }
+    }
+
+    private static boolean isSelectionDownload(Exportation exportationBody) {
+        // check exportationBody to see if there is some dimension values selected
+        if (exportationBody == null || exportationBody.getDatasetSelection() == null || exportationBody.getDatasetSelection().getDimensions() == null) {
+            return false;
+        }
+
+        boolean acc = false;
+        for (DatasetSelectionDimension datasetSelectionDimension : exportationBody.getDatasetSelection().getDimensions().getDimensions()) {
+            acc = acc || (datasetSelectionDimension.getDimensionValues() != null && !datasetSelectionDimension.getDimensionValues().getDimensionValues().isEmpty());
+        }
+        return acc;
     }
 
     private static String buildFilename(String extension, String... parts) {
@@ -32,7 +46,7 @@ public class ExportUtils {
     }
 
     public static String buildExportFilenameWithoutExtension(Exportation exportationBody, String... parts) {
-        if (exportationBody != null && exportationBody.getDatasetSelection() != null) {
+        if (isSelectionDownload(exportationBody)) {
             return buildFilenameWithoutExtension(ArrayUtils.addStringElementsToStringArray(parts, POSTFIX_SELECTION));
         } else {
             return buildFilenameWithoutExtension(parts);
