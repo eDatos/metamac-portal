@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.siemac.metamac.metamac-portal</groupId>
 		<artifactId>metamac-portal-parent</artifactId>
-		<version>9.13.2-SNAPSHOT</version>
+		<version>9.14.0</version>
 		<relativePath>../metamac-portal-parent/pom.xml</relativePath>
 	</parent>
 
@@ -14,7 +14,7 @@
 	<artifactId>metamac-portal-rest-internal-api</artifactId>
 	<packaging>jar</packaging>
 	<name>METAMAC :: PORTAL :: REST :: INTERNAL API</name>
-    <version>9.13.2-SNAPSHOT</version>
+    <version>9.14.0</version>
     
     <dependencies>
         <dependency>
