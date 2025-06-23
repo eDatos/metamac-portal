@@ -5,6 +5,7 @@ import static org.siemac.metamac.portal.rest.external.RestExternalConstantsPriva
 import java.net.URI;
 import java.util.Collections;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -19,6 +20,7 @@ import org.siemac.edatos.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,16 +32,17 @@ public class CaptchaFilter implements RequestHandler {
     @Context
     private HttpServletRequest  request;
 
-    private PortalConfiguration portalConfiguration;
+    @Autowired
+    private PortalConfiguration configurationService;
 
     private String apiKey;
 
-    public CaptchaFilter(PortalConfiguration portalConfiguration) {
-        this.portalConfiguration = portalConfiguration;
+    @PostConstruct
+    public void init() {
         try {
-            this.apiKey = "INTERNAL".equals(portalConfiguration.retrieveInstallationType())
-                    ? portalConfiguration.retrievePortalInternalApiKey()
-                    : portalConfiguration.retrievePortalApiKey();
+            this.apiKey = "INTERNAL".equals(configurationService.retrieveInstallationType())
+                    ? configurationService.retrievePortalInternalApiKey()
+                    : configurationService.retrievePortalApiKey();
         } catch (MetamacException e) {
             this.apiKey = "";
         }
@@ -55,7 +58,7 @@ public class CaptchaFilter implements RequestHandler {
 
             UriBuilder urlBuilder;
             try {
-                urlBuilder = UriBuilder.fromUri(portalConfiguration.retrieveCaptchaExternalApiUrlBase());
+                urlBuilder = UriBuilder.fromUri(configurationService.retrieveCaptchaExternalApiUrlBase());
             } catch (MetamacException e) {
                 // If the captchaExternalApiUrlBase is not available (for example, if external-users is not installed) we don´t check for captchas
                 return null;

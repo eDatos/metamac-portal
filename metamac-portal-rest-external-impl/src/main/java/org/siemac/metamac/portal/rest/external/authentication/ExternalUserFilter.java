@@ -10,6 +10,7 @@ import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -34,12 +36,13 @@ public class ExternalUserFilter implements RequestHandler {
     @Context
     private HttpServletRequest  request;
 
+    @Autowired
     private PortalConfiguration configurationService;
 
     private String apiKey;
 
-    public ExternalUserFilter(PortalConfiguration configurationService) {
-        this.configurationService = configurationService;
+    @PostConstruct
+    public void init() {
         try {
             this.apiKey = "INTERNAL".equals(configurationService.retrieveInstallationType())
                     ? configurationService.retrievePortalInternalApiKey()
