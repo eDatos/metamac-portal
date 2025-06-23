@@ -71,6 +71,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static Integer      cellThreshold                     = null;
     protected static String     unitMeasure                       = null;
     protected static String     unitMeasureMultiplier             = null;
+    protected static String     apiKey                            = null;
 
     public static String getInstallationType() {
         return installationType;
@@ -399,6 +400,14 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static void setUnitMeasureMultiplier(String unitMeasureMultiplier) {
         WebUtils.unitMeasureMultiplier = unitMeasureMultiplier;
+    }
+
+    public static String getApiKey() {
+        return apiKey;
+    }
+
+    public static void setApiKey(String apiKey) {
+        WebUtils.apiKey = apiKey;
     }
 
     public static String buildPageTitle(String organisation, String resourceName, String lang) {

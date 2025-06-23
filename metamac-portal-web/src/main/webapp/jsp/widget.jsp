@@ -75,6 +75,7 @@
         request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
         request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
         request.setAttribute("analyticsUrl", analyticsUrl);
+        request.setAttribute("apiKey", WebUtils.getApiKey());
     %>
     <%
         String permalinkId = request.getParameter("permalink");
@@ -149,6 +150,7 @@
 		App.config["unitMeasure"] = "${unitMeasure}";
 		App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
         App.config["theme"] = "${theme}";
+        App.config["apiKey"] = "${apiKey}";
 
         App.endpoints["statistical-resources"] = "${ApiUrlStatisticalResources}/v1.0";
         App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";
