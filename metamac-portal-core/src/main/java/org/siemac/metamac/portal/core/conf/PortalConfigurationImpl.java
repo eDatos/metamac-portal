@@ -125,6 +125,11 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
     }
 
     @Override
+    public String retrievePortalWidgetApiKey() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_CAPTCHA_API_KEY);
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
 

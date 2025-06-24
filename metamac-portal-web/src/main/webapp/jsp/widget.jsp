@@ -53,6 +53,7 @@
         String analyticsUrl = (internalPortal ? configurationService.retrieveAppsInternalWebApplicationUrlBase() :
                                                 configurationService.retrieveAppsExternalWebApplicationUrlBase()) +
                                                 "/includes/analytics.js";
+        String widgetApiKey = configurationService.retrievePortalWidgetApiKey();
     %>
     <%
         String STATISTICAL_RESOURCES_API_URL_BASE = WebUtils.getStatisticalResourcesApiBaseUrl();
@@ -75,7 +76,7 @@
         request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
         request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
         request.setAttribute("analyticsUrl", analyticsUrl);
-        request.setAttribute("apiKey", WebUtils.getApiKey());
+        request.setAttribute("apiKey", widgetApiKey);
     %>
     <%
         String permalinkId = request.getParameter("permalink");
