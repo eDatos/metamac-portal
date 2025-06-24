@@ -20,6 +20,8 @@ import org.siemac.edatos.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +30,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class CaptchaFilter implements RequestHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CaptchaFilter.class);
 
     @Context
     private HttpServletRequest  request;
@@ -42,7 +46,7 @@ public class CaptchaFilter implements RequestHandler {
         try {
             this.apiKey = configurationService.retrievePortalApiKeyByInstallationType();
         } catch (MetamacException e) {
-            this.apiKey = "";
+            LOG.warn("No se ha encontrado la propiedad api key de portal para la instalación actual (\"metamac.portal.rest.api_key\" o \"metamac.portal.rest.internal.api_key\").");
         }
     }
 

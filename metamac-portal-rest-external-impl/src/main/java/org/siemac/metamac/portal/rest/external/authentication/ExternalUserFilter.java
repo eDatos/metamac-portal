@@ -46,7 +46,7 @@ public class ExternalUserFilter implements RequestHandler {
         try {
             this.apiKey = configurationService.retrievePortalApiKeyByInstallationType();
         } catch (MetamacException e) {
-            this.apiKey = "";
+            LOG.warn("No se ha encontrado la propiedad api key de portal para la instalación actual (\"metamac.portal.rest.api_key\" o \"metamac.portal.rest.internal.api_key\").");
         }
     }
 
