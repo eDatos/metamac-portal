@@ -45,12 +45,7 @@ public abstract class AbstractIndicatorsRestFacade {
 
     public IndicatorType retrieveIndicator(String indicatorCode) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            if (StringUtils.isNotBlank(apiKey)) {
-                headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
-            }
-
-            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            HttpEntity<Void> requestEntity = new HttpEntity<>(buildHeaders());
             ResponseEntity<IndicatorType> response = restTemplate.exchange(
                     getIndicatorRequest(indicatorCode).toString(),
                     HttpMethod.GET,
@@ -72,12 +67,7 @@ public abstract class AbstractIndicatorsRestFacade {
                 indicatorDataRequest.append("?").append("representation=").append(selectedRepresentations);
             }
 
-            HttpHeaders headers = new HttpHeaders();
-            if (StringUtils.isNotBlank(apiKey)) {
-                headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
-            }
-
-            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            HttpEntity<Void> requestEntity = new HttpEntity<>(buildHeaders());
             ResponseEntity<DataType> response = restTemplate.exchange(
                     indicatorDataRequest.toString(),
                     HttpMethod.GET,
@@ -100,4 +90,12 @@ public abstract class AbstractIndicatorsRestFacade {
         return indicatorBaseRequest.append(getRestApiLocatorEndpoint()).append("/v1.0").append("/indicators");
     }
 
+    private HttpHeaders buildHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        if (StringUtils.isNotBlank(apiKey)) {
+            headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
+        }
+
+        return headers;
+    }
 }

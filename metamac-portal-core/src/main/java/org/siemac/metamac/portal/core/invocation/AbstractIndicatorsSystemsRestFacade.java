@@ -45,12 +45,7 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
     protected abstract String getRestApiLocatorEndpoint();
     public IndicatorInstanceType retrieveIndicatorInstanceByCode(String idIndicatorSystem, String idIndicatorInstance) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            if (StringUtils.isNotBlank(apiKey)) {
-                headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
-            }
-
-            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            HttpEntity<Void> requestEntity = new HttpEntity<>(buildHeaders());
             ResponseEntity<IndicatorInstanceType> response = restTemplate.exchange(
                     getIndicatorInstanceRequest(idIndicatorSystem, idIndicatorInstance).toString(),
                     HttpMethod.GET,
@@ -72,12 +67,7 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
                 indicatorDataRequest.append("?").append("representation=").append(selectedRepresentations);
             }
 
-            HttpHeaders headers = new HttpHeaders();
-            if (StringUtils.isNotBlank(apiKey)) {
-                headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
-            }
-
-            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            HttpEntity<Void> requestEntity = new HttpEntity<>(buildHeaders());
             ResponseEntity<DataType> response = restTemplate.exchange(
                     indicatorDataRequest.toString(),
                     HttpMethod.GET,
@@ -93,12 +83,7 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
 
     public IndicatorsSystemType retrieveIndicatorsSystem(String idIndicatorSystem) {
         try {
-            HttpHeaders headers = new HttpHeaders();
-            if (StringUtils.isNotBlank(apiKey)) {
-                headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
-            }
-
-            HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+            HttpEntity<Void> requestEntity = new HttpEntity<>(buildHeaders());
             ResponseEntity<IndicatorsSystemType> response = restTemplate.exchange(
                     getIndicatorSystemRequest(idIndicatorSystem).toString(),
                     HttpMethod.GET,
@@ -125,5 +110,12 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
         return indicatorInstanceBaseRequest.append(getRestApiLocatorEndpoint()).append("/v1.0").append("/indicatorsSystems");
     }
 
+    private HttpHeaders buildHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        if (StringUtils.isNotBlank(apiKey)) {
+            headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
+        }
 
+        return headers;
+    }
 }
