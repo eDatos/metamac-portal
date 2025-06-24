@@ -130,6 +130,11 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
     }
 
     @Override
+    public String retrievePortalApiKeyByInstallationType() throws MetamacException {
+        return "INTERNAL".equals(retrieveInstallationType()) ? retrievePortalInternalApiKey() : retrievePortalApiKey();
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
 

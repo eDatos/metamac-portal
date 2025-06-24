@@ -40,9 +40,7 @@ public class CaptchaFilter implements RequestHandler {
     @PostConstruct
     public void init() {
         try {
-            this.apiKey = "INTERNAL".equals(configurationService.retrieveInstallationType())
-                    ? configurationService.retrievePortalInternalApiKey()
-                    : configurationService.retrievePortalApiKey();
+            this.apiKey = configurationService.retrievePortalApiKeyByInstallationType();
         } catch (MetamacException e) {
             this.apiKey = "";
         }
