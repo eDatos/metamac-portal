@@ -42,7 +42,7 @@ I18n.translations.es = {
             all: "Descargar todo",
             selectionDisabled: "La descarga de la selección se ha deshabilitado porque hay demasiados elementos seleccionados en las dimensiones. Para volver a habilitarla, deseleccione algunos elementos.",
             excel: {
-                disabled: "Este recurso no se puede descargar como XLSX porque excede el número de observaciones para este formato. Por favor, elija otra opción."
+                disabled: "Este recurso no se puede descargar como XLSX porque excede el número de observaciones para este formato."
             },
             modal: {
                 title: "Información de descarga"

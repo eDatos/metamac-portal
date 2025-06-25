@@ -139,7 +139,7 @@
                         png: disableAnyFormat,
                         pdf: disableAnyFormat,
                         svg: disableAnyFormat,
-                        infoMessage: _.compact([messageExcelDisabled, messageSelectionDisabled]).join('<br>')
+                        infoMessage: _.compact([messageSelectionDisabled, messageExcelDisabled]).join('<br>')
                     }
                 },
             };
