@@ -143,8 +143,9 @@
         },
 
         _calculateAndSetRanges: function () {
-            var values = _.map(this._dataJson, function (value) {
-                return value.value;
+            var self = this;
+            var values = this._geoJson.map(function(geoJsonItem) {
+                return self._dataJson[geoJsonItem.normCode].value;
             });
             this._mapModel.set("values", values);
             this._mapModel.set("minValue", values.length > 0 ? _.min(values): 0);
