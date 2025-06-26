@@ -45,14 +45,7 @@ public abstract class AbstractIndicatorsRestFacade {
 
     public IndicatorType retrieveIndicator(String indicatorCode) {
         try {
-            HttpEntity<Void> requestEntity = new HttpEntity<>(buildHeaders());
-            ResponseEntity<IndicatorType> response = restTemplate.exchange(
-                    getIndicatorRequest(indicatorCode).toString(),
-                    HttpMethod.GET,
-                    requestEntity,
-                    IndicatorType.class
-            );
-            return response.getBody();
+            return buildGetRequest(apiKey, getIndicatorRequest(indicatorCode).toString(), IndicatorType.class);
         } catch (Exception e) {
             logger.error("Error obteniendo el Indicador", e);
         }
@@ -67,14 +60,7 @@ public abstract class AbstractIndicatorsRestFacade {
                 indicatorDataRequest.append("?").append("representation=").append(selectedRepresentations);
             }
 
-            HttpEntity<Void> requestEntity = new HttpEntity<>(buildHeaders());
-            ResponseEntity<DataType> response = restTemplate.exchange(
-                    indicatorDataRequest.toString(),
-                    HttpMethod.GET,
-                    requestEntity,
-                    DataType.class
-            );
-            return response.getBody();
+            return buildGetRequest(apiKey, indicatorDataRequest.toString(), DataType.class);
         } catch (Exception e) {
             logger.error("Error obteniendo el Indicador", e);
         }
@@ -90,12 +76,14 @@ public abstract class AbstractIndicatorsRestFacade {
         return indicatorBaseRequest.append(getRestApiLocatorEndpoint()).append("/v1.0").append("/indicators");
     }
 
-    private HttpHeaders buildHeaders() {
+    private <T> T buildGetRequest(String apiKey, String url, Class<T> type) {
         HttpHeaders headers = new HttpHeaders();
         if (StringUtils.isNotBlank(apiKey)) {
             headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
         }
 
-        return headers;
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, type);
+        return response.getBody();
     }
 }
