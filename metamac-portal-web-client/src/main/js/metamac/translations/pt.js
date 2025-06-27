@@ -44,7 +44,7 @@ I18n.translations.pt = {
                 title: "Baixar informações"
             },
             excel: {
-                disabled: "Este recurso não pode ser baixado como XLSX porque excede o número de observações para este formato. Escolha outra opção."
+                disabled: "Este recurso não pode ser baixado como XLSX porque excede o número de observações para este formato."
             },
             attributes: {
                 modal: {

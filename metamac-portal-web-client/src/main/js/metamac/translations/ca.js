@@ -45,7 +45,7 @@ I18n.translations.ca = {
                 title: "Informació de descàrrega"
             },
             excel: {
-                disabled: "Aquest recurs no es pot descarregar com XLSX perquè excedeix el nombre d'observacions per a aquest format. Si us plau, triï una altra opció."
+                disabled: "Aquest recurs no es pot descarregar com XLSX perquè excedeix el nombre d'observacions per a aquest format."
             },
             attributes: {
                 modal: {
