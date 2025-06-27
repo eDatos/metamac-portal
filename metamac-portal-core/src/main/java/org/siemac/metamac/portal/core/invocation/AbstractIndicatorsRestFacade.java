@@ -45,7 +45,7 @@ public abstract class AbstractIndicatorsRestFacade {
 
     public IndicatorType retrieveIndicator(String indicatorCode) {
         try {
-            return buildGetRequest(apiKey, getIndicatorRequest(indicatorCode).toString(), IndicatorType.class);
+            return getForObject(apiKey, getIndicatorRequest(indicatorCode).toString(), IndicatorType.class);
         } catch (Exception e) {
             logger.error("Error obteniendo el Indicador", e);
         }
@@ -60,7 +60,7 @@ public abstract class AbstractIndicatorsRestFacade {
                 indicatorDataRequest.append("?").append("representation=").append(selectedRepresentations);
             }
 
-            return buildGetRequest(apiKey, indicatorDataRequest.toString(), DataType.class);
+            return getForObject(apiKey, indicatorDataRequest.toString(), DataType.class);
         } catch (Exception e) {
             logger.error("Error obteniendo el Indicador", e);
         }
@@ -76,7 +76,7 @@ public abstract class AbstractIndicatorsRestFacade {
         return indicatorBaseRequest.append(getRestApiLocatorEndpoint()).append("/v1.0").append("/indicators");
     }
 
-    private <T> T buildGetRequest(String apiKey, String url, Class<T> type) {
+    private <T> T getForObject(String apiKey, String url, Class<T> type) {
         HttpHeaders headers = new HttpHeaders();
         if (StringUtils.isNotBlank(apiKey)) {
             headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
