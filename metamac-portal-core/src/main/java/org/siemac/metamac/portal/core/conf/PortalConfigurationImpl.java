@@ -126,12 +126,22 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
 
     @Override
     public String retrievePortalWidgetApiKey() throws MetamacException {
-        return retrieveProperty(PortalConfigurationConstants.PORTAL_CAPTCHA_API_KEY);
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_WIDGET_API_KEY);
+    }
+
+    @Override
+    public String retrievePortalWidgetInternalApiKey() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_WIDGET_INTERNAL_API_KEY);
     }
 
     @Override
     public String retrievePortalApiKeyByInstallationType() throws MetamacException {
         return "INTERNAL".equals(retrieveInstallationType()) ? retrievePortalInternalApiKey() : retrievePortalApiKey();
+    }
+
+    @Override
+    public String retrievePortalWidgetApiKeyByInstallationType() throws MetamacException {
+        return "INTERNAL".equals(retrieveInstallationType()) ? retrievePortalWidgetInternalApiKey() : retrievePortalWidgetApiKey();
     }
 
     @Override
