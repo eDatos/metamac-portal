@@ -329,6 +329,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open(requestMethod, url, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('api-key', App.config["apiKey"]);
             xhr.responseType = 'arraybuffer';
 
             var self = this;
