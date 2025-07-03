@@ -31,8 +31,11 @@ public class PortalConfigurationConstants extends ConfigurationConstants {
 
     public static final String PORTAL_EXPORT_EXCEL_CELL_THRESHOLD     = "metamac.portal.export.excel.cell_threshold";
 
-    public static final String PORTAL_INTERNAL_EXPORT     = "metamac.portal.rest.internal.export";
+    public static final String PORTAL_INTERNAL_EXPORT                 = "metamac.portal.rest.internal.export";
 
-    public static final String PORTAL_INTERNAL_PERMALINK     = "metamac.portal.rest.internal.permalinks";
+    public static final String PORTAL_INTERNAL_PERMALINK              = "metamac.portal.rest.internal.permalinks";
 
+    public static final String PORTAL_INTERNAL_REST_API_KEY           = "metamac.portal.rest.internal.api_key";
+    public static final String PORTAL_WIDGET_API_KEY                  = "metamac.portal.widget.api_key";
+    public static final String PORTAL_WIDGET_INTERNAL_API_KEY         = "metamac.portal.widget.internal.api_key";
 }

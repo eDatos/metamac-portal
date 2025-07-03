@@ -1,15 +1,24 @@
 package org.siemac.metamac.portal.core.invocation;
 
 import org.apache.commons.lang.StringUtils;
+import org.siemac.edatos.core.common.constants.CoreCommonConstants;
+import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import es.gobcan.istac.indicators.rest.types.DataType;
 import es.gobcan.istac.indicators.rest.types.IndicatorInstanceType;
 import es.gobcan.istac.indicators.rest.types.IndicatorsSystemType;
+
+import javax.annotation.PostConstruct;
 
 @Component("indicatorsSystemRestFacade")
 public abstract class AbstractIndicatorsSystemsRestFacade {
@@ -19,10 +28,24 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private PortalConfiguration configurationService;
+
+    private String apiKey;
+
+    @PostConstruct
+    public void init() {
+        try {
+            this.apiKey = configurationService.retrievePortalApiKeyByInstallationType();
+        } catch (MetamacException e) {
+            logger.warn("No se ha encontrado la propiedad api key de portal para la instalación actual (\"metamac.portal.rest.api_key\" o \"metamac.portal.rest.internal.api_key\").");
+        }
+    }
+
     protected abstract String getRestApiLocatorEndpoint();
     public IndicatorInstanceType retrieveIndicatorInstanceByCode(String idIndicatorSystem, String idIndicatorInstance) {
         try {
-            return restTemplate.getForObject(getIndicatorInstanceRequest(idIndicatorSystem, idIndicatorInstance).toString(), IndicatorInstanceType.class);
+            return getForObject(apiKey, getIndicatorInstanceRequest(idIndicatorSystem, idIndicatorInstance).toString(), IndicatorInstanceType.class);
         } catch (Exception e) {
             logger.error("Error obteniendo el Indicador", e);
         }
@@ -37,7 +60,7 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
                 indicatorDataRequest.append("?").append("representation=").append(selectedRepresentations);
             }
 
-            return restTemplate.getForObject(indicatorDataRequest.toString(), DataType.class);
+            return getForObject(apiKey, indicatorDataRequest.toString(), DataType.class);
         } catch (Exception e) {
             logger.error("Error obteniendo el Indicador", e);
         }
@@ -46,7 +69,7 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
 
     public IndicatorsSystemType retrieveIndicatorsSystem(String idIndicatorSystem) {
         try {
-            return restTemplate.getForObject(getIndicatorSystemRequest(idIndicatorSystem).toString(), IndicatorsSystemType.class);
+            return getForObject(apiKey, getIndicatorSystemRequest(idIndicatorSystem).toString(), IndicatorsSystemType.class);
         } catch (Exception e) {
             logger.error("Error obteniendo el Indicador", e);
         }
@@ -66,5 +89,14 @@ public abstract class AbstractIndicatorsSystemsRestFacade {
         return indicatorInstanceBaseRequest.append(getRestApiLocatorEndpoint()).append("/v1.0").append("/indicatorsSystems");
     }
 
+    private <T> T getForObject(String apiKey, String url, Class<T> type) {
+        HttpHeaders headers = new HttpHeaders();
+        if (StringUtils.isNotBlank(apiKey)) {
+            headers.set(CoreCommonConstants.API_KEY_PARAMETER, apiKey);
+        }
 
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<T> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, type);
+        return response.getBody();
+    }
 }

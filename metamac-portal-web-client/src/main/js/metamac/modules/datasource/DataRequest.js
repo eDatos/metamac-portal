@@ -17,7 +17,10 @@
         fetch: function (callback) {
             var self = this;
             $.ajax({
-                url: self._url()
+                url: self._url(),
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
             }).success(function (response) {
                 self.response = response;
                 callback(null, "done")

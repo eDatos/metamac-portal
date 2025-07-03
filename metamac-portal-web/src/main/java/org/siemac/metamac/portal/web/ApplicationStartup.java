@@ -43,6 +43,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
                 WebUtils.setAppsBaseUrl(configurationService.retrieveAppsExternalWebApplicationUrlBase());
                 WebUtils.setPermalinksApiBaseUrl(configurationService.retrievePortalExternalApisPermalinksUrlBase());
                 WebUtils.setExportApiBaseUrl(configurationService.retrievePortalExternalApisExportUrlBase());
+                WebUtils.setApiKey(configurationService.retrievePortalApiKey());
             } else if (INSTALLATION_TYPE.equals("INTERNAL")) {
                 WebUtils.setPortalBaseUrl(portalConfigurationService.retrievePortalInternalWebApplicationUrlBase());
                 WebUtils.setPortalWebVisualizerUrl(configurationService.retrievePortalInternalWebApplicationUrlVisualizer());
@@ -50,7 +51,9 @@ public class ApplicationStartup extends ApplicationStartupListener {
                 WebUtils.setAppsBaseUrl(configurationService.retrieveAppsInternalWebApplicationUrlBase());
                 WebUtils.setPermalinksApiBaseUrl(portalConfigurationService.retrievePortalInternalApisPermalinksUrlBase());
                 WebUtils.setExportApiBaseUrl(portalConfigurationService.retrievePortalInternalApisExportUrlBase());
+                WebUtils.setApiKey(portalConfigurationService.retrievePortalInternalApiKey());
             }
+            WebUtils.setWidgetApiKey(portalConfigurationService.retrievePortalWidgetApiKeyByInstallationType());
 
             WebUtils.setApiStyleHeaderUrl(configurationService.retrieveApiStyleHeaderUrl());
             WebUtils.setApiStyleCssUrl(configurationService.retrieveApiStyleCssUrl());

@@ -52,6 +52,14 @@
             }, this);
         },
 
+        sync: function (method, model, options) {
+            options = options || {};
+            options.beforeSend = function (xhr) {
+                xhr.setRequestHeader('api-key', App.config["apiKey"]);
+            };
+            return Backbone.Model.prototype.sync.call(this, method, model, options);
+        },
+
         url: function () {
             return App.endpoints["statistical-resources"] + '/multidatasets/' + this.agency + '/' + this.identifier + '?_type=json';
         },

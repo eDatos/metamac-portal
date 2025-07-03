@@ -35,4 +35,10 @@ public interface PortalConfiguration extends ConfigurationService {
 
     String retrievePortalInternalApisExportUrlBase() throws MetamacException;
 
+    String retrievePortalInternalApiKey() throws MetamacException;
+    String retrievePortalWidgetApiKey() throws MetamacException;
+    String retrievePortalWidgetInternalApiKey() throws MetamacException;
+
+    String retrievePortalApiKeyByInstallationType() throws MetamacException;
+    String retrievePortalWidgetApiKeyByInstallationType() throws MetamacException;
 }

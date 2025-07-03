@@ -82,6 +82,7 @@
 							App.config["unitMeasure"] = "${unitMeasure}";
 							App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
 							App.config["theme"] = '${theme}';
+							App.config["apiKey"] = '${apiKey}';
 							App.queryParams["agency"] = '${param.agencyId}';
 							App.queryParams["identifier"] = '${param.resourceId}';
 							App.queryParams["version"] = '${param.version}';
