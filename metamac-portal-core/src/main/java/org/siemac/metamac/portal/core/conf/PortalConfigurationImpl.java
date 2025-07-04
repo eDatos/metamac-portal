@@ -108,13 +108,40 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
         }
         return unitMeasureMultiplier;
     }
+
     @Override
     public String retrievePortalInternalApisPermalinksUrlBase() throws MetamacException {
         return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_PERMALINK);
     }
+
     @Override
     public String retrievePortalInternalApisExportUrlBase() throws MetamacException {
         return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_EXPORT);
+    }
+
+    @Override
+    public String retrievePortalInternalApiKey() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_INTERNAL_REST_API_KEY);
+    }
+
+    @Override
+    public String retrievePortalWidgetApiKey() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_WIDGET_API_KEY);
+    }
+
+    @Override
+    public String retrievePortalWidgetInternalApiKey() throws MetamacException {
+        return retrieveProperty(PortalConfigurationConstants.PORTAL_WIDGET_INTERNAL_API_KEY);
+    }
+
+    @Override
+    public String retrievePortalApiKeyByInstallationType() throws MetamacException {
+        return "INTERNAL".equals(retrieveInstallationType()) ? retrievePortalInternalApiKey() : retrievePortalApiKey();
+    }
+
+    @Override
+    public String retrievePortalWidgetApiKeyByInstallationType() throws MetamacException {
+        return "INTERNAL".equals(retrieveInstallationType()) ? retrievePortalWidgetInternalApiKey() : retrievePortalWidgetApiKey();
     }
 
     @Override

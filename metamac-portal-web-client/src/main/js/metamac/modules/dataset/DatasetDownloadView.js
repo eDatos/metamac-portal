@@ -114,6 +114,8 @@
             var disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
             const param = this.toStatisticalResourcesApiRepresentationParameter(this.getDatasetSelection());
             const disableAllSelectionFormat = param && param.length > GLOBAL_CHAR_LENGTH_URL_LIMIT && visualizationSupertype === 'data';
+            var messageExcelDisabled = disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : "";
+            var messageSelectionDisabled = disableAllSelectionFormat ? I18n.t("filter.download.selectionDisabled") : "";
 
             return {
                 dataFormats: haveDataFormats,
@@ -137,9 +139,7 @@
                         png: disableAnyFormat,
                         pdf: disableAnyFormat,
                         svg: disableAnyFormat,
-                        infoMessage: disableSelectionExcel ? I18n.t("filter.download.excel.disabled")
-                                    : disableAllSelectionFormat ? I18n.t("filter.download.selectionDisabled")
-                                    : null
+                        infoMessage: _.compact([messageSelectionDisabled, messageExcelDisabled]).join('<br>')
                     }
                 },
             };
@@ -329,6 +329,7 @@
             var xhr = new XMLHttpRequest();
             xhr.open(requestMethod, url, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('api-key', App.config["apiKey"]);
             xhr.responseType = 'arraybuffer';
 
             var self = this;

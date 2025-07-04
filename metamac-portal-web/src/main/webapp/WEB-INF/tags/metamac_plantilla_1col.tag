@@ -24,6 +24,7 @@
 			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
 				<c:param name="${internationalizationCookie}" value="${currentLocale}" />
 				<c:param name="appId" value="statistical-visualizer-${installationType}" />
+				<c:param name="apiKey" value="${apiKey}" />
 			</c:import>
         </c:when>
         <c:otherwise>

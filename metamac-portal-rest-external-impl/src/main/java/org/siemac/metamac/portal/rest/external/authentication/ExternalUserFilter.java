@@ -4,9 +4,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.jaxrs.ext.RequestHandler;
 import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.message.Message;
-import org.siemac.metamac.core.common.conf.ConfigurationService;
+import org.siemac.edatos.core.common.constants.CoreCommonConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
+import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -35,7 +37,18 @@ public class ExternalUserFilter implements RequestHandler {
     private HttpServletRequest  request;
 
     @Autowired
-    private ConfigurationService configurationService;
+    private PortalConfiguration configurationService;
+
+    private String apiKey;
+
+    @PostConstruct
+    public void init() {
+        try {
+            this.apiKey = configurationService.retrievePortalApiKeyByInstallationType();
+        } catch (MetamacException e) {
+            LOG.warn("No se ha encontrado la propiedad api key de portal para la instalación actual (\"metamac.portal.rest.api_key\" o \"metamac.portal.rest.internal.api_key\").");
+        }
+    }
 
     @Override
     public Response handleRequest(Message m, ClassResourceInfo resourceClass) {
@@ -44,6 +57,9 @@ public class ExternalUserFilter implements RequestHandler {
             LOG.info("Validating external user");
             MultiValueMap<String, String> header = new LinkedMultiValueMap<>();
             header.add("Authorization", authToken);
+            if (StringUtils.isNotBlank(this.apiKey)) {
+                header.set(CoreCommonConstants.API_KEY_PARAMETER, this.apiKey);
+            }
             HttpEntity<String> entity = new HttpEntity<>("body", header);
             try {
                 RestTemplate restTemplate = ApplicationContextProvider.getApplicationContext().getBean(RestTemplate.class);

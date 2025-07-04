@@ -18,6 +18,9 @@
                 data: {
                     query: this._createNormCodesQuery(codes),
                     _type: "json"
+                },
+                headers: {
+                    "api-key": App.config["apiKey"]
                 }
             };
             $.ajax(ajaxParams)
@@ -40,8 +43,11 @@
                 type: "GET",
                 url: url,
                 dataType: 'jsonp',
-                jsonp: '_callback'
-            }
+                jsonp: '_callback',
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
+            };
             $.ajax(ajaxParams).done(function (response) {
                 var urn = response.variableElement[0].urn;
                 callback(null, self._extractNormCodeFromUrn(urn));
@@ -58,7 +64,10 @@
                     url: App.endpoints["structural-resources"] + "/variables/" + variableId + "/variableelements/" + codes[0] + "/geoinfo.json?fields=-geographicalGranularity,-geometry,-point",
                     method: "GET",
                     dataType: 'jsonp',
-                    jsonp: '_callback'
+                    jsonp: '_callback',
+                    headers: {
+                        "api-key": App.config["apiKey"]
+                    }
                 };
                 $.ajax(requestParams)
                     .done(function (response) {
@@ -85,7 +94,10 @@
                 url: defaultGeographicalGranularityCodelistUrl,
                 method: "GET",
                 dataType: 'jsonp',
-                jsonp: '_callback'
+                jsonp: '_callback',
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
             };
             $.ajax(requestParams).
                 done(function (response) {

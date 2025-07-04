@@ -12,7 +12,10 @@
                     method: "POST",
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
-                    data: filter.toString()
+                    data: filter.toString(),
+                    headers: {
+                        "api-key": App.config["apiKey"]
+                    }
                 }).then(ajaxSettings => {
                     $.ajax(ajaxSettings).done(function (val) {
                         resolve(val)
@@ -27,7 +30,10 @@
             return new Promise(function(resolve, reject) {
                 Edatos.UserManagement.prepareRequestWithEdatosAuthenticationToExternalUsers({
                     url: App.endpoints["external-users"] + '/api/filters/last-access/' + permalinkId,
-                    method: "PUT"
+                    method: "PUT",
+                    headers: {
+                        "api-key": App.config["apiKey"]
+                    }
                 }).then(ajaxSettings => {
                     $.ajax(ajaxSettings).done(function (val) {
                         resolve(val)

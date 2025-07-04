@@ -1,3 +1,4 @@
+<%@ page import="org.siemac.metamac.portal.web.WebUtils" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -8,6 +9,10 @@
 
 <script src="${baseURL}/client/metamac.js?d=${jsDate}"></script>
 <link rel="stylesheet" type="text/css" href="${baseURL}/client/metamac.css?d=${cssDate}">
+
+<%
+    request.setAttribute("apiKey", WebUtils.getApiKey());
+%>
 
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${currentLocale}" />
@@ -105,7 +110,7 @@
         return collectionList;
     }
     
-    fetch(statisticalResourcesApi + '/collections.json?fields=+statisticalOperation&limit=10000')
+    fetch(statisticalResourcesApi + '/collections.json?fields=+statisticalOperation&limit=10000', { headers: { "api-key": "${apiKey}" } })
         .then(response => response.json())
         .then(data => {
             var operations = parseCollectionsIntoOperationsTree(data.collection);

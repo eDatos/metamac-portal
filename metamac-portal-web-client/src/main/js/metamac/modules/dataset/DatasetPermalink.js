@@ -50,7 +50,10 @@
                         method: "POST",
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify({content: content})
+                        data: JSON.stringify({content: content}),
+                        headers: {
+                            "api-key": App.config["apiKey"]
+                        }
                     };
                     if (window.Edatos && Edatos.UserManagement) {
                         Edatos.UserManagement.prepareRequestWithEdatosAuthentication(baseAjaxSettings).then(ajaxSettings => {

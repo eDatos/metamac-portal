@@ -153,7 +153,8 @@
                 action: "portal_permalink",
                 buttonText: I18n.t("captcha.button.text"),
                 labelText: I18n.t("captcha.label.text"),
-                withButton: false
+                withButton: false,
+                apiKey: App.config["apiKey"]
             };
 
             this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
