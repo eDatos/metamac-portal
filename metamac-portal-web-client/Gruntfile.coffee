@@ -46,6 +46,7 @@ module.exports = (grunt) ->
                 paths.lib + "/async.js"
                 paths.lib + "/cookies.js"
                 paths.nodeModules + "/shareon/dist/shareon.iife.js"
+                paths.nodeModules + "/mathjax/es5/tex-chtml.js"
                 paths.js + "/metamac/App.js"
                 paths.js + "/metamac/libs/HandlebarsHelpers.js"
                 paths.js + "/metamac/templates/HandlebarsTemplates.js"

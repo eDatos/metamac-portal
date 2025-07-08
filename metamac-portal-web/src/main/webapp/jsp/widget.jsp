@@ -122,7 +122,21 @@
 		var paramValue = getQueryParams(params);
 		return (paramValue != null) ? decodeURIComponent(paramValue) :null;
 	}
-</script>                
+</script>
+
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [
+                ['$', '$'],
+                ['\\(', '\\)']
+            ]
+        },
+        svg: {
+            fontCache: 'global'
+        },
+    };
+</script>
 
 <script>
 

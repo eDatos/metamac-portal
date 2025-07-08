@@ -1,5 +1,5 @@
 
-(function () {
+(function (MathJax) {
     "use strict";
 
     App.namespace("App.components.tooltip");
@@ -124,6 +124,7 @@
                 } else {
                     this._updateByMouseOver(point);
                 }
+                MathJax.typesetPromise();
             } else {
                 this._hide();
             }
@@ -202,4 +203,4 @@
         }
 
     };
-}());
+}(MathJax));
