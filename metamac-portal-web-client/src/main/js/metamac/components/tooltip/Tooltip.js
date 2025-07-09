@@ -51,6 +51,14 @@
             this.$cellChart = $('<div class="tooltip-cell-chart"></div>');
             this.$innerTooltip = $('<div class="tooltip-inner"></div>').append(this.$cellInfo).append(this.$cellChart);
             this.$tooltip = $('<div class="tooltip in metamac-tooltip"></div>').append(this.$innerTooltip);
+
+            if (App.config["widget"]) {
+                this.$innerTooltip.css({
+                    "height": "100%",
+                    "max-height": "fit-content",
+                    "width": "min-content"
+                });
+            }
         },
 
         _attachEvents: function () {
@@ -136,11 +144,17 @@
                 this.view.toggleClickedCellByRelativePoint(point);
                 this.$cellInfo.html(attribute);
                 this._drawChart(point);
-                var position = this._getPosition(point);
-                this.$tooltip.css({
-                    top: position.y,
-                    left: position.x
-                });
+                if (App.config["widget"]) {
+                    this.$tooltip.css({
+                        inset: "0 0 75px 0"
+                    });
+                } else {
+                    var position = this._getPosition(point);
+                    this.$tooltip.css({
+                        top: Math.max(position.y, 0),
+                        left: Math.max(position.x, 0)
+                    });
+                }
                 this.$tooltip.toggle();
             } else {
                 this._hide();
@@ -174,12 +188,17 @@
             var title = this.delegate.getTitleAtMousePosition(point);
             if (title) {
                 this.$cellInfo.html(title);
-                var position = this._getPosition(point);
-                this.$tooltip.css({
-                    display: 'block',
-                    top: position.y,
-                    left: position.x
-                });
+                if (App.config["widget"]) {
+                    this.$tooltip.css({
+                        inset: "0 0 75px 0"
+                    });
+                } else {
+                    var position = this._getPosition(point);
+                    this.$tooltip.css({
+                        top: Math.max(position.y, 0),
+                        left: Math.max(position.x, 0)
+                    });
+                }
             } else {
                 this._hide();
             }
