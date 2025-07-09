@@ -145,6 +145,11 @@ public class PortalConfigurationImpl extends ConfigurationServiceImpl implements
     }
 
     @Override
+    public boolean retrieveAddAncestorsForGeoParam() throws MetamacException {
+        return retrievePropertyBoolean(PortalConfigurationConstants.PORTAL_GEO_PARAM_ADD_ANCESTORS);
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
 
