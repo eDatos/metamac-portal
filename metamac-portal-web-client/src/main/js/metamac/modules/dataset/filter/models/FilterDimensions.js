@@ -150,6 +150,7 @@
             var json = {};
             json[geographicDimension.id] = {
                 position: position,
+                visibleLabelType: App.modules.dataset.filter.models.FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL,
                 categories: geographicDimension.get('representations').models.map(representation => ({
                     id: representation.get("id"),
                     selected: selectedAndValidatedVariableElements.length === 0
