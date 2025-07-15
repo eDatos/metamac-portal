@@ -1,4 +1,4 @@
-(function () {
+(function (MathJax) {
     "use strict";
 
     App.namespace("App.VisualElement.Info");
@@ -198,6 +198,7 @@
             });
 
             scrollGroup.perfectScrollbar('update');
+            MathJax.typesetPromise();
         },
 
         _getMetadata: function () {
@@ -326,4 +327,4 @@
         }
     });
 
-}());
+}(MathJax));
