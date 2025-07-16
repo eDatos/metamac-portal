@@ -164,8 +164,8 @@
         _preselectMostPopulatedGeographicLevelRepresentations: function () {
             var nonFixedGeographicDimensions = this.filterDimensions.getAllNonFixedDimensionsCopyByType("GEOGRAPHIC_DIMENSION");
             _(nonFixedGeographicDimensions).each(function (geographicDimension) {
-                geographicDimension.get('representations').updateSelectedGeographicLevelWithMostRepeatedValue();
-                geographicDimension.get('representations').updateDrawablesBySelectedLevel();
+                geographicDimension.get('representations').updateSelectedGeographicGranularityWithMostRepeatedValue();
+                geographicDimension.get('representations').updateDrawablesBySelectedGeographicGranularity();
             });
         },
 

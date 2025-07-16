@@ -10,7 +10,7 @@
         initialize: function () {
             this.drawableLimit = Infinity;
 
-            this.selectedGeographicalLevel = null;
+            this.selectedGeographicalGranularity = null;
             this.selectedTemporalGranularity = null;
             this._bindEvents();
         },
@@ -181,12 +181,12 @@
 
         updateSelectedGeographicLevelIfNoElementsInLevel: function() {
             //take the actual SelectedGeographicalLevel
-            var level = this.getSelectedGeographicLevel();
+            var level = this.getSelectedGeographicGranularity();
             //take the representations of the current level that have more than one element selected
             var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('level').toString() === level);
             //If there are no elements selected, then we perform the update
             if (filterRepresentations.length == 0) {
-                this.updateSelectedGeographicLevelWithMostRepeatedValue();
+                this.updateSelectedGeographicGranularityWithMostRepeatedValue();
             }
         },
 
@@ -194,9 +194,9 @@
             return this.filter(representation => representation.get("drawable"));
         },
 
-        updateDrawablesBySelectedLevel: function () {
+        updateDrawablesBySelectedGeographicGranularity: function () {
             if (this.getSelectedRepresentationsByCurrentLevel().length === 0) {
-                this.updateSelectedGeographicLevelWithMostRepeatedValue();    
+                this.updateSelectedGeographicGranularityWithMostRepeatedValue();
             }
 
             _.invoke(this.models, 'set', { drawable: false }, { silent: true });
@@ -205,7 +205,7 @@
         },
 
         getSelectedRepresentationsByCurrentLevel: function () {
-            return this.filter(representation => representation.get("level") === parseInt(this.selectedGeographicalLevel) && representation.get("selected"));
+            return this.filter(representation => representation.get("geographicGranularityId") === this.selectedGeographicalGranularity && representation.get("selected"));
         },
 
         updateDrawablesBySelectedGranularity: function () {
@@ -226,23 +226,23 @@
             return this.filter(representation => representation.get("temporalGranularity") === temporalGranularity);
         },
 
-        setSelectedGeographicLevel: function (geographicalLevel) {
-            this.selectedGeographicalLevel = geographicalLevel;
+        setSelectedGeographicGranularity: function (geographicalGranularity) {
+            this.selectedGeographicalGranularity = geographicalGranularity;
         },
 
-        getSelectedGeographicLevel: function () {
-            if (this.selectedGeographicalLevel == null) {
-                this.updateSelectedGeographicLevelWithMostRepeatedValue();
+        getSelectedGeographicGranularity: function () {
+            if (this.selectedGeographicalGranularity == null) {
+                this.updateSelectedGeographicGranularityWithMostRepeatedValue();
             }
-            return this.selectedGeographicalLevel;
+            return this.selectedGeographicalGranularity;
         },
 
-        updateSelectedGeographicLevelWithMostRepeatedValue: function () {
-            this.selectedGeographicalLevel = this._getMostRepeatedValue(this.getSelectedGeographicLevels());
+        updateSelectedGeographicGranularityWithMostRepeatedValue: function () {
+            this.selectedGeographicalGranularity = this._getMostRepeatedValue(this.getSelectedGeographicGranularities());
         },
 
-        getSelectedGeographicLevels: function () {
-            return _(this.getGeographicRepresentationsWithMoreThanOneElementSelected()).invoke("get", "level");
+        getSelectedGeographicGranularities: function () {
+            return _(this.getGeographicRepresentationsWithMoreThanOneElementSelected()).invoke("get", "geographicGranularityId");
         },
 
         setSelectedTemporalGranularity: function(temporalGranularity) {

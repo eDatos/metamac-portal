@@ -22,10 +22,10 @@
                                 </select>
                             {{/if}}
 
-                            {{#if selectedLevel }}                        
-                                <select class="dimension-select-level" data-dimension-id="{{ ../../id }}">
-                                    {{#each levelList}}
-                                        <option value="{{ level }}" {{#compare ../../selectedLevel "==" level}}selected{{/compare}}>{{ label }}</option>
+                            {{#if selectedGeographicGranularity }}
+                                <select class="dimension-select-geographic-granularity" data-dimension-id="{{ ../../id }}">
+                                    {{#each geographicGranularityList}}
+                                        <option value="{{ id }}" {{#compare ../../selectedGeographicGranularity "==" id}}selected{{/compare}}>{{ label }}</option>
                                     {{/each}}
                                 </select>
                             {{/if}}
