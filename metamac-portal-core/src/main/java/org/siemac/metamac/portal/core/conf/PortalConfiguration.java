@@ -41,4 +41,6 @@ public interface PortalConfiguration extends ConfigurationService {
 
     String retrievePortalApiKeyByInstallationType() throws MetamacException;
     String retrievePortalWidgetApiKeyByInstallationType() throws MetamacException;
+
+    boolean retrieveAddAncestorsForGeoParam() throws MetamacException;
 }
