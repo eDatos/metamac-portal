@@ -136,11 +136,11 @@
 
             var selectedVariableElements = selection.split("|");
             var selectedAndValidatedVariableElements = [];
-                for (var i = 0; i < selectedVariableElements.length; i++) {
-                    var representation = geographicDimension.getRepresentationsByVariableElementId(selectedVariableElements[i])[0];
+            for (var i = 0; i < selectedVariableElements.length; i++) {
+                var representation = geographicDimension.getRepresentationsByVariableElementId(selectedVariableElements[i])[0];
                 if (representation) {
                     selectedAndValidatedVariableElements.push(selectedVariableElements[i]);
-                    if (representation.get("parent")) {
+                    if (representation.get("parent") && App.config["addAncestorsForGeoParam"]) {
                         var representationParent = geographicDimension.getRepresentationsById(representation.get("parent"))[0];
                         selectedVariableElements.push(representationParent.get("variableElementId"));
                     }
@@ -150,6 +150,7 @@
             var json = {};
             json[geographicDimension.id] = {
                 position: position,
+                visibleLabelType: App.modules.dataset.filter.models.FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL,
                 categories: geographicDimension.get('representations').models.map(representation => ({
                     id: representation.get("id"),
                     selected: selectedAndValidatedVariableElements.length === 0

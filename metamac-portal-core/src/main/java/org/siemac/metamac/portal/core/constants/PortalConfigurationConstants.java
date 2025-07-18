@@ -38,4 +38,5 @@ public class PortalConfigurationConstants extends ConfigurationConstants {
     public static final String PORTAL_INTERNAL_REST_API_KEY           = "metamac.portal.rest.internal.api_key";
     public static final String PORTAL_WIDGET_API_KEY                  = "metamac.portal.widget.api_key";
     public static final String PORTAL_WIDGET_INTERNAL_API_KEY         = "metamac.portal.widget.internal.api_key";
+    public static final String PORTAL_GEO_PARAM_ADD_ANCESTORS         = "metamac.portal.geo_param.add_ancestors";
 }

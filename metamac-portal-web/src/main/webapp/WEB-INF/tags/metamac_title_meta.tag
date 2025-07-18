@@ -55,6 +55,7 @@
         String INTERNATIONALIZATION_COOKIE_ID = "";
         String DEFAULT_INTERNATIONALIZATION_LANGUAGE = "";
         String API_KEY = "";
+        Boolean ADD_ANCESTORS_FOR_GEO_PARAM = Boolean.TRUE;
 
 		PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
 		try {
@@ -97,6 +98,12 @@
                 EXPORT_API_URL_BASE = configurationService.retrievePortalExternalApisExportUrlBase();
 			}
 
+            try {
+                ADD_ANCESTORS_FOR_GEO_PARAM = configurationService.retrieveAddAncestorsForGeoParam();
+            } catch(MetamacException e) {
+                log.warn("Error retrieving property to select (or not) ancestors when using the geo param");
+            }
+
             request.setAttribute("installationType", INSTALLATION_TYPE);
 			request.setAttribute("ApiUrlStatisticalVisualizer", STATISTICAL_VISUALIZER_URL_BASE);
             request.setAttribute("StatisticalVisualizerBase", PORTAL_URL_BASE);
@@ -113,7 +120,7 @@
             request.setAttribute("internationalizationCookie", INTERNATIONALIZATION_COOKIE_ID);
             request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
             request.setAttribute("apiKey", API_KEY);
-
+            request.setAttribute("addAncestorsForGeoParam", ADD_ANCESTORS_FOR_GEO_PARAM);
 
 		} catch (MetamacException e) {
             request.setAttribute("installationType", "error");
@@ -132,6 +139,7 @@
             request.setAttribute("internationalizationCookie", "error");
             request.setAttribute("defaultInternationalizationLanguage", "error");
             request.setAttribute("apiKey", "error");
+            request.setAttribute("addAncestorsForGeoParam", "error");
 
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
