@@ -195,16 +195,16 @@
         },
 
         updateDrawablesBySelectedGeographicGranularity: function () {
-            if (this.getSelectedRepresentationsByCurrentLevel().length === 0) {
+            if (this.getSelectedRepresentationsByCurrentGeographicGranularity().length === 0) {
                 this.updateSelectedGeographicGranularityWithMostRepeatedValue();
             }
 
             _.invoke(this.models, 'set', { drawable: false }, { silent: true });
-            _.invoke(this.getSelectedRepresentationsByCurrentLevel(), 'set', { drawable: true });
+            _.invoke(this.getSelectedRepresentationsByCurrentGeographicGranularity(), 'set', { drawable: true });
             this.trigger("change:drawable");
         },
 
-        getSelectedRepresentationsByCurrentLevel: function () {
+        getSelectedRepresentationsByCurrentGeographicGranularity: function () {
             return this.filter(representation => representation.get("geographicGranularityId") === this.selectedGeographicalGranularity && representation.get("selected"));
         },
 

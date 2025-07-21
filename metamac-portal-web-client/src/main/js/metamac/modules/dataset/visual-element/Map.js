@@ -264,7 +264,7 @@
         },
 
         _getGeographicSelectedRepresentations: function () {
-            return this._getGeographicDimension().get('representations').getSelectedRepresentationsByCurrentLevel();
+            return this._getGeographicDimension().get('representations').getSelectedRepresentationsByCurrentGeographicGranularity();
         },
 
         _getGeographicDimensionNormCodes: function () {
