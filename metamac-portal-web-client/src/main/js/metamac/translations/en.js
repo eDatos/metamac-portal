@@ -250,6 +250,13 @@ I18n.translations.en = {
                 reuse: "Reutilization and info for developers"
             },
 
+            seeConcept: {
+                button: "See concept",
+            },
+            seeRelatedResource: {
+                button: "See codelist"
+            },
+
             language: "Language",
 
             apiDocumentationUrl: "API documentation access",

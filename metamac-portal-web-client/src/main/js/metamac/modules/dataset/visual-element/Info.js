@@ -99,6 +99,9 @@
                         dimension.conceptIdentity = dimensionConcept;
                         dimension.conceptName = App.DimensionsUtils.getDimensionLabel(dimensionConcept);
                         dimension.conceptDescription = App.InternationalizationUtils.localizeLabel(dimensionConcept.description);
+                        dimension.conceptResource = dimension.conceptIdentity.visualizerHtmlLink;
+                        dimension.relatedResource = dimension.localRepresentation.enumerationCodelist ? 
+                                                    dimension.localRepresentation.enumerationCodelist.visualizerHtmlLink : '';
                         return dimension;
                     });
                     self.updateDimensions(parsedDimensions);

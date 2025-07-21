@@ -59,7 +59,16 @@
             <div>{{ message "entity.dataset.section.dimensions" }}</div>
         </div>
         <div class="metadata-value">
-            {{#ulList nonMeasureDimensions }} {{ fieldOutput conceptName conceptDescription "text" false false true}} {{/ulList}}
+            {{#ulList nonMeasureDimensions }} {{ fieldOutput conceptName conceptDescription "text" false false true}}
+            <div class="metadata-resource-value">
+                {{ fieldOutput "entity.dataset.seeConcept.button" conceptResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+            </div>
+            {{#if relatedResource }}
+            <div class="metadata-resource-value">
+                {{ fieldOutput "entity.dataset.seeRelatedResource.button" relatedResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+            </div>
+            {{/if}}
+            {{/ulList}}
         </div>
     </div>
     {{/if}} {{#if metadata.hasValidity}}

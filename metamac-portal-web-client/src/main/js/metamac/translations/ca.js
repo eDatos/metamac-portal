@@ -250,6 +250,13 @@ I18n.translations.ca = {
                 reuse: "Reutilització i informació per a desenvolupadors"
             },
 
+            seeConcept: {
+                button: "Veure concepte",
+            },
+            seeRelatedResource: {
+                button: "Veure classificació"
+            },
+
             language: "Idioma",
 
             apiDocumentationUrl: "Accés a la documentació de l'API",
