@@ -287,7 +287,7 @@
             this.filterDimensions.each(function (filterDimension) {
                 self.listenTo(filterDimension.get('representations'), 'change:drawable', _.debounce(_.bind(self._updateSelectedCategory, self, filterDimension.get('id')), 400));
                 
-                if (self._needsGeographicLevelSelector(filterDimension)) {
+                if (self._needsGeographicGranularitySelector(filterDimension)) {
                     self.listenTo(filterDimension.get('representations'), 'change:selected', _.debounce(_.bind(self._onChangeSelectedForGeographicRepresentations, self, filterDimension.get('id')), 300));
                 } else if (self._needsTemporalGranularitySelector(filterDimension)) {
                     self.listenTo(filterDimension.get('representations'), 'change:selected', _.debounce(_.bind(self._onChangeSelectedForTemporalRepresentations, self, filterDimension.get('id')), 300));
@@ -406,7 +406,7 @@
             var self = this;
             return this.filterDimensions.dimensionsAtZone(zone)
                 .reduce(function (memo, dimension) {
-                    return memo || self._needsGeographicLevelSelector(dimension) || self._needsTemporalGranularitySelector(dimension);
+                    return memo || self._needsGeographicGranularitySelector(dimension) || self._needsTemporalGranularitySelector(dimension);
                 }, false);
         },
 
@@ -449,7 +449,7 @@
 
                 if (dimension.singleValue) {
                     // Single values don´t have any kind of selector in the pill
-                } else if (self._needsGeographicLevelSelector(dimensionModel)) {
+                } else if (self._needsGeographicGranularitySelector(dimensionModel)) {
                     dimension.selectedGeographicGranularity = dimensionModel.get('representations').getSelectedGeographicGranularity();
                     dimension.geographicGranularityList = self._getGeographicGranularityCollection(dimensionModel);
                 } else if (self._needsTemporalGranularitySelector(dimensionModel)) {
@@ -492,7 +492,7 @@
                 .value();
         },
 
-        _needsGeographicLevelSelector: function (dimension) {
+        _needsGeographicGranularitySelector: function (dimension) {
             return this._isMap() && dimension.get('type') == "GEOGRAPHIC_DIMENSION";
         },
 
