@@ -173,17 +173,17 @@
                 // Filter selected elements
                 if (item.get('selected')) {
                   // check that there are more items selected in your level
-                  return this.filter(subItem => subItem.get('level') === item.get('level') && subItem.get('selected')).length > 1;
+                  return this.filter(subItem => subItem.get('geographicGranularityId') === item.get('geographicGranularityId') && subItem.get('selected')).length > 1;
                 }
                 return false;
               });
         },
 
-        updateSelectedGeographicLevelIfNoElementsInLevel: function() {
+        updateSelectedGeographicGranularityIfNoElementsInGranularity: function() {
             //take the actual SelectedGeographicalLevel
-            var level = this.getSelectedGeographicGranularity();
+            var granularity = this.getSelectedGeographicGranularity();
             //take the representations of the current level that have more than one element selected
-            var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('level').toString() === level);
+            var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('geographicGranularityId').toString() === granularity);
             //If there are no elements selected, then we perform the update
             if (filterRepresentations.length == 0) {
                 this.updateSelectedGeographicGranularityWithMostRepeatedValue();

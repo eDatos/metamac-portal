@@ -226,7 +226,7 @@
 
         _onChangeSelectedForGeographicRepresentations: function (dimensionId, e) {
             this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedGeographicGranularity();
-            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicLevelIfNoElementsInLevel();
+            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicGranularityIfNoElementsInGranularity();
             this.render();
         },
 
