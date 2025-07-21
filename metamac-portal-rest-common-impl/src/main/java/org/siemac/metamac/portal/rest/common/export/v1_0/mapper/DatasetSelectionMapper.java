@@ -258,6 +258,7 @@ public class DatasetSelectionMapper {
         // Default values
         LabelVisualisationModeEnum labelVisualizationMode = CODE_AND_LABEL;
         Integer position = dataStructureDefinitionToPosition(dimension.getId(), dataStructureDefinition);
+        Boolean reversed = false;
 
         // If we have data sent via api, use that instead
         if (selectionDimension != null) {
@@ -266,6 +267,9 @@ public class DatasetSelectionMapper {
             }
             if (selectionDimension.getPosition() != null) {
                 position = selectionDimension.getPosition();
+            }
+            if (selectionDimension.getReversed() != null) {
+                reversed = selectionDimension.getReversed();
             }
         }
         // If
@@ -279,6 +283,7 @@ public class DatasetSelectionMapper {
         datasetSelectionDimension.setLabelVisualisationMode(labelVisualizationMode);
         datasetSelectionDimension.setPosition(position);
         datasetSelectionDimension.setSelectedDimensionValues(dimensionValues);
+        datasetSelectionDimension.setReversed(reversed);
         return datasetSelectionDimension;
     }
 

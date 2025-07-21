@@ -47,12 +47,21 @@ public class DatasetSelection {
         }
 
         recalculateMultipliers();
+        reverseDimensionsIfNeeded();
     }
 
     private void recalculateMultipliers() {
         initializeMultipliers(getLeftDimensions());
         initializeMultipliers(getTopDimensions());
         initializedFixedMultipliers();
+    }
+
+    private void reverseDimensionsIfNeeded() {
+        for (DatasetSelectionDimension dimension : getDimensions()) {
+            if (dimension.getReversed()) {
+                Collections.reverse(dimension.getSelectedDimensionValues());
+            }
+        }
     }
 
     public boolean isUserSelection() {

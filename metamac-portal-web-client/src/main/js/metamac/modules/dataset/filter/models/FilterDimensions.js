@@ -290,7 +290,8 @@
                     position: position,
                     visibleLabelType: dimension.get('visibleLabelType'),
                     categories: categories,
-                    sortBy: dimension.get('sortBy')
+                    sortBy: dimension.get('sortBy'),
+                    reversed: dimension.get('reversed'),
                 }
             });
             return exportResult;
