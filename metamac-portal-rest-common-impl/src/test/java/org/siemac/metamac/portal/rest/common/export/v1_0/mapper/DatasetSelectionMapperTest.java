@@ -73,6 +73,7 @@ public class DatasetSelectionMapperTest {
         dimension.setLabelVisualisationMode(labelVisualisationMode);
         dimension.setDimensionValues(new DimensionValues());
         dimension.getDimensionValues().getDimensionValues().addAll(Arrays.asList(dimensionValues));
+        dimension.setReversed(false);
         return dimension;
     }
 

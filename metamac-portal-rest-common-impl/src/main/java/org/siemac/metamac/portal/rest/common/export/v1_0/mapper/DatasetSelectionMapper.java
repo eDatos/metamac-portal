@@ -112,6 +112,7 @@ public class DatasetSelectionMapper {
         target.setSelectedDimensionValues(source.getDimensionValues().getDimensionValues());
         target.setPosition(source.getPosition());
         target.setLabelVisualisationMode(toLabelVisualisationMode(source.getLabelVisualisationMode()));
+        target.setReversed(source.getReversed());
         return target;
     }
 
