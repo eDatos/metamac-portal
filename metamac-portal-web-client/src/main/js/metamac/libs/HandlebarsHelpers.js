@@ -173,7 +173,7 @@
             result += '</div>';
             result +=
                 '</div>';
-        } else {
+        } else if (type === 'resourceButton') {
             var hrefValue = {href: value, name: localizeLabel ? I18n.t(label) : label};
             result += resourceOutput(hrefValue, targetBlank, fieldClass, iconClass);
         }

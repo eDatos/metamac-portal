@@ -198,7 +198,25 @@
             var conceptsUrl = new URL(conceptItems[0].selfLink.href);
             conceptsUrl.pathname = conceptsUrl.pathname.replace(/\/concepts\/[^\/]+\/*$/, '');
             return conceptsUrl.toString();
-        }
+        },
+
+        getRelatedCodelistFromDatasetAttribute: function (codelist, callback) {
+            var requestParams = {
+                url: codelist.selfLink.href + "?_type=json",
+                method: "GET",
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
+            };
+
+            $.ajax(requestParams)
+                .done(function (response) {
+                    callback(null, response);
+                })
+                .fail(function () {
+                    callback("Error fetching codelist");
+                })
+        },
     };
 
 }());
