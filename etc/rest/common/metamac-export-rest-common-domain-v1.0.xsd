@@ -36,6 +36,7 @@
             <xs:element name="dimensionFilters" type="tns:DimensionFilters" minOccurs="0" /> <!-- opcional -->
             <xs:element name="labelVisualisationMode" type="tns:LabelVisualisationMode" minOccurs="0" /> <!--  opcional, se rellena como LABEL_CODE si no se especifica -->
             <xs:element name="position" type="xs:int" minOccurs="0" /> <!--  opcional, se rellena desde el dsd si no se especifica -->
+            <xs:element name="reversed" type="xs:boolean" minOccurs="0" /> <!--  opcional, se sirve el orden original si no se especifica -->
         </xs:sequence>
     </xs:complexType> 
     
