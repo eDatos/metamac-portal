@@ -436,16 +436,12 @@ public class PxExporter {
         }
 
         String valueCode = "";
-        List<ResourceStatisticalResourceBase> resources = subjectAreas.getResources();
-        if (resources != null && !resources.isEmpty()) {
-            String id = resources.get(0).getId();
-            valueCode = (id != null) ? id : "";
-        }
-
         InternationalString valueNameInternationalString = null;
-        for (Iterator<ResourceStatisticalResourceBase> iterator = subjectAreas.getResources().iterator(); iterator.hasNext(); ) {
-            ResourceStatisticalResourceBase subjectArea = iterator.next();
-            valueNameInternationalString = PortalUtils.concatenateInternationalString(valueNameInternationalString, subjectArea.getName());
+        List<ResourceStatisticalResourceBase> subjectAreaResources = subjectAreas.getResources();
+        if (subjectAreaResources != null && !subjectAreaResources.isEmpty()) {
+            String id = subjectAreaResources.get(0).getId();
+            valueNameInternationalString  =  PortalUtils.concatenateInternationalString(valueNameInternationalString, subjectAreaResources.get(0).getName());
+            valueCode = (id != null) ? id : "";
         }
 
         writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), valueNameInternationalString);
