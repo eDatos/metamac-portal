@@ -198,7 +198,8 @@
                 const selectedDimension = {
                     dimensionId: dimensionId,
                     labelVisualisationMode: dimension.visibleLabelType,
-                    position: dimension.position
+                    position: dimension.position,
+                    reversed: dimension.reversed
                 };
 
                 // Only include if some (but not all) are selected

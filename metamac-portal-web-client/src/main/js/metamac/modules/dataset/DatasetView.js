@@ -226,10 +226,18 @@
 
         _initializeWidget: function () {
             this.content.$el.addClass('dataset-widget');
-            this._updateSidebarHeight($('body').height());
+            const $body = $('body');
+            this._updateSidebarHeight($body.height());
+
+            const updateSidebarHeightOnResize = _.debounce(() => {
+                this._updateSidebarHeight($body.height());
+            }, 100);
+
+            $body.on('resize.datasetSidebarHeight', _.bind(updateSidebarHeightOnResize, this));
         },
+
         _updateSidebarHeight: function (height) {
-            this.content.$el.outerHeight(height);
+            this.content.$el.height(height);
         },
 
         showLoading: function () {
