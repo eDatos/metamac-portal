@@ -439,9 +439,9 @@ public class PxExporter {
         InternationalString valueNameInternationalString = null;
         List<ResourceStatisticalResourceBase> subjectAreaResources = subjectAreas.getResources();
         if (subjectAreaResources != null && !subjectAreaResources.isEmpty()) {
-            String id = subjectAreaResources.get(0).getId();
-            valueNameInternationalString  =  PortalUtils.concatenateInternationalString(valueNameInternationalString, subjectAreaResources.get(0).getName());
-            valueCode = (id != null) ? id : "";
+            ResourceStatisticalResourceBase subjectArea = subjectAreaResources.get(0);
+            valueNameInternationalString = subjectArea.getName();
+            valueCode = subjectArea.getId();
         }
 
         writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), valueNameInternationalString);
