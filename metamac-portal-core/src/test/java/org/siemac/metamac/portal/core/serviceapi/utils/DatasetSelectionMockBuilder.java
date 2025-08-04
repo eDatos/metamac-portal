@@ -39,6 +39,7 @@ public class DatasetSelectionMockBuilder {
         DatasetSelectionDimension dimension = new DatasetSelectionDimension(dimensionId);
         dimension.setPosition(position);
         dimension.setLabelVisualisationMode(labelVisualisationMode);
+        dimension.setReversed(false);
         lastDimension = dimension;
         dimensions.add(dimension);
         return this;

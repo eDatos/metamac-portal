@@ -11,6 +11,7 @@ public class DatasetSelectionDimension {
 
     private LabelVisualisationModeEnum labelVisualisationMode;
     private Integer                    position;
+    private Boolean                    reversed;
 
     public DatasetSelectionDimension(String id) {
         this.id = id;
@@ -44,4 +45,11 @@ public class DatasetSelectionDimension {
         this.selectedDimensionValues = selectedDimensionValues;
     }
 
+    public Boolean getReversed() {
+        return reversed;
+    }
+
+    public void setReversed(Boolean reversed) {
+        this.reversed = reversed;
+    }
 }
