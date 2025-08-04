@@ -201,6 +201,9 @@
         },
 
         getRelatedCodelistFromDatasetAttribute: function (codelist, callback) {
+            if (!codelist.selfLink) {
+                return null;
+            }
             var requestParams = {
                 url: codelist.selfLink.href + "?_type=json",
                 method: "GET",
