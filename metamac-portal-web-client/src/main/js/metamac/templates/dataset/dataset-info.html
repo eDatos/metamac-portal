@@ -55,6 +55,9 @@
             <div class="field">
                 {{ fieldOutput name description "text" false false true ''}} {{#each annotations }}
                 <span class="metadata-value">{{ resourceOutput this ../../targetBlank }}</span> {{/each}}
+                <div class="metadata-resource-value">
+                    {{ fieldOutput "entity.dataset.seeConcept.button" resource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+                </div>
             </div>
             {{/ulList}}
         </div>
