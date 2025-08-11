@@ -269,13 +269,11 @@
         },
 
         _getApiDownloadFormats: function() {
-            if (this._isQuery()) {
-                return ["XML", "JSON", "JSONSTAT"];
-            } else if (this._isIndicator()) {
-                return ["JSONSTAT"];
-            } else {
-                return ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
+            var allApiDownloadFormats = ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
+            if (this._isIndicator()) {
+                return allApiDownloadFormats.filter(format => format !== "XML");
             }
+            return allApiDownloadFormats;
         },
 
         _getRelatedResources: function() {
