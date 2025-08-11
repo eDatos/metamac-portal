@@ -65,31 +65,31 @@ import org.slf4j.LoggerFactory;
 
 public class PxExporter {
 
-    private static final int       MAX_LINE_LENGTH          = 252;
+    private static final int MAX_LINE_LENGTH = 252;
 
-    private final Logger           logger                   = LoggerFactory.getLogger(PxExporter.class);
+    private final Logger logger = LoggerFactory.getLogger(PxExporter.class);
 
-    private final ResourceAccess   datasetAccess;
-    private final String           ATTRIBUTE_LINE_SEPARATOR = "#";
-    private Set<String>            languages                = new HashSet<String>();
-    private Map<String, Integer>   languageOrder            = new HashMap<String, Integer>();
-    private final DatasetSelection datasetSelection;
-    private Integer                showDecimals             = null;
-    private final static int       MAX_PX_MATRIX_LENGTH     = 8;
-    private String                 unitMeasure              = "UNIDAD_MEDIDA";
-    private String                 unitMultiplier           = "MULTIPLICADOR_UNIDAD";
-
+    private final        ResourceAccess       datasetAccess;
+    private final        String               ATTRIBUTE_LINE_SEPARATOR = "#";
+    private              Set<String>          languages                = new HashSet<String>();
+    private              Map<String, Integer> languageOrder            = new HashMap<String, Integer>();
+    private final        DatasetSelection     datasetSelection;
+    private              Integer              showDecimals             = null;
+    private final static int                  MAX_PX_MATRIX_LENGTH     = 8;
+    private              String               unitMeasure              = "UNIDAD_MEDIDA";
+    private              String               unitMultiplier           = "MULTIPLICADOR_UNIDAD";
 
     public PxExporter(DatasetBase dataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
-        datasetAccess = new ResourceAccess( dataset, datasetSelection, lang, langDefault);
+        datasetAccess = new ResourceAccess(dataset, datasetSelection, lang, langDefault);
 
         this.datasetSelection = datasetSelection;
         this.unitMeasure = unitMeasure;
         this.unitMultiplier = unitMultiplier;
     }
 
-    public PxExporter(QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier) throws MetamacException {
-        datasetAccess = new ResourceAccess( query, relatedDataset, datasetSelection, lang, langDefault);
+    public PxExporter(QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, String langDefault, String unitMeasure, String unitMultiplier)
+            throws MetamacException {
+        datasetAccess = new ResourceAccess(query, relatedDataset, datasetSelection, lang, langDefault);
 
         this.datasetSelection = datasetSelection;
         this.unitMeasure = unitMeasure;
@@ -435,15 +435,13 @@ public class PxExporter {
             return;
         }
 
+        String valueCode = "";
         InternationalString valueNameInternationalString = null;
-        StringBuilder valueCode = new StringBuilder();
-        for (Iterator<ResourceStatisticalResourceBase> iterator = subjectAreas.getResources().iterator(); iterator.hasNext();) {
-            ResourceStatisticalResourceBase subjectArea = iterator.next();
-            valueNameInternationalString = PortalUtils.concatenateInternationalString(valueNameInternationalString, subjectArea.getName());
-            valueCode.append(subjectArea.getId());
-            if (iterator.hasNext()) {
-                valueCode.append(". ");
-            }
+        List<ResourceStatisticalResourceBase> subjectAreaResources = subjectAreas.getResources();
+        if (subjectAreaResources != null && !subjectAreaResources.isEmpty()) {
+            ResourceStatisticalResourceBase subjectArea = subjectAreaResources.get(0);
+            valueNameInternationalString = subjectArea.getName();
+            valueCode = subjectArea.getId();
         }
 
         writeLocalisedLine(printWriter, PxKeysEnum.SUBJECT_AREA, Collections.emptyList(), valueNameInternationalString);
@@ -766,8 +764,7 @@ public class PxExporter {
     }
 
     /**
-     * If exist more than one attribute for a same key (example: pair dimensionId-dimensionValueId for VALUENOTE) concat values with <br/>
-     * (# in PX)
+     * If exist more than one attribute for a same key (example: pair dimensionId-dimensionValueId for VALUENOTE) concat values with <br/> (# in PX)
      *
      * @throws MetamacException
      */
@@ -917,8 +914,8 @@ public class PxExporter {
 
         // Builds attribute values
         for (Attribute attribute : attributes) {
-            if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())
-                    && !(AttributeAttachmentLevelType.DIMENSION.equals(attribute.getAttachmentLevel()) && attribute.getDimensions().getDimensions().size() > 1)) {
+            if (!AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel()) && !(AttributeAttachmentLevelType.DIMENSION.equals(
+                    attribute.getAttachmentLevel()) && attribute.getDimensions().getDimensions().size() > 1)) {
                 continue;
             }
             String attributeId = attribute.getId();
@@ -1256,7 +1253,7 @@ public class PxExporter {
 
         int currentLineCharactersLength = initialOffset;
         boolean multilineAvalaible = initialOffset != -1;
-        for (Iterator<String> iterator = sources.iterator(); iterator.hasNext();) {
+        for (Iterator<String> iterator = sources.iterator(); iterator.hasNext(); ) {
             String source = iterator.next();
             StringBuilder valueBuilder = new StringBuilder(MAX_LINE_LENGTH);
             valueBuilder.append(QUOTE);
