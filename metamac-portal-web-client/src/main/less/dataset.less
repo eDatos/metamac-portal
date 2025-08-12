@@ -120,6 +120,31 @@
                     list-style: none;
                 }
             }
+
+            .metadata-resource-value {
+                padding-top: 10px;
+                .button-link {
+                    padding: 5px 10px;
+                    background: transparent;
+                    border: 1px solid @istacBlueMedium;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    text-transform: uppercase;
+                    display: flex;
+                    gap: 5px;
+                    align-items: center;
+                    width: max-content;
+
+                    i {
+                        color: @istacBlueMedium;
+                       
+                        &:before {
+                            color: @istacBlueMedium;
+                            padding: 0;
+                        }  
+                    }
+                }
+            }
         }
     }
 
@@ -486,6 +511,11 @@
 .dataset-options-visualize {
     .dataset-options-type-icon;
     .icon-visualize;
+}
+
+.metadata-value-resource-url {
+    .dataset-options-type-icon;
+    .icon-eye;
 }
 
 .dataset-download {
