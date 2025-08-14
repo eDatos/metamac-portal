@@ -294,6 +294,11 @@
 
             var attributeEnumerates = attribute.attributeValues;
             if (attributeEnumerates) { // enumerated resource
+                var api = new App.dataset.StructuralResourcesApi();
+                api.getRelatedCodelistFromDatasetAttribute(attributeEnumerates.value[0] ,function (error, response) {
+                    attribute.relatedResource = response.visualizerHtmlLink;
+                });
+                 
                 attributeEnumerates = _(attributeEnumerates.value).indexBy("id");
                 attribute.value = this._getValueForEnumerate(attribute.value, attributeEnumerates);
             }

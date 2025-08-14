@@ -67,6 +67,8 @@
 		                    App.endpoints["structural-resources"] = "${ApiUrlStructuralResources}/v1.0";
 		                    // http://estadisticas.arte-consultores.com/statistical-visualizer
 		                    App.endpoints["statistical-visualizer"] = "${StatisticalVisualizerBase}";
+							// http://estadisticas.arte-consultores.com/statistical-visualizer/visualizer
+							App.endpoints["statistical-visualizer-url"] = "${statisticalVisualizerUrl}";
 		                    // http://estadisticas.arte-consultores.com/permalinks
 		                    App.endpoints["permalinks"] = "${ApiUrlPermalinks}/v1.0";
 		                    // http://estadisticas.arte-consultores.com/export

@@ -99,6 +99,9 @@
                         dimension.conceptIdentity = dimensionConcept;
                         dimension.conceptName = App.DimensionsUtils.getDimensionLabel(dimensionConcept);
                         dimension.conceptDescription = App.InternationalizationUtils.localizeLabel(dimensionConcept.description);
+                        dimension.conceptResource = dimension.conceptIdentity.visualizerHtmlLink;
+                        dimension.relatedResource = dimension.localRepresentation.enumerationCodelist ? 
+                                                    dimension.localRepresentation.enumerationCodelist.visualizerHtmlLink : '';
                         return dimension;
                     });
                     self.updateDimensions(parsedDimensions);
@@ -125,6 +128,7 @@
                 var parsedConcepts = _.map(concepts, function (concept) {
                     concept.name = App.InternationalizationUtils.localizeLabel(concept.name);
                     concept.description = App.InternationalizationUtils.localizeLabel(concept.description);
+                    concept.resource = concept.visualizerHtmlLink;
                     concept.annotations = concept.annotations ? _.map(concept.annotations.annotation, function (annotation) {
                         return {
                             href: annotation.url,
@@ -265,13 +269,11 @@
         },
 
         _getApiDownloadFormats: function() {
-            if (this._isQuery()) {
-                return ["XML", "JSON", "JSONSTAT"];
-            } else if (this._isIndicator()) {
-                return ["JSONSTAT"];
-            } else {
-                return ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
+            var allApiDownloadFormats = ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
+            if (this._isIndicator()) {
+                return allApiDownloadFormats.filter(format => format !== "XML");
             }
+            return allApiDownloadFormats;
         },
 
         _getRelatedResources: function() {

@@ -26,17 +26,17 @@
                     {
                         format: 'csv',
                         href: App.Helpers.formatUrl(this._buildEndpoint('csv')),
-                        show: this.identifierType === App.Constants.visualization.type.DATASET
+                        show: true
                     },
                     {
                         format: 'tsv',
                         href: App.Helpers.formatUrl(this._buildEndpoint('tsv')),
-                        show: this.identifierType === App.Constants.visualization.type.DATASET
+                        show: true 
                     },
                     {
                         format: 'xlsx',
                         href: App.Helpers.formatUrl(this._buildEndpoint('xlsx')),
-                        show: this.identifierType === App.Constants.visualization.type.DATASET
+                        show: true
                     },
                     {
                         format: 'xml',
@@ -46,7 +46,7 @@
                     {
                         format: 'json',
                         href: App.Helpers.formatUrl(this._buildEndpoint('json')),
-                        show: this.identifierType === App.Constants.visualization.type.DATASET || this.identifierType === App.Constants.visualization.type.QUERY
+                        show: true
                     },
                     {
                         format: 'jsonstat',

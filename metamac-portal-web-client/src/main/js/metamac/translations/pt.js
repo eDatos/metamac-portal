@@ -248,6 +248,13 @@ I18n.translations.pt = {
                 reuse: "Reutilização e informações para desenvolvedores"
             },
 
+            seeConcept: {
+                button: "Ver conceito",
+            },
+            seeRelatedResource: {
+                button: "Ver classificação"
+            },
+
             language: "Idioma",
 
             apiDocumentationUrl: "Acesso à documentação API",

@@ -121,7 +121,7 @@
             request.setAttribute("defaultInternationalizationLanguage", DEFAULT_INTERNATIONALIZATION_LANGUAGE);
             request.setAttribute("apiKey", API_KEY);
             request.setAttribute("addAncestorsForGeoParam", ADD_ANCESTORS_FOR_GEO_PARAM);
-
+            request.setAttribute("statisticalVisualizerUrl", WebUtils.getPortalWebVisualizerUrl());
 		} catch (MetamacException e) {
             request.setAttribute("installationType", "error");
 		 	request.setAttribute("ApiUrlStatisticalVisualizer","error");
@@ -140,7 +140,7 @@
             request.setAttribute("defaultInternationalizationLanguage", "error");
             request.setAttribute("apiKey", "error");
             request.setAttribute("addAncestorsForGeoParam", "error");
-
+            request.setAttribute("statisticalVisualizerUrl", "error");
 		 	request.setAttribute("analyticsGoogleTrackingId", "error");
             
 		 	log.error("Error durante la inicialización de propiedades", e);
