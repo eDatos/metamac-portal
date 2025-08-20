@@ -179,7 +179,7 @@ I18n.translations.es = {
         },
         noSelection: "Debe seleccionar al menos una categoría en cada dimensión",
 
-        selectAtLeastTwoItems: "Debe seleccionar al menos dos valores en el mismo nivel",
+        selectAtLeastTwoItems: "Debe seleccionar al menos dos valores de la misma granularidad geográfica",
 
         loading: "Cargando datos..."
     },
