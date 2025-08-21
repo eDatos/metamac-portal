@@ -178,7 +178,7 @@ I18n.translations.ca = {
             nomap: "Mapa no disponible"
         },
         noSelection: "Seleccioni almenys una categoria en cada dimensió",
-        selectAtLeastTwoItems: "Seleccioni almenys dos valors al mateix nivell",
+        selectAtLeastTwoItems: "Ha de seleccionar almenys dos valors de la mateixa granularitat geogràfica",
         loading: "Carregant dades..."
     },
 

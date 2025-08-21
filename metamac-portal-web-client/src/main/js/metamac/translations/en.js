@@ -178,7 +178,7 @@ I18n.translations.en = {
             nomap: "No map available"
         },
         noSelection: "You must choose at least one category on each dimension",
-        selectAtLeastTwoItems: "You must select at least two values at the same level",
+        selectAtLeastTwoItems: "You must select at least two values of the same geographical granularity",
         loading: "Loading data..."
     },
 

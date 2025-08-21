@@ -257,11 +257,11 @@
         },
 
         _calculateSelectedGeographicLevel: function (dimension, representations) {
-            var selectedLevels = _.uniq(_.map(representations.getSelectedAndDrawableRepresentations(), function(representation) {
-                return representation.get('level');
+            var selectedGranularity = _.uniq(_.map(representations.getSelectedAndDrawableRepresentations(), function(representation) {
+                return representation.get('geographicGranularityId');
             }));
-            if (dimension.get('type') === "GEOGRAPHIC_DIMENSION" && selectedLevels.length === 1) {
-                representations.setSelectedGeographicLevel(selectedLevels[0]);
+            if (dimension.get('type') === "GEOGRAPHIC_DIMENSION" && selectedGranularity.length === 1) {
+                representations.setSelectedGeographicGranularity(selectedGranularity[0]);
             }
         },
 

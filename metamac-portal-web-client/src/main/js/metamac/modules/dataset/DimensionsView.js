@@ -186,7 +186,7 @@
             "click a.order-sidebar-dimension": "_dontFollowLinks",
             "click a.order-sidebar-measure-attribute": "_dontFollowLinks",
             "change .fixed-dimension-select-category": "_onChangeCategory",
-            "change .dimension-select-level": "_onChangeLevel",
+            "change .dimension-select-geographic-granularity": "_onChangeGeographicGranularity",
             "change .dimension-select-granularity": "_onChangeGranularity",
             "change .dimension-select-sortby": "_onChangeSortBy",
 
@@ -225,8 +225,8 @@
         },
 
         _onChangeSelectedForGeographicRepresentations: function (dimensionId, e) {
-            this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedLevel();
-            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicLevelIfNoElementsInLevel();
+            this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedGeographicGranularity();
+            this.filterDimensions.get(dimensionId).get('representations').updateSelectedGeographicGranularityIfNoElementsInGranularity();
             this.render();
         },
 
@@ -237,13 +237,13 @@
             this.render();
         },
 
-        _onChangeLevel: function (e) {
+        _onChangeGeographicGranularity: function (e) {
             var currentTarget = $(e.currentTarget);
-            var selectedLevel = currentTarget.val();
+            var selectedGranularity = currentTarget.val();
             var dimensionId = currentTarget.data("dimension-id");
             if (dimensionId) {
-                this.filterDimensions.get(dimensionId).get('representations').setSelectedGeographicLevel(selectedLevel);
-                this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedLevel();
+                this.filterDimensions.get(dimensionId).get('representations').setSelectedGeographicGranularity(selectedGranularity);
+                this.filterDimensions.get(dimensionId).get('representations').updateDrawablesBySelectedGeographicGranularity();
             }
         },
 
@@ -287,7 +287,7 @@
             this.filterDimensions.each(function (filterDimension) {
                 self.listenTo(filterDimension.get('representations'), 'change:drawable', _.debounce(_.bind(self._updateSelectedCategory, self, filterDimension.get('id')), 400));
                 
-                if (self._needsGeographicLevelSelector(filterDimension)) {
+                if (self._needsGeographicGranularitySelector(filterDimension)) {
                     self.listenTo(filterDimension.get('representations'), 'change:selected', _.debounce(_.bind(self._onChangeSelectedForGeographicRepresentations, self, filterDimension.get('id')), 300));
                 } else if (self._needsTemporalGranularitySelector(filterDimension)) {
                     self.listenTo(filterDimension.get('representations'), 'change:selected', _.debounce(_.bind(self._onChangeSelectedForTemporalRepresentations, self, filterDimension.get('id')), 300));
@@ -406,7 +406,7 @@
             var self = this;
             return this.filterDimensions.dimensionsAtZone(zone)
                 .reduce(function (memo, dimension) {
-                    return memo || self._needsGeographicLevelSelector(dimension) || self._needsTemporalGranularitySelector(dimension);
+                    return memo || self._needsGeographicGranularitySelector(dimension) || self._needsTemporalGranularitySelector(dimension);
                 }, false);
         },
 
@@ -449,9 +449,9 @@
 
                 if (dimension.singleValue) {
                     // Single values don´t have any kind of selector in the pill
-                } else if (self._needsGeographicLevelSelector(dimensionModel)) {
-                    dimension.selectedLevel = dimensionModel.get('representations').getSelectedGeographicLevel();
-                    dimension.levelList = self._getGeographicGranularityCollection(dimensionModel);
+                } else if (self._needsGeographicGranularitySelector(dimensionModel)) {
+                    dimension.selectedGeographicGranularity = dimensionModel.get('representations').getSelectedGeographicGranularity();
+                    dimension.geographicGranularityList = self._getGeographicGranularityCollection(dimensionModel);
                 } else if (self._needsTemporalGranularitySelector(dimensionModel)) {
                     dimension.selectedGranularity = dimensionModel.get('representations').getSelectedTemporalGranularity();
                     dimension.granularityList = self._getGranularityList(dimensionModel);
@@ -492,17 +492,17 @@
                 .value();
         },
 
-        _needsGeographicLevelSelector: function (dimension) {
+        _needsGeographicGranularitySelector: function (dimension) {
             return this._isMap() && dimension.get('type') == "GEOGRAPHIC_DIMENSION";
         },
 
         _getGeographicGranularityCollection: function (dimension) {
             return _.chain(dimension.get("representations").getGeographicRepresentationsWithMoreThanOneElementSelected())
                 .sortBy(representation => representation.get("level"))
-                .uniq(true, representation => representation.get("level"))
+                .uniq(true, representation => representation.get("geographicGranularityId"))
                 .map(function (representation) {
                     return {
-                        level: representation.get("level").toString(),
+                        id: representation.get("geographicGranularityId"),
                         label: representation.get("geographicGranularityLabel"),
                     };
                 })
