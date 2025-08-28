@@ -118,7 +118,7 @@
                         active: fullScreenActive,
                         btnClass: fullScreenActive ? 'active' : ''
                     },
-                    helpUrl: App.config["helpUrl"],
+                    helpUrl: this._getHelpUrl(),
                     usersAreAvailable: !!(App.endpoints["external-users"] && App.endpoints["external-users-web"] && window.Edatos && Edatos.UserManagement),
                     visualize: this.optionsModel.get('visualize'),
                     widget: this.optionsModel.get('widget'),
@@ -143,6 +143,15 @@
                 return type == "info" || type == this.optionsModel.get('widgetInitialType');
             }
             return true;
+        },
+
+        _getHelpUrl: function () {
+            try {
+                var helpUrl = JSON.parse(App.config["helpUrl"]);
+                return App.InternationalizationUtils.localizeLabel(helpUrl);
+            } catch (error) {
+                return App.config["helpUrl"];
+            }
         },
 
         _isExportableImage: function () {
