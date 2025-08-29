@@ -92,7 +92,7 @@
 		                    App.config["installationType"] = "${installationType}";
                             App.config["socialTwitterVia"] = "${socialTwitterVia}";
                             App.config["enableGraphColors"] = ${enableGraphColors};
-							App.config["helpUrl"] = "${helpUrl}";
+							App.config["helpUrl"] = '${helpUrl}';
 							App.config["cellThreshold"] = ${cellThreshold};
 							App.config["unitMeasure"] = "${unitMeasure}";
 							App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
