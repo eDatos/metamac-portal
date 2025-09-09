@@ -34,7 +34,7 @@
         </property>
     </bean>
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="dataSource" class="org.siemac.edatos.core.common.datasource.EdatosBasicDataSource" destroy-method="close">
         <property name="driverClassName"    value="${metamac.portal.db.driver_name}"/>
         <property name="url"                value="${metamac.portal.db.url}"/>
         <property name="username"           value="${metamac.portal.db.username}"/>
