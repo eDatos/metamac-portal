@@ -54,6 +54,11 @@
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jasig.cas.client</groupId>
+            <artifactId>cas-client-core</artifactId>
+            <version>${cas-client.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

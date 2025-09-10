@@ -121,4 +121,51 @@
 		<welcome-file>jsp/visualizer/operations.jsp</welcome-file>
 	</welcome-file-list>
 
+    <!-- CAS Configuration -->
+    <context-param>
+        <param-name>casServerLoginUrl</param-name>
+        <param-value>https://estadisticas.arte-consultores.com/authentication-service-internal/login</param-value>
+    </context-param>
+    <context-param>
+        <param-name>casServerLogoutUrl</param-name>
+        <param-value>https://estadisticas.arte-consultores.com/authentication-service-internal/logout</param-value>
+    </context-param>
+    <context-param>
+        <param-name>serverName</param-name>
+        <param-value>https://estadisticas.arte-consultores.com/statistical-visualizer</param-value>
+    </context-param>
+
+    <!-- CAS Single Sign Out Listener -->
+    <listener>
+        <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+    </listener>
+
+    <!-- CAS Authentication Filter -->
+    <filter>
+        <filter-name>CAS Authentication Filter</filter-name>
+        <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
+        <init-param>
+            <param-name>casServerLoginUrl</param-name>
+            <param-value>https://estadisticas.arte-consultores.com/authentication-service-internal/login</param-value>
+        </init-param>
+        <init-param>
+            <param-name>serverName</param-name>
+            <param-value>https://estadisticas.arte-consultores.com/statistical-visualizer</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CAS Authentication Filter</filter-name>
+        <url-pattern>/visualizer/*</url-pattern>
+    </filter-mapping>
+
+    <!-- CAS Single Sign Out Filter -->
+    <filter>
+        <filter-name>CAS Single Sign Out Filter</filter-name>
+        <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CAS Single Sign Out Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>
