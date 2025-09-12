@@ -76,7 +76,7 @@
         },
 
         initializeCache: function () {
-            var measureDimension = this.getMeasureDimension() ? this.getMeasureDimension().id : null;
+            var measureDimension = this.getMeasureDimension() ? this.getMeasureDimension().id : this.getMeasureAttribute().id;
             this.decimalsForSelection = _.memoize(this.decimalsForSelection, function (selection) {
                 if (measureDimension) {
                     return selection[measureDimension];
@@ -277,13 +277,17 @@
             return dimensions;
         },
 
-        getAttributesLikeDimensions: function () {
+        getMeasureAttribute: function() {
+            return _.findWhere(this.getAttributesLikeDimensions(), { type: "MEASURE" });
+        },
+
+        getAttributesLikeDimensions: _.memoize(function () {
             if (!this.metadata.attributes) { return []; }
 
             var self = this;
             return _.chain(this.metadata.attributes.attribute)
                 .filter(function (attribute) {
-                    return attribute.attachmentLevel == "DATASET" && _.include(["MEASURE", "TEMPORAL", "SPATIAL"], attribute.type);
+                    return attribute.attachmentLevel === "DATASET" && _.include(["MEASURE", "TEMPORAL", "SPATIAL"], attribute.type);
                 })
                 .map(function (attribute) {
                     return {
@@ -294,11 +298,12 @@
                         isAttribute: true,
                         representations: self.getRepresentationsForAttributeDimension(attribute.id),
                         measureUnit: self.getUnitMeasureValueForAttributeDimension(attribute),
-                        unitMultiplier: self.getUnitMultiplierValueForAttributeDimension(attribute)
-                    }
+                        unitMultiplier: self.getUnitMultiplierValueForAttributeDimension(attribute),
+                        decimals: self.getDecimalsForAttributeDimension(attribute),
+                    };
                 })
                 .value();
-        },
+        }),
 
         getUnitMeasureValueForAttributeDimension: function (attribute) {
             if (attribute.attributeValues && attribute.attributeValues.value[0] && attribute.attributeValues.value[0].measureQuantity) {
@@ -434,6 +439,9 @@
         },
 
         decimalsForSelection: function (selection) {
+            if (this.getMeasureAttribute() != null) {
+                return this.getMeasureAttribute().decimals;
+            }
             var selectedDimValue = this._findSelectedMeasureDimensionValue(selection);
             if (selectedDimValue) {
                 return selectedDimValue.decimals;
@@ -691,6 +699,14 @@
 
         _getResourceName: function (resource) {
             return resource && App.InternationalizationUtils.localizeLabel(resource.name);
+        },
+
+        getDecimalsForAttributeDimension: function(attribute) {
+            if (attribute.attributeValues && attribute.attributeValues.value[0] && attribute.attributeValues.value[0].showDecimalsPrecision != null) {
+                return attribute.attributeValues.value[0].showDecimalsPrecision;
+            } else {
+                return this.getDefaultDecimals();
+            }
         }
     };
 
