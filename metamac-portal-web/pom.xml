@@ -59,6 +59,11 @@
             <artifactId>cas-client-core</artifactId>
             <version>${cas-client.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.siemac.metamac.metamac-sso</groupId>
+            <artifactId>metamac-sso-client</artifactId>
+            <version>4.11.1</version>
+        </dependency>
     </dependencies>
 
     <build>
