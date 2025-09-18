@@ -76,10 +76,13 @@
         },
 
         initializeCache: function () {
-            var measureDimension = this.getMeasureDimension() ? this.getMeasureDimension().id : this.getMeasureAttribute().id;
+            var measureDimension = this.getMeasureDimension() ? this.getMeasureDimension().id : null;
+            var measureAttribute = this.getMeasureAttribute() ? this.getMeasureAttribute().id : null;
             this.decimalsForSelection = _.memoize(this.decimalsForSelection, function (selection) {
                 if (measureDimension) {
                     return selection[measureDimension];
+                } else if (measureAttribute) {
+                    return selection[measureAttribute];
                 } else {
                     return JSON.stringify(selection);
                 }
