@@ -159,6 +159,7 @@
     };
 
     App.Table.View.prototype.repaint = function () {
+        this.fixHighDpiBlur();
         _.each(this.zones, function (zone) {
             if (zone.needRepaint) {
                 zone.repaint();
@@ -166,7 +167,26 @@
         });
     };
 
+    App.Table.View.prototype.fixHighDpiBlur = function () {
+        // see https://stackoverflow.com/questions/15661339/how-do-i-fix-blurry-text-in-my-html5-canvas/54027313#54027313
+        const dpr = window.devicePixelRatio;
+        const width = Math.ceil(this.canvas.clientWidth * dpr);
+        const height = Math.ceil(this.canvas.clientHeight * dpr);
+
+        this.canvas.width = width;
+        this.canvas.height = height;
+
+        this.canvas.style.width = `${width / dpr}px`;
+        this.canvas.style.height = `${height / dpr}px`;
+
+        this.ctx.scale(dpr, dpr);
+        _.each(this.zones, function (zone) {
+            zone.needRepaint = true;
+        });
+    };
+
     App.Table.View.prototype.forceRepaint = function () {
+        this.fixHighDpiBlur();
         this.clear();
         this.leftHeaderZone.calculateIncrementalSize();
         this.topHeaderZone.calculateIncrementalSize();
