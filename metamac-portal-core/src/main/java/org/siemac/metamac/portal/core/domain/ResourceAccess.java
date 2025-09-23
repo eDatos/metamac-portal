@@ -737,8 +737,14 @@ public class ResourceAccess {
         return offset;
     }
 
-    public boolean existsContVariable() {
+    public boolean hasMeasureDimension() {
         return getMeasureDimension() != null;
+    }
+
+    public boolean existsContVariable() {
+        return hasMeasureDimension()
+               && (getMeasureDimension().getDimensionValues() instanceof EnumeratedDimensionValues)
+               && ((EnumeratedDimensionValues) getMeasureDimension().getDimensionValues()).getTotal().longValue() > 1;
     }
 
     public List<EnumeratedDimensionValue> getSelectedValuesForMeasureDimension() {

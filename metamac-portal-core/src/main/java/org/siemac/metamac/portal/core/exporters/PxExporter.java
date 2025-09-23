@@ -379,7 +379,7 @@ public class PxExporter {
 
         if (showDecimals != null) {
             // Check if correction for Precisions is needed: If precision is more less than showdecimals, then showdecimals is changed to precission value
-            if (datasetAccess.existsContVariable()) {
+            if (datasetAccess.hasMeasureDimension()) {
                 // Measure dimension Has an enumerated representation
                 for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                     if (dimensionValue.getShowDecimalsPrecision() != null && showDecimals > dimensionValue.getShowDecimalsPrecision()) {
@@ -490,8 +490,7 @@ public class PxExporter {
      */
     private void writeContents(PrintWriter printWriter) throws MetamacException {
         InternationalString value = null;
-        if (datasetAccess.existsContVariable()) {
-            // Exists the CONTVARIABLE in the PX
+        if (datasetAccess.hasMeasureDimension()) {
             Dimension measureDimension = datasetAccess.getMeasureDimension();
             value = measureDimension.getName(); // Concept associated to measure
         } else {
@@ -515,7 +514,7 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeUnits(PrintWriter printWriter) throws MetamacException {
-        if (datasetAccess.existsContVariable()) {
+        if (datasetAccess.hasMeasureDimension()) {
             // The general UNITS (not indexed) is mandatory or will launch a "missing units" on pc axis 2008
             writeLocalisedLineAllowEmptyValues(printWriter, PxKeysEnum.UNITS, Collections.emptyList(), buildInternationalStringFromSingleCode(StringUtils.EMPTY, languages));
 
@@ -523,7 +522,7 @@ public class PxExporter {
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 final InternationalString unit = datasetAccess.extractUnitCode(dimensionValue, unitMeasure, unitMultiplier);
                 if (unit != null) {
-                    writeLocalisedLine(printWriter, PxKeysEnum.UNITS, dimensionValue.getName(), unit);
+                    writeLocalisedLine(printWriter, PxKeysEnum.UNITS, datasetAccess.existsContVariable() ? dimensionValue.getName() : null, unit);
                 }
             }
         } else {
@@ -631,6 +630,10 @@ public class PxExporter {
         List<String> result = new LinkedList<>();
 
         for (InternationalString indexValue : indexValues) {
+            if (indexValue == null) {
+                continue;
+            }
+
             String label = null;
             if (fillValuesWithDefaultLanguage) {
                 label = PortalUtils.getLabel(indexValue, lang, datasetAccess.getLangDefault());
@@ -673,12 +676,12 @@ public class PxExporter {
      * @throws MetamacException
      */
     private void writeLastUpdated(PrintWriter printWriter) throws MetamacException {
-        if (datasetAccess.existsContVariable()) {
+        if (datasetAccess.hasMeasureDimension()) {
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
                 // Metamac doesn't support languages in Last Updated
                 InternationalString value = createInternationalStringWithDefaultValue(dateToString(datasetAccess.getMetadata().getLastUpdate()));
-                writeLocalisedLine(printWriter, PxKeysEnum.LAST_UPDATED, dimensionValue.getName(), value);
+                writeLocalisedLine(printWriter, PxKeysEnum.LAST_UPDATED, datasetAccess.existsContVariable() ? dimensionValue.getName() : null, value);
             }
         } else {
             PxLineContainer pxLineContainer = PxLineContainerBuilder.pxLineContainer().withPxKey(PxKeysEnum.LAST_UPDATED).withValue(datasetAccess.getMetadata().getLastUpdate()).build();
@@ -698,10 +701,10 @@ public class PxExporter {
             value = PortalUtils.concatenateInternationalString(value, publisher.getName());
         }
 
-        if (datasetAccess.existsContVariable()) {
+        if (datasetAccess.hasMeasureDimension()) {
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : datasetAccess.getSelectedValuesForMeasureDimension()) {
-                writeLocalisedLine(printWriter, PxKeysEnum.CONTACT, dimensionValue.getName(), value);
+                writeLocalisedLine(printWriter, PxKeysEnum.CONTACT, datasetAccess.existsContVariable() ? dimensionValue.getName() : null, value);
             }
         } else {
             writeLocalisedLine(printWriter, PxKeysEnum.CONTACT, Collections.emptyList(), value);
@@ -778,6 +781,11 @@ public class PxExporter {
         writeAttributesCellNote(printWriter, attributes);
     }
 
+    /**
+     * Precision is only included when there's a need to specify the decimals for every value of the measure dimension
+     * (when the precision is different for each value of the measure dimension), since showDecimals is a general value for all the
+     * measure dimension values.
+     */
     private void writePrecision(PrintWriter printWriter) throws MetamacException {
         if (datasetAccess.existsContVariable()) {
             // Measure dimension Has an enumerated representation
@@ -793,8 +801,6 @@ public class PxExporter {
                 writeLine(printWriter, pxLineContainer);
                 // @formatter:on
             }
-        } else {
-            return; // Nothing
         }
     }
 
