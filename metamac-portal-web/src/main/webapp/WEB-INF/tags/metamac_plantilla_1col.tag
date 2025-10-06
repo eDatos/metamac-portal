@@ -36,7 +36,6 @@
 
 	<!-- begin: #bloq_interior -->
 	<div id="bloq_interior">
-		<a href="https://estadisticas.arte-consultores.com/authentication-service-internal/logout">Logout</a>
 		<!-- begin: CONTENIDO CENTRAL -->
 		<div class="contenido">
 			<jsp:doBody/>

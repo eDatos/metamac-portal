@@ -27,6 +27,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static final String PARAM_APP_NAME                    = "appName";
     private static final String PARAM_APP_URL                     = "appUrl";
     private static final String PARAM_ENABLE_AUTHENTICATION       = "enableAuthentication";
+    private static final String PARAM_INSTALLATION_TYPE           = "installationType";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -441,13 +442,19 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static String buildQuery(String... params) {
         StringJoiner joiner = new StringJoiner("&");
         for (String param : params) {
-            joiner.add(param);
+            if (StringUtils.isNotBlank(param)) {
+                joiner.add(param);
+            }
         }
         return joiner.length() > 0 ? "?" + joiner.toString() : "";
     }
 
     private static String buildHeaderQuery(String lang) {
-        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam(), PARAM_ENABLE_AUTHENTICATION);
+        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam(), buildInstallationType(), PARAM_ENABLE_AUTHENTICATION);
+    }
+
+    private static String buildInstallationType() {
+        return "INTERNAL".equalsIgnoreCase(installationType) ? buildParam(PARAM_INSTALLATION_TYPE, "INTERNAL") : "";
     }
 
     private static String buildAppUrlParam() {
