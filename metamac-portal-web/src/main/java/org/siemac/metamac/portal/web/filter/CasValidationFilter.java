@@ -14,8 +14,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 public class CasValidationFilter implements Filter {
 
@@ -46,13 +47,36 @@ public class CasValidationFilter implements Filter {
 
         String ticket = request.getParameter("ticket");
 
-        String service = "";
         try {
-            service = removeTicket(request.getRequestURL().toString());
+            StringBuilder query = new StringBuilder();
+
+            try {
+                for (Object keyObj : request.getParameterMap().keySet()) {
+                    String key = keyObj.toString();
+                    if ("ticket".equals(key)) {
+                        continue; // saltar el parámetro "ticket"
+                    }
+                    String value = request.getParameter(key);
+                    if (value != null) {
+                        if (query.length() > 0) {
+                            query.append("&");
+                        }
+                        query.append(key)
+                                .append("=")
+                                .append(URLEncoder.encode(value, "UTF-8"));
+                    }
+                }
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+
+            String service = buildServiceUrl(request);
             MetamacPrincipal metamacPrincipal = null;
             metamacPrincipal = validateTicket.validateTicket(ticket, service);
             ServiceContext serviceContext = new ServiceContext(metamacPrincipal.getUserId(), ticket, "PORTAL");
             serviceContext.setProperty(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
+            request.getSession().setAttribute(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
+            //ServiceContextHolder.putCurrentServiceContext(serviceContext);
         } catch (Exception e) {
             logger.error("Error building service URL", e);
         } catch (NoClassDefFoundError e) {
@@ -61,39 +85,25 @@ public class CasValidationFilter implements Filter {
         chain.doFilter(servletRequest, servletResponse);
     }
 
-    public static String removeTicket(String url) throws URISyntaxException {
-        URI uri = new URI(url);
+    public static String buildServiceUrl(HttpServletRequest request) throws UnsupportedEncodingException {
+        StringBuilder url = new StringBuilder(request.getRequestURL().toString());
 
-        String query = uri.getQuery();
-        if (query == null) {
-            return url; // no hay parámetros
-        }
+        String query = request.getQueryString();
+        if (query != null && query.length() > 0) {
+            // quitar el parámetro ticket=... si existe
+            query = query.replaceAll("(^|&)?ticket=[^&]*", "");
 
-        StringBuilder newQuery = new StringBuilder();
-        String[] params = query.split("&");
-
-        for (String param : params) {
-            // comprobamos si es "ticket" con o sin valor
-            if (param.startsWith("ticket=") || "ticket".equals(param)) {
-                continue; // saltamos este
+            // limpiar & al inicio si quedó
+            if (query.startsWith("&")) {
+                query = query.substring(1);
             }
 
-            if (newQuery.length() > 0) {
-                newQuery.append("&");
+            if (query.length() > 0) {
+                url.append("?").append(query);
             }
-            newQuery.append(param);
         }
 
-        // reconstruimos la URL con el nuevo query
-        URI newUri = new URI(
-                uri.getScheme(),
-                uri.getAuthority(),
-                uri.getPath(),
-                newQuery.length() == 0 ? null : newQuery.toString(),
-                uri.getFragment()
-        );
-
-        return newUri.toString();
+        return URLDecoder.decode(url.toString(), "UTF-8");
     }
 
     @Override
