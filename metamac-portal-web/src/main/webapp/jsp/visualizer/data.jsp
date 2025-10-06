@@ -115,11 +115,6 @@
 		                });
 		            });
 		        </script>
-				<script>
-					var urlWithoutTicket = new URL(window.location.href);
-					urlWithoutTicket.searchParams.delete('ticket');
-					window.history.replaceState({}, document.title, urlWithoutTicket.toString());
-				</script>
 	        </c:otherwise>
 	    </c:choose>
     </div>
