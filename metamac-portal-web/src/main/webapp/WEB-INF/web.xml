@@ -153,15 +153,7 @@
     <!-- CAS Authentication Filter -->
     <filter>
         <filter-name>CAS Authentication Filter</filter-name>
-        <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
-        <init-param>
-            <param-name>casServerLoginUrl</param-name>
-            <param-value>http://localhost:8180/metamac_sso_web_war_exploded/login</param-value>
-        </init-param>
-        <init-param>
-            <param-name>serverName</param-name>
-            <param-value>http://localhost:9000</param-value>
-        </init-param>
+        <filter-class>org.siemac.metamac.portal.web.filter.CasAuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>CAS Authentication Filter</filter-name>
@@ -179,12 +171,3 @@
     </filter-mapping>
 
 </web-app>
-<!--
-    - Da igual el valor de ticket, si existe te deja pasar. Indicators hace una petición a validateTicket
-    - Falta una forma de hacer logout
-    - El single sign out si funciona
-    - Habría que esconder el parámetro ticket
-    - comprobar que no se ve la api key: no se ve, porque hace un redirect
-    - en indicadores cada recarga tiene que redirigir al cas primero
-    - deberian usarse los roles
--->

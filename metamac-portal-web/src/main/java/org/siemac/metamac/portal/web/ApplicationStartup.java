@@ -52,6 +52,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
                 WebUtils.setPermalinksApiBaseUrl(portalConfigurationService.retrievePortalInternalApisPermalinksUrlBase());
                 WebUtils.setExportApiBaseUrl(portalConfigurationService.retrievePortalInternalApisExportUrlBase());
                 WebUtils.setApiKey(portalConfigurationService.retrievePortalInternalApiKey());
+                WebUtils.setCasServiceLoginUrl(portalConfigurationService.retrieveSecurityCasServiceLoginUrl());
             }
             WebUtils.setWidgetApiKey(portalConfigurationService.retrievePortalWidgetApiKeyByInstallationType());
 
