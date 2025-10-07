@@ -28,7 +28,7 @@ public class CasAuthenticationFilter extends AuthenticationFilter {
     }
 
     private String getUrlDomain(String url) throws MalformedURLException {
-        String urlPath = new URL(url).getPath();
-        return url.substring(0, url.lastIndexOf(urlPath));
+        URL urlObject = new URL(url);
+        return urlObject.getProtocol() + "://" + urlObject.getHost() + ((urlObject.getPort() == -1) ? "" : ":" + urlObject.getPort());
     }
 }
