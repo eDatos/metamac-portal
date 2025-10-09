@@ -155,7 +155,7 @@
 	</error-page>
     <error-page>
         <error-code>403</error-code>
-        <location>/403.html</location>
+        <location>/jsp/visualizer/403.jsp</location>
     </error-page>
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
