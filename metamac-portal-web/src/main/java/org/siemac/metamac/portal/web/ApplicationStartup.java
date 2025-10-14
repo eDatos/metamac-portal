@@ -275,18 +275,18 @@ public class ApplicationStartup extends ApplicationStartupListener {
             sce.getServletContext().addListener(SingleSignOutHttpSessionListener.class);
 
             FilterRegistration.Dynamic ssoFilter = sce.getServletContext().addFilter("CAS Single Sign Out Filter", SingleSignOutFilter.class);
-            ssoFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+            ssoFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
 
             FilterRegistration.Dynamic authFilter = sce.getServletContext().addFilter("CAS Authentication Filter", AuthenticationFilter.class);
             authFilter.setInitParameter("casServerLoginUrl", casLoginUrl);
             authFilter.setInitParameter("serverName", getServerNameFromUrl(portalBaseUrl));
-            authFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*");
+            authFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
 
             FilterRegistration.Dynamic validationFilter = sce.getServletContext().addFilter("Cas Validation Filter", CasValidationFilter.class);
-            validationFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*");
+            validationFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
 
             FilterRegistration.Dynamic authorizationFilter = sce.getServletContext().addFilter("Cas Authorization Filter", CasAuthorizationFilter.class);
-            authorizationFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*");
+            authorizationFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
         } catch (Exception e) {
             log.error("Error registering CAS filters", e);
             throw new RuntimeException("Failed to register CAS filters", e);
