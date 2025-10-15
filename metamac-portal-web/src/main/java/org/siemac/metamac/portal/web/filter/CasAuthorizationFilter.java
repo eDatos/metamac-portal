@@ -15,6 +15,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,10 +46,11 @@ public class CasAuthorizationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
-        MetamacPrincipal metamacPrincipal = (MetamacPrincipal) ((HttpServletRequest) servletRequest).getSession().getAttribute(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
-        if (metamacPrincipal != null && !hasAccess(metamacPrincipal, (HttpServletRequest) servletRequest)) {
-            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Acceso denegado");
+        MetamacPrincipal metamacPrincipal = (MetamacPrincipal) httpRequest.getSession().getAttribute(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
+        if (metamacPrincipal != null && !hasAccess(metamacPrincipal, httpRequest)) {
+            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
@@ -67,16 +70,21 @@ public class CasAuthorizationFilter implements Filter {
     }
 
     private boolean statisticalResourcesIsValid(HttpServletRequest request) {
-        String requestPage = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
+        String requestPage = getRequestLastPathSegment(request);
         List<String> pagesWithResourceType = Arrays.asList("data.html", "collection.html");
 
         return !pagesWithResourceType.contains(requestPage) || STATISTICAL_RESOURCES_VALID_TYPES.contains(request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE));
     }
 
     private boolean indicatorsIsValid(HttpServletRequest request) {
-        String requestPage = request.getRequestURI().substring(request.getRequestURI().lastIndexOf('/') + 1);
+        String requestPage = getRequestLastPathSegment(request);
 
         return "data.html".equals(requestPage) && INDICATORS_VALID_TYPES.contains(request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE));
+    }
+
+    private String getRequestLastPathSegment(HttpServletRequest request) {
+        Path lastPathSegment = Paths.get(request.getRequestURI()).getFileName();
+        return lastPathSegment != null ? lastPathSegment.toString() : "";
     }
 
     @Override
