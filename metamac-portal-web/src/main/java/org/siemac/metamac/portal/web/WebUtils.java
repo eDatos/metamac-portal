@@ -463,7 +463,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String buildInstallationType() {
-        return "INTERNAL".equalsIgnoreCase(installationType) ? buildParam(PARAM_INSTALLATION_TYPE, "INTERNAL") : "";
+        return buildParam(PARAM_INSTALLATION_TYPE, installationType);
     }
 
     private static String buildAppUrlParam() {
