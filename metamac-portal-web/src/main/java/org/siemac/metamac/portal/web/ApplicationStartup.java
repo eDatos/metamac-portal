@@ -1,11 +1,14 @@
 package org.siemac.metamac.portal.web;
 
 import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContextEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 import org.jasig.cas.client.session.SingleSignOutFilter;
@@ -263,34 +266,33 @@ public class ApplicationStartup extends ApplicationStartupListener {
     }
 
     private void registerCasFilters(ServletContextEvent sce) {
-        String casLoginUrl = WebUtils.getCasServiceLoginUrl();
-        String portalBaseUrl = WebUtils.getPortalBaseUrl();
-
-        if (casLoginUrl == null || casLoginUrl.isEmpty() || portalBaseUrl == null || portalBaseUrl.isEmpty()) {
-            log.error("CAS is not properly configured. casLoginUrl or portalBaseUrl is empty");
-            throw new RuntimeException("CAS is not properly configured. casLoginUrl or portalBaseUrl is empty");
-        }
-
         try {
             sce.getServletContext().addListener(SingleSignOutHttpSessionListener.class);
 
-            FilterRegistration.Dynamic ssoFilter = sce.getServletContext().addFilter("CAS Single Sign Out Filter", SingleSignOutFilter.class);
-            ssoFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
-
-            FilterRegistration.Dynamic authFilter = sce.getServletContext().addFilter("CAS Authentication Filter", AuthenticationFilter.class);
-            authFilter.setInitParameter("casServerLoginUrl", casLoginUrl);
-            authFilter.setInitParameter("serverName", getServerNameFromUrl(portalBaseUrl));
-            authFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
-
-            FilterRegistration.Dynamic validationFilter = sce.getServletContext().addFilter("Cas Validation Filter", CasValidationFilter.class);
-            validationFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
-
-            FilterRegistration.Dynamic authorizationFilter = sce.getServletContext().addFilter("Cas Authorization Filter", CasAuthorizationFilter.class);
-            authorizationFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/visualizer/*", "/widget.html");
+            registerCasFilter(sce, "CAS Single Sign Out Filter", SingleSignOutFilter.class, null);
+            registerCasFilter(sce, "CAS Authentication Filter", AuthenticationFilter.class, new HashMap<String, String>() {{
+                put("casServerLoginUrl", WebUtils.getCasServiceLoginUrl());
+                put("serverName", getServerNameFromUrl(WebUtils.getPortalBaseUrl()));
+            }});
+            registerCasFilter(sce, "Cas Validation Filter", CasValidationFilter.class, null);
+            registerCasFilter(sce, "Cas Authorization Filter", CasAuthorizationFilter.class, null);
         } catch (Exception e) {
-            log.error("Error registering CAS filters", e);
             throw new RuntimeException("Failed to register CAS filters", e);
         }
+    }
+
+    private void registerCasFilter(ServletContextEvent sce, String filterName,
+                                   Class<? extends Filter> filterClass, Map<String, String> initParameters) {
+        FilterRegistration.Dynamic filter = sce.getServletContext().addFilter(filterName, filterClass);
+
+        if (initParameters != null) {
+            for (Map.Entry<String, String> entry : initParameters.entrySet()) {
+                filter.setInitParameter(entry.getKey(), entry.getValue());
+            }
+        }
+
+        String[] urlPatterns = {"/visualizer/*", "/widget.html"};
+        filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPatterns);
     }
 
     private String getServerNameFromUrl(String url) {
@@ -299,8 +301,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
             String port = (urlObject.getPort() == -1) ? "" : ":" + urlObject.getPort();
             return urlObject.getProtocol() + "://" + urlObject.getHost() + port;
         } catch (MalformedURLException e) {
-            log.error("Error parsing URL: {}", url, e);
-            throw new RuntimeException("Error parsing server name URL", e);
+            throw new RuntimeException("Error parsing server name from URL", e);
         }
     }
 }
