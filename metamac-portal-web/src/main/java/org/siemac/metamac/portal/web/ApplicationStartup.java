@@ -66,6 +66,8 @@ public class ApplicationStartup extends ApplicationStartupListener {
                 WebUtils.setExportApiBaseUrl(portalConfigurationService.retrievePortalInternalApisExportUrlBase());
                 WebUtils.setApiKey(portalConfigurationService.retrievePortalInternalApiKey());
                 WebUtils.setCasServiceLoginUrl(portalConfigurationService.retrieveSecurityCasServiceLoginUrl());
+                WebUtils.setCasServerUrlPrefix(configurationService.retrieveSecurityCasServerUrlPrefix());
+                WebUtils.setCasSecurityTolerance(configurationService.retrieveSecurityTolerance());
 
                 registerCasFilters(sce);
             }
@@ -270,11 +272,11 @@ public class ApplicationStartup extends ApplicationStartupListener {
             sce.getServletContext().addListener(SingleSignOutHttpSessionListener.class);
 
             registerCasFilter(sce, "CAS Single Sign Out Filter", SingleSignOutFilter.class, null);
+            registerCasFilter(sce, "Cas Validation Filter", CasValidationFilter.class, null);
             registerCasFilter(sce, "CAS Authentication Filter", AuthenticationFilter.class, new HashMap<String, String>() {{
                 put("casServerLoginUrl", WebUtils.getCasServiceLoginUrl());
                 put("serverName", getServerNameFromUrl(WebUtils.getPortalBaseUrl()));
             }});
-            registerCasFilter(sce, "Cas Validation Filter", CasValidationFilter.class, null);
             registerCasFilter(sce, "Cas Authorization Filter", CasAuthorizationFilter.class, null);
         } catch (Exception e) {
             throw new RuntimeException("Failed to register CAS filters", e);

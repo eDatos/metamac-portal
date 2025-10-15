@@ -49,7 +49,7 @@ public class CasAuthorizationFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
         MetamacPrincipal metamacPrincipal = (MetamacPrincipal) httpRequest.getSession().getAttribute(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
-        if (metamacPrincipal != null && !hasAccess(metamacPrincipal, httpRequest)) {
+        if (!hasAccess(metamacPrincipal, httpRequest)) {
             httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

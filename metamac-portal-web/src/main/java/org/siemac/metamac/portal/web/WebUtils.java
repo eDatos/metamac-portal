@@ -75,6 +75,8 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     apiKey                            = null;
     protected static String     widgetApiKey                      = null;
     protected static String     casServiceLoginUrl                = null;
+    protected static String     casServerUrlPrefix                = null;
+    protected static String     casSecurityTolerance              = null;
 
     public static String getInstallationType() {
         return installationType;
@@ -427,6 +429,22 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
 
     public static void setCasServiceLoginUrl(String casServiceLoginUrl) {
         WebUtils.casServiceLoginUrl = casServiceLoginUrl;
+    }
+
+    public static String getCasServerUrlPrefix() {
+        return casServerUrlPrefix;
+    }
+
+    public static void setCasServerUrlPrefix(String casServerUrlPrefix) {
+        WebUtils.casServerUrlPrefix = casServerUrlPrefix;
+    }
+
+    public static String getCasSecurityTolerance() {
+        return casSecurityTolerance;
+    }
+
+    public static void setCasSecurityTolerance(String casSecurityTolerance) {
+        WebUtils.casSecurityTolerance = casSecurityTolerance;
     }
 
     public static String buildPageTitle(String organisation, String resourceName, String lang) {
