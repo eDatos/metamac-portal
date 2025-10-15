@@ -81,8 +81,6 @@
         <servlet-name>widget-js</servlet-name>
         <url-pattern>/js/widget.js</url-pattern>
     </servlet-mapping>
-    
-    <!-- CAS filters and listeners are registered programmatically in ApplicationStartup for INTERNAL installations -->
 
     <!-- CORS -->
     <filter>
