@@ -201,7 +201,7 @@ public class ExcelExporter {
         // Units
         int titleRowForUnitsIndex = headerRow++;
         boolean hasAnyUnits = false;
-        if (resourceAccess.existsContVariable()) { // Measure dimension
+        if (resourceAccess.hasMeasureDimension()) { // Measure dimension
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : resourceAccess.getSelectedValuesForMeasureDimension()) {
                 final String unit = buildUnitText(dimensionValue);
