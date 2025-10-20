@@ -2,6 +2,7 @@ package org.siemac.metamac.portal.web.filter;
 
 import org.siemac.metamac.portal.Helpers;
 import org.siemac.metamac.portal.core.constants.PortalConstants;
+import org.siemac.metamac.portal.web.WebUtils;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
 import org.siemac.metamac.sso.client.SsoClientConstants;
@@ -50,7 +51,7 @@ public class CasAuthorizationFilter implements Filter {
 
         MetamacPrincipal metamacPrincipal = (MetamacPrincipal) httpRequest.getSession().getAttribute(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
         if (!hasAccess(metamacPrincipal, httpRequest)) {
-            httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
+            httpResponse.sendRedirect(WebUtils.getPortalBaseUrl() + "/error/403.html");
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

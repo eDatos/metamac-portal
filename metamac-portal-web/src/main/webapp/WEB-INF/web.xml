@@ -82,6 +82,15 @@
         <url-pattern>/js/widget.js</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>403</servlet-name>
+        <jsp-file>/jsp/visualizer/403.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>403</servlet-name>
+        <url-pattern>/error/403.html</url-pattern>
+    </servlet-mapping>
+
     <!-- CORS -->
     <filter>
         <filter-name>CORSFilter</filter-name>
@@ -113,10 +122,6 @@
 		<exception-type>404</exception-type>
 		<location>/error.html</location>
 	</error-page>
-    <error-page>
-        <error-code>403</error-code>
-        <location>/jsp/visualizer/403.jsp</location>
-    </error-page>
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/error.html</location>
