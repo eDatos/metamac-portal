@@ -257,7 +257,7 @@ public class ExcelExporter {
         }
 
         if (fixedDimensionsText.length() > 0) {
-            fixedDimensionsText.delete(fixedDimensionsText.length() - 3, fixedDimensionsText.length()); // delete last comma and space
+            fixedDimensionsText.delete(fixedDimensionsText.length() - 2, fixedDimensionsText.length()); // delete last comma and space
             String by = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_LABEL_PARA, locale);
             SXSSFRow rowTitle = sheet.createRow(headerRow++);
             addStringCell(rowTitle, 0, by + " " + fixedDimensionsText.toString(), null);
