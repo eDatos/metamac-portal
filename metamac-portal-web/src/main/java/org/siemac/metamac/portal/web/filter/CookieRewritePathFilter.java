@@ -27,7 +27,7 @@ public class CookieRewritePathFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String jSessionId = ((HttpServletRequest) request).getSession().getId();
-        ((HttpServletResponse) response).setHeader("Set-Cookie", JSESSIONID + "=" + jSessionId + ";Path=" + COOKIE_PATH);
+        ((HttpServletResponse) response).setHeader("Set-Cookie", JSESSIONID + "=" + jSessionId + ";Path=" + COOKIE_PATH + ";SameSite=None;Secure");
         chain.doFilter(request, response);
     }
 

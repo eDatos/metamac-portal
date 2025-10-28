@@ -1,5 +1,6 @@
 package org.siemac.metamac.portal.web.filter;
 
+import org.jasig.cas.client.validation.Assertion;
 import org.siemac.metamac.portal.Helpers;
 import org.siemac.metamac.portal.core.constants.PortalConstants;
 import org.siemac.metamac.portal.web.WebUtils;
@@ -49,7 +50,8 @@ public class CasAuthorizationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
 
-        MetamacPrincipal metamacPrincipal = (MetamacPrincipal) httpRequest.getSession().getAttribute(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
+        Assertion assertion = (Assertion) httpRequest.getSession().getAttribute("_const_cas_assertion_");
+        MetamacPrincipal metamacPrincipal = (MetamacPrincipal) assertion.getPrincipal().getAttributes().get(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
         if (!hasAccess(metamacPrincipal, httpRequest)) {
             httpResponse.sendRedirect(WebUtils.getPortalBaseUrl() + "/error/403.html");
         } else {

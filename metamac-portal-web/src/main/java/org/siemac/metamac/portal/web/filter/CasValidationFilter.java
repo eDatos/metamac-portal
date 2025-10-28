@@ -1,6 +1,10 @@
 package org.siemac.metamac.portal.web.filter;
 
 import org.apache.commons.lang.StringUtils;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.authentication.AttributePrincipalImpl;
+import org.jasig.cas.client.validation.Assertion;
+import org.jasig.cas.client.validation.AssertionImpl;
 import org.siemac.metamac.portal.web.WebUtils;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.SsoClientConstants;
@@ -13,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
 
 public class CasValidationFilter implements Filter {
 
@@ -39,7 +45,7 @@ public class CasValidationFilter implements Filter {
         if (StringUtils.isNotBlank(ticket)) {
             try {
                 MetamacPrincipal metamacPrincipal = validateTicket.validateTicket(ticket, buildServiceUrl(request));
-                request.getSession().setAttribute(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
+                request.getSession().setAttribute("_const_cas_assertion_", getAssertion(metamacPrincipal));
             } catch (Exception e) {
                 logger.error("Error validating CAS ticket", e);
                 response.sendRedirect(buildServiceUrl(request));
@@ -48,6 +54,16 @@ public class CasValidationFilter implements Filter {
         }
 
         chain.doFilter(servletRequest, servletResponse);
+    }
+
+    private Assertion getAssertion(MetamacPrincipal metamacPrincipal) {
+        AttributePrincipal principal = new AttributePrincipalImpl(
+            metamacPrincipal.getUserId(),
+            new HashMap<String, Object>() {{
+                put(SsoClientConstants.PRINCIPAL_ATTRIBUTE, metamacPrincipal);
+            }}
+        );
+        return new AssertionImpl(principal, new Date(), null, new HashMap<>());
     }
 
     private static String buildServiceUrl(HttpServletRequest request) {
