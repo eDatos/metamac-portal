@@ -303,6 +303,12 @@
         }
         this.canvas.width = size.width;
         this.canvas.height = size.height;
+
+        // this is because canvas css size is independent of canvas internal size and
+        // is required by the fix for high DPI screens
+        this.canvas.style.width = size.width + 'px';
+        this.canvas.style.height = size.height + 'px';
+
         this.update();
         this.clickTooltip.setEl(this.$canvas);
     };
@@ -510,4 +516,3 @@
     }
 
 }());
-
