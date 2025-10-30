@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 public class CookieRewritePathFilter implements Filter {
 
     private static final String JSESSIONID  = "JSESSIONID";
-    private static final String COOKIE_PATH = "/";
 
     @Override
     public void init(FilterConfig arg0) throws ServletException {
@@ -26,8 +25,14 @@ public class CookieRewritePathFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String jSessionId = ((HttpServletRequest) request).getSession().getId();
-        ((HttpServletResponse) response).setHeader("Set-Cookie", JSESSIONID + "=" + jSessionId + ";Path=" + COOKIE_PATH + ";SameSite=None;Secure");
+        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+
+        String jSessionId = httpServletRequest.getSession().getId();
+
+        String contextPath = httpServletRequest.getContextPath();
+        String cookiePath = contextPath.isEmpty() ? "/" : contextPath;
+
+        ((HttpServletResponse) response).setHeader("Set-Cookie", JSESSIONID + "=" + jSessionId + ";Path=" + cookiePath + ";SameSite=None;Secure");
         chain.doFilter(request, response);
     }
 
