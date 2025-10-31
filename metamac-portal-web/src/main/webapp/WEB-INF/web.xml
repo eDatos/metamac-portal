@@ -91,6 +91,15 @@
         <url-pattern>/error/403.html</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>widget-login-required</servlet-name>
+        <jsp-file>/jsp/visualizer/widget-login-required.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>widget-login-required</servlet-name>
+        <url-pattern>/error/widget-login-required.html</url-pattern>
+    </servlet-mapping>
+
     <!-- CORS -->
     <filter>
         <filter-name>CORSFilter</filter-name>

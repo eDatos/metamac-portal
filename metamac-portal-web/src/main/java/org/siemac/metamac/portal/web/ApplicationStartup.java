@@ -21,6 +21,7 @@ import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.siemac.metamac.portal.core.constants.PortalConfigurationConstants;
 import org.siemac.metamac.portal.web.filter.CasAuthorizationFilter;
 import org.siemac.metamac.portal.web.filter.CasValidationFilter;
+import org.siemac.metamac.portal.web.filter.WidgetCasFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -271,6 +272,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
         try {
             sce.getServletContext().addListener(SingleSignOutHttpSessionListener.class);
 
+            registerCasFilter(sce, "Widget Cas Filter", WidgetCasFilter.class, null, "/widget.html");
             registerCasFilter(sce, "CAS Single Sign Out Filter", SingleSignOutFilter.class, null);
             registerCasFilter(sce, "Cas Validation Filter", CasValidationFilter.class, null);
             registerCasFilter(sce, "CAS Authentication Filter", AuthenticationFilter.class, new HashMap<String, String>() {{
@@ -284,7 +286,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
     }
 
     private void registerCasFilter(ServletContextEvent sce, String filterName,
-                                   Class<? extends Filter> filterClass, Map<String, String> initParameters) {
+                                   Class<? extends Filter> filterClass, Map<String, String> initParameters, String... customUrlPatterns) {
         FilterRegistration.Dynamic filter = sce.getServletContext().addFilter(filterName, filterClass);
 
         if (initParameters != null) {
@@ -293,7 +295,9 @@ public class ApplicationStartup extends ApplicationStartupListener {
             }
         }
 
-        String[] urlPatterns = {"/visualizer/*", "/widget.html"};
+        String[] urlPatterns = (customUrlPatterns != null && customUrlPatterns.length > 0)
+                ? customUrlPatterns
+                : new String[]{"/visualizer/*", "/widget.html"};
         filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPatterns);
     }
 
