@@ -297,7 +297,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         String[] urlPatterns = (customUrlPatterns != null && customUrlPatterns.length > 0)
                 ? customUrlPatterns
-                : new String[]{"/visualizer/*", "/widget.html"};
+                : new String[]{"/visualizer/*", "/widget.html", "/"};
         filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPatterns);
     }
 

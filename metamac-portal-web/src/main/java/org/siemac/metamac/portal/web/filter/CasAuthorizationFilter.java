@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class CasAuthorizationFilter implements Filter {
 
@@ -39,6 +40,7 @@ public class CasAuthorizationFilter implements Filter {
             PortalConstants.ResourceType.INDICATOR_INSTANCE.getName()
     );
 
+    private static final List<String> PAGES_WITH_RESOURCE_TYPE = Arrays.asList("data.html", "widget.html", "collection.html");
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -60,9 +62,12 @@ public class CasAuthorizationFilter implements Filter {
     }
 
     private boolean hasAccess(MetamacPrincipal metamacPrincipal, HttpServletRequest request) {
+        String requestLastPathSegment = getRequestLastPathSegment(request);
+        boolean everybodyIsValid = everybodyIsValid(request, requestLastPathSegment);
+
         ArrayList<String> validApps = new ArrayList<>();
-        if (statisticalResourcesIsValid(request)) validApps.add(STATISTICAL_RESOURCES_APP_NAME);
-        if (indicatorsIsValid(request)) validApps.add(INDICATORS_APP_NAME);
+        if (everybodyIsValid || statisticalResourcesIsValid(request, requestLastPathSegment)) validApps.add(STATISTICAL_RESOURCES_APP_NAME);
+        if (everybodyIsValid || indicatorsIsValid(request, requestLastPathSegment)) validApps.add(INDICATORS_APP_NAME);
 
         for (MetamacPrincipalAccess access : metamacPrincipal.getAccesses()) {
             if (validApps.contains(access.getApplication())) {
@@ -72,17 +77,21 @@ public class CasAuthorizationFilter implements Filter {
         return false;
     }
 
-    private boolean statisticalResourcesIsValid(HttpServletRequest request) {
-        String requestPage = getRequestLastPathSegment(request);
-        List<String> pagesWithResourceType = Arrays.asList("data.html", "collection.html");
-
-        return !pagesWithResourceType.contains(requestPage) || STATISTICAL_RESOURCES_VALID_TYPES.contains(request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE));
+    private boolean everybodyIsValid(HttpServletRequest request, String requestLastPathSegment) {
+        Map<String, String[]> requestParameters = request.getParameterMap();
+        return PAGES_WITH_RESOURCE_TYPE.contains(requestLastPathSegment)
+                && (requestParameters.containsKey(Helpers.PARAMETER_PERMALINK) || requestParameters.containsKey(Helpers.PARAMETER_MULTIDATASET_ID))
+                && !requestParameters.containsKey(Helpers.PARAMETER_RESOURCE_TYPE);
     }
 
-    private boolean indicatorsIsValid(HttpServletRequest request) {
-        String requestPage = getRequestLastPathSegment(request);
+    private boolean statisticalResourcesIsValid(HttpServletRequest request, String requestLastPathSegment) {
+        return !PAGES_WITH_RESOURCE_TYPE.contains(requestLastPathSegment)
+                || STATISTICAL_RESOURCES_VALID_TYPES.contains(request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE));
+    }
 
-        return "data.html".equals(requestPage) && INDICATORS_VALID_TYPES.contains(request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE));
+    private boolean indicatorsIsValid(HttpServletRequest request, String requestLastPathSegment) {
+        return PAGES_WITH_RESOURCE_TYPE.contains(requestLastPathSegment)
+                && INDICATORS_VALID_TYPES.contains(request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE));
     }
 
     private String getRequestLastPathSegment(HttpServletRequest request) {

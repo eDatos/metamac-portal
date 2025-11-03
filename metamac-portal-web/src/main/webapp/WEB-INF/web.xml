@@ -145,6 +145,6 @@
 		<location>/error.html</location>
 	</error-page>
 	<welcome-file-list>
-		<welcome-file>jsp/visualizer/operations.jsp</welcome-file>
+		<welcome-file>visualizer/operations.html</welcome-file>
 	</welcome-file-list>
 </web-app>

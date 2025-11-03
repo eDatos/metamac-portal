@@ -78,7 +78,7 @@
         request.setAttribute("apiKey", WebUtils.getWidgetApiKey());
     %>
     <%
-        String permalinkId = request.getParameter("permalink");
+        String permalinkId = request.getParameter(Helpers.PARAMETER_PERMALINK);
         String sharedVisualizerUrl = request.getParameter("sharedVisualizerUrl");
 		String title = request.getParameter("title");
         String theme = request.getParameter("theme");
