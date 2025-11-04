@@ -176,7 +176,7 @@
 
         App.start();
 
-        if(${ApiUrlCaptcha != null}) {
+        if(${ApiUrlCaptcha != null && installationType == "EXTERNAL"}) {
             LazyLoad.js("${ApiUrlCaptcha}/captcha.js");
         }
 
