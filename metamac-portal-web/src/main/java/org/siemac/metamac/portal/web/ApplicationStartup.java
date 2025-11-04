@@ -4,23 +4,30 @@ import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.jasig.cas.client.authentication.AuthenticationFilter;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.siemac.edatos.core.common.constants.shared.ConfigurationConstants;
 import org.siemac.metamac.core.common.exception.MetamacException;
+import org.siemac.metamac.core.common.filter.CORSFilter;
+import org.siemac.metamac.core.common.filter.URIEncodingFilter;
 import org.siemac.metamac.core.common.listener.ApplicationStartupListener;
 import org.siemac.metamac.core.common.util.ApplicationContextProvider;
 import org.siemac.metamac.portal.core.conf.PortalConfiguration;
 import org.siemac.metamac.portal.core.constants.PortalConfigurationConstants;
 import org.siemac.metamac.portal.web.filter.CasAuthorizationFilter;
 import org.siemac.metamac.portal.web.filter.CasValidationFilter;
+import org.siemac.metamac.portal.web.filter.CookieRewritePathFilter;
 import org.siemac.metamac.portal.web.filter.WidgetCasFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +35,8 @@ import org.slf4j.LoggerFactory;
 public class ApplicationStartup extends ApplicationStartupListener {
 
     private static final Logger log = LoggerFactory.getLogger(ApplicationStartup.class);
+
+    private static final List<String> patternsProtectedByCas = new ArrayList<>();
 
     @Override
     public String projectName() {
@@ -69,8 +78,6 @@ public class ApplicationStartup extends ApplicationStartupListener {
                 WebUtils.setCasServiceLoginUrl(portalConfigurationService.retrieveSecurityCasServiceLoginUrl());
                 WebUtils.setCasServerUrlPrefix(configurationService.retrieveSecurityCasServerUrlPrefix());
                 WebUtils.setCasSecurityTolerance(configurationService.retrieveSecurityTolerance());
-
-                registerCasFilters(sce);
             }
             WebUtils.setWidgetApiKey(portalConfigurationService.retrievePortalWidgetApiKeyByInstallationType());
 
@@ -100,15 +107,16 @@ public class ApplicationStartup extends ApplicationStartupListener {
         setPortalTourismStyles();
         setPortalPublicServiceStyles();
         setPortalCustomStyles();
-
         setSocialTwitterVia();
         setPortalGraphColorsEnabled();
         setHelpUrl();
-
         setExternalUsersIntegration();
-
         setUnitMeasure();
         setUnitMeasureMultiplier();
+
+        patternsProtectedByCas.add("/");
+        registerServlets(sce);
+        registerFilters(sce);
     }
 
     private void setExternalUsersIntegration() {
@@ -268,25 +276,81 @@ public class ApplicationStartup extends ApplicationStartupListener {
         checkOptionalProperty(PortalConfigurationConstants.ENDPOINT_EXTERNAL_CAPTCHA_API);
     }
 
-    private void registerCasFilters(ServletContextEvent sce) {
-        try {
-            sce.getServletContext().addListener(SingleSignOutHttpSessionListener.class);
+    private void registerServlets(ServletContextEvent sce) {
+        log.info("Registering application servlets...");
 
-            registerCasFilter(sce, "Widget Cas Filter", WidgetCasFilter.class, null, "/widget.html");
-            registerCasFilter(sce, "CAS Single Sign Out Filter", SingleSignOutFilter.class, null);
-            registerCasFilter(sce, "Cas Validation Filter", CasValidationFilter.class, null);
-            registerCasFilter(sce, "CAS Authentication Filter", AuthenticationFilter.class, new HashMap<String, String>() {{
-                put("casServerLoginUrl", WebUtils.getCasServiceLoginUrl());
-                put("serverName", getServerNameFromUrl(WebUtils.getPortalBaseUrl()));
-            }});
-            registerCasFilter(sce, "Cas Authorization Filter", CasAuthorizationFilter.class, null);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to register CAS filters", e);
+        // PROTECTED BY CAS
+        registerServlet(sce, "operations", "/jsp/visualizer/operations.jsp", true,
+            "/visualizer/operations.html");
+        registerServlet(sce, "data", "/jsp/visualizer/data.jsp", true,
+            "/visualizer/data.html",
+            "/visualizer/custom/data.html",
+            "/visualizer/agricultura/data.html",
+            "/visualizer/medioambiente/data.html",
+            "/visualizer/turismo/data.html",
+            "/visualizer/funcion-publica/data.html",
+            "/visualizer/iqua/data.html");
+        registerServlet(sce, "collection", "/jsp/visualizer/collection.jsp", true,
+            "/visualizer/collection.html",
+            "/visualizer/custom/collection.html",
+            "/visualizer/agricultura/collection.html",
+            "/visualizer/medioambiente/collection.html",
+            "/visualizer/turismo/collection.html",
+            "/visualizer/funcion-publica/collection.html",
+            "/visualizer/iqua/collection.html");
+        registerServlet(sce, "widget", "/jsp/widget.jsp", true,
+            "/widget.html");
+        registerServlet(sce, "403", "/jsp/visualizer/403.jsp", true,
+            "/error/403.html");
+
+        // UNPROTECTED BY CAS
+        registerServlet(sce, "widget-js", "/js/widget.jsp", false,
+                "/js/widget.js");
+        registerServlet(sce, "widget-login-required", "/jsp/visualizer/widget-login-required.jsp", false,
+            "/error/widget-login-required.html");
+
+        log.info("All servlets registered successfully");
+    }
+
+    private void registerServlet(ServletContextEvent sce, String servletName, String jspPath, boolean protectedByCas, String... urlPatterns) {
+        ServletRegistration.Dynamic servlet = sce.getServletContext().addServlet(servletName, new JspForwardServlet(jspPath));
+        servlet.addMapping(urlPatterns);
+
+        if (protectedByCas) {
+            patternsProtectedByCas.addAll(Arrays.asList(urlPatterns));
+            log.info("Registered servlet PROTECTED by CAS '{}' -> {} (patterns: {})", new Object[]{servletName, jspPath, Arrays.toString(urlPatterns)});
+        } else {
+            log.warn("Registered servlet NOT PROTECTED by CAS '{}' -> {} (patterns: {})", new Object[]{servletName, jspPath, Arrays.toString(urlPatterns)});
         }
     }
 
-    private void registerCasFilter(ServletContextEvent sce, String filterName,
-                                   Class<? extends Filter> filterClass, Map<String, String> initParameters, String... customUrlPatterns) {
+    private void registerFilters(ServletContextEvent sce) {
+        registerFilter(sce, "CORSFilter", CORSFilter.class, null, "/apis/*");
+        registerFilter(sce, "CookieRewritePathFilter", CookieRewritePathFilter.class, null, "/*");
+        registerFilter(sce, "encodingFilter", URIEncodingFilter.class, new HashMap<String, String>() {{
+            put("encodings", "UTF-8");
+        }}, "/*");
+
+        if ("INTERNAL".equals(WebUtils.getInstallationType())) {
+            try {
+                sce.getServletContext().addListener(SingleSignOutHttpSessionListener.class);
+
+                registerCasFilter(sce, "Widget Cas Filter", WidgetCasFilter.class, null, "/widget.html");
+                registerCasFilter(sce, "CAS Single Sign Out Filter", SingleSignOutFilter.class, null);
+                registerCasFilter(sce, "Cas Validation Filter", CasValidationFilter.class, null);
+                registerCasFilter(sce, "CAS Authentication Filter", AuthenticationFilter.class, new HashMap<String, String>() {{
+                    put("casServerLoginUrl", WebUtils.getCasServiceLoginUrl());
+                    put("serverName", getServerNameFromUrl(WebUtils.getPortalBaseUrl()));
+                }});
+                registerCasFilter(sce, "Cas Authorization Filter", CasAuthorizationFilter.class, null);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to register CAS filters", e);
+            }
+        }
+    }
+
+    private void registerFilter(ServletContextEvent sce, String filterName,
+                                Class<? extends Filter> filterClass, Map<String, String> initParameters, String... urlPatterns) {
         FilterRegistration.Dynamic filter = sce.getServletContext().addFilter(filterName, filterClass);
 
         if (initParameters != null) {
@@ -295,10 +359,15 @@ public class ApplicationStartup extends ApplicationStartupListener {
             }
         }
 
+        filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPatterns);
+    }
+
+    private void registerCasFilter(ServletContextEvent sce, String filterName,
+                                   Class<? extends Filter> filterClass, Map<String, String> initParameters, String... customUrlPatterns) {
         String[] urlPatterns = (customUrlPatterns != null && customUrlPatterns.length > 0)
                 ? customUrlPatterns
-                : new String[]{"/visualizer/*", "/widget.html", "/"};
-        filter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, urlPatterns);
+                : patternsProtectedByCas.toArray(new String[0]);
+        registerFilter(sce, filterName, filterClass, initParameters, urlPatterns);
     }
 
     private String getServerNameFromUrl(String url) {
@@ -308,6 +377,20 @@ public class ApplicationStartup extends ApplicationStartupListener {
             return urlObject.getProtocol() + "://" + urlObject.getHost() + port;
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error parsing server name from URL", e);
+        }
+    }
+
+    private static class JspForwardServlet extends HttpServlet {
+        private static final long serialVersionUID = 1L;
+        private final String jspPath;
+
+        public JspForwardServlet(String jspPath) {
+            this.jspPath = jspPath;
+        }
+
+        @Override
+        protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            req.getRequestDispatcher(jspPath).forward(req, resp);
         }
     }
 }
