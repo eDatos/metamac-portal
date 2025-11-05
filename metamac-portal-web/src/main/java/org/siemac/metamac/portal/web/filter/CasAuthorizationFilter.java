@@ -79,9 +79,11 @@ public class CasAuthorizationFilter implements Filter {
 
     private boolean everybodyIsValid(HttpServletRequest request, String requestLastPathSegment) {
         Map<String, String[]> requestParameters = request.getParameterMap();
-        return PAGES_WITH_RESOURCE_TYPE.contains(requestLastPathSegment)
+
+        boolean currentPageRequiresResourceTypeButItIsNotSetYet = PAGES_WITH_RESOURCE_TYPE.contains(requestLastPathSegment)
                 && (requestParameters.containsKey(Helpers.PARAMETER_PERMALINK) || requestParameters.containsKey(Helpers.PARAMETER_MULTIDATASET_ID))
                 && !requestParameters.containsKey(Helpers.PARAMETER_RESOURCE_TYPE);
+        return "403.html".equals(requestLastPathSegment) || currentPageRequiresResourceTypeButItIsNotSetYet;
     }
 
     private boolean statisticalResourcesIsValid(HttpServletRequest request, String requestLastPathSegment) {
