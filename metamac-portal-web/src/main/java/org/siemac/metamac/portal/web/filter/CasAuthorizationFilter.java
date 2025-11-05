@@ -28,6 +28,7 @@ public class CasAuthorizationFilter implements Filter {
 
     private static final String STATISTICAL_RESOURCES_APP_NAME = "GESTOR_RECURSOS_ESTADISTICOS";
     private static final String INDICATORS_APP_NAME = "GESTOR_INDICADORES";
+    private static final String UNAUTHORIZED_PAGE = "403.html";
 
     private static final List<String> STATISTICAL_RESOURCES_VALID_TYPES = Arrays.asList(
             PortalConstants.ResourceType.COLLECTION.getName(),
@@ -55,7 +56,7 @@ public class CasAuthorizationFilter implements Filter {
         Assertion assertion = (Assertion) httpRequest.getSession().getAttribute("_const_cas_assertion_");
         MetamacPrincipal metamacPrincipal = (MetamacPrincipal) assertion.getPrincipal().getAttributes().get(SsoClientConstants.PRINCIPAL_ATTRIBUTE);
         if (!hasAccess(metamacPrincipal, httpRequest)) {
-            httpResponse.sendRedirect(WebUtils.getPortalBaseUrl() + "/error/403.html");
+            httpResponse.sendRedirect(WebUtils.getPortalBaseUrl() + "/error/" + UNAUTHORIZED_PAGE);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }
@@ -83,7 +84,7 @@ public class CasAuthorizationFilter implements Filter {
         boolean currentPageRequiresResourceTypeButItIsNotSetYet = PAGES_WITH_RESOURCE_TYPE.contains(requestLastPathSegment)
                 && (requestParameters.containsKey(Helpers.PARAMETER_PERMALINK) || requestParameters.containsKey(Helpers.PARAMETER_MULTIDATASET_ID))
                 && !requestParameters.containsKey(Helpers.PARAMETER_RESOURCE_TYPE);
-        return "403.html".equals(requestLastPathSegment) || currentPageRequiresResourceTypeButItIsNotSetYet;
+        return UNAUTHORIZED_PAGE.equals(requestLastPathSegment) || currentPageRequiresResourceTypeButItIsNotSetYet;
     }
 
     private boolean statisticalResourcesIsValid(HttpServletRequest request, String requestLastPathSegment) {
