@@ -69,7 +69,7 @@ public class CasAuthorizationFilter implements Filter {
     }
 
     private boolean hasAccess(MetamacPrincipal metamacPrincipal, HttpServletRequest request) {
-        boolean everybodyIsValid = everybodyIsValid(request);
+        boolean everybodyIsValid = everyAppWithAccessToPortalIsValid(request);
 
         ArrayList<String> validApps = new ArrayList<>();
         if (everybodyIsValid || statisticalResourcesIsValid(request)) validApps.add(STATISTICAL_RESOURCES_APP_NAME);
@@ -83,7 +83,7 @@ public class CasAuthorizationFilter implements Filter {
         return false;
     }
 
-    private boolean everybodyIsValid(HttpServletRequest request) {
+    private boolean everyAppWithAccessToPortalIsValid(HttpServletRequest request) {
         Map<String, String[]> requestParameters = request.getParameterMap();
 
         boolean currentPageRequiresResourceTypeButItIsNotSetYet = PAGES_WITH_RESOURCE_TYPE.contains(request.getServletPath())
