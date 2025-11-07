@@ -22,9 +22,11 @@
             window.history.pushState("", "", newPath);
 
             var queryParams = QueryParamsUtils.getQueryParamsFromQuery(target.search);
-            queryParams.identifier = queryParams.resourceId;
-            delete queryParams.resourceId;
-            _.extend(App.queryParams, queryParams);
+
+            App.queryParams.agency = queryParams.agencyId;
+            App.queryParams.identifier = queryParams.resourceId;
+            App.queryParams.type = queryParams.resourceType;
+            App.queryParams.version = queryParams.resourceType === 'query' ? undefined : queryParams.version;
 
             // Refresca la ruta actual: https://stackoverflow.com/a/25777550
             Backbone.history.loadUrl(Backbone.history.fragment);
