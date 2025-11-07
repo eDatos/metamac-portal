@@ -38,6 +38,26 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
     private static final List<String> patternsProtectedByCas = new ArrayList<>();
 
+    public static final List<String> COLLECTION_PATHS = Collections.unmodifiableList(Arrays.asList(
+        "/visualizer/collection.html",
+        "/visualizer/custom/collection.html",
+        "/visualizer/agricultura/collection.html",
+        "/visualizer/medioambiente/collection.html",
+        "/visualizer/turismo/collection.html",
+        "/visualizer/funcion-publica/collection.html",
+        "/visualizer/iqua/collection.html"
+    ));
+
+    public static final List<String> DATA_PATHS = Collections.unmodifiableList(Arrays.asList(
+        "/visualizer/data.html",
+        "/visualizer/custom/data.html",
+        "/visualizer/agricultura/data.html",
+        "/visualizer/medioambiente/data.html",
+        "/visualizer/turismo/data.html",
+        "/visualizer/funcion-publica/data.html",
+        "/visualizer/iqua/data.html"
+    ));
+
     @Override
     public String projectName() {
         return "statistical-visualizer";
@@ -280,34 +300,15 @@ public class ApplicationStartup extends ApplicationStartupListener {
         log.info("Registering application servlets...");
 
         // PROTECTED BY CAS
-        registerServlet(sce, "operations", "/jsp/visualizer/operations.jsp", true,
-            "/visualizer/operations.html");
-        registerServlet(sce, "data", "/jsp/visualizer/data.jsp", true,
-            "/visualizer/data.html",
-            "/visualizer/custom/data.html",
-            "/visualizer/agricultura/data.html",
-            "/visualizer/medioambiente/data.html",
-            "/visualizer/turismo/data.html",
-            "/visualizer/funcion-publica/data.html",
-            "/visualizer/iqua/data.html");
-        registerServlet(sce, "collection", "/jsp/visualizer/collection.jsp", true,
-            "/visualizer/collection.html",
-            "/visualizer/custom/collection.html",
-            "/visualizer/agricultura/collection.html",
-            "/visualizer/medioambiente/collection.html",
-            "/visualizer/turismo/collection.html",
-            "/visualizer/funcion-publica/collection.html",
-            "/visualizer/iqua/collection.html");
-        registerServlet(sce, "widget", "/jsp/widget.jsp", true,
-            "/widget.html");
-        registerServlet(sce, "403", "/jsp/visualizer/403.jsp", true,
-            "/error/403.html");
+        registerServlet(sce, "operations", "/jsp/visualizer/operations.jsp", true, "/visualizer/operations.html");
+        registerServlet(sce, "data", "/jsp/visualizer/data.jsp", true, DATA_PATHS.toArray(new String[0]));
+        registerServlet(sce, "collection", "/jsp/visualizer/collection.jsp", true, COLLECTION_PATHS.toArray(new String[0]));
+        registerServlet(sce, "widget", "/jsp/widget.jsp", true, "/widget.html");
+        registerServlet(sce, "403", "/jsp/visualizer/403.jsp", true, "/error/403.html");
 
         // UNPROTECTED BY CAS
-        registerServlet(sce, "widget-js", "/js/widget.jsp", false,
-                "/js/widget.js");
-        registerServlet(sce, "widget-login-required", "/jsp/visualizer/widget-login-required.jsp", false,
-            "/error/widget-login-required.html");
+        registerServlet(sce, "widget-js", "/js/widget.jsp", false, "/js/widget.js");
+        registerServlet(sce, "widget-login-required", "/jsp/visualizer/widget-login-required.jsp", false, "/error/widget-login-required.html");
 
         log.info("All servlets registered successfully");
     }

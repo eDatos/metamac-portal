@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
+import static org.siemac.metamac.portal.web.ApplicationStartup.COLLECTION_PATHS;
+import static org.siemac.metamac.portal.web.ApplicationStartup.DATA_PATHS;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CasAuthorizationFilterTest {
@@ -49,44 +51,9 @@ public class CasAuthorizationFilterTest {
     @Mock
     private MetamacPrincipal metamacPrincipal;
 
-    // Application names
-    private static final String GESTOR_RECURSOS_ESTADISTICOS = "GESTOR_RECURSOS_ESTADISTICOS";
-    private static final String GESTOR_INDICADORES = "GESTOR_INDICADORES";
+    private static final String GESTOR_RECURSOS_ESTADISTICOS = CasAuthorizationFilter.STATISTICAL_RESOURCES_APP_NAME;
+    private static final String GESTOR_INDICADORES = CasAuthorizationFilter.INDICATORS_APP_NAME;
     private static final String GESTOR_RECURSOS_ESTRUCTURALES = "GESTOR_RECURSOS_ESTRUCTURALES";
-
-    // Collection paths
-    private static final String[] COLLECTION_PATHS = {
-        "/visualizer/collection.html",
-        "/visualizer/custom/collection.html",
-        "/visualizer/agricultura/collection.html",
-        "/visualizer/medioambiente/collection.html",
-        "/visualizer/turismo/collection.html",
-        "/visualizer/funcion-publica/collection.html",
-        "/visualizer/iqua/collection.html"
-    };
-
-    // Data paths
-    private static final String[] DATA_PATHS = {
-        "/visualizer/data.html",
-        "/visualizer/custom/data.html",
-        "/visualizer/agricultura/data.html",
-        "/visualizer/medioambiente/data.html",
-        "/visualizer/turismo/data.html",
-        "/visualizer/funcion-publica/data.html",
-        "/visualizer/iqua/data.html"
-    };
-
-    // Pages that support resource type parameter
-    private static final String[] PAGES_WITH_RESOURCE_TYPE = {
-        "/visualizer/data.html",
-        "/visualizer/custom/data.html",
-        "/visualizer/agricultura/data.html",
-        "/visualizer/medioambiente/data.html",
-        "/visualizer/turismo/data.html",
-        "/visualizer/funcion-publica/data.html",
-        "/visualizer/iqua/data.html",
-        "/widget.html"
-    };
 
     @Before
     public void setUp() {
@@ -196,42 +163,42 @@ public class CasAuthorizationFilterTest {
 
     @Test
     public void testStatisticalResourcesAccessOnlyWithPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_RECURSOS_ESTADISTICOS, path, null, "somePermalink", null);
         }
     }
 
     @Test
     public void testStatisticalResourcesAccessOnlyWithMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_RECURSOS_ESTADISTICOS, path, null, null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testStatisticalResourcesAccessWithDatasetAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.DATASET.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testStatisticalResourcesAccessWithDatasetAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.DATASET.getName(), null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testStatisticalResourcesCannotAccessWithIndicatorAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.INDICATOR.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testStatisticalResourcesCannotAccessWithIndicatorAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.INDICATOR.getName(), null, "someMultidatasetId");
         }
     }
@@ -331,42 +298,42 @@ public class CasAuthorizationFilterTest {
 
     @Test
     public void testIndicatorsAccessOnlyWithPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_INDICADORES, path, null, "somePermalink", null);
         }
     }
 
     @Test
     public void testIndicatorsAccessOnlyWithMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_INDICADORES, path, null, null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testIndicatorsAccessWithIndicatorAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_INDICADORES, path, PortalConstants.ResourceType.INDICATOR.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testIndicatorsAccessWithIndicatorAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(GESTOR_INDICADORES, path, PortalConstants.ResourceType.INDICATOR.getName(), null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testIndicatorsCannotAccessWithDatasetAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_INDICADORES, path, PortalConstants.ResourceType.DATASET.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testIndicatorsCannotAccessWithDatasetAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_INDICADORES, path, PortalConstants.ResourceType.DATASET.getName(), null, "someMultidatasetId");
         }
     }
@@ -476,42 +443,42 @@ public class CasAuthorizationFilterTest {
 
     @Test
     public void testStructuralResourcesCannotAccessOnlyWithPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, null, "somePermalink", null);
         }
     }
 
     @Test
     public void testStructuralResourcesCannotAccessOnlyWithMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, null, null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testStructuralResourcesCannotAccessWithDatasetAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.DATASET.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testStructuralResourcesCannotAccessWithDatasetAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.DATASET.getName(), null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testStructuralResourcesCannotAccessWithIndicatorAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.INDICATOR.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testStructuralResourcesCannotAccessWithIndicatorAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.INDICATOR.getName(), null, "someMultidatasetId");
         }
     }
@@ -621,42 +588,42 @@ public class CasAuthorizationFilterTest {
 
     @Test
     public void testStatisticalResourcesPlusIndicatorsAccessOnlyWithPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, null, "somePermalink", null);
         }
     }
 
     @Test
     public void testStatisticalResourcesPlusIndicatorsAccessOnlyWithMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, null, null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testStatisticalResourcesPlusIndicatorsAccessWithDatasetAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.DATASET.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testStatisticalResourcesPlusIndicatorsAccessWithDatasetAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.DATASET.getName(), null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testStatisticalResourcesPlusIndicatorsAccessWithIndicatorAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.INDICATOR.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testStatisticalResourcesPlusIndicatorsAccessWithIndicatorAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.INDICATOR.getName(), null, "someMultidatasetId");
         }
     }
@@ -756,42 +723,42 @@ public class CasAuthorizationFilterTest {
 
     @Test
     public void testNoAppsAccessWithOnlyPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(new String[]{}, path, null, "somePermalink", null);
         }
     }
 
     @Test
     public void testNoAppsAccessWithOnlyMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(new String[]{}, path, null, null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testNoAppsCannotAccessWithDatasetAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.DATASET.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testNoAppsCannotAccessWithDatasetAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.DATASET.getName(), null, "someMultidatasetId");
         }
     }
 
     @Test
     public void testNoAppsCannotAccessWithIndicatorAndPermalink() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.INDICATOR.getName(), "somePermalink", null);
         }
     }
 
     @Test
     public void testNoAppsCannotAccessWithIndicatorAndMultidatasetId() throws IOException, ServletException {
-        for (String path : PAGES_WITH_RESOURCE_TYPE) {
+        for (String path : CasAuthorizationFilter.PAGES_WITH_RESOURCE_TYPE) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.INDICATOR.getName(), null, "someMultidatasetId");
         }
     }

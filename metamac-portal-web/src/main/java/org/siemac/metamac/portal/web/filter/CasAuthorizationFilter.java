@@ -3,6 +3,7 @@ package org.siemac.metamac.portal.web.filter;
 import org.jasig.cas.client.validation.Assertion;
 import org.siemac.metamac.portal.Helpers;
 import org.siemac.metamac.portal.core.constants.PortalConstants;
+import org.siemac.metamac.portal.web.ApplicationStartup;
 import org.siemac.metamac.portal.web.WebUtils;
 import org.siemac.metamac.sso.client.MetamacPrincipal;
 import org.siemac.metamac.sso.client.MetamacPrincipalAccess;
@@ -17,36 +18,28 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CasAuthorizationFilter implements Filter {
 
-    private static final String STATISTICAL_RESOURCES_APP_NAME = "GESTOR_RECURSOS_ESTADISTICOS";
-    private static final String INDICATORS_APP_NAME = "GESTOR_INDICADORES";
-    private static final String UNAUTHORIZED_PAGE = "/error/403.html";
+    static final String STATISTICAL_RESOURCES_APP_NAME = "GESTOR_RECURSOS_ESTADISTICOS";
+    static final String INDICATORS_APP_NAME = "GESTOR_INDICADORES";
+    static final String UNAUTHORIZED_PAGE = "/error/403.html";
 
-    private static final List<String> STATISTICAL_RESOURCES_VALID_TYPES = Arrays.asList(
+    static final List<String> STATISTICAL_RESOURCES_VALID_TYPES = Collections.unmodifiableList(Arrays.asList(
             PortalConstants.ResourceType.DATASET.getName(),
             PortalConstants.ResourceType.QUERY.getName(),
             PortalConstants.ResourceType.MULTIDATASET.getName()
-    );
-    private static final List<String> INDICATORS_VALID_TYPES = Arrays.asList(
+    ));
+    static final List<String> INDICATORS_VALID_TYPES = Collections.unmodifiableList(Arrays.asList(
             PortalConstants.ResourceType.INDICATOR.getName(),
             PortalConstants.ResourceType.INDICATOR_INSTANCE.getName()
-    );
+    ));
 
-    private static final List<String> PAGES_WITH_RESOURCE_TYPE = Arrays.asList(
-            "/visualizer/data.html",
-            "/visualizer/custom/data.html",
-            "/visualizer/agricultura/data.html",
-            "/visualizer/medioambiente/data.html",
-            "/visualizer/turismo/data.html",
-            "/visualizer/funcion-publica/data.html",
-            "/visualizer/iqua/data.html",
-            "/widget.html"
+    static final List<String> PAGES_WITH_RESOURCE_TYPE = Collections.unmodifiableList(
+            Stream.concat(ApplicationStartup.DATA_PATHS.stream(), Stream.of("/widget.html")).collect(Collectors.toList())
     );
 
     @Override
@@ -93,16 +86,9 @@ public class CasAuthorizationFilter implements Filter {
     }
 
     private boolean statisticalResourcesIsValid(HttpServletRequest request) {
-        List<String> statisticalResourcesValidServlets = Arrays.asList(
-                "/visualizer/operations.html",
-                "/visualizer/collection.html",
-                "/visualizer/custom/collection.html",
-                "/visualizer/agricultura/collection.html",
-                "/visualizer/medioambiente/collection.html",
-                "/visualizer/turismo/collection.html",
-                "/visualizer/funcion-publica/collection.html",
-                "/visualizer/iqua/collection.html"
-        );
+        List<String> statisticalResourcesValidServlets = new ArrayList<>(ApplicationStartup.COLLECTION_PATHS);
+        statisticalResourcesValidServlets.add("/visualizer/operations.html");
+
         return statisticalResourcesValidServlets.contains(request.getServletPath())
                 || (PAGES_WITH_RESOURCE_TYPE.contains(request.getServletPath()) && STATISTICAL_RESOURCES_VALID_TYPES.contains(
                 request.getParameter(Helpers.PARAMETER_RESOURCE_TYPE)));
