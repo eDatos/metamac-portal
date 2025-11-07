@@ -118,42 +118,42 @@ public class CasAuthorizationFilterTest {
     }
 
     @Test
-    public void testStatisticalResourcesCannotAccessToDatasetWithoutResourceType() throws IOException, ServletException {
+    public void testStatisticalResourcesCannotAccessToAllDataPagesWithoutResourceType() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTADISTICOS, path, null, null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesAccessToDataWithDataset() throws IOException, ServletException {
+    public void testStatisticalResourcesAccessToAllDataPagesWithDataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.DATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesAccessToDataWithQuery() throws IOException, ServletException {
+    public void testStatisticalResourcesAccessToAllDataPagesWithQuery() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.QUERY.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesAccessToDataWithMultidataset() throws IOException, ServletException {
+    public void testStatisticalResourcesAccessToAllDataPagesWithMultidataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.MULTIDATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesCannotAccessToDataWithIndicators() throws IOException, ServletException {
+    public void testStatisticalResourcesCannotAccessToAllDataPagesWithIndicators() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.INDICATOR.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesCannotAccessToDataWithIndicatorInstances() throws IOException, ServletException {
+    public void testStatisticalResourcesCannotAccessToAllDataPagesWithIndicatorInstances() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTADISTICOS, path, PortalConstants.ResourceType.INDICATOR_INSTANCE.getName(), null, null);
         }
@@ -253,42 +253,42 @@ public class CasAuthorizationFilterTest {
     }
 
     @Test
-    public void testIndicatorsCannotAccessToDatasetWithoutResourceType() throws IOException, ServletException {
+    public void testIndicatorsCannotAccessToAllDataPagessetWithoutResourceType() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_INDICADORES, path, null, null, null);
         }
     }
 
     @Test
-    public void testIndicatorsCannotAccessToDataWithDataset() throws IOException, ServletException {
+    public void testIndicatorsCannotAccessToAllDataPagesWithDataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_INDICADORES, path, PortalConstants.ResourceType.DATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testIndicatorsCannotAccessToDataWithQuery() throws IOException, ServletException {
+    public void testIndicatorsCannotAccessToAllDataPagesWithQuery() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_INDICADORES, path, PortalConstants.ResourceType.QUERY.getName(), null, null);
         }
     }
 
     @Test
-    public void testIndicatorsCannotAccessToDataWithMultidataset() throws IOException, ServletException {
+    public void testIndicatorsCannotAccessToAllDataPagesWithMultidataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_INDICADORES, path, PortalConstants.ResourceType.MULTIDATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testIndicatorsAccessToDataWithIndicators() throws IOException, ServletException {
+    public void testIndicatorsAccessToAllDataPagesWithIndicators() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(GESTOR_INDICADORES, path, PortalConstants.ResourceType.INDICATOR.getName(), null, null);
         }
     }
 
     @Test
-    public void testIndicatorsAccessToDataWithIndicatorInstances() throws IOException, ServletException {
+    public void testIndicatorsAccessToAllDataPagesWithIndicatorInstances() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(GESTOR_INDICADORES, path, PortalConstants.ResourceType.INDICATOR_INSTANCE.getName(), null, null);
         }
@@ -398,42 +398,42 @@ public class CasAuthorizationFilterTest {
     }
 
     @Test
-    public void testStructuralResourcesCannotAccessToDatasetWithoutResourceType() throws IOException, ServletException {
+    public void testStructuralResourcesCannotAccessToAllDataPagesWithoutResourceType() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, null, null, null);
         }
     }
 
     @Test
-    public void testStructuralResourcesCannotAccessToDataWithDataset() throws IOException, ServletException {
+    public void testStructuralResourcesCannotAccessToAllDataPagesWithDataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.DATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testStructuralResourcesCannotAccessToDataWithQuery() throws IOException, ServletException {
+    public void testStructuralResourcesCannotAccessToAllDataPagesWithQuery() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.QUERY.getName(), null, null);
         }
     }
 
     @Test
-    public void testStructuralResourcesCannotAccessToDataWithMultidataset() throws IOException, ServletException {
+    public void testStructuralResourcesCannotAccessToAllDataPagesWithMultidataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.MULTIDATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testStructuralResourcesCannotAccessToDataWithIndicators() throws IOException, ServletException {
+    public void testStructuralResourcesCannotAccessToAllDataPagesWithIndicators() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.INDICATOR.getName(), null, null);
         }
     }
 
     @Test
-    public void testStructuralResourcesCannotAccessToDataWithIndicatorInstances() throws IOException, ServletException {
+    public void testStructuralResourcesCannotAccessToAllDataPagesWithIndicatorInstances() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, path, PortalConstants.ResourceType.INDICATOR_INSTANCE.getName(), null, null);
         }
@@ -543,42 +543,42 @@ public class CasAuthorizationFilterTest {
     }
 
     @Test
-    public void testStatisticalResourcesPlusIndicatorsCannotAccessToDatasetWithoutResourceType() throws IOException, ServletException {
+    public void testStatisticalResourcesPlusIndicatorsCannotAccessToAllDataPagesWithoutResourceType() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, null, null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesPlusIndicatorsAccessToDataWithDataset() throws IOException, ServletException {
+    public void testStatisticalResourcesPlusIndicatorsAccessToAllDataPagesWithDataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.DATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesPlusIndicatorsAccessToDataWithQuery() throws IOException, ServletException {
+    public void testStatisticalResourcesPlusIndicatorsAccessToAllDataPagesWithQuery() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.QUERY.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesPlusIndicatorsAccessToDataWithMultidataset() throws IOException, ServletException {
+    public void testStatisticalResourcesPlusIndicatorsAccessToAllDataPagesWithMultidataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.MULTIDATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesPlusIndicatorsAccessToDataWithIndicators() throws IOException, ServletException {
+    public void testStatisticalResourcesPlusIndicatorsAccessToAllDataPagesWithIndicators() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.INDICATOR.getName(), null, null);
         }
     }
 
     @Test
-    public void testStatisticalResourcesPlusIndicatorsAccessToDataWithIndicatorInstances() throws IOException, ServletException {
+    public void testStatisticalResourcesPlusIndicatorsAccessToAllDataPagesWithIndicatorInstances() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessGranted(new String[]{GESTOR_RECURSOS_ESTADISTICOS, GESTOR_INDICADORES}, path, PortalConstants.ResourceType.INDICATOR_INSTANCE.getName(), null, null);
         }
@@ -678,42 +678,42 @@ public class CasAuthorizationFilterTest {
     }
 
     @Test
-    public void testNoAppsCannotAccessToDatasetWithoutResourceType() throws IOException, ServletException {
+    public void testNoAppsCannotAccessToAllDataPagesWithoutResourceType() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(new String[]{}, path, null, null, null);
         }
     }
 
     @Test
-    public void testNoAppsCannotAccessToDataWithDataset() throws IOException, ServletException {
+    public void testNoAppsCannotAccessToAllDataPagesWithDataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.DATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testNoAppsCannotAccessToDataWithQuery() throws IOException, ServletException {
+    public void testNoAppsCannotAccessToAllDataPagesWithQuery() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.QUERY.getName(), null, null);
         }
     }
 
     @Test
-    public void testNoAppsCannotAccessToDataWithMultidataset() throws IOException, ServletException {
+    public void testNoAppsCannotAccessToAllDataPagesWithMultidataset() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.MULTIDATASET.getName(), null, null);
         }
     }
 
     @Test
-    public void testNoAppsCannotAccessToDataWithIndicators() throws IOException, ServletException {
+    public void testNoAppsCannotAccessToAllDataPagesWithIndicators() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.INDICATOR.getName(), null, null);
         }
     }
 
     @Test
-    public void testNoAppsCannotAccessToDataWithIndicatorInstances() throws IOException, ServletException {
+    public void testNoAppsCannotAccessToAllDataPagesWithIndicatorInstances() throws IOException, ServletException {
         for (String path : DATA_PATHS) {
             testAccessDenied(new String[]{}, path, PortalConstants.ResourceType.INDICATOR_INSTANCE.getName(), null, null);
         }
