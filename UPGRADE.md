@@ -9,7 +9,7 @@
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
 ## 9.18.4 a 9.18.5-SNAPSHOT
-- Esta versión necesita que la tarea de actualización del SSO se haya realizado y mezclado previamente.
+- Esta versión depende de la versión 4.11.3-SNAPSHOT de metamac-sso.
 
 ## 9.17.0 a 9.18.0
 - Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión.
