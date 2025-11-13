@@ -34,8 +34,6 @@ import org.siemac.metamac.rest.permalinks.v1_0.domain.Permalink;
 import org.siemac.metamac.rest.utils.RestUtils;
 import org.springframework.context.ApplicationContext;
 
-// TODO EDATOS-3384 - Al mover el captcha de proyecto estos tests se han roto, se ignoran por lo pronto, pero han de ser revisados para ver si podemos mantenerlos
-@Ignore
 public class PermalinksRestExternalFacadeV10Test extends MetamacRestBaseTest {
 
     protected static PermalinksV1_0 permalinksV1_0;
