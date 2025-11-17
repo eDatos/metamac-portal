@@ -94,8 +94,6 @@
                             App.config["enableGraphColors"] = ${enableGraphColors};
 							App.config["helpUrl"] = '${helpUrl}';
 							App.config["cellThreshold"] = ${cellThreshold};
-							App.config["unitMeasure"] = "${unitMeasure}";
-							App.config["unitMeasureMultiplier"] = "${unitMeasureMultiplier}";
 							App.config["theme"] = '${theme}';
 							App.config["apiKey"] = '${apiKey}';
 							App.config["addAncestorsForGeoParam"] = ${addAncestorsForGeoParam};
