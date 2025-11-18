@@ -18,8 +18,6 @@
 <head>
   <meta charset="UTF-8">
   <title>${msg['api.doc.title']}</title>
- 
-  <link href="<%=org.siemac.metamac.portal.web.diffusion.WebUtils.getFavicon()%>" rel="shortcut icon"/>
 
 </head>
 <body>
