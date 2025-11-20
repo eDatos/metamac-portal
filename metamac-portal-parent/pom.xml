@@ -58,7 +58,7 @@
         <jaxb-commons-lang-plugin-version>2.1.3</jaxb-commons-lang-plugin-version>
 
         <!-- cas -->
-        <metamac-sso.version>4.11.1</metamac-sso.version>
+        <metamac-sso-client.version>4.11.1</metamac-sso-client.version>
     </properties>
 
     <dependencyManagement>
