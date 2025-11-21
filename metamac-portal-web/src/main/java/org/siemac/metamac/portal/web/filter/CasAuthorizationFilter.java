@@ -62,11 +62,15 @@ public class CasAuthorizationFilter implements Filter {
     }
 
     private boolean hasAccess(MetamacPrincipal metamacPrincipal, HttpServletRequest request) {
-        boolean everybodyIsValid = everyAppWithAccessToPortalIsValid(request);
+        if (everybodyIsValid(request)) {
+            return true;
+        }
+
+        boolean everyAppWithAccessToPortalIsValid = everyAppWithAccessToPortalIsValid(request);
 
         ArrayList<String> validApps = new ArrayList<>();
-        if (everybodyIsValid || statisticalResourcesIsValid(request)) validApps.add(STATISTICAL_RESOURCES_APP_NAME);
-        if (everybodyIsValid || indicatorsIsValid(request)) validApps.add(INDICATORS_APP_NAME);
+        if (everyAppWithAccessToPortalIsValid || statisticalResourcesIsValid(request)) validApps.add(STATISTICAL_RESOURCES_APP_NAME);
+        if (everyAppWithAccessToPortalIsValid || indicatorsIsValid(request)) validApps.add(INDICATORS_APP_NAME);
 
         for (MetamacPrincipalAccess access : metamacPrincipal.getAccesses()) {
             if (validApps.contains(access.getApplication())) {
@@ -76,13 +80,16 @@ public class CasAuthorizationFilter implements Filter {
         return false;
     }
 
+    private boolean everybodyIsValid(HttpServletRequest request) {
+        return UNAUTHORIZED_PAGE.equals(request.getServletPath());
+    }
+
     private boolean everyAppWithAccessToPortalIsValid(HttpServletRequest request) {
         Map<String, String[]> requestParameters = request.getParameterMap();
 
-        boolean currentPageRequiresResourceTypeButItIsNotSetYet = PAGES_WITH_RESOURCE_TYPE.contains(request.getServletPath())
+        return PAGES_WITH_RESOURCE_TYPE.contains(request.getServletPath())
                 && (requestParameters.containsKey(Helpers.PARAMETER_PERMALINK) || requestParameters.containsKey(Helpers.PARAMETER_MULTIDATASET_ID))
                 && !requestParameters.containsKey(Helpers.PARAMETER_RESOURCE_TYPE);
-        return UNAUTHORIZED_PAGE.equals(request.getServletPath()) || currentPageRequiresResourceTypeButItIsNotSetYet;
     }
 
     private boolean statisticalResourcesIsValid(HttpServletRequest request) {

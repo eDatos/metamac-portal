@@ -437,8 +437,8 @@ public class CasAuthorizationFilterTest {
     }
 
     @Test
-    public void testStructuralResourcesCannotAccessTo403ErrorPage() throws IOException, ServletException {
-        testAccessDenied(GESTOR_RECURSOS_ESTRUCTURALES, "/error/403.html", null, null, null);
+    public void testStructuralResourcesCanAccessTo403ErrorPage() throws IOException, ServletException {
+        testAccessGranted(GESTOR_RECURSOS_ESTRUCTURALES, "/error/403.html", null, null, null);
     }
 
     @Test
@@ -717,8 +717,8 @@ public class CasAuthorizationFilterTest {
     }
 
     @Test
-    public void testNoAppsCannotAccessTo403ErrorPage() throws IOException, ServletException {
-        testAccessDenied(new String[]{}, "/error/403.html", null, null, null);
+    public void testNoAppsCanAccessTo403ErrorPage() throws IOException, ServletException {
+        testAccessGranted(new String[]{}, "/error/403.html", null, null, null);
     }
 
     @Test
