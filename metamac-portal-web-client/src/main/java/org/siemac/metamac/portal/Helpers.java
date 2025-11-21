@@ -71,6 +71,7 @@ public class Helpers {
     public static final String  PARAMETER_MULTIDATASET_ID                         = "multidatasetId";
     public static final String  PARAMETER_LOCALE                                  = "locale";
     public static final String  PARAMETER_TITLE                                   = "title";
+    public static final String  PARAMETER_PERMALINK                               = "permalink";
 
     // Mainly intended for debug
     public static final String  PARAMETER_THEME                                   = "theme";
@@ -326,7 +327,7 @@ public class Helpers {
 
         // Hash is the SPA route, for example #datasets/selection. Includes #
         stringBuilder.append(permalink.getContent().getHash());
-        stringBuilder.append("/").append("permalink").append("/").append(permalink.getId());
+        stringBuilder.append("/").append(Helpers.PARAMETER_PERMALINK).append("/").append(permalink.getId());
 
         return stringBuilder.toString();
     }

@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%@ attribute name="baseURL" required="true" rtexprvalue="true" %>
+<%@ attribute name="includeApiKey" required="false" rtexprvalue="true" %>
 <%@ tag description="Simple Wrapper Tag" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
@@ -24,7 +25,7 @@
 			<c:import charEncoding="UTF-8" url="${portalStyleHeaderUrl}">
 				<c:param name="${internationalizationCookie}" value="${currentLocale}" />
 				<c:param name="appId" value="statistical-visualizer-${installationType}" />
-				<c:param name="apiKey" value="${apiKey}" />
+				<c:param name="apiKey" value="${(empty includeApiKey or includeApiKey) ? apiKey : ''}" />
 			</c:import>
         </c:when>
         <c:otherwise>
@@ -67,5 +68,10 @@
       ga('send', 'pageview');
 
     </script>
+	<script>
+		var urlWithoutTicket = new URL(window.location.href);
+		urlWithoutTicket.searchParams.delete('ticket');
+		window.history.replaceState({}, document.title, urlWithoutTicket.toString());
+	</script>
 </body>
 </html>
