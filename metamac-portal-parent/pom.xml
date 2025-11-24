@@ -10,7 +10,7 @@
 
     <groupId>org.siemac.metamac.metamac-portal</groupId>
     <artifactId>metamac-portal-parent</artifactId>
-    <version>9.18.5-SNAPSHOT</version>
+    <version>9.18.6-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>METAMAC :: PORTAL :: PARENT</name>
     <description>METAMAC :: PORTAL :: PARENT</description>
@@ -26,35 +26,39 @@
         <metamac-statistical-resources-rest-api-common.version>2.11.0</metamac-statistical-resources-rest-api-common.version>
 
         <indicators.version>11.10.0</indicators.version>
-        
+
         <!-- TODO: Revisar si es necesario que estas dependencias esten aqui o se pueden pasar al proyecto metamac-parent -->
         <google-guava.version>15.0</google-guava.version>
-        
+
         <!-- Excel -->
         <apache-poi.version>5.2.3</apache-poi.version>
         <apache-poi-schemas.version>5.2.3</apache-poi-schemas.version>
         <commons-io.version>2.11.0</commons-io.version>
-        
+
         <commons-lang3.version>3.0.1</commons-lang3.version>
         <batik-core.version>1.17</batik-core.version>
         <fop.version>2.9</fop.version>
         <jsoup.version>1.7.2</jsoup.version>
-        
+
         <frontend-maven-plugin.version>1.11.3</frontend-maven-plugin.version>
         <node.version>v20.14.0</node.version>
-        
+
         <!-- WEB -->
+        <servlet-api.version>3.1.0</servlet-api.version>
         <freemarker.version>2.3.18</freemarker.version>
         <taglibs.version>1.1.2</taglibs.version>
         <jstl.version>1.2</jstl.version>
         <jaxws-rt.version>2.1.7</jaxws-rt.version>
-        
+
         <!-- TEST -->
         <mockito.version>1.9.0</mockito.version>
-        
+
         <!-- wsdl2java -->
         <cxf-version>2.2.8</cxf-version>
         <jaxb-commons-lang-plugin-version>2.1.3</jaxb-commons-lang-plugin-version>
+
+        <!-- cas -->
+        <metamac-sso-client.version>4.11.1</metamac-sso-client.version>
     </properties>
 
     <dependencyManagement>
@@ -62,7 +66,7 @@
             <!-- Container-provided dependencies -->
             <dependency>
                 <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
+                <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
                 <scope>provided</scope>
             </dependency>
