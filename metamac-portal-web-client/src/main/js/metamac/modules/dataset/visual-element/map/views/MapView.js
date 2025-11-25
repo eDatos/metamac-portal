@@ -105,6 +105,7 @@
                 geo: {
                     map: 'map',
                     roam: true,
+                    roamTrigger: "global",
                     itemStyle: {
                         borderWidth: 0.1,
                         borderColor: Constants.colors.istacWhite
