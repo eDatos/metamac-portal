@@ -51,7 +51,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/libs/HandlebarsHelpers.js"
                 paths.js + "/metamac/templates/HandlebarsTemplates.js"
                 paths.js + "/metamac/modules/TemplateManager.js"
-                paths.js + "/libs/echarts.js"
+                paths.nodeModules + "/echarts/dist/echarts.js"
                 paths.js + "/libs/jquery.mousewheel.js"
                 paths.js + "/libs/jquery.ba-resize.js"
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
