@@ -14,7 +14,7 @@
     <entry key="metamac.organisation.urn">urn:sdmx:org.sdmx.infomodel.base.Agency=SDMX:AGENCIES(1.0).ISTAC</entry>
     <entry key="metamac.portal.export.excel.cell_threshold">250000</entry>
     <entry key="metamac.srm.dsd.unit_measure.id">UNIDAD_MEDIDA</entry>
-    <entry key="metamac.srm.dsd.unit_measure_multiplier.id">MULTIPLICADOR_UNIDAD</entry>     
+    <entry key="metamac.srm.dsd.unit_measure_multiplier.id">MULTIPLICADOR_UNIDAD</entry>
     <entry key="metamac.portal.rest.api_key">niQPxZJ656do4NhiptWLsz1DFFzyKvSAbamyrWsq8FC5fZGtLdGmQy58KDkYMHFG</entry>
     <entry key="metamac.portal.rest.internal.api_key">5Vh1dt6oVJ8rTpv1XYrnxLafg3qMb5L1WfPSSfvXaYBDBsML9bv03tjSwiAGTN78</entry>
 </properties>

@@ -88,8 +88,8 @@ public class ExcelExporter {
 
     private boolean                highPerformanceMode            = false;
     private Integer                cellThreshold                  = 250_000;
-    private String                 unitMeasure                    = "UNIDAD_MEDIDA";
-    private String                 unitMultiplier                 = "MULTIPLICADOR_UNIDAD";
+    private String                 unitMeasure;
+    private String                 unitMultiplier;
 
 
     public ExcelExporter(DatasetBase dataset, DatasetSelection datasetSelection, String lang, String langAlternative, Integer cellThreshold, String unitMeasure, String unitMultiplier)
