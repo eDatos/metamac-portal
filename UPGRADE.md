@@ -11,6 +11,8 @@
 ## 9.18.5 a 9.18.6-SNAPSHOT
 - Esta versión depende de la versión 5.0.0 de metamac-sso.
 
+- Esta versión tiene como dependencia complementos-apps en su versión 8.19.1-SNAPSHOT
+
 ## 9.17.0 a 9.18.0
 - Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión.
   Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/9.17.0/db/common-metadata/postgresql/](etc/changes-from-release/9.17.0/db/common-metadata/postgresql)
