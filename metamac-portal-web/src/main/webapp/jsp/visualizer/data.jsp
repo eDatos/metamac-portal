@@ -109,7 +109,7 @@
 							console.log("starting app");
 							App.start();
 
-                            if(${ApiUrlCaptcha != "error"}) {
+                            if(${ApiUrlCaptcha != "error" && installationType == "EXTERNAL"}) {
                                 LazyLoad.js("${ApiUrlCaptcha}/captcha.js");
                             }
 		                });

@@ -27,6 +27,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static final String PARAM_APP_NAME                    = "appName";
     private static final String PARAM_APP_URL                     = "appUrl";
     private static final String PARAM_ENABLE_AUTHENTICATION       = "enableAuthentication";
+    private static final String PARAM_INSTALLATION_TYPE           = "installationType";
 
     private static final Logger log                               = LoggerFactory.getLogger(WebUtils.class);
 
@@ -73,6 +74,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     protected static String     unitMeasureMultiplier             = null;
     protected static String     apiKey                            = null;
     protected static String     widgetApiKey                      = null;
+    protected static String     casServiceLoginUrl                = null;
+    protected static String     casServerUrlPrefix                = null;
+    protected static String     casSecurityTolerance              = null;
 
     public static String getInstallationType() {
         return installationType;
@@ -419,6 +423,30 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         WebUtils.widgetApiKey = widgetApiKey;
     }
 
+    public static String getCasServiceLoginUrl() {
+        return casServiceLoginUrl;
+    }
+
+    public static void setCasServiceLoginUrl(String casServiceLoginUrl) {
+        WebUtils.casServiceLoginUrl = casServiceLoginUrl;
+    }
+
+    public static String getCasServerUrlPrefix() {
+        return casServerUrlPrefix;
+    }
+
+    public static void setCasServerUrlPrefix(String casServerUrlPrefix) {
+        WebUtils.casServerUrlPrefix = casServerUrlPrefix;
+    }
+
+    public static String getCasSecurityTolerance() {
+        return casSecurityTolerance;
+    }
+
+    public static void setCasSecurityTolerance(String casSecurityTolerance) {
+        WebUtils.casSecurityTolerance = casSecurityTolerance;
+    }
+
     public static String buildPageTitle(String organisation, String resourceName, String lang) {
         StringJoiner joiner = new StringJoiner(" | ");
         joiner.add(organisation);
@@ -441,13 +469,19 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     private static String buildQuery(String... params) {
         StringJoiner joiner = new StringJoiner("&");
         for (String param : params) {
-            joiner.add(param);
+            if (StringUtils.isNotBlank(param)) {
+                joiner.add(param);
+            }
         }
         return joiner.length() > 0 ? "?" + joiner.toString() : "";
     }
 
     private static String buildHeaderQuery(String lang) {
-        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam(), PARAM_ENABLE_AUTHENTICATION);
+        return buildQuery(buildBreadcrumbsParams(lang), buildAppNameParam(lang), buildAppUrlParam(), buildInstallationType(), PARAM_ENABLE_AUTHENTICATION);
+    }
+
+    private static String buildInstallationType() {
+        return buildParam(PARAM_INSTALLATION_TYPE, installationType);
     }
 
     private static String buildAppUrlParam() {
