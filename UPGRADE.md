@@ -8,10 +8,10 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
-## 9.18.5 a 9.18.6-SNAPSHOT
+## 9.18.5 a 9.19.0
 - Esta versión depende de la versión 5.0.0 de metamac-sso.
 
-- Esta versión tiene como dependencia complementos-apps en su versión 8.19.1-SNAPSHOT
+- Esta versión tiene como dependencia complementos-apps en su versión 8.20.0
 
 ## 9.17.0 a 9.18.0
 - Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión.
