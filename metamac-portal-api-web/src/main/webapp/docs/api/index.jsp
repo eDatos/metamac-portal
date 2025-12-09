@@ -24,6 +24,9 @@
     
     Pattern pattern = Pattern.compile(".*/(?:(" + EXPORT_API_NAME + "|" + PERMALINKS_API_NAME + "))(?:/.*)?", Pattern.CASE_INSENSITIVE);
     String requestHeaderUrl = request.getHeader("referer");
+    if (requestHeaderUrl == null || requestHeaderUrl.isEmpty()) {
+        requestHeaderUrl = request.getRequestURI();
+    }
     Matcher matcher = pattern.matcher(requestHeaderUrl);
     if (matcher.matches() && matcher.groupCount() >= 0) {
     	String currentApi = matcher.group(1);
