@@ -8,6 +8,8 @@
         this._type = "map";
         this.mapType = options.mapType;
         this.shapes = new App.Map.Shapes();
+
+        this._loadShapes();
     };
 
     App.VisualElement.Map.prototype = new App.VisualElement.Base();

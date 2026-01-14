@@ -33,17 +33,35 @@
                 metadata: this.metadata,
                 dataSource: this.dataSource
             };
-            this.ve = {
-                info: new App.VisualElement.Info(options),
-                column: new App.VisualElement.ColumnChart(options),
-                bar: new App.VisualElement.BarChart(options),
-                line: new App.VisualElement.LineChart(options),
-                table: new App.VisualElement.Table(options),
-                map: new App.VisualElement.Map(_.extend(options, {mapType: 'map'})),
-                mapbubble: new App.VisualElement.Map(_.extend(options, {mapType: 'mapbubble'}))
-            };
-            this.ve.map.on('didLoadVe', this._hideSpinner, this);
-            this.ve.mapbubble.on('didLoadVe', this._hideSpinner, this);
+
+            this.ve = {};
+            _.each(this.veElements, function (element) {
+                switch (element) {
+                    case 'info':
+                        this.ve.info = new App.VisualElement.Info(options);
+                        break;
+                    case 'column':
+                        this.ve.column = new App.VisualElement.ColumnChart(options);
+                        break;
+                    case 'bar':
+                        this.ve.bar = new App.VisualElement.BarChart(options);
+                        break;
+                    case 'line':
+                        this.ve.line = new App.VisualElement.LineChart(options);
+                        break;
+                    case 'table':
+                        this.ve.table = new App.VisualElement.Table(options);
+                        break;
+                    case 'map':
+                        this.ve.map = new App.VisualElement.Map(_.extend(options, {mapType: 'map'}));
+                        this.ve.map.on('didLoadVe', this._hideSpinner, this);
+                        break;
+                    case 'mapbubble':
+                        this.ve.mapbubble = new App.VisualElement.Map(_.extend(options, {mapType: 'mapbubble'}));
+                        this.ve.mapbubble.on('didLoadVe', this._hideSpinner, this);
+                        break;
+                }
+            }, this);
         },
 
         _initializeFullScreen: function () {
