@@ -62,6 +62,69 @@
                         break;
                 }
             }, this);
+
+            var self = this;
+            this.loadColors(function () {
+                if (self.currentVeNeedsColors()) {
+                    self._getCurrentVe().update();
+                    self.hideLoading();
+                }
+            });
+        },
+
+        currentVeNeedsColors: function () {
+            return this.currentElement === 'line' || this.currentElement === 'column' || this.currentElement === 'bar';
+        },
+
+        colorsLoaded: function() {
+            return this.data._colorsLoaded;
+        },
+
+        graphColorsEnabled: function () {
+            return this.data && App.config["enableGraphColors"];
+        },
+
+        loadColors: function (callback) {
+            if (this.graphColorsEnabled()) {
+                var self = this;
+
+                var api = new App.dataset.StructuralResourcesApi(self.data);
+                api.getCodelists(function (codelists) {
+                    var filteredCodelistsWithVariableElements = [];
+                    for (var codelist of codelists) {
+                        var filteredCodelist = codelist.code.filter((item) => item.hasOwnProperty("variableElement"))
+                        if (filteredCodelist.length > 0) {
+                            filteredCodelistsWithVariableElements.push(filteredCodelist);
+                        }
+                    }
+
+                    if (filteredCodelistsWithVariableElements.length > 0) {
+                        var variableUrls = _.map(filteredCodelistsWithVariableElements, function (codelist) {
+                            return codelist[0].variableElement.selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+renderingColor");
+                        });
+                        api.getVariableElements(variableUrls, function (variableElements) {
+                            var flattenedCodelists = _.flatten(filteredCodelistsWithVariableElements);
+                            var flattenedVariableElements = _.flatten(_.map(variableElements, function (variab) {
+                                return variab.variableElement;
+                            }));
+
+                            for (var code of flattenedCodelists) {
+                                self.data.colors[code.urn] = flattenedVariableElements.find(elem => elem.urn === code.variableElement.urn).renderingColor;
+                            }
+
+                            self.data._colorsLoaded = true;
+                            if (callback) {
+                                callback();
+                            }
+                        });
+                    } else {
+                        self.data._colorsLoaded = true;
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                });
+            }
         },
 
         _initializeFullScreen: function () {
@@ -95,6 +158,9 @@
 
         load: function () {
             this.ve[this.currentElement].load();
+            if (this.currentVeNeedsColors() && !this.colorsLoaded()) {
+                this.showLoading();
+            }
         },
 
         showLoading: function () {
