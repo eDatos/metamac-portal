@@ -12,8 +12,6 @@
             var codes = this._extractCodes(normCodes);
             var ajaxParams = {
                 type: "GET",
-                dataType: 'jsonp',
-                jsonp: '_callback',
                 url: App.endpoints["structural-resources"] + "/variables/" + variableId + "/variableelements/~all/geoinfo.json",
                 data: {
                     query: this._createNormCodesQuery(codes),
@@ -42,8 +40,6 @@
             var ajaxParams = {
                 type: "GET",
                 url: url,
-                dataType: 'jsonp',
-                jsonp: '_callback',
                 headers: {
                     "api-key": App.config["apiKey"]
                 }
@@ -63,8 +59,6 @@
                 var requestParams = {
                     url: App.endpoints["structural-resources"] + "/variables/" + variableId + "/variableelements/" + codes[0] + "/geoinfo.json?fields=-geographicalGranularity,-geometry,-point",
                     method: "GET",
-                    dataType: 'jsonp',
-                    jsonp: '_callback',
                     headers: {
                         "api-key": App.config["apiKey"]
                     }
@@ -93,8 +87,6 @@
             var requestParams = {
                 url: defaultGeographicalGranularityCodelistUrl,
                 method: "GET",
-                dataType: 'jsonp',
-                jsonp: '_callback',
                 headers: {
                     "api-key": App.config["apiKey"]
                 }
