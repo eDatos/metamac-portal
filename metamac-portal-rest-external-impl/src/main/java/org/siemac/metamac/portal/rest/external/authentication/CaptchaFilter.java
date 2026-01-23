@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 public class CaptchaFilter implements RequestHandler {
@@ -84,10 +84,10 @@ public class CaptchaFilter implements RequestHandler {
                         url,
                         HttpMethod.GET,
                         requestEntity,
-                        Object.class
+                        Void.class
                 );
                 return null;
-            } catch (HttpClientErrorException e) {
+            } catch (HttpStatusCodeException e) {
                 return Response.status(e.getStatusCode().value()).type(MediaType.APPLICATION_JSON_TYPE).entity(e.getResponseBodyAsString()).build();
             }
         } else {
