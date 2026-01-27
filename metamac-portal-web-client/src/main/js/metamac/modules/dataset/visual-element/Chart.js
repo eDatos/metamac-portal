@@ -342,60 +342,7 @@
             return seriesDimension;
         },
 
-        loadColors: function (showLoading, hideLoading) {
-            if (this.graphColorsEnabled()) {
-                var self = this;
-
-                if (showLoading) {
-                    showLoading();
-                }
-                self.api = new App.dataset.StructuralResourcesApi(self.data);
-                self.api.getCodelists(function (codelists) {
-                    var filteredCodelistsWithVariableElements = [];
-                    for (var codelist of codelists) {
-                        var filteredCodelist = codelist.code.filter((item) => item.hasOwnProperty("variableElement"))
-                        if (filteredCodelist.length > 0) {
-                            filteredCodelistsWithVariableElements.push(filteredCodelist);
-                        }
-                    }
-
-                    if (filteredCodelistsWithVariableElements.length > 0) {
-                        var variableUrls = _.map(filteredCodelistsWithVariableElements, function (codelist) {
-                            return codelist[0].variableElement.selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+renderingColor");
-                        });
-                        self.api.getVariableElements(variableUrls, function (variableElements) {
-                            var flattenedCodelists = _.flatten(filteredCodelistsWithVariableElements);
-                            var flattenedVariableElements = _.flatten(_.map(variableElements, function (variab) {
-                                return variab.variableElement;
-                            }));
-
-                            for (var code of flattenedCodelists) {
-                                self.data.colors[code.urn] = flattenedVariableElements.find(elem => elem.urn === code.variableElement.urn).renderingColor;
-                            }
-
-                            self.update();
-                            if (hideLoading) {
-                                hideLoading();
-                            }
-                        });
-                    } else {
-                        if (hideLoading) {
-                            hideLoading();
-                        }
-                    }
-                });
-            }
-        },
-
         update: function () {
         },
-
-        colorsLoaded: function() {
-            return this.data && this.data.colors && !_.isEmpty(this.data.colors);
-        },
-
-        graphColorsEnabled: function () {
-            return this.data && App.config["enableGraphColors"];
-        }
     };
 }());
