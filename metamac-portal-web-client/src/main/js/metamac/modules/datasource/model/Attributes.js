@@ -176,7 +176,9 @@
         },
 
         getDatasetAttributes: function () {
-            if (this.hasAttributes()) {
+            if (this.datasetAttributes) {
+                return this.datasetAttributes;
+            } else if (this.hasAttributes()) {
                 var datasetAttributesRawValues = _.where(this.attributes, { attachmentLevel: ATTACHMENT_LEVELS.DATASET });
                 var datasetAttributesParsedValues = _(datasetAttributesRawValues).map(this._parseDatasetValue, this);
 
