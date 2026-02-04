@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -519,9 +520,9 @@ public class ExcelExporter {
             addCellComment(cellDetails, cell);
 
             if (observation != null) {
-                try {
-                    cell.setCellValue(Double.parseDouble(observation));
-                } catch (NumberFormatException e) {
+                if (NumberUtils.isNumber(observation)) {
+                    cell.setCellValue(NumberUtils.createDouble(observation));
+                } else {
                     cell.setCellValue(observation);
                 }
             }
