@@ -200,26 +200,30 @@ public class DatasetSelection {
      */
     public Map<String, String> permutationAtCell(int row, int column) {
         Map<String, String> permutation = new HashMap<String, String>();
+        fillPermutationAtCell(row, column, permutation);
+        return permutation;
+    }
+
+    public void fillPermutationAtCell(int row, int column, Map<String, String> target) {
+        target.clear();
 
         for (DatasetSelectionDimension dimension : getLeftDimensions()) {
             Integer multiplier = multipliers.get(dimension.getId());
             int selectedCategoryIndex = (row / multiplier) % dimension.getSelectedDimensionValues().size();
-            permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
+            target.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
         }
 
         for (DatasetSelectionDimension dimension : getTopDimensions()) {
             Integer multiplier = multipliers.get(dimension.getId());
             int selectedCategoryIndex = (column / multiplier) % dimension.getSelectedDimensionValues().size();
-            permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
+            target.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
         }
 
         for (DatasetSelectionDimension dimension : getFixedDimensions()) {
             if (dimension.getSelectedDimensionValues().size() > 0) {
-                permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(0));
+                target.put(dimension.getId(), dimension.getSelectedDimensionValues().get(0));
             }
         }
-
-        return permutation;
     }
 
     public Map<String, String> permutationAtDimension(String dimensionId, String selectedDimensionValue) {

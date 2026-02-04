@@ -97,7 +97,7 @@ public class ResourceAccess {
     private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
     private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>();   // Map<Dimension, Map<Code, Index>
 
-    private int                                           primaryMeasureAttributesCount = 0;
+    private int                                           primaryMeasureAttributesCount = -1;
 
     private SrmRestExternalFacade srmRestExternalFacade;
 
@@ -380,10 +380,6 @@ public class ResourceAccess {
                         attributesValuesByAttributeId.put(attribute.getId(), dataToDataArray(dataAttribute.getValues(), this.getLang(), this.getLangDefault()));
                     }
                 }
-            }
-
-            if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
-                primaryMeasureAttributesCount += calculateNonEmptyCount(attributesValuesByAttributeId.get(attribute.getId()));
             }
 
             // Measure Attribute
@@ -793,6 +789,14 @@ public class ResourceAccess {
     }
 
     public int getPrimaryMeasureAttributesCount() {
+        if (primaryMeasureAttributesCount == -1) {
+            primaryMeasureAttributesCount = 0;
+            for (Attribute attribute : attributesMetadata) {
+                if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
+                    primaryMeasureAttributesCount += calculateNonEmptyCount(attributesValuesByAttributeId.get(attribute.getId()));
+                }
+            }
+        }
         return primaryMeasureAttributesCount;
     }
 }

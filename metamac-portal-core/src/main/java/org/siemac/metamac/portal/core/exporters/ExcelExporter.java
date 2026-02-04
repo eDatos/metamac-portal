@@ -1,20 +1,20 @@
 package org.siemac.metamac.portal.core.exporters;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -371,7 +371,6 @@ public class ExcelExporter {
                     addCellComment(cellDetails, cell);
 
                     cell.setCellValue(dimensionValueLabel);
-                    cell.setCellType(CellType.STRING);
                     cell.setCellStyle(headerCellStyle);
                     headerColumn += multiplier;
                 }
@@ -383,10 +382,11 @@ public class ExcelExporter {
 
     private void content() {
         int observationsStartRow = currentRowCount;
+        Map<String, String> reusablePermutation = new HashMap<>();
         for (int i = 0; i < rowsOfData; i++) {
             SXSSFRow row = sheet.createRow(observationsStartRow + i);
             leftHeaderAtRow(i, row);
-            observationsAtRow(i, row);
+            observationsAtRow(i, row, reusablePermutation);
         }
         currentRowCount += rowsOfData;
     }
@@ -477,7 +477,6 @@ public class ExcelExporter {
     private void addStringCell(SXSSFRow row, int column, String cellValue, CellStyle cellStyle) {
         SXSSFCell cell = initializeCell(row, column);
         cell.setCellValue(cellValue);
-        cell.setCellType(CellType.STRING);
         cell.setCellStyle(cellStyle);
     }
 
@@ -497,32 +496,33 @@ public class ExcelExporter {
                 addCellComment(cellDetails, cell);
 
                 cell.setCellValue(dimensionValueLabel);
-                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             } else {
                 // Empty Cells
                 SXSSFCell cell = initializeCell(row, leftDimensionIndex);
-                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             }
         }
     }
 
-    private void observationsAtRow(int observationRowIndex, SXSSFRow row) {
+    private void observationsAtRow(int observationRowIndex, SXSSFRow row, Map<String, String> reusablePermutation) {
         for (int j = 0; j < columnsOfData; j++) {
-            Map<String, String> permutationAtCell = datasetSelection.permutationAtCell(observationRowIndex, j);
-            String observation = resourceAccess.observationAtPermutation(permutationAtCell);
-            SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
+            datasetSelection.fillPermutationAtCell(observationRowIndex, j, reusablePermutation);
+            String observation = resourceAccess.observationAtPermutation(reusablePermutation);
+            CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(reusablePermutation, unitMeasure, unitMultiplier);
 
-            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell, unitMeasure, unitMultiplier), cell);
+            if (observation == null && cellDetails.getValue() == null) {
+                continue;
+            }
+
+            SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
+            addCellComment(cellDetails, cell);
 
             if (observation != null) {
-                if (NumberUtils.isNumber(observation)) {
-                    cell.setCellValue(NumberUtils.createDouble(observation));
-                    cell.setCellType(CellType.NUMERIC);
-                } else {
+                try {
+                    cell.setCellValue(Double.parseDouble(observation));
+                } catch (NumberFormatException e) {
                     cell.setCellValue(observation);
-                    cell.setCellType(CellType.STRING);
                 }
             }
             cell.setCellStyle(dataCellStyle);
@@ -538,7 +538,6 @@ public class ExcelExporter {
         if (highPerformanceMode) {
             SXSSFCell commentCell = initializeCell((SXSSFRow) cell.getRow(), cell.getColumnIndex() + 1);
             commentCell.setCellValue(commentString);
-            commentCell.setCellType(CellType.STRING);
         } else {
             addCellCommentAsComment(cellCommentDetails, cell, commentString);
         }
@@ -586,7 +585,9 @@ public class ExcelExporter {
         }
 
         try {
-            workbook.write(os);
+            BufferedOutputStream bos = new BufferedOutputStream(os, 65536);
+            workbook.write(bos);
+            bos.flush();
         } catch (IOException e) {
             log.error("Error writing excel to OutputStream", e);
             throw new MetamacException(e, ServiceExceptionType.UNKNOWN, "Error writing excel to OutputStream");
