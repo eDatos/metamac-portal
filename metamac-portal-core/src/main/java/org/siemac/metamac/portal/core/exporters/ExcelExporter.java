@@ -383,11 +383,10 @@ public class ExcelExporter {
 
     private void content() {
         int observationsStartRow = currentRowCount;
-        Map<String, String> reusablePermutation = new HashMap<>();
         for (int i = 0; i < rowsOfData; i++) {
             SXSSFRow row = sheet.createRow(observationsStartRow + i);
             leftHeaderAtRow(i, row);
-            observationsAtRow(i, row, reusablePermutation);
+            observationsAtRow(i, row);
         }
         currentRowCount += rowsOfData;
     }
@@ -506,11 +505,11 @@ public class ExcelExporter {
         }
     }
 
-    private void observationsAtRow(int observationRowIndex, SXSSFRow row, Map<String, String> reusablePermutation) {
+    private void observationsAtRow(int observationRowIndex, SXSSFRow row) {
         for (int j = 0; j < columnsOfData; j++) {
-            datasetSelection.fillPermutationAtCell(observationRowIndex, j, reusablePermutation);
-            String observation = resourceAccess.observationAtPermutation(reusablePermutation);
-            CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(reusablePermutation, unitMeasure, unitMultiplier);
+            Map<String, String> permutationAtCell = datasetSelection.permutationAtCell(observationRowIndex, j);
+            String observation = resourceAccess.observationAtPermutation(permutationAtCell);
+            CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(permutationAtCell, unitMeasure, unitMultiplier);
 
             if (observation == null && cellDetails.getValue() == null) {
                 continue;

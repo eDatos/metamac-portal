@@ -31,6 +31,9 @@ public class DatasetSelection {
     private List<DatasetSelectionDimension>              cachedTopDimensions;
     private List<DatasetSelectionDimension>              cachedFixedDimensions;
 
+    // Cache for the permutation at cell method. Clearing the HashMap is slightly more performant than creating a new one each time.
+    private Map<String, String>                          permutation                     = new HashMap<String, String>();
+
     public DatasetSelection(List<DatasetSelectionDimension> dimensions, List<DatasetSelectionAttribute> attributes, boolean userSelection) {
         this(dimensions, attributes);
         this.userSelection = userSelection;
@@ -216,31 +219,27 @@ public class DatasetSelection {
      * @return
      */
     public Map<String, String> permutationAtCell(int row, int column) {
-        Map<String, String> permutation = new HashMap<String, String>();
-        fillPermutationAtCell(row, column, permutation);
-        return permutation;
-    }
-
-    public void fillPermutationAtCell(int row, int column, Map<String, String> target) {
-        target.clear();
+        permutation.clear();
 
         for (DatasetSelectionDimension dimension : getLeftDimensions()) {
             Integer multiplier = multipliers.get(dimension.getId());
             int selectedCategoryIndex = (row / multiplier) % dimension.getSelectedDimensionValues().size();
-            target.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
+            permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
         }
 
         for (DatasetSelectionDimension dimension : getTopDimensions()) {
             Integer multiplier = multipliers.get(dimension.getId());
             int selectedCategoryIndex = (column / multiplier) % dimension.getSelectedDimensionValues().size();
-            target.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
+            permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(selectedCategoryIndex));
         }
 
         for (DatasetSelectionDimension dimension : getFixedDimensions()) {
             if (dimension.getSelectedDimensionValues().size() > 0) {
-                target.put(dimension.getId(), dimension.getSelectedDimensionValues().get(0));
+                permutation.put(dimension.getId(), dimension.getSelectedDimensionValues().get(0));
             }
         }
+
+        return permutation;
     }
 
     public Map<String, String> permutationAtDimension(String dimensionId, String selectedDimensionValue) {

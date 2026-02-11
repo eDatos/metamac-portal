@@ -152,13 +152,11 @@ public class PlainTextExporter {
             }
         }
 
-        Map<String, String> permutationAtCell = new HashMap<String, String>(dimensionsOrdered.size());
-
         int estimatedLineSize = dimensionsOrdered.size() * 20 + primaryMeasureAttributes.size() * 15 + 20;
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                datasetSelection.fillPermutationAtCell(i, j, permutationAtCell);
+                Map<String, String> permutationAtCell = datasetSelection.permutationAtCell(i, j);
 
                 int offset = datasetAccess.calculateOffset(permutationAtCell);
 
