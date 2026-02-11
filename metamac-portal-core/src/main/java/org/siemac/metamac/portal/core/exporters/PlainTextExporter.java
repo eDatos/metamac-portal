@@ -158,7 +158,7 @@ public class PlainTextExporter {
             for (int j = 0; j < cols; j++) {
                 Map<String, String> permutationAtCell = datasetSelection.permutationAtCell(i, j);
 
-                int offset = datasetAccess.calculateOffset(permutationAtCell);
+                int offset = datasetAccess.calculateOffsetAtPermutation(permutationAtCell);
 
                 StringBuilder line = new StringBuilder(estimatedLineSize);
 

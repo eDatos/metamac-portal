@@ -465,49 +465,6 @@ public class ResourceAccess {
     }
 
     /**
-     * Calculate the offset for a permutation. Use this to avoid recalculating
-     * the offset when accessing both observations and attributes for the same cell.
-     *
-     * @param permutation the cell permutation
-     * @return the offset in the data array
-     */
-    public int calculateOffset(Map<String, String> permutation) {
-        return calculateOffsetAtPermutation(permutation);
-    }
-
-    /**
-     * Retrieve the observation at a specific offset.
-     * Use with calculateOffset() for better performance when accessing multiple values.
-     *
-     * @param offset the pre-calculated offset
-     * @return the observation value or null if empty
-     */
-    public String observationAtOffset(int offset) {
-        String observation = observations[offset];
-        if (!observation.trim().isEmpty()) {
-            return observation;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Retrieve the attribute value at a specific offset.
-     * Use with calculateOffset() for better performance when accessing multiple values.
-     *
-     * @param attributeId the attribute id
-     * @param offset the pre-calculated offset
-     * @return the attribute value or null
-     */
-    public String measureAttributeValueAtOffset(String attributeId, int offset) {
-        String[] attributeValues = attributesValuesByAttributeId.get(attributeId);
-        if (attributeValues != null) {
-            return attributeValues[offset];
-        }
-        return null;
-    }
-
-    /**
      * Retrieve the observation for a specific key <param>permutation</param>
      *
      * @param observation at permutation key
@@ -515,7 +472,16 @@ public class ResourceAccess {
      */
     public String observationAtPermutation(Map<String, String> permutation) {
         int offset = calculateOffsetAtPermutation(permutation);
+        return observationAtOffset(offset);
+    }
 
+    /**
+     * Retrieve the observation for a specific <param>offset</param>
+     *
+     * @param offset the pre-calculated offset
+     * @return
+     */
+    public String observationAtOffset(int offset) {
         String observation = getObservations()[offset];
         if (!observation.trim().isEmpty()) {
             return observation;
@@ -526,6 +492,10 @@ public class ResourceAccess {
 
     public String measureAttributeValueAtPermutation(String attributeId, Map<String, String> permutation) {
         int offset = calculateOffsetAtPermutation(permutation);
+        return measureAttributeValueAtOffset(attributeId, offset);
+    }
+
+    public String measureAttributeValueAtOffset(String attributeId, int offset) {
         String[] attributeValues = getAttributeValues(attributeId);
         String attributeValue = null;
         if (attributeValues != null) {
@@ -714,7 +684,7 @@ public class ResourceAccess {
         }
     }
 
-    private int calculateOffsetAtPermutation(Map<String, String> permutation) {
+    public int calculateOffsetAtPermutation(Map<String, String> permutation) {
         return calculateOffsetAtPermutation(permutation, multipliers);
     }
 
