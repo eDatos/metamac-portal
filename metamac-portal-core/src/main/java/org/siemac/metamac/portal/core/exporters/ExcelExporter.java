@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +15,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -372,6 +372,7 @@ public class ExcelExporter {
                     addCellComment(cellDetails, cell);
 
                     cell.setCellValue(dimensionValueLabel);
+                    cell.setCellType(CellType.STRING);
                     cell.setCellStyle(headerCellStyle);
                     headerColumn += multiplier;
                 }
@@ -477,6 +478,7 @@ public class ExcelExporter {
     private void addStringCell(SXSSFRow row, int column, String cellValue, CellStyle cellStyle) {
         SXSSFCell cell = initializeCell(row, column);
         cell.setCellValue(cellValue);
+        cell.setCellType(CellType.STRING);
         cell.setCellStyle(cellStyle);
     }
 
@@ -496,10 +498,12 @@ public class ExcelExporter {
                 addCellComment(cellDetails, cell);
 
                 cell.setCellValue(dimensionValueLabel);
+                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             } else {
                 // Empty Cells
                 SXSSFCell cell = initializeCell(row, leftDimensionIndex);
+                cell.setCellType(CellType.STRING);
                 cell.setCellStyle(headerCellStyle);
             }
         }
@@ -509,20 +513,17 @@ public class ExcelExporter {
         for (int j = 0; j < columnsOfData; j++) {
             Map<String, String> permutationAtCell = datasetSelection.permutationAtCell(observationRowIndex, j);
             String observation = resourceAccess.observationAtPermutation(permutationAtCell);
-            CellCommentDetails cellDetails = resourceAccess.attributesAtPermutation(permutationAtCell, unitMeasure, unitMultiplier);
-
-            if (observation == null && cellDetails.getValue() == null) {
-                continue;
-            }
-
             SXSSFCell cell = initializeCell(row, leftHeaderSizeOfData + j);
-            addCellComment(cellDetails, cell);
+
+            addCellComment(resourceAccess.attributesAtPermutation(permutationAtCell, unitMeasure, unitMultiplier), cell);
 
             if (observation != null) {
                 if (NumberUtils.isNumber(observation)) {
                     cell.setCellValue(NumberUtils.createDouble(observation));
+                    cell.setCellType(CellType.NUMERIC);
                 } else {
                     cell.setCellValue(observation);
+                    cell.setCellType(CellType.STRING);
                 }
             }
             cell.setCellStyle(dataCellStyle);
@@ -538,6 +539,7 @@ public class ExcelExporter {
         if (highPerformanceMode) {
             SXSSFCell commentCell = initializeCell((SXSSFRow) cell.getRow(), cell.getColumnIndex() + 1);
             commentCell.setCellValue(commentString);
+            commentCell.setCellType(CellType.STRING);
         } else {
             addCellCommentAsComment(cellCommentDetails, cell, commentString);
         }
