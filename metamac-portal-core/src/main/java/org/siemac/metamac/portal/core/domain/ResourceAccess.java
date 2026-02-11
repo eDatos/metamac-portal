@@ -97,7 +97,7 @@ public class ResourceAccess {
     private final Map<String, Map<String, Integer>>       multipliersByAttribute        = new HashMap<String, Map<String, Integer>>();
     private final Map<String, Map<String, Long>>          representationIndex           = new HashMap<String, Map<String, Long>>();   // Map<Dimension, Map<Code, Index>
 
-    private int                                           primaryMeasureAttributesCount = -1;
+    private int                                           primaryMeasureAttributesCount = 0;
 
     private SrmRestExternalFacade srmRestExternalFacade;
 
