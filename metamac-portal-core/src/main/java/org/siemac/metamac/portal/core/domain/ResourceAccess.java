@@ -382,6 +382,10 @@ public class ResourceAccess {
                 }
             }
 
+            if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
+                primaryMeasureAttributesCount += calculateNonEmptyCount(attributesValuesByAttributeId.get(attribute.getId()));
+            }
+
             // Measure Attribute
             if (ComponentType.MEASURE.equals(attribute.getType())) {
                 measureAttribute = attribute;
@@ -802,14 +806,6 @@ public class ResourceAccess {
     }
 
     public int getPrimaryMeasureAttributesCount() {
-        if (primaryMeasureAttributesCount == -1) {
-            primaryMeasureAttributesCount = 0;
-            for (Attribute attribute : attributesMetadata) {
-                if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
-                    primaryMeasureAttributesCount += calculateNonEmptyCount(attributesValuesByAttributeId.get(attribute.getId()));
-                }
-            }
-        }
         return primaryMeasureAttributesCount;
     }
 }

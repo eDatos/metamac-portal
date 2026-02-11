@@ -138,21 +138,12 @@ public class PlainTextExporter {
         List<Attribute> attributes = datasetAccess.getAttributesMetadata();
         String separator = plainTextTypeEnum.getSeparator();
 
-        Map<String, LabelVisualisationModeEnum> dimLabelModes = new HashMap<String, LabelVisualisationModeEnum>(dimensionsOrdered.size());
-        for (String dimId : dimensionsOrdered) {
-            dimLabelModes.put(dimId, datasetAccess.getDimensionLabelVisualisationMode(dimId));
-        }
-
         List<Attribute> primaryMeasureAttributes = new ArrayList<Attribute>();
-        Map<String, LabelVisualisationModeEnum> attrLabelModes = new HashMap<String, LabelVisualisationModeEnum>();
         for (Attribute attribute : attributes) {
             if (AttributeAttachmentLevelType.PRIMARY_MEASURE.equals(attribute.getAttachmentLevel())) {
                 primaryMeasureAttributes.add(attribute);
-                attrLabelModes.put(attribute.getId(), datasetAccess.getAttributeLabelVisualisationMode(attribute.getId()));
             }
         }
-
-        int estimatedLineSize = dimensionsOrdered.size() * 20 + primaryMeasureAttributes.size() * 15 + 20;
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -160,11 +151,11 @@ public class PlainTextExporter {
 
                 int offset = datasetAccess.calculateOffsetAtPermutation(permutationAtCell);
 
-                StringBuilder line = new StringBuilder(estimatedLineSize);
+                StringBuilder line = new StringBuilder();
 
                 for (String dimensionId : dimensionsOrdered) {
                     String dimensionValueId = permutationAtCell.get(dimensionId);
-                    LabelVisualisationModeEnum labelVisualisation = dimLabelModes.get(dimensionId);
+                    LabelVisualisationModeEnum labelVisualisation = datasetAccess.getDimensionLabelVisualisationMode(dimensionId);
                     if (labelVisualisation.isLabel()) {
                         String dimensionValueLabel = datasetAccess.getDimensionValueLabelCurrentLocale(dimensionId, dimensionValueId);
                         line.append(escapeString(dimensionValueLabel, ESCAPE_IF_NECESSARY)).append(separator);
@@ -187,7 +178,7 @@ public class PlainTextExporter {
                         attributeValue = StringUtils.EMPTY;
                         line.append(separator).append(escapeString(attributeValue, ESCAPE_IF_NECESSARY));
                     } else {
-                        LabelVisualisationModeEnum labelVisualisation = attrLabelModes.get(attributeId);
+                        LabelVisualisationModeEnum labelVisualisation = datasetAccess.getAttributeLabelVisualisationMode(attributeId);
                         if (labelVisualisation.isLabel()) {
                             String attributeValueLabel = datasetAccess.getAttributeValueLabelCurrentLocale(attributeId, attributeValue);
                             line.append(separator).append(escapeString(attributeValueLabel != null ? attributeValueLabel : attributeValue, ESCAPE_IF_NECESSARY));
