@@ -27,6 +27,10 @@ public class DatasetSelection {
 
     private final Map<String, Integer>                   multipliers                     = new HashMap<String, Integer>();
 
+    private List<DatasetSelectionDimension>              cachedLeftDimensions;
+    private List<DatasetSelectionDimension>              cachedTopDimensions;
+    private List<DatasetSelectionDimension>              cachedFixedDimensions;
+
     public DatasetSelection(List<DatasetSelectionDimension> dimensions, List<DatasetSelectionAttribute> attributes, boolean userSelection) {
         this(dimensions, attributes);
         this.userSelection = userSelection;
@@ -51,6 +55,10 @@ public class DatasetSelection {
     }
 
     private void recalculateMultipliers() {
+        cachedLeftDimensions = null;
+        cachedTopDimensions = null;
+        cachedFixedDimensions = null;
+
         initializeMultipliers(getLeftDimensions());
         initializeMultipliers(getTopDimensions());
         initializedFixedMultipliers();
@@ -146,15 +154,24 @@ public class DatasetSelection {
     }
 
     public List<DatasetSelectionDimension> getLeftDimensions() {
-        return getDimensionsInPositionRange(LEFT_DIMENSIONS_START_POSITION, TOP_DIMENSIONS_START_POSITION);
+        if (cachedLeftDimensions == null) {
+            cachedLeftDimensions = getDimensionsInPositionRange(LEFT_DIMENSIONS_START_POSITION, TOP_DIMENSIONS_START_POSITION);
+        }
+        return cachedLeftDimensions;
     }
 
     public List<DatasetSelectionDimension> getTopDimensions() {
-        return getDimensionsInPositionRange(TOP_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION);
+        if (cachedTopDimensions == null) {
+            cachedTopDimensions = getDimensionsInPositionRange(TOP_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION);
+        }
+        return cachedTopDimensions;
     }
 
     public List<DatasetSelectionDimension> getFixedDimensions() {
-        return getDimensionsInPositionRange(FIXED_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION + 20);
+        if (cachedFixedDimensions == null) {
+            cachedFixedDimensions = getDimensionsInPositionRange(FIXED_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION + 20);
+        }
+        return cachedFixedDimensions;
     }
 
     public void moveTopDimensionsToLeft() {
