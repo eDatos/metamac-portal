@@ -132,11 +132,11 @@ public class PlainTextExporter {
     }
 
     private void writeBodyForPlainTextObservations(PrintWriter printWriter) {
-        int rows = datasetSelection.getRows();
-        int cols = datasetSelection.getColumns();
+        final int rows = datasetSelection.getRows();
+        final int cols = datasetSelection.getColumns();
+        final String separator = plainTextTypeEnum.getSeparator();
         List<String> dimensionsOrdered = datasetAccess.getDimensionsOrderedForData();
         List<Attribute> attributes = datasetAccess.getAttributesMetadata();
-        String separator = plainTextTypeEnum.getSeparator();
 
         List<Attribute> primaryMeasureAttributes = new ArrayList<Attribute>();
         for (Attribute attribute : attributes) {
