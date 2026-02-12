@@ -126,8 +126,7 @@ public class PlainTextExporter {
                 header.append(plainTextTypeEnum.getSeparator() + escapeString(attributeId + HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE));
             }
         }
-        header.append('\n');
-        printWriter.write(header.toString());
+        println(header, printWriter);
     }
 
     private void writeBodyForPlainTextObservations(PrintWriter printWriter) {
@@ -187,8 +186,7 @@ public class PlainTextExporter {
                         }
                     }
                 }
-                line.append('\n');
-                printWriter.write(line.toString());
+                println(line, printWriter);
             }
         }
     }
@@ -209,8 +207,7 @@ public class PlainTextExporter {
         if (numberOfColumnsToAttributeValue == 2) {
             header.append(plainTextTypeEnum.getSeparator() + escapeString(HEADER_ATTRIBUTE_VALUE_CODE)); // put this column only when it is necessary
         }
-        header.append('\n');
-        printWriter.write(header.toString());
+        println(header, printWriter);
     }
 
     private void writeBodyForPlainTextAttributesDataset(PrintWriter printWriter, List<Attribute> attributes, int numberOfColumnsToAttributeValue) {
@@ -240,8 +237,7 @@ public class PlainTextExporter {
             // Attribute value
             String attributeValue = attributeValues[0];
             writeBodyAttributeValueForPlainTextAttributes(line, attributeId, attributeValue, numberOfColumnsToAttributeValue);
-            line.append('\n');
-            printWriter.write(line.toString());
+            println(line, printWriter);
         }
     }
 
@@ -306,8 +302,7 @@ public class PlainTextExporter {
                     line.append(escapeString(attributeId) + plainTextTypeEnum.getSeparator());
                     // Attribute value
                     writeBodyAttributeValueForPlainTextAttributes(line, attributeId, attributeValue, numberOfColumnsToAttributeValue);
-                    line.append('\n');
-                    printWriter.write(line.toString());
+                    println(line, printWriter);
                 }
             } else {
                 String dimensionId = dimensionsAttributeOrderedForData.get(dimensionPosition + 1);
@@ -376,5 +371,10 @@ public class PlainTextExporter {
             return source;
         }
         return ESCAPE_DOUBLE_QUOTES + source + ESCAPE_DOUBLE_QUOTES;
+    }
+
+    private void println(StringBuilder line, PrintWriter printWriter) {
+        line.append('\n');
+        printWriter.write(line.toString());
     }
 }
