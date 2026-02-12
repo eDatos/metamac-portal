@@ -149,7 +149,7 @@ public class PlainTextExporter {
 
                 int offset = datasetAccess.calculateOffsetAtPermutation(permutationAtCell);
 
-                StringBuilder line = new StringBuilder();
+                StringBuilder line = new StringBuilder(256);
 
                 for (String dimensionId : dimensionsOrdered) {
                     String dimensionValueId = permutationAtCell.get(dimensionId);
