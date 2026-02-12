@@ -21,15 +21,15 @@ public class DatasetSelection {
 
     private List<DatasetSelectionDimension>              dimensions                      = new ArrayList<DatasetSelectionDimension>();
     private final Map<String, DatasetSelectionDimension> dimensionsMap                   = new HashMap<String, DatasetSelectionDimension>();
+    private List<DatasetSelectionDimension>              leftDimensions                  = new ArrayList<DatasetSelectionDimension>();
+    private List<DatasetSelectionDimension>              topDimensions                   = new ArrayList<DatasetSelectionDimension>();
+    private List<DatasetSelectionDimension>              fixedDimensions                 = new ArrayList<DatasetSelectionDimension>();
 
     private List<DatasetSelectionAttribute>              attributes                      = new ArrayList<DatasetSelectionAttribute>();
     private final Map<String, DatasetSelectionAttribute> attributesMap                   = new HashMap<String, DatasetSelectionAttribute>();
 
     private final Map<String, Integer>                   multipliers                     = new HashMap<String, Integer>();
 
-    private List<DatasetSelectionDimension>              cachedLeftDimensions;
-    private List<DatasetSelectionDimension>              cachedTopDimensions;
-    private List<DatasetSelectionDimension>              cachedFixedDimensions;
 
     // Cache for the permutation at cell method. Clearing the HashMap is slightly more performant than creating a new one each time.
     private Map<String, String>                          permutation                     = new HashMap<String, String>();
@@ -45,6 +45,9 @@ public class DatasetSelection {
             for (DatasetSelectionDimension dimension : dimensions) {
                 dimensionsMap.put(dimension.getId(), dimension);
             }
+            fixedDimensions = getDimensionsInPositionRange(FIXED_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION + 20);
+            leftDimensions = getDimensionsInPositionRange(LEFT_DIMENSIONS_START_POSITION, TOP_DIMENSIONS_START_POSITION);
+            topDimensions = getDimensionsInPositionRange(TOP_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION);
         }
         if (attributes != null) {
             this.attributes = new ArrayList<DatasetSelectionAttribute>(attributes);
@@ -58,10 +61,6 @@ public class DatasetSelection {
     }
 
     private void recalculateMultipliers() {
-        cachedLeftDimensions = null;
-        cachedTopDimensions = null;
-        cachedFixedDimensions = null;
-
         initializeMultipliers(getLeftDimensions());
         initializeMultipliers(getTopDimensions());
         initializedFixedMultipliers();
@@ -157,24 +156,15 @@ public class DatasetSelection {
     }
 
     public List<DatasetSelectionDimension> getLeftDimensions() {
-        if (cachedLeftDimensions == null) {
-            cachedLeftDimensions = getDimensionsInPositionRange(LEFT_DIMENSIONS_START_POSITION, TOP_DIMENSIONS_START_POSITION);
-        }
-        return cachedLeftDimensions;
+        return leftDimensions;
     }
 
     public List<DatasetSelectionDimension> getTopDimensions() {
-        if (cachedTopDimensions == null) {
-            cachedTopDimensions = getDimensionsInPositionRange(TOP_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION);
-        }
-        return cachedTopDimensions;
+        return topDimensions;
     }
 
     public List<DatasetSelectionDimension> getFixedDimensions() {
-        if (cachedFixedDimensions == null) {
-            cachedFixedDimensions = getDimensionsInPositionRange(FIXED_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION + 20);
-        }
-        return cachedFixedDimensions;
+        return fixedDimensions;
     }
 
     public void moveTopDimensionsToLeft() {
