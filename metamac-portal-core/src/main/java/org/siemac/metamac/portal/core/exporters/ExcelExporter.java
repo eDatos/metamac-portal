@@ -1,5 +1,6 @@
 package org.siemac.metamac.portal.core.exporters;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
@@ -586,7 +587,9 @@ public class ExcelExporter {
         }
 
         try {
-            workbook.write(os);
+            BufferedOutputStream bos = new BufferedOutputStream(os, 65536);
+            workbook.write(bos);
+            bos.flush();
         } catch (IOException e) {
             log.error("Error writing excel to OutputStream", e);
             throw new MetamacException(e, ServiceExceptionType.UNKNOWN, "Error writing excel to OutputStream");
