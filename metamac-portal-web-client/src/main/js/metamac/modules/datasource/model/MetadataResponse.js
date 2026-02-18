@@ -21,17 +21,16 @@
             this.selectedLanguages = this.metadataResponse.selectedLanguages.language;
             this.metadata = this.metadataResponse.metadata;
             this.codelistUrls = [];
-            if (this.metadata.type === 'DATASET') {
-                for (var dimension of this.metadata.dimensions.dimension) {
-                    var dimensionValues = dimension.dimensionValues;
-                    var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
-                    if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type) && dimensionValues.value[0].selfLink != null) {
-                        this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
-                    }
+            for (var dimension of this.metadata.dimensions.dimension) {
+                var dimensionValues = dimension.dimensionValues;
+                var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
+                if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type) && dimensionValues.value[0].selfLink != null) {
+                    this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
                 }
             }
             this.initializeCache();
         },
+
         identifier: function () {
             return this.datasourceIdentifier.getIdentifier();
         },
