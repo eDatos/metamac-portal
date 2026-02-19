@@ -476,7 +476,16 @@ public class ResourceAccess {
      */
     public String observationAtPermutation(Map<String, String> permutation) {
         int offset = calculateOffsetAtPermutation(permutation);
+        return observationAtOffset(offset);
+    }
 
+    /**
+     * Retrieve the observation for a specific <param>offset</param>
+     *
+     * @param offset the pre-calculated offset
+     * @return
+     */
+    public String observationAtOffset(int offset) {
         String observation = getObservations()[offset];
         if (!observation.trim().isEmpty()) {
             return observation;
@@ -487,6 +496,10 @@ public class ResourceAccess {
 
     public String measureAttributeValueAtPermutation(String attributeId, Map<String, String> permutation) {
         int offset = calculateOffsetAtPermutation(permutation);
+        return measureAttributeValueAtOffset(attributeId, offset);
+    }
+
+    public String measureAttributeValueAtOffset(String attributeId, int offset) {
         String[] attributeValues = getAttributeValues(attributeId);
         String attributeValue = null;
         if (attributeValues != null) {
@@ -675,7 +688,7 @@ public class ResourceAccess {
         }
     }
 
-    private int calculateOffsetAtPermutation(Map<String, String> permutation) {
+    public int calculateOffsetAtPermutation(Map<String, String> permutation) {
         return calculateOffsetAtPermutation(permutation, multipliers);
     }
 

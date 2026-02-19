@@ -697,8 +697,10 @@ public class PxExporter {
 		// Calculate International String Contact
 		ResourcesStatisticalResourceBase publishers = datasetAccess.getMetadata().getPublishers();
 		InternationalString value = null;
-		for (Resource publisher : publishers.getResources()) {
-			value = PortalUtils.concatenateInternationalString(value, publisher.getName());
+		if (publishers != null && publishers.getResources() != null) {
+			for (Resource publisher : publishers.getResources()) {
+				value = PortalUtils.concatenateInternationalString(value, publisher.getName());
+			}
 		}
 
 		if (datasetAccess.hasMeasureDimension()) {
@@ -1327,3 +1329,4 @@ public class PxExporter {
 	}
 
 }
+

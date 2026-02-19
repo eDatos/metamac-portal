@@ -57,9 +57,6 @@
                 return;
             }
             this.render();
-            if (!this.colorsLoaded()) {
-                this.loadColors(_.bind(this.showLoading, this), _.bind(this.hideLoading, this));
-            }
         },
 
         _bindEvents: function () {
