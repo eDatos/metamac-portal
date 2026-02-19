@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
+import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -451,6 +452,7 @@ public abstract class DataExportRestCommon {
     private File generatePlainTextZip(PlainTextTypeEnum plainTextTypeEnum, File fileObservations, File fileAttributes, String filenamePrefix) throws Exception {
         File zipFile = File.createTempFile("metamac", "zip");
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));) {
+            out.setLevel(Deflater.BEST_SPEED);
 
             addToZip(out, fileObservations, filenamePrefix + "-observations." + plainTextTypeEnum.getExtension());
             addToZip(out, fileAttributes, filenamePrefix + "-attributes." + plainTextTypeEnum.getExtension());
@@ -464,8 +466,7 @@ public abstract class DataExportRestCommon {
 
             zip.putNextEntry(new ZipEntry(filenameToZip));
 
-            // Transfer bytes from the file to the ZIP file
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[8192];
             int len;
             while ((len = in.read(buf)) > 0) {
                 zip.write(buf, 0, len);

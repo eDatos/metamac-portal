@@ -21,11 +21,18 @@ public class DatasetSelection {
 
     private List<DatasetSelectionDimension>              dimensions                      = new ArrayList<DatasetSelectionDimension>();
     private final Map<String, DatasetSelectionDimension> dimensionsMap                   = new HashMap<String, DatasetSelectionDimension>();
+    private List<DatasetSelectionDimension>              leftDimensions                  = new ArrayList<DatasetSelectionDimension>();
+    private List<DatasetSelectionDimension>              topDimensions                   = new ArrayList<DatasetSelectionDimension>();
+    private List<DatasetSelectionDimension>              fixedDimensions                 = new ArrayList<DatasetSelectionDimension>();
 
     private List<DatasetSelectionAttribute>              attributes                      = new ArrayList<DatasetSelectionAttribute>();
     private final Map<String, DatasetSelectionAttribute> attributesMap                   = new HashMap<String, DatasetSelectionAttribute>();
 
     private final Map<String, Integer>                   multipliers                     = new HashMap<String, Integer>();
+
+
+    // Cache for the permutation at cell method. Clearing the HashMap is slightly more performant than creating a new one each time.
+    private Map<String, String>                          permutation                     = new HashMap<String, String>();
 
     public DatasetSelection(List<DatasetSelectionDimension> dimensions, List<DatasetSelectionAttribute> attributes, boolean userSelection) {
         this(dimensions, attributes);
@@ -38,6 +45,9 @@ public class DatasetSelection {
             for (DatasetSelectionDimension dimension : dimensions) {
                 dimensionsMap.put(dimension.getId(), dimension);
             }
+            fixedDimensions = getDimensionsInPositionRange(FIXED_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION + 20);
+            leftDimensions = getDimensionsInPositionRange(LEFT_DIMENSIONS_START_POSITION, TOP_DIMENSIONS_START_POSITION);
+            topDimensions = getDimensionsInPositionRange(TOP_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION);
         }
         if (attributes != null) {
             this.attributes = new ArrayList<DatasetSelectionAttribute>(attributes);
@@ -146,15 +156,15 @@ public class DatasetSelection {
     }
 
     public List<DatasetSelectionDimension> getLeftDimensions() {
-        return getDimensionsInPositionRange(LEFT_DIMENSIONS_START_POSITION, TOP_DIMENSIONS_START_POSITION);
+        return leftDimensions;
     }
 
     public List<DatasetSelectionDimension> getTopDimensions() {
-        return getDimensionsInPositionRange(TOP_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION);
+        return topDimensions;
     }
 
     public List<DatasetSelectionDimension> getFixedDimensions() {
-        return getDimensionsInPositionRange(FIXED_DIMENSIONS_START_POSITION, FIXED_DIMENSIONS_START_POSITION + 20);
+        return fixedDimensions;
     }
 
     public void moveTopDimensionsToLeft() {
@@ -199,7 +209,7 @@ public class DatasetSelection {
      * @return
      */
     public Map<String, String> permutationAtCell(int row, int column) {
-        Map<String, String> permutation = new HashMap<String, String>();
+        permutation.clear();
 
         for (DatasetSelectionDimension dimension : getLeftDimensions()) {
             Integer multiplier = multipliers.get(dimension.getId());
