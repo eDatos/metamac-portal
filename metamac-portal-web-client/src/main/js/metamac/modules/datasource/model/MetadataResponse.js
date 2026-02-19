@@ -21,11 +21,13 @@
             this.selectedLanguages = this.metadataResponse.selectedLanguages.language;
             this.metadata = this.metadataResponse.metadata;
             this.codelistUrls = [];
-            for (var dimension of this.metadata.dimensions.dimension) {
-                var dimensionValues = dimension.dimensionValues;
-                var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
-                if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type) && dimensionValues.value[0].selfLink != null) {
-                    this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
+            if (this.metadata.dimensions) {
+                for (var dimension of this.metadata.dimensions.dimension) {
+                    var dimensionValues = dimension.dimensionValues;
+                    var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
+                    if (dimensionValues.total > 0 && !dimensionsToExclude.includes(dimension.type) && dimensionValues.value[0].selfLink != null) {
+                        this.codelistUrls.push(dimensionValues.value[0].selfLink.href.replace(/\/[^\/]*$/, ".json?fields=+variableElement"));
+                    }
                 }
             }
             this.initializeCache();
