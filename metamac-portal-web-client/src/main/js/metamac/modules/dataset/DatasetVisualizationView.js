@@ -158,7 +158,7 @@
 
         load: function () {
             this.ve[this.currentElement].load();
-            if (this.currentVeNeedsColors() && !this.colorsLoaded()) {
+            if (this.graphColorsEnabled() && this.currentVeNeedsColors() && !this.colorsLoaded()) {
                 this.showLoading();
             }
         },
