@@ -1,5 +1,6 @@
 package org.siemac.metamac.portal.web.diffusion;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +28,9 @@ public class SwaggerFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws java.io.IOException, ServletException {
         String path = ((HttpServletRequest) request).getRequestURI();
-        if (StringUtils.isBlank(((HttpServletRequest) request).getQueryString())
+        Map requestParameters = request.getParameterMap();
+        boolean hasNoParamsOrOnlyToken = requestParameters.isEmpty() || (requestParameters.size() == 1 && requestParameters.containsKey("token"));
+        if (hasNoParamsOrOnlyToken
                 && (StringUtils.endsWithAny(path, getSupportedExportApiiVersions()) || StringUtils.endsWithAny(path, getSupportedPermalinksApiVersions()))) {
             request.getRequestDispatcher("/docs/api/index.jsp").forward(request, response);
         } else if (path.endsWith("swagger.jsp")) {
