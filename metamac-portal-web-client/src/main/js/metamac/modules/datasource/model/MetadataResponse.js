@@ -21,7 +21,7 @@
             this.selectedLanguages = this.metadataResponse.selectedLanguages.language;
             this.metadata = this.metadataResponse.metadata;
             this.codelistUrls = [];
-            if (this.metadata.type === 'DATASET') {
+            if (this.metadata.dimensions) {
                 for (var dimension of this.metadata.dimensions.dimension) {
                     var dimensionValues = dimension.dimensionValues;
                     var dimensionsToExclude = ["MEASURE_DIMENSION", "TIME_DIMENSION"];
@@ -32,6 +32,7 @@
             }
             this.initializeCache();
         },
+
         identifier: function () {
             return this.datasourceIdentifier.getIdentifier();
         },
