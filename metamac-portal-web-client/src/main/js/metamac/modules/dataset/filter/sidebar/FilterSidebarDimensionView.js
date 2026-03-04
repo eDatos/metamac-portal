@@ -108,6 +108,7 @@
                     collection: this.levelsCollection,
                     selectionModel: this.filterDimension,
                     name: 'filterLevel',
+                    dropdownCssClass: "filter-level",
                     el: this.$('.filter-sidebar-dimension-levels')
                 });
                 this.levelView.render();

@@ -1,5 +1,10 @@
 @import "variables";
 
+@contenidoWidth: 1280px;
+@contenidoTopPadding: 25px;
+@contenidoBottomPadding: 69px;
+@visualizerWrapperHeight: 870px;
+
 .metamac-tooltip,
 .metamac-container {
 	font: @istacFontSansSerif;
@@ -11,11 +16,34 @@
 }
 
 input, textarea, select, button {
-	font-size: @defaultFontSize;
+	font-size: var(--edatos-font-size-m);
 }
 
-.visualizer-wrapper {
-    height: 800px;
-    display: flex;
-    flex-direction: column;
+body.statistical-visualizer {
+	font-family: var(--edatos-font-family);
+	font-size: var(--edatos-font-size-m);
+	font-weight: var(--edatos-font-weight-light);
+	color: var(--edatos-color-black-100);
+	background: var(--edatos-color-gray-5);
+
+	#bloq_interior {
+		padding: @paddingBig 0;
+	}
+
+	.contenido {
+		max-width: @contenidoWidth;
+		padding: @contenidoTopPadding var(--edatos-spacing-x-m) @contenidoBottomPadding;
+		width: 100%;
+		box-sizing: border-box;
+		justify-self: center;
+		background: var(--edatos-color-white-100);
+		box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
+
+		.visualizer-wrapper {
+			height: @visualizerWrapperHeight;
+			display: flex;
+			flex-direction: column;
+			padding: 0;
+		}
+	}
 }

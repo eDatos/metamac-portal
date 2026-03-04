@@ -6,22 +6,21 @@
     .btn-group-vertical > .btn {
         float: none;
     }
-    .btn {        
-        padding: 2px 4px;
-        margin-bottom: 0; // For input.btn
+    .btn {
+        border-radius: @borderRadiusMedium;
+        border: @borderWidthSmall solid var(--edatos-color-secondary-100);
+        background-color: var(--edatos-color-white-100);
+        color: var(--edatos-color-secondary-100);
+        text-transform: uppercase;
         text-align: center;
+        line-height: @lineHeightMedium;
+        padding: @paddingSmall @paddingMedium;
+        margin-bottom: 0; // For input.btn
         vertical-align: middle;
         cursor: pointer;
-        font-size: @defaultFontSize;
-        border: none;
         white-space: nowrap;
         .user-select(none);
         display: inline-block;
-        line-height: @defaultFontSize + 5px;
-        border-radius: 0;
-
-        background-color: @istacGreyMedium;
-        color: @istacWhite;
 
         &:link, &:visited {
             text-decoration: none;
@@ -32,7 +31,7 @@
         }
 
         &:hover,
-        &:focus {
+        &:focus, &[aria-expanded="true"] {
             text-decoration: none;
             
             color: @istacBlack;
@@ -56,23 +55,14 @@
         }
 
     }
-    
-    .btn-with-label {
-    	padding-top: 0;
-    	padding-bottom: 1px;
-        margin-top: -4px;
-    	label {
-    		cursor : pointer;
-            display : block;
-            margin: 0;
-            font-weight: normal;
-    	}
-    } 
 
-    .btn-mini {        
-        i {
-            font-size: @defaultFontSize - 1px;
-            line-height: @defaultFontSize - 1px + 5px;
-        }
-    }   
+    .btn-mini {
+        border-radius: @borderRadiusSmall;
+        background-color: var(--edatos-color-gray-40);
+        color: var(--edatos-color-white-100);
+        border: none;
+        font-weight: var(--edatos-font-weight-semibold);
+        text-transform: none;
+        padding: @paddingSmall;
+    }
 }

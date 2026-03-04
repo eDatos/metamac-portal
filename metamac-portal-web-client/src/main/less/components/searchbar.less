@@ -1,15 +1,24 @@
+@import "../variables";
+
+@searchBarHorizontalPadding: 1.18rem;
+@searchBarHeight: 2.625rem;
+
 .searchbar {
     position: relative;
 
     input {
-        display: block;
-        width: 100%;
         .box-sizing(border-box);
-        padding: 0 6px;
-        height: 24px;
-        .border-radius(0);
-    }
 
+        display: block;
+        background: var(--edatos-color-white-100);
+        color: var(--edatos-color-gray-60);
+        height: @searchBarHeight;
+        width: 100%;
+        padding: 0 @searchBarHorizontalPadding;
+        font-weight: var(--edatos-font-weight-semibold);
+        border-radius: @borderRadiusSmall;
+        border: @borderWidthSmall solid var(--edatos-color-gray-40);
+    }
 
     .searchbar-icon {
         position:absolute;
@@ -38,5 +47,4 @@
             color: @istacBlack;
         }
     }
-
 }

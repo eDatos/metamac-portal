@@ -131,7 +131,7 @@
                     collapseClass: collapseClass
                 };
                 this.$el.html(this.template(context));
-                this.$el.css("padding-left", this.filterRepresentation.get('level') * 18);
+                this.$el.css("padding-left", this.filterRepresentation.get('level') * 21);
             } else {
                 this.$el.addClass('hide');
                 this.$el.html('');

@@ -16,11 +16,11 @@
 
         initialize : function () {
             _.defaults(this.options, this.defaults);
-            _.extend(this, _.pick(this.options, 'selectionModel', 'idAttribute', 'label', 'multiple', 'name'));
+            _.extend(this, _.pick(this.options, 'selectionModel', 'idAttribute', 'label', 'multiple', 'name', 'dropdownCssClass'));
         },
 
         destroy : function () {
-
+            this.$('select').select2('destroy');
         },
 
         events : {
@@ -66,6 +66,21 @@
             };
 
             this.$el.html(this.template(context));
+
+            var self = this;
+            this.$('select').select2({
+                dropdownParent: $('.metamac-container'),
+                minimumResultsForSearch: Infinity
+            }).on('select2:open', function () {
+                setTimeout(function () {
+                    var $dropdown = $('.select2-dropdown');
+                    if (self.dropdownCssClass) {
+                        $dropdown.addClass(self.dropdownCssClass);
+                    }
+                    $dropdown.css('width', 'auto');
+                    $dropdown.css('min-width', self.$('.select2-selection')[0].offsetWidth);
+                });
+            });
         },
 
         onChangeSelect : function () {

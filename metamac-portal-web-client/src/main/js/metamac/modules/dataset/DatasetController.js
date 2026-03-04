@@ -121,6 +121,8 @@
                     
                     self.metadata = self.metadataRequest.getMetadataResponse();
 
+                    self.createUpdateDatesSection(self.metadata);
+
                     self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                     self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
 
@@ -146,6 +148,46 @@
                 }
             });
             return deferred.promise();
+        },
+
+        createUpdateDatesSection: function(metadata) {
+            var updateDates = "";
+            if (metadata.getLastUpdate()) {
+                var lastUpdateDate = new Date(metadata.getLastUpdate());
+
+                if (!isNaN(lastUpdateDate.getTime())) {
+                    var lastUpdateOptions = {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'UTC',
+                        timeZoneName: 'shortOffset'
+                    };
+                    updateDates += lastUpdateDate.toLocaleString(I18n.locale, lastUpdateOptions).replaceAll(',', '');
+                }
+            }
+
+            var nextUpdateDatePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+            var matchNextUpdate = nextUpdateDatePattern.exec(metadata.getDateNextUpdate());
+            if (matchNextUpdate) {
+                var dateNextUpdate = new Date(+matchNextUpdate[3], +matchNextUpdate[2] - 1, +matchNextUpdate[1]);
+                var nexUpdateOptions = {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                };
+
+                if (updateDates) {
+                    updateDates += " | ";
+                }
+                updateDates += I18n.t("entity.dataset.nextUpdate", {dateNextUpdate: dateNextUpdate.toLocaleString(I18n.locale, nexUpdateOptions).replaceAll(',', '')});
+            }
+
+            if (!!updateDates) {
+                $('.visualizer-header-info').append('<div class="visualizer-update-dates">' + updateDates + '</div>');
+            }
         }
     });
 

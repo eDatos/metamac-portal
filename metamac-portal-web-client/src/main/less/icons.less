@@ -5,10 +5,15 @@
 
 // Mixins
 
+.icon-arrow-down-a-z, 
+.icon-arrow-up-right-and-arrow-down-left-from-center, 
 .icon-axis-x, 
 .icon-axis-y, 
 .icon-bar, 
 .icon-check-fill, 
+.icon-chevron-down, 
+.icon-circle-check, 
+.icon-code, 
 .icon-cogwheel, 
 .icon-collapse-frame, 
 .icon-collapse, 
@@ -33,7 +38,6 @@
 .icon-down, 
 .icon-down_blank, 
 .icon-download, 
-.icon-embed, 
 .icon-exit, 
 .icon-expand-frame, 
 .icon-expand, 
@@ -41,7 +45,7 @@
 .icon-eye, 
 .icon-facebook, 
 .icon-filter, 
-.icon-full-screen, 
+.icon-floppy-disk, 
 .icon-g_plus, 
 .icon-global, 
 .icon-google, 
@@ -55,6 +59,7 @@
 .icon-json, 
 .icon-json2, 
 .icon-kml, 
+.icon-left, 
 .icon-line, 
 .icon-link, 
 .icon-linkedin, 
@@ -69,10 +74,8 @@
 .icon-map, 
 .icon-mapbubble, 
 .icon-meneame, 
-.icon-minus-fill, 
 .icon-minus, 
 .icon-pdf, 
-.icon-plus-fill, 
 .icon-plus, 
 .icon-png, 
 .icon-px, 
@@ -82,15 +85,17 @@
 .icon-rdf, 
 .icon-refresh, 
 .icon-remove, 
-.icon-reverse, 
 .icon-rows, 
 .icon-search, 
 .icon-semi-circle-chart, 
 .icon-separator, 
-.icon-share, 
+.icon-share-nodes, 
 .icon-shp, 
 .icon-sort, 
-.icon-star, 
+.icon-square-check, 
+.icon-square-minus, 
+.icon-square-plus, 
+.icon-square, 
 .icon-svg, 
 .icon-table, 
 .icon-table2, 
@@ -102,16 +107,13 @@
 .icon-uncheck, 
 .icon-up, 
 .icon-up_blank, 
-.icon-visualize, 
 .icon-x, 
 .icon-xls, 
 .icon-xlsx, 
 .icon-xml2, 
 .icon-yahoo { 
-	// grunt-webfont will move this font-family inside &:before. Don´t. It will break
-	// fontawesome icons if already loaded
-	font-family: "icons";
 	&:before {
+		font-family:"icons";
 		display:inline-block;
 		font-weight:normal;
 		font-style:normal;
@@ -122,7 +124,7 @@
 
 // Icons
 
-.icon-axis-x {
+.icon-arrow-down-a-z {
 	&:before {
 		content:"\f101";
 	}
@@ -130,7 +132,7 @@
 }
 
 
-.icon-axis-y {
+.icon-arrow-up-right-and-arrow-down-left-from-center {
 	&:before {
 		content:"\f102";
 	}
@@ -138,7 +140,7 @@
 }
 
 
-.icon-bar {
+.icon-axis-x {
 	&:before {
 		content:"\f103";
 	}
@@ -146,7 +148,7 @@
 }
 
 
-.icon-check-fill {
+.icon-axis-y {
 	&:before {
 		content:"\f104";
 	}
@@ -154,7 +156,7 @@
 }
 
 
-.icon-cogwheel {
+.icon-bar {
 	&:before {
 		content:"\f105";
 	}
@@ -162,7 +164,7 @@
 }
 
 
-.icon-collapse-frame {
+.icon-check-fill {
 	&:before {
 		content:"\f106";
 	}
@@ -170,7 +172,7 @@
 }
 
 
-.icon-collapse {
+.icon-chevron-down {
 	&:before {
 		content:"\f107";
 	}
@@ -178,7 +180,7 @@
 }
 
 
-.icon-collection-column {
+.icon-circle-check {
 	&:before {
 		content:"\f108";
 	}
@@ -186,7 +188,7 @@
 }
 
 
-.icon-collection-map {
+.icon-code {
 	&:before {
 		content:"\f109";
 	}
@@ -194,7 +196,7 @@
 }
 
 
-.icon-collection-minus {
+.icon-cogwheel {
 	&:before {
 		content:"\f10a";
 	}
@@ -202,7 +204,7 @@
 }
 
 
-.icon-collection-plus {
+.icon-collapse-frame {
 	&:before {
 		content:"\f10b";
 	}
@@ -210,7 +212,7 @@
 }
 
 
-.icon-collection-table {
+.icon-collapse {
 	&:before {
 		content:"\f10c";
 	}
@@ -218,7 +220,7 @@
 }
 
 
-.icon-column {
+.icon-collection-column {
 	&:before {
 		content:"\f10d";
 	}
@@ -226,7 +228,7 @@
 }
 
 
-.icon-columns {
+.icon-collection-map {
 	&:before {
 		content:"\f10e";
 	}
@@ -234,7 +236,7 @@
 }
 
 
-.icon-comma {
+.icon-collection-minus {
 	&:before {
 		content:"\f10f";
 	}
@@ -242,7 +244,7 @@
 }
 
 
-.icon-csv {
+.icon-collection-plus {
 	&:before {
 		content:"\f110";
 	}
@@ -250,7 +252,7 @@
 }
 
 
-.icon-dat {
+.icon-collection-table {
 	&:before {
 		content:"\f111";
 	}
@@ -258,7 +260,7 @@
 }
 
 
-.icon-data-jsonstat {
+.icon-column {
 	&:before {
 		content:"\f112";
 	}
@@ -266,7 +268,7 @@
 }
 
 
-.icon-data-tsv {
+.icon-columns {
 	&:before {
 		content:"\f113";
 	}
@@ -274,7 +276,7 @@
 }
 
 
-.icon-data-xls-2 {
+.icon-comma {
 	&:before {
 		content:"\f114";
 	}
@@ -282,7 +284,7 @@
 }
 
 
-.icon-data-xls {
+.icon-csv {
 	&:before {
 		content:"\f115";
 	}
@@ -290,7 +292,7 @@
 }
 
 
-.icon-data-xlsx {
+.icon-dat {
 	&:before {
 		content:"\f116";
 	}
@@ -298,7 +300,7 @@
 }
 
 
-.icon-delicious {
+.icon-data-jsonstat {
 	&:before {
 		content:"\f117";
 	}
@@ -306,7 +308,7 @@
 }
 
 
-.icon-digg {
+.icon-data-tsv {
 	&:before {
 		content:"\f118";
 	}
@@ -314,7 +316,7 @@
 }
 
 
-.icon-diigo {
+.icon-data-xls-2 {
 	&:before {
 		content:"\f119";
 	}
@@ -322,7 +324,7 @@
 }
 
 
-.icon-down {
+.icon-data-xls {
 	&:before {
 		content:"\f11a";
 	}
@@ -330,7 +332,7 @@
 }
 
 
-.icon-down_blank {
+.icon-data-xlsx {
 	&:before {
 		content:"\f11b";
 	}
@@ -338,7 +340,7 @@
 }
 
 
-.icon-download {
+.icon-delicious {
 	&:before {
 		content:"\f11c";
 	}
@@ -346,7 +348,7 @@
 }
 
 
-.icon-embed {
+.icon-digg {
 	&:before {
 		content:"\f11d";
 	}
@@ -354,7 +356,7 @@
 }
 
 
-.icon-exit {
+.icon-diigo {
 	&:before {
 		content:"\f11e";
 	}
@@ -362,7 +364,7 @@
 }
 
 
-.icon-expand-frame {
+.icon-down {
 	&:before {
 		content:"\f11f";
 	}
@@ -370,7 +372,7 @@
 }
 
 
-.icon-expand {
+.icon-down_blank {
 	&:before {
 		content:"\f120";
 	}
@@ -378,7 +380,7 @@
 }
 
 
-.icon-eye-slash {
+.icon-download {
 	&:before {
 		content:"\f121";
 	}
@@ -386,7 +388,7 @@
 }
 
 
-.icon-eye {
+.icon-exit {
 	&:before {
 		content:"\f122";
 	}
@@ -394,7 +396,7 @@
 }
 
 
-.icon-facebook {
+.icon-expand-frame {
 	&:before {
 		content:"\f123";
 	}
@@ -402,7 +404,7 @@
 }
 
 
-.icon-filter {
+.icon-expand {
 	&:before {
 		content:"\f124";
 	}
@@ -410,7 +412,7 @@
 }
 
 
-.icon-full-screen {
+.icon-eye-slash {
 	&:before {
 		content:"\f125";
 	}
@@ -418,7 +420,7 @@
 }
 
 
-.icon-g_plus {
+.icon-eye {
 	&:before {
 		content:"\f126";
 	}
@@ -426,7 +428,7 @@
 }
 
 
-.icon-global {
+.icon-facebook {
 	&:before {
 		content:"\f127";
 	}
@@ -434,7 +436,7 @@
 }
 
 
-.icon-google {
+.icon-filter {
 	&:before {
 		content:"\f128";
 	}
@@ -442,7 +444,7 @@
 }
 
 
-.icon-graph-pdf {
+.icon-floppy-disk {
 	&:before {
 		content:"\f129";
 	}
@@ -450,7 +452,7 @@
 }
 
 
-.icon-graph-png {
+.icon-g_plus {
 	&:before {
 		content:"\f12a";
 	}
@@ -458,7 +460,7 @@
 }
 
 
-.icon-graph-svg {
+.icon-global {
 	&:before {
 		content:"\f12b";
 	}
@@ -466,7 +468,7 @@
 }
 
 
-.icon-gviz {
+.icon-google {
 	&:before {
 		content:"\f12c";
 	}
@@ -474,7 +476,7 @@
 }
 
 
-.icon-help {
+.icon-graph-pdf {
 	&:before {
 		content:"\f12d";
 	}
@@ -482,7 +484,7 @@
 }
 
 
-.icon-info {
+.icon-graph-png {
 	&:before {
 		content:"\f12e";
 	}
@@ -490,7 +492,7 @@
 }
 
 
-.icon-jpg {
+.icon-graph-svg {
 	&:before {
 		content:"\f12f";
 	}
@@ -498,7 +500,7 @@
 }
 
 
-.icon-json {
+.icon-gviz {
 	&:before {
 		content:"\f130";
 	}
@@ -506,7 +508,7 @@
 }
 
 
-.icon-json2 {
+.icon-help {
 	&:before {
 		content:"\f131";
 	}
@@ -514,7 +516,7 @@
 }
 
 
-.icon-kml {
+.icon-info {
 	&:before {
 		content:"\f132";
 	}
@@ -522,7 +524,7 @@
 }
 
 
-.icon-line {
+.icon-jpg {
 	&:before {
 		content:"\f133";
 	}
@@ -530,7 +532,7 @@
 }
 
 
-.icon-link {
+.icon-json {
 	&:before {
 		content:"\f134";
 	}
@@ -538,7 +540,7 @@
 }
 
 
-.icon-linkedin {
+.icon-json2 {
 	&:before {
 		content:"\f135";
 	}
@@ -546,7 +548,7 @@
 }
 
 
-.icon-lock {
+.icon-kml {
 	&:before {
 		content:"\f136";
 	}
@@ -554,7 +556,7 @@
 }
 
 
-.icon-m1 {
+.icon-left {
 	&:before {
 		content:"\f137";
 	}
@@ -562,7 +564,7 @@
 }
 
 
-.icon-m_json {
+.icon-line {
 	&:before {
 		content:"\f138";
 	}
@@ -570,7 +572,7 @@
 }
 
 
-.icon-m_xml {
+.icon-link {
 	&:before {
 		content:"\f139";
 	}
@@ -578,7 +580,7 @@
 }
 
 
-.icon-map-center {
+.icon-linkedin {
 	&:before {
 		content:"\f13a";
 	}
@@ -586,7 +588,7 @@
 }
 
 
-.icon-map-pdf {
+.icon-lock {
 	&:before {
 		content:"\f13b";
 	}
@@ -594,7 +596,7 @@
 }
 
 
-.icon-map-png {
+.icon-m1 {
 	&:before {
 		content:"\f13c";
 	}
@@ -602,7 +604,7 @@
 }
 
 
-.icon-map-svg {
+.icon-m_json {
 	&:before {
 		content:"\f13d";
 	}
@@ -610,7 +612,7 @@
 }
 
 
-.icon-map {
+.icon-m_xml {
 	&:before {
 		content:"\f13e";
 	}
@@ -618,7 +620,7 @@
 }
 
 
-.icon-mapbubble {
+.icon-map-center {
 	&:before {
 		content:"\f13f";
 	}
@@ -626,7 +628,7 @@
 }
 
 
-.icon-meneame {
+.icon-map-pdf {
 	&:before {
 		content:"\f140";
 	}
@@ -634,7 +636,7 @@
 }
 
 
-.icon-minus-fill {
+.icon-map-png {
 	&:before {
 		content:"\f141";
 	}
@@ -642,7 +644,7 @@
 }
 
 
-.icon-minus {
+.icon-map-svg {
 	&:before {
 		content:"\f142";
 	}
@@ -650,7 +652,7 @@
 }
 
 
-.icon-pdf {
+.icon-map {
 	&:before {
 		content:"\f143";
 	}
@@ -658,7 +660,7 @@
 }
 
 
-.icon-plus-fill {
+.icon-mapbubble {
 	&:before {
 		content:"\f144";
 	}
@@ -666,7 +668,7 @@
 }
 
 
-.icon-plus {
+.icon-meneame {
 	&:before {
 		content:"\f145";
 	}
@@ -674,7 +676,7 @@
 }
 
 
-.icon-png {
+.icon-minus {
 	&:before {
 		content:"\f146";
 	}
@@ -682,7 +684,7 @@
 }
 
 
-.icon-px {
+.icon-pdf {
 	&:before {
 		content:"\f147";
 	}
@@ -690,7 +692,7 @@
 }
 
 
-.icon-question {
+.icon-plus {
 	&:before {
 		content:"\f148";
 	}
@@ -698,7 +700,7 @@
 }
 
 
-.icon-radio-checked {
+.icon-png {
 	&:before {
 		content:"\f149";
 	}
@@ -706,7 +708,7 @@
 }
 
 
-.icon-radio-unchecked {
+.icon-px {
 	&:before {
 		content:"\f14a";
 	}
@@ -714,7 +716,7 @@
 }
 
 
-.icon-rdf {
+.icon-question {
 	&:before {
 		content:"\f14b";
 	}
@@ -722,7 +724,7 @@
 }
 
 
-.icon-refresh {
+.icon-radio-checked {
 	&:before {
 		content:"\f14c";
 	}
@@ -730,7 +732,7 @@
 }
 
 
-.icon-remove {
+.icon-radio-unchecked {
 	&:before {
 		content:"\f14d";
 	}
@@ -738,7 +740,7 @@
 }
 
 
-.icon-reverse {
+.icon-rdf {
 	&:before {
 		content:"\f14e";
 	}
@@ -746,7 +748,7 @@
 }
 
 
-.icon-rows {
+.icon-refresh {
 	&:before {
 		content:"\f14f";
 	}
@@ -754,7 +756,7 @@
 }
 
 
-.icon-search {
+.icon-remove {
 	&:before {
 		content:"\f150";
 	}
@@ -762,7 +764,7 @@
 }
 
 
-.icon-semi-circle-chart {
+.icon-rows {
 	&:before {
 		content:"\f151";
 	}
@@ -770,7 +772,7 @@
 }
 
 
-.icon-separator {
+.icon-search {
 	&:before {
 		content:"\f152";
 	}
@@ -778,7 +780,7 @@
 }
 
 
-.icon-share {
+.icon-semi-circle-chart {
 	&:before {
 		content:"\f153";
 	}
@@ -786,7 +788,7 @@
 }
 
 
-.icon-shp {
+.icon-separator {
 	&:before {
 		content:"\f154";
 	}
@@ -794,7 +796,7 @@
 }
 
 
-.icon-sort {
+.icon-share-nodes {
 	&:before {
 		content:"\f155";
 	}
@@ -802,7 +804,7 @@
 }
 
 
-.icon-star {
+.icon-shp {
 	&:before {
 		content:"\f156";
 	}
@@ -810,7 +812,7 @@
 }
 
 
-.icon-svg {
+.icon-sort {
 	&:before {
 		content:"\f157";
 	}
@@ -818,7 +820,7 @@
 }
 
 
-.icon-table {
+.icon-square-check {
 	&:before {
 		content:"\f158";
 	}
@@ -826,7 +828,7 @@
 }
 
 
-.icon-table2 {
+.icon-square-minus {
 	&:before {
 		content:"\f159";
 	}
@@ -834,7 +836,7 @@
 }
 
 
-.icon-tags {
+.icon-square-plus {
 	&:before {
 		content:"\f15a";
 	}
@@ -842,7 +844,7 @@
 }
 
 
-.icon-tar {
+.icon-square {
 	&:before {
 		content:"\f15b";
 	}
@@ -850,7 +852,7 @@
 }
 
 
-.icon-times {
+.icon-svg {
 	&:before {
 		content:"\f15c";
 	}
@@ -858,7 +860,7 @@
 }
 
 
-.icon-tuenti {
+.icon-table {
 	&:before {
 		content:"\f15d";
 	}
@@ -866,7 +868,7 @@
 }
 
 
-.icon-twitter {
+.icon-table2 {
 	&:before {
 		content:"\f15e";
 	}
@@ -874,7 +876,7 @@
 }
 
 
-.icon-uncheck {
+.icon-tags {
 	&:before {
 		content:"\f15f";
 	}
@@ -882,7 +884,7 @@
 }
 
 
-.icon-up {
+.icon-tar {
 	&:before {
 		content:"\f160";
 	}
@@ -890,7 +892,7 @@
 }
 
 
-.icon-up_blank {
+.icon-times {
 	&:before {
 		content:"\f161";
 	}
@@ -898,7 +900,7 @@
 }
 
 
-.icon-visualize {
+.icon-tuenti {
 	&:before {
 		content:"\f162";
 	}
@@ -906,7 +908,7 @@
 }
 
 
-.icon-x {
+.icon-twitter {
 	&:before {
 		content:"\f163";
 	}
@@ -914,7 +916,7 @@
 }
 
 
-.icon-xls {
+.icon-uncheck {
 	&:before {
 		content:"\f164";
 	}
@@ -922,7 +924,7 @@
 }
 
 
-.icon-xlsx {
+.icon-up {
 	&:before {
 		content:"\f165";
 	}
@@ -930,7 +932,7 @@
 }
 
 
-.icon-xml2 {
+.icon-up_blank {
 	&:before {
 		content:"\f166";
 	}
@@ -938,9 +940,41 @@
 }
 
 
-.icon-yahoo {
+.icon-x {
 	&:before {
 		content:"\f167";
+	}
+	
+}
+
+
+.icon-xls {
+	&:before {
+		content:"\f168";
+	}
+	
+}
+
+
+.icon-xlsx {
+	&:before {
+		content:"\f169";
+	}
+	
+}
+
+
+.icon-xml2 {
+	&:before {
+		content:"\f16a";
+	}
+	
+}
+
+
+.icon-yahoo {
+	&:before {
+		content:"\f16b";
 	}
 	
 }

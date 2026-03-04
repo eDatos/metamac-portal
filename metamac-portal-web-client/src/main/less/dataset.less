@@ -1,7 +1,11 @@
 .metamac-container {
     height: 100%;
     width: 100%;
-    overflow: auto;
+    overflow: hidden;
+
+    > div {
+        height: 100%;
+    }
 }
 
 .dataset-view {
@@ -415,21 +419,9 @@
     padding-left: 0;
     font-size: @mIconHeight;
     line-height: @mIconHeight;
-    
-    .btn-with-label & {
-    	font-size: @mIconHeight - 5px;
-    	padding-top: 2px;
-    	padding-bottom: 2px;
-    }
 
     &:before {
-        color: @istacGreyDark;
         padding: 2px 2px;
-    }    
-    
-    .active &:before,
-    &:hover:before {
-        color: @istacBlueDark;
     }
 }
 
@@ -475,7 +467,7 @@
 
 .dataset-options-full-screen {
     .dataset-options-type-icon;
-    .icon-full-screen;
+    .icon-arrow-up-right-and-arrow-down-left-from-center;
 }
 
 .options-filter {
@@ -485,17 +477,17 @@
 
 .dataset-options-share {
     .dataset-options-type-icon;
-    .icon-share;
+    .icon-share-nodes;
 }
 
 .dataset-options-save {
     .dataset-options-type-icon;
-    .icon-star;
+    .icon-floppy-disk;
 }
 
 .dataset-options-embed {
     .dataset-options-type-icon;
-    .icon-embed;
+    .icon-code;
 }
 
 .dataset-options-download {
@@ -510,7 +502,7 @@
 
 .dataset-options-visualize {
     .dataset-options-type-icon;
-    .icon-visualize;
+    .icon-circle-check
 }
 
 .metadata-value-resource-url {

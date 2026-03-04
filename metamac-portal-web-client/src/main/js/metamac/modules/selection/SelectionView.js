@@ -7,7 +7,7 @@
 
         template: "selection/selection",
         itemView: App.widget.filter.sidebar.FilterSidebarDimensionView,
-        itemViewContainer: ".selection-dimensions",
+        itemViewContainer: ".selection-dimensions-container",
 
         events: {
             "click .selection-visualize-selection": "onVisualizeSelection",
