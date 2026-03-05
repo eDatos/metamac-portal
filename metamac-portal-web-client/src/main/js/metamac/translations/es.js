@@ -49,7 +49,7 @@ I18n.translations.es = {
             },
             attributes: {
                 modal: {
-                    title: "Incluir atributos",
+                    title: "DESCARGAR - Incluir atributos",
                     question: "¿Desea incluir los atributos en la descarga?"
                 }
             }

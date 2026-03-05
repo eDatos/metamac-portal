@@ -1,7 +1,13 @@
+@import "../variables";
 
-
-@modal-width: 452px;
+@modal-width: 90%;
+@modal-max-width: 595px;
 @modal-min-width: 260px;
+@modal-close-font-size: 1.25rem;
+@modal-content-y-padding: 1.875rem;
+@modal-button-height: 2.3125rem;
+@modal-button-max-width: 9,375rem;
+@modal-confirmation-text-margin-bottom: 1.25rem;
 
 .modal-backdrop {
     position: fixed;
@@ -14,9 +20,12 @@
 }
 
 .modal {
+    width: @modal-width;
+    border: none;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
+    border-radius: @borderRadiusMedium;
     background-color : @istacWhite;
     overflow: auto;
-    font: @istacFontSansSerif;
     font-size: @defaultFontSize;
 
     position: fixed;
@@ -25,25 +34,20 @@
     transform: translate(-50%, -50%);
     z-index: @zIndex40;
     max-height: 500px;
-    max-width: @modal-width;
+    max-width: @modal-max-width;
     min-width: @modal-min-width;
     display: block;
     bottom: inherit;
     right: inherit;
-
-    .border-radius(@borderRadiusBig);
-    border: 2px solid @istacGreyDark;
 
     &:has(.dataset-api-download) {
       max-height: min(@widgetModalMaxHeight, 500px);
     }
     
     .modal-close {
-	    float: right;
-	    font-size: 30px;
-	    font-weight: bold;
-	    line-height: 20px;
-	    color: @istacGreyDark;
+        display: flex;
+        color: var(--edatos-color-white-100);
+        font-size: @modal-close-font-size;
 	    border: 0;
 		background: none;	    
 	    
@@ -73,23 +77,42 @@
 }
 
 .modal-header {
-	h2 {
-    	margin: 0;
-    	text-align: left;
-        font-size: 14px;
-        color: @istacGreyDark;
-	}
-	border-bottom: 1px solid @istacGreyLight;    	
-    padding: 10px;
+    border-bottom: @borderWidthSmall solid @istacGreyLight;
     background: @istacGreyLight;
-    display: block;
+    display: flex;
+    padding: @paddingMedium @paddingMedium @paddingMedium @paddingBig;
+    justify-content: space-between;
+    background: var(--edatos-color-secondary-100);
+    align-items: center;
+
+    .modal-title {
+        color: white;
+        display: flex;
+        flex-direction: row;
+        gap: @paddingSmall;
+
+        i {
+            font-size: @defaultFontSize;
+            align-self: center;
+        }
+
+        h2 {
+            margin: 0;
+            color: var(--edatos-color-white-100);
+            text-align: center;
+            font-size: @defaultFontSize;
+            font-weight: var(--edatos-font-weight-semibold);
+            line-height: @lineHeightMedium;
+        }
+    }
 }
 
 .modal-content {
+  width: 100%;
+  box-sizing: border-box;
   text-align: left;
-  padding: 10px 10px 20px 10px;
   border-radius: 0;
-  width: inherit;
+  padding: @modal-content-y-padding var(--edatos-spacing-x-m);
 
   &, > div:first-child {
     &, > form {
@@ -113,13 +136,42 @@
 
 .modal-confirmation {
   p {
-    margin-top: 5px;
-    margin-bottom: 15px;
+    place-self: center;
+    margin-bottom: @modal-confirmation-text-margin-bottom;
+    margin-top: 0;
+    color: var(--edatos-color-black-100);
+    font-size: @defaultFontSize;
+    font-weight: var(--edatos-font-weight-semibold);
+    line-height: @lineHeightMedium;
   }
   .form-buttons {
     display: flex;
-    justify-content: space-around;
+    gap: @paddingBig;
+    justify-content: center;
+
+    button {
+      max-width: @modal-button-max-width;
+      height: @modal-button-height;
+      width: 100%;
+      border: none;
+      color: var(--edatos-color-white-100);
+      text-align: center;
+      font-size: var(--edatos-font-size-s);
+      font-weight: var(--edatos-font-weight-semibold);
+      border-radius: @borderRadiusSmall;
+      cursor: pointer;
+      text-transform: uppercase;
+
+      &.button-reject {
+        background-color: var(--edatos-color-red-100);
+      }
+
+      &.button-confirm {
+        background-color: var(--edatos-color-green-100);
+      }
+    }
   }
+
   button {
     width: 40%;
   }

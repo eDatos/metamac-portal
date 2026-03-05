@@ -10,6 +10,7 @@
         initialize: function () {
             this.title = this.options.title;
             this.contentView = this.options.contentView;
+            this.titleIconName = this.options.titleIconName;
         },
 
         regions: {
@@ -23,7 +24,8 @@
 
         serializeData: function () {
             var context = {
-                title: this.title
+                title: this.title,
+                titleIconName: this.titleIconName
             };
             return context;
         },

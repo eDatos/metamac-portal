@@ -49,7 +49,7 @@ I18n.translations.ca = {
             },
             attributes: {
                 modal: {
-                    title: "Incloure atributs",
+                    title: "DESCARREGAR - Incloure atributs",
                     question: "Voleu incloure els atributs a la descàrrega?"
                 }
             }

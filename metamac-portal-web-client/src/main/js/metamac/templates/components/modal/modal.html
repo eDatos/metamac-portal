@@ -1,8 +1,15 @@
 <div class="modal-backdrop"></div>
 <div class="modal">
     <div class="modal-header">
-        <button class="modal-close" title='{{message "filter.button.close"}}'>×</button>
-    	<h2>{{title}}</h2>
+        <div class="modal-title">
+            {{#if titleIconName}}
+            <i class="{{titleIconName}}"></i>
+            {{/if}}
+            <h2>{{title}}</h2>
+        </div>
+        <button class="modal-close" title='{{message "filter.button.close"}}'>
+            <i class="icon-xmark"></i>
+        </button>
     </div>
     <div class="modal-content">
         Contenido
