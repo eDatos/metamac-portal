@@ -18,11 +18,13 @@
             this.onReject = this.options.onReject || (function() {});
         },
 
-        confirm: function() {
+        confirm: function(e) {
+            e.stopPropagation();
             this.onConfirm();
         },
 
-        reject: function() {
+        reject: function(e) {
+            e.stopPropagation();
             this.onReject();
         },
 

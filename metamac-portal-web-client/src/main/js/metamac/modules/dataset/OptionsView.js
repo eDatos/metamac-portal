@@ -30,7 +30,6 @@
             "click .visual-element-options-fs": "clickFullScreen",
             "click .visual-element-options-share": "clickShare",
             "click .visual-element-options-save": "clickSave",
-            "click .visual-element-options-download": "clickDownload",
             "click .visual-element-options-api-download": "clickApiDownload",
             "click .visual-element-options-embed": "clickEmbed",
         },
@@ -125,6 +124,8 @@
                     widgetButton: this.optionsModel.get('widgetButton')
                 };
                 this.$el.html(this.template(context));
+
+                this.renderDownloadButton();
             }
             return this;
         },
@@ -293,31 +294,30 @@
             this.currentVe = currentVe;
         },
 
-        clickDownload: function (e) {
-            e.preventDefault();
-            var modalContentView = null;
-            modalContentView = new App.modules.dataset.DatasetDownloadView({
-                currentVe: this.currentVe,
-                filterDimensions: this.filterDimensions,
-                estimatedNumberOfCells: {
-                    all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest
-                    selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
-                },
-                numberOfObservations: {
-                    all: {
-                        total: this.data.getDataObservationsCount(),
-                        tableSize: this.data.getDataTableSize()
+        renderDownloadButton: function () {
+            if (!this.downloadSelectView) {
+                this.downloadSelectView = new App.modules.dataset.DatasetDownloadView({
+                    currentVe: this.currentVe,
+                    filterDimensions: this.filterDimensions,
+                    estimatedNumberOfCells: {
+                        all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest
+                        selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
                     },
-                    selection: {
-                        total: this.dataSource.getSelectionObservationsCount(),
-                        tableSize: this.filterDimensions.getTableInfo().getTableSize()
-                    }
-                },
-                optionsModel: this.optionsModel
-            });
-            var title = I18n.t("filter.download.modal.title");
-            var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
-            modal.show();
+                    numberOfObservations: {
+                        all: {
+                            total: this.data.getDataObservationsCount(),
+                            tableSize: this.data.getDataTableSize()
+                        },
+                        selection: {
+                            total: this.dataSource.getSelectionObservationsCount(),
+                            tableSize: this.filterDimensions.getTableInfo().getTableSize()
+                        }
+                    },
+                    optionsModel: this.optionsModel,
+                    el: this.$('.visual-element-options-download')
+                });
+                this.downloadSelectView.render();
+            }
         },
 
         clickApiDownload: function (e) {

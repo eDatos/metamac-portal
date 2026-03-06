@@ -14,13 +14,8 @@
         className: "dataset-download",
 
         events: {
-            "click a.download-xlsx": function(event) { this.clickDownloadButton(event, 'xlsx'); },
-            "click a.download-tsv": function(event) { this.clickDownloadButton(event, 'tsv'); },
-            "click a.download-csv": function(event) { this.clickDownloadButton(event, 'px'); },
-            "click a.download-png": function(event) { this.clickDownloadButton(event, 'png'); },
-            "click a.download-pdf": function(event) { this.clickDownloadButton(event, 'pdf'); },
-            "click a.download-svg": function(event) { this.clickDownloadButton(event, 'svg'); },
-            "click a.download-jsonstat": function(event) { this.clickDownloadButton(event, 'jsonstat'); },
+            "click .download-menu-dropdown a": "clickDownloadButton",
+            "click .download-menu-toggle": "_toggleDropdown"
         },
 
         initialize: function () {
@@ -60,6 +55,14 @@
         _bindEvents: function () {
             this.listenTo(this.optionsModel, "change:isDownloading", this.render);
 
+            var self = this;
+            this._closeDropdownOnOutsideClick = function (e) {
+                if (!self.$('.download-menu-dropdown').is(e.target) && self.$('.download-menu-dropdown').has(e.target).length === 0) {
+                    self.$('.download-menu-dropdown').removeClass('open');
+                }
+            };
+            $(document).on('click', this._closeDropdownOnOutsideClick);
+
             this.delegateEvents();
         },
 
@@ -67,6 +70,7 @@
             var context = {
                 buttonConfig: this._getButtonConfiguration(),
                 hasJsonstatUrl: !!this.urls.jsonstat,
+                isReopeningNecessary: this.$('.download-menu').hasClass('open')
             };
 
             if (this._exportableImage()) {
@@ -233,15 +237,25 @@
             return { datasetSelection: null };
         },
 
-        clickDownloadButton: function (e, type) {
+        _toggleDropdown: function (e) {
+            e.stopPropagation();
+            this.$('.download-menu').toggleClass('open');
+        },
+
+        clickDownloadButton: function (e) {
             e.preventDefault();
+            e.stopPropagation();
+
             var $currentTarget = $(e.currentTarget);
-            if ($currentTarget.hasClass('disabled')) {
+            var $li = $currentTarget.closest('li');
+            if ($li.hasClass("disabled")) {
                 return;
             }
 
-            var jsonBody = $currentTarget.hasClass('selection') ? this.datasetSelection : this.datasetAllSelected;
-            var xlsxCsvAndTsvFilenameSuffix = $currentTarget.hasClass('selection') ? "-selection" : "";
+            var hasClassSelection = $li.hasClass("selection");
+            var jsonBody = hasClassSelection ? this.datasetSelection : this.datasetAllSelected;
+            var xlsxCsvAndTsvFilenameSuffix = hasClassSelection ? "-selection" : "";
+            var type = $currentTarget.data('type');
             switch (type) {
                 case "tsv":
                     var self = this;
@@ -259,7 +273,7 @@
                     this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type, "chart");
                     break;
                 case "jsonstat":
-                    this.redirectToFile(this.urls[type], $currentTarget.hasClass('selection') && this.jsonstatSelection != null ? { representation: this.jsonstatSelection } : null);
+                    this.redirectToFile(this.urls[type], hasClassSelection && this.jsonstatSelection != null ? { representation: this.jsonstatSelection } : null);
                     break;
             }
         },
@@ -381,7 +395,10 @@
             } else {
                 a.href = downloadUrl;
                 a.download = filename;
-                a.click();
+
+                // We click the anchor to download the file but without propagating the event to avoid
+                // closing the dropdown
+                a.dispatchEvent(new MouseEvent('click', { bubbles: false }));
             }
 
             setTimeout(function () {
@@ -403,7 +420,7 @@
                 }
             });
             var title = I18n.t("filter.download.attributes.modal.title");
-            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
+            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView, titleIconName: "icon-download-solid" });
             this.modal.show();
         },
 
@@ -458,3 +475,4 @@
     });
 
 }());
+

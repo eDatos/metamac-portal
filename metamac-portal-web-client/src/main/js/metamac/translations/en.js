@@ -52,6 +52,15 @@ I18n.translations.en = {
                     title: "DOWNLOAD - Attributes inclusion",
                     question: "Would you like to include the attributes on the download?"
                 }
+            },
+            menu: {
+                xlsx: "Download in xlsx format",
+                tsv: "Download in tsv format",
+                px: "Download in px format",
+                jsonstat: "Download in jsonstat format",
+                svg: "Download in svg format",
+                png: "Download in png format",
+                pdf: "Download in pdf format"
             }
         },
         apiDownload: {

@@ -7,20 +7,22 @@
         float: none;
     }
     .btn {
+        display: flex;
+        flex-direction: row;
+        gap: @paddingSmall;
+        align-items: center;
+        justify-content: center;
         border-radius: @borderRadiusMedium;
         border: @borderWidthSmall solid var(--edatos-color-secondary-100);
         background-color: var(--edatos-color-white-100);
         color: var(--edatos-color-secondary-100);
         text-transform: uppercase;
-        text-align: center;
         line-height: @lineHeightMedium;
         padding: @paddingSmall @paddingMedium;
         margin-bottom: 0; // For input.btn
-        vertical-align: middle;
         cursor: pointer;
         white-space: nowrap;
         .user-select(none);
-        display: inline-block;
 
         &:link, &:visited {
             text-decoration: none;

@@ -51,6 +51,15 @@ I18n.translations.pt = {
                     title: "BAIXAR - Incluir atributos",
                     question: "Deseja incluir os atributos no download?"
                 }
+            },
+            menu: {
+                xlsx: "Baixar no formato xlsx",
+                tsv: "Baixar no formato tsv",
+                px: "Baixar no formato px",
+                jsonstat: "Baixar no formato jsonstat",
+                svg: "Baixar no formato svg",
+                png: "Baixar no formato png",
+                pdf: "Baixar no formato pdf"
             }
         },
         apiDownload: {

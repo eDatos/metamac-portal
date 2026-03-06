@@ -55,8 +55,10 @@
             gap: @paddingMedium;
 
             @media (max-width: @minWidthToShowButtonsText) {
-                button > span {
-                    display: none;
+                button {
+                    > span, > i.icon-chevron-down {
+                        display: none;
+                    }
                 }
             }
         }

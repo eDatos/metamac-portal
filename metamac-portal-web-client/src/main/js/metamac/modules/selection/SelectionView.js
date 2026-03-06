@@ -19,6 +19,10 @@
             this.data = options.data;
             this.controller = options.controller;
             this.filterDimensions = this.controller.filterDimensions;
+            this.dataSource = new App.DataSourceDataset({
+                data: this.data,
+                filterDimensions: this.filterDimensions
+            });
 
             this.optionsModel = new App.modules.dataset.OptionsModel({
                 widget: App.config.widget,
@@ -47,7 +51,8 @@
                 data: this.data,
                 optionsModel: this.optionsModel,
                 filterDimensions: this.filterDimensions,
-                el: this.$(".selection-options-bar")
+                el: this.$(".selection-options-bar"),
+                dataSource: this.dataSource
                 //,buttons : this.veElements
             });
         },

@@ -52,6 +52,15 @@ I18n.translations.ca = {
                     title: "DESCARREGAR - Incloure atributs",
                     question: "Voleu incloure els atributs a la descàrrega?"
                 }
+            },
+            menu: {
+                xlsx: "Descarregar en format xlsx",
+                tsv: "Descarregar en format tsv",
+                px: "Descarregar en format px",
+                jsonstat: "Descarregar en format jsonstat",
+                svg: "Descarregar en format svg",
+                png: "Descarregar en format png",
+                pdf: "Descarregar en format pdf"
             }
         },
         apiDownload: {
