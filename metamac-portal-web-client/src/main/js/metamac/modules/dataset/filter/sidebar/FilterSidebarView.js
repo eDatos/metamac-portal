@@ -68,8 +68,10 @@
 
         _unbindEvents: function () {
             _.invoke(this.subviews, '_unbindEvents');
-            this._resizeObserver.disconnect();
-            this._resizeObserver = null;
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+                this._resizeObserver = null;
+            }
         },
 
         render: function () {
