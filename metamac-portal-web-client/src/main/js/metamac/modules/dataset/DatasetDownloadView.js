@@ -58,7 +58,7 @@
             var self = this;
             this._closeDropdownOnOutsideClick = function (e) {
                 if (!self.$('.download-menu-dropdown').is(e.target) && self.$('.download-menu-dropdown').has(e.target).length === 0) {
-                    self.$('.download-menu-dropdown').removeClass('open');
+                    self.$('.download-menu').removeClass('open');
                 }
             };
             $(document).on('click', this._closeDropdownOnOutsideClick);
@@ -112,38 +112,52 @@
             var haveDataFormats = visualizationSupertype == 'data';
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
             var haveImageFormats = this._hasExportableImage(visualizationSupertype);
-            var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length == 0;
-            var disableAnyFormat = this.optionsModel.get('isDownloading');
+            var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length === 0;
+            var isDownloading = this.optionsModel.get('isDownloading');
             var disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
             var disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
             const param = this.toStatisticalResourcesApiRepresentationParameter(this.getDatasetSelection());
             const disableAllSelectionFormat = param && param.length > GLOBAL_CHAR_LENGTH_URL_LIMIT && visualizationSupertype === 'data';
-            var messageExcelDisabled = disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : "";
+
+            var messageExcelDisabledForAllData = disableAllExcel ? I18n.t("filter.download.excel.disabled") : "";
+            var messageExcelDisabledForSelection = disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : "";
             var messageSelectionDisabled = disableAllSelectionFormat ? I18n.t("filter.download.selectionDisabled") : "";
+            var messageNoSelection = allDimensionsWithSelections ? "" : I18n.t("ve.noSelection");
 
             return {
                 dataFormats: haveDataFormats,
-                allDimensionsWithSelections: allDimensionsWithSelections,
                 mapFormats: haveMapFormats,
                 imageFormats: haveImageFormats,
                 iconPreffix: visualizationSupertype,
                 disableFormat: {
                     all: {
-                        excel: disableAnyFormat || disableAllExcel,
-                        tsv: disableAnyFormat,
-                        csv: disableAnyFormat,
-                        jsonstat: disableAnyFormat,
-                        infoMessage: disableAllExcel ? I18n.t("filter.download.excel.disabled") : null
+                        excel: isDownloading || disableAllExcel,
+                        tsv: isDownloading,
+                        csv: isDownloading,
+                        jsonstat: isDownloading
                     },
                     selection: {
-                        excel: disableAnyFormat || disableAllSelectionFormat || disableSelectionExcel,
-                        tsv: disableAnyFormat || disableAllSelectionFormat,
-                        csv: disableAnyFormat || disableAllSelectionFormat,
-                        jsonstat: disableAnyFormat || disableAllSelectionFormat,
-                        png: disableAnyFormat,
-                        pdf: disableAnyFormat,
-                        svg: disableAnyFormat,
-                        infoMessage: _.compact([messageSelectionDisabled, messageExcelDisabled]).join('<br>')
+                        excel: isDownloading || disableAllSelectionFormat || disableSelectionExcel || !allDimensionsWithSelections,
+                        tsv: isDownloading || disableAllSelectionFormat || !allDimensionsWithSelections,
+                        csv: isDownloading || disableAllSelectionFormat || !allDimensionsWithSelections,
+                        jsonstat: isDownloading || disableAllSelectionFormat || !allDimensionsWithSelections,
+                        png: isDownloading || !allDimensionsWithSelections,
+                        pdf: isDownloading || !allDimensionsWithSelections,
+                        svg: isDownloading || !allDimensionsWithSelections,
+                    }
+                },
+                title: {
+                    all: {
+                        excel: messageExcelDisabledForAllData
+                    },
+                    selection: {
+                        excel: _.compact([messageSelectionDisabled, messageExcelDisabledForSelection, messageNoSelection]).join(' '),
+                        tsv: _.compact([messageSelectionDisabled, messageNoSelection]).join(' '),
+                        csv: _.compact([messageSelectionDisabled, messageNoSelection]).join(' '),
+                        jsonstat: _.compact([messageSelectionDisabled, messageNoSelection]).join(' '),
+                        png: messageNoSelection,
+                        pdf: messageNoSelection,
+                        svg: messageNoSelection
                     }
                 },
             };
@@ -475,4 +489,3 @@
     });
 
 }());
-

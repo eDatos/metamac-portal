@@ -186,7 +186,7 @@ I18n.translations.es = {
         mapbubble: {
             nomap: "Mapa no disponible"
         },
-        noSelection: "Debe seleccionar al menos una categoría en cada dimensión",
+        noSelection: "Debe seleccionar al menos una categoría en cada dimensión.",
 
         selectAtLeastTwoItems: "Debe seleccionar al menos dos valores de la misma granularidad geográfica",
 

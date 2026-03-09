@@ -314,10 +314,10 @@
                         }
                     },
                     optionsModel: this.optionsModel,
-                    el: this.$('.visual-element-options-download')
                 });
-                this.downloadSelectView.render();
             }
+            this.downloadSelectView.setElement(this.$('.visual-element-options-download'));
+            this.downloadSelectView.render();
         },
 
         clickApiDownload: function (e) {

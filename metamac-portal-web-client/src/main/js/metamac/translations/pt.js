@@ -185,7 +185,7 @@ I18n.translations.pt = {
         mapbubble: {
             nomap: "Mapa indisponível"
         },
-        noSelection: "Você deve escolher pelo menos uma categoria em cada dimensão",
+        noSelection: "Você deve escolher pelo menos uma categoria em cada dimensão.",
         loading: "Carregando dados..."
     },
 

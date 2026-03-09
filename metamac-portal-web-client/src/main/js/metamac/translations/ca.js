@@ -186,7 +186,7 @@ I18n.translations.ca = {
         mapbubble: {
             nomap: "Mapa no disponible"
         },
-        noSelection: "Seleccioni almenys una categoria en cada dimensió",
+        noSelection: "Seleccioni almenys una categoria en cada dimensió.",
         selectAtLeastTwoItems: "Ha de seleccionar almenys dos valors de la mateixa granularitat geogràfica",
         loading: "Carregant dades..."
     },
