@@ -33,7 +33,8 @@ module.exports = (grunt) ->
                 paths.lib + "/polyfills/console-shim.js"
 
                 # External libs
-                paths.lib + "/jquery-1.9.0.js"
+                paths.lib + "/jquery-4.0.0.js"
+                paths.lib + "/jquery-migrate-4.0.2.js"
                 paths.lib + "/jquery-ui.js"
                 paths.lib + "/i18n.js"
                 paths.lib + "/underscore.js"
