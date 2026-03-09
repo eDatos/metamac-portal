@@ -37,9 +37,9 @@
         
         _setUpListeners : function() {
             _.bindAll(this, '_handleMouseMove', '_handleMouseUp', '_handleMousewheel');
-            $(document).bind('mousemove', this._handleMouseMove);
-            $(document).bind('mouseup', this._handleMouseUp);
-            this.$el.bind('mousewheel', this._handleMousewheel);
+            $(document).on('mousemove', this._handleMouseMove);
+            $(document).on('mouseup', this._handleMouseUp);
+            this.$el.on('mousewheel', this._handleMousewheel);
         },
         
         _storeInitialCSSInfo : function() {

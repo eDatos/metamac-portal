@@ -118,10 +118,10 @@
 
         _addExitFullScreenListeners : function () {
             if (this.browserHasFullScreenSupport()) {
-                this.$document.bind(this.events.change, this._didExitFullScreen);
-                this.$document.bind(this.events.error, this._didExitFullScreen);
+                this.$document.on(this.events.change, this._didExitFullScreen);
+                this.$document.on(this.events.error, this._didExitFullScreen);
             } else {
-                this.$document.bind('keydown', this._keydown);
+                this.$document.on('keydown', this._keydown);
             }
         },
 

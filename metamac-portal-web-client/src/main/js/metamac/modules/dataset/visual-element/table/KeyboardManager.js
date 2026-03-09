@@ -26,11 +26,11 @@
         bindEvents : function () {
             var self = this;
             var $document = $(document);
-            $document.bind('keydown.up keydown.right keydown.down keydown.left', this.arrow);
-            $document.bind('keydown.home', this.home);
-            $document.bind('keydown.end', this.end);
-            $document.bind('keydown.pageup', this.pageup);
-            $document.bind('keydown.pagedown', this.pagedown);
+            $document.on('keydown.up keydown.right keydown.down keydown.left', this.arrow);
+            $document.on('keydown.home', this.home);
+            $document.on('keydown.end', this.end);
+            $document.on('keydown.pageup', this.pageup);
+            $document.on('keydown.pagedown', this.pagedown);
         },
 
         unbindEvents : function () {

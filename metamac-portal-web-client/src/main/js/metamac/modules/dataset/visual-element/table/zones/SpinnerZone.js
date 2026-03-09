@@ -19,8 +19,8 @@
         this.onAjax = false;
         _.bindAll(this, 'ajaxStart', 'ajaxStop', 'loop');
 
-        $(document).bind('ajaxStart.spinnerZone', this.ajaxStart);
-        $(document).bind('ajaxStop.spinnerZone', this.ajaxStop);
+        $(document).on('ajaxStart.spinnerZone', this.ajaxStart);
+        $(document).on('ajaxStop.spinnerZone', this.ajaxStop);
     };
 
     App.Table.SpinnerZone.prototype.destroy = function () {

@@ -40,7 +40,7 @@
             this.$el.html(this.template(context));                        
             this.updateClearVisibility(value);
             this.$searchInput = this.$("input");            
-            this.$searchInput.keyup(_.bind(this.onChangeSearchInput, this));
+            this.$searchInput.on('keyup', _.bind(this.onChangeSearchInput, this));
         },
 
         updateModelAttribute : function (value) {
