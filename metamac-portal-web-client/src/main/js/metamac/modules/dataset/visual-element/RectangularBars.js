@@ -69,15 +69,15 @@
 
             var resize = _.debounce(_.bind(this._updateSize, this), 200);
             var self = this;
-            this.$el.on("resize", function (e) {
-                e.stopPropagation();
+            this._resizeObserver = new ResizeObserver(function () {
                 resize(self.$el, self.$title);
             });
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         _unbindEvents: function () {
             this.stopListening();
-            this.$el.off("resize");
+            this._resizeObserver.disconnect();
         },
 
         _onChartDestroy: function () {
@@ -123,8 +123,6 @@
             var data = this.getData();
             this._extendChartOptions(data);
             this._updateChartOptions();
-
-            this.$el.on("resize", function () { });
         },
 
         resizeFullScreen: function () { },

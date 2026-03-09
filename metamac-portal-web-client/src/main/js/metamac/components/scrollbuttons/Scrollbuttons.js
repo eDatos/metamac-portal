@@ -93,10 +93,10 @@
             });
 
             var resize = _.debounce(_.bind(this.updateSize, this), 200);
-            this.$el.on("resize", function (e) {
-                e.stopPropagation();
+            this._resizeObserver = new ResizeObserver(function () {
                 resize();
             });
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         _setNewOffset : function(newOffset) {
@@ -112,6 +112,7 @@
         _detachEvents : function () {
             if (this.$leftButton)  { this.$leftButton.off('click'); }
             if (this.$rightButton) { this.$rightButton.off('click'); }
+            if (this._resizeObserver) { this._resizeObserver.disconnect(); }
         },        
 
         updateSize : function() {

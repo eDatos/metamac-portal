@@ -36,11 +36,12 @@
             this.tooltipDelegate = new App.Map.TooltipDelegate(options);
 
             this._onResize = _.debounce(_.bind(this._onResize, this), 200);
+            this._resizeObserver = new ResizeObserver(this._onResize);
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         events: {
             "dblclick": "_handleDblclick",
-            "resize": "_onResize"
         },
 
         _initializeMapOptions: function () {
@@ -505,6 +506,12 @@
                     top: 'auto'
                 },
             };
+        },
+
+        destroy: function () {
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+            }
         }
     });
 

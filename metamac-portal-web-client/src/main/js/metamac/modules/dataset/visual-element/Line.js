@@ -63,10 +63,10 @@
             this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", _.debounce(this.update, 100));
 
             var resize = _.debounce(_.bind(this._onResizeEvent, this), 200);
-            this.$el.on("resize", function (e) {
-                e.stopPropagation();
+            this._resizeObserver = new ResizeObserver(function () {
                 resize();
             });
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         _onResizeEvent: function () {
@@ -76,7 +76,7 @@
 
         _unbindEvents: function () {
             this.stopListening();
-            this.$el.off("resize");
+            this._resizeObserver.disconnect();
         },
 
         _onChartDestroy: function () {

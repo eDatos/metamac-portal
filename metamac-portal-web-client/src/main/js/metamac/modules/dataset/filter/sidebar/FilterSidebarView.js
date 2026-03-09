@@ -48,7 +48,6 @@
         },
 
         events: {
-            "resize": "_onResize",
             "change .control-ignore-value": "onIgnoreDimensionValue"
         },
 
@@ -61,10 +60,16 @@
 
         _bindEvents: function () {
             _.invoke(this.subviews, '_bindEvents');
+            if (!this._resizeObserver) {
+                this._resizeObserver = new ResizeObserver(_.bind(this._onResize, this));
+                this._resizeObserver.observe(this.$el[0]);
+            }
         },
 
         _unbindEvents: function () {
             _.invoke(this.subviews, '_unbindEvents');
+            this._resizeObserver.disconnect();
+            this._resizeObserver = null;
         },
 
         render: function () {

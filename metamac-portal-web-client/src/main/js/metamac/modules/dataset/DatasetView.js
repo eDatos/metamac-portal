@@ -123,6 +123,10 @@
 
         _unbindEvents: function () {
             this.stopListening();
+            if (this._sidebarResizeObserver) {
+                this._sidebarResizeObserver.disconnect();
+                this._sidebarResizeObserver = null;
+            }
         },
 
         serializeData: function () {
@@ -233,7 +237,8 @@
                 this._updateSidebarHeight($body.height());
             }, 100);
 
-            $body.on('resize.datasetSidebarHeight', _.bind(updateSidebarHeightOnResize, this));
+            this._sidebarResizeObserver = new ResizeObserver(_.bind(updateSidebarHeightOnResize, this));
+            this._sidebarResizeObserver.observe($body[0]);
         },
 
         _updateSidebarHeight: function (height) {
