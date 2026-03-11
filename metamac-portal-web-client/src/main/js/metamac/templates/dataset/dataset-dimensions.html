@@ -55,7 +55,7 @@
     <div class="dataset-dimensions-right dataset-dimensions-left-{{leftColumns}}">
         {{#each zones}} {{#compare location "==" "right"}}
         <div class="order-sidebar-zone {{#if draggable}}draggable{{/if}} {{#if hasSelector}}has-selector{{/if}}" data-zone="{{ id }}"
-            {{#if width}}style="width: {{ width }}" {{/if}}>
+            {{#if flex}}style="flex: {{ flex }}" {{/if}}>
 
             {{#if showHeader}}
             <h2><i class="{{ icon }}"></i> {{ label }}</h2>

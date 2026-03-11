@@ -25,10 +25,10 @@
         },
 
         _attachButtons : function() {         
-            this.$wrapper.prepend('<button class="scroll-button-left" style="display:none">◀</button>');
+            this.$wrapper.prepend('<button class="scroll-button-left" style="display:none"><i class="icon-caret-left"></i></button>');
             this.$leftButton = this.$wrapper.find('.scroll-button-left');
 
-            this.$wrapper.append('<button class="scroll-button-right" style="display:none">▶</button');
+            this.$wrapper.append('<button class="scroll-button-right" style="display:none"><i class="icon-caret-right"></i></button');
             this.$rightButton = this.$wrapper.find('.scroll-button-right');
 
             this.updateButtonsVisibility();

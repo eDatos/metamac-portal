@@ -18,14 +18,12 @@
             this.filterDimensions = options.filterDimensions;
             this.dataSource = options.dataSource;
             this.optionsModel = options.optionsModel;
-            this.buttons = options.buttons;
 
             this._bindEvents();
         },
 
         events: {
             "click .dataset-options-filter": "clickFilter",
-            "click .change-visual-element button": "changeType",
             "click .visual-element-options-edit": "clickFilterLoader",
             "click .visual-element-options-fs": "clickFullScreen",
             "click .visual-element-options-share": "clickShare",
@@ -39,7 +37,6 @@
         },
 
         _bindEvents: function () {
-            this.listenTo(this.optionsModel, "change:type", this.render);
             this.listenTo(this.optionsModel, "change:fullScreen", this.updateFullscreenButton);
             this.listenTo(this.optionsModel, "change:filter", this.updateFilterButton);
             this.listenTo(this.filterDimensions, "change:drawable", _.debounce(this.updateView, 400));
@@ -85,9 +82,6 @@
         render: function () {
             this._unbindEvents();
             this._bindEvents();
-            var self = this;
-
-            var activeType = this.optionsModel.get('type');
 
             var fullScreenVisible = this.fullScreenIsAllowed();
             var fullScreenActive = this.isFullScreen();
@@ -95,19 +89,7 @@
             var optionsEnabled = this.isOptions();
 
             if (optionsEnabled) {
-                var buttons = this.buttons;
-
-                var veTypeButtons = _.map(buttons, function (type) {
-                    return {
-                        title: I18n.t("filter.button." + type),
-                        type: type,
-                        btnClass: type === activeType ? 'active' : '',
-                        enabled: self._isVisualizationButtonEnabled(type)
-                    };
-                });
-
                 var context = {
-                    veTypeButton: veTypeButtons,
                     filter: {
                         active: filterActive,
                         btnClass: filterActive ? 'active' : ''
@@ -130,22 +112,6 @@
             return this;
         },
 
-        _isVisualizationButtonEnabled: function (type) {
-
-            if (type == "line" && !this.filterDimensions.canDrawLineVisualizations()) {
-                return false;
-            }
-
-            if ((type == "map" || type == "mapbubble") && !this.filterDimensions.canDrawMapVisualizations()) {
-                return false;
-            }
-
-            if (this.optionsModel.get('widget')) {
-                return type == "info" || type == this.optionsModel.get('widgetInitialType');
-            }
-            return true;
-        },
-
         _getHelpUrl: function () {
             try {
                 var helpUrl = JSON.parse(App.config["helpUrl"]);
@@ -155,22 +121,8 @@
             }
         },
 
-        _isExportableImage: function () {
-            return _.contains(['line', 'column', 'bar', 'map', 'mapbubble'], this.optionsModel.get('type'));
-        },
-
         clickFilter: function (e) {
             this.optionsModel.set('filter', !this.optionsModel.get('filter'));
-        },
-
-        changeType: function (e) {
-            if (this.isFilter()) {
-                $(document).trigger('closeFilter');
-            }
-            var $target = $(e.currentTarget);
-            var type = $target.data('type');
-
-            this.optionsModel.set('type', type);
         },
 
         clickFilterLoader: function (e) {

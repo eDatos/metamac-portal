@@ -53,7 +53,6 @@
                 data: this.data,
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
-                buttons: this.visualElements,
                 dataSource: this.dataSource
             });
 

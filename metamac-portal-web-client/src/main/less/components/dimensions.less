@@ -3,7 +3,6 @@
 @dimensionTitleWidth: 85px;
 @dimensionHeight: 23px;
 @zonesHorizontalPadding: 16px;
-@dimensionTitleWidthColumn: 72px;
 @h2LeftPadding: 4px;
 .order-dimensions {
     .order-sidebar-zone {
@@ -25,7 +24,7 @@
             white-space: nowrap;
             font-size: 11px;
 
-            border: 1px solid @istacGreyMedium;        
+            border: 1px solid @istacGreyMedium;
             color: @istacGreyMedium;
             padding-left: @h2LeftPadding;
             height: @dimensionHeight;
@@ -33,11 +32,11 @@
 
             i:before {
                 margin-top: -2px;
-            }            
+            }
         }
 
         .order-sidebar-dimensions {
-            white-space: nowrap;            
+            white-space: nowrap;
             height: @dimensionHeight;
 
             border: 1px solid @istacGreyMedium;
@@ -49,18 +48,13 @@
         }
 
         &.has-selector {
-            h2,
-            .order-sidebar-dimensions {
-                height: @dimensionHeight + 16px;
-            }
-
             .order-sidebar-dimension.dimension-pill {
                 .border-radius(@borderRadiusBig @borderRadiusBig 0 0);
             }
         }
-        
+
         .order-sidebar-measure-attribute,
-        .order-sidebar-dimension {            
+        .order-sidebar-dimension {
             padding: 2px;
 
             /* IE9 bug changed divs with a, so this correct the new style */
@@ -73,9 +67,9 @@
 
             border: 1px solid @istacGreyMedium;
             border-bottom: 0;
-            &.drag-over {                
-                .drag-over-dimension;         
-            }                    
+            &.drag-over {
+                .drag-over-dimension;
+            }
 
             background-color: @istacGreyMedium;
             color: @istacWhite;
@@ -83,7 +77,7 @@
             &.active {
                 background-color: @istacBlueDark;
             }
-                    
+
             .dimension-select-geographic-granularity,
             .dimension-select-granularity,
             .fixed-dimension-select-category,
@@ -120,9 +114,9 @@
                     padding: 0px 2px;
                     height: inherit;
                 }
-            }    
+            }
         }
-        
+
         .order-sidebar-dimension-single-value {
             display: flex;
             box-sizing: border-box;
@@ -133,134 +127,144 @@
             text-decoration: none;
 
             align-items: center;
-            justify-content: center;            
+            justify-content: center;
+        }
+    }
+
+    .dataset-dimensions {
+        display: flex;
+        flex-direction: row;
+        gap: var(--edatos-spacing-x-sm);
+    }
+
+    .dataset-dimensions-left, .dataset-dimensions-right {
+        display: flex;
+        flex-direction: row;
+        min-height: 79px;
+        height: auto;
+        border-radius: 5px;
+        overflow: hidden;
+        gap: 2px;
+
+        .order-sidebar-zone {
+            flex: 1 1 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 2px;
+
+            h2 {
+                min-width: 130px;
+                width: 100%;
+                text-overflow: ellipsis;
+                height: 100%;
+                border: none;
+                background: var(--Negro-5, #F2F2F2);
+                color: var(--Negro-60, #666);
+                font-size: 16px;
+                font-weight: 600;
+                padding: 8px 10px;
+                box-sizing: border-box;
+                align-content: center;
+
+                i {
+                    margin-right: 10px;
+                }
+            }
+
+            .order-sidebar-dimensions {
+                border: none;
+                flex: 1 1 auto;
+            }
         }
     }
     
     .dataset-dimensions-left {
-        padding-left: 1px;
-        
-        width: 100%;            
+        gap: 1px;
+        border: 1px solid var(--Colors-secondary, #004678);
+
         &.dataset-dimensions-left-0 {
-            width: 0;
+            display: none;
         }
 
-        &.dataset-dimensions-left-1 {
-            width: (@dimensionPillWidth + @dimensionPillFrameWidth) * 1 + 2px;
-        }
-        &.dataset-dimensions-left-2 {
-            width: (@dimensionPillWidth + @dimensionPillFrameWidth) * 2 + 2px;
-        }
+        &.dataset-dimensions-left-1:not(:has(h2)) {
+            border: none;
 
-        &.dataset-dimensions-left-1,
-        &.dataset-dimensions-left-2 { 
-            .order-sidebar-zone {
-                .order-sidebar-dimensions {
-                    overflow: hidden;
-                }
-
-                &:last-child .order-sidebar-dimensions{
-                    .border-radius(0 0 @borderRadiusMedium 0); 
-                }
+            .order-sidebar-dimensions {
+                background: var(--Negro-5, #F2F2F2);
             }
         }
-                        
+
         float: left;            
         .order-sidebar-zone {
             float: left;
-            margin-left: -1px;                              
-            h2 {
-                float: none;
-                width: initial;
-                margin-right: 0;
-            }
-            .order-sidebar-dimensions {
-                margin-left: 0;
-                margin-top: -1px;
-                margin-right: 0;
-            }
+            margin-left: -1px;
+            min-height: 69px;
+            height: auto;
+            flex-direction: column;
+            gap: 2px;
 
-            .order-sidebar-dimension {
-                margin: 0 -1px 0px -1px;
-                &.dimension-pill {
-                    margin: 2px;
-                    width: @dimensionPillWidth - 2 * 4px;
-                }
+            &:not(:last-child) {
+                border-right: 1px solid var(--Colors-secondary, #004678);
             }
 
             &.has-selector {
                 padding-top: 0;
-                h2 {
-                    height: @dimensionHeight;
+            }
+
+            h2 {
+                height: 68px;
+                border-bottom: 1px solid var(--Colors-secondary, #004678);
+                background: white;
+            }
+
+            .order-sidebar-dimensions {
+                padding: 7px 11px;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: -1px;
+                margin-right: 0;
+                height: 68px;
+                width: auto;
+                background: white;
+
+                .order-sidebar-dimension {
+                    margin: 0 -1px 0px -1px;
+                    &.dimension-pill {
+                        margin: 2px;
+                        width: @dimensionPillWidth - 2 * 4px;
+                    }
                 }
             }
         }
     }
-    .dataset-dimensions-right {            
-        padding-left: 0;            
 
-        &.dataset-dimensions-left-1 {
-            padding-left: (@dimensionPillWidth + @dimensionPillFrameWidth) * 1 + @zonesHorizontalPadding;                            
-        }            
-        &.dataset-dimensions-left-2 {
-            padding-left: (@dimensionPillWidth + @dimensionPillFrameWidth) * 2 + @zonesHorizontalPadding;            
-            
-        }
-        
-        &.dataset-dimensions-left-1,
-        &.dataset-dimensions-left-2 {
-            .order-sidebar-zone:last-child { 
-                .order-sidebar-dimensions.no-header, 
-                h2 {
-                    .border-radius(0 0 0 @borderRadiusMedium);
-                    overflow: hidden;
-                }
-            }
-        }
+    .dataset-dimensions-right {
+        flex-wrap: wrap;
+        flex: 1;
 
         .order-sidebar-zone {             
             width: 100%;
-            float: left;
             box-sizing: border-box;
 
             h2 {
-                width: @dimensionTitleWidthColumn;
+                flex: 0 0 130px;
             }
+
             .order-sidebar-dimensions {
-                margin-left: @dimensionTitleWidthColumn + 1px + @h2LeftPadding;
-                border-right: none;
-                &.no-header {                
-                     margin-left: 0;
-                }                                  
+                min-width: 0;
+                margin-left: 0;
+                background: var(--Negro-5, #F2F2F2);
+                height: auto;
+
+                a {
+                    min-width: min-content;
+                }
             }
+
         }           
     }    
-}
-
-.sidebar-sidebar-content {
-   .order-sidebar-zone {
-        background-color: @istacGreyDark;
-        h2 {
-            .sidebar-title;
-            margin: 0;
-            margin-bottom: 3px;
-        }
-
-        .order-sidebar-dimension {
-            padding: 5px;
-            border: 1px solid @istacGreyMedium;
-            background-color: @istacGreyLight;
-
-            margin: 0;
-            margin-bottom: 3px;
-
-            /* IE9 bug changed divs with a, so this correct the new style */
-            display: block;
-        }
-
-        padding-bottom: 30px;
-        margin-bottom: 20px;
-   }
 }
 
 .order-sidebar-zone {    

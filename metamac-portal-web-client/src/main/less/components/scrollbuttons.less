@@ -1,43 +1,53 @@
-@buttonWidth: 14px;
-@buttonPadding: 1px;
+@paddingScrollButton: 2px;
+@leftPaddingScrollButtonRight: 4px;
+@leftPaddingScrollButtonLeft: 5px;
+@scrollButtonWidth: var(--edatos-spacing-x-m);
+@scrollButtonContentWrapperMargin: var(--edatos-spacing-x-l);
+
 .scroll-buttons {
     position: relative;
     height: 100%;
     overflow: hidden;
+
     .scroll-button-content-wrapper {
-        margin: 0 (@buttonWidth - @buttonPadding);
-        overflow: hidden;    
-        
+        overflow: hidden;
+        margin: 0 @scrollButtonContentWrapperMargin;
+        height: 100%;
+
         .scroll-button-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 100%;
+            margin-left: 0;
+            gap: var(--edatos-spacing-x-sm);
         }
     }
 
     .scroll-button {
-        width: @buttonWidth - @buttonPadding;
         position: absolute;
-        top: 0;
+        box-sizing: border-box;
+        width: @scrollButtonWidth;
         height: 100%;
+        top: 0;
         line-height: 100%;
-
-        font-size: 9px;
-        padding: 0;
+        font-size: var(--edatos-font-size-lg);
         border: none;
-        background: @istacGreyLight;
-        color: @istacGreyMedium;
+        color: var(--edatos-color-gray-60);
+        background: var(--edatos-color-gray-20);
+        padding: @paddingScrollButton;
     }
 
     .scroll-button-left {
         .scroll-button;
-        padding-right: @buttonPadding;
+        padding-left: @leftPaddingScrollButtonLeft;
         left: 0;
-        .box-shadow(1px 0px 6px 0px rgba(0,0,0,0.75));
     }
 
     .scroll-button-right {
         .scroll-button;
-        padding-left: @buttonPadding;
+        padding-left: @leftPaddingScrollButtonRight;
         right: 0;
-        .box-shadow(-1px 0px 6px 0px rgba(0,0,0,0.75));
     }
 }
 

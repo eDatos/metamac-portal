@@ -5,7 +5,6 @@
 @filterSidebarDimensionWidth: 610px;
 @filterSidebarDimensionTitlePadding: 0,9rem;
 @filterSidebarDimensionTitleHeight: 2,625rem;
-@minWidthToShowButtonsText: 64rem;
 
 .selection-body {
     height: 100%;
@@ -44,24 +43,6 @@
     	.full-screen & {
     		width: 100%;
     	}
-
-        padding: 0;
-        height: auto;
-        background: transparent;
-
-        .horizontal-buttons-group {
-            display: flex;
-            flex-direction: row;
-            gap: @paddingMedium;
-
-            @media (max-width: @minWidthToShowButtonsText) {
-                button {
-                    > span, > i.icon-chevron-down {
-                        display: none;
-                    }
-                }
-            }
-        }
     }
 
     .selection-dimensions-container {

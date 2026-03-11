@@ -22,13 +22,13 @@
             table: {
                 zones: {
                     top: {
-                        icon: "columns",
+                        icon: "table-columns",
                         draggable: true,
                         location: "right",
                         showHeader: true
                     },
                     left: {
-                        icon: "rows",
+                        icon: "table-rows",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -38,7 +38,7 @@
             column: {
                 zones: {
                     axisy: {
-                        icon: "axis-y",
+                        icon: "arrow-turn-left-up",
                         draggable: false,
                         location: "left",
                         showHeader: true,
@@ -46,23 +46,23 @@
                         assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
-                        icon: "axis-x",
+                        icon: "arrow-turn-down-right",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "225px",
+                        flex: "1 0 360px",
                         sortable: true
                     },
                     top: {
-                        icon: "column",
+                        icon: "chart-simple",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "calc(100% - 225px)",
+                        flex: "100 1 360px",
                         sortable: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -72,7 +72,7 @@
             bar: {
                 zones: {
                     axisy: {
-                        icon: "axis-x",
+                        icon: "arrow-turn-down-right",
                         draggable: false,
                         location: "left",
                         showHeader: true,
@@ -80,23 +80,23 @@
                         assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
-                        icon: "axis-y",
+                        icon: "arrow-turn-left-up",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "225px",
+                        flex: "1 0 360px",
                         sortable: true
                     },
                     top: {
-                        icon: "bar",
+                        icon: "chart-simple",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "calc(100% - 225px)",
+                        flex: "100 1 360px",
                         sortable: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -106,7 +106,7 @@
             line: {
                 zones: {
                     axisy: {
-                        icon: "axis-y",
+                        icon: "arrow-turn-left-up",
                         draggable: false,
                         location: "left",
                         showHeader: true,
@@ -114,19 +114,19 @@
                         assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
-                        icon: "axis-x",
+                        icon: "arrow-turn-down-right",
                         draggable: false,
                         location: "left",
                         showHeader: true
                     },
                     top: {
-                        icon: "line",
+                        icon: "chart-line",
                         draggable: true,
                         location: "right",
                         showHeader: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -136,7 +136,6 @@
             map: {
                 zones: {
                     left: {
-                        icon: "map",
                         draggable: false,
                         location: "left",
                         showHeader: false,
@@ -144,7 +143,7 @@
                         assignedAttributeTypes: ["SPATIAL"]
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: false,
                         location: "right",
                         showHeader: true
@@ -154,14 +153,13 @@
             mapbubble: {
                 zones: {
                     left: {
-                        icon: "map",
                         draggable: false,
                         location: "left",
                         showHeader: false,
                         showSingleValue: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: false,
                         location: "right",
                         showHeader: true
@@ -336,8 +334,8 @@
             return isDraggable;
         },
 
-        _zoneWidthByChartType: function (zone) {
-            return this._getCurrentChartType() ? this.configuration[this._getCurrentChartType()].zones[zone].width : false;
+        _zoneFlexByChartType: function (zone) {
+            return this._getCurrentChartType() ? this.configuration[this._getCurrentChartType()].zones[zone].flex : false;
         },
 
         _renderContext: function () {
@@ -352,7 +350,7 @@
                     hasSelector: this._hasSelector(zone),
                     location: this._getLocationForZone(zone),
                     showHeader: this._getShowHeader(zone),
-                    width: this._zoneWidthByChartType(zone)
+                    flex: this._zoneFlexByChartType(zone)
                 };
             }, this);
 
