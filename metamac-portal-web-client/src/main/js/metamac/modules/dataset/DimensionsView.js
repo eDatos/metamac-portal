@@ -526,6 +526,10 @@
             var $elem = $(e.currentTarget);
             e.originalEvent.dataTransfer.effectAllowed = 'move';
             e.originalEvent.dataTransfer.setData('Text', $elem.data("dimension-id"));
+
+            setTimeout(function() {
+                $elem.addClass('empty-space');
+            }, 0);
         },
 
         _onDragover: function (e) {
@@ -567,6 +571,7 @@
 
         _onDragend: function () {
             this.$("." + DRAGOVER_CLASS).removeClass(DRAGOVER_CLASS);
+            this.$('.empty-space').removeClass('empty-space');
         }
 
     });
