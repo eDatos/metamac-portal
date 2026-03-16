@@ -102,7 +102,7 @@
         },
 
         _initializeRouteTabsView: function () {
-            this.routeTabsView = new App.components.navigationTabs.RouteTabsView({
+            this.routeTabsView = new App.components.navigationTabs.NavigationTabsView({
                 tabs: this._getTabsConfig(),
                 optionsModel: this.optionsModel
             });

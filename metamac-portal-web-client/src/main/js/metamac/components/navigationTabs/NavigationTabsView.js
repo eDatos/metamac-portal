@@ -1,7 +1,7 @@
 (function () {
     App.namespace("App.components.navigationTabs");
 
-    App.components.navigationTabs.RouteTabsView = Backbone.Marionette.ItemView.extend({
+    App.components.navigationTabs.NavigationTabsView = Backbone.Marionette.ItemView.extend({
 
         template: "components/navigationTabs/navigation-tabs",
 
