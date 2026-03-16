@@ -10,6 +10,7 @@
         className: "dataset-view",
 
         regions: {
+            routeTabs: ".navigation-tabs-region",
             content: ".dataset-sidebar-visualization-container",
             optionsBar: ".dataset-visualization-options-bar",
             dimensions: ".dataset-visualization-dimensions"
@@ -34,6 +35,7 @@
 
             this._initializeVisualElements();
             this._initializeSidebarView();
+            this._initializeRouteTabsView();
             this._initializeFullScreen();
         },
 
@@ -99,6 +101,64 @@
             });
         },
 
+        _initializeRouteTabsView: function () {
+            this.routeTabsView = new App.components.navigationTabs.RouteTabsView({
+                tabs: this._getTabsConfig(),
+                optionsModel: this.optionsModel
+            });
+        },
+
+        _getTabsConfig: function () {
+            var self = this;
+            var helpUrl = this._getHelpUrl();
+
+            var graphSubtabs = [
+                { type: "column", title: I18n.t("filter.button.column") },
+                { type: "bar", title: I18n.t("filter.button.bar") },
+                { type: "line", title: I18n.t("filter.button.line") }
+            ].filter(function (subtab) {
+                return self._isVisualizationButtonEnabled(subtab.type);
+            });
+
+            var mapSubtabs = [
+                { type: "map", title: I18n.t("filter.button.map") },
+                { type: "mapbubble", title: I18n.t("filter.button.mapbubble") }
+            ].filter(function (subtab) {
+                return self._isVisualizationButtonEnabled(subtab.type);
+            });
+
+            return [
+                {
+                    type: "table",
+                    enabled: self._isVisualizationButtonEnabled("table"),
+                    title: I18n.t("filter.button.table")
+                }, {
+                    type: "charts",
+                    enabled: graphSubtabs.length > 0,
+                    title: I18n.t("filter.button.charts"),
+                    subtabs: graphSubtabs
+                }, {
+                    type: "maps",
+                    enabled: mapSubtabs.length > 0,
+                    title: I18n.t("filter.button.maps"),
+                    subtabs: mapSubtabs
+                }, {
+                    type: "info",
+                    enabled: self._isVisualizationButtonEnabled("info"),
+                    title: I18n.t("filter.button.info")
+                }, /* TODO add when the api download is transformed into a page (now it's a modal) {
+                    type: "api",
+                    enabled: true,
+                    title: I18n.t("filter.button.apiDownload")
+                }, */ {
+                    type: "help",
+                    enabled: !!helpUrl,
+                    link: helpUrl,
+                    title: I18n.t("filter.button.helpUrl")
+                }
+            ];
+        },
+
         _initializeFullScreen: function () {
             this.fullScreen = new App.FullScreen();
         },
@@ -129,12 +189,35 @@
         },
 
         serializeData: function () {
-            var context = {
+            return {
                 showHeader: this._showHeader(), // Depends if the server is already painting the title and description
                 isWidget: this.optionsModel.get('widget'),
                 metadata: this.metadata.toJSON()
             };
-            return context;
+        },
+
+        _getHelpUrl: function () {
+            try {
+                var helpUrl = JSON.parse(App.config["helpUrl"]);
+                return App.InternationalizationUtils.localizeLabel(helpUrl);
+            } catch (error) {
+                return App.config["helpUrl"];
+            }
+        },
+
+        _isVisualizationButtonEnabled: function (type) {
+            if (type === "line" && !this.filterDimensions.canDrawLineVisualizations()) {
+                return false;
+            }
+
+            if ((type === "map" || type === "mapbubble") && !this.filterDimensions.canDrawMapVisualizations()) {
+                return false;
+            }
+
+            if (this.optionsModel.get('widget')) {
+                return type === "info" || type === this.optionsModel.get('widgetInitialType');
+            }
+            return true;
         },
 
         _showHeader: function () {
@@ -142,7 +225,7 @@
         },
 
         onRender: function () {
-
+            this.routeTabs.show(this.routeTabsView);
             this.content.show(this.sidebarView);
             this.optionsBar.show(this.optionsView);
             this.dimensions.show(this.dimensionsView);
