@@ -11,7 +11,7 @@ I18n.translations.es = {
     },
     filter: {
         button: {
-            edit: "Cambiar selección",
+            selection: "Selección",
             info: "Información",
             table: "Tabla",
             column: "Columnas",

@@ -28,8 +28,8 @@
             "click .visual-element-options-fs": "clickFullScreen",
             "click .visual-element-options-share": "clickShare",
             "click .visual-element-options-save": "clickSave",
-            "click .visual-element-options-api-download": "clickApiDownload",
             "click .visual-element-options-embed": "clickEmbed",
+            "click .selection-visualize-selection": "clickVisualize"
         },
 
         destroy: function () {
@@ -99,10 +99,8 @@
                         active: fullScreenActive,
                         btnClass: fullScreenActive ? 'active' : ''
                     },
-                    helpUrl: this._getHelpUrl(),
                     usersAreAvailable: !!(App.endpoints["external-users"] && App.endpoints["external-users-web"] && window.Edatos && Edatos.UserManagement),
                     visualize: this.optionsModel.get('visualize'),
-                    widget: this.optionsModel.get('widget'),
                     widgetButton: this.optionsModel.get('widgetButton')
                 };
                 this.$el.html(this.template(context));
@@ -110,15 +108,6 @@
                 this.renderDownloadButton();
             }
             return this;
-        },
-
-        _getHelpUrl: function () {
-            try {
-                var helpUrl = JSON.parse(App.config["helpUrl"]);
-                return App.InternationalizationUtils.localizeLabel(helpUrl);
-            } catch (error) {
-                return App.config["helpUrl"];
-            }
         },
 
         clickFilter: function (e) {
@@ -136,7 +125,7 @@
                 this.trigger('exitFullScreen');
                 this.$el.find('.visual-element-options-fs').removeClass("active");
             } else {
-                if (this.fullScreenIsAllowed) {
+                if (this.fullScreenIsAllowed()) {
                     this.trigger('enterFullScreen');
                     this.$el.find('.visual-element-options-fs').addClass("active");
                 }
@@ -244,9 +233,14 @@
 
         setCurrentVe: function (currentVe) {
             this.currentVe = currentVe;
+            this.renderDownloadButton();
         },
 
         renderDownloadButton: function () {
+            if (!this.currentVe) {
+                return;
+            }
+
             if (!this.downloadSelectView) {
                 this.downloadSelectView = new App.modules.dataset.DatasetDownloadView({
                     currentVe: this.currentVe,
@@ -267,11 +261,19 @@
                     },
                     optionsModel: this.optionsModel,
                 });
+            } else {
+                this.downloadSelectView.setCurrentVe(this.currentVe);
             }
             this.downloadSelectView.setElement(this.$('.visual-element-options-download'));
             this.downloadSelectView.render();
         },
 
+        clickVisualize: function (e) {
+            e.preventDefault();
+            this.trigger('visualize');
+        },
+
+        /* TODO remove when the api download is transformed into a page */
         clickApiDownload: function (e) {
             e.preventDefault();
             var modalContentView = null;
@@ -298,8 +300,6 @@
         isInternalPortal: function () {
             return App.config["installationType"] === "INTERNAL";
         }
-
-
     });
 
 

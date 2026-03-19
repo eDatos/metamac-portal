@@ -33,12 +33,16 @@
         },
 
         showDatasetSelection: function (datasetIdentifier) {
+            datasetIdentifier = _.defaults(datasetIdentifier, {
+                visualizationType: "selection"
+            });
             var link = this._linkToDatasetSelection(datasetIdentifier);
             this.router.navigate(link, { replace: true });
 
             var self = this;
             this._loadMetadataAndData(datasetIdentifier).then(function () {
                 self.region.show(self.selectionView);
+                self.selectionView.showVisualizationType(datasetIdentifier);
             });
         },
 
@@ -59,14 +63,20 @@
                 if (self.region.currentView !== self.visualizationView) {
                     self.region.show(self.visualizationView);
                 }
-                self.visualizationView.showChart(options);
+                self.visualizationView.showVisualizationType(options);
             });
         },
 
         changeDatasetVisualization: function (options) {
             var link = this._linkToDatasetVisualization(options);
             this.router.navigate(link, { replace: true });
-            this.visualizationView.showChart(options);
+            this.visualizationView.showVisualizationType(options);
+        },
+
+        changeSelectionVisualization: function (options) {
+            var link = this._linkToDatasetSelection(options);
+            this.router.navigate(link, { replace: true });
+            this.selectionView.showVisualizationType(options);
         },
 
         _linkToDatasetVisualization: function (options) {
@@ -82,6 +92,9 @@
 
         _linkToDatasetSelection: function (options) {
             var routeName = "selection";
+            if (options.visualizationType && options.visualizationType !== "selection") {
+                routeName = routeName + "Type";
+            }
             if (options.permalinkId) {
                 routeName = routeName + "Permalink";
             }
@@ -126,7 +139,7 @@
                     self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                     self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
 
-                    self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata, data: self.data });
+                    self.selectionView = new App.modules.selection.SelectionView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
 
                     self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
 

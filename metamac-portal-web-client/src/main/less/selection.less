@@ -6,52 +6,40 @@
 @filterSidebarDimensionTitlePadding: 0,9rem;
 @filterSidebarDimensionTitleHeight: 2,625rem;
 
-.selection-body {
+.selection-view {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--edatos-spacing-x-m);
+
+    &.selection-visualization-type-selection {
+        .dataset-visualization-visual-element {
+            border: none;
+        }
+    }
+}
+
+.selection-visualization-options-bar {
+    .options-bar;
+}
+
+.selection-visualization-container {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+.selection-dimensions-container {
+    display: grid;
+    grid-template-columns: ~"repeat(auto-fit, minmax(clamp(@{filterSidebarDimensionMinWidth}, 40%, 100%), 1fr))";
+    width: 100%;
+    margin: 0;
+    gap: var(--edatos-spacing-x-m);
+    overflow: auto;
     height: 100%;
 
     .full-screen & {
         .full-screen;
-    }  
-}
-
-.selection-dimensions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--edatos-spacing-x-m);
-    height: 100%;
-	overflow: hidden;
-
-    &> div {
-        min-width: @filterSidebarDimensionMinWidth;
-
-        .full-screen & {    
-            padding-left: 10px;
-        }
-        
-        &:last-child .filter-sidebar-dimension-content {
-        	//.border-radius(0 0 6px 0);
-        }        
-    }
-
-    .selection-options-bar {
-    	margin-left: 0;
-
-        .border-radius(@borderRadiusSmall @borderRadiusSmall 0 0);
-    	
-    	.options-bar;
-    	
-    	.full-screen & {
-    		width: 100%;
-    	}
-    }
-
-    .selection-dimensions-container {
-        display: grid;
-        grid-template-columns: ~"repeat(auto-fit, minmax(clamp(@{filterSidebarDimensionMinWidth}, 40%, 100%), 1fr))";
-        width: 100%;
-        margin: 0;
-        gap: var(--edatos-spacing-x-m);
-        overflow: auto;
     }
 
     .filter-sidebar-dimension {
@@ -64,6 +52,10 @@
         height: @filterSidebarDimensionHeight;
         max-width: @filterSidebarDimensionWidth;
         width: 100%;
+
+        .full-screen & {
+            padding-left: 10px;
+        }
     }
 
     .filter-sidebar-dimension-title {
@@ -89,17 +81,6 @@
         padding-top: @paddingMedium;
         gap: @paddingMedium;
     }
-}
-
-.selection-sidebar-container {
-	float: left;
-	width: auto;
-	height: 438px;
-    .border-radius(0 0 0 @borderRadiusSmall);
-	
-	.full-screen & {
-		min-height: 100% !important;
-	}
 }
 
 .select2-container--open .select2-dropdown.filter-level {

@@ -1,9 +1,7 @@
 (function () {
-    var Constants = App.Constants;
-
     App.namespace("App.modules.dataset");
 
-    App.modules.dataset.DatasetView = Backbone.Marionette.Layout.extend({
+    App.modules.dataset.DatasetView = App.modules.layout.BasePageLayout.extend({
 
         template: "dataset/dataset-page",
 
@@ -17,58 +15,32 @@
         },
 
         initialize: function (options) {
-            this.controller = options.controller;
-            this.filterDimensions = options.filterDimensions;
-            this.metadata = options.metadata;
-            this.data = options.data;
-            this.dataSource = new App.DataSourceDataset({
-                data: this.data,
-                filterDimensions: this.filterDimensions
-            });
+            App.modules.dataset.DatasetView.__super__.initialize.call(this, options);
+            this._initializeSidebarView();
+        },
 
-            this.optionsModel = new App.modules.dataset.OptionsModel({
+        _getOptionsModelConfig: function () {
+            return {
                 widget: App.config.widget,
                 menu: false,
                 filter: this.filterDimensions.hasMultidataset(),
                 mustApplyVisualizationRestrictions: !this.metadata.identifier().permalinkId
-            });
-
-            this._initializeVisualElements();
-            this._initializeSidebarView();
-            this._initializeRouteTabsView();
-            this._initializeFullScreen();
+            };
         },
 
-        _initializeVisualElements: function () {
-            var visualElements = ["info", "table", "column", "bar", "line"];
-            if (_.findWhere(this.metadata.getDimensions(), { type: 'GEOGRAPHIC_DIMENSION' })) {
-                visualElements.push("map");
-                visualElements.push("mapbubble");
+        _getVeElements: function () {
+            if (!this._veElements) {
+                var visualElements = ["info", "table", "column", "bar", "line"];
+                if (_.findWhere(this.metadata.getDimensions(), { type: 'GEOGRAPHIC_DIMENSION' })) {
+                    visualElements.push("map");
+                    visualElements.push("mapbubble");
+                }
+                this._veElements = visualElements;
             }
-            this.visualElements = visualElements;
+            return this._veElements;
         },
 
         _initializeSidebarView: function () {
-
-            // Options bar
-            this.optionsView = new App.modules.dataset.OptionsView({
-                data: this.data,
-                filterDimensions: this.filterDimensions,
-                optionsModel: this.optionsModel,
-                dataSource: this.dataSource
-            });
-
-            // visualization
-            this.visualizationView = new App.modules.dataset.DatasetVisualizationView({
-                data: this.data,
-                filterDimensions: this.filterDimensions,
-                optionsModel: this.optionsModel,
-                veElements: this.visualElements,
-                optionsView: this.optionsView,
-                metadata: this.metadata,
-                dataSource: this.dataSource
-            });
-
             this.dimensionsView = new App.modules.dataset.DimensionsView({
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
@@ -98,13 +70,6 @@
                 contentView: this.visualizationView,
                 optionsModel: this.optionsModel,
                 defaultCurrentSideView: "filterSidebar"
-            });
-        },
-
-        _initializeRouteTabsView: function () {
-            this.routeTabsView = new App.components.navigationTabs.NavigationTabsView({
-                tabs: this._getTabsConfig(),
-                optionsModel: this.optionsModel
             });
         },
 
@@ -159,17 +124,8 @@
             ];
         },
 
-        _initializeFullScreen: function () {
-            this.fullScreen = new App.FullScreen();
-        },
-
         _bindEvents: function () {
-            // FullScreen
-            this.listenTo(this.visualizationView, "enterFullScreen", _.bind(this.fullScreen.enterFullScreen, this.fullScreen));
-            this.listenTo(this.visualizationView, "exitFullScreen", _.bind(this.fullScreen.exitFullScreen, this.fullScreen));
-            this.listenTo(this.fullScreen, "didEnterFullScreen", this._onDidEnterFullScreen);
-            this.listenTo(this.fullScreen, "didExitFullScreen", this._onDidExitFullScreen);
-            this.listenTo(this.optionsModel, "change:type", this._onSelectChartType);
+            App.modules.dataset.DatasetView.__super__._bindEvents.call(this);
 
             if (this.optionsModel.get('widget')) {
                 this.listenTo(this.optionsModel, "change:filter", this._updateDimensionsHeight);
@@ -180,48 +136,21 @@
             this.content.$el.toggleClass('no-dimensions', !this.optionsModel.get('filter'));
         },
 
+        _getVisualizationContext: function () {
+            return "dataset";
+        },
+
+        _afterTypeChange: function (controllerParams) {
+            this.dimensionsView.render();
+            this.controller.changeDatasetVisualization(controllerParams);
+        },
+
         _unbindEvents: function () {
-            this.stopListening();
+            App.modules.dataset.DatasetView.__super__._unbindEvents.call(this);
             if (this._sidebarResizeObserver) {
                 this._sidebarResizeObserver.disconnect();
                 this._sidebarResizeObserver = null;
             }
-        },
-
-        serializeData: function () {
-            return {
-                showHeader: this._showHeader(), // Depends if the server is already painting the title and description
-                isWidget: this.optionsModel.get('widget'),
-                metadata: this.metadata.toJSON()
-            };
-        },
-
-        _getHelpUrl: function () {
-            try {
-                var helpUrl = JSON.parse(App.config["helpUrl"]);
-                return App.InternationalizationUtils.localizeLabel(helpUrl);
-            } catch (error) {
-                return App.config["helpUrl"];
-            }
-        },
-
-        _isVisualizationButtonEnabled: function (type) {
-            if (type === "line" && !this.filterDimensions.canDrawLineVisualizations()) {
-                return false;
-            }
-
-            if ((type === "map" || type === "mapbubble") && !this.filterDimensions.canDrawMapVisualizations()) {
-                return false;
-            }
-
-            if (this.optionsModel.get('widget')) {
-                return type === "info" || type === this.optionsModel.get('widgetInitialType');
-            }
-            return true;
-        },
-
-        _showHeader: function () {
-            return App.config.showHeader && !this.optionsModel.get('widget');
         },
 
         onRender: function () {
@@ -247,54 +176,8 @@
             this.optionsModel.unset('type');
         },
 
-        showChart: function (options) {
-            if (this.fullScreen.isInFullScreen()) {
-                this.fullScreen.refreshFullScreenListeners();
-                this.optionsModel.set('fullScreen', true);
-            }
-            else if (options.fullScreen) {
-                this.fullScreen.enterFullScreen();
-            }
-
-            if (!this.optionsModel.get('widgetInitialType')) {
-                this.optionsModel.set('widgetInitialType', options.visualizationType);
-            }
-            this.optionsModel.set('type', options.visualizationType);
-        },
-
-        _onSelectChartType: function () {
-            var currentVe = this.visualizationView._getCurrentVe();
-            if (currentVe) {
-                currentVe._unbindEvents();
-            }
-
-            var type = this.optionsModel.get('type');
-            if (type) {
-                this._toggleClassByChartType(type);
-
-                this.visualizationView.activeVisualElement(type);
-                this.visualizationView.load();
-                this.dimensionsView.render();
-
-                var controllerParams = this.metadata.identifier();
-                controllerParams.visualizationType = type;
-                this.controller.changeDatasetVisualization(controllerParams);
-            }
-            this.optionsView.setCurrentVe(this.visualizationView._getCurrentVe());
-        },
-
-        _toggleClassByChartType: function (type) {
-            var CLASS_PREFFIX = "dataset-visualization-type-";
-            var regex = new RegExp("(^|\\s)" + CLASS_PREFFIX + "\\S+", 'g');
-            this.content.$el.removeClass(function (index, className) {
-                return (className.match(regex) || []).join(' ');
-            });
-            this.content.$el.addClass(CLASS_PREFFIX + type);
-        },
-
         _onDidEnterFullScreen: function () {
-            this.visualizationView._didEnterFullScreen();
-            this.optionsModel.set('fullScreen', true);
+            App.modules.dataset.DatasetView.__super__._onDidEnterFullScreen.call(this);
 
             if (this.optionsModel.get('widget')) {
                 this._updateSidebarHeight('');
@@ -302,8 +185,7 @@
         },
 
         _onDidExitFullScreen: function () {
-            this.visualizationView._didExitFullScreen();
-            this.optionsModel.set('fullScreen', false);
+            App.modules.dataset.DatasetView.__super__._onDidExitFullScreen.call(this);
 
             if (this.optionsModel.get('widget')) {
                 this._updateSidebarHeight($('body').height());

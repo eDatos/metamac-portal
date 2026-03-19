@@ -27,7 +27,6 @@
             };
             window.addEventListener("pageshow", this.pageshowListener);
 
-            this.visualizationType = this.optionsModel.get('type');
             this.filterDimensions = this.options.filterDimensions;
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
             this.numberOfObservations = this.options.numberOfObservations;
@@ -66,6 +65,10 @@
             this.delegateEvents();
         },
 
+        setCurrentVe: function (currentVe) {
+            this.currentVe = currentVe;
+        },
+
         render: function () {
             var context = {
                 buttonConfig: this._getButtonConfiguration(),
@@ -81,8 +84,8 @@
 
         _getVisualizationType: function () {
             var visualizationSupertype = '';
-            switch (this.visualizationType) {
-                case '': // On selection mode
+            switch (this.optionsModel.get('type')) {
+                case 'selection':
                 case 'info':
                 case 'table':
                     visualizationSupertype = 'data';

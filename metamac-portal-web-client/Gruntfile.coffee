@@ -87,6 +87,9 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/translations/pt.js"
                 paths.js + "/metamac/translations/ca.js"
 
+                # LAYOUT
+                paths.modules + "/layout/BasePageLayout.js"
+
                 # DATASET MODULE
                 paths.modules + "/dataset/DatasetPermalink.js"
                 paths.modules + "/dataset/PermalinkBuilder.js"
@@ -187,6 +190,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/visual-element/Line.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Table.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Map.js"
+                paths.js + "/metamac/modules/dataset/visual-element/Selection.js"
                 paths.js + "/metamac/modules/dataset/ErrorView.js"
                 # canvas table
                 paths.js + "/libs/lru.js"

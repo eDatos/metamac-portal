@@ -18,8 +18,7 @@
 
             this.optionsModel = options.optionsModel;
             this.veElements = options.veElements;
-            options.optionsView.on("enterFullScreen", this.enterFullScreen, this);
-            options.optionsView.on("exitFullScreen", this.exitFullScreen, this);
+            this.veWithCustomColors = ['line', 'column', 'bar'];
 
             this._initializeVisualElements();
         },
@@ -37,6 +36,9 @@
             this.ve = {};
             _.each(this.veElements, function (element) {
                 switch (element) {
+                    case 'selection':
+                        this.ve.selection = new App.VisualElement.Selection(options);
+                        break;
                     case 'info':
                         this.ve.info = new App.VisualElement.Info(options);
                         break;
@@ -72,8 +74,12 @@
             });
         },
 
+        anyVeNeedsColors: function () {
+            return _.intersection(this.veElements, this.veWithCustomColors).length > 0;
+        },
+
         currentVeNeedsColors: function () {
-            return this.currentElement === 'line' || this.currentElement === 'column' || this.currentElement === 'bar';
+            return this.veWithCustomColors.includes(this.currentElement);
         },
 
         colorsLoaded: function() {
@@ -85,7 +91,7 @@
         },
 
         loadColors: function (callback) {
-            if (this.graphColorsEnabled()) {
+            if (this.graphColorsEnabled() && this.anyVeNeedsColors()) {
                 var self = this;
 
                 var api = new App.dataset.StructuralResourcesApi(self.data);
@@ -187,14 +193,6 @@
             if (this.currentElement) {
                 return this.ve[this.currentElement];
             }
-        },
-
-        enterFullScreen: function () {
-            this.trigger("enterFullScreen");
-        },
-
-        exitFullScreen: function () {
-            this.trigger("exitFullScreen");
         },
 
         _willEnterFullScreen: function () {

@@ -3,152 +3,81 @@
 
     App.namespace('App.modules.selection.SelectionView');
 
-    App.modules.selection.SelectionView = Backbone.Marionette.CompositeView.extend({
+    App.modules.selection.SelectionView = App.modules.layout.BasePageLayout.extend({
 
         template: "selection/selection",
-        itemView: App.widget.filter.sidebar.FilterSidebarDimensionView,
-        itemViewContainer: ".selection-dimensions-container",
 
-        events: {
-            "click .selection-visualize-selection": "onVisualizeSelection",
-            "click .selection-visualize-all": "onVisualizeAll"
+        className: "selection-view",
+
+        regions: {
+            routeTabs: ".navigation-tabs-region",
+            content: ".selection-visualization-container",
+            optionsBar: ".selection-visualization-options-bar"
         },
 
-        initialize: function (options) {
-            this.metadata = options.metadata;
-            this.data = options.data;
-            this.controller = options.controller;
-            this.filterDimensions = this.controller.filterDimensions;
-            this.dataSource = new App.DataSourceDataset({
-                data: this.data,
-                filterDimensions: this.filterDimensions
-            });
-
-            this.optionsModel = new App.modules.dataset.OptionsModel({
+        _getOptionsModelConfig: function () {
+            return {
                 widget: App.config.widget,
                 visualize: true
-            });
-
-            this._initializeOptionsView();
-            this._initializeFullScreen();
-        },
-
-        serializeData: function () {
-            var context = {
-                showHeader: this._showHeader(),
-                selectAllUrl: App.context + this.metadata.urlIdentifierPart(),
-                metadata: this.metadata.toJSON()
             };
-            return context;
         },
 
-        _showHeader: function () {
-            return App.config.showHeader && !this.optionsModel.get('widget');
+        _getVeElements: function () {
+            return ["info", "selection"];
         },
 
-        _initializeOptionsView: function () {
-            this.optionsView = new App.modules.dataset.OptionsView({
-                data: this.data,
-                optionsModel: this.optionsModel,
-                filterDimensions: this.filterDimensions,
-                el: this.$(".selection-options-bar"),
-                dataSource: this.dataSource
-                //,buttons : this.veElements
-            });
+        _getTabsConfig: function () {
+            var helpUrl = this._getHelpUrl();
+            return [
+                {
+                    type: "selection",
+                    enabled: true,
+                    title: I18n.t("filter.button.selection")
+                }, {
+                    type: "info",
+                    enabled: this._isVisualizationButtonEnabled("info"),
+                    title: I18n.t("filter.button.info")
+                }, /* TODO add when the api download is transformed into a page (now it's a modal) {
+                    type: "api",
+                    enabled: true,
+                    title: I18n.t("filter.button.apiDownload")
+                }, */ {
+                    type: "help",
+                    enabled: !!helpUrl,
+                    link: helpUrl,
+                    title: I18n.t("filter.button.helpUrl")
+                }
+            ];
         },
 
-        buildItemView: function (item, ItemViewType, itemViewOptions) {
-            var options = _.extend({ filterDimension: item, collapsable: false }, itemViewOptions);
-            return new ItemViewType(options);
+        _getVisualizationContext: function () {
+            return "selection";
         },
 
-        onBeforeRender: function () {
-            this.delegateEvents();
-
-            this.collection.invoke('set', { open: true });
-            this.collection.accordion = false;
-
-            var zones = this.collection.zones;
-
-            // Remove restrictions
-            zones.get("left").set({ fixedSize: undefined, drawableLimit: Infinity });
-            zones.get("top").set({ fixedSize: undefined, drawableLimit: Infinity });
-
-            zones
-                .getFixedZones()
-                .forEach(function (zone) {
-                    zone.get('dimensions').each(function (dimension) {
-                        zones.setDimensionZone("left", dimension);
-                    }, this);
-                });
+        _afterTypeChange: function (controllerParams) {
+            this.controller.changeSelectionVisualization(controllerParams);
         },
 
         onRender: function () {
-            // We render here the options bar and the user header because marionette provides a built in method
-            this.optionsView.setElement(this.$('.selection-options-bar')).render();
-
+            this.routeTabs.show(this.routeTabsView);
+            this.content.show(this.visualizationView);
+            this.optionsBar.show(this.optionsView);
             this.fullScreen.setContainer($('.metamac-container'));
-            // Workaround: assigning a inner container as selection-body will generate problems when changing pages, because the fullscreen will break because it doesn´t exist.
-            // Thats why its assigned to a parent
-            //            this.fullScreen.setContainer(this.$('.selection-body'));
-
             this.optionsModel.set('fullScreen', false);
 
             this._unbindEvents();
             this._bindEvents();
         },
 
-        _initializeFullScreen: function () {
-            this.fullScreen = new App.FullScreen();
-        },
-
         _bindEvents: function () {
-            // FullScreen
-            this.listenTo(this.optionsView, "enterFullScreen", _.bind(this.fullScreen.enterFullScreen, this.fullScreen));
-            this.listenTo(this.optionsView, "exitFullScreen", _.bind(this.fullScreen.exitFullScreen, this.fullScreen));
-            this.listenTo(this.fullScreen, "didEnterFullScreen", this._onDidEnterFullScreen);
-            this.listenTo(this.fullScreen, "didExitFullScreen", this._onDidExitFullScreen);
+            App.modules.selection.SelectionView.__super__._bindEvents.call(this);
+            this.listenTo(this.optionsView, "visualize", this._onVisualize);
         },
 
-        _unbindEvents: function () {
-            this.stopListening();
-        },
-
-        _onDidEnterFullScreen: function () {
-            this.optionsModel.set('fullScreen', true);
-        },
-
-        _onDidExitFullScreen: function () {
-            this.optionsModel.set('fullScreen', false);
-        },
-
-        onBeforeClose: function () {
-            var models = this.collection.models;
-            _(models).first().set({ open: true });
-            _.chain(models).tail().invoke('set', { open: false });
-            this.collection.accordion = true;
-        },
-
-        onVisualizeAll: function (e) {
-            e.preventDefault();
-
-            this.collection.each(function (filterDimension) {
-                filterDimension.get('representations').selectAll();
-            });
-            this.gotoVisualization();
-        },
-
-        onVisualizeSelection: function (e) {
-            e.preventDefault();
-            // generate a permalink?
-            this.gotoVisualization();
-        },
-
-        gotoVisualization: function () {
+        _onVisualize: function () {
             var controllerParams = this.metadata.identifier();
-
             controllerParams.fullScreen = this.optionsModel.get('fullScreen');
-
+            controllerParams.visualizationType = undefined;
             this.controller.showDatasetVisualization(controllerParams);
         }
     });

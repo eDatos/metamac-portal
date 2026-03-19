@@ -11,7 +11,7 @@ I18n.translations.ca = {
     },
     filter: {
         button: {
-            edit: "Canviar selecció",
+            selection: "Selecció",
             info: "Informació",
             table: "Taula",
             column: "Columnes",
