@@ -3,8 +3,6 @@
 @filterSidebarCheckboxSize: 17px;
 @filterSidebarCategoryMargin: 5px;
 @filterSidebarFontSize: 11px;
-@filterSidebarFontSizeTitle: @filterSidebarFontSize * 1.2;
-@filterSidebarCategoryActionsColor: #5F5B5B;
 @filterSidebarCategoryPadding: 1.875rem;
 @actionBarHeight: 2rem;
 
@@ -59,7 +57,6 @@
 .sidebar-title {
     padding: 5px;
     margin-bottom: @filterSidebarCategoryMargin;
-    font-size: @filterSidebarFontSizeTitle;
     line-height: 1.25em;
     background-color: @istacBlueDark;
     color: @istacWhite;
@@ -108,7 +105,6 @@
                 box-sizing: border-box;
                 height: @actionBarHeight;
                 min-width: @actionBarHeight;
-                padding: @paddingSmall;
                 margin-right: @paddingMedium;
             }
 
@@ -136,7 +132,6 @@
                 flex-direction: row;
                 gap: var(--edatos-spacing-x-xs);
                 align-items: center;
-                padding: @paddingSmall;
 
                 .select2-selection__rendered {
                     padding: 0;
@@ -266,7 +261,7 @@
         i {
             width: auto;
             flex: 1;
-            color: @filterSidebarCategoryActionsColor;
+            color: var(--edatos-color-secondary-100);
 
             &:before {
                 font-size: @leftActionsFontSize;

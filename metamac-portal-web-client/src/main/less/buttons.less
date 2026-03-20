@@ -1,5 +1,7 @@
 @import "variables";
 
+@magicNumberToAvoidRoundBottomBorder: 10px;
+
 .metamac-container {
 
     .btn-group > .btn, 
@@ -13,11 +15,12 @@
         align-items: center;
         justify-content: center;
         border-radius: @borderRadiusMedium;
-        border: @borderWidthSmall solid var(--edatos-color-secondary-100);
-        background-color: var(--edatos-color-white-100);
+        border: none;
+        box-shadow: inset 0 0 0 @borderWidthSmall var(--edatos-color-secondary-100);
+        background: var(--edatos-color-white-100);
         color: var(--edatos-color-secondary-100);
         text-transform: uppercase;
-        line-height: @lineHeightMedium;
+        font-size: var(--edatos-font-size-s);
         padding: @paddingSmall @paddingMedium;
         margin-bottom: 0; // For input.btn
         cursor: pointer;
@@ -29,42 +32,56 @@
         }
 
         &:focus {
-           // .tab-focus();
+            box-shadow: inset 0 0 0 @borderWidthMedium var(--edatos-color-accent-100);
         }
 
-        &:hover,
-        &:focus, &[aria-expanded="true"] {
-            text-decoration: none;
-            
-            color: @istacBlack;
-			background-color: @istacGreyLight;
-			background-position: 0 -15px;
-			.transition(background-position .1s linear);
+        &:hover {
+            box-shadow: inset 0 0 0 @borderWidthMedium var(--edatos-color-primary-100);
+            background: var(--edatos-color-primary-5);
         }
 
         &:active,
-        &.active {
-            outline: 0;
-            background-image: none;
-            .box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+        &.active,
+        &[aria-expanded="true"] {
+            box-shadow: none;
+            background: var(--edatos-color-primary-100);
+            color: var(--edatos-color-white-100);
         }
 
         &.disabled {
             cursor: not-allowed;
             pointer-events: none; // Future-proof disabling of clicks
-            .opacity(.65);
-            .box-shadow(none);
+            .opacity(30);
         }
-
     }
 
     .btn-mini {
         border-radius: @borderRadiusSmall;
-        background-color: var(--edatos-color-gray-40);
+        background: var(--edatos-color-gray-40);
         color: var(--edatos-color-white-100);
-        border: none;
+        box-shadow: none;
         font-weight: var(--edatos-font-weight-semibold);
         text-transform: none;
-        padding: @paddingSmall;
+        padding: @paddingSmall @paddingMedium;
+
+        &:focus:not([aria-expanded="true"]):not(.active):not(:active) {
+            box-shadow: inset 0 0 0 @borderWidthMedium #333333;
+            background: var(--edatos-color-gray-20);
+            color: var(--edatos-color-gray-80);
+        }
+
+        &:hover,
+        &[aria-expanded="true"] {
+            box-shadow: none;
+            background: var(--edatos-color-gray-20);
+            color: var(--edatos-color-gray-80);
+        }
+
+        &:active,
+        &.active {
+            box-shadow: inset 0 -(@magicNumberToAvoidRoundBottomBorder + @borderWidthMedium) 0 -@magicNumberToAvoidRoundBottomBorder var(--edatos-color-gray-80);
+            background: var(--edatos-color-gray-20);
+            color: var(--edatos-color-gray-80);
+        }
     }
 }

@@ -3,8 +3,8 @@
 @filterSidebarDimensionHeight: 570px;
 @filterSidebarDimensionMinWidth: 371px; // magic number to fit at least on large smartphone screens
 @filterSidebarDimensionWidth: 610px;
-@filterSidebarDimensionTitlePadding: 0,9rem;
-@filterSidebarDimensionTitleHeight: 2,625rem;
+@filterSidebarDimensionTitlePadding: 0.9rem;
+@filterSidebarDimensionTitleHeight: 2.625rem;
 
 .selection-view {
     height: 100%;
@@ -12,7 +12,9 @@
     flex-direction: column;
     gap: var(--edatos-spacing-x-m);
 
-    &.selection-visualization-type-selection {
+    &.selection-visualization-type-selection .dataset-visualization {
+        gap: 0;
+
         .dataset-visualization-visual-element {
             border: none;
         }
@@ -84,7 +86,8 @@
 }
 
 .select2-container--open .select2-dropdown.filter-level {
-    background: @istacGreyLight;
+    background: var(--edatos-color-gray-20);
+    width: auto;
 
     .select2-results__options .select2-results__option {
         color: var(--edatos-color-gray-80);

@@ -323,8 +323,6 @@
 }
 
 .dataset-options-type-icon {
-    height: @mIconHeight;
-    width: @mIconWidth;
     padding-left: 0;
     font-size: @mIconHeight;
     line-height: @mIconHeight;
@@ -352,31 +350,55 @@
 .dataset-options-full-screen {
     .dataset-options-type-icon;
     .icon-arrow-up-right-and-arrow-down-left-from-center;
+
+    .btn.active &, .btn:active & {
+        .icon-arrow-up-right-and-arrow-down-left-from-center-solid;
+    }
 }
 
 .options-filter {
     .dataset-options-type-icon;
     .icon-filter;
+
+    .btn.active &, .btn:active & {
+        .icon-filter-solid;
+    }
 }
 
 .dataset-options-share {
     .dataset-options-type-icon;
     .icon-share-nodes;
+
+    .btn.active &, .btn:active & {
+        .icon-share-nodes-solid;
+    }
 }
 
 .dataset-options-save {
     .dataset-options-type-icon;
     .icon-floppy-disk;
+
+    .btn.active &, .btn:active & {
+        .icon-floppy-disk-solid;
+    }
 }
 
 .dataset-options-embed {
     .dataset-options-type-icon;
     .icon-code;
+
+    .btn.active &, .btn:active & {
+        .icon-code-solid;
+    }
 }
 
 .dataset-options-download {
     .dataset-options-type-icon;
     .icon-download;
+
+    .btn.active &, .btn:active & {
+        .icon-download-solid;
+    }
 }
 
 .dataset-options-api-download {

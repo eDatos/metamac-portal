@@ -70,15 +70,25 @@
             var self = this;
             this.$('select').select2({
                 dropdownParent: $('.metamac-container'),
-                minimumResultsForSearch: Infinity
+                minimumResultsForSearch: Infinity,
+                width: 'auto'
             }).on('select2:open', function () {
                 setTimeout(function () {
                     var $dropdown = $('.select2-dropdown');
                     if (self.dropdownCssClass) {
                         $dropdown.addClass(self.dropdownCssClass);
                     }
-                    $dropdown.css('width', 'auto');
-                    $dropdown.css('min-width', self.$('.select2-selection')[0].offsetWidth);
+
+                    $dropdown.css('width', '');
+                    var dropdownWidth = $dropdown[0].getBoundingClientRect().width;
+                    var selectionWidth = self.$('.select2-selection')[0].getBoundingClientRect().width;
+
+                    if (dropdownWidth > selectionWidth) {
+                        $dropdown.addClass('select2-dropdown--wider-than-trigger');
+                        $dropdown.css('transform', 'translateX(-' + (dropdownWidth - selectionWidth) + 'px)');
+                    } else {
+                        $dropdown.css('width', selectionWidth);
+                    }
                 });
             });
         },

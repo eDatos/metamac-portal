@@ -50,6 +50,10 @@
     border: none;
     border-radius: 0 0 @borderRadiusSmall @borderRadiusSmall;
 
+    &.select2-dropdown--wider-than-trigger {
+        border-top-left-radius: @borderRadiusSmall;
+    }
+
     .select2-results__options {
         display: flex;
         flex-direction: column;
@@ -57,6 +61,7 @@
         padding: @paddingMedium;
 
         .select2-results__option {
+            white-space: nowrap;
             height: @select2OptionHeight;
             font-size: var(--edatos-font-size-s);
             padding: 0 @paddingSmall;
