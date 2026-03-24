@@ -1,17 +1,28 @@
-// Component sidebar
+@import "../variables";
+
+@filterIgnoreValuesChecksHeight: 5rem;
 
 @sidebarMenuWidth: 50px;
 @sidebarSidebarWidth: 240px; // See SidebarStateModel.js
-@sidebarRadius : 6px;
-
 @sidebarMenuColor: @istacBlueDark;
 @sidebarMenuBackground: @istacBlueMedium;
+@sidebarTransition: 0.2s ease-in-out;
+@splitterWidth: 1rem;
+@splitterBackgroundColor: #D9D9D9;
 
 .sidebar-container {
     width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden;
+
+    .collapse {
+        display: none;
+        &.in {
+            display: flex;
+            flex-direction: column;
+        }
+    }
 }
 
 .sidebar-menu {
@@ -27,9 +38,9 @@
     ul {
         list-style: none;
         margin: 0;
-        color: @istacWhite;		
+        color: @istacWhite;
         padding: 0;
-		
+
         li {
             text-align: center;
             padding: 10px 3px 5px 3px;
@@ -38,11 +49,11 @@
             font-size: 11px;
             cursor: pointer;
             margin: 0;
-            background:none;
-            
+            background: none;
+
             &:first-child {
-				.border-radius(@borderRadiusSmall 0 0 0);
-			}
+                .border-radius(@borderRadiusSmall 0 0 0);
+            }
 
             &.active {
                 background-color: @sidebarMenuBackground;
@@ -72,29 +83,31 @@
                 }
             }
         }
-
     }
 }
-
-@sidebarTransition : 0.2s ease-in-out;
-@splitterWidth: 6px;
 
 .sidebar-sidebar {
     position: absolute;
     width: @sidebarSidebarWidth;
     height: 100%;
     left: @sidebarMenuWidth - @sidebarSidebarWidth;
-
-    padding: 5px;
+    border-radius: @borderRadiusMedium 0 0 @borderRadiusMedium;
+    border: @borderWidthSmall solid var(--edatos-color-gray-60);
+    border-right: none;
+    padding: @paddingMedium @splitterWidth @paddingMedium @paddingMedium;
     .box-sizing(border-box);
     z-index: 1;
 
     .sidebar-sidebar-content {
         height: 100%;
-        margin-right: @splitterWidth + 2px;
-        padding-bottom: 40px;
+        margin-right: @paddingMedium;
+        padding-bottom: calc(@filterIgnoreValuesChecksHeight + @paddingMedium);
         box-sizing: border-box;
         position: relative;
+
+        .btn-mini {
+            padding-inline: @paddingSmall;
+        }
     }
 
     &.animation {
@@ -107,47 +120,31 @@
 }
 
 .sidebar-splitter {
+    box-sizing: border-box;
     width: @splitterWidth;
-    height: 100%;
     position: absolute;
     right: 0;
-    top: 0;
-    background-color: @istacGreyLight;
-
-    border-left: 1px solid @istacGreyMedium;
-    border-right: 1px solid @istacGreyMedium;
+    top: -1px;
+    bottom: -1px;
+    background-color: @splitterBackgroundColor;
+    border: @borderWidthSmall solid var(--edatos-color-gray-40);
     cursor: col-resize;
 
-
     i {
+        display: flex;
+        justify-content: center;
         opacity: 0.5;
         position: absolute;
         top: 50%;
-        left: -4px;
-        font-size: 14px;
-        
+        width: 100%;
+        font-size: var(--edatos-font-size-lg);
         .icon-separator;
     }
 }
 
-.sidebar-opener {
-    position: absolute;
-    top: 50%;
-    right: -23px;
-    z-index: -1;
-    button {
-        .border-radius(0 @borderRadiusMedium @borderRadiusMedium 0);   
-    }    
-}
-
 .sidebar-content {
     height: 100%;
-    padding-left: @sidebarMenuWidth;    
     .box-sizing(border-box);
-
-    &.without-menu {
-        padding-left: 0;
-    }
 }
 
 .sidebar-slideRight {
@@ -157,21 +154,6 @@
         &.without-menu {
             left: 0;
         }
-    }
-
-    .sidebar-content {
-        padding-left: @sidebarMenuWidth + @sidebarSidebarWidth;
-
-        &.without-menu {
-            padding-left: @sidebarSidebarWidth;
-        }
-    }
-    
-}
-
-.sidebar-slideRightOver {
-    .sidebar-sidebar {
-        left: @sidebarMenuWidth;
     }
 }
 
@@ -187,3 +169,44 @@
     cursor: col-resize;
 }
 
+.filter-ignore-values-checks {
+    position: absolute;
+    width: 100%;
+    height: @filterIgnoreValuesChecksHeight;
+    bottom: 0;
+    left: 0;
+    border-top: @borderWidthSmall solid var(--edatos-color-gray-60);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-sm) var(--edatos-spacing-y-sm);
+    box-sizing: border-box;
+
+    label {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 0;
+        gap: var(--edatos-spacing-x-sm);
+        white-space: nowrap;
+        cursor: pointer;
+
+        span {
+            font-weight: var(--edatos-font-weight-semibold);
+            line-height: @lineHeightMedium;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        input.control-ignore-value {
+            display: none;
+            & + .filter-sidebar-category-icon-check {
+                .icon-square;
+            }
+
+            &:checked + .filter-sidebar-category-icon-check {
+                .icon-square-check;
+            }
+        }
+    }
+}

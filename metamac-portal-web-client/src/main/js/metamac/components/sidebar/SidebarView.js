@@ -72,12 +72,13 @@
         _updateSidebar: function () {
             var width = this.state.get('width');
             var menuWidth = this.optionsModel.get('menu') ? this.menuWidth : 0;
+            var gap = 10;
             if (this.state.get('visible')) {
                 this.$sidebar.css({ width: width, left: menuWidth });
-                this.$content.css('padding-left', menuWidth + width);
+                this.$content.css('margin-left', menuWidth + width + gap);
             } else {
                 this.$sidebar.css({ width: width, left: -width });
-                this.$content.css('padding-left', menuWidth);
+                this.$content.css('margin-left', menuWidth);
             }
 
             this.$sidebar.toggleClass('without-menu', !this.optionsModel.get('menu'));

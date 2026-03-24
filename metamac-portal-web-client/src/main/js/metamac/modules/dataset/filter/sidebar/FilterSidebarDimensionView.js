@@ -50,7 +50,8 @@
             this._bindEvents();
 
             var context = {
-                dimension: this.filterDimension.toJSON()
+                dimension: this.filterDimension.toJSON(),
+                isDimensionLevelsSectionNotEmpty: this._hasHierarchy()
             };
 
             this.$el.html(this.template(context));
@@ -87,7 +88,7 @@
             this.actionsView.render();
             this.subviews.push(this.actionsView);
 
-            if (this.filterDimension.get('hierarchy')) {
+            if (this._hasHierarchy()) {
                 let hierarchyLevel;
                 let levelsModels;
                 if (this.filterDimension.isTimeDimension()) {
@@ -134,6 +135,10 @@
             return this.el;
         },
 
+        _hasHierarchy: function () {
+            return !!this.filterDimension.get('hierarchy');
+        },
+
         updateScrollbar: function () {
             // Wait for DOM
             setTimeout(function () {
@@ -163,7 +168,7 @@
         setMaxHeight: function (maxHeight) {
             this.maxHeight = maxHeight;
             this.$('.collapse').css('max-height', maxHeight);
-            var SIDEBAR_DIMENSION_HEADER_HEIGHT = 65;
+            var SIDEBAR_DIMENSION_HEADER_HEIGHT = 135;
             var height = maxHeight - SIDEBAR_DIMENSION_HEADER_HEIGHT;
             this.$('.filter-sidebar-categories').css('height', height);
             this.updateScrollbar();

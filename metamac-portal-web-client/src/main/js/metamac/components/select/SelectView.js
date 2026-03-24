@@ -71,7 +71,7 @@
             this.$('select').select2({
                 dropdownParent: $('.metamac-container'),
                 minimumResultsForSearch: Infinity,
-                width: 'auto'
+                width: '100%'
             }).on('select2:open', function () {
                 setTimeout(function () {
                     var $dropdown = $('.select2-dropdown');

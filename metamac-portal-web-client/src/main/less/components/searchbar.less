@@ -20,22 +20,14 @@
         border: @borderWidthSmall solid var(--edatos-color-gray-40);
     }
 
-    .searchbar-icon {
-        position:absolute;
-        padding-left: 0;
-        width: 13px;
-        top: 5px;
-
-        &:before {
-            color: @istacGreyMedium;
-            font-size: 14px;
-        }
-    }
-
     .searchbar-icon-clear {
-        .searchbar-icon;
-        .icon-times;
-        right: 6px;
+        .icon-xmark-thin;
+
+        height: 100%;
+        align-content: center;
+        position: absolute;
+        top: 0;
+        right: @paddingSmall;
     }
 
     .searchbar-clear {

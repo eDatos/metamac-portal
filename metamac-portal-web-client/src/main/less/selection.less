@@ -3,8 +3,6 @@
 @filterSidebarDimensionHeight: 570px;
 @filterSidebarDimensionMinWidth: 371px; // magic number to fit at least on large smartphone screens
 @filterSidebarDimensionWidth: 610px;
-@filterSidebarDimensionTitlePadding: 0.9rem;
-@filterSidebarDimensionTitleHeight: 2.625rem;
 
 .selection-view {
     height: 100%;
@@ -61,17 +59,7 @@
     }
 
     .filter-sidebar-dimension-title {
-        box-sizing: border-box;
-        padding: 0 @filterSidebarDimensionTitlePadding;
-        color: var(--edatos-color-white-100);
-        font-weight: var(--edatos-font-weight-semibold);
-        line-height: @lineHeightMedium;
-        align-content: center;
-
-        border-radius: @borderRadiusSmall;
         background: var(--edatos-color-secondary-100);
-        height: @filterSidebarDimensionTitleHeight;
-        margin-bottom: 0;
         cursor: auto;
     }
 
@@ -80,20 +68,5 @@
         flex-direction: column;
         flex: 1;
         min-height: 0;
-        padding-top: @paddingMedium;
-        gap: @paddingMedium;
-    }
-}
-
-.select2-container--open .select2-dropdown.filter-level {
-    background: var(--edatos-color-gray-20);
-    width: auto;
-
-    .select2-results__options .select2-results__option {
-        color: var(--edatos-color-gray-80);
-
-        &:hover {
-            background-color: var(--edatos-color-white-100);
-        }
     }
 }
