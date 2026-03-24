@@ -35,11 +35,15 @@ public class PlainTextExporter {
     private static final String    HEADER_SUFIX_CODE_WHEN_EXPORT_TITLE = "_CODE";
 
     private PlainTextTypeEnum      plainTextTypeEnum                   = null;
+    private String                 decimalSeparator                    = null;
 
-    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess) throws MetamacException {
+    public PlainTextExporter(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, String decimalSeparator) throws MetamacException {
         datasetAccess = resourceAccess;
         datasetSelection = resourceAccess.getDataSelection();
         this.plainTextTypeEnum = plainTextTypeEnum;
+        if (",".equals(decimalSeparator) || ".".equals(decimalSeparator)) {
+            this.decimalSeparator = decimalSeparator;
+        }
         if (this.plainTextTypeEnum == null) {
             throw new MetamacException(ServiceExceptionType.UNKNOWN, "Plain Text format is required ");
         }
@@ -167,7 +171,7 @@ public class PlainTextExporter {
                 if (observation == null) {
                     observation = StringUtils.EMPTY;
                 }
-                line.append(escapeString(observation));
+                line.append(escapeString(formatObservation(observation)));
 
                 for (Attribute attribute : primaryMeasureAttributes) {
                     String attributeId = attribute.getId();
@@ -371,6 +375,13 @@ public class PlainTextExporter {
             return source;
         }
         return ESCAPE_DOUBLE_QUOTES + source + ESCAPE_DOUBLE_QUOTES;
+    }
+
+    private String formatObservation(String observation) {
+        if (",".equals(decimalSeparator)) {
+            return observation.replace(".", ",");
+        }
+        return observation;
     }
 
     private void println(StringBuilder line, PrintWriter printWriter) {
