@@ -391,18 +391,19 @@
 
         _showExportTsvAttributesConfig: function (callback) {
             var self = this;
-            var modalContentView = new App.components.modal.ConfirmationModalView({
-                question: I18n.t("filter.download.attributes.modal.question"),
-                onConfirm: function() {
-                    callback(self._buildExportEndpoint('tsv'), ".zip");
-                    self.modal.close();
-                },
-                onReject: function() {
-                    callback(self._buildExportEndpoint('tsv', { fields: '-attributes' }), "-observations.tsv");
+            var modalContentView = new App.components.modal.ExportOptionsModalView({
+                onDownload: function(options) {
+                    var params = { decimalSeparator: options.decimalSeparator };
+                    if (options.includeAttributes) {
+                        callback(self._buildExportEndpoint('tsv', params), ".zip");
+                    } else {
+                        params.fields = '-attributes';
+                        callback(self._buildExportEndpoint('tsv', params), "-observations.tsv");
+                    }
                     self.modal.close();
                 }
             });
-            var title = I18n.t("filter.download.attributes.modal.title");
+            var title = I18n.t("filter.download.options.title");
             this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView });
             this.modal.show();
         },

@@ -210,7 +210,6 @@ GitLab CI (`.gitlab-ci.yml`). JDK 8, Maven 3.5. Stages: build → release → de
 
 ## Conventions
 
-- Branch naming follows Jira ticket IDs: `EDATOS-XXXX-description`
 - The `develop` branch is the main integration branch; `master` is for releases
 - REST API interfaces must be kept in sync across common/external/internal API modules — a new endpoint must be added to
   all three

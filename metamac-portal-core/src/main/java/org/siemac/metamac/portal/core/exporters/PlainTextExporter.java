@@ -171,7 +171,7 @@ public class PlainTextExporter {
                 if (observation == null) {
                     observation = StringUtils.EMPTY;
                 }
-                line.append(escapeString(formatObservation(observation)));
+                line.append(formatObservation(observation));
 
                 for (Attribute attribute : primaryMeasureAttributes) {
                     String attributeId = attribute.getId();
@@ -381,7 +381,7 @@ public class PlainTextExporter {
         if (",".equals(decimalSeparator)) {
             return observation.replace(".", ",");
         }
-        return observation;
+        return escapeString(observation);
     }
 
     private void println(StringBuilder line, PrintWriter printWriter) {
