@@ -499,7 +499,7 @@
     },
     "ExportationSvg": {
       "type":"string",
-      "example": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"120\" height=\"120\"><rect x=\"14\" y=\"23\" width=\"200\" height=\"50\" fill=\"lime\" stroke=\"black\" /></svg>"
+      "example": "<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='120' height='120'><rect x='14' y='23' width='200' height='50' fill='lime' stroke='black' /></svg>"
     },
   },
   "paths": {
