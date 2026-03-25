@@ -12,7 +12,7 @@
                 {{#if visible}}
                 <a href="#" class="order-sidebar-dimension {{#if singleValue}}order-sidebar-dimension-single-value{{/if}} {{#if ../../draggable}}draggable dimension-pill{{/if}}" {{#if ../../draggable}}draggable="true"
                     {{/if}} data-dimension-id="{{id}}" title="{{pluralLabel}}{{#if selectedCategory }} - {{ selectedCategory.label }} {{/if}}">
-                            {{ pluralLabel }}
+                            <span class="order-sidebar-dimension-label">{{ pluralLabel }}</span>
 
                             {{#if selectedCategory }}                        
                                 <select class="fixed-dimension-select-category" data-dimension-id="{{ ../../id }}">
@@ -66,7 +66,7 @@
                 {{#if visible}}
                 <a href="#" class="order-sidebar-dimension {{#if singleValue}}order-sidebar-dimension-single-value{{/if}} {{#if ../../draggable}}draggable dimension-pill{{/if}}" {{#if ../../draggable}}draggable="true"
                     {{/if}} data-dimension-id="{{id}}" title="{{pluralLabel}}{{#if selectedCategory }} - {{ selectedCategory.label }} {{/if}}">
-                            {{ pluralLabel }}
+                            <span class="order-sidebar-dimension-label">{{ pluralLabel }}</span>
 
                             {{#if selectedCategory }}                        
                                 <select class="fixed-dimension-select-category" data-dimension-id="{{ ../../id }}">

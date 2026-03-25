@@ -426,7 +426,10 @@
                 self.scrollbuttons.push(new App.components.scrollbuttons.Scrollbuttons({ el: this }));
             });
             this.$el.find('select').select2({
-                dropdownParent: $('.metamac-container')
+                dropdownParent: $('.metamac-container'),
+                width: '100%'
+            }).on('select2:open', function () {
+                App.Select2Utils.onSelect2Open($(this), 'dimension-select', false);
             });
         },
 

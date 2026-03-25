@@ -89,32 +89,6 @@
             span.select2-selection {
                 .metamac-container .btn;
                 .metamac-container .btn-mini;
-                display: flex;
-                flex-direction: row;
-                gap: var(--edatos-spacing-x-xs);
-                align-items: center;
-
-                .select2-selection__rendered {
-                    padding: 0;
-                }
-
-                .select2-selection__arrow {
-                    position: static;
-                    width: auto;
-                    height: auto;
-                    transition: transform @transitionTime linear;
-
-                    b {
-                        .icon-chevron-down;
-                        position: static;
-                        margin: 0;
-                        border: none;
-                    }
-                }
-
-                &[aria-expanded="true"] {
-                    border-radius: @borderRadiusSmall @borderRadiusSmall 0 0;
-                }
             }
 
             .filter-sidebar-selectAll, .filter-sidebar-unselectAll {
