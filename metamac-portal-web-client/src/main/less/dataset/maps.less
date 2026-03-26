@@ -1,8 +1,8 @@
 .svgContainer {
     width: 100%;
     height: 100%;
-    padding-top: 25px;
     box-sizing: border-box;
+    position: relative;
 }
 
 .grabbing {
@@ -13,10 +13,11 @@
 
 #zoom-container {
     position: absolute;
-    top: @dimensionsBarTypeDefault;
+    top: 0;
     left: 0;
     width: 30px;
     height: 130px;
+    z-index: 1;
 
     .zoom-controls {
         font-size: 11px;

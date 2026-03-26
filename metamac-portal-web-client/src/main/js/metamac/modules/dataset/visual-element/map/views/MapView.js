@@ -27,7 +27,6 @@
             this.mapType = options.mapType;
             this.title = options.title;
             this.metadata = options.metadata;
-            this.$title = options.$title;
             this.rightsHolder = options.rightsHolder;
             this.showRightsHolder = options.showRightsHolder;
 
@@ -240,7 +239,7 @@
             }
 
             var self = this;
-            this._initializeChart(this.$el, this.$title);
+            this._initializeChart(this.$el);
             this._getChart().on('georoam', function (roamParams) {
                 if (roamParams.zoom) {
                     self.model.zoomTo(self._getChart().getOption().geo[0].zoom);
@@ -437,7 +436,7 @@
         },
 
         _onResize: function () {
-            this._updateSize(this.$el, this.$title);
+            this._updateSize();
             if (this.mapType === 'map') {
                 this._extendChartOptions({
                     visualMap: {

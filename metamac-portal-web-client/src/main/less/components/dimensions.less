@@ -61,7 +61,7 @@
             display: inline-block;
             width: @dimensionPillWidth;
             text-overflow: ellipsis;
-            overflow: hidden;
+            overflow: clip;
             text-align: center;
             color: var(--edatos-color-white-100);
             border-radius: @borderRadiusSmall;
@@ -69,8 +69,6 @@
             box-sizing: border-box;
             border: none;
             flex: 0 1 @dimensionSelectorMaxWidth;
-            margin-top: var(--edatos-spacing-y-sm);
-            margin-bottom: var(--edatos-spacing-y-sm);
 
             &.drag-over {
                 .drag-over-dimension;
@@ -180,12 +178,7 @@
             flex-direction: row;
             gap: 2px;
 
-            h2, .order-sidebar-dimensions {
-                padding: var(--edatos-spacing-y-sm) @paddingBig;
-            }
-
             h2 {
-                min-width: 130px;
                 width: 100%;
                 text-overflow: ellipsis;
                 height: 100%;
@@ -194,7 +187,7 @@
                 color: var(--edatos-color-gray-60);
                 font-size: @defaultFontSize;
                 font-weight: var(--edatos-font-weight-semibold);
-                padding: var(--edatos-spacing-y-sm) @paddingBig;
+                padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
                 box-sizing: border-box;
                 align-content: center;
 
@@ -205,6 +198,10 @@
 
             .order-sidebar-dimensions {
                 border: none;
+
+                .order-sidebar-dimension:hover .order-sidebar-dimension-label {
+                    background-color: var(--edatos-color-primary-50);
+                }
             }
         }
     }
@@ -321,8 +318,13 @@
                         visibility: hidden;
                     }
                 }
-            }
 
+                .scroll-button-content-wrapper {
+                    padding-top: var(--edatos-spacing-y-sm);
+                    padding-bottom: var(--edatos-spacing-y-sm);
+                    box-sizing: border-box;
+                }
+            }
         }           
     }    
 }
@@ -340,7 +342,6 @@
     }
 
     .order-sidebar-dimension {                        
-        margin-bottom: 3px;
         .user-select(none);
 
         /* IE9 bug changed divs with a, so this correct the new style */

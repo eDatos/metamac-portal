@@ -12,7 +12,7 @@
     
         STEP_LENGTH : 100,
         ANIMATION_LENGTH : 500,
-        OFFSET : 13, // Margin-left, see scrollbuttons.less @buttonWidth
+        OFFSET : 10, // Margin-left, see scrollbuttons.less @scrollButtonContentWrapperMarginInline
 
         initialize : function (options) {
             this.setEl(options.el);

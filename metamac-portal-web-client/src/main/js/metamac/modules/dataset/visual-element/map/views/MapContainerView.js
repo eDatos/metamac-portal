@@ -22,7 +22,6 @@
             this.showRightsHolder = options.showRightsHolder;
             this.callback = options.callback;
             this.metadata = options.metadata;
-            this.$title = options.$title;
             this.$el.empty();
             this._initInternalViews();
         },
@@ -67,9 +66,9 @@
         },
 
         _initMapView: function () {
-            var $mapContainer = $('<div class="svgContainer"></div>').appendTo(this.$el);
+            this.$mapContainer = $('<div class="svgContainer"></div>').appendTo(this.$el);
             this.mapView = new App.Map.MapView({
-                el: $mapContainer,
+                el: this.$mapContainer,
                 data: this._data,
                 dataSource: this._dataSource,
                 filterDimensions: this._filterDimensions,
@@ -86,12 +85,11 @@
                 showRightsHolder: this.showRightsHolder,
                 callback: this.callback,
                 metadata: this.metadata,
-                $title: this.$title
             });
         },
 
         _initZoomView: function () {
-            var $elZoom = $('<div id="zoom-container"/>').appendTo(this.$el);
+            var $elZoom = $('<div id="zoom-container"/>').appendTo(this.$mapContainer);
             this.zoomView = new App.Map.ZoomView({
                 el: $elZoom.get(0),
                 model: this._mapModel,

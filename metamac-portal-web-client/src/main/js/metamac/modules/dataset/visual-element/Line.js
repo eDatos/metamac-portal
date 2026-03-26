@@ -70,7 +70,7 @@
         },
 
         _onResizeEvent: function () {
-            this._updateSize(this.$el, this.$title);
+            this._updateSize();
             this._updatePointsVisibility();
         },
 
@@ -118,7 +118,7 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._initializeChart(this.$el, this.$title);
+            this._initializeChart(this.$el);
             var self = this;
             this._getChart().on('datazoom', function (params) {
                 App.util.ChartsUtils._setTooltipTriggerOnClosestItem(self._getChart());

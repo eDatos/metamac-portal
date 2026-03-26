@@ -2,17 +2,20 @@
 @leftPaddingScrollButtonRight: 4px;
 @leftPaddingScrollButtonLeft: 5px;
 @scrollButtonWidth: var(--edatos-spacing-x-m);
-@scrollButtonContentWrapperMargin: var(--edatos-spacing-x-l);
+@scrollButtonContentWrapperMarginInline: 10px;
 
 .scroll-buttons {
+    display: flex;
+    flex-direction: row;
     position: relative;
     height: 100%;
     overflow: hidden;
 
     .scroll-button-content-wrapper {
         overflow: hidden;
-        margin: 0 @scrollButtonContentWrapperMargin;
+        margin-inline: @scrollButtonContentWrapperMarginInline;
         height: 100%;
+        width: 100%;
 
         .scroll-button-content {
             display: flex;
@@ -25,29 +28,26 @@
     }
 
     .scroll-button {
-        position: absolute;
         box-sizing: border-box;
         width: @scrollButtonWidth;
         height: 100%;
-        top: 0;
         line-height: 100%;
         font-size: var(--edatos-font-size-lg);
         border: none;
         color: var(--edatos-color-gray-60);
         background: var(--edatos-color-gray-20);
         padding: @paddingScrollButton;
+        cursor: pointer;
     }
 
     .scroll-button-left {
         .scroll-button;
         padding-left: @leftPaddingScrollButtonLeft;
-        left: 0;
     }
 
     .scroll-button-right {
         .scroll-button;
         padding-left: @leftPaddingScrollButtonRight;
-        right: 0;
     }
 }
 

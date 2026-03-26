@@ -17,9 +17,8 @@
             this._initializeChartOptions();
         },
 
-        _initializeChart: function ($el, $title) {
-            this.$chartContainer = $('<div></div>');
-            this.$chartContainer.height($el.height() - $title.outerHeight(true));
+        _initializeChart: function ($el) {
+            this.$chartContainer = $('<div class="chart-container"></div>');
             $el.append(this.$chartContainer);
             this.chart = echarts.init(this.$chartContainer[0], null, { renderer: 'canvas' });
 
@@ -171,10 +170,8 @@
         _onChartDestroy: function () {
         },
 
-        _updateSize: function ($el, $title) {
-            var newHeight = $el.height() - $title.outerHeight(true);
-            this.$chartContainer.height(newHeight);
-            if (newHeight !== this.chart.getHeight()) {
+        _updateSize: function () {
+            if (this.$chartContainer.height() !== this.chart.getHeight()) {
                 this._onHeightUpdated();
             }
             if (this.$chartContainer.width() !== this.chart.getWidth()) {

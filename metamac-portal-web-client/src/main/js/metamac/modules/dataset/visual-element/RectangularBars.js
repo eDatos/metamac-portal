@@ -70,7 +70,7 @@
             var resize = _.debounce(_.bind(this._updateSize, this), 200);
             var self = this;
             this._resizeObserver = new ResizeObserver(function () {
-                resize(self.$el, self.$title);
+                resize();
             });
             this._resizeObserver.observe(this.$el[0]);
         },
@@ -119,7 +119,7 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._initializeChart(this.$el, this.$title);
+            this._initializeChart(this.$el);
             var data = this.getData();
             this._extendChartOptions(data);
             this._updateChartOptions();

@@ -34,8 +34,8 @@
                 self._getData();
 
                 self._initModel();
-                self._initTitleView();
                 self._initContainerView();
+                self._initTitleView();
 
                 self.showTitle();
                 self.render();
@@ -174,8 +174,7 @@
                 rightsHolder: this.getRightsHolderText(),
                 showRightsHolder: this.showRightsHolderText(),
                 callback: _.bind(this.hideLoading, this),
-                metadata: this.metadata,
-                $title: this.$title
+                metadata: this.metadata
             });
         },
 
