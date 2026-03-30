@@ -19,7 +19,11 @@
 
     &.dataset-visualization-type-info {
         .dataset-visualization-visual-element {
-            padding-right: 5px;
+            border: none;
+        }
+
+        .dataset-visualization-dimensions {
+            display: none;
         }
 
         .rights-holder {
@@ -74,100 +78,117 @@
 }
 
 .metadata-group {
-    padding: 5px 20px;
-    height: 94%;
+    height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--edatos-spacing-y-sm);
+
+    .ui-accordion-header .ui-accordion-header-icon {
+        .icon-minus-solid;
+    }
+
+    .ui-accordion-header-collapsed .ui-accordion-header-icon {
+        .icon-plus-solid;
+    }
 
     .dataset-visualization-visual-element & {
         overflow-y: scroll;
     }
 
-    h3 {
-        background: @istacGreyLight;
-        .border-radius(4px 4px 4px 4px);
-        padding-left: 5px;
-    }
+    .info-section {
+        font-size: var(--edatos-font-size-s);
+        color: var(--edatos-color-black-100);
+        border: @borderWidthSmall solid var(--edatos-color-gray-20);
+        border-radius: @borderRadiusMedium;
+        overflow: clip;
 
-    @infoVerticalPadding: 8px;
-    .field {
-        border-bottom: 1px solid @istacGreyMedium;
-        box-shadow: 0 1px 0 @istacGreyLight;
-        padding-bottom: @infoVerticalPadding + 4px;
-        .metadata-title {
-            display: block;
-            color: @istacBlack;
-            font-weight: bold;
-            margin-top: @infoVerticalPadding;
-            margin-bottom: 0;
-            line-height: 26px;
+        a {
+            color: var(--edatos-color-secondary-100);
+            text-decoration-skip-ink: none;
+        }
 
-            &.ui-accordion-header .ui-accordion-header-icon:before {
-                font-size: 24px;
-                margin-top: -3px;
-                vertical-align: middle;
+        .info-section-title {
+            display: flex;
+            flex-direction: row;
+            gap: @paddingMedium;
+            padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+            margin: 0;
+            background: var(--edatos-color-gray-5);
+            color: var(--edatos-color-black-100);
+            font-weight: var(--edatos-font-weight-semibold);
+            text-transform: uppercase;
+            cursor: pointer;
+            border-bottom: @borderWidthSmall solid var(--edatos-color-gray-20);
+
+            &.ui-accordion-header-collapsed {
+                border-bottom: none;
+            }
+
+            .ui-accordion-header-icon:before {
+                font-size: @defaultFontSize;
             }
         }
 
-        &.metadata-accordion {
-            padding-bottom: 4px;
-            .metadata-title div {
-                display: inline-block;
-                cursor: pointer;
-            }
-            .field {
-                padding-bottom: 0;
-            }
-        }
+        .info-section-content ul {
+            margin: 0;
+            padding: 0;
 
-        .metadata-value {
-            display: block;
-            color: @istacGreyDark;
-            word-wrap: break-word;
+            li {
+                display: flex;
+                flex-direction: column;
+                gap: @paddingMedium;
+                padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+                margin: 0;
+                background: none;
+                list-style: none;
 
-            a {
-                color: @istacBlueMedium;
-            }
-            ul {
-                margin: 0 0 1em 2em;
-                padding: 0;
-                li {
-                    background: none;
-                    margin-top: 0;
-                    margin-bottom: 0;
-                    list-style: none;
+                &:empty {
+                    display: none;
                 }
-            }
 
-            .metadata-resource-value {
-                padding-top: 10px;
-                .button-link {
-                    padding: 0px 6px;
-                    background: transparent;
-                    border: 1px solid @istacBlueMedium;
-                    border-radius: 5px;
-                    font-size: 9px;
-                    text-transform: uppercase;
+                &:not(:empty):has(~ li:not(:empty)) {
+                    border-bottom: @borderWidthSmall solid var(--edatos-color-gray-20);
+                }
+
+                .metadata-group-title {
+                    font-weight: var(--edatos-font-weight-semibold);
+                    font-size: @defaultFontSize;
+                }
+
+                .field {
                     display: flex;
-                    gap: 5px;
-                    align-items: center;
-                    width: max-content;
+                    flex-direction: column;
+                    gap: var(--edatos-spacing-y-xs);
 
-                    i {
-                        color: @istacBlueMedium;
-                       
-                        &:before {
-                            color: @istacBlueMedium;
+                    .metadata-title {
+                        font-weight: var(--edatos-font-weight-semibold);
+                        margin-bottom: var(--edatos-spacing-y-xs);
+                    }
+
+                    .metadata-value {
+                        color: var(--edatos-color-gray-80);
+                        line-height: @lineHeightMedium;
+                        font-weight: var(--edatos-font-weight-regular);
+                    }
+                }
+
+                .metadata-resources {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    gap: var(--edatos-spacing-x-sm);
+
+                    .metadata-resource-value .button-link {
+                        font-weight: var(--edatos-font-weight-regular);
+
+                        i:before {
                             padding: 0;
-                        }  
+                        }
                     }
                 }
             }
         }
-    }
-
-    .field:last-child {
-        border-bottom: none;
-        box-shadow: none;
     }
 
     .spacer {
@@ -326,8 +347,7 @@
 
 .dataset-options-type-icon {
     padding-left: 0;
-    font-size: @mIconHeight;
-    line-height: @mIconHeight;
+    font-size: @defaultFontSize;
 
     &:before {
         padding: 2px 2px;
@@ -416,11 +436,13 @@
 .metadata-value-resource-url {
     .dataset-options-type-icon;
     .icon-eye;
-    
-    height: 12px;
-    width: 14px;
-    font-size: 12px;
-    line-height: 12px;
+
+    .btn.active &, .btn:active & {
+        .icon-eye-solid;
+    }
+
+    font-size: 0.9rem;
+    width: @defaultFontSize;
 }
 
 .dataset-download {
