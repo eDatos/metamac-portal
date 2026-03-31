@@ -20,7 +20,6 @@
 
         h2 {
             margin: 0;
-            margin-bottom: -1px;
             width: @dimensionTitleWidth - @h2LeftPadding;
             float: left;
 
@@ -170,13 +169,11 @@
         height: auto;
         border-radius: 5px;
         overflow: hidden;
-        gap: 2px;
 
         .order-sidebar-zone {
             flex: 1 1 100%;
             display: flex;
             flex-direction: row;
-            gap: 2px;
 
             h2 {
                 width: 100%;
@@ -187,7 +184,7 @@
                 color: var(--edatos-color-gray-60);
                 font-size: @defaultFontSize;
                 font-weight: var(--edatos-font-weight-semibold);
-                padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
+                padding: var(--edatos-spacing-y-sm) @paddingMedium;
                 box-sizing: border-box;
                 align-content: center;
 
@@ -205,10 +202,11 @@
             }
         }
     }
-    
+
+    @dimensionsLeftGap: 3px;
     .dataset-dimensions-left {
-        gap: 1px;
-        border: @borderWidthSmall solid var(--edatos-color-secondary-100);
+        gap: @dimensionsLeftGap;
+        float: left;
 
         &.dataset-dimensions-left-0 {
             display: none;
@@ -222,18 +220,12 @@
             }
         }
 
-        float: left;            
         .order-sidebar-zone {
             float: left;
-            margin-left: -1px;
             min-height: 69px;
             height: auto;
             flex-direction: column;
-            gap: 2px;
-
-            &:not(:last-child) {
-                border-right: @borderWidthSmall solid var(--edatos-color-secondary-100);
-            }
+            gap: @dimensionsLeftGap;
 
             &.has-selector {
                 padding-top: 0;
@@ -249,40 +241,33 @@
                 flex-basis: @leftOrderSidebarDimensionMinHeight;
             }
 
-            h2 {
-                border-bottom: @borderWidthSmall solid var(--edatos-color-secondary-100);
-                background: white;
-            }
-
             .order-sidebar-dimensions {
-                padding: 7px 11px;
+                padding: var(--edatos-spacing-y-sm) @paddingMedium;
                 box-sizing: border-box;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin-top: -1px;
                 margin-right: 0;
                 width: auto;
-                background: white;
 
-                .order-sidebar-dimension {
-                    margin: 0 -1px 0px -1px;
-                    &.dimension-pill {
-                        margin: 2px;
-                        width: @dimensionPillWidth - 2 * 4px;
-                    }
+                .order-sidebar-dimension.dimension-pill {
+                    margin: 2px;
+                    width: @dimensionPillWidth - 2 * 4px;
                 }
             }
         }
     }
 
+    @dimensionsRightGap: 2px;
     .dataset-dimensions-right {
         flex-wrap: wrap;
         flex: 1;
+        gap: @dimensionsRightGap;
 
         .order-sidebar-zone {             
             width: 100%;
             box-sizing: border-box;
+            gap: @dimensionsRightGap;
 
             h2 {
                 flex: 0 0 130px;
@@ -315,9 +300,7 @@
     }    
 }
 
-.order-sidebar-zone {    
-    margin-bottom: -1px;
-
+.order-sidebar-zone {
     &.has-selector {
         padding-top: 0;
     }
