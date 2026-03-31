@@ -240,20 +240,6 @@
 
                 .order-sidebar-dimensions {
                     background: var(--edatos-color-gray-5);
-
-                    &:not(:hover):not(:has(.select2-container--open)) {
-                        background: var(--edatos-color-secondary-100);
-
-                        .order-sidebar-dimension {
-                            height: 100%;
-                            align-content: center;
-                            border-radius: 0;
-
-                            .select2 {
-                                display: none;
-                            }
-                        }
-                    }
                 }
             }
 
@@ -369,7 +355,7 @@
 
 .select2-container--open .dimension-select.select2-dropdown {
     box-shadow: @dimensionSelectorBoxShadow;
-    clip-path: inset(0 -@paddingBig -@paddingBig -@paddingBig);
+    clip-path: inset(1px -@paddingBig -@paddingBig -@paddingBig);
 
     .select2-search {
         padding-inline: @paddingMedium;
