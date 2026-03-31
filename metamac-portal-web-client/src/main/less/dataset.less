@@ -17,7 +17,8 @@
         }
     }
 
-    &.dataset-visualization-type-info {
+    &.dataset-visualization-type-info,
+    &.dataset-visualization-type-apiDownload {
         .dataset-visualization-visual-element {
             border: none;
         }
@@ -30,6 +31,19 @@
             bottom: 6px;
             right: 10px;
             position: absolute;
+        }
+    }
+
+    &.dataset-visualization-type-apiDownload {
+        .metadata-group .info-section .info-section-content ul li .field .metadata-value.resource-format {
+            color: var(--edatos-color-primary-100);
+            font-weight: var(--edatos-font-weight-semibold);
+            line-height: @lineHeightMedium;
+
+            a {
+                font-weight: var(--edatos-font-weight-regular);
+                word-break: break-all;
+            }
         }
     }
 }
@@ -252,10 +266,6 @@
         border-bottom: 1px solid @istacGreyMedium;
         padding: 4px;
         background: @istacWhite;
-        a {
-            color: @istacBlueMedium;
-            text-decoration: none;
-        }
         margin: 0;
         font-size: 12px;
         position: absolute;
@@ -423,11 +433,6 @@
     }
 }
 
-.dataset-options-api-download {
-    .dataset-options-type-icon;
-    .icon-link;
-}
-
 .dataset-options-visualize {
     .dataset-options-type-icon;
     .icon-circle-check
@@ -479,39 +484,6 @@
         }
     }
 
-}
-
-.dataset-api-download {
-    padding: 10px;
-    .dataset-api-resources-format {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-
-        .resource-format-label {
-            color: @istacGreyDark;
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            align-items: center;
-            span:first-child {
-                font-weight: bold;
-                text-transform: uppercase;
-                min-width: 55px;
-                text-align: center;
-            }
-        }
-    }
-    .dataset-api-download-info {
-        font-size: 13px;
-        color: @istacGreyDark;
-        padding: 15px 0 10px;
-        margin-left: -5px;
-        a {
-            color: @istacGreyDark;
-            text-decoration: underline;
-        }
-    }
 }
 
 .dataset-share {

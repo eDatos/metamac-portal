@@ -251,6 +251,18 @@
         // Patch until this issue is fixed: https://github.com/apache/echarts/issues/18242
         _createUniqueNameForData: function (name, uniqueIndex) {
             return name.replace(/\u200B/g, '') + '\u200B'.repeat(uniqueIndex);
+        },
+
+        _isIndicator: function () {
+            return App.Constants.visualization.type.INDICATOR === this.data.metadata.identifier().type || App.Constants.visualization.type.INDICATOR_INSTANCE === this.data.metadata.identifier().type;
+        },
+
+        _isDataset: function () {
+            return App.Constants.visualization.type.DATASET === this.data.metadata.identifier().type;
+        },
+
+        _isQuery: function () {
+            return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
         }
     };
 

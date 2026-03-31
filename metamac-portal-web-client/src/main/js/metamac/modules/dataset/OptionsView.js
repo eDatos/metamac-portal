@@ -273,30 +273,6 @@
             this.trigger('visualize');
         },
 
-        /* TODO remove when the api download is transformed into a page */
-        clickApiDownload: function (e) {
-            e.preventDefault();
-            var modalContentView = null;
-            var modal = null;
-            var title = I18n.t("filter.apiDownload.modal.title");
-
-            var self = this;
-            modalContentView = new App.modules.dataset.DatasetApiDownloadView({
-                filterDimensions: this.filterDimensions,
-                optionsModel: this.optionsModel,
-                identifierType: this.filterDimensions.metadata.datasourceIdentifier.identifier.type,
-                onClickInfoLink: function () {
-                    if (self.isFilter()) {
-                        $(document).trigger('closeFilter');
-                    }
-                    modal.close();
-                },
-            });
-
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
-            modal.show();
-        },
-
         isInternalPortal: function () {
             return App.config["installationType"] === "INTERNAL";
         }

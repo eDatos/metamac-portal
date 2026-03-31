@@ -122,7 +122,7 @@
             fieldClass = _.isUndefined(fieldClass) ? "" : fieldClass;
             var target = targetBlank ? " target='_blank'" : "";
             var href = Handlebars.Utils.escapeExpression(value.href);
-            var name = value.name;
+            var name = value.name || href;
             result = href ? '<a href=' + href + target + ' class="' + fieldClass + '">' : '';
             if (!_.isUndefined(iconClass)) {
                 result += '<i class="' + iconClass + '"></i>';
@@ -146,13 +146,13 @@
         fieldClass = _.isUndefined(fieldClass) ? "field" : fieldClass;
         var result = '';
         if (type !== 'resourceButton' && (value || allowEmptyValue)) {
-            result +=
-                '<div class="' + fieldClass + '" >' +
-                '<span class="metadata-title">';
-            result += localizeLabel ? I18n.t(label) : label;
-            result += '</span>';
-            result +=
-                '<div class="metadata-value">';
+            result += '<div class="' + fieldClass + '" >';
+            if (label) {
+                result += '<span class="metadata-title">';
+                result += localizeLabel ? I18n.t(label) : label;
+                result += '</span>';
+            }
+            result += '<div class="metadata-value">';
 
             if (type === "date") {
                 value = Handlebars.Utils.escapeExpression(value);

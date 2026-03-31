@@ -19,6 +19,12 @@
             info: {
                 zones: {},
             },
+            selection: {
+                zones: {},
+            },
+            apiDownload: {
+                zones: {},
+            },
             table: {
                 zones: {
                     top: {

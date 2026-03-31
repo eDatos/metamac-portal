@@ -103,7 +103,7 @@
             }
 
             if (this.optionsModel.get('widget')) {
-                return type === "info" || type === this.optionsModel.get('widgetInitialType');
+                return type === "info" || type === "apiDownload" || type === this.optionsModel.get('widgetInitialType');
             }
             return true;
         },

@@ -23,7 +23,7 @@
         },
 
         _getVeElements: function () {
-            return ["info", "selection"];
+            return ["info", "selection", "apiDownload"];
         },
 
         _getTabsConfig: function () {
@@ -37,11 +37,11 @@
                     type: "info",
                     enabled: this._isVisualizationButtonEnabled("info"),
                     title: I18n.t("filter.button.info")
-                }, /* TODO add when the api download is transformed into a page (now it's a modal) {
-                    type: "api",
-                    enabled: true,
+                }, {
+                    type: "apiDownload",
+                    enabled: this._isVisualizationButtonEnabled("apiDownload"),
                     title: I18n.t("filter.button.apiDownload")
-                }, */ {
+                }, {
                     type: "help",
                     enabled: !!helpUrl,
                     link: helpUrl,

@@ -104,7 +104,6 @@ module.exports = (grunt) ->
                 paths.modules + "/dataset/DatasetShareView.js"
                 paths.modules + "/dataset/DatasetSaveView.js"
                 paths.modules + "/dataset/DatasetDownloadView.js"
-                paths.modules + "/dataset/DatasetApiDownloadView.js"
                 paths.modules + "/dataset/DatasetEmbedView.js"
 
                 # Datasource
@@ -192,7 +191,9 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/visual-element/Table.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Map.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Selection.js"
+                paths.js + "/metamac/modules/dataset/visual-element/ApiDownload.js"
                 paths.js + "/metamac/modules/dataset/ErrorView.js"
+
                 # canvas table
                 paths.js + "/libs/lru.js"
                 paths.js + "/libs/jquery.hotkeys.js"

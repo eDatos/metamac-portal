@@ -1,16 +1,58 @@
-<div class="dataset-api-resources">
-	<div class="dataset-api-resources-format">
-		{{#each url}}
-		{{#if show}}
-		<div class="resource-format-label">
-			<span>{{ format }}:</span>
-			<span>{{{ href }}}</span>
+<div class="metadata-group">
+	<div class="info-section metadata-accordion">
+		<div class="info-section-title">
+			{{ message "entity.dataset.apiDocumentationUrl" }}
 		</div>
-		{{/if}}
-		{{/each}}
+		<div class="info-section-content">
+			<ul>
+				<li>{{ fieldOutput "" apiDocumentationUrl "resource" targetBlank }}</li>
+			</ul>
+		</div>
 	</div>
+	<div class="info-section metadata-accordion">
+		<div class="info-section-title">
+			{{ message "entity.dataset.apiUrl.title" }}
+		</div>
+		<div class="info-section-content">
+			<ul>
+				<li>
+					<div class="field">
+						<div class="metadata-value">
+							{{ apiDownloadMessage }}
+						</div>
+						{{#each url}}
+						<div class="metadata-value resource-format">
+							<span>{{ format }}: </span>
+							{{ resourceOutput this ../targetBlank }}
+						</div>
+						{{/each}}
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{{#if selectionIsVisible}}
+	<div class="info-section metadata-accordion">
+		<div class="info-section-title">
+			{{ message "entity.dataset.selectionApiUrl.title" }}
+		</div>
+		<div class="info-section-content">
+			<ul>
+				<li>
+					<div class="field">
+						<div class="metadata-value">
+							{{ selectionApiDownloadMessage }}
+						</div>
+						{{#each selectionUrl}}
+						<div class="metadata-value resource-format">
+							<span>{{ format }}: </span>
+							{{ resourceOutput this ../targetBlank }}
+						</div>
+						{{/each}}
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{{/if}}
 </div>
-<div class="dataset-api-download-info">
-	<i class="icon-info"></i>
-</div>
-

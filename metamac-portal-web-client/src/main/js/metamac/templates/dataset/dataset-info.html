@@ -168,31 +168,6 @@
                 <li>{{ fieldOutput "entity.dataset.mediators" metadata.mediators "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dataProviders" metadata.dataProviders "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dataProviderAnnotations" metadata.dataProviderAnnotations "text" }}</li>
-                <li>{{ fieldOutput "entity.dataset.apiDocumentationUrl" metadata.apiDocumentationUrl "resource" targetBlank }}</li>
-                <li>
-                    <div class="field">
-                        <span class="metadata-title">{{ message "entity.dataset.apiUrl.title" }}</span>
-                        <div class="metadata-value">
-                            {{ apiDownloadMessage }}
-                        </div>
-                        <div class="metadata-value">
-                            {{ resourceOutput metadata.apiUrl targetBlank }}
-                        </div>
-                    </div>
-                </li>
-                {{#if urlParametersForDimensionSelection.isVisible}}
-                <li>
-                    <div class="field">
-                        <span class="metadata-title">{{ message "entity.dataset.selectionApiUrl.title" }}</span>
-                        <div class="metadata-value">
-                            {{ selectionApiDownloadMessage }}
-                        </div>
-                        <div class="metadata-value">
-                            {{ resourceOutput urlParametersForDimensionSelection targetBlank }}
-                        </div>
-                    </div>
-                </li>
-                {{/if}}
             </ul>
         </div>
     </div>

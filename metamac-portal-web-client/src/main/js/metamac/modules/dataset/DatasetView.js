@@ -30,7 +30,7 @@
 
         _getVeElements: function () {
             if (!this._veElements) {
-                var visualElements = ["info", "table", "column", "bar", "line"];
+                var visualElements = ["info", "apiDownload", "table", "column", "bar", "line"];
                 if (_.findWhere(this.metadata.getDimensions(), { type: 'GEOGRAPHIC_DIMENSION' })) {
                     visualElements.push("map");
                     visualElements.push("mapbubble");
@@ -111,11 +111,11 @@
                     type: "info",
                     enabled: self._isVisualizationButtonEnabled("info"),
                     title: I18n.t("filter.button.info")
-                }, /* TODO add when the api download is transformed into a page (now it's a modal) {
-                    type: "api",
-                    enabled: true,
+                }, {
+                    type: "apiDownload",
+                    enabled: self._isVisualizationButtonEnabled("apiDownload"),
                     title: I18n.t("filter.button.apiDownload")
-                }, */ {
+                }, {
                     type: "help",
                     enabled: !!helpUrl,
                     link: helpUrl,
