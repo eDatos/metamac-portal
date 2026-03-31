@@ -239,8 +239,8 @@
             "description":"${msg['api.doc.swagger.paths.permalinks.id.get']}",
             "operationId":"resource__v1.0_permalinks__id__retrievePermalinkById_GET",
             "produces":[
-               "application/xml",
-                "application/json"
+               "application/json"
+               "application/xml"
             ],
             "parameters":[
                {
