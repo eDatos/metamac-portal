@@ -32,8 +32,8 @@ Application Portal {
             exportQueryToCsvSemicolonSeparated(QueryBase query, DatasetSelection datasetSelection, String lang, OutputStream resultObservationsOutputStream, OutputStream resultAttributesOutputStream) throws MetamacException;
             exportQueryToPx(QueryBase query, DatasetBase relatedDataset, DatasetSelection datasetSelection, String lang, OutputStream resultOutputStream) throws MetamacException;
         
-            exportResourceToPlainText(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream, OutputStream resultAttributesOutputStream) throws MetamacException ;
-            exportResourceToPlainTextWithoutAttributes(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream) throws MetamacException;
+            exportResourceToPlainText(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream, OutputStream resultAttributesOutputStream, String decimalSeparator) throws MetamacException ;
+            exportResourceToPlainTextWithoutAttributes(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream, String decimalSeparator) throws MetamacException;
 			
 			exportSvgToImage(String svg, Float width, String mimeType, OutputStream resultOutputStream) throws MetamacException;
 		}

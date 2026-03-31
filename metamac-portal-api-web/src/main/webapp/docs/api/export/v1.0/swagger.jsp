@@ -560,6 +560,12 @@
             "in":"query",
             "type":"string",
             "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
+         },
+         {
+            "name":"decimalSeparator",
+            "in":"query",
+            "type":"string",
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.decimalSeparator']}"
          }
         ],
         "responses": {
@@ -629,6 +635,12 @@
             "in":"query",
             "type":"string",
             "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
+         },
+         {
+            "name":"decimalSeparator",
+            "in":"query",
+            "type":"string",
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.decimalSeparator']}"
          }
         ],
         "responses": {
@@ -640,7 +652,7 @@
           }
         }
       }
-    },   
+    },
     "/v1.0/excel/datasets/{agencyID}/{resourceID}/{version}": {
       "post": {
         "tags": [
@@ -1196,6 +1208,12 @@
             "in":"query",
             "type":"string",
             "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
+         },
+         {
+            "name":"decimalSeparator",
+            "in":"query",
+            "type":"string",
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.decimalSeparator']}"
          }
         ],
         "responses": {
@@ -1259,6 +1277,12 @@
             "in":"query",
             "type":"string",
             "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
+         },
+         {
+            "name":"decimalSeparator",
+            "in":"query",
+            "type":"string",
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.decimalSeparator']}"
          }
         ],
         "responses": {
@@ -1315,6 +1339,12 @@
             "in":"query",
             "type":"string",
             "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
+         },
+         {
+            "name":"decimalSeparator",
+            "in":"query",
+            "type":"string",
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.decimalSeparator']}"
          }
         ],
         "responses": {
@@ -1378,6 +1408,12 @@
             "in":"query",
             "type":"string",
             "description":"${msg['api.doc.swagger.paths.any.post.parameters.fields']}"
+         },
+         {
+            "name":"decimalSeparator",
+            "in":"query",
+            "type":"string",
+            "description":"${msg['api.doc.swagger.paths.any.post.parameters.decimalSeparator']}"
          }
         ],
         "responses": {

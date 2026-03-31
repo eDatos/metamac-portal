@@ -48,9 +48,18 @@ I18n.translations.pt = {
             },
             attributes: {
                 modal: {
-                    title: "Incluir atributos",
-                    question: "Deseja incluir os atributos no download?"
+                    title: "Opções",
+                    question: "Incluir os atributos no download"
                 }
+            },
+            options: {
+                title: "Propriedades de exportação",
+                download: "Download"
+            },
+            decimalSeparator: {
+                title: "Separador decimal",
+                comma: "Vírgula",
+                dot: "Ponto"
             }
         },
         apiDownload: {
