@@ -64,40 +64,40 @@ public abstract class DataExportRestCommon {
     protected abstract QueryBase retrieveQuery(String agencyID, String resourceID, String lang, String dimensionSelection) throws MetamacException;
 
 
-    public Response exportDatasetToTsv(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToTsv(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
-    public Response exportDatasetToTsv(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
+    public Response exportDatasetToTsv(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
-    public Response exportQueryToTsv(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields) {
-        return exportQueryToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename, fields);
+    public Response exportQueryToTsv(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields, String decimalSeparator) {
+        return exportQueryToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename, fields, decimalSeparator);
     }
 
-    public Response exportQueryToTsv(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String lang, String filename, String fields) {
+    public Response exportQueryToTsv(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String lang, String filename, String fields, String decimalSeparator) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportQueryToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename, fields);
+        return exportQueryToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, agencyID, resourceID, lang, filename, fields, decimalSeparator);
     }
 
-    public Response exportIndicatorToTsv(ServiceContext ctx, Exportation exportationBody, String resourceID, String filename, String fields) {
-        return exportIndicatorToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, resourceID, filename, fields);
+    public Response exportIndicatorToTsv(ServiceContext ctx, Exportation exportationBody, String resourceID, String filename, String fields, String decimalSeparator) {
+        return exportIndicatorToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, resourceID, filename, fields, decimalSeparator);
     }
 
-    public Response exportIndicatorToTsv(ServiceContext ctx, String jsonBody, String resourceID, String filename, String fields) {
+    public Response exportIndicatorToTsv(ServiceContext ctx, String jsonBody, String resourceID, String filename, String fields, String decimalSeparator) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportIndicatorToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, resourceID, filename, fields);
+        return exportIndicatorToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, resourceID, filename, fields, decimalSeparator);
     }
 
-    public Response exportIndicatorInstanceToTsv(ServiceContext ctx, Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename, String fields) {
-        return exportIndicatorInstanceToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename, fields);
+    public Response exportIndicatorInstanceToTsv(ServiceContext ctx, Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename, String fields, String decimalSeparator) {
+        return exportIndicatorInstanceToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename, fields, decimalSeparator);
     }
 
-    public Response exportIndicatorInstanceToTsv(ServiceContext ctx, String jsonBody, String indicatorSystemCode, String resourceID, String filename, String fields) {
+    public Response exportIndicatorInstanceToTsv(ServiceContext ctx, String jsonBody, String indicatorSystemCode, String resourceID, String filename, String fields, String decimalSeparator) {
         Exportation exportationBody = getExportation(jsonBody);
-        return exportIndicatorInstanceToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename, fields);
+        return exportIndicatorInstanceToPlainText(ctx, PlainTextTypeEnum.TSV, exportationBody, indicatorSystemCode, resourceID, filename, fields, decimalSeparator);
     }
 
     public Response exportIndicatorToPxForm(ServiceContext ctx, String jsonBody, String resourceID, String filename) {
@@ -110,22 +110,22 @@ public abstract class DataExportRestCommon {
         return exportIndicatorInstanceToPx(ctx, pxExportationBody, indicatorSystemCode, resourceID, filename);
     }
 
-    public Response exportDatasetToCsvComma(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToCsvComma(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, exportationBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
-    public Response exportDatasetToCsvComma(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
+    public Response exportDatasetToCsvComma(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
         Exportation tsvExportation = getExportation(jsonBody);
-        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
+        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, tsvExportation, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
-    public Response exportDatasetToCsvSemicolon(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToCsvSemicolon(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, exportationBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
-    public Response exportDatasetToCsvSemicolon(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
+    public Response exportDatasetToCsvSemicolon(ServiceContext ctx, String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
         Exportation tsvExportation = getExportation(jsonBody);
-        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, tsvExportation, agencyID, resourceID, version, lang, filename, fields);
+        return exportDatasetToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, tsvExportation, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
     public Response exportDatasetToExcel(ServiceContext ctx, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename) {
@@ -477,7 +477,7 @@ public abstract class DataExportRestCommon {
         }
     }
 
-    private Response exportIndicatorToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String resourceID, String filename, String fields) {
+    private Response exportIndicatorToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String resourceID, String filename, String fields, String decimalSeparator) {
 
         ResourceAccess resourceAccess = buildResourceAccessForIndicator(exportationBody, resourceID);
 
@@ -485,22 +485,22 @@ public abstract class DataExportRestCommon {
             filename = ExportUtils.buildExportFilenameWithoutExtension(exportationBody, ResourceType.INDICATOR.getName(), resourceID);
         }
 
-        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields);
+        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields, decimalSeparator);
     }
 
     private Response exportIndicatorInstanceToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename,
-            String fields) {
+            String fields, String decimalSeparator) {
         ResourceAccess resourceAccess = buildResourceAccessForIndicatorInstance(exportationBody, indicatorSystemCode, resourceID);
 
         if (filename == null) {
             filename = ExportUtils.buildExportFilenameWithoutExtension(exportationBody, ResourceType.INDICATOR_INSTANCE.getName(), resourceID);
         }
 
-        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields);
+        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields, decimalSeparator);
     }
 
     private Response exportDatasetToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename,
-            String fields) {
+            String fields, String decimalSeparator) {
 
         ResourceAccess resourceAccess = buildResourceAccessForDataset(exportationBody, agencyID, resourceID, version, lang);
 
@@ -508,10 +508,10 @@ public abstract class DataExportRestCommon {
             filename = ExportUtils.buildExportFilenameWithoutExtension(exportationBody, ResourceType.DATASET.getName(), agencyID, resourceID, version);
         }
 
-        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields);
+        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields, decimalSeparator);
     }
 
-    private Response exportQueryToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields) {
+    private Response exportQueryToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields, String decimalSeparator) {
 
         ResourceAccess resourceAccess = buildResourceAccessForQuery(exportationBody, agencyID, resourceID, lang);
 
@@ -519,10 +519,10 @@ public abstract class DataExportRestCommon {
             filename = ExportUtils.buildExportFilenameWithoutExtension(exportationBody, ResourceType.QUERY.getName(), agencyID, resourceID);
         }
 
-        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields);
+        return exportResourceAccessToPlainText(ctx, resourceAccess, filename, plainTextTypeEnum, fields, decimalSeparator);
     }
 
-    private Response exportResourceAccessToPlainText(ServiceContext ctx, ResourceAccess resourceAccess, String proposedFilename, PlainTextTypeEnum plainTextTypeEnum, String fields) {
+    private Response exportResourceAccessToPlainText(ServiceContext ctx, ResourceAccess resourceAccess, String proposedFilename, PlainTextTypeEnum plainTextTypeEnum, String fields, String decimalSeparator) {
 
         FileOutputStream outputStreamObservations = null;
         FileOutputStream outputStreamAttributes = null;
@@ -537,7 +537,7 @@ public abstract class DataExportRestCommon {
             boolean excludeAttributes = PortalRestUtils.containsField(parsedFields, RestCommonConstants.FIELD_EXCLUDE_ATTRIBUTES);
             if (excludeAttributes) {
                 // Not zip
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, decimalSeparator);
 
                 String filename = ExportUtils.addExtensionToFilenameIfNeeded(plainTextTypeEnum.getExtension(), proposedFilename + "-observations");
                 return buildResponseOkWithFile(tmpFileObservations, filename, plainTextTypeEnum.getMimeType());
@@ -545,7 +545,7 @@ public abstract class DataExportRestCommon {
                 // Zip
                 tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
                 outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, outputStreamAttributes);
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, outputStreamAttributes, decimalSeparator);
 
                 String filename = ExportUtils.addExtensionToFilenameIfNeeded("zip", proposedFilename);
                 String filenamePrefix = FilenameUtils.getBaseName(filename);

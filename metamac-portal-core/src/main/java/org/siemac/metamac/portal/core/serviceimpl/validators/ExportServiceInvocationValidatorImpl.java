@@ -94,14 +94,14 @@ public class ExportServiceInvocationValidatorImpl extends BaseInvocationValidato
     }
 
     public static void checkExportResourceToPlainTextWithoutAttributes(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream,
-            List<MetamacExceptionItem> exceptions) {
+                                                                       String decimalSeparator, List<MetamacExceptionItem> exceptions) {
         checkMetadataRequired(resourceAccess, ServiceExceptionParameters.RESOURCE_ACCESS, exceptions);
         checkMetadataRequired(plainTextTypeEnum, ServiceExceptionParameters.PLAIN_TEXT_TYPE_ENUM, exceptions);
         checkMetadataRequired(resultObservationsOutputStream, ServiceExceptionParameters.STREAM, exceptions);
     }
 
     public static void checkExportResourceToPlainText(PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream,
-            OutputStream resultAttributesOutputStream, List<MetamacExceptionItem> exceptions) {
+                                                      OutputStream resultAttributesOutputStream, String decimalSeparator, List<MetamacExceptionItem> exceptions) {
         checkMetadataRequired(resourceAccess, ServiceExceptionParameters.RESOURCE_ACCESS, exceptions);
         checkMetadataRequired(plainTextTypeEnum, ServiceExceptionParameters.PLAIN_TEXT_TYPE_ENUM, exceptions);
         checkMetadataRequired(resultObservationsOutputStream, ServiceExceptionParameters.STREAM, exceptions);

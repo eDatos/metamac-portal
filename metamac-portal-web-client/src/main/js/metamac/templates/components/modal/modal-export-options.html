@@ -1,0 +1,23 @@
+<div class="modal-export-options">
+    <div class="export-option-group">
+        <label class="export-option-title">{{ message "filter.download.attributes.modal.title" }}</label>
+        <label class="export-option-checkbox">
+            <input type="checkbox" class="include-attributes" />
+            {{ message "filter.download.attributes.modal.question" }}
+        </label>
+    </div>
+    <div class="export-option-group">
+        <label class="export-option-title">{{ message "filter.download.decimalSeparator.title" }}</label>
+        <label class="export-option-radio">
+            <input type="radio" name="decimalSeparator" value="." checked />
+            {{ message "filter.download.decimalSeparator.dot" }}
+        </label>
+        <label class="export-option-radio">
+            <input type="radio" name="decimalSeparator" value=","  />
+            {{ message "filter.download.decimalSeparator.comma" }}
+        </label>
+    </div>
+    <div class="form-buttons">
+        <button class="btn-download" type="button">{{ message "filter.download.options.download" }}</button>
+    </div>
+</div>
