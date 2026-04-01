@@ -151,12 +151,13 @@
         },
 
         _toggleClassByType: function (type) {
-            var CLASS_PREFIX = this._getVisualizationContext() + "-visualization-type-";
-            var regex = new RegExp("(^|\\s)" + CLASS_PREFIX + "\\S+", 'g');
+            var GENERIC_PREFIX = "visualization-type-";
+            var CONTEXT_PREFIX = this._getVisualizationContext() + "-visualization-type-";
+            var regex = new RegExp("(^|\\s)(" + GENERIC_PREFIX + "|" + CONTEXT_PREFIX + ")\\S+", 'g');
             this.$el.removeClass(function (index, className) {
                 return (className.match(regex) || []).join(' ');
             });
-            this.$el.addClass(CLASS_PREFIX + type);
+            this.$el.addClass(GENERIC_PREFIX + type + " " + CONTEXT_PREFIX + type);
         },
 
         // Subclasses must override at least the following methods:
