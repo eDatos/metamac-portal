@@ -50,7 +50,7 @@ I18n.translations.pt = {
             },
             attributes: {
                 modal: {
-                    title: "BAIXAR - Incluir atributos",
+                    title: "BAIXAR - Opções",
                     question: "Incluir os atributos no download"
                 }
             },

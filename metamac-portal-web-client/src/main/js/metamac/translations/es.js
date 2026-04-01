@@ -51,7 +51,7 @@ I18n.translations.es = {
             },
             attributes: {
                 modal: {
-                    title: "DESCARGAR - Incluir atributos",
+                    title: "DESCARGAR - Opciones",
                     question: "Incluir los atributos en la descarga"
                 }
             },

@@ -51,7 +51,7 @@ I18n.translations.ca = {
             },
             attributes: {
                 modal: {
-                    title: "DESCARREGAR - Incloure atributs",
+                    title: "DESCARREGAR - Opcions",
                     question: "Incloure els atributs a la descàrrega"
                 }
             },

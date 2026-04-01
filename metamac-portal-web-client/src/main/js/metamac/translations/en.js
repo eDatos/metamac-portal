@@ -51,7 +51,7 @@ I18n.translations.en = {
             },
             attributes: {
                 modal: {
-                    title: "DOWNLOAD - Attributes inclusion",
+                    title: "DOWNLOAD - Options",
                     question: "Include attributes in the download"
                 }
             },
