@@ -52,8 +52,17 @@ I18n.translations.ca = {
             attributes: {
                 modal: {
                     title: "DESCARREGAR - Incloure atributs",
-                    question: "Voleu incloure els atributs a la descàrrega?"
+                    question: "Incloure els atributs a la descàrrega"
                 }
+            },
+            options: {
+                title: "Propietats d'exportació",
+                download: "Descarregar"
+            },
+            decimalSeparator: {
+                title: "Separador decimal",
+                comma: "Coma",
+                dot: "Punt"
             },
             menu: {
                 xlsx: "Descarregar en format xlsx",

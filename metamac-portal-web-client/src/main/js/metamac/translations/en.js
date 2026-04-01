@@ -52,8 +52,17 @@ I18n.translations.en = {
             attributes: {
                 modal: {
                     title: "DOWNLOAD - Attributes inclusion",
-                    question: "Would you like to include the attributes on the download?"
+                    question: "Include attributes in the download"
                 }
+            },
+            options: {
+                title: "Export properties",
+                download: "Download"
+            },
+            decimalSeparator: {
+                title: "Decimal separator",
+                comma: "Comma",
+                dot: "Dot"
             },
             menu: {
                 xlsx: "Download in xlsx format",

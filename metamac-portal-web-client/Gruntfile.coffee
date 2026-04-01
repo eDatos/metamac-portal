@@ -151,6 +151,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/components/toggleable/ToggleableView.js"
                 paths.js + "/metamac/components/modal/ModalView.js"
                 paths.js + "/metamac/components/modal/ConfirmationModalView.js"
+                paths.js + "/metamac/components/modal/ExportOptionsModalView.js"
                 paths.js + "/metamac/components/modal/PermalinkConfigModalView.js"
                 paths.js + "/metamac/components/modal/EmbedConfigModalView.js"
                 paths.js + "/metamac/components/modal/InformationModalView.js"

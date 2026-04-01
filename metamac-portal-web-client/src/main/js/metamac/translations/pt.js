@@ -51,8 +51,17 @@ I18n.translations.pt = {
             attributes: {
                 modal: {
                     title: "BAIXAR - Incluir atributos",
-                    question: "Deseja incluir os atributos no download?"
+                    question: "Incluir os atributos no download"
                 }
+            },
+            options: {
+                title: "Propriedades de exportação",
+                download: "Download"
+            },
+            decimalSeparator: {
+                title: "Separador decimal",
+                comma: "Vírgula",
+                dot: "Ponto"
             },
             menu: {
                 xlsx: "Baixar no formato xlsx",

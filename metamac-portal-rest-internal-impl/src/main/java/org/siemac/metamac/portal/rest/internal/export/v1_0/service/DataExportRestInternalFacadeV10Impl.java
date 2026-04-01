@@ -46,43 +46,43 @@ public class DataExportRestInternalFacadeV10Impl extends DataExportRestCommon im
 
 
     @Override
-    public Response exportDatasetToTsv(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToTsv(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToTsv(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToTsv(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportDatasetToTsv(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToTsv(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToTsv(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToTsv(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportQueryToTsv(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields) {
-        return exportQueryToTsv(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, lang, filename, fields);
+    public Response exportQueryToTsv(Exportation exportationBody, String agencyID, String resourceID, String lang, String filename, String fields, String decimalSeparator) {
+        return exportQueryToTsv(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, lang, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportQueryToTsv(String jsonBody, String agencyID, String resourceID, String lang, String filename, String fields) {
-        return exportQueryToTsv(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, lang, filename, fields);
+    public Response exportQueryToTsv(String jsonBody, String agencyID, String resourceID, String lang, String filename, String fields, String decimalSeparator) {
+        return exportQueryToTsv(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, lang, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportIndicatorToTsv(Exportation exportationBody, String resourceID, String filename, String fields) {
-        return exportIndicatorToTsv(SERVICE_CONTEXT, exportationBody, resourceID, filename, fields);
+    public Response exportIndicatorToTsv(Exportation exportationBody, String resourceID, String filename, String fields, String decimalSeparator) {
+        return exportIndicatorToTsv(SERVICE_CONTEXT, exportationBody, resourceID, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportIndicatorToTsv(String jsonBody, String resourceID, String filename, String fields) {
-        return exportIndicatorToTsv(SERVICE_CONTEXT, jsonBody, resourceID, filename, fields);
+    public Response exportIndicatorToTsv(String jsonBody, String resourceID, String filename, String fields, String decimalSeparator) {
+        return exportIndicatorToTsv(SERVICE_CONTEXT, jsonBody, resourceID, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportIndicatorInstanceToTsv(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename, String fields) {
-        return exportIndicatorInstanceToTsv(SERVICE_CONTEXT, exportationBody, indicatorSystemCode, resourceID, filename, fields) ;
+    public Response exportIndicatorInstanceToTsv(Exportation exportationBody, String indicatorSystemCode, String resourceID, String filename, String fields, String decimalSeparator) {
+        return exportIndicatorInstanceToTsv(SERVICE_CONTEXT, exportationBody, indicatorSystemCode, resourceID, filename, fields, decimalSeparator) ;
     }
 
     @Override
-    public Response exportIndicatorInstanceToTsv(String jsonBody, String indicatorSystemCode, String resourceID, String filename, String fields) {
-        return exportIndicatorInstanceToTsv(SERVICE_CONTEXT, jsonBody, indicatorSystemCode, resourceID, filename, fields);
+    public Response exportIndicatorInstanceToTsv(String jsonBody, String indicatorSystemCode, String resourceID, String filename, String fields, String decimalSeparator) {
+        return exportIndicatorInstanceToTsv(SERVICE_CONTEXT, jsonBody, indicatorSystemCode, resourceID, filename, fields, decimalSeparator);
     }
 
     @Override
@@ -96,23 +96,23 @@ public class DataExportRestInternalFacadeV10Impl extends DataExportRestCommon im
     }
 
     @Override
-    public Response exportDatasetToCsvComma(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToCsvComma(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToCsvComma(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToCsvComma(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportDatasetToCsvComma(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToCsvComma(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToCsvComma(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToCsvComma(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportDatasetToCsvSemicolon(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToCsvSemicolon(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToCsvSemicolon(Exportation exportationBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToCsvSemicolon(SERVICE_CONTEXT, exportationBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
     @Override
-    public Response exportDatasetToCsvSemicolon(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields) {
-        return exportDatasetToCsvSemicolon(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, version, lang, filename, fields);
+    public Response exportDatasetToCsvSemicolon(String jsonBody, String agencyID, String resourceID, String version, String lang, String filename, String fields, String decimalSeparator) {
+        return exportDatasetToCsvSemicolon(SERVICE_CONTEXT, jsonBody, agencyID, resourceID, version, lang, filename, fields, decimalSeparator);
     }
 
     @Override
