@@ -20,6 +20,8 @@
         _errorTemplate: App.templateManager.get('dataset/map/map-error'),
 
         load: function () {
+            this._destroyed = false;
+
             this._unbindEvents();
             this._bindEvents();
             if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
@@ -29,6 +31,10 @@
             this.showLoading();
             var self = this;
             this._loadShapes().then(function () {
+                if (self._destroyed) {
+                    return;
+                }
+
                 self._getBaseShapes();
                 self._getDrawableShapes();
                 self._getData();
@@ -43,6 +49,7 @@
         },
 
         destroy: function () {
+            this._destroyed = true;
             this._unbindEvents();
 
             if (this._mapContainerView) {

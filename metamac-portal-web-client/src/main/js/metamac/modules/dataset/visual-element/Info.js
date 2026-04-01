@@ -16,6 +16,8 @@
         template: App.templateManager.get("dataset/dataset-info"),
 
         load: function () {
+            this._destroyed = false;
+
             this.getDimensions();
             this.getMeasureConcepts();
             this.getMetadataFromRelatedDataset();
@@ -67,16 +69,24 @@
                 filterDimensions: self.filterDimensions
             });
             self.multidataset.fetch().then(function() {
-                self.render();
+                if (!self._destroyed) {
+                    self.render();
+                }
             })
         },
 
         getDimensions: function () {
             var self = this;
             this.api.getDimensions(function (error, dimensions) {
+                if (self._destroyed) {
+                    return;
+                }
                 self.updateDimensions(dimensions);
 
                 self.api.getDimensionsConcepts(dimensions, function (error, dimensionsConcepts) {
+                    if (self._destroyed) {
+                        return;
+                    }
                     var parsedDimensions = _.map(self.dimensions, function (dimension) {
                         var dimensionConcept = _.findWhere(dimensionsConcepts, { id: dimension.conceptIdentity.id });
                         dimension.conceptIdentity = dimensionConcept;
@@ -99,6 +109,9 @@
 
                 var self = this;
                 relatedDatasetMetadataRequest.fetch(function () {
+                    if (self._destroyed) {
+                        return;
+                    }
                     var datasetMetadata = relatedDatasetMetadataRequest.getMetadataResponse();
                     self.updateMetadataFromRelatedDataset(datasetMetadata);
                 });
@@ -108,6 +121,9 @@
         getMeasureConcepts: function () {
             var self = this;
             this.api.getMeasureConcepts(function (error, concepts) {
+                if (self._destroyed) {
+                    return;
+                }
                 var parsedConcepts = _.map(concepts, function (concept) {
                     concept.name = App.InternationalizationUtils.localizeLabel(concept.name);
                     concept.description = App.InternationalizationUtils.localizeLabel(concept.description);
@@ -254,6 +270,10 @@
             var urlWithTheme = new URL(url);
             urlWithTheme.searchParams.append("theme", App.config.theme);
             return urlWithTheme.href;
+        },
+
+        destroy: function () {
+            this._destroyed = true;
         }
     });
 
