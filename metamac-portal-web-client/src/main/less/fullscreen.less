@@ -36,9 +36,11 @@
     width: auto;
 }
 
+@fullScreenBottomPadding: 2.5rem;
 .full-screen {
-    background-color: @istacGreyLight !important;
+    background-color: var(--edatos-color-white-100) !important;
     margin: 0 !important;
+    padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) @fullScreenBottomPadding var(--edatos-spacing-x-m) !important;
     width: 100% !important;
     height: 100% !important;
     overflow-y: auto;    
@@ -46,7 +48,6 @@
 
 .full-screen > div:first-child {
     height: 100%;
-    overflow: hidden;
 }
 
 .full-screen #visual-element {
