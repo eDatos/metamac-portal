@@ -43,7 +43,13 @@
     padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) @fullScreenBottomPadding var(--edatos-spacing-x-m) !important;
     width: 100% !important;
     height: 100% !important;
-    overflow-y: auto;    
+    overflow-y: auto;
+
+    .dataset-view, .selection-view {
+        &:not(.visualization-type-table) .dataset-visualization-visual-element {
+            border: none;
+        }
+    }
 }
 
 .full-screen > div:first-child {
