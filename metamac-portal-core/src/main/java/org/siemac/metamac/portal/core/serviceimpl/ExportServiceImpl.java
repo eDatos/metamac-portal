@@ -78,16 +78,16 @@ public class ExportServiceImpl extends ExportServiceImplBase {
 
     @Override
     public void exportResourceToPlainText(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream,
-            OutputStream resultAttributesOutputStream) throws MetamacException {
-        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, resourceAccess);
+            OutputStream resultAttributesOutputStream, String decimalSeparator) throws MetamacException {
+        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, resourceAccess, decimalSeparator);
         exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
         exporter.writeAttributesWithDatasetAndDimensionAttachmentLevel(resultAttributesOutputStream);
     }
 
     @Override
-    public void exportResourceToPlainTextWithoutAttributes(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream)
-            throws MetamacException {
-        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, resourceAccess);
+    public void exportResourceToPlainTextWithoutAttributes(ServiceContext ctx, PlainTextTypeEnum plainTextTypeEnum, ResourceAccess resourceAccess, OutputStream resultObservationsOutputStream,
+            String decimalSeparator) throws MetamacException {
+        PlainTextExporter exporter = new PlainTextExporter(plainTextTypeEnum, resourceAccess, decimalSeparator);
         exporter.writeObservationsAndAttributesWithObservationAttachmentLevel(resultObservationsOutputStream);
     }
 
