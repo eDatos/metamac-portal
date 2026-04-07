@@ -84,11 +84,11 @@
     function buildOperationsList(operations) {
         if (!operations.length) { return null;}        
         var operationsList = document.createElement('ul');
-        operationsList.classList.add('capitulos', 'deep-tree');
+        operationsList.classList.add('resource-list');
         operations.forEach(operation => {
             var listItem = document.createElement('li');
-            listItem.classList.add('dimension','dimension-depth-1', 'dimension-close');
-            listItem.innerHTML = '<a href="#" class="tree-icon"></a><span class="dimension-title">'+ getText(operation.statisticalOperation.name) + '</span>';
+            listItem.classList.add('resource-section','resource-section-depth-1', 'resource-section-collapsed');
+            listItem.innerHTML = '<span class="resource-section-title"><span class="resource-section-title-label">'+ getText(operation.statisticalOperation.name) + '</span><i class="icon-chevron-down"></i></span>';
             listItem.append(buildCollectionsList(operation.collections));
             operationsList.append(listItem);
         });
@@ -98,9 +98,10 @@
     function buildCollectionsList(collections) {
         if (!collections.length) { return null;}
         var collectionList = document.createElement('ul');
-        collectionList.classList.add('capitulos', 'simple-list');
+        collectionList.classList.add('resource-list');
         collections.forEach(collection => {
             var listItem = document.createElement('li');
+            listItem.classList.add('resource-link', 'compact');
             var link = document.createElement('a');
             link.append(getText(collection.name));
             link.setAttribute('href',buildCollectionUrl(collection.urn));
@@ -118,15 +119,11 @@
             operationsElement.innerHTML = null;
             operationsElement.append(buildOperationsList(operations));
 
-            // Tree behaviour
-            $(".tree-icon").click(function (e) {
+            $(".resource-list .resource-section-depth-1 .resource-section-title").click(function (e) {
                 e.preventDefault();
-                var $icon = $(this);
-                var $parentDimension = $icon.closest(".dimension-depth-1");
-                $parentDimension.toggleClass("dimension-open");
-                $parentDimension.toggleClass("dimension-close");
+                $(this).parent().toggleClass("resource-section-collapsed");
             });
         });
 </script>
-<div id="operations" class="contenido"><div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div></div>
+<div id="operations"><div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div></div>
 </t:metamac_plantilla_1col>

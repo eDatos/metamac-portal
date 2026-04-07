@@ -1,0 +1,136 @@
+@import "../variables";
+
+@resourceListIconSize: 1.5rem;
+@resourceListLinkIconOffset: -20%;
+
+.contenido ul.resource-list {
+    color: var(--edatos-color-black-100);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .resource-section {
+        .resource-section-title,
+        .resource-section-description,
+        .resource-list li {
+            margin-top: var(--edatos-spacing-y-l);
+        }
+
+        li.resource-link {
+            display: flex;
+            flex-direction: row;
+            gap: var(--edatos-spacing-x-sm);
+            align-items: center;
+            padding: var(--edatos-spacing-y-xs) 0;
+
+            &.compact {
+                padding: 0;
+            }
+
+            i {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: @resourceListIconSize;
+                height: @resourceListIconSize;
+                font-size: var(--edatos-font-size-lg);
+                color: var(--edatos-color-primary-100);
+
+                &.icon-link:before {
+                    margin-left: @resourceListLinkIconOffset;
+                }
+            }
+
+            a {
+                font-size: var(--edatos-font-size-s);
+                font-weight: var(--edatos-font-weight-regular);
+            }
+        }
+
+        .resource-section-title {
+            box-sizing: border-box;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--edatos-spacing-x-xs);
+            padding: var(--edatos-spacing-y-sm) 0;
+            font-size: @defaultFontSize;
+            font-weight: var(--edatos-font-weight-semibold);
+            border-radius: @borderRadiusMedium;
+
+            > .resource-section-title-label {
+                flex: 1;
+            }
+
+            &:has(i.icon-chevron-down) {
+                cursor: pointer;
+            }
+
+            i.icon-chevron-down {
+                width: @resourceListIconSize;
+                height: @resourceListIconSize;
+                font-size: var(--edatos-font-size-s);
+                border-radius: @borderRadiusSmall;
+                text-align: center;
+                align-content: center;
+            }
+        }
+
+        .resource-section-description {
+            font-size: var(--edatos-font-size-s);
+            font-weight: var(--edatos-font-weight-light);
+            line-height: @lineHeightMedium;
+        }
+
+        &.resource-section-collapsed > *:not(.resource-section-title) {
+            display: none;
+        }
+
+        &:not(.resource-section-collapsed) > .resource-section-title i.icon-chevron-down:before {
+            transform: rotateZ(180deg);
+        }
+    }
+
+    .resource-section-depth-1 {
+        > .resource-section-title {
+            background: var(--edatos-color-primary-100);
+            padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-m);
+            color: var(--edatos-color-white-100);
+            font-size: var(--edatos-font-size-lg);
+
+            > .resource-section-index {
+                display: inline-block;
+                box-sizing: border-box;
+                padding-inline: var(--edatos-spacing-x-xs);
+                text-align: center;
+                min-width: @resourceListIconSize;
+                background: var(--edatos-color-white-100);
+                color: var(--edatos-color-primary-100);
+                border-radius: @borderRadiusSmall;
+            }
+        }
+
+        > .resource-section-description,
+        > .resource-list > li.resource-link {
+            padding-inline: var(--edatos-spacing-x-sm);
+        }
+    }
+
+    .resource-section-depth-2 {
+        > .resource-section-title {
+            background: var(--edatos-color-gray-5);
+            padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
+            font-size: var(--edatos-font-size-lg);
+
+            i.icon-chevron-down {
+                background: var(--edatos-color-black-100);
+                color: var(--edatos-color-white-100);
+            }
+        }
+
+        > .resource-list {
+            padding-inline: var(--edatos-spacing-x-sm);
+        }
+    }
+}

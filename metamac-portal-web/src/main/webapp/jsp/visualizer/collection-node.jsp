@@ -7,7 +7,7 @@
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<ul class="capitulos">
+<ul class="resource-list">
     <%
         String theme = (String) request.getAttribute("theme");
         String locale = (String) request.getAttribute("currentLocale");
@@ -36,15 +36,15 @@
                 String chapterIndex = parentIndex + chapterCount;
     %>
 
-    <li class="dimension dimension-depth-${nodeDepth}">
-        <span class="dimension-title">
-            <span class="dimension-index"><%= chapterIndex %></span>
-            <span class="dimension-title-label"><%= helper.localizeText(chapter.getName()).trim() %></span>
+    <li class="resource-section resource-section-depth-${nodeDepth}">
+        <span class="resource-section-title">
+            <span class="resource-section-index"><%= chapterIndex %></span>
+            <span class="resource-section-title-label"><%= helper.localizeText(chapter.getName()).trim() %></span>
             <c:if test="${nodeDepth == 2}">
                 <i class="icon-chevron-down"></i>
             </c:if>
         </span>
-        <div class="dimension-description">
+        <div class="resource-section-description">
 	        <c:if test="${nodeDepth <= 2}">
 	        	<%= Helpers.cleanHtml(helper.localizeText(chapter.getDescription())) %>
 	        </c:if>

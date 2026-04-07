@@ -59,9 +59,9 @@
     <script>
 	    LazyLoad.css('${baseURL}/client/metamac.css', function () {
 	        LazyLoad.js('${baseURL}/client/metamac.js', function () {
-				$(".capitulos .dimension-depth-2 .dimension-title").click(function (e) {
+				$(".resource-list .resource-section-depth-2 .resource-section-title").click(function (e) {
 					e.preventDefault();
-					$(this).parent().toggleClass("dimension-collapsed");
+					$(this).parent().toggleClass("resource-section-collapsed");
 				});
             });
         });
