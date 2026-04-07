@@ -59,16 +59,10 @@
     <script>
 	    LazyLoad.css('${baseURL}/client/metamac.css', function () {
 	        LazyLoad.js('${baseURL}/client/metamac.js', function () {
-
-                // Tree behaviour
-                $(".tree-icon").click(function (e) {
-                    e.preventDefault();
-                    var $icon = $(this);
-                    var $parentDimension = $icon.closest(".dimension");
-                    $parentDimension.toggleClass("dimension-open");
-                    $parentDimension.toggleClass("dimension-close");
-                });
-
+				$(".capitulos .dimension-depth-2 .dimension-title").click(function (e) {
+					e.preventDefault();
+					$(this).parent().toggleClass("dimension-collapsed");
+				});
             });
         });
     </script>

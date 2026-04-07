@@ -21,29 +21,38 @@
             nodeDepth = nodeDepth + 1;
         }
         request.setAttribute("nodeDepth", nodeDepth);
-        request.setAttribute("openClass", "dimension-open");
 
+        String parentIndex = (String) request.getAttribute("parentIndex");
+        if (parentIndex == null) {
+            parentIndex = "";
+        }
+
+        int chapterCount = 0;
         List<CollectionNode> nodes = (List<CollectionNode>) request.getAttribute("nodes");
         for (CollectionNode node : nodes) {
             if (node instanceof Chapter) {
                 Chapter chapter = (Chapter) node;
+                chapterCount++;
+                String chapterIndex = parentIndex + chapterCount;
     %>
 
-    <li class="dimension dimension-depth-${nodeDepth} ${openClass}">
+    <li class="dimension dimension-depth-${nodeDepth}">
         <span class="dimension-title">
-        	<% if (chapter.getNodes() != null) { %>
-            	<c:if test="${nodeDepth > 2}"><a href="#" class="tree-icon"></a></c:if>
-            <% } %>
-            <%= helper.localizeText(chapter.getName()) %>
+            <span class="dimension-index"><%= chapterIndex %></span>
+            <span class="dimension-title-label"><%= helper.localizeText(chapter.getName()).trim() %></span>
+            <c:if test="${nodeDepth == 2}">
+                <i class="icon-chevron-down"></i>
+            </c:if>
         </span>
         <div class="dimension-description">
 	        <c:if test="${nodeDepth <= 2}">
 	        	<%= Helpers.cleanHtml(helper.localizeText(chapter.getDescription())) %>
 	        </c:if>
 	    </div>
-        <% if (chapter.getNodes() != null) { 
+        <% if (chapter.getNodes() != null) {
             request.setAttribute("nodes", chapter.getNodes().getNodes());
-        %>        
+            request.setAttribute("parentIndex", chapterIndex + ".");
+        %>
         	<jsp:include page="/jsp/visualizer/collection-node.jsp"/>
 			<%
     			request.setAttribute("nodeDepth", nodeDepth); //reset node depth
@@ -63,9 +72,9 @@
         request.setAttribute("numeration", numeration);
         Integer numberOfFixedDigitsInNumeration = (Integer)request.getAttribute("numberOfFixedDigitsInNumeration");
         request.setAttribute("numerationFixed", String.format("%0"+ numberOfFixedDigitsInNumeration +"d", numeration));
-        
+
         Resource resource = table.getResource();
-        String iconClass = "icon-collection-table";
+        String iconClass = "icon-table";
         List<String> resourcesWithIconLink = Arrays.asList("statisticalResources#url", "statisticalResources#collection");
         if (resource != null && resourcesWithIconLink.contains(resource.getKind())) {
             iconClass = "icon-link";
@@ -73,10 +82,10 @@
         request.setAttribute("iconClass", iconClass);
     %>
 
-    <li>
+    <li class="resource-link">
         <i class="${iconClass}"></i>
-        <span class="item-numeration">${numerationFixed}</span>
-        <a class="nouline" href="<%= Helpers.tableViewUrl(table, theme) %>"><%= helper.localizeText(table.getName()) %>
+        <a class="nouline" href="<%= Helpers.tableViewUrl(table, theme) %>">
+            ${numerationFixed} <%= helper.localizeText(table.getName()) %>
         </a>
     </li>
 
