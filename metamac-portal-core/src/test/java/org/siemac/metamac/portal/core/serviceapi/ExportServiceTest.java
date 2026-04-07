@@ -2,6 +2,7 @@ package org.siemac.metamac.portal.core.serviceapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.siemac.metamac.portal.core.exporters.PlainTextExporter.DECIMAL_SEPARATOR_DOT;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -1412,7 +1413,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
                 ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes, ".");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
                 outAttributes.close();
@@ -1432,7 +1433,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
                 ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes, ".");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
                 outAttributes.close();
@@ -1452,7 +1453,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
                 ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes, ".");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
                 outAttributes.close();
@@ -1478,7 +1479,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
                 ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes, ".");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, outAttributes, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
                 outAttributes.close();
@@ -1498,7 +1499,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
                 ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes, ".");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, outAttributes, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
                 outAttributes.close();
@@ -1518,7 +1519,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outAttributes = new FileOutputStream(tmpFileAttributes);
 
                 ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes, ".");
+                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, outAttributes, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
                 outAttributes.close();
@@ -1546,7 +1547,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
                 ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, ".");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
 
@@ -1560,7 +1561,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
                 ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, ".");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
 
@@ -1574,7 +1575,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
                 ResourceAccess resourceAccess = new ResourceAccess(query, null, datasetSelection, "es", "es");
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, ".");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
 
@@ -1594,7 +1595,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
                 ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, ".");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outObservations, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
 
@@ -1608,7 +1609,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
                 ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, ".");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_COMMA, resourceAccess, outObservations, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
 
@@ -1622,7 +1623,7 @@ public class ExportServiceTest implements ExportServiceTestBase {
                 FileOutputStream outObservations = new FileOutputStream(tmpFileObservations);
 
                 ResourceAccess resourceAccess = new ResourceAccess(dataset, datasetSelection, "es", null);
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, ".");
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.CSV_SEMICOLON, resourceAccess, outObservations, DECIMAL_SEPARATOR_DOT);
 
                 outObservations.close();
 
