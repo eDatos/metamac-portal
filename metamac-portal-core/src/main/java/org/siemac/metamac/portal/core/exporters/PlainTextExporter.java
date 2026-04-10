@@ -382,7 +382,7 @@ public class PlainTextExporter {
 
     private String formatObservation(String observation) {
         if (DECIMAL_SEPARATOR_COMMA.equals(decimalSeparator)) {
-            return observation.replace(DECIMAL_SEPARATOR_DOT, DECIMAL_SEPARATOR_COMMA);
+            return escapeString(observation.replace(DECIMAL_SEPARATOR_DOT, DECIMAL_SEPARATOR_COMMA));
         }
         return escapeString(observation);
     }
