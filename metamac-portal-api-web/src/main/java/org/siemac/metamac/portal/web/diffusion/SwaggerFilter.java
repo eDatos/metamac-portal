@@ -30,7 +30,7 @@ public class SwaggerFilter implements Filter {
         String path = ((HttpServletRequest) request).getRequestURI();
         Map requestParameters = request.getParameterMap();
         boolean hasNoParamsOrOnlyToken = requestParameters.isEmpty() || (requestParameters.size() == 1 && requestParameters.containsKey("token"));
-        if (hasNoParamsOrOnlyToken && (StringUtils.endsWithAny(path, getSupportedExportApiiVersions()) || StringUtils.endsWithAny(path, getSupportedPermalinksApiVersions()))) {
+        if (hasNoParamsOrOnlyToken && (StringUtils.endsWithAny(path, getSupportedExportApiVersions()) || StringUtils.endsWithAny(path, getSupportedPermalinksApiVersions()))) {
             request.getRequestDispatcher("/docs/api/index.jsp").forward(request, response);
         } else if (path.endsWith("swagger.jsp") || path.endsWith("api-docs")) {
             Matcher matcher = swaggerVersionPattern.matcher(path);
@@ -46,7 +46,7 @@ public class SwaggerFilter implements Filter {
     public void destroy() {
     }
 
-    private String[] getSupportedExportApiiVersions() {
+    private String[] getSupportedExportApiVersions() {
         return new String[]{"/" + EXPORT_API_NAME + "/v1.0/"};
     }
 
