@@ -19,7 +19,7 @@ public class SwaggerFilter implements Filter {
     private static final String EXPORT_API_NAME       = "export";
     private static final String PERMALINKS_API_NAME   = "permalinks";
 
-    private static Pattern      swaggerVersionPattern = Pattern.compile(".*(/(" + EXPORT_API_NAME + "|" + PERMALINKS_API_NAME + ")/v\\d+\\.\\d+/)swagger.jsp");
+    private static Pattern      swaggerVersionPattern = Pattern.compile(".*(/(" + EXPORT_API_NAME + "|" + PERMALINKS_API_NAME + ")/v\\d+\\.\\d+/)(swagger.jsp|api-docs)");
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -30,10 +30,9 @@ public class SwaggerFilter implements Filter {
         String path = ((HttpServletRequest) request).getRequestURI();
         Map requestParameters = request.getParameterMap();
         boolean hasNoParamsOrOnlyToken = requestParameters.isEmpty() || (requestParameters.size() == 1 && requestParameters.containsKey("token"));
-        if (hasNoParamsOrOnlyToken
-                && (StringUtils.endsWithAny(path, getSupportedExportApiiVersions()) || StringUtils.endsWithAny(path, getSupportedPermalinksApiVersions()))) {
+        if (hasNoParamsOrOnlyToken && (StringUtils.endsWithAny(path, getSupportedExportApiiVersions()) || StringUtils.endsWithAny(path, getSupportedPermalinksApiVersions()))) {
             request.getRequestDispatcher("/docs/api/index.jsp").forward(request, response);
-        } else if (path.endsWith("swagger.jsp")) {
+        } else if (path.endsWith("swagger.jsp") || path.endsWith("api-docs")) {
             Matcher matcher = swaggerVersionPattern.matcher(path);
             if (matcher.matches() && matcher.groupCount() >= 0) {
                 request.getRequestDispatcher("/docs/api" + matcher.group(1) + "swagger.jsp").forward(request, response);
