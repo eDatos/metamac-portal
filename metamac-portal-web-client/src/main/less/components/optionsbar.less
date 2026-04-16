@@ -1,6 +1,21 @@
 @import "../variables";
 
 @minWidthToShowButtonsText: 64rem;
+@minWidthToShowButtonsTextWidget: 80rem;
+
+.horizontal-buttons-group-compact() {
+    gap: var(--edatos-spacing-x-xs);
+
+    button {
+        height: min-content;
+        width: var(--edatos-spacing-x-m);
+        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-xs);
+
+        > span, > i.icon-chevron-down {
+            display: none;
+        }
+    }
+}
 
 .options-bar  {
     .clearfix;
@@ -16,11 +31,15 @@
         flex-direction: row;
         gap: @paddingMedium;
 
-        @media (max-width: @minWidthToShowButtonsText) {
-            button {
-                > span, > i.icon-chevron-down {
-                    display: none;
-                }
+        body:not(.widget) & {
+            @media (max-width: @minWidthToShowButtonsText) {
+                .horizontal-buttons-group-compact();
+            }
+        }
+
+        body.widget & {
+            @media (max-width: @minWidthToShowButtonsTextWidget) {
+                .horizontal-buttons-group-compact();
             }
         }
     }

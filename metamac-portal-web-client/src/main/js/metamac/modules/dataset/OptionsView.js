@@ -18,6 +18,7 @@
             this.filterDimensions = options.filterDimensions;
             this.dataSource = options.dataSource;
             this.optionsModel = options.optionsModel;
+            this.visualizationTabs = options.visualizationTabs;
 
             this._bindEvents();
         },
@@ -29,7 +30,8 @@
             "click .visual-element-options-share": "clickShare",
             "click .visual-element-options-save": "clickSave",
             "click .visual-element-options-embed": "clickEmbed",
-            "click .selection-visualize-selection": "clickVisualize"
+            "click .selection-visualize-selection": "clickVisualize",
+            "click .visualization-button": "clickVisualizationButton"
         },
 
         destroy: function () {
@@ -40,6 +42,11 @@
             this.listenTo(this.optionsModel, "change:fullScreen", this.updateFullscreenButton);
             this.listenTo(this.optionsModel, "change:filter", this.updateFilterButton);
             this.listenTo(this.filterDimensions, "change:drawable", _.debounce(this.updateView, 400));
+
+            if (this.optionsModel.get('widget')) {
+                this.listenTo(this.optionsModel, "change:widgetInitialType", this.updateView);
+                this.listenTo(this.optionsModel, "change:type", this.updateWidgetActiveTab);
+            }
 
             this.delegateEvents();
         },
@@ -101,13 +108,57 @@
                     },
                     usersAreAvailable: !!(App.endpoints["external-users"] && App.endpoints["external-users-web"] && window.Edatos && Edatos.UserManagement),
                     visualize: this.optionsModel.get('visualize'),
-                    widgetButton: this.optionsModel.get('widgetButton')
+                    filterDisabled: this._isFilterDisabled(),
+                    widgetButton: this.optionsModel.get('widgetButton'),
+                    widgetTabs: this._getWidgetTabs()
                 };
                 this.$el.html(this.template(context));
 
                 this.renderDownloadButton();
             }
             return this;
+        },
+
+        _isFilterDisabled: function () {
+            return this.optionsModel.get('widget') && (this.optionsModel.get('type') === 'info' || this.optionsModel.get('type') === 'apiDownload');
+        },
+
+        _getWidgetTabs: function () {
+            if (!this.optionsModel.get('widget') || !this.visualizationTabs) {
+                return null;
+            }
+            var currentType = this.optionsModel.get('type');
+            var widgetInitialType = this.optionsModel.get('widgetInitialType');
+            var widgetTabs = [];
+
+            var self = this;
+            _.each(this.visualizationTabs, function (tab) {
+                if (tab.subtabs && tab.subtabs.length > 0) {
+                    _.each(tab.subtabs, function (subtab) {
+                        if (self._isFixedVisualizationTypeForWidgets(subtab.type) || subtab.type === widgetInitialType) {
+                            widgetTabs.push(_.extend({}, subtab, { active: subtab.type === currentType }));
+                        }
+                    });
+                } else if (self._isFixedVisualizationTypeForWidgets(tab.type) || tab.type === widgetInitialType) {
+                    widgetTabs.push(_.extend({}, tab, { active: tab.type === currentType }));
+                }
+            });
+            return widgetTabs;
+        },
+
+        _isFixedVisualizationTypeForWidgets: function (visualizationType) {
+            return visualizationType === 'info' || visualizationType === 'apiDownload';
+        },
+
+        updateWidgetActiveTab: function () {
+            var type = this.optionsModel.get('type');
+            this.$('.visualization-button').removeClass('active');
+            this.$('.visualization-button[data-type="' + type + '"]').addClass('active');
+        },
+
+        clickVisualizationButton: function (e) {
+            var type = $(e.currentTarget).data('type');
+            this.optionsModel.set('type', type);
         },
 
         clickFilter: function (e) {

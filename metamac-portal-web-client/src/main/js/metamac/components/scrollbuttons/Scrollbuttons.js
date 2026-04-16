@@ -10,13 +10,18 @@
 
     App.components.scrollbuttons.Scrollbuttons.prototype = {
     
-        STEP_LENGTH : 100,
+        STEP_LENGTH : 75,
         ANIMATION_LENGTH : 500,
-        OFFSET : 10, // Margin-left, see scrollbuttons.less @scrollButtonContentWrapperMarginInline
 
         initialize : function (options) {
             this.setEl(options.el);
             this.delegate = options.delegate;
+
+            var rootStyle = getComputedStyle(document.documentElement);
+            this.OFFSET = parseInt(options.isWidget
+                ? rootStyle.getPropertyValue('--scroll-button-content-wrapper-margin-inline-widget')
+                : rootStyle.getPropertyValue('--scroll-button-content-wrapper-margin-inline')
+            , 10);
         },
 
         destroy : function () {

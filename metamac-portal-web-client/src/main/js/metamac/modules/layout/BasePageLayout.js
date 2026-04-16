@@ -38,7 +38,8 @@
                 data: this.data,
                 filterDimensions: this.filterDimensions,
                 optionsModel: this.optionsModel,
-                dataSource: this.dataSource
+                dataSource: this.dataSource,
+                visualizationTabs: this._getTabsConfig()
             });
         },
 
@@ -97,14 +98,10 @@
             if (type === "line" && !this.filterDimensions.canDrawLineVisualizations()) {
                 return false;
             }
-
             if ((type === "map" || type === "mapbubble") && !this.filterDimensions.canDrawMapVisualizations()) {
                 return false;
             }
 
-            if (this.optionsModel.get('widget')) {
-                return type === "info" || type === "apiDownload" || type === this.optionsModel.get('widgetInitialType');
-            }
             return true;
         },
 

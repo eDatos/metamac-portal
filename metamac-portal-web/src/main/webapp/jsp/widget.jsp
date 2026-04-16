@@ -35,6 +35,10 @@
 
     <link rel="stylesheet" href="client/metamac.css?d=${cssDate}"/>
 
+    <c:import url="https://estadisticas.arte-consultores.com/apps/assets/css/styles.jsp"/>
+    <c:import url="https://estadisticas.arte-consultores.com/apps/organisations/istac/common/css/overrides.jsp"/>
+    <!-- TODO get from metadata property -->
+
     <style>
         html, body {
             margin: 0;
@@ -47,7 +51,8 @@
         request.setAttribute("locale", locale);
 
         PortalConfiguration configurationService = ApplicationContextProvider.getApplicationContext().getBean(PortalConfiguration.class);
-        request.setAttribute("defaultLocale", configurationService.retrieveDefaultInternationalizationLanguage());
+        String defaultLocale = configurationService.retrieveDefaultInternationalizationLanguage();
+        request.setAttribute("defaultLocale", defaultLocale);
         String INSTALLATION_TYPE = configurationService.retrieveInstallationType();
         Boolean internalPortal = INSTALLATION_TYPE.equals("INTERNAL");
         String analyticsUrl = (internalPortal ? configurationService.retrieveAppsInternalWebApplicationUrlBase() :
@@ -75,7 +80,10 @@
         request.setAttribute("unitMeasure", WebUtils.getUnitMeasure());
         request.setAttribute("unitMeasureMultiplier", WebUtils.getUnitMeasureMultiplier());
         request.setAttribute("analyticsUrl", analyticsUrl);
-        request.setAttribute("apiKey", WebUtils.getWidgetApiKey());
+        String apiKey = WebUtils.getWidgetApiKey();
+        request.setAttribute("apiKey", apiKey);
+
+        Helpers.initialize(locale, defaultLocale, apiKey);
     %>
     <%
         String permalinkId = request.getParameter(Helpers.PARAMETER_PERMALINK);
@@ -100,7 +108,7 @@
     %>
     <script type="application/javascript" src="${analyticsUrl}" appId="statistical-visualizer-${installationType}-widget"></script>
 </head>
-<body>
+<body class="statistical-visualizer">
 
 <div class="visualizer-wrapper metamac-container"></div>
 

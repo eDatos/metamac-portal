@@ -9,6 +9,7 @@
     App.modules.dataset.DimensionsView = Backbone.View.extend({
 
         template: App.templateManager.get('dataset/dataset-dimensions'),
+        className: 'dataset-dimensions',
 
         initialize: function (options) {
             this.filterDimensions = options.filterDimensions;
@@ -56,7 +57,6 @@
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        flex: "1 0 360px",
                         sortable: true
                     },
                     top: {
@@ -64,7 +64,6 @@
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        flex: "100 1 360px",
                         sortable: true
                     },
                     fixed: {
@@ -90,7 +89,6 @@
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        flex: "1 0 360px",
                         sortable: true
                     },
                     top: {
@@ -98,7 +96,6 @@
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        flex: "100 1 360px",
                         sortable: true
                     },
                     fixed: {
@@ -188,7 +185,6 @@
             "drop .order-sidebar-zone.draggable": "_onDrop",
 
             "click a.order-sidebar-dimension": "_dontFollowLinks",
-            "click a.order-sidebar-measure-attribute": "_dontFollowLinks",
             "change .fixed-dimension-select-category": "_onChangeCategory",
             "change .dimension-select-geographic-granularity": "_onChangeGeographicGranularity",
             "change .dimension-select-granularity": "_onChangeGranularity",
@@ -203,11 +199,7 @@
         },
 
         toggleVisibility: function () {
-            if (this.optionsModel.get('filter')) {
-                this.$el.show();
-            } else {
-                this.$el.hide();
-            }
+            this.$el.toggleClass('hidden', !this.optionsModel.get('filter'));
         },
 
         getMeasureAttribute: function () {
@@ -340,10 +332,6 @@
             return isDraggable;
         },
 
-        _zoneFlexByChartType: function (zone) {
-            return this._getCurrentChartType() ? this.configuration[this._getCurrentChartType()].zones[zone].flex : false;
-        },
-
         _renderContext: function () {
             var zonesIds = this._getZonesByChartType();
             var zones = _.map(zonesIds, function (zone) {
@@ -356,12 +344,12 @@
                     hasSelector: this._hasSelector(zone),
                     location: this._getLocationForZone(zone),
                     showHeader: this._getShowHeader(zone),
-                    flex: this._zoneFlexByChartType(zone)
                 };
             }, this);
 
             return {
                 leftColumns: this._getLeftColumns(zones),
+                rightZones: this._getRightZones(zones),
                 sortByOptions: this._getSortByOptions(),
                 zones: zones
             };
@@ -381,6 +369,12 @@
                 return memo;
             }, 0)
             return currentChartType ? leftColumns : 0;
+        },
+
+        _getRightZones: function (zones) {
+            return _.filter(zones, function (zone) {
+                return zone.location === 'right';
+            }).length;
         },
 
         _getShowHeader: function (zone) {
@@ -429,7 +423,7 @@
             this.scrollbuttons = [];
             var self = this;
             this.$el.find('.order-sidebar-dimensions.scrollable').each(function () {
-                self.scrollbuttons.push(new App.components.scrollbuttons.Scrollbuttons({ el: this }));
+                self.scrollbuttons.push(new App.components.scrollbuttons.Scrollbuttons({ el: this, isWidget: self.optionsModel.get('widget') }));
             });
             this.$el.find('select').select2({
                 dropdownParent: $('.metamac-container'),

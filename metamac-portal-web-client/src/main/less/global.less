@@ -33,7 +33,10 @@ body.statistical-visualizer {
 	font-size: var(--edatos-font-size-m);
 	font-weight: var(--edatos-font-weight-light);
 	color: var(--edatos-color-black-100);
-	background: var(--edatos-color-gray-5);
+
+	&:not(.widget) {
+		background: var(--edatos-color-gray-5);
+	}
 
 	#bloq_interior {
 		padding: @paddingBig 0;

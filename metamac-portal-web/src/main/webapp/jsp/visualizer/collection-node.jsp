@@ -13,7 +13,7 @@
         String locale = (String) request.getAttribute("currentLocale");
         String defaultLocale = (String) request.getAttribute("defaultInternationalizationLanguage");
         String apiKey = (String) request.getAttribute("apiKey");
-    	Helpers helper = new Helpers(locale, defaultLocale, apiKey);
+        Helpers.initialize(locale, defaultLocale, apiKey);
         Integer nodeDepth = (Integer)request.getAttribute("nodeDepth");
         if (nodeDepth == null) {
             nodeDepth = 1;
@@ -39,14 +39,14 @@
     <li class="resource-section resource-section-depth-${nodeDepth}">
         <span class="resource-section-title">
             <span class="resource-section-index"><%= chapterIndex %></span>
-            <span class="resource-section-title-label"><%= helper.localizeText(chapter.getName()).trim() %></span>
+            <span class="resource-section-title-label"><%= Helpers.localizeText(chapter.getName()).trim() %></span>
             <c:if test="${nodeDepth == 2}">
                 <i class="icon-chevron-down"></i>
             </c:if>
         </span>
         <div class="resource-section-description">
 	        <c:if test="${nodeDepth <= 2}">
-	        	<%= Helpers.cleanHtml(helper.localizeText(chapter.getDescription())) %>
+	        	<%= Helpers.cleanHtml(Helpers.localizeText(chapter.getDescription())) %>
 	        </c:if>
 	    </div>
         <% if (chapter.getNodes() != null) {
@@ -85,7 +85,7 @@
     <li class="resource-link">
         <i class="${iconClass}"></i>
         <a class="nouline" href="<%= Helpers.tableViewUrl(table, theme) %>">
-            ${numerationFixed} <%= helper.localizeText(table.getName()) %>
+            ${numerationFixed} <%= Helpers.localizeText(table.getName()) %>
         </a>
     </li>
 

@@ -67,7 +67,7 @@
                     calculable: true,
                     hoverLink: false,
                     left: 'center',
-                    bottom: Constants.charts.title.fontSize + (Constants.charts.gap * 2),
+                    bottom: this.getRightsHolderStyle().fontSize + (Constants.charts.gap * 2),
                     orient: 'horizontal',
                     inRange: {
                         color: [

@@ -19,7 +19,7 @@
             this.tooltipPosition = (this._dataAxis === "xAxis") ? 'top' : 'right';
 
             var titleBottom = Constants.charts.gap;
-            var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
+            var legendBottom = titleBottom + (this.showRightsHolderText() ? Constants.charts.gap + this.getRightsHolderStyle().fontSize : 0);
             this._extendChartOptions({
                 title: {
                     text: this.getRightsHolderText(),

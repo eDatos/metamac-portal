@@ -78,16 +78,16 @@
             var helpUrl = this._getHelpUrl();
 
             var graphSubtabs = [
-                { type: "column", title: I18n.t("filter.button.column") },
-                { type: "bar", title: I18n.t("filter.button.bar") },
-                { type: "line", title: I18n.t("filter.button.line") }
+                { type: "column", title: I18n.t("filter.button.column"), iconClass: "dataset-options-column" },
+                { type: "bar", title: I18n.t("filter.button.bar"), iconClass: "dataset-options-bar" },
+                { type: "line", title: I18n.t("filter.button.line"), iconClass: "dataset-options-line" }
             ].filter(function (subtab) {
                 return self._isVisualizationButtonEnabled(subtab.type);
             });
 
             var mapSubtabs = [
-                { type: "map", title: I18n.t("filter.button.map") },
-                { type: "mapbubble", title: I18n.t("filter.button.mapbubble") }
+                { type: "map", title: I18n.t("filter.button.map"), iconClass: "dataset-options-map" },
+                { type: "mapbubble", title: I18n.t("filter.button.mapbubble"), iconClass: "dataset-options-mapbubble" }
             ].filter(function (subtab) {
                 return self._isVisualizationButtonEnabled(subtab.type);
             });
@@ -96,7 +96,8 @@
                 {
                     type: "table",
                     enabled: self._isVisualizationButtonEnabled("table"),
-                    title: I18n.t("filter.button.table")
+                    title: I18n.t("filter.button.table"),
+                    iconClass: "dataset-options-table"
                 }, {
                     type: "charts",
                     enabled: graphSubtabs.length > 0,
@@ -110,11 +111,13 @@
                 }, {
                     type: "info",
                     enabled: self._isVisualizationButtonEnabled("info"),
-                    title: I18n.t("filter.button.info")
+                    title: I18n.t("filter.button.info"),
+                    iconClass: "dataset-options-info"
                 }, {
                     type: "apiDownload",
                     enabled: self._isVisualizationButtonEnabled("apiDownload"),
-                    title: I18n.t("filter.button.apiDownload")
+                    title: I18n.t("filter.button.apiDownload"),
+                    iconClass: "dataset-options-api-download"
                 }, {
                     type: "help",
                     enabled: !!helpUrl,
@@ -122,18 +125,6 @@
                     title: I18n.t("filter.button.helpUrl")
                 }
             ];
-        },
-
-        _bindEvents: function () {
-            App.modules.dataset.DatasetView.__super__._bindEvents.call(this);
-
-            if (this.optionsModel.get('widget')) {
-                this.listenTo(this.optionsModel, "change:filter", this._updateDimensionsHeight);
-            }
-        },
-
-        _updateDimensionsHeight: function () {
-            this.content.$el.toggleClass('no-dimensions', !this.optionsModel.get('filter'));
         },
 
         _getVisualizationContext: function () {
@@ -165,10 +156,6 @@
             this._unbindEvents();
             this._bindEvents();
 
-            if (this.optionsModel.get('widget')) {
-                this._updateDimensionsHeight();
-            }
-
             App.BrowsersCompatibility.forceFontsRepaint();
         },
 
@@ -178,35 +165,14 @@
 
         _onDidEnterFullScreen: function () {
             App.modules.dataset.DatasetView.__super__._onDidEnterFullScreen.call(this);
-
-            if (this.optionsModel.get('widget')) {
-                this._updateSidebarHeight('');
-            }
         },
 
         _onDidExitFullScreen: function () {
             App.modules.dataset.DatasetView.__super__._onDidExitFullScreen.call(this);
-
-            if (this.optionsModel.get('widget')) {
-                this._updateSidebarHeight($('body').height());
-            }
         },
 
         _initializeWidget: function () {
-            this.content.$el.addClass('dataset-widget');
-            const $body = $('body');
-            this._updateSidebarHeight($body.height());
-
-            const updateSidebarHeightOnResize = _.debounce(() => {
-                this._updateSidebarHeight($body.height());
-            }, 100);
-
-            this._sidebarResizeObserver = new ResizeObserver(_.bind(updateSidebarHeightOnResize, this));
-            this._sidebarResizeObserver.observe($body[0]);
-        },
-
-        _updateSidebarHeight: function (height) {
-            this.content.$el.height(height);
+            $('body').addClass('widget');
         },
 
         showLoading: function () {

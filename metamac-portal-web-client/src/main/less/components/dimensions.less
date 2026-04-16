@@ -7,6 +7,7 @@
 @dimensionSelectorBoxShadow: 0 0 3px 0 rgba(0, 0, 0, 0.15);
 @dimensionSelectorMaxWidth: 187px;
 @leftOrderSidebarDimensionMinHeight: 4.5rem;
+@dimensionsGap: 2px;
 
 .order-dimensions {
     .order-sidebar-zone {
@@ -54,12 +55,10 @@
             }
         }
 
-        .order-sidebar-measure-attribute,
         .order-sidebar-dimension {
             /* IE9 bug changed divs with a, so this correct the new style */
             display: inline-block;
             width: @dimensionPillWidth;
-            text-overflow: ellipsis;
             overflow: clip;
             text-align: center;
             color: var(--edatos-color-white-100);
@@ -87,6 +86,8 @@
                 align-content: center;
                 background-color: var(--edatos-color-secondary-100);
                 width: 100%;
+                text-overflow: ellipsis;
+                overflow: clip;
             }
 
             .dimension-select-geographic-granularity,
@@ -143,16 +144,12 @@
         }
 
         .order-sidebar-dimension-single-value {
-            display: flex;
-            box-sizing: border-box;
-            white-space: normal;
             height: 100%;
+            border-radius: 0;
 
-            cursor: default;
-            text-decoration: none;
-
-            align-items: center;
-            justify-content: center;
+            .order-sidebar-dimension-label {
+                height: 100%;
+            }
         }
     }
 
@@ -163,34 +160,43 @@
     }
 
     .dataset-dimensions-left, .dataset-dimensions-right {
-        display: flex;
-        flex-direction: row;
-        min-height: 79px;
+        display: grid;
         height: auto;
         border-radius: 5px;
         overflow: hidden;
+        gap: @dimensionsGap;
+
+        > .order-sidebar-zone-header,
+        > .order-sidebar-zone {
+            min-width: 0;
+        }
+
+        .order-sidebar-zone-header {
+            display: flex;
+            align-items: center;
+            border: none;
+            background: var(--edatos-color-gray-5);
+            color: var(--edatos-color-gray-60);
+            font-size: @defaultFontSize;
+            font-weight: var(--edatos-font-weight-semibold);
+            padding: @paddingMedium;
+            box-sizing: border-box;
+            white-space: nowrap;
+            margin: 0;
+
+            i {
+                margin-right: 10px;
+            }
+        }
 
         .order-sidebar-zone {
             flex: 1 1 100%;
             display: flex;
             flex-direction: row;
+            gap: @dimensionsGap;
 
-            h2 {
-                width: 100%;
-                text-overflow: ellipsis;
-                height: 100%;
-                border: none;
-                background: var(--edatos-color-gray-5);
-                color: var(--edatos-color-gray-60);
-                font-size: @defaultFontSize;
-                font-weight: var(--edatos-font-weight-semibold);
-                padding: var(--edatos-spacing-y-sm) @paddingMedium;
-                box-sizing: border-box;
-                align-content: center;
-
-                i {
-                    margin-right: 10px;
-                }
+            &.no-header {
+                grid-row: 1 / -1;
             }
 
             .order-sidebar-dimensions {
@@ -203,10 +209,14 @@
         }
     }
 
-    @dimensionsLeftGap: 3px;
     .dataset-dimensions-left {
-        gap: @dimensionsLeftGap;
-        float: left;
+        grid-auto-flow: column;
+        grid-template-rows: ~"1fr" ~"1fr";
+        grid-auto-columns: max-content;
+
+        .dataset-visualization-type-line & {
+            grid-template-rows: min-content auto;
+        }
 
         &.dataset-dimensions-left-0 {
             display: none;
@@ -221,11 +231,8 @@
         }
 
         .order-sidebar-zone {
-            float: left;
-            min-height: 69px;
             height: auto;
             flex-direction: column;
-            gap: @dimensionsLeftGap;
 
             &.has-selector {
                 padding-top: 0;
@@ -235,13 +242,10 @@
                 }
             }
 
-            h2, .order-sidebar-dimensions {
+            .order-sidebar-dimensions {
                 flex-grow: 1;
                 flex-shrink: 0;
-                flex-basis: @leftOrderSidebarDimensionMinHeight;
-            }
-
-            .order-sidebar-dimensions {
+                flex-basis: min-content;
                 padding: var(--edatos-spacing-y-sm) @paddingMedium;
                 box-sizing: border-box;
                 display: flex;
@@ -250,54 +254,102 @@
                 margin-right: 0;
                 width: auto;
 
+                &:has(> .order-sidebar-dimension-single-value) {
+                    padding: 0;
+                }
+
                 .order-sidebar-dimension.dimension-pill {
                     margin: 2px;
                     width: @dimensionPillWidth - 2 * 4px;
                 }
             }
         }
+
+        &:has(.order-sidebar-zone.no-header) {
+            grid-template-rows: unset;
+        }
     }
 
-    @dimensionsRightGap: 2px;
     .dataset-dimensions-right {
-        flex-wrap: wrap;
+        grid-template-columns: min-content ~"1fr";
         flex: 1;
-        gap: @dimensionsRightGap;
 
-        .order-sidebar-zone {             
-            width: 100%;
-            box-sizing: border-box;
-            gap: @dimensionsRightGap;
+        &:not(.dataset-zones-right-1) {
+            grid-template-rows: min-content;
+        }
 
-            h2 {
-                flex: 0 0 130px;
+        &.dataset-zones-right-3 {
+            grid-template-columns: ~"minmax(min-content, auto)" ~"1fr" min-content ~"1fr";
+
+            > .order-sidebar-zone-header:nth-last-child(2),
+            > .order-sidebar-zone:last-of-type {
+                grid-row: 2;
             }
 
-            .order-sidebar-dimensions {
-                flex: 1 1 auto;
-                min-width: 0;
-                margin-left: 0;
-                background: var(--edatos-color-gray-5);
-                height: auto;
+            > .order-sidebar-zone-header:nth-last-child(2) {
+                grid-column: 1;
+            }
 
-                .order-sidebar-dimension.empty-space {
-                    background-color: var(--edatos-color-white-100);
-                    color: var(--edatos-color-white-100);
-                    border: @borderWidthSmall dashed var(--edatos-color-gray-20);
+            > .order-sidebar-zone:last-of-type {
+                grid-column: ~"2 / -1";
+            }
+        }
 
-                    > * {
-                        visibility: hidden;
+        .order-sidebar-zone .order-sidebar-dimensions {
+            width: 100%;
+            min-width: 0;
+            margin-left: 0;
+            background: var(--edatos-color-gray-5);
+            height: auto;
+
+            .order-sidebar-dimension.empty-space {
+                background-color: var(--edatos-color-white-100);
+                color: var(--edatos-color-white-100);
+                border: @borderWidthSmall dashed var(--edatos-color-gray-20);
+
+                > * {
+                    visibility: hidden;
+                }
+            }
+
+            .scroll-button-content-wrapper {
+                padding-top: var(--edatos-spacing-y-sm);
+                padding-bottom: var(--edatos-spacing-y-sm);
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    @media(max-width: @tabletMaxWidthBreakpoint) {
+        .dataset-dimensions {
+            gap: @dimensionsGap;
+
+            .dataset-dimensions-left, .dataset-dimensions-right {
+                .order-sidebar-zone-header {
+                    padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-xs);
+
+                    i {
+                        margin-right: var(--edatos-spacing-x-xs);
                     }
                 }
+            }
 
-                .scroll-button-content-wrapper {
-                    padding-top: var(--edatos-spacing-y-sm);
-                    padding-bottom: var(--edatos-spacing-y-sm);
-                    box-sizing: border-box;
+            body:not(.widget) & .dataset-dimensions-right.dataset-zones-right-3 {
+                grid-template-columns: min-content ~"1fr";
+                grid-template-rows: auto;
+
+                > .order-sidebar-zone-header:nth-last-child(2),
+                > .order-sidebar-zone:last-of-type {
+                    grid-row: auto;
+                    grid-column: auto;
                 }
             }
-        }           
-    }    
+        }
+
+        .dataset-dimensions-left .order-sidebar-zone .order-sidebar-dimensions {
+            padding-inline: var(--edatos-spacing-x-xs);
+        }
+    }
 }
 
 .order-sidebar-zone {
@@ -310,7 +362,7 @@
         list-style: none;
     }
 
-    .order-sidebar-dimension {                        
+    .order-sidebar-dimension {
         .user-select(none);
 
         /* IE9 bug changed divs with a, so this correct the new style */
@@ -363,6 +415,55 @@
             &:not(.select2-results__message):hover {
                 background: var(--edatos-color-gray-5);
                 font-weight: var(--edatos-font-weight-semibold);
+            }
+        }
+    }
+}
+
+// WIDGET-SPECIFIC STYLES
+
+// TODO la dimensión de la derecha debería poder separarse en 3 filas pero con menos ancho que un widget
+
+body.widget .metamac-container:not(.full-screen) {
+    .dataset-sidebar-visualization-container .dataset-visualization-dimensions {
+        .dataset-dimensions {
+            .dataset-dimensions-left, .dataset-dimensions-right {
+                .order-sidebar-zone-header {
+                    font-size: var(--edatos-font-size-xs);
+                }
+
+                .order-sidebar-zone  .order-sidebar-dimension {
+                    font-size: var(--edatos-font-size-xs);
+
+                    .order-sidebar-dimension-label {
+                        line-height: 1;
+                    }
+
+                    .dimension-select-geographic-granularity,
+                    .dimension-select-granularity,
+                    .fixed-dimension-select-category,
+                    .dimension-select-sortby,
+                    .select2-container .selection {
+                        padding-top: var(--edatos-spacing-y-xs);
+                        padding-bottom: var(--edatos-spacing-y-xs);
+                    }
+                }
+            }
+        }
+
+        .dataset-dimensions-left {
+            grid-template-rows: min-content auto;
+
+            .order-sidebar-zone .order-sidebar-dimensions {
+                padding-top: var(--edatos-spacing-y-xs);
+                padding-bottom: var(--edatos-spacing-y-xs);
+            }
+        }
+
+        .dataset-dimensions-right {
+            .order-sidebar-zone .order-sidebar-dimensions .scroll-button-content-wrapper {
+                padding-top: var(--edatos-spacing-y-xs);
+                padding-bottom: var(--edatos-spacing-y-xs);
             }
         }
     }

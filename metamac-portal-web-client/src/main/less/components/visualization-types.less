@@ -10,12 +10,6 @@
         .dataset-visualization-dimensions {
             display: none;
         }
-
-        .rights-holder {
-            bottom: 6px;
-            right: 10px;
-            position: absolute;
-        }
     }
 }
 
@@ -30,4 +24,10 @@
             word-break: break-all;
         }
     }
+}
+
+// WIDGET-SPECIFIC STYLES
+
+body.widget .metamac-container:not(.full-screen) .dataset-view:not(.visualization-type-table) .dataset-visualization-visual-element {
+    border: none;
 }

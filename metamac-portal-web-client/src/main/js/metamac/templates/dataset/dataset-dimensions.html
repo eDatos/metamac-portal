@@ -1,93 +1,88 @@
-<div class="dataset-dimensions">
-    <div class="dataset-dimensions-left dataset-dimensions-left-{{leftColumns}}">
-        {{#each zones}} {{#compare location "==" "left"}}
-        <div class="order-sidebar-zone {{#if draggable}}draggable{{/if}} {{#if hasSelector}}has-selector{{/if}}" data-zone="{{ id }}">
+<div class="dataset-dimensions-left dataset-dimensions-left-{{leftColumns}}">
+    {{#each zones}} {{#compare location "==" "left"}}
+    {{#if showHeader}}
+    <h2 class="order-sidebar-zone-header"><i class="{{ icon }}"></i> {{ label }}</h2>
+    {{/if}}
+    <div class="order-sidebar-zone {{#if draggable}}draggable{{/if}} {{#if hasSelector}}has-selector{{/if}} {{#unless showHeader}}no-header{{/unless}}" data-zone="{{ id }}">
 
-            {{#if showHeader}}
-            <h2><i class="{{ icon }}"></i> {{ label }}</h2>
+        <div class="order-sidebar-dimensions {{#compare dimensions.length '>' '1'}}scrollable{{/compare}}">
+            {{#each dimensions }}
+            {{#if visible}}
+            <a href="#" class="order-sidebar-dimension {{#if singleValue}}order-sidebar-dimension-single-value{{/if}} {{#if ../../draggable}}draggable dimension-pill{{/if}}" {{#if ../../draggable}}draggable="true"
+                {{/if}} data-dimension-id="{{id}}" title="{{pluralLabel}}{{#if selectedCategory }} - {{ selectedCategory.label }} {{/if}}">
+                        <span class="order-sidebar-dimension-label">{{ pluralLabel }}</span>
+
+                        {{#if selectedCategory }}
+                            <select class="fixed-dimension-select-category" data-dimension-id="{{ ../../id }}">
+                                {{#each representationsList}}
+                                    <option value="{{ id }}" {{#compare ../../selectedCategory.id "==" id}}selected{{/compare}}>{{ label }}</option>
+                                {{/each}}
+                            </select>
+                        {{/if}}
+
+                        {{#if selectedGeographicGranularity }}
+                            <select class="dimension-select-geographic-granularity" data-dimension-id="{{ ../../id }}">
+                                {{#each geographicGranularityList}}
+                                    <option value="{{ id }}" {{#compare ../../selectedGeographicGranularity "==" id}}selected{{/compare}}>{{ label }}</option>
+                                {{/each}}
+                            </select>
+                        {{/if}}
+
+                        {{#if selectedGranularity }}
+                            <select class="dimension-select-granularity" data-dimension-id="{{ ../../id }}">
+                                {{#each granularityList}}
+                                    <option value="{{ granularity }}" {{#compare ../../selectedGranularity "==" granularity}}selected{{/compare}}>{{ label }}</option>
+                                {{/each}}
+                            </select>
+                        {{/if}}
+
+                        {{#if sortable}}
+                            <select class="dimension-select-sortby" data-dimension-id="{{ ../../id }}">
+                                {{#each ../../../../../sortByOptions}}
+                                    <option value="{{ id }}">{{ label }}</option>
+                                {{/each}}
+                            </select>
+                        {{/if}}
+                    </a>
             {{/if}}
-
-            <div class="order-sidebar-dimensions {{#compare dimensions.length '>' '1'}}scrollable{{/compare}}">
-                {{#each dimensions }}
-                {{#if visible}}
-                <a href="#" class="order-sidebar-dimension {{#if singleValue}}order-sidebar-dimension-single-value{{/if}} {{#if ../../draggable}}draggable dimension-pill{{/if}}" {{#if ../../draggable}}draggable="true"
-                    {{/if}} data-dimension-id="{{id}}" title="{{pluralLabel}}{{#if selectedCategory }} - {{ selectedCategory.label }} {{/if}}">
-                            <span class="order-sidebar-dimension-label">{{ pluralLabel }}</span>
-
-                            {{#if selectedCategory }}                        
-                                <select class="fixed-dimension-select-category" data-dimension-id="{{ ../../id }}">
-                                    {{#each representationsList}}
-                                        <option value="{{ id }}" {{#compare ../../selectedCategory.id "==" id}}selected{{/compare}}>{{ label }}</option>
-                                    {{/each}}
-                                </select>
-                            {{/if}}
-
-                            {{#if selectedGeographicGranularity }}
-                                <select class="dimension-select-geographic-granularity" data-dimension-id="{{ ../../id }}">
-                                    {{#each geographicGranularityList}}
-                                        <option value="{{ id }}" {{#compare ../../selectedGeographicGranularity "==" id}}selected{{/compare}}>{{ label }}</option>
-                                    {{/each}}
-                                </select>
-                            {{/if}}
-                            
-                            {{#if selectedGranularity }}                        
-                                <select class="dimension-select-granularity" data-dimension-id="{{ ../../id }}">
-                                    {{#each granularityList}}
-                                        <option value="{{ granularity }}" {{#compare ../../selectedGranularity "==" granularity}}selected{{/compare}}>{{ label }}</option>
-                                    {{/each}}
-                                </select>
-                            {{/if}}
-
-                            {{#if sortable}}
-                                <select class="dimension-select-sortby" data-dimension-id="{{ ../../id }}">
-                                    {{#each ../../../../../sortByOptions}}
-                                        <option value="{{ id }}">{{ label }}</option>
-                                    {{/each}}
-                                </select>
-                            {{/if}}
-                        </a> 
-                {{/if}}
-                {{/each}}
-            </div>
+            {{/each}}
         </div>
-        {{/compare}} {{/each}}
     </div>
-    <div class="dataset-dimensions-right dataset-dimensions-left-{{leftColumns}}">
-        {{#each zones}} {{#compare location "==" "right"}}
-        <div class="order-sidebar-zone {{#if draggable}}draggable{{/if}} {{#if hasSelector}}has-selector{{/if}}" data-zone="{{ id }}"
-            {{#if flex}}style="flex: {{ flex }}" {{/if}}>
+    {{/compare}} {{/each}}
+</div>
+<div class="dataset-dimensions-right dataset-dimensions-left-{{leftColumns}} dataset-zones-right-{{rightZones}}">
+    {{#each zones}} {{#compare location "==" "right"}}
+    {{#if showHeader}}
+    <h2 class="order-sidebar-zone-header"><i class="{{ icon }}"></i> {{ label }}</h2>
+    {{/if}}
+    <div class="order-sidebar-zone {{#if draggable}}draggable{{/if}} {{#if hasSelector}}has-selector{{/if}} {{#unless showHeader}}no-header{{/unless}}" data-zone="{{ id }}">
 
-            {{#if showHeader}}
-            <h2><i class="{{ icon }}"></i> {{ label }}</h2>
+        <div class="order-sidebar-dimensions scrollable">
+            {{#each dimensions }}
+            {{#if visible}}
+            <a href="#" class="order-sidebar-dimension {{#if singleValue}}order-sidebar-dimension-single-value{{/if}} {{#if ../../draggable}}draggable dimension-pill{{/if}}" {{#if ../../draggable}}draggable="true"
+                {{/if}} data-dimension-id="{{id}}" title="{{pluralLabel}}{{#if selectedCategory }} - {{ selectedCategory.label }} {{/if}}">
+                        <span class="order-sidebar-dimension-label">{{ pluralLabel }}</span>
+
+                        {{#if selectedCategory }}
+                            <select class="fixed-dimension-select-category" data-dimension-id="{{ ../../id }}">
+                                {{#each representationsList}}
+                                    <option value="{{ id }}" {{#compare ../../selectedCategory.id "==" id}}selected{{/compare}}>{{ label }}</option>
+                                {{/each}}
+                            </select>
+                        {{/if}}
+
+                        {{#if sortable}}
+                            <select class="dimension-select-sortby" data-dimension-id="{{ ../../id }}">
+                                {{#each ../../../../../sortByOptions}}
+                                    <option value="{{ id }}" {{#compare ../../sortBy "==" id}}selected{{/compare}}>{{ label }}</option>
+                                {{/each}}
+                            </select>
+                        {{/if}}
+                    </a>
             {{/if}}
-
-            <div class="order-sidebar-dimensions scrollable {{#compare showHeader '==' false}}no-header{{/compare}}">
-                {{#each dimensions }}
-                {{#if visible}}
-                <a href="#" class="order-sidebar-dimension {{#if singleValue}}order-sidebar-dimension-single-value{{/if}} {{#if ../../draggable}}draggable dimension-pill{{/if}}" {{#if ../../draggable}}draggable="true"
-                    {{/if}} data-dimension-id="{{id}}" title="{{pluralLabel}}{{#if selectedCategory }} - {{ selectedCategory.label }} {{/if}}">
-                            <span class="order-sidebar-dimension-label">{{ pluralLabel }}</span>
-
-                            {{#if selectedCategory }}                        
-                                <select class="fixed-dimension-select-category" data-dimension-id="{{ ../../id }}">
-                                    {{#each representationsList}}
-                                        <option value="{{ id }}" {{#compare ../../selectedCategory.id "==" id}}selected{{/compare}}>{{ label }}</option>
-                                    {{/each}}
-                                </select>
-                            {{/if}}
-
-                            {{#if sortable}}
-                                <select class="dimension-select-sortby" data-dimension-id="{{ ../../id }}">
-                                    {{#each ../../../../../sortByOptions}}
-                                        <option value="{{ id }}" {{#compare ../../sortBy "==" id}}selected{{/compare}}>{{ label }}</option>
-                                    {{/each}}
-                                </select>
-                            {{/if}}
-                        </a>
-                {{/if}}
-                {{/each}}
-            </div>
+            {{/each}}
         </div>
-        {{/compare}} {{/each}}
     </div>
+    {{/compare}} {{/each}}
 </div>

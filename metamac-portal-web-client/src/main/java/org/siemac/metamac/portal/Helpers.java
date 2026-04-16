@@ -81,23 +81,25 @@ public class Helpers {
 
     private static final Logger LOGGGER                                           = LoggerFactory.getLogger(Helpers.class);
 
+    private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
+    private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
+    private static final String DEFAULT_KEY                                        = "__default__";
+
     private static String       language;
     private static String       defaultLanguage;
     private static String       apiKey;
-    private String              DEFAULT_KEY                                       = "__default__";
-    private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
-    private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
 
     private static RestTemplate restTemplate;
 
-    public Helpers(String language, String defaultLanguage, String apiKey) {
-        this.language = language;
-        this.defaultLanguage = defaultLanguage;
-        this.apiKey = apiKey;
+    public static void initialize(String language, String defaultLanguage, String apiKey) {
+        Helpers.language = language;
+        Helpers.defaultLanguage = defaultLanguage;
+        Helpers.apiKey = apiKey;
     }
 
-    public Helpers(String language, String defaultLanguage) {
-        this(language, defaultLanguage, null);
+    public static void initialize(String language, String defaultLanguage) {
+        Helpers.language = language;
+        Helpers.defaultLanguage = defaultLanguage;
     }
 
     public static String getPackageVersion() {
@@ -435,7 +437,7 @@ public class Helpers {
         return total;
     }
 
-    public String localizeText(InternationalString internationalString) {
+    public static String localizeText(InternationalString internationalString) {
         if (internationalString != null) {
             String defaultText = internationalString.getTexts().get(0).getValue();
             for (LocalisedString text : internationalString.getTexts()) {
@@ -451,7 +453,7 @@ public class Helpers {
         }
     }
 
-    public String localizeText(Map<String, String> stringMap) {
+    public static String localizeText(Map<String, String> stringMap) {
         if (stringMap == null) {
             return StringUtils.EMPTY;
         }

@@ -50,7 +50,8 @@
                 apiDownloadMessage: this._buildApiDownloadMessage(),
                 selectionApiDownloadMessage: this._buildApiDownloadMessage(true),
                 apiDocumentationUrl: this.metadata.getApiDocumentationUrl(),
-                targetBlank: App.config["widget"]
+                targetBlank: App.config["widget"],
+                rightsHolder: this.showRightsHolderText() ? this.getRightsHolderText() : '',
             };
             this.$el.html(this.template(context));
 

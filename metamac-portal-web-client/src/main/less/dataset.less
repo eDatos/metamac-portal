@@ -1,5 +1,12 @@
 @import "variables";
 
+:root {
+    --rights-holder-font-size: 12;
+    --rights-holder-font-weight: var(--edatos-font-weight-light);
+    --rights-holder-font-color: var(--edatos-color-gray-80);
+    --rights-holder-font-family: var(--edatos-font-family);
+}
+
 .dataset-view {
     height: 100%;
     display: flex;
@@ -174,10 +181,6 @@
             }
         }
     }
-
-    .spacer {
-        margin-bottom: 50px;
-    }
 }
 
 .btn-group.open .btn-primary.dropdown-toggle {
@@ -209,7 +212,6 @@
 
         h3 {
             font-size: @defaultFontSize;
-            margin-top: 5px;
             background: none;
             color: @istacGreyDark;
             font-weight: normal;
@@ -223,39 +225,35 @@
         }
     }
 }
-.dataset-visualization-container {
-    height: 500px; // TODO set according to window height
-    position: relative;
-    flex: auto;
-    .box-sizing(border-box);
-    .border-radius(0 0 @borderRadiusBig @borderRadiusBig);
-    overflow: hidden;
-    .clearfix;
 
-    .dataset-visualization-title {
-        border-bottom: 1px solid @istacGreyMedium;
-        padding: 4px;
-        background: @istacWhite;
-        margin: 0;
-        font-size: 12px;
-        position: absolute;
-        width: 100%;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        .box-sizing(border-box);
-    }
+.dataset-sidebar-visualization-container {
+    height: 500px; // TODO set according to window height
 
     .dataset-visualization-dimensions {
         background: @istacWhite;
         width: 100%;
-        margin-bottom: var(--edatos-spacing-y-l);
+
+        .dataset-dimensions {
+            margin-bottom: var(--edatos-spacing-y-l);
+
+            &.hidden {
+                display: none;
+            }
+        }
 
         .order-dimensions;
     }
+
+    .rights-holder {
+        text-align: right;
+        color: var(--rights-holder-font-color);
+        font-size: ~"calc(var(--rights-holder-font-size) * 1px)";
+        font-weight: var(--rights-holder-font-weight);
+        font-family: var(--rights-holder-font-family);
+        margin-top: var(--edatos-spacing-y-xs);
+    }
 }
 
-// Options bar
 .dataset-visualization-options-bar {
     .options-bar;
 }
@@ -265,26 +263,6 @@
 
     .visual-element-options-edit {
         height: 41px;
-    }
-}
-
-.dataset-sidebar-visualization-container {
-    height: 100%;
-    &.dataset-widget {
-
-        .sidebar-container {
-            height: 100%; 
-        }
-
-        padding-top: @datasetVisualizationWidgetTitleHeight;
-    }
-
-    .box-sizing(border-box);
-
-    .rights-holder {
-        font-size: 9px;
-        color: @istacGreyMedium;
-        text-align: right;
     }
 }
 
@@ -328,10 +306,7 @@
 .dataset-options-type-icon {
     padding-left: 0;
     font-size: @defaultFontSize;
-
-    &:before {
-        padding: 2px 2px;
-    }
+    height: @defaultFontSize;
 }
 
 .dataset-options-full-screen {
@@ -391,6 +366,74 @@
 .dataset-options-visualize {
     .dataset-options-type-icon;
     .icon-circle-check
+}
+
+.dataset-options-table {
+    .dataset-options-type-icon;
+    .icon-table;
+
+    .btn.active &, .btn:active & {
+        .icon-table-solid;
+    }
+}
+
+.dataset-options-column {
+    .dataset-options-type-icon;
+    .icon-chart-simple;
+
+    .btn.active &, .btn:active & {
+        .icon-chart-simple-solid;
+    }
+}
+
+.dataset-options-bar {
+    .dataset-options-type-icon;
+    .icon-chart-simple-horizontal;
+
+    .btn.active &, .btn:active & {
+        .icon-chart-simple-horizontal-solid;
+    }
+}
+
+.dataset-options-line {
+    .dataset-options-type-icon;
+    .icon-chart-line;
+
+    .btn.active &, .btn:active & {
+        .icon-chart-line-solid;
+    }
+}
+
+.dataset-options-map {
+    .dataset-options-type-icon;
+    .icon-earth-europe;
+
+    .btn.active &, .btn:active & {
+        .icon-earth-europe-solid;
+    }
+}
+
+.dataset-options-mapbubble {
+    .dataset-options-type-icon;
+    .icon-mapbubble;
+}
+
+.dataset-options-info {
+    .dataset-options-type-icon;
+    .icon-circle-info;
+
+    .btn.active &, .btn:active & {
+        .icon-circle-info-solid;
+    }
+}
+
+.dataset-options-api-download {
+    .dataset-options-type-icon;
+    .icon-link;
+
+    .btn.active &, .btn:active & {
+        .icon-link-solid;
+    }
 }
 
 .metadata-value-resource-url {
@@ -602,4 +645,60 @@
     overflow: hidden;
     height: 0;
     width: 0;
+}
+
+// WIDGET-SPECIFIC STYLES
+
+body.widget {
+    .dataset-view {
+        .dataset-visualization-title {
+            .box-sizing(border-box);
+
+            width: 100%;
+            min-height: min-content;
+            margin: 0;
+            color: var(--edatos-color-secondary-100);
+            font-weight: var(--edatos-font-weight-bold);
+        }
+
+        .dataset-sidebar-visualization-container {
+            height: 100%;
+            overflow: hidden;
+        }
+    }
+
+    .metamac-container:not(.full-screen) {
+        .dataset-view {
+            gap: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-xs);
+
+            .dataset-visualization-title {
+                font-size: var(--edatos-font-size-s);
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                line-height: 1;
+                padding: var(--edatos-spacing-y-xs) 0 0 0;
+            }
+
+            .dataset-sidebar-visualization-container {
+                .sidebar-container {
+                    .dataset-visualization-dimensions .dataset-dimensions {
+                        margin-bottom: var(--edatos-spacing-y-xs);
+                    }
+
+                    .dataset-visualization-visual-element {
+                        h3 {
+                            font-size: var(--edatos-font-size-xs);
+                            padding-left: 0;
+                            margin: 0 0 var(--edatos-spacing-y-xs);
+                        }
+
+                        .info-section-title {
+                            padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-m);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

@@ -1,8 +1,18 @@
+:root {
+    --scroll-button-content-wrapper-margin-inline: 10;
+    --scroll-button-content-wrapper-margin-inline-widget: 5;
+}
+
 @paddingScrollButton: 2px;
+@scrollButtonWidth: var(--edatos-spacing-x-m);
+
 @leftPaddingScrollButtonRight: 4px;
 @leftPaddingScrollButtonLeft: 5px;
-@scrollButtonWidth: var(--edatos-spacing-x-m);
-@scrollButtonContentWrapperMarginInline: 10px;
+@scrollButtonContentWrapperMarginInline: ~"calc(var(--scroll-button-content-wrapper-margin-inline) * 1px)";
+
+@leftPaddingScrollButtonRightWidget: 3px;
+@leftPaddingScrollButtonLeftWidget: 4px;
+@scrollButtonContentWrapperMarginInlineWidget: ~"calc(var(--scroll-button-content-wrapper-margin-inline-widget) * 1px)";
 
 .scroll-buttons {
     display: flex;
@@ -16,6 +26,7 @@
         margin-inline: @scrollButtonContentWrapperMarginInline;
         height: 100%;
         width: 100%;
+        align-content: center;
 
         .scroll-button-content {
             display: flex;
@@ -48,6 +59,27 @@
     .scroll-button-right {
         .scroll-button;
         padding-left: @leftPaddingScrollButtonRight;
+    }
+}
+
+// WIDGET-SPECIFIC STYLES
+
+body.widget .metamac-container:not(.full-screen) .scroll-buttons {
+    .scroll-button-content-wrapper {
+        margin-inline: @scrollButtonContentWrapperMarginInlineWidget;
+    }
+
+    .scroll-button-left, .scroll-button-right {
+        width: var(--edatos-font-size-s);
+        font-size: var(--edatos-font-size-s);
+    }
+
+    .scroll-button-left {
+        padding-left: @leftPaddingScrollButtonLeftWidget;
+    }
+
+    .scroll-button-right {
+        padding-left: @leftPaddingScrollButtonRightWidget;
     }
 }
 

@@ -37,7 +37,7 @@
             self.tooltipPosition = "top";
             this._chartOptions = {
                 textStyle: {
-                    fontFamily: "Helvetica, Arial, sans-serif"
+                    fontFamily: this.getRightsHolderStyle().fontFamily
                 },
                 animation: false,
                 backgroundColor: Constants.colors.istacWhite,
@@ -101,9 +101,9 @@
                     right: Constants.charts.title.marginRight,
                     padding: 0,
                     textStyle: {
-                        fontSize: Constants.charts.title.fontSize,
-                        color: Constants.colors.istacBlack,
-                        fontWeight: 'normal'
+                        fontSize: this.getRightsHolderStyle().fontSize,
+                        color: this.getRightsHolderStyle().color,
+                        fontWeight: this.getRightsHolderStyle().fontWeight
                     }
                 },
                 tooltip: {
@@ -126,6 +126,19 @@
                 },
                 color: Constants.charts.colors
             };
+        },
+
+        getRightsHolderStyle: function () {
+            if (!App.VisualElement.Chart._cachedRightsHolderStyle) {
+                var rootStyle = getComputedStyle(document.documentElement);
+                App.VisualElement.Chart._cachedRightsHolderStyle = {
+                    fontSize: parseInt(rootStyle.getPropertyValue('--rights-holder-font-size'), 10),
+                    fontWeight: parseInt(rootStyle.getPropertyValue('--rights-holder-font-weight'), 10),
+                    color: rootStyle.getPropertyValue('--rights-holder-font-color').trim(),
+                    fontFamily: rootStyle.getPropertyValue('--rights-holder-font-family').trim()
+                };
+            }
+            return App.VisualElement.Chart._cachedRightsHolderStyle;
         },
 
         getTooltipFormatterFunction: function (tooltipFormatterParams) {

@@ -19,17 +19,10 @@
     {{/if}}
 </div>
 {{/if}}
-<div class="navigation-tabs-region">
-
-</div>
-<div class="dataset-visualization-options-bar">
-
-</div>
-<div class="dataset-visualization-container">
-    {{#if isWidget}}
-    <h2 class="dataset-visualization-title"><a target="_blank" href="{{ metadata.visualizerUrlForWidget }}" title="{{ metadata.title }}">{{ metadata.title }}</a></h2>
-    {{/if}}
-    <div class="dataset-sidebar-visualization-container {{#if noDimensions}}no-dimensions{{/if}}">">
-
-    </div>
-</div>
+{{#if isWidget}}
+<h2 class="dataset-visualization-title"><a target="_blank" href="{{ metadata.visualizerUrlForWidget }}" title="{{ metadata.title }}">{{ metadata.title }}</a></h2>
+{{ else }}
+<div class="navigation-tabs-region"></div>
+{{/if}}
+<div class="dataset-visualization-options-bar"></div>
+<div class="dataset-sidebar-visualization-container"></div>
