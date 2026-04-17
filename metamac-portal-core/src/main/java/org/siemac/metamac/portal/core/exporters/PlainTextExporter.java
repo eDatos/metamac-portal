@@ -24,6 +24,9 @@ import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.QueryBas
 
 public class PlainTextExporter {
 
+    public static final String DECIMAL_SEPARATOR_COMMA = ",";
+    public static final String DECIMAL_SEPARATOR_DOT = ".";
+
     private final ResourceAccess   datasetAccess;
     private final DatasetSelection datasetSelection;
 
@@ -41,7 +44,7 @@ public class PlainTextExporter {
         datasetAccess = resourceAccess;
         datasetSelection = resourceAccess.getDataSelection();
         this.plainTextTypeEnum = plainTextTypeEnum;
-        if (",".equals(decimalSeparator) || ".".equals(decimalSeparator)) {
+        if (DECIMAL_SEPARATOR_COMMA.equals(decimalSeparator) || DECIMAL_SEPARATOR_DOT.equals(decimalSeparator)) {
             this.decimalSeparator = decimalSeparator;
         }
         if (this.plainTextTypeEnum == null) {
@@ -378,8 +381,8 @@ public class PlainTextExporter {
     }
 
     private String formatObservation(String observation) {
-        if (",".equals(decimalSeparator)) {
-            return observation.replace(".", ",");
+        if (DECIMAL_SEPARATOR_COMMA.equals(decimalSeparator)) {
+            return escapeString(observation.replace(DECIMAL_SEPARATOR_DOT, DECIMAL_SEPARATOR_COMMA));
         }
         return escapeString(observation);
     }
