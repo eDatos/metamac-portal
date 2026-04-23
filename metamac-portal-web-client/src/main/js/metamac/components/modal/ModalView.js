@@ -33,6 +33,7 @@
         onRender: function () {
             this.content.show(this.contentView);
             this.contentView.$el.addClass('modal-specific-content');
+            this.$('.modal-content').perfectScrollbar();
         },
 
         show: function () {

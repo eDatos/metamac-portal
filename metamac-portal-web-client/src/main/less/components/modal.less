@@ -21,6 +21,8 @@
 }
 
 .modal {
+    display: flex;
+    flex-direction: column;
     width: @modal-width;
     border: none;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
@@ -85,189 +87,228 @@
         }
     }
 
-    .modal-content .modal-specific-content {
-        display: flex;
-        flex-direction: column;
-        gap: var(--edatos-spacing-y-xs);
-        box-sizing: border-box;
-        padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m);
+    .modal-content {
+        overflow-y: auto;
 
-        .modal-form-section {
+        .modal-specific-content {
             display: flex;
             flex-direction: column;
             gap: var(--edatos-spacing-y-xs);
+            box-sizing: border-box;
+            padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m);
 
-            .modal-section-title {
-                margin: 0;
-                color: var(--edatos-color-black-100);
-                font-weight: var(--edatos-font-weight-semibold);
-                line-height: @lineHeightMedium;
-
-                &:is(legend) {
-                    margin-bottom: var(--edatos-spacing-y-xs);
-                    padding: 0;
-                }
-            }
-
-            &:not(:first-child) {
-                margin-top: var(--edatos-spacing-y-sm);
-            }
-
-            .modal-radio-button,
-            .modal-checkbox {
+            .modal-form-section {
                 display: flex;
-                align-items: center;
-                width: 100%;
+                flex-direction: column;
+                gap: var(--edatos-spacing-y-xs);
 
-                label {
+                .modal-section-title {
+                    margin: 0;
                     color: var(--edatos-color-black-100);
-                    font-weight: var(--edatos-font-weight-light);
+                    font-weight: var(--edatos-font-weight-semibold);
                     line-height: @lineHeightMedium;
-                    margin: 0 var(--edatos-spacing-x-xs) 0 0;
+
+                    &:is(legend) {
+                        margin-bottom: var(--edatos-spacing-y-xs);
+                        padding: 0;
+                    }
                 }
 
-                .radio-related-input {
-                    width: 50%;
-                    max-width: @modal-related-input-max-width;
-                    box-sizing: border-box;
+                &:not(:first-child) {
+                    margin-top: var(--edatos-spacing-y-sm);
                 }
 
-                .input-related-radio {
+                .modal-radio-button,
+                .modal-checkbox {
                     display: flex;
                     align-items: center;
-                    flex: 1;
+                    width: 100%;
+
+                    label {
+                        color: var(--edatos-color-black-100);
+                        font-weight: var(--edatos-font-weight-light);
+                        line-height: @lineHeightMedium;
+                        margin: 0 var(--edatos-spacing-x-xs) 0 0;
+                    }
+
+                    .radio-related-input {
+                        width: 50%;
+                        max-width: @modal-related-input-max-width;
+                        box-sizing: border-box;
+                    }
+
+                    .input-related-radio {
+                        display: flex;
+                        align-items: center;
+                        flex: 1;
+                    }
                 }
             }
-        }
-
-        .form-buttons {
-            display: flex;
-            justify-content: flex-start;
-            margin-top: var(--edatos-spacing-y-xl, 2rem);
-
-            .modal-form-view-icon {
-                .dataset-options-type-icon;
-                .icon-eye;
-
-                .btn.active &,
-                .btn:active & {
-                    .icon-eye-solid;
-                }
-            }
-        }
-
-        .form-error, .form-info {
-            font-size: var(--edatos-font-size-s);
-        }
-
-        .form-error {
-            color: var(--edatos-color-red-100);
-        }
-
-        .form-info {
-            color: var(--edatos-color-gray-60);
-        }
-
-        #modal-captcha {
-            display: flex;
-            justify-content: center;
-        }
-
-        p {
-            place-self: center;
-            margin: 0;
-            color: var(--edatos-color-black-100);
-            font-size: @defaultFontSize;
-            font-weight: var(--edatos-font-weight-semibold);
-            line-height: @lineHeightMedium;
-            text-align: center;
-        }
-
-        &.modal-confirmation {
-            gap: var(--edatos-spacing-y-l);
-            margin: var(--edatos-spacing-y-sm) 0;
 
             .form-buttons {
-                gap: var(--edatos-spacing-x-m);
+                display: flex;
+                justify-content: flex-start;
+                margin-top: var(--edatos-spacing-y-xl, 2rem);
+
+                .modal-form-view-icon {
+                    .dataset-options-type-icon;
+                    .icon-eye;
+
+                    .btn.active &,
+                    .btn:active & {
+                        .icon-eye-solid;
+                    }
+                }
+            }
+
+            .form-error, .form-info {
+                font-size: var(--edatos-font-size-s);
+            }
+
+            .form-error {
+                color: var(--edatos-color-red-100);
+            }
+
+            .form-info {
+                color: var(--edatos-color-gray-60);
+            }
+
+            #modal-captcha {
+                display: flex;
                 justify-content: center;
-                margin-top: 0;
+            }
 
-                button {
-                    height: @modal-button-height;
-                    width: 100%;
-                    max-width: @modal-button-max-width;
-                    border: none;
-                    color: var(--edatos-color-white-100);
-                    text-align: center;
-                    font-size: var(--edatos-font-size-s);
-                    font-weight: var(--edatos-font-weight-semibold);
-                    border-radius: @borderRadiusSmall;
-                    cursor: pointer;
-                    text-transform: uppercase;
+            p {
+                place-self: center;
+                margin: 0;
+                color: var(--edatos-color-black-100);
+                font-size: @defaultFontSize;
+                font-weight: var(--edatos-font-weight-semibold);
+                line-height: @lineHeightMedium;
+                text-align: center;
+            }
 
-                    &.button-reject {
-                        background-color: var(--edatos-color-red-100);
-                    }
+            &.modal-confirmation {
+                gap: var(--edatos-spacing-y-l);
+                margin: var(--edatos-spacing-y-sm) 0;
 
-                    &.button-confirm {
-                        background-color: var(--edatos-color-green-100);
+                .form-buttons {
+                    gap: var(--edatos-spacing-x-m);
+                    justify-content: center;
+                    margin-top: 0;
+
+                    button {
+                        height: @modal-button-height;
+                        width: 100%;
+                        max-width: @modal-button-max-width;
+                        border: none;
+                        color: var(--edatos-color-white-100);
+                        text-align: center;
+                        font-size: var(--edatos-font-size-s);
+                        font-weight: var(--edatos-font-weight-semibold);
+                        border-radius: @borderRadiusSmall;
+                        cursor: pointer;
+                        text-transform: uppercase;
+
+                        &.button-reject {
+                            background-color: var(--edatos-color-red-100);
+                        }
+
+                        &.button-confirm {
+                            background-color: var(--edatos-color-green-100);
+                        }
                     }
                 }
             }
-        }
 
-        &.modal-share {
-            .modal-share-icons .modal-share-icon {
-                padding-left: 0;
-                font-size: var(--edatos-font-size-lg);
+            &.modal-share {
+                .modal-share-icons .modal-share-icon {
+                    padding-left: 0;
+                    font-size: var(--edatos-font-size-lg);
 
-                &:before {
-                    color: var(--edatos-color-black-100);
-                    padding: 2px 3px;
-                }
+                    &:before {
+                        color: var(--edatos-color-black-100);
+                        padding: 2px 3px;
+                    }
 
-                &.twitter {
-                    .icon-x;
-                    &:hover:before { color: #000; }
-                }
-                &.facebook {
-                    .icon-facebook;
-                    &:hover:before { color: #3b5999; }
-                }
-                &.linkedin {
-                    .icon-linkedin;
-                    &:hover:before { color: #4498C8; }
-                }
-                &.diigo {
-                    .icon-diigo;
-                    &:hover:before { color: #0888D8; }
-                }
-                &.meneame {
-                    .icon-meneame;
-                    &:hover:before { color: #F47312; }
-                }
-                &.digg {
-                    .icon-digg;
-                    &:hover:before { color: #16B4EF; }
-                }
-                &.delicious {
-                    .icon-delicious;
-                    &:hover:before { color: #07529C; }
-                }
-                &.google {
-                    .icon-google;
-                    &:hover:before { color: #0868B9; }
-                }
-                &.yahoobkm {
-                    .icon-yahoo;
-                    &:hover:before { color: #791998; }
+                    &.twitter {
+                        .icon-x;
+
+                        &:hover:before {
+                            color: #000;
+                        }
+                    }
+
+                    &.facebook {
+                        .icon-facebook;
+
+                        &:hover:before {
+                            color: #3b5999;
+                        }
+                    }
+
+                    &.linkedin {
+                        .icon-linkedin;
+
+                        &:hover:before {
+                            color: #4498C8;
+                        }
+                    }
+
+                    &.diigo {
+                        .icon-diigo;
+
+                        &:hover:before {
+                            color: #0888D8;
+                        }
+                    }
+
+                    &.meneame {
+                        .icon-meneame;
+
+                        &:hover:before {
+                            color: #F47312;
+                        }
+                    }
+
+                    &.digg {
+                        .icon-digg;
+
+                        &:hover:before {
+                            color: #16B4EF;
+                        }
+                    }
+
+                    &.delicious {
+                        .icon-delicious;
+
+                        &:hover:before {
+                            color: #07529C;
+                        }
+                    }
+
+                    &.google {
+                        .icon-google;
+
+                        &:hover:before {
+                            color: #0868B9;
+                        }
+                    }
+
+                    &.yahoobkm {
+                        .icon-yahoo;
+
+                        &:hover:before {
+                            color: #791998;
+                        }
+                    }
                 }
             }
-        }
 
-        &.modal-save {
-            textarea {
-                resize: none;
+            &.modal-save {
+                textarea {
+                    resize: none;
+                }
             }
         }
     }
