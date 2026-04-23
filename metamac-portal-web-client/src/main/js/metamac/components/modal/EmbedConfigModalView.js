@@ -20,10 +20,9 @@
 
         TitleView: Backbone.View.extend({
 
-            template: '<div class="modal-form-section">' +
-                '    <label id="dataset-embed-title-label" class="modal-section-title" for="dataset-embed-title-input"></label>' +
-                '    <input id="dataset-embed-title-input" type="text">' +
-                '</div>',
+            template: '' +
+                '<label id="dataset-embed-title-label" class="modal-section-title" for="dataset-embed-title-input"></label>' +
+                '<input id="dataset-embed-title-input" type="text">',
             className: 'modal-form-section',
 
             initialize: function () {
