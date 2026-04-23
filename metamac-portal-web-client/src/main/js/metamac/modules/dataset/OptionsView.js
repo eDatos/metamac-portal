@@ -195,15 +195,16 @@
                     onSubmit: function (permalink) {
                         modal.close();
 
-                        modalContentView = new App.modules.dataset.DatasetShareView({permalinkId: permalink.id, filterDimensions: self.filterDimensions});
-                        modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                        modalContentView = new App.components.modal.ShareModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions});
+                        modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-share-nodes"});
                         modal.show();
                     },
+                    customButtonText: I18n.t("modal.shareConfig.button.submit")
                 });
             } else {
-                modalContentView = new App.modules.dataset.DatasetShareView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
+                modalContentView = new App.components.modal.ShareModalView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
             }
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-share-nodes"});
             modal.show();
         },
 
@@ -212,7 +213,7 @@
             if (this.isInternalPortal()) {
                 var modalContentView = new DisabledFeatureInternalPortalView();
                 var title = I18n.t("filter.button.save");
-                var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
                 modal.show();
             } else {
                 var self = this;
@@ -225,19 +226,20 @@
                             onSubmit: function (permalink) {
                                 modal.close();
 
-                                modalContentView = new App.modules.dataset.DatasetSaveView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val});
-                                modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                                modalContentView = new App.components.modal.SaveModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val});
+                                modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
                                 modal.show();
                             },
+                            customButtonText: I18n.t("modal.saveConfig.button.submit")
                         });
                     } else {
-                        modalContentView = new App.modules.dataset.DatasetSaveView({
+                        modalContentView = new App.components.modal.SaveModalView({
                             permalinkId: DatasetPermalink.getExistingPermalinkId(self.filterDimensions),
                             filterDimensions: self.filterDimensions,
                             user: val
                         });
                     }
-                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
                     modal.show();
                 }).catch(function () {
                     var modal;
@@ -252,7 +254,7 @@
                         },
                     });
                     var title = I18n.t("modal.information.loginRequired.title");
-                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
                     modal.show();
                 });
             }
@@ -270,15 +272,16 @@
                         onSubmit: function (permalink, embedConfigExtraData) {
                             modal.close();
 
-                            modalContentView = new App.modules.dataset.DatasetEmbedView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title});
-                            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                            modalContentView = new App.components.modal.EmbedModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title});
+                            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-code"});
                             modal.show();
                         },
+                        customButtonText: I18n.t("modal.embedConfig.button.submit"),
                     });
                 } else {
-                    modalContentView = new App.modules.dataset.DatasetEmbedView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
+                    modalContentView = new App.components.modal.EmbedModalView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
                 }
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-code"});
             modal.show();
         },
 

@@ -1,11 +1,12 @@
 (function () {
     "use strict";
 
-    App.namespace('App.modules.dataset.DatasetEmbedView');
+    App.namespace('App.components.modal.EmbedModalView');
 
-    App.modules.dataset.DatasetEmbedView = Backbone.View.extend({
+    App.components.modal.EmbedModalView = Backbone.View.extend({
 
-        template: App.templateManager.get("dataset/dataset-embed"),
+        template: App.templateManager.get("components/modal/modal-embed"),
+        className: 'modal-embed',
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
@@ -22,7 +23,7 @@
                 'permalink',
                 '=',
                 this.permalinkId
-            ].join('')
+            ].join('');
         },
 
         render: function () {

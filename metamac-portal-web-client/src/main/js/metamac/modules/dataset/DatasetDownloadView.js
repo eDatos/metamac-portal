@@ -11,8 +11,6 @@
 
         template: App.templateManager.get("dataset/dataset-download"),
 
-        className: "dataset-download",
-
         events: {
             "click .download-menu-dropdown a": "clickDownloadButton",
             "click .download-menu-toggle": "_toggleDropdown"
@@ -439,7 +437,7 @@
                 }
             });
             var title = I18n.t("filter.download.options.title");
-            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView, titleIconName: "icon-download-solid" });
+            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView, titleIconName: "icon-file-export" });
             this.modal.show();
         },
 

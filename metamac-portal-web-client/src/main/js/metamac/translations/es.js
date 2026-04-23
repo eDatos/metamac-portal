@@ -434,9 +434,22 @@ I18n.translations.es = {
             }
         },
         embedConfig: {
+            button: {
+                submit: "Ver código",
+            },
             label: {
                 title: "Título"
             }
+        },
+        shareConfig: {
+            button: {
+                submit: "Ver enlace",
+            },
+        },
+        saveConfig: {
+            button: {
+                submit: "Ver descriptores",
+            },
         }
     },
     captcha: {

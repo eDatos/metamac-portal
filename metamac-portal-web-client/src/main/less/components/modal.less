@@ -1,13 +1,13 @@
 @import "../variables";
+@import "../mixins";
 
 @modal-width: 90%;
 @modal-max-width: 595px;
 @modal-min-width: 260px;
 @modal-close-font-size: 1.25rem;
-@modal-content-y-padding: 1.875rem;
 @modal-button-height: 2.3125rem;
-@modal-button-max-width: 9,375rem;
-@modal-confirmation-text-margin-bottom: 1.25rem;
+@modal-button-max-width: 9.375rem;
+@modal-related-input-max-width: 230px;
 
 .modal-backdrop {
     position: fixed;
@@ -16,7 +16,8 @@
     bottom: 0;
     left: 0;
     z-index: (@zIndex40 - 5);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--edatos-color-black-100);
+    .opacity(30);
 }
 
 .modal {
@@ -24,285 +25,251 @@
     border: none;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
     border-radius: @borderRadiusMedium;
-    background-color : @istacWhite;
-    overflow: auto;
+    background-color: var(--edatos-color-white-100);
+    overflow: clip;
     font-size: @defaultFontSize;
-
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: @zIndex40;
-    max-height: 500px;
+    max-height: 90%;
     max-width: @modal-max-width;
     min-width: @modal-min-width;
-    display: block;
-    bottom: inherit;
-    right: inherit;
 
-    .modal-close {
+    .modal-header {
         display: flex;
+        padding: @paddingMedium @paddingMedium @paddingMedium @paddingBig;
+        justify-content: space-between;
+        background: var(--edatos-color-secondary-100);
         color: var(--edatos-color-white-100);
-        font-size: @modal-close-font-size;
-	    border: 0;
-		background: none;	    
-	    
-	    &:hover {
-		    cursor: pointer;
-		    opacity: .4;
-		    filter: alpha(opacity=40)
-		} 
-	}
+        align-items: center;
 
-  button {
-    padding: 2px 6px;
-  }
+        .modal-title {
+            display: flex;
+            flex-direction: row;
+            gap: var(--edatos-spacing-x-sm);
+            text-transform: uppercase;
 
-  .button-link {
-    padding: 0;
-    background: transparent;
-    border: none;
-    font-size: 13px;
-    color: @istacGreyDark;
-    text-decoration: underline;
+            i {
+                display: flex;
+                align-self: center;
+                font-size: var(--edatos-font-size-lg);
+                width: var(--edatos-font-size-lg);
 
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
+                &:before {
+                    font-weight: var(--edatos-font-weight-semibold);
+                }
+            }
 
-.modal-header {
-    border-bottom: @borderWidthSmall solid @istacGreyLight;
-    background: @istacGreyLight;
-    display: flex;
-    padding: @paddingMedium @paddingMedium @paddingMedium @paddingBig;
-    justify-content: space-between;
-    background: var(--edatos-color-secondary-100);
-    align-items: center;
-
-    .modal-title {
-        color: white;
-        display: flex;
-        flex-direction: row;
-        gap: @paddingSmall;
-
-        i {
-            font-size: @defaultFontSize;
-            align-self: center;
+            h2 {
+                margin: 0;
+                text-align: center;
+                font-size: @defaultFontSize;
+                font-weight: var(--edatos-font-weight-semibold);
+                line-height: @lineHeightMedium;
+            }
         }
 
-        h2 {
+        .modal-close {
+            display: flex;
+            color: inherit;
+            font-size: @modal-close-font-size;
+            border: 0;
+            background: none;
+
+            &:hover {
+                cursor: pointer;
+                .opacity(40);
+            }
+        }
+    }
+
+    .modal-content .modal-specific-content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--edatos-spacing-y-xs);
+        box-sizing: border-box;
+        padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m);
+
+        .modal-form-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--edatos-spacing-y-xs);
+
+            .modal-section-title {
+                margin: 0;
+                color: var(--edatos-color-black-100);
+                font-weight: var(--edatos-font-weight-semibold);
+                line-height: @lineHeightMedium;
+
+                &:is(legend) {
+                    margin-bottom: var(--edatos-spacing-y-xs);
+                    padding: 0;
+                }
+            }
+
+            &:not(:first-child) {
+                margin-top: var(--edatos-spacing-y-sm);
+            }
+
+            .modal-radio-button,
+            .modal-checkbox {
+                display: flex;
+                align-items: center;
+                width: 100%;
+
+                label {
+                    color: var(--edatos-color-black-100);
+                    font-weight: var(--edatos-font-weight-light);
+                    line-height: @lineHeightMedium;
+                    margin: 0 var(--edatos-spacing-x-xs) 0 0;
+                }
+
+                .radio-related-input {
+                    width: 50%;
+                    max-width: @modal-related-input-max-width;
+                    box-sizing: border-box;
+                }
+
+                .input-related-radio {
+                    display: flex;
+                    align-items: center;
+                    flex: 1;
+                }
+            }
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: var(--edatos-spacing-y-xl, 2rem);
+
+            .modal-form-view-icon {
+                .dataset-options-type-icon;
+                .icon-eye;
+
+                .btn.active &,
+                .btn:active & {
+                    .icon-eye-solid;
+                }
+            }
+        }
+
+        .form-error, .form-info {
+            font-size: var(--edatos-font-size-s);
+        }
+
+        .form-error {
+            color: var(--edatos-color-red-100);
+        }
+
+        .form-info {
+            color: var(--edatos-color-gray-60);
+        }
+
+        #modal-captcha {
+            display: flex;
+            justify-content: center;
+        }
+
+        p {
+            place-self: center;
             margin: 0;
-            color: var(--edatos-color-white-100);
-            text-align: center;
+            color: var(--edatos-color-black-100);
             font-size: @defaultFontSize;
             font-weight: var(--edatos-font-weight-semibold);
             line-height: @lineHeightMedium;
+            text-align: center;
+        }
+
+        &.modal-confirmation {
+            gap: var(--edatos-spacing-y-l);
+            margin: var(--edatos-spacing-y-sm) 0;
+
+            .form-buttons {
+                gap: var(--edatos-spacing-x-m);
+                justify-content: center;
+                margin-top: 0;
+
+                button {
+                    height: @modal-button-height;
+                    width: 100%;
+                    max-width: @modal-button-max-width;
+                    border: none;
+                    color: var(--edatos-color-white-100);
+                    text-align: center;
+                    font-size: var(--edatos-font-size-s);
+                    font-weight: var(--edatos-font-weight-semibold);
+                    border-radius: @borderRadiusSmall;
+                    cursor: pointer;
+                    text-transform: uppercase;
+
+                    &.button-reject {
+                        background-color: var(--edatos-color-red-100);
+                    }
+
+                    &.button-confirm {
+                        background-color: var(--edatos-color-green-100);
+                    }
+                }
+            }
+        }
+
+        &.modal-share {
+            .modal-share-icons .modal-share-icon {
+                padding-left: 0;
+                font-size: var(--edatos-font-size-lg);
+
+                &:before {
+                    color: var(--edatos-color-black-100);
+                    padding: 2px 3px;
+                }
+
+                &.twitter {
+                    .icon-x;
+                    &:hover:before { color: #000; }
+                }
+                &.facebook {
+                    .icon-facebook;
+                    &:hover:before { color: #3b5999; }
+                }
+                &.linkedin {
+                    .icon-linkedin;
+                    &:hover:before { color: #4498C8; }
+                }
+                &.diigo {
+                    .icon-diigo;
+                    &:hover:before { color: #0888D8; }
+                }
+                &.meneame {
+                    .icon-meneame;
+                    &:hover:before { color: #F47312; }
+                }
+                &.digg {
+                    .icon-digg;
+                    &:hover:before { color: #16B4EF; }
+                }
+                &.delicious {
+                    .icon-delicious;
+                    &:hover:before { color: #07529C; }
+                }
+                &.google {
+                    .icon-google;
+                    &:hover:before { color: #0868B9; }
+                }
+                &.yahoobkm {
+                    .icon-yahoo;
+                    &:hover:before { color: #791998; }
+                }
+            }
+        }
+
+        &.modal-save {
+            textarea {
+                resize: none;
+            }
         }
     }
-}
 
-.modal-content {
-  width: 100%;
-  box-sizing: border-box;
-  text-align: left;
-  border-radius: 0;
-  padding: @modal-content-y-padding var(--edatos-spacing-x-m);
-
-  &, > div:first-child {
-    &, > form {
-      min-width: min-content;
-    }
-  }
-
-  h3 {
-      margin: 0 0 10px 4px;
-      text-align: left;
-      font-size: 13px;
-  }
-
-  .modal-info {
-    font-size: 12px;
-    background-color: @istacGreyLight;
-    padding: 5px;
-    margin-top: 9px;
-  }
-}
-
-.modal-confirmation {
-  p {
-    place-self: center;
-    margin-bottom: @modal-confirmation-text-margin-bottom;
-    margin-top: 0;
-    color: var(--edatos-color-black-100);
-    font-size: @defaultFontSize;
-    font-weight: var(--edatos-font-weight-semibold);
-    line-height: @lineHeightMedium;
-  }
-  .form-buttons {
-    display: flex;
-    gap: @paddingBig;
-    justify-content: center;
-
-    button {
-      max-width: @modal-button-max-width;
-      height: @modal-button-height;
-      width: 100%;
-      border: none;
-      color: var(--edatos-color-white-100);
-      text-align: center;
-      font-size: var(--edatos-font-size-s);
-      font-weight: var(--edatos-font-weight-semibold);
-      border-radius: @borderRadiusSmall;
-      cursor: pointer;
-      text-transform: uppercase;
-
-      &.button-reject {
-        background-color: var(--edatos-color-red-100);
-      }
-
-      &.button-confirm {
-        background-color: var(--edatos-color-green-100);
-      }
-    }
-  }
-
-  button {
-    width: 40%;
-  }
-}
-
-.modal-export-options {
-  padding: 5px;
-
-  .export-option-group {
-    margin-bottom: 12px;
-  }
-
-  .export-option-title {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .export-option-checkbox,
-  .export-option-radio {
-    display: flex;
-    align-items: center;
-    font-weight: normal;
-    margin-bottom: 3px;
-
-    input {
-      width: auto;
-      margin: 0 6px 0 0;
-    }
-  }
-
-  .form-buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-  }
-}
-
-@media only screen and (min-width: 550px) {
-  .modal-permalink-config {
-    width: 335px;
-  }
-}
-
-@media only screen and (max-width: 550px) {
-  .modal-permalink-config {
-    width: 230px;
-  }
-}
-
-.modal-permalink-config {
-  padding: 5px;
-  fieldset, #modal-permalink-captcha {
-    margin-bottom: 10px;
-  }
-  #modal-permalink-captcha {
-    display: flex;
-    justify-content: center;
-  }
-  .form-buttons {
-    display: flex;
-    justify-content: flex-end;
-  }
-  .horizontal-radio-group {
-    display: flex;
-    justify-content: space-evenly;
-    .radio-field {
-      width: 100%;
-      display: flex;
-      label {
-        margin: 0;
-        font-weight: normal;
-      }
-      input {
-        width: auto;
-        margin: 0 5px 0 0;
-      }
-    }
-  }
-  .vertical-radio-group {
-    .radio-field {
-      width: 100%;
-      display: flex;
-      margin-bottom: 5px;
-      label {
-        margin: 0 5px 0 0;
-        font-weight: normal;
-      }
-      input, select {
-        width: auto;
-        &[type="radio"] {
-          margin: 0 5px 0 0;
-        }
-        &:disabled {
-          background-color: #e6e6e6;
-        }
-      }
-      .radio-related-input {
-        width: 50%;
-        box-sizing: border-box;
-      }
-      .input-related-radio {
-        min-height: 16px;
-        width: 50%;
-        display: flex;
-        align-items: center;
-      }
-    }
-  }
-
-  .checkbox-field {
-    display: flex;
-    input {
-      margin: 0 5px 0 0;
-      width: auto;
-    }
-    label {
-      margin-bottom: 0;
-      font-weight: normal;
-    }
-  }
-
-  .form-error {
-    margin: 0 0 10px 0;
-    color: red;
-  }
-
-  .form-info {
-    color: @istacGreyDark;
-    margin: 0;
-  }
-
-  #dataset-embed-title-input {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
 }

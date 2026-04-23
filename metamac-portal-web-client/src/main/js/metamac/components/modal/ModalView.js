@@ -32,13 +32,14 @@
 
         onRender: function () {
             this.content.show(this.contentView);
+            this.contentView.$el.addClass('modal-specific-content');
         },
 
         show: function () {
             this.render();
             if ($(".full-screen").append(this.$el).length == 0) {
-                $(".metamac-container").append(this.$el)
-            };
+                $(".metamac-container").append(this.$el);
+            }
         },
 
         onClickBackdrop: function () {
@@ -48,8 +49,6 @@
         onClickClose: function () {
             this.close();
         }
-
-
     });
 
 }());

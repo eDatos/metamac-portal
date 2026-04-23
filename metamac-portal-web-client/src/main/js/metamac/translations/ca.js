@@ -434,9 +434,22 @@ I18n.translations.ca = {
             }
         },
         embedConfig: {
+            button: {
+                submit: "Veure codi",
+            },
             label: {
                 title: "Títol"
             }
+        },
+        shareConfig: {
+            button: {
+                submit: "Veure l'enllaç",
+            },
+        },
+        saveConfig: {
+            button: {
+                submit: "Veure descriptors",
+            },
         }
     },
     captcha: {

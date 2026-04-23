@@ -1,0 +1,15 @@
+<div class="modal-form-section">
+    <label class="modal-section-title" for="name">{{ message "filter.save.label.name" }}</label>
+    <input type="text" id="name" maxlength="255" value="{{defaultCustomQueryName}}">
+</div>
+<div class="modal-form-section">
+    <label class="modal-section-title" for="notes">{{ message "filter.save.label.notes" }}</label>
+    <textarea id="notes" rows="5" maxlength="4000"></textarea>
+</div>
+
+<div class="form-buttons">
+    <button class="btn" type="submit">
+        <i class="dataset-options-save"></i>
+        {{ message "filter.save.button.submit" }}
+    </button>
+</div>

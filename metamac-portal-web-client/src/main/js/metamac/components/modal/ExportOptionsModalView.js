@@ -6,6 +6,7 @@
     App.components.modal.ExportOptionsModalView = Backbone.View.extend({
 
         template: App.templateManager.get("components/modal/modal-export-options"),
+        className: 'modal-export-options',
 
         events: {
             "click .btn-download": "onDownload"
@@ -16,7 +17,7 @@
         },
 
         onDownload: function () {
-            var includeAttributes = this.$('.include-attributes').is(':checked');
+            var includeAttributes = this.$('.export-options-include-attributes').is(':checked');
             var decimalSeparator = this.$('input[name="decimalSeparator"]:checked').val();
             this.onDownloadCallback({
                 includeAttributes: includeAttributes,

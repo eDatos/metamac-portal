@@ -432,9 +432,22 @@ I18n.translations.en = {
             }
         },
         embedConfig: {
+            button: {
+                submit: "View code",
+            },
             label: {
                 title: "Title"
             }
+        },
+        shareConfig: {
+            button: {
+                submit: "View link",
+            },
+        },
+        saveConfig: {
+            button: {
+                submit: "View descriptors",
+            },
         }
     },
     captcha: {

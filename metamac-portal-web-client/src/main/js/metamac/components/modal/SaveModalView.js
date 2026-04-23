@@ -3,12 +3,16 @@
 
     var UserUtils = App.modules.user.UserUtils;
 
-    App.namespace('App.modules.dataset.DatasetSaveView');
+    App.namespace('App.components.modal.SaveModalView');
 
-    App.modules.dataset.DatasetSaveView = Backbone.View.extend({
+    App.components.modal.SaveModalView = Backbone.View.extend({
 
-        template: App.templateManager.get("dataset/dataset-save"),
+        template: App.templateManager.get("components/modal/modal-save"),
         templateResult: App.templateManager.get("components/modal/modal-message"),
+
+        tagName: 'form',
+        className: 'modal-save',
+        attributes: { novalidate: '' },
 
         events: {
             "submit": "onSubmit"
@@ -45,8 +49,9 @@
         },
 
         renderResult: function (succeeded) {
-            this.$el.html(this.templateResult());
-            this.$el.find("#message-container")[0].innerHTML = I18n.t(succeeded ? "filter.save.modal.success" : "filter.save.modal.failure");
+            this.$el.html(this.templateResult({
+                messageContent: I18n.t(succeeded ? "filter.save.modal.success" : "filter.save.modal.failure")
+            }));
         },
 
         getResourceTitle: function () {

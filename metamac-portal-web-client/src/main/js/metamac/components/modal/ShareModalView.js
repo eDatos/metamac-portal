@@ -1,11 +1,12 @@
 (function () {
     "use strict";
 
-    App.namespace('App.modules.dataset.DatasetShareView');
+    App.namespace('App.components.modal.ShareModalView');
 
-    App.modules.dataset.DatasetShareView = Backbone.View.extend({
+    App.components.modal.ShareModalView = Backbone.View.extend({
 
-        template: App.templateManager.get("dataset/dataset-share"),
+        template: App.templateManager.get("components/modal/modal-share"),
+        className: 'modal-share',
 
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
@@ -17,7 +18,7 @@
                 'permalink',
                 '=',
                 this.permalinkId
-            ].join('')
+            ].join('');
         },
 
         getSharedUrl: function () {
@@ -41,11 +42,11 @@
                 twitterVia: App.config.socialTwitterVia,
                 shareMeInDiigo: this.buildDiigoShareUrl(url, title, description),
                 shareMeInMeneame: this.buildMeneameShareUrl(url)
-            };           
+            };
             this.$el.html(this.template(context));
 
-            // A setTimeout is needed here to work. Looks like 
-            setTimeout(function() { Shareon.init(); })
+            // A setTimeout is needed here to work. Looks like
+            setTimeout(function() { Shareon.init(); });
         },
 
         buildDiigoShareUrl: function(url, title, desc) {

@@ -430,9 +430,22 @@ I18n.translations.pt = {
             }
         },
         embedConfig: {
+            button: {
+                submit: "Ver código",
+            },
             label: {
                 title: "Título"
             }
+        },
+        shareConfig: {
+            button: {
+                submit: "Ver link",
+            },
+        },
+        saveConfig: {
+            button: {
+                submit: "Ver descritores",
+            },
         }
     },
     captcha: {

@@ -101,10 +101,7 @@ module.exports = (grunt) ->
                 paths.modules + "/dataset/OptionsView.js"
                 paths.modules + "/dataset/DimensionsView.js"
                 paths.modules + "/dataset/DatasetVisualizationView.js"
-                paths.modules + "/dataset/DatasetShareView.js"
-                paths.modules + "/dataset/DatasetSaveView.js"
                 paths.modules + "/dataset/DatasetDownloadView.js"
-                paths.modules + "/dataset/DatasetEmbedView.js"
 
                 # Datasource
                 paths.js + "/metamac/modules/datasource/helper/ApiIndicatorResponseToApiResponse.js"
@@ -149,12 +146,16 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/components/accordion/AccordionItemView.js"
                 paths.js + "/metamac/components/select/SelectView.js"
                 paths.js + "/metamac/components/toggleable/ToggleableView.js"
+                paths.js + "/metamac/components/input/NumericInputView.js"
                 paths.js + "/metamac/components/modal/ModalView.js"
                 paths.js + "/metamac/components/modal/ConfirmationModalView.js"
                 paths.js + "/metamac/components/modal/ExportOptionsModalView.js"
                 paths.js + "/metamac/components/modal/PermalinkConfigModalView.js"
                 paths.js + "/metamac/components/modal/EmbedConfigModalView.js"
                 paths.js + "/metamac/components/modal/InformationModalView.js"
+                paths.js + "/metamac/components/modal/ShareModalView.js"
+                paths.js + "/metamac/components/modal/SaveModalView.js"
+                paths.js + "/metamac/components/modal/EmbedModalView.js"
                 paths.js + "/metamac/components/navigationTabs/NavigationTabsView.js"
 
                 # filters

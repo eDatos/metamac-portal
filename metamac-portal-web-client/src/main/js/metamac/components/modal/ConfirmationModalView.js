@@ -6,6 +6,7 @@
     App.components.modal.ConfirmationModalView = Backbone.View.extend({
 
         template: App.templateManager.get("components/modal/modal-confirmation"),
+        className: 'modal-confirmation',
 
         events: {
             "click .button-confirm": "confirm",
@@ -31,7 +32,7 @@
         render: function () {
             var context = {
                 question: this.question
-            }
+            };
             this.$el.html(this.template(context));
         },
     });
