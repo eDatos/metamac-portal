@@ -126,6 +126,21 @@
                 .select2-selection__arrow b {
                     .icon-chevron-down-thin;
                 }
+
+                .select2-selection--single {
+                    border: none;
+                    border-radius: 0;
+                    padding: 0;
+                    height: inherit;
+                    font-size: inherit;
+                    font-weight: inherit;
+                    line-height: inherit;
+                    color: inherit;
+
+                    &:hover {
+                        background: transparent;
+                    }
+                }
             }
 
             &.dimension-pill {
@@ -390,7 +405,6 @@
 
 .select2-container--open .dimension-select.select2-dropdown {
     box-shadow: @dimensionSelectorBoxShadow;
-    clip-path: inset(1px -@paddingBig -@paddingBig -@paddingBig);
 
     .select2-search {
         padding-inline: @paddingMedium;
@@ -465,6 +479,16 @@ body.widget .metamac-container:not(.full-screen) {
                 padding-top: var(--edatos-spacing-y-xs);
                 padding-bottom: var(--edatos-spacing-y-xs);
             }
+        }
+    }
+
+    .select2-container--open .dimension-select.select2-dropdown .select2-results__options {
+        gap: 0;
+
+        .select2-results__option {
+            font-size: var(--edatos-font-size-xs);
+            padding-top: var(--edatos-spacing-y-xs);
+            padding-bottom: var(--edatos-spacing-y-xs);
         }
     }
 }
