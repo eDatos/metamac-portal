@@ -93,9 +93,12 @@
         .modal-specific-content {
             display: flex;
             flex-direction: column;
-            gap: var(--edatos-spacing-y-xs);
             box-sizing: border-box;
             padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m);
+
+            > :where(:not(:empty) ~ :not(:empty)) {
+                margin-top: var(--edatos-spacing-y-sm);
+            }
 
             .modal-form-section {
                 display: flex;
@@ -112,10 +115,6 @@
                         margin-bottom: var(--edatos-spacing-y-xs);
                         padding: 0;
                     }
-                }
-
-                &:not(:first-child) {
-                    margin-top: var(--edatos-spacing-y-sm);
                 }
 
                 .modal-radio-button,
@@ -312,5 +311,4 @@
             }
         }
     }
-
 }
