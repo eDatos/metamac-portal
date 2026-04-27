@@ -27,7 +27,7 @@
 
         destroy : function () {
             this.$el.remove();
-            this.$el.unbind('mousewheel');
+            this.$el.off('mousewheel');
         },
 
         transform : function () {

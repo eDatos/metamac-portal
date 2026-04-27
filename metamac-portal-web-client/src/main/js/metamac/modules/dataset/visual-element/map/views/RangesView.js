@@ -26,9 +26,9 @@
         
         destroy : function() {
             this.$el.remove();
-            $(document).unbind('mousemove');
-            $(document).unbind('mouseup');
-            this.$el.unbind('mousewheel');
+            $(document).off('mousemove', this._handleMouseMove);
+            $(document).off('mouseup', this._handleMouseUp);
+            this.$el.off('mousewheel');
         },
         
         updateRanges : function() {

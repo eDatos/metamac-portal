@@ -24,7 +24,7 @@
     };
 
     App.Table.SpinnerZone.prototype.destroy = function () {
-        $(document).unbind('.spinnerZone');
+        $(document).off('.spinnerZone');
     };
 
     App.Table.SpinnerZone.prototype.ajaxStart = function () {

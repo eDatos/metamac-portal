@@ -126,9 +126,9 @@
         },
 
         _removeExitFullScreenListeners : function () {
-            this.$document.unbind(this.events.change, this._didExitFullScreen);
-            this.$document.unbind(this.events.error, this._didExitFullScreen);
-            this.$document.unbind('keydown', this._keydown);
+            this.$document.off(this.events.change, this._didExitFullScreen);
+            this.$document.off(this.events.error, this._didExitFullScreen);
+            this.$document.off('keydown', this._keydown);
         },
 
         _keydown : function (e) {
