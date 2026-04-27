@@ -406,6 +406,14 @@
 .select2-container--open .dimension-select.select2-dropdown {
     box-shadow: @dimensionSelectorBoxShadow;
 
+    &.select2-dropdown--below {
+        transform: translateY(-1px);
+    }
+
+    &.select2-dropdown--above {
+        transform: translateY(1px);
+    }
+
     .select2-search {
         padding-inline: @paddingMedium;
 

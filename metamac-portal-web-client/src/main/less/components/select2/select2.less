@@ -78,13 +78,11 @@
     &.select2-dropdown--below {
         border-radius: 0 0 @borderRadiusSmall @borderRadiusSmall;
         clip-path: inset(0 -30px -30px -30px);
-        transform: translateY(-1px);
     }
 
     &.select2-dropdown--above {
         border-radius: @borderRadiusSmall @borderRadiusSmall 0 0;
         clip-path: inset(-30px -30px 0 -30px);
-        transform: translateY(1px);
     }
 
     &.select2-dropdown--wider-than-trigger {
@@ -111,13 +109,12 @@
             padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
             border-radius: @borderRadiusSmall;
             background-color: transparent;
-            color: var(--edatos-color-black-100);
+            color: var(--edatos-color-secondary-100);
             font-weight: var(--edatos-font-weight-regular);
             align-content: center;
 
             &:hover {
                 background-color: var(--edatos-color-gray-5);
-                color: var(--edatos-color-black-100);
             }
         }
     }
