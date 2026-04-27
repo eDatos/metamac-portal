@@ -36,7 +36,6 @@
             this.datasetSelection = JSON.stringify(datasetSelectionObject);
             this.jsonstatSelection = this._getSelection(datasetSelectionObject);
 
-            this.svg = null;
             this.urls = {
                 xlsx: this._buildExportEndpoint('excel'),
                 px: this._buildExportEndpoint('px'),
@@ -50,7 +49,7 @@
         },
 
         _bindEvents: function () {
-            this.listenTo(this.optionsModel, "change:isDownloading", this.render);
+            this.listenTo(this.optionsModel, "change:isDownloading", this._updateDownloadingState);
 
             var self = this;
             this._closeDropdownOnOutsideClick = function (e) {
@@ -70,14 +69,14 @@
         render: function () {
             var context = {
                 buttonConfig: this._getButtonConfiguration(),
-                hasJsonstatUrl: !!this.urls.jsonstat,
-                isReopeningNecessary: this.$('.download-menu').hasClass('open')
+                hasJsonstatUrl: !!this.urls.jsonstat
             };
 
-            if (this._exportableImage()) {
-                this.svg = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
-            }
             this.$el.html(this.template(context));
+        },
+
+        _updateDownloadingState: function () {
+            this.$('.download-menu').toggleClass('is-downloading', this.optionsModel.get('isDownloading'));
         },
 
         _getVisualizationType: function () {
@@ -115,7 +114,6 @@
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
             var haveImageFormats = this._hasExportableImage(visualizationSupertype);
             var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length === 0;
-            var isDownloading = this.optionsModel.get('isDownloading');
             var disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
             var disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
             const param = this.toStatisticalResourcesApiRepresentationParameter(this.getDatasetSelection());
@@ -133,19 +131,19 @@
                 iconPreffix: visualizationSupertype,
                 disableFormat: {
                     all: {
-                        excel: isDownloading || disableAllExcel,
-                        tsv: isDownloading,
-                        csv: isDownloading,
-                        jsonstat: isDownloading
+                        excel: disableAllExcel,
+                        tsv: false,
+                        csv: false,
+                        jsonstat: false
                     },
                     selection: {
-                        excel: isDownloading || disableAllSelectionFormat || disableSelectionExcel || !allDimensionsWithSelections,
-                        tsv: isDownloading || disableAllSelectionFormat || !allDimensionsWithSelections,
-                        csv: isDownloading || disableAllSelectionFormat || !allDimensionsWithSelections,
-                        jsonstat: isDownloading || disableAllSelectionFormat || !allDimensionsWithSelections,
-                        png: isDownloading || !allDimensionsWithSelections,
-                        pdf: isDownloading || !allDimensionsWithSelections,
-                        svg: isDownloading || !allDimensionsWithSelections,
+                        excel: disableAllSelectionFormat || disableSelectionExcel || !allDimensionsWithSelections,
+                        tsv: disableAllSelectionFormat || !allDimensionsWithSelections,
+                        csv: disableAllSelectionFormat || !allDimensionsWithSelections,
+                        jsonstat: disableAllSelectionFormat || !allDimensionsWithSelections,
+                        png: !allDimensionsWithSelections,
+                        pdf: !allDimensionsWithSelections,
+                        svg: !allDimensionsWithSelections,
                     }
                 },
                 title: {
@@ -264,7 +262,7 @@
 
             var $currentTarget = $(e.currentTarget);
             var $li = $currentTarget.closest('li');
-            if ($li.hasClass("disabled")) {
+            if ($li.hasClass("disabled") || this.optionsModel.get('isDownloading')) {
                 return;
             }
 
@@ -286,7 +284,8 @@
                 case "png":
                 case "pdf":
                 case "svg":
-                    this.downloadFile('POST', this.urls[type], { svg: this.svg }, "." + type, "chart");
+                    var svg = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
+                    this.downloadFile('POST', this.urls[type], { svg: svg }, "." + type, "chart");
                     break;
                 case "jsonstat":
                     this.redirectToFile(this.urls[type], hasClassSelection && this.jsonstatSelection != null ? { representation: this.jsonstatSelection } : null);
