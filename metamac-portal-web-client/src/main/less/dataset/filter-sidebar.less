@@ -49,7 +49,7 @@
         .clearfix;
 
         background: @istacGreyMedium;
-        .border-radius(0 0 @borderRadiusSmall @borderRadiusSmall);
+        border-radius: 0 0 @borderRadiusSmall @borderRadiusSmall;
 
         .filter-sidebar-dimension-actionsbar-wrapper {
             background: @istacWhite;
@@ -159,9 +159,7 @@
         padding-right: @paddingBig;
 
         display: block;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+        .text-overflow();
 
         margin-bottom: 5px;
 

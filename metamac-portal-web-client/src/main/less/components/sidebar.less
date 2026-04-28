@@ -52,7 +52,7 @@
             background: none;
 
             &:first-child {
-                .border-radius(@borderRadiusSmall 0 0 0);
+                border-radius: @borderRadiusSmall 0 0 0;
             }
 
             &.active {
@@ -93,7 +93,7 @@
     border: @borderWidthSmall solid var(--edatos-color-gray-60);
     border-right: none;
     padding: @paddingMedium @splitterWidth @paddingMedium @paddingMedium;
-    .box-sizing(border-box);
+    box-sizing: border-box;
     z-index: 1;
 
     .sidebar-sidebar-content {
@@ -109,7 +109,7 @@
     }
 
     &.animation {
-        .transition(left @sidebarTransition);
+        transition: left @sidebarTransition;
     }
 
     &.without-menu {
@@ -142,7 +142,7 @@
 
 .sidebar-content {
     height: 100%;
-    .box-sizing(border-box);
+    box-sizing: border-box;
 }
 
 .sidebar-slideRight {
