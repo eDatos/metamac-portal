@@ -395,7 +395,7 @@ I18n.translations.ca = {
         information: {
             loginRequired: {
                 title: "Operació no vàlida",
-                message: "L'operació que vol realitzar requereix que inicie sessió primer"
+                message: "L'operació que vol realitzar requereix que iniciï sessió primer. Desitja iniciar sessió?"
             }
         },
         permalinkConfig: {
