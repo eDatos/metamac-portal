@@ -11,7 +11,6 @@
             widget: false,
             widgetButton: true,
             widgetInitialType: '',
-            menu: true,
             mustApplyVisualizationRestrictions: true,
             isDownloading: false
         }

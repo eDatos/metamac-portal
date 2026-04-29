@@ -22,7 +22,6 @@
         _getOptionsModelConfig: function () {
             return {
                 widget: App.config.widget,
-                menu: false,
                 filter: this.filterDimensions.hasMultidataset(),
                 mustApplyVisualizationRestrictions: !this.metadata.identifier().permalinkId
             };

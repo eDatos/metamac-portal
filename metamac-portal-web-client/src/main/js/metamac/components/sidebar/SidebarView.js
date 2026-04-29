@@ -9,8 +9,6 @@
 
         className: "sidebar-container",
 
-        menuWidth: 50, // sidebar.less, @sidebarMenuWidth
-
         initialize: function (options) {
             this.sideViews = options.sideViews;
             this.contentView = options.contentView;
@@ -28,7 +26,6 @@
         },
 
         events: {
-            "click .sidebar-menu-item": "_onClickMenuItem",
             "mousedown .sidebar-splitter": "_onClickSplitter"
         },
 
@@ -50,14 +47,6 @@
             this.state.set('visible', this.optionsModel.get('filter'));
         },
 
-        _onClickMenuItem: function (e) {
-            e.preventDefault();
-            var $currentTarget = $(e.currentTarget);
-            var sideViewId = $currentTarget.data("view-id");
-
-            this.state.toggleSideView(sideViewId);
-        },
-
         _updateVisibility: function () {
             this._updateSidebar();
             if (this.state.get("visible")) {
@@ -71,18 +60,14 @@
 
         _updateSidebar: function () {
             var width = this.state.get('width');
-            var menuWidth = this.optionsModel.get('menu') ? this.menuWidth : 0;
             var gap = 10;
             if (this.state.get('visible')) {
-                this.$sidebar.css({ width: width, left: menuWidth });
-                this.$content.css('margin-left', menuWidth + width + gap);
+                this.$sidebar.css({ width: width, left: 0 });
+                this.$content.css('margin-left', width + gap);
             } else {
                 this.$sidebar.css({ width: width, left: -width });
-                this.$content.css('margin-left', menuWidth);
+                this.$content.css('margin-left', 0);
             }
-
-            this.$sidebar.toggleClass('without-menu', !this.optionsModel.get('menu'));
-            this.$content.toggleClass('without-menu', !this.optionsModel.get('menu'));
 
             this.updateSidebarHeight();
         },
@@ -161,18 +146,9 @@
             this._unbindEvents();
             this._bindEvents();
 
-            var context = {
-                menu: this.optionsModel.get('menu'),
-                menuClass: this.optionsModel.get('menu') ? '' : 'without-menu'
-            };
-            context.menuItems = _.map(this.sideViews, function (view) {
-                return { id: view.id, icon: view.icon, title: view.title };
-            });
-            this.$el.html(this.template(context));
-
+            this.$el.html(this.template({}));
 
             this.$sidebarContainer = this.$el;
-            this.$menu = this.$('.sidebar-menu');
             this.$sidebar = this.$('.sidebar-sidebar');
             this.$sidebarContent = this.$('.sidebar-sidebar-content');
             this.$content = this.$('.sidebar-content');
