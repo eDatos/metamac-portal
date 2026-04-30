@@ -8,6 +8,10 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
+## 9.23.1 a 9.23.2-SNAPSHOT
+
+- Esta versión tiene como dependencia complementos-apps en su versión 8.23.2-SNAPSHOT por el uso de las nuevas variables de css creadas en dicha versión.
+
 ## 9.18.5 a 9.19.0
 - Esta versión depende de la versión 5.0.0 de metamac-sso.
 
