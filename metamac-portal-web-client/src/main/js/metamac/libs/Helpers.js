@@ -1,14 +1,21 @@
-(function () {
+(function (DOMPurify) {
 	"use strict";
 
 	App.namespace('App.Helpers');
 
 	App.Helpers = {
+		cleanHtml: function (html) {
+			return DOMPurify.sanitize(html, {
+				ALLOWED_TAGS: ['a', 'b', 'em', 'i', 'strong', 'u', 'br', 'div', 'ul', 'ol', 'li']
+			});
+		},
+
 		getHostname: function (url) {
 			var l = document.createElement("a");
 			l.href = url;
 			return l.hostname;
 		},
+
 		formatUrl: function (url) {
 			//https://css-tricks.com/better-line-breaks-for-long-urls/
 			var doubleSlash = url.split('//');
@@ -27,4 +34,4 @@
 		}
 	};
 
-}());
+}(DOMPurify));

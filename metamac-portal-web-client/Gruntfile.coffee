@@ -53,6 +53,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/templates/HandlebarsTemplates.js"
                 paths.js + "/metamac/modules/TemplateManager.js"
                 paths.nodeModules + "/echarts/dist/echarts.js"
+                paths.nodeModules + "/dompurify/dist/purify.min.js"
                 paths.js + "/libs/jquery.mousewheel.js"
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
                 paths.js + "/libs/select2.full.min.js" # TODO EDATOS-3095: replace this pre-release with the next official release

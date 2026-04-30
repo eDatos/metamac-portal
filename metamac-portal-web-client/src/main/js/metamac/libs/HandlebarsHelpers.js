@@ -164,10 +164,9 @@
                 result += resourceOutput(value, targetBlank);
             } else {
                 value = _.isArray(value) ? value.join(", ") : value;
-                value = Handlebars.Utils.escapeExpression(value);
+                value = App.Helpers.cleanHtml(value);
                 value = resourceLink(value, 0);
-                //result += Handlebars.helpers.iString(value) +
-                result += htmlDecode(value);
+                result += value;
             }
 
             result += '</div>';
