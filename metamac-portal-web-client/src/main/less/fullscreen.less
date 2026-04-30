@@ -1,35 +1,7 @@
-.full-screen-no-support {
-}
-
-.full-screen-no-support #visual-element-container,
-.full-screen-no-support #visual-element-and-filter, {
-    //height: 90%;
-    padding-left: 5px;
-    position: fixed !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 51px !important;
-    left: 0 !important;
-    z-index: 1 !important;
-    background-color: @istacGreyLight;
-}
-
-.full-screen-no-support #options-bar {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 41px;
-    background-color: @istacGreyLight;
-    margin: 0 !important;
-}
-
-
-@fullScreenBottomPadding: 2.5rem;
 .full-screen {
     background-color: var(--edatos-color-white-100) !important;
     margin: 0 !important;
-    padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) @fullScreenBottomPadding var(--edatos-spacing-x-m) !important;
+    padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) var(--edatos-spacing-y-xl) var(--edatos-spacing-x-m) !important;
     width: 100% !important;
     height: 100% !important;
     overflow-y: auto;
@@ -44,30 +16,3 @@
 .full-screen > div:first-child {
     height: 100%;
 }
-
-.full-screen #visual-element {
-    height: 100%;
-}
-
-.full-screen #visual-element-container,
-.full-screen #visual-element-and-filter {
-    position: absolute !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 51px !important;
-    left: 0 !important;
-    z-index: 1 !important;
-    //height: 90%;
-    padding-left: 5px;
-}
-
-.full-screen #options-bar {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 2 !important;
-    height: 41px;
-    margin: 0 !important;
-}
-
