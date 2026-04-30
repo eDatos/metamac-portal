@@ -27,15 +27,13 @@
         position: absolute;
         top: 0;
         right: @paddingSmall;
-    }
 
-    .searchbar-clear {
-        &:link, &:active, &:visited {
-            color: @istacGreyDark;
+        &:before {
+            color: var(--edatos-color-gray-40);
         }
 
-        &:hover {
-            color: @istacBlack;
+        &:hover:before {
+            color: var(--edatos-color-black-100);
         }
     }
 }
