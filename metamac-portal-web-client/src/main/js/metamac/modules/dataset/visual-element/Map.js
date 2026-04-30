@@ -16,9 +16,6 @@
 
     _.extend(App.VisualElement.Map.prototype, {
 
-        _granularitiesWithNoSelection: App.templateManager.get('dataset/granuralities-with-no-selection'),
-        _errorTemplate: App.templateManager.get('dataset/map/map-error'),
-
         load: function () {
             this._destroyed = false;
 
@@ -220,7 +217,7 @@
                 this.hideWrongSelectionView();
                 return true;
             } else {
-                this.renderWrongSelectionView(this._granularitiesWithNoSelection());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.selectAtLeastTwoItems' }));
                 return false;
             }
         },
@@ -230,7 +227,7 @@
                 this.hideWrongSelectionView();
                 return true;
             } else {
-                this.renderWrongSelectionView(this._errorTemplate());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.map.nomap' }));
                 return false;
             }
         },

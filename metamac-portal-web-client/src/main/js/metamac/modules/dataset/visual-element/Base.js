@@ -8,8 +8,7 @@
 
     App.VisualElement.Base.prototype = {
 
-        _noSelectionTemplate: App.templateManager.get('dataset/dataset-no-selection'),
-        _loadingTemplate: App.templateManager.get('dataset/dataset-loading'),
+        _messageTemplate: App.templateManager.get('dataset/dataset-message'),
 
         initialize: function (options) {
             options = options || {};
@@ -222,14 +221,14 @@
                 this.hideWrongSelectionView();
                 return true;
             } else {
-                this.renderWrongSelectionView(this._noSelectionTemplate());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.noSelection' }));
                 return false;
             }
         },
 
         showLoading: function () {
             this.setupLoadingViewIfNeeded();
-            this.$loading.html(this._loadingTemplate());
+            this.$loading.html(this._messageTemplate({ messageKey: 've.loading' }));
             this.hideTitle();
             this.$loading.show();
         },

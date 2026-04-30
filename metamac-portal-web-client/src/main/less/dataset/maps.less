@@ -6,9 +6,7 @@
 }
 
 .grabbing {
-    cursor: move;
-    cursor: -webkit-grabbing;
-    cursor: -moz-grabbing;
+    cursor: grabbing;
 }
 
 #zoom-container {
@@ -29,7 +27,7 @@
         position: absolute;
         line-height: 18px;
         text-align: center;
-        color: @istacBlack;
+        color: var(--edatos-color-gray-80);
         .user-select(none);
     }
 
@@ -46,7 +44,7 @@
     }
 
     #zoom-line {
-        background-color: @istacGreyDark;
+        background-color: var(--edatos-color-gray-40);
         position: absolute;
         top: 58px;
         left: 13px;
@@ -64,90 +62,3 @@
     }
 }
 
-#ranges-container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin: auto;
-    bottom: 7px;
-    width: 200px;
-    height: 12px;
-
-    .ranges-selector-title {
-        display: inline-block;
-        margin-right: 10px;
-        vertical-align: middle;
-        color: @istacBlueDark;
-    }
-
-
-    #line-container {
-        position: relative;
-        display: inline-block;
-        width: 140px;
-
-        .selector {
-            display: inline-block;
-            width: 100px;
-            margin-right: 10px;
-            position: relative;
-            vertical-align: middle;
-            height: 12px;
-
-            #line {
-                height: 2px;
-                width: 100%;
-                background: @istacGreyMedium;
-                position: absolute;
-                top: 5px;
-            }
-
-            #draggable {
-                width: 6px;
-                height: 100%;
-                background: var(--edatos-color-white-100);
-                box-shadow: 0 0 2px @istacGreyDark;
-                position: absolute;
-                top: 0px;
-                left: 0px;
-            }
-        }
-
-        .ranges-boundaries {
-            display: inline-block;
-            width: 10px;            
-            font-size: 10px;
-            color: @istacBlueDark;
-        }
-
-    }
-}
-
-.map-error-container {
-    height: 100%;
-
-    display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-box-pack: center;
-    -webkit-box-align: center;
-
-    display: -moz-box;
-    -moz-box-orient: horizontal;
-    -moz-box-pack: center;
-    -moz-box-align: center;
-
-    display: box;
-    box-orient: horizontal;
-    box-pack: center;
-    box-align: center;
-    
-
-    .map-error {
-        font-size: 20px;
-        color: var(--edatos-color-white-100);
-        background-color: @istacGreyDark;
-        padding: 18px;
-        border-radius: 5px;
-        text-align: center;
-    }
-}
