@@ -129,9 +129,11 @@
 .icon-xmark-thin, 
 .icon-xmark, 
 .icon-xml2, 
-.icon-yahoo { 
+.icon-yahoo {
+	// grunt-webfont will move this font-family inside &:before. Don´t. It will break
+	// fontawesome icons if already loaded
+	font-family: "icons";
 	&:before {
-		font-family:"icons";
 		display:inline-block;
 		font-weight:normal;
 		font-style:normal;
