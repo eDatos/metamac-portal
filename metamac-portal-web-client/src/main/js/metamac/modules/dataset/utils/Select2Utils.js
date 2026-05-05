@@ -25,6 +25,8 @@
                         $dropdown.css('transform', 'translateX(-' + (dropdownWidth - selectionWidth) + 'px)');
                     }
                 }
+
+                $dropdown.find('.select2-results__options').perfectScrollbar();
             });
         }
 
