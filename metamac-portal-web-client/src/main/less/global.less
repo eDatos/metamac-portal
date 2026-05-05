@@ -4,6 +4,13 @@
 @contenidoTopPadding: 25px;
 @contenidoBottomPadding: 69px;
 
+html, body {
+	font-family: var(--edatos-font-family) !important;
+	font-size: var(--edatos-font-size-m) !important;
+	font-weight: var(--edatos-font-weight-light) !important;
+	color: var(--edatos-color-black-100) !important;
+}
+
 .metamac-tooltip,
 .metamac-container {
 	* {
@@ -25,11 +32,6 @@ input, textarea, select, button {
 }
 
 body.statistical-visualizer {
-	font-family: var(--edatos-font-family);
-	font-size: var(--edatos-font-size-m);
-	font-weight: var(--edatos-font-weight-light);
-	color: var(--edatos-color-black-100);
-
 	&:not(.widget) {
 		background: var(--edatos-color-gray-5);
 	}
@@ -53,5 +55,10 @@ body.statistical-visualizer {
 			flex-direction: column;
 			padding: 0;
 		}
+	}
+
+	&.thematic .contenido {
+		padding: 0;
+		box-shadow: none;
 	}
 }
