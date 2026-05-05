@@ -25,12 +25,6 @@
     }
 }
 
-.citation {
-    font-size: 10px;
-    font-style: italic;
-    text-align: right;
-}
-
 .metadata-group {
     height: 100%;
     position: relative;
@@ -146,16 +140,11 @@
     }
 }
 
-.btn-group.open .btn-primary.dropdown-toggle {
-    background-color: @istacBlueDark;
-}
-
 .dataset-visualization {
     display: flex;
     flex-direction: column;
     position: relative;
     height: 100%;
-    .clearfix;
 
     .canvas-wrapper {
         width: 100%;
@@ -176,7 +165,7 @@
         h3 {
             font-size: @defaultFontSize;
             background: none;
-            color: @istacGreyDark;
+            color: var(--edatos-color-gray-40);
             font-weight: normal;
             padding-left: 10px;
         }

@@ -11,44 +11,8 @@
 
 .order-dimensions {
     .order-sidebar-zone {
-        &.drag-over {
-            .order-sidebar-dimensions,
-            h2 {
-                background: @istacGreyLight;
-                color: @istacBlack;
-            }
-        }
-
-        h2 {
-            margin: 0;
-            width: @dimensionTitleWidth - @h2LeftPadding;
-            float: left;
-
-            overflow: hidden;
-            white-space: nowrap;
-            font-size: 11px;
-
-            border: 1px solid @istacGreyMedium;
-            color: @istacGreyMedium;
-            padding-left: @h2LeftPadding;
-            height: @dimensionHeight;
-            line-height: @dimensionHeight;
-
-            i:before {
-                margin-top: -2px;
-            }
-        }
-
         .order-sidebar-dimensions {
             white-space: nowrap;
-            height: @dimensionHeight;
-
-            border: 1px solid @istacGreyMedium;
-            color: @istacGreyMedium;
-
-            &.has-header {
-                margin-left: @dimensionTitleWidth + 1px;
-            }
 
             .scroll-button-content a:has(.select2-container--open) {
                 box-shadow: @dimensionSelectorBoxShadow;
@@ -96,7 +60,7 @@
             .dimension-select-sortby,
             .select2-container .selection {
                 background: var(--edatos-color-white-100);
-                color: @istacGreyMedium;
+                color: var(--edatos-color-gray-40);
                 margin: 2px 0 -2px -2px;
 
                 text-align: left;
@@ -249,14 +213,6 @@
             height: auto;
             flex-direction: column;
 
-            &.has-selector {
-                padding-top: 0;
-
-                .order-sidebar-dimensions {
-                    background: var(--edatos-color-gray-5);
-                }
-            }
-
             .order-sidebar-dimensions {
                 flex-grow: 1;
                 flex-shrink: 0;
@@ -368,22 +324,12 @@
 }
 
 .order-sidebar-zone {
-    &.has-selector {
-        padding-top: 0;
-    }
-
-    ul {
-        margin: 0;
-        list-style: none;
-    }
-
     .order-sidebar-dimension {
         .user-select(none);
 
         /* IE9 bug changed divs with a, so this correct the new style */
         display: block;
         text-decoration: none;
-        color: @istacBlack;
 
         &[draggable='true'] {
             cursor: move;
@@ -400,7 +346,7 @@
 
 .drag-over-dimension {
     opacity: 0.8;
-    border: 1px dashed @istacBlueDark;
+    border: @borderWidthSmall dashed var(--edatos-color-gray-20);
 }
 
 .select2-container--open .dimension-select.select2-dropdown {
@@ -423,7 +369,6 @@
     }
 
     .select2-results__options {
-        gap: @paddingSmall;
         padding-bottom: @paddingMedium;
         padding-top: 0;
 

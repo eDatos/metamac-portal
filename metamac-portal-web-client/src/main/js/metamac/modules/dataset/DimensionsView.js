@@ -341,7 +341,6 @@
                     icon: this._getIconFromZone(zone),
                     draggable: this._zoneIsDraggableByChartType(zone),
                     dimensions: this._dimensionsForZone(zone),
-                    hasSelector: this._hasSelector(zone),
                     location: this._getLocationForZone(zone),
                     showHeader: this._getShowHeader(zone),
                 };
@@ -392,20 +391,8 @@
             return currentChartType ? this.configuration[currentChartType].zones[zone].location : "right";
         },
 
-        _hasSelector: function (zoneId) {
-            return this._isFixedZone(zoneId) || this._hasHierarchySelector(zoneId) || this._getSortable(zoneId);
-        },
-
         _isFixedZone: function (zoneId) {
             return this.filterDimensions.isFixedZone(zoneId);
-        },
-
-        _hasHierarchySelector: function (zone) {
-            var self = this;
-            return this.filterDimensions.dimensionsAtZone(zone)
-                .reduce(function (memo, dimension) {
-                    return memo || self._needsGeographicGranularitySelector(dimension) || self._needsTemporalGranularitySelector(dimension);
-                }, false);
         },
 
         _isMap: function () {
