@@ -43,7 +43,7 @@
             }
 
             .order-sidebar-dimension-label {
-                padding: @paddingSmall @paddingMedium;
+                padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
                 line-height: @defaultFontSize;
                 display: inline-block;
                 box-sizing: border-box;
@@ -79,7 +79,7 @@
                     box-sizing: border-box;
                     width: 100%;
                     margin: 0;
-                    padding-inline: @paddingSmall;
+                    padding-inline: var(--edatos-spacing-x-xs);
 
                     .select2-selection, .select2-selection__rendered {
                         height: 100%;
@@ -158,7 +158,7 @@
             color: var(--edatos-color-gray-60);
             font-size: @defaultFontSize;
             font-weight: var(--edatos-font-weight-semibold);
-            padding: @paddingMedium;
+            padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
             box-sizing: border-box;
             white-space: nowrap;
             margin: 0;
@@ -217,7 +217,7 @@
                 flex-grow: 1;
                 flex-shrink: 0;
                 flex-basis: min-content;
-                padding: var(--edatos-spacing-y-sm) @paddingMedium;
+                padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
                 box-sizing: border-box;
                 display: flex;
                 align-items: center;
@@ -361,7 +361,7 @@
     }
 
     .select2-search {
-        padding-inline: @paddingMedium;
+        padding-inline: var(--edatos-spacing-x-sm);
 
         input {
             border: @borderWidthSmall solid var(--edatos-color-gray-40);
@@ -369,14 +369,14 @@
     }
 
     .select2-results__options {
-        padding-bottom: @paddingMedium;
+        padding-bottom: var(--edatos-spacing-y-sm);
         padding-top: 0;
 
         .select2-results__option {
             color: var(--edatos-color-gray-80);
             font-size: @defaultFontSize;
             font-weight: var(--edatos-font-weight-regular);
-            padding-inline: @paddingSmall;
+            padding-inline: var(--edatos-spacing-x-xs);
             border-radius: @borderRadiusSmall;
 
             &:not(.select2-results__message):hover {

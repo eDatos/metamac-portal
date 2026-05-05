@@ -29,19 +29,19 @@
     border-radius: @borderRadiusMedium 0 0 @borderRadiusMedium;
     border: @borderWidthSmall solid var(--edatos-color-gray-60);
     border-right: none;
-    padding: @paddingMedium @splitterWidth @paddingMedium @paddingMedium;
+    padding: var(--edatos-spacing-y-sm) @splitterWidth var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
     box-sizing: border-box;
     z-index: 1;
 
     .sidebar-sidebar-content {
         height: 100%;
         margin-right: var(--edatos-spacing-x-xs);
-        padding-bottom: calc(@filterIgnoreValuesChecksHeight + @paddingMedium);
+        padding-bottom: calc(@filterIgnoreValuesChecksHeight + var(--edatos-spacing-y-sm));
         box-sizing: border-box;
         position: relative;
 
         .btn-mini {
-            padding-inline: @paddingSmall;
+            padding-inline: var(--edatos-spacing-x-xs);
         }
     }
 

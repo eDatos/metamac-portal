@@ -35,7 +35,7 @@
 .filter-sidebar-dimensions {
     display: flex;
     flex-direction: column;
-    gap: @paddingMedium;
+    gap: var(--edatos-spacing-y-sm);
 }
 
 .filter-sidebar-dimension {
@@ -53,7 +53,7 @@
         .filter-sidebar-dimension-actionsbar-wrapper {
             display: flex;
             flex-direction: row;
-            gap: @paddingMedium;
+            gap: var(--edatos-spacing-x-sm);
 
             .btn, .select2 span.select2-selection, &:after {
                 align-content: center;
@@ -82,7 +82,7 @@
         .filter-sidebar-dimension-actions {
             display: flex;
             flex-direction: row;
-            gap: @paddingMedium;
+            gap: var(--edatos-spacing-x-sm);
             min-width: 0;
 
             span.select2-selection {
@@ -100,21 +100,21 @@
     }
 
     .filter-sidebar-dimension-content {
-        padding-top: @paddingMedium;
-        gap: @paddingMedium;
+        padding-top: var(--edatos-spacing-y-sm);
+        gap: var(--edatos-spacing-y-sm);
     }
 }
 
 .filter-sidebar-multidataset {
 
-    margin-bottom: @paddingMedium;
+    margin-bottom: var(--edatos-spacing-y-sm);
 
     .filter-sidebar-multidataset-title {
         .sidebar-title;
     }
 
     .filter-sidebar-multidataset-content {
-        padding-top: @paddingMedium;
+        padding-top: var(--edatos-spacing-y-sm);
     }
 
     .filter-sidebar-multidataset-node {
@@ -135,7 +135,7 @@
 }
 
 .filter-sidebar-multidataset-searchbar {
-    margin-bottom: @paddingMedium;
+    margin-bottom: var(--edatos-spacing-y-sm);
 }
 
 .filter-sidebar-multidataset-node,
@@ -153,7 +153,7 @@
         color: var(--edatos-color-secondary-100);
         line-height: @lineHeightMedium;
         padding-left: @leftActionsWidth + @leftActionsGap;
-        padding-right: @paddingBig;
+        padding-right: var(--edatos-spacing-x-m);
 
         display: block;
         .text-overflow();

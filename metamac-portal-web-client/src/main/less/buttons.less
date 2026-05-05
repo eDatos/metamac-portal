@@ -12,7 +12,7 @@
         display: flex;
         flex-direction: row;
         height: 1.5em;
-        gap: @paddingSmall;
+        gap: var(--edatos-spacing-x-xs);
         align-items: center;
         justify-content: center;
         border-radius: @borderRadiusMedium;
@@ -22,7 +22,7 @@
         color: var(--edatos-color-secondary-100);
         text-transform: uppercase;
         font-size: var(--edatos-font-size-s);
-        padding: @paddingSmall @paddingMedium;
+        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
         margin-bottom: 0; // For input.btn
         cursor: pointer;
         white-space: nowrap;
@@ -64,7 +64,7 @@
         font-size: var(--edatos-font-size-m);
         font-weight: var(--edatos-font-weight-semibold);
         text-transform: none;
-        padding: @paddingSmall @paddingMedium;
+        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
 
         &:focus:not([aria-expanded="true"]):not(.active):not(:active) {
             box-shadow: inset 0 0 0 @borderWidthMedium var(--edatos-color-gray-80);
