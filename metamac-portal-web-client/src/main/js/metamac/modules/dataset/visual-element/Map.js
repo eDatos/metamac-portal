@@ -28,10 +28,6 @@
             this.showLoading();
             var self = this;
             this._loadShapes().then(function () {
-                if (self._destroyed) {
-                    return;
-                }
-
                 self._getBaseShapes();
                 self._getDrawableShapes();
                 self._getData();
@@ -188,7 +184,7 @@
         },
 
         render: function () {
-            if (this.assertMapAvailable()) {
+            if (this.assertMapAvailable() && !this._destroyed) {
                 this._mapContainerView.render();
             }
         },

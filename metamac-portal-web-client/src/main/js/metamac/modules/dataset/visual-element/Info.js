@@ -69,24 +69,16 @@
                 filterDimensions: self.filterDimensions
             });
             self.multidataset.fetch().then(function() {
-                if (!self._destroyed) {
-                    self.render();
-                }
-            })
+                self.render();
+            });
         },
 
         getDimensions: function () {
             var self = this;
             this.api.getDimensions(function (error, dimensions) {
-                if (self._destroyed) {
-                    return;
-                }
                 self.updateDimensions(dimensions);
 
                 self.api.getDimensionsConcepts(dimensions, function (error, dimensionsConcepts) {
-                    if (self._destroyed) {
-                        return;
-                    }
                     var parsedDimensions = _.map(self.dimensions, function (dimension) {
                         var dimensionConcept = _.findWhere(dimensionsConcepts, { id: dimension.conceptIdentity.id });
                         dimension.conceptIdentity = dimensionConcept;
@@ -109,9 +101,6 @@
 
                 var self = this;
                 relatedDatasetMetadataRequest.fetch(function () {
-                    if (self._destroyed) {
-                        return;
-                    }
                     var datasetMetadata = relatedDatasetMetadataRequest.getMetadataResponse();
                     self.updateMetadataFromRelatedDataset(datasetMetadata);
                 });
@@ -121,9 +110,6 @@
         getMeasureConcepts: function () {
             var self = this;
             this.api.getMeasureConcepts(function (error, concepts) {
-                if (self._destroyed) {
-                    return;
-                }
                 var parsedConcepts = _.map(concepts, function (concept) {
                     concept.name = App.InternationalizationUtils.localizeLabel(concept.name);
                     concept.description = App.InternationalizationUtils.localizeLabel(concept.description);
@@ -156,7 +142,7 @@
         },
 
         render: function () {
-            if (!this.$el) { return; }
+            if (!this.$el || this._destroyed) { return; }
 
             var context = {
                 relatedResources: {
