@@ -166,7 +166,7 @@
                     minimumResultsForSearch: Infinity,
                     width: 'style'
                 }).on('select2:open', function () {
-                    App.Select2Utils.onSelect2Open($(this), 'modal-form-select2-dropdown', false);
+                    App.Select2Utils.onOpen($(this), 'modal-form-select2-dropdown', false);
                 }).siblings(".select2").addClass("radio-related-input");
             }
 

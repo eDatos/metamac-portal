@@ -5,7 +5,7 @@
 
     App.Select2Utils = {
 
-        onSelect2Open: function ($select, dropdownClass, alignRight) {
+        onOpen: function ($select, dropdownClass, alignRight) {
             setTimeout(function () {
                 var $dropdown = $('.select2-dropdown');
                 if (dropdownClass) {

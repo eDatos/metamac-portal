@@ -416,7 +416,7 @@
                 dropdownParent: $('.metamac-container'),
                 width: '100%'
             }).on('select2:open', function () {
-                App.Select2Utils.onSelect2Open($(this), 'dimension-select', false);
+                App.Select2Utils.onOpen($(this), 'dimension-select', false);
             });
         },
 
