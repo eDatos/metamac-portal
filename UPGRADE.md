@@ -11,6 +11,8 @@
 ## 9.23.1 a 9.23.2-SNAPSHOT
 
 - Esta versión tiene como dependencia complementos-apps en su versión 8.23.2-SNAPSHOT por el uso de las nuevas variables de css creadas en dicha versión.
+- Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión.
+  Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/9.23.1/db/common-metadata/postgresql/](etc/changes-from-release/9.23.1/db/common-metadata/postgresql)
 
 ## 9.18.5 a 9.19.0
 - Esta versión depende de la versión 5.0.0 de metamac-sso.
