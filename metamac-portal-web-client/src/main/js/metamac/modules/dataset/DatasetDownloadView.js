@@ -262,7 +262,7 @@
 
             var $currentTarget = $(e.currentTarget);
             var $li = $currentTarget.closest('li');
-            if ($li.hasClass("disabled") || this.optionsModel.get('isDownloading')) {
+            if ($currentTarget.hasClass("disabled") || this.optionsModel.get('isDownloading')) {
                 return;
             }
 

@@ -66,9 +66,13 @@
                 align-items: center;
                 font-size: @defaultFontSize;
             }
+
+            &.disabled {
+                color: var(--edatos-color-primary-50);
+                cursor: default;
+            }
         }
 
-        &.disabled,
         .download-menu.is-downloading &:not(.download-menu-dropdown-header) {
             color: var(--edatos-color-primary-50);
 
@@ -77,7 +81,7 @@
             }
         }
 
-        .download-menu:not(.is-downloading) &:not(.download-menu-dropdown-header):not(.disabled):hover {
+        .download-menu:not(.is-downloading) &:not(.download-menu-dropdown-header):not(:has(> a.disabled)):hover {
             background: var(--edatos-color-primary-5);
             color: var(--edatos-color-black-100);
         }
