@@ -149,7 +149,7 @@
 
         _toggleClassByType: function (type) {
             var GENERIC_PREFIX = "visualization-type-";
-            var CONTEXT_PREFIX = this._getVisualizationContext() + "-visualization-type-";
+            var CONTEXT_PREFIX = this._getVisualizationContext() + "-" + GENERIC_PREFIX;
             var regex = new RegExp("(^|\\s)(" + GENERIC_PREFIX + "|" + CONTEXT_PREFIX + ")\\S+", 'g');
             this.$el.removeClass(function (index, className) {
                 return (className.match(regex) || []).join(' ');
