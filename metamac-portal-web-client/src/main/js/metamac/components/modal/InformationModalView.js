@@ -13,7 +13,7 @@
         },
 
         render: function () {
-            var context = {
+            const context = {
                 messageContent: this.message
             };
             this.$el.html(this.template(context));

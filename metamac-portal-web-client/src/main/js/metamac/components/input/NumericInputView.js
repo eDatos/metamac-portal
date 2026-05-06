@@ -18,22 +18,22 @@
         },
 
         render: function () {
-            this.$el.html(
-                '<input type="number" min="' + this.min + '">' +
-                '<button type="button" class="numeric-input-up"></button>' +
-                '<button type="button" class="numeric-input-down"></button>'
-            );
+            this.$el.html(`
+                <input type="number" min="${this.min}">
+                <button type="button" class="numeric-input-up"></button>
+                <button type="button" class="numeric-input-down"></button>
+            `);
             this.$input = this.$el.find('input');
             return this;
         },
 
         onNumberUp: function () {
-            var currentValue = Number.isSafeInteger(this.getValue()) ? this.getValue() : 0;
+            const currentValue = Number.isSafeInteger(this.getValue()) ? this.getValue() : 0;
             this.$input.val(currentValue + 1);
         },
 
         onNumberDown: function () {
-            var currentValue = Number.isSafeInteger(this.getValue()) ? this.getValue() : 0;
+            const currentValue = Number.isSafeInteger(this.getValue()) ? this.getValue() : 0;
             this.$input.val(Math.max(+this.$input.attr('min'), currentValue - 1));
         },
 

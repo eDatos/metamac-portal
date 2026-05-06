@@ -74,7 +74,7 @@
         },
 
         changeSelectionVisualization: function (options) {
-            var link = this._linkToDatasetSelection(options);
+            const link = this._linkToDatasetSelection(options);
             this.router.navigate(link, { replace: true });
             this.selectionView.showVisualizationType(options);
         },
@@ -164,12 +164,12 @@
         },
 
         createUpdateDatesSection: function(metadata) {
-            var updateDates = "";
+            let updateDates = "";
             if (metadata.getLastUpdate()) {
-                var lastUpdateDate = new Date(metadata.getLastUpdate());
+                const lastUpdateDate = new Date(metadata.getLastUpdate());
 
                 if (!isNaN(lastUpdateDate.getTime())) {
-                    var lastUpdateOptions = {
+                    const lastUpdateOptions = {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
@@ -182,11 +182,11 @@
                 }
             }
 
-            var nextUpdateDatePattern = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-            var matchNextUpdate = nextUpdateDatePattern.exec(metadata.getDateNextUpdate());
+            const NEXT_UPDATE_DATE_PATTERN = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+            const matchNextUpdate = NEXT_UPDATE_DATE_PATTERN.exec(metadata.getDateNextUpdate());
             if (matchNextUpdate) {
-                var dateNextUpdate = new Date(+matchNextUpdate[3], +matchNextUpdate[2] - 1, +matchNextUpdate[1]);
-                var nexUpdateOptions = {
+                const dateNextUpdate = new Date(+matchNextUpdate[3], +matchNextUpdate[2] - 1, +matchNextUpdate[1]);
+                const nexUpdateOptions = {
                     day: 'numeric',
                     month: 'short',
                     year: 'numeric'
@@ -199,7 +199,7 @@
             }
 
             if (!!updateDates) {
-                $('.visualizer-header-info').append('<div class="visualizer-update-dates">' + updateDates + '</div>');
+                $('.visualizer-header-info').append(`<div class="visualizer-update-dates">${updateDates}</div>`);
             }
         }
     });

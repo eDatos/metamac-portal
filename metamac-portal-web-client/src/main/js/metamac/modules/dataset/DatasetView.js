@@ -29,7 +29,7 @@
 
         _getVeElements: function () {
             if (!this._veElements) {
-                var visualElements = ["info", "apiDownload", "table", "column", "bar", "line"];
+                let visualElements = ["info", "apiDownload", "table", "column", "bar", "line"];
                 if (_.findWhere(this.metadata.getDimensions(), { type: 'GEOGRAPHIC_DIMENSION' })) {
                     visualElements.push("map");
                     visualElements.push("mapbubble");
@@ -73,10 +73,10 @@
         },
 
         _getTabsConfig: function () {
-            var self = this;
-            var helpUrl = this._getHelpUrl();
+            const self = this;
+            const helpUrl = this._getHelpUrl();
 
-            var graphSubtabs = [
+            const graphSubtabs = [
                 { type: "column", title: I18n.t("filter.button.column"), iconClass: "dataset-options-column" },
                 { type: "bar", title: I18n.t("filter.button.bar"), iconClass: "dataset-options-bar" },
                 { type: "line", title: I18n.t("filter.button.line"), iconClass: "dataset-options-line" }
@@ -84,7 +84,7 @@
                 return self._isVisualizationButtonEnabled(subtab.type);
             });
 
-            var mapSubtabs = [
+            const mapSubtabs = [
                 { type: "map", title: I18n.t("filter.button.map"), iconClass: "dataset-options-map" },
                 { type: "mapbubble", title: I18n.t("filter.button.mapbubble"), iconClass: "dataset-options-mapbubble" }
             ].filter(function (subtab) {

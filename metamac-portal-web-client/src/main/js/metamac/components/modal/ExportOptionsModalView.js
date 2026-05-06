@@ -17,8 +17,8 @@
         },
 
         onDownload: function () {
-            var includeAttributes = this.$('.export-options-include-attributes').is(':checked');
-            var decimalSeparator = this.$('input[name="decimalSeparator"]:checked').val();
+            const includeAttributes = this.$('.export-options-include-attributes').is(':checked');
+            const decimalSeparator = this.$('input[name="decimalSeparator"]:checked').val();
             this.onDownloadCallback({
                 includeAttributes: includeAttributes,
                 decimalSeparator: decimalSeparator

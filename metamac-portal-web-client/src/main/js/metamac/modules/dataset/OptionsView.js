@@ -127,11 +127,11 @@
             if (!this.optionsModel.get('widget') || !this.visualizationTabs) {
                 return null;
             }
-            var currentType = this.optionsModel.get('type');
-            var widgetInitialType = this.optionsModel.get('widgetInitialType');
-            var widgetTabs = [];
+            const currentType = this.optionsModel.get('type');
+            const widgetInitialType = this.optionsModel.get('widgetInitialType');
+            const widgetTabs = [];
 
-            var self = this;
+            const self = this;
             _.each(this.visualizationTabs, function (tab) {
                 if (tab.subtabs && tab.subtabs.length > 0) {
                     _.each(tab.subtabs, function (subtab) {
@@ -151,13 +151,13 @@
         },
 
         updateWidgetActiveTab: function () {
-            var type = this.optionsModel.get('type');
+            const type = this.optionsModel.get('type');
             this.$('.visualization-button').removeClass('active');
-            this.$('.visualization-button[data-type="' + type + '"]').addClass('active');
+            this.$(`.visualization-button[data-type="${type}"]`).addClass('active');
         },
 
         clickVisualizationButton: function (e) {
-            var type = $(e.currentTarget).data('type');
+            const type = $(e.currentTarget).data('type');
             this.optionsModel.set('type', type);
         },
 

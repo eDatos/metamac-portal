@@ -17,7 +17,7 @@
             this.setEl(options.el);
             this.delegate = options.delegate;
 
-            var rootStyle = getComputedStyle(document.documentElement);
+            const rootStyle = getComputedStyle(document.documentElement);
             this.OFFSET = parseInt(options.isWidget
                 ? rootStyle.getPropertyValue('--scroll-button-content-wrapper-margin-inline-widget')
                 : rootStyle.getPropertyValue('--scroll-button-content-wrapper-margin-inline')

@@ -37,9 +37,9 @@
                 return;
             }
 
-            var self = this;
-            var formats = this._getApiDownloadFormats();
-            var context = {
+            const self = this;
+            const formats = this._getApiDownloadFormats();
+            const context = {
                 url: formats.map(function (format) {
                     return { format: format, href: self._buildEndpoint(format.toLowerCase()) };
                 }),
@@ -55,7 +55,7 @@
             };
             this.$el.html(this.template(context));
 
-            var scrollGroup = this.$el.find('.metadata-group');
+            const scrollGroup = this.$el.find('.metadata-group');
             scrollGroup.perfectScrollbar();
             this.$el.find('.metadata-accordion').accordion({
                 collapsible: true,
@@ -75,8 +75,8 @@
         },
 
         _getSelectionApiUrl: function () {
-            var apiUrl = this.data.metadata.getApiUrl();
-            var dimensionParameter = App.DimensionsUtils.getDimensionsParameterForRequest(this._getDimensionsForApiUrl());
+            const apiUrl = this.data.metadata.getApiUrl();
+            const dimensionParameter = App.DimensionsUtils.getDimensionsParameterForRequest(this._getDimensionsForApiUrl());
             this.selectionApiUrl = {
                 href: apiUrl.href,
                 queryParams: dimensionParameter,
@@ -86,7 +86,7 @@
 
         _getDimensionsForApiUrl: function () {
             return _.map(this.filterDimensions.getDimensionsWithSomeRepresentationNotSelected(), function (dimension) {
-                var representations = _.map(dimension.getSelectedRepresentations(), function(representation) {
+                const representations = _.map(dimension.getSelectedRepresentations(), function(representation) {
                     return representation.id;
                 });
                 return {
@@ -97,27 +97,27 @@
         },
 
         _buildApiDownloadMessage: function(isSelection) {
-            var formats = this._getApiDownloadFormats();
-            var formatExample = formats[0];
+            const formats = this._getApiDownloadFormats();
+            const formatExample = formats[0];
             return isSelection?
                 I18n.t("entity.dataset.selectionApiUrl.apiDownload", { formats: formats, formatExampleLowercase: formatExample.toLowerCase() })
                 : I18n.t("entity.dataset.apiUrl.apiDownload", { formats: formats, formatExample: formatExample, formatExampleLowercase: formatExample.toLowerCase() });
         },
 
         _getApiDownloadFormats: function() {
-            var allApiDownloadFormats = ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
+            const ALL_API_DOWNLOAD_FORMATS = ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
             if (this._isIndicator()) {
-                return allApiDownloadFormats.filter(format => format !== "XML");
+                return ALL_API_DOWNLOAD_FORMATS.filter(format => format !== "XML");
             }
-            return allApiDownloadFormats;
+            return ALL_API_DOWNLOAD_FORMATS;
         },
 
         _buildEndpoint: function (type) {
-            return this.filterDimensions.metadata.getApiUrl().href + "." + type;
+            return `${this.filterDimensions.metadata.getApiUrl().href}.${type}`;
         },
 
         _buildSelectionEndpoint: function (type) {
-            return this.selectionApiUrl.href + "." + type + '?' + this.selectionApiUrl.queryParams;
+            return `${this.selectionApiUrl.href}.${type}?${this.selectionApiUrl.queryParams}`;
         }
     });
 }());

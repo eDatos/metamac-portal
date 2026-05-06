@@ -7,14 +7,14 @@
 
         onOpen: function ($select, dropdownClass, alignRight) {
             setTimeout(function () {
-                var $dropdown = $('.select2-dropdown');
+                const $dropdown = $('.select2-dropdown');
                 if (dropdownClass) {
                     $dropdown.addClass(dropdownClass);
                 }
 
                 $dropdown.css('width', 'auto');
-                var dropdownWidth = $dropdown[0].getBoundingClientRect().width;
-                var selectionWidth = $select.data('select2').$container.find('.selection')[0].getBoundingClientRect().width;
+                const dropdownWidth = $dropdown[0].getBoundingClientRect().width;
+                const selectionWidth = $select.data('select2').$container.find('.selection')[0].getBoundingClientRect().width;
 
                 $dropdown.css('min-width', selectionWidth);
                 if (dropdownWidth > selectionWidth) {
@@ -22,7 +22,7 @@
 
                     if (alignRight) {
                         $dropdown.addClass('select2-dropdown--align-right');
-                        $dropdown.css('transform', 'translateX(-' + (dropdownWidth - selectionWidth) + 'px)');
+                        $dropdown.css('transform', `translateX(-${dropdownWidth - selectionWidth}px)`);
                     }
                 }
 

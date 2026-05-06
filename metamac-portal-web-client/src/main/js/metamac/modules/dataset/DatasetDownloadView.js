@@ -51,7 +51,7 @@
         _bindEvents: function () {
             this.listenTo(this.optionsModel, "change:isDownloading", this._updateDownloadingState);
 
-            var self = this;
+            const self = this;
             this._closeDropdownOnOutsideClick = function (e) {
                 if (!self.$('.download-menu-dropdown').is(e.target) && self.$('.download-menu-dropdown').has(e.target).length === 0) {
                     self.$('.download-menu').removeClass('open');
@@ -113,16 +113,16 @@
             var haveDataFormats = visualizationSupertype == 'data';
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
             var haveImageFormats = this._hasExportableImage(visualizationSupertype);
-            var allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length === 0;
-            var disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
-            var disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
+            const allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length === 0;
+            const disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
+            const disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
             const param = this.toStatisticalResourcesApiRepresentationParameter(this.getDatasetSelection());
             const disableAllSelectionFormat = param && param.length > GLOBAL_CHAR_LENGTH_URL_LIMIT && visualizationSupertype === 'data';
 
-            var messageExcelDisabledForAllData = disableAllExcel ? I18n.t("filter.download.excel.disabled") : "";
-            var messageExcelDisabledForSelection = disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : "";
-            var messageSelectionDisabled = disableAllSelectionFormat ? I18n.t("filter.download.selectionDisabled") : "";
-            var messageNoSelection = allDimensionsWithSelections ? "" : I18n.t("ve.noSelection");
+            const messageExcelDisabledForAllData = disableAllExcel ? I18n.t("filter.download.excel.disabled") : "";
+            const messageExcelDisabledForSelection = disableSelectionExcel ? I18n.t("filter.download.excel.disabled") : "";
+            const messageSelectionDisabled = disableAllSelectionFormat ? I18n.t("filter.download.selectionDisabled") : "";
+            const messageNoSelection = allDimensionsWithSelections ? "" : I18n.t("ve.noSelection");
 
             return {
                 dataFormats: haveDataFormats,
@@ -261,18 +261,18 @@
             e.stopPropagation();
 
             var $currentTarget = $(e.currentTarget);
-            var $li = $currentTarget.closest('li');
+            const $li = $currentTarget.closest('li');
             if ($currentTarget.hasClass("disabled") || this.optionsModel.get('isDownloading')) {
                 return;
             }
 
-            var hasClassSelection = $li.hasClass("selection");
-            var jsonBody = hasClassSelection ? this.datasetSelection : this.datasetAllSelected;
-            var xlsxCsvAndTsvFilenameSuffix = hasClassSelection ? "-selection" : "";
-            var type = $currentTarget.data('type');
+            const hasClassSelection = $li.hasClass("selection");
+            const jsonBody = hasClassSelection ? this.datasetSelection : this.datasetAllSelected;
+            const xlsxCsvAndTsvFilenameSuffix = hasClassSelection ? "-selection" : "";
+            const type = $currentTarget.data('type');
             switch (type) {
                 case "tsv":
-                    var self = this;
+                    const self = this;
                     this._showExportTsvAttributesConfig(function (url, suffixAndFileExtension) {
                         self.downloadFile('POST', url, { jsonBody: jsonBody }, xlsxCsvAndTsvFilenameSuffix + suffixAndFileExtension);
                     });
@@ -284,7 +284,7 @@
                 case "png":
                 case "pdf":
                 case "svg":
-                    var svg = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
+                    const svg = svgExporter.sanitizeSvg(this.currentVe.getExportChartSvg());
                     this.downloadFile('POST', this.urls[type], { svg: svg }, "." + type, "chart");
                     break;
                 case "jsonstat":

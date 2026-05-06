@@ -168,8 +168,8 @@
         setMaxHeight: function (maxHeight) {
             this.maxHeight = maxHeight;
             this.$('.collapse').css('max-height', maxHeight);
-            var SIDEBAR_DIMENSION_HEADER_HEIGHT = 135;
-            var height = maxHeight - SIDEBAR_DIMENSION_HEADER_HEIGHT;
+            const SIDEBAR_DIMENSION_HEADER_HEIGHT = 135;
+            const height = maxHeight - SIDEBAR_DIMENSION_HEADER_HEIGHT;
             this.$('.filter-sidebar-categories').css('height', height);
             this.updateScrollbar();
         },

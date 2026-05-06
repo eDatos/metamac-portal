@@ -52,7 +52,7 @@
                 } else if(this.$("#periods-all")[0].checked) {
                     dynamicSelectionBuilder.selectAllTemporalDimensionCategories();
                 } else {
-                    var self = this;
+                    const self = this;
                     var chosenCategoryAttributes = this.getTemporalDimensionCategories().find(function(val) {
                         return val.get("id") === self.$("#periods-date-related-input")[0].value;
                     }).attributes;
@@ -83,7 +83,7 @@
                 if (!this.$("#periods-all")[0].checked && !this.$("#periods-quantity")[0].checked && !this.$("#periods-date")[0].checked) {
                     return I18n.t("modal.permalinkConfig.error.periods");
                 } else if (!this.periodsQuantityView.isDisabled()) {
-                    var value = this.periodsQuantityView.getValue();
+                    const value = this.periodsQuantityView.getValue();
                     if (!Number.isInteger(value) || value < 1) {
                         return I18n.t("modal.permalinkConfig.error.quantity");
                     }

@@ -67,7 +67,7 @@
 
             this.$el.html(this.template(context));
 
-            var self = this;
+            const self = this;
             this.$('select').select2({
                 dropdownParent: $('.metamac-container'),
                 minimumResultsForSearch: Infinity,

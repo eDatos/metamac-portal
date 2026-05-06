@@ -60,10 +60,10 @@
 
         _updateSidebar: function () {
             var width = this.state.get('width');
-            var gap = 10;
+            const GAP = 10;
             if (this.state.get('visible')) {
                 this.$sidebar.css({ width: width, left: 0 });
-                this.$content.css('margin-left', width + gap);
+                this.$content.css('margin-left', width + GAP);
             } else {
                 this.$sidebar.css({ width: width, left: -width });
                 this.$content.css('margin-left', 0);

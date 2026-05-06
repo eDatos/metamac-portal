@@ -23,16 +23,16 @@
         },
 
         changeType: function (e) {
-            var $target = $(e.currentTarget);
+            const $target = $(e.currentTarget);
 
             if ($target.attr('href')) {
                 return;
             }
 
-            var type = $target.data('type');
-            var $subtabs = this.$('.navigation-subtabs a[data-parent-type="' + type + '"]');
+            let type = $target.data('type');
+            const $subtabs = this.$(`.navigation-subtabs a[data-parent-type="${type}"]`);
             if ($subtabs.length > 0) {
-                var $activeSubtabs = $subtabs.filter('.active');
+                const $activeSubtabs = $subtabs.filter('.active');
                 type = ($activeSubtabs.length > 0 ? $activeSubtabs : $subtabs.first()).data('type');
             }
 
@@ -44,7 +44,7 @@
         },
 
         _onTypeChange: function () {
-            var type = this.optionsModel.get('type');
+            const type = this.optionsModel.get('type');
             if (!type) {
                 return;
             }
@@ -52,16 +52,16 @@
             this.$('.navigation-tabs a').removeClass('active');
             this.$('.navigation-subtabs a').removeClass('active').hide();
 
-            var subTab = this.$('.navigation-subtabs a[data-type="' + type + '"]');
+            const subTab = this.$(`.navigation-subtabs a[data-type="${type}"]`);
             if (subTab.length === 0) {
-                this.$('.navigation-tabs a[data-type="' + type + '"]').addClass('active');
+                this.$(`.navigation-tabs a[data-type="${type}"]`).addClass('active');
                 this.$('.navigation-subtabs').hide();
             } else {
                 subTab.addClass('active');
 
-                var parentType = subTab.data('parentType');
-                this.$('.navigation-tabs a[data-type="' + parentType + '"]').addClass('active');
-                this.$('.navigation-subtabs a[data-parent-type="' + parentType + '"]').show();
+                const parentType = subTab.data('parentType');
+                this.$(`.navigation-tabs a[data-type="${parentType}"]`).addClass('active');
+                this.$(`.navigation-subtabs a[data-parent-type="${parentType}"]`).show();
                 this.$('.navigation-subtabs').show();
             }
         }
