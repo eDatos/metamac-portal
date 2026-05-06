@@ -438,7 +438,7 @@ public class Helpers {
     }
 
     public static String localizeText(InternationalString internationalString) {
-        if (internationalString != null) {
+        if (internationalString != null && internationalString.getTexts() != null && !internationalString.getTexts().isEmpty()) {
             String defaultText = internationalString.getTexts().get(0).getValue();
             for (LocalisedString text : internationalString.getTexts()) {
                 if (text.getLang().equals(language)) {
