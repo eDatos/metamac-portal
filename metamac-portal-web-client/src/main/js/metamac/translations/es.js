@@ -25,7 +25,7 @@ I18n.translations.es = {
             helpUrl: "Ayuda",
             share: "Compartir",
             download: "Descargar",
-            apiDownload: "Consultas a la API",
+            apiEndpoints: "Consultas a la API",
             save: "Guardar",
             accept: "Aceptar",
             cancel: "Cancelar",
@@ -73,12 +73,6 @@ I18n.translations.es = {
                 png: "Descargar en formato png",
                 pdf: "Descargar en formato pdf"
             }
-        },
-        apiDownload: {
-            modal: {
-                title: "Descarga vía API",
-                info: "Para más información consultar el apartado de {{hrefTag}} donde se explica cómo construir la llamada a la API para el recurso completo y para la selección actual."
-            },
         },
         share: {
             permanent: "Enlace permanente:"
@@ -285,11 +279,11 @@ I18n.translations.es = {
             apiDocumentationUrl: "Acceso a la documentación de la API",
             apiUrl: {
                 title: "Acceso al recurso en la API",
-                apiDownload: "El recurso se puede obtener en los siguientes formatos: {{formats}}. Para construir la llamada a la API basta con añadir el formato al final de la URL, por ejemplo, para construir la llamada del formato {{formatExample}} se haría de la siguiente forma: URL.{{formatExampleLowercase}}"
+                apiEndpoints: "El recurso se puede obtener en los siguientes formatos: {{formats}}. Para construir la llamada a la API basta con añadir el formato al final de la URL, por ejemplo, para construir la llamada del formato {{formatExample}} se haría de la siguiente forma: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Acceso a la selección actual en la API",
-                apiDownload: "La selección también se puede obtener en diferentes formatos ({{formats}}). En este caso, para construir la llamada a la API se debe tener en cuenta que el formato se debe indicar antes de pasar los parámetros, por ejemplo: URL.{{formatExampleLowercase}}?PARAMETROS"
+                apiEndpoints: "La selección también se puede obtener en diferentes formatos ({{formats}}). En este caso, para construir la llamada a la API se debe tener en cuenta que el formato se debe indicar antes de pasar los parámetros, por ejemplo: URL.{{formatExampleLowercase}}?PARAMETROS"
             },
             nextVersion: {
                 title: "Próxima actualización",

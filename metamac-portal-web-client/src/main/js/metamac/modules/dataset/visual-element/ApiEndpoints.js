@@ -1,18 +1,18 @@
 (function () {
     "use strict";
 
-    App.namespace('App.VisualElement.ApiDownload');
+    App.namespace('App.VisualElement.ApiEndpoints');
 
-    App.VisualElement.ApiDownload = function (options) {
+    App.VisualElement.ApiEndpoints = function (options) {
         this.initialize(options);
-        this._type = 'apiDownload';
+        this._type = 'apiEndpoints';
     };
 
-    App.VisualElement.ApiDownload.prototype = new App.VisualElement.Base();
+    App.VisualElement.ApiEndpoints.prototype = new App.VisualElement.Base();
 
-    _.extend(App.VisualElement.ApiDownload.prototype, {
+    _.extend(App.VisualElement.ApiEndpoints.prototype, {
 
-        template: App.templateManager.get("dataset/dataset-api-download"),
+        template: App.templateManager.get("dataset/dataset-api-endpoints"),
 
         load: function () {
             this._getSelectionApiUrl();
@@ -38,7 +38,7 @@
             }
 
             const self = this;
-            const formats = this._getApiDownloadFormats();
+            const formats = this._getApiEndpointsFormats();
             const context = {
                 url: formats.map(function (format) {
                     return { format: format, href: self._buildEndpoint(format.toLowerCase()) };
@@ -47,8 +47,8 @@
                     return { format: format, href: self._buildSelectionEndpoint(format.toLowerCase()) };
                 }),
                 selectionIsVisible: this.selectionApiUrl.isVisible,
-                apiDownloadMessage: this._buildApiDownloadMessage(),
-                selectionApiDownloadMessage: this._buildApiDownloadMessage(true),
+                apiEndpointsMessage: this._buildApiEndpointsMessage(),
+                selectionApiEndpointsMessage: this._buildApiEndpointsMessage(true),
                 apiDocumentationUrl: this.metadata.getApiDocumentationUrl(),
                 targetBlank: App.config["widget"],
                 rightsHolder: this.showRightsHolderText() ? this.getRightsHolderText() : '',
@@ -96,20 +96,20 @@
             });
         },
 
-        _buildApiDownloadMessage: function(isSelection) {
-            const formats = this._getApiDownloadFormats();
+        _buildApiEndpointsMessage: function(isSelection) {
+            const formats = this._getApiEndpointsFormats();
             const formatExample = formats[0];
             return isSelection?
-                I18n.t("entity.dataset.selectionApiUrl.apiDownload", { formats: formats, formatExampleLowercase: formatExample.toLowerCase() })
-                : I18n.t("entity.dataset.apiUrl.apiDownload", { formats: formats, formatExample: formatExample, formatExampleLowercase: formatExample.toLowerCase() });
+                I18n.t("entity.dataset.selectionApiUrl.apiEndpoints", { formats: formats, formatExampleLowercase: formatExample.toLowerCase() })
+                : I18n.t("entity.dataset.apiUrl.apiEndpoints", { formats: formats, formatExample: formatExample, formatExampleLowercase: formatExample.toLowerCase() });
         },
 
-        _getApiDownloadFormats: function() {
-            const ALL_API_DOWNLOAD_FORMATS = ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
+        _getApiEndpointsFormats: function() {
+            const ALL_API_ENDPOINTS_FORMATS = ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
             if (this._isIndicator()) {
-                return ALL_API_DOWNLOAD_FORMATS.filter(format => format !== "XML");
+                return ALL_API_ENDPOINTS_FORMATS.filter(format => format !== "XML");
             }
-            return ALL_API_DOWNLOAD_FORMATS;
+            return ALL_API_ENDPOINTS_FORMATS;
         },
 
         _buildEndpoint: function (type) {

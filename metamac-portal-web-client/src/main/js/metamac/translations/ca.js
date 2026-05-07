@@ -25,7 +25,7 @@ I18n.translations.ca = {
             helpUrl: "Ajuda",
             share: "Compartir",
             download: "Descarregar",
-            apiDownload: "Consultes a l'API",
+            apiEndpoints: "Consultes a l'API",
             save: "Guardar",
             accept: "Acceptar",
             cancel: "Cancel·lar",
@@ -73,12 +73,6 @@ I18n.translations.ca = {
                 png: "Descarregar en format png",
                 pdf: "Descarregar en format pdf"
             }
-        },
-        apiDownload: {
-            modal: {
-                title: "Descarregar via API",
-                info: "Per a més informació consultar l'apartat de {{hrefTag}} on s'explica com construir la cridada a l'API per al recurs complet i per a la selecció actual."
-            },
         },
         share: {
             permanent: "Enllaç permanent:"
@@ -283,11 +277,11 @@ I18n.translations.ca = {
             apiDocumentationUrl: "Accés a la documentació de l'API",
             apiUrl: {
                 title: "Accés al recurs en l'API",
-                apiDownload: "El recurs es pot obtenir en els formats següents: {{formats}}. Per a construir la cridad a l'API n'hi ha prou amb afegir el format al final de la URL, per exemple, per a construir la crida del format {{formatExample}} es faria de la manera següent: URL.{{formatExampleLowercase}}"
+                apiEndpoints: "El recurs es pot obtenir en els formats següents: {{formats}}. Per a construir la cridad a l'API n'hi ha prou amb afegir el format al final de la URL, per exemple, per a construir la crida del format {{formatExample}} es faria de la manera següent: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Accés a la selecció actual en l'API",
-                apiDownload: "La selecció també es pot obtenir en diferents formats ({{formats}}). En aquest cas, per a construir la cridad a l'API s'ha de tenir en compte que el format s'ha d'indicar abans de passar els paràmetres, per exemple: URL.{{formatExampleLowercase}}?PARAMETROS"
+                apiEndpoints: "La selecció també es pot obtenir en diferents formats ({{formats}}). En aquest cas, per a construir la cridad a l'API s'ha de tenir en compte que el format s'ha d'indicar abans de passar els paràmetres, per exemple: URL.{{formatExampleLowercase}}?PARAMETROS"
             },
             nextVersion: {
                 title: "Pròxima actualització",

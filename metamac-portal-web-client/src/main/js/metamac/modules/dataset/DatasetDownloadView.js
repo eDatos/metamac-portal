@@ -82,7 +82,7 @@
         _getVisualizationType: function () {
             var visualizationSupertype = '';
             switch (this.optionsModel.get('type')) {
-                case 'apiDownload':
+                case 'apiEndpoints':
                 case 'selection':
                 case 'info':
                 case 'table':

@@ -23,7 +23,7 @@
         },
 
         _getVeElements: function () {
-            return ["info", "selection", "apiDownload"];
+            return ["info", "selection", "apiEndpoints"];
         },
 
         _getTabsConfig: function () {
@@ -38,9 +38,9 @@
                     enabled: this._isVisualizationButtonEnabled("info"),
                     title: I18n.t("filter.button.info")
                 }, {
-                    type: "apiDownload",
-                    enabled: this._isVisualizationButtonEnabled("apiDownload"),
-                    title: I18n.t("filter.button.apiDownload")
+                    type: "apiEndpoints",
+                    enabled: this._isVisualizationButtonEnabled("apiEndpoints"),
+                    title: I18n.t("filter.button.apiEndpoints")
                 }, {
                     type: "help",
                     enabled: !!helpUrl,

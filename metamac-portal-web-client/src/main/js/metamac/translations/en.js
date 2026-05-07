@@ -25,7 +25,7 @@ I18n.translations.en = {
             helpUrl: "Help",
             share: "Share",
             download: "Download",
-            apiDownload: "API queries",
+            apiEndpoints: "API queries",
             save: "Save",
             accept: "Accept",
             cancel: "Cancel",
@@ -73,12 +73,6 @@ I18n.translations.en = {
                 png: "Download in png format",
                 pdf: "Download in pdf format"
             }
-        },
-        apiDownload: {
-            modal: {
-                title: "Download via API",
-                info: "For more information, see the {{hrefTag}} section, which explains how to construct the API call for the entire resource and for the current selection."
-            },
         },
         share: {
             permanent: "Permanent link:"
@@ -283,11 +277,11 @@ I18n.translations.en = {
             apiDocumentationUrl: "API documentation access",
             apiUrl: {
                 title: "API access to the resource",
-                apiDownload: "The resource can be obtained in the following formats: {{formats}}. To build the API call, just add the format to the end of the URL. For example, to build the call in {{formatExample}} format it would be done as follows: URL.{{formatExampleLowercase}}"
+                apiEndpoints: "The resource can be obtained in the following formats: {{formats}}. To build the API call, just add the format to the end of the URL. For example, to build the call in {{formatExample}} format it would be done as follows: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Access to the current selection in the API",
-                apiDownload: "The selection can also be obtained in different formats ({{formats}}). In this case, to build the API call it must be taken into account that the format must be indicated before passing the parameters, for example: URL.{{formatExampleLowercase}}?PARAMETERS"
+                apiEndpoints: "The selection can also be obtained in different formats ({{formats}}). In this case, to build the API call it must be taken into account that the format must be indicated before passing the parameters, for example: URL.{{formatExampleLowercase}}?PARAMETERS"
             },
             nextVersion: {
                 title: "Next update",

@@ -39,8 +39,8 @@
                     case 'selection':
                         this.ve.selection = new App.VisualElement.Selection(options);
                         break;
-                    case 'apiDownload':
-                        this.ve.apiDownload = new App.VisualElement.ApiDownload(options);
+                    case 'apiEndpoints':
+                        this.ve.apiEndpoints = new App.VisualElement.ApiEndpoints(options);
                         break;
                     case 'info':
                         this.ve.info = new App.VisualElement.Info(options);

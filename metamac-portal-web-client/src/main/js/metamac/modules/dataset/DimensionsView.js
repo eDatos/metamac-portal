@@ -23,7 +23,7 @@
             selection: {
                 zones: {},
             },
-            apiDownload: {
+            apiEndpoints: {
                 zones: {},
             },
             table: {

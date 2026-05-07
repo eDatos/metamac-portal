@@ -29,7 +29,7 @@
 
         _getVeElements: function () {
             if (!this._veElements) {
-                let visualElements = ["info", "apiDownload", "table", "column", "bar", "line"];
+                let visualElements = ["info", "apiEndpoints", "table", "column", "bar", "line"];
                 if (_.findWhere(this.metadata.getDimensions(), { type: 'GEOGRAPHIC_DIMENSION' })) {
                     visualElements.push("map");
                     visualElements.push("mapbubble");
@@ -113,10 +113,10 @@
                     title: I18n.t("filter.button.info"),
                     iconClass: "dataset-options-info"
                 }, {
-                    type: "apiDownload",
-                    enabled: self._isVisualizationButtonEnabled("apiDownload"),
-                    title: I18n.t("filter.button.apiDownload"),
-                    iconClass: "dataset-options-api-download"
+                    type: "apiEndpoints",
+                    enabled: self._isVisualizationButtonEnabled("apiEndpoints"),
+                    title: I18n.t("filter.button.apiEndpoints"),
+                    iconClass: "dataset-options-api-endpoints"
                 }, {
                     type: "help",
                     enabled: !!helpUrl,

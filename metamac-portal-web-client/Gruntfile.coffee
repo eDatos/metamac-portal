@@ -191,7 +191,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/visual-element/Table.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Map.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Selection.js"
-                paths.js + "/metamac/modules/dataset/visual-element/ApiDownload.js"
+                paths.js + "/metamac/modules/dataset/visual-element/ApiEndpoints.js"
                 paths.js + "/metamac/modules/dataset/ErrorView.js"
 
                 # canvas table

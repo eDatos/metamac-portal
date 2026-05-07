@@ -120,7 +120,7 @@
         },
 
         _isFilterDisabled: function () {
-            return this.optionsModel.get('widget') && (this.optionsModel.get('type') === 'info' || this.optionsModel.get('type') === 'apiDownload');
+            return this.optionsModel.get('widget') && (this.optionsModel.get('type') === 'info' || this.optionsModel.get('type') === 'apiEndpoints');
         },
 
         _getWidgetTabs: function () {
@@ -147,7 +147,7 @@
         },
 
         _isFixedVisualizationTypeForWidgets: function (visualizationType) {
-            return visualizationType === 'info' || visualizationType === 'apiDownload';
+            return visualizationType === 'info' || visualizationType === 'apiEndpoints';
         },
 
         updateWidgetActiveTab: function () {
