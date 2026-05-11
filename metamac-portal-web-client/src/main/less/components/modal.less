@@ -26,7 +26,7 @@
     width: @modal-width;
     border: none;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--edatos-border-radius-sm);
     background-color: var(--edatos-color-white-100);
     overflow: clip;
     font-size: @defaultFontSize;
@@ -41,7 +41,7 @@
 
     .modal-header {
         display: flex;
-        padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm) var(--edatos-spacing-y-sm) var(--edatos-spacing-x-m);
+        padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm) var(--edatos-spacing-y-sm) var(--edatos-spacing-x-lg);
         justify-content: space-between;
         background: var(--edatos-color-secondary-100);
         color: var(--edatos-color-white-100);
@@ -94,7 +94,7 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m) var(--edatos-spacing-x-m);
+            padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg);
 
             > :where(:not(:empty) ~ :not(:empty)) {
                 margin-top: var(--edatos-spacing-y-sm);
@@ -161,7 +161,7 @@
             }
 
             .form-error, .form-info {
-                font-size: var(--edatos-font-size-s);
+                font-size: var(--edatos-font-size-sm);
             }
 
             .form-error {
@@ -189,11 +189,11 @@
             }
 
             &.modal-confirmation {
-                gap: var(--edatos-spacing-y-l);
+                gap: var(--edatos-spacing-y-lg);
                 margin: var(--edatos-spacing-y-sm) 0;
 
                 .form-buttons {
-                    gap: var(--edatos-spacing-x-m);
+                    gap: var(--edatos-spacing-x-lg);
                     justify-content: center;
                     margin-top: 0;
 
@@ -204,9 +204,9 @@
                         border: none;
                         color: var(--edatos-color-white-100);
                         text-align: center;
-                        font-size: var(--edatos-font-size-s);
+                        font-size: var(--edatos-font-size-sm);
                         font-weight: var(--edatos-font-weight-semibold);
-                        border-radius: var(--border-radius-s);
+                        border-radius: var(--edatos-border-radius-xs);
                         cursor: pointer;
                         text-transform: uppercase;
 

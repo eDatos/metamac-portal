@@ -11,7 +11,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--edatos-spacing-x-m);
+    gap: var(--edatos-spacing-x-lg);
 
     &.dataset-visualization-type-table {
         .dataset-visualization-visual-element {
@@ -37,10 +37,10 @@
     }
 
     .info-section {
-        font-size: var(--edatos-font-size-s);
+        font-size: var(--edatos-font-size-sm);
         color: var(--edatos-color-black-100);
         border: @borderWidthSmall solid var(--edatos-color-gray-20);
-        border-radius: var(--border-radius-sm);
+        border-radius: var(--edatos-border-radius-sm);
         overflow: clip;
 
         a {
@@ -52,7 +52,7 @@
             display: flex;
             flex-direction: row;
             gap: var(--edatos-spacing-x-sm);
-            padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+            padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg);
             margin: 0;
             background: var(--edatos-color-gray-5);
             color: var(--edatos-color-black-100);
@@ -78,7 +78,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: var(--edatos-spacing-y-sm);
-                padding: var(--edatos-spacing-y-l) var(--edatos-spacing-x-m);
+                padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg);
                 margin: 0;
                 background: none;
                 list-style: none;
@@ -151,7 +151,7 @@
         height: 100%;
         box-sizing: border-box;
         background: var(--edatos-color-white-100);
-        border-radius: var(--border-radius-sm);
+        border-radius: var(--edatos-border-radius-sm);
         border: @borderWidthSmall solid var(--edatos-color-gray-60);
 
         h3 {
@@ -178,7 +178,7 @@
         width: 100%;
 
         .dataset-dimensions {
-            margin-bottom: var(--edatos-spacing-y-l);
+            margin-bottom: var(--edatos-spacing-y-lg);
 
             &.hidden {
                 display: none;
@@ -445,7 +445,7 @@ body.widget {
 
             .dataset-visualization-title {
                 .text-overflow();
-                font-size: var(--edatos-font-size-s);
+                font-size: var(--edatos-font-size-sm);
                 line-height: 1;
                 padding: var(--edatos-spacing-y-xs) 0 0 0;
             }
@@ -464,7 +464,7 @@ body.widget {
                         }
 
                         .info-section-title {
-                            padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-m);
+                            padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-lg);
                         }
                     }
                 }
