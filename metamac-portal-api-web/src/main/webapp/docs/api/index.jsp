@@ -16,10 +16,13 @@
     String internationalizationCookie = InternationalizationUtils.getInstance().getInternationalizationCookieId();
     String locale = InternationalizationUtils.getInstance().getCurrentLocale(request);
     String appName = "";
-    String appNameExport =  ResourceBundle.getBundle("i18n.export.messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name");
-    String appNamePermalinks = ResourceBundle.getBundle("i18n.permalinks.messages" , LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT)).getString("app.name");
-    MessagesResourceBundle messagesResource = new MessagesResourceBundle(locale, "i18n.permalinks.messages");
-    pageContext.setAttribute("msg", messagesResource);
+    String appTitle = "";
+    ResourceBundle exportBundle = ResourceBundle.getBundle("i18n.export.messages", LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT));
+    ResourceBundle permalinksBundle = ResourceBundle.getBundle("i18n.permalinks.messages", LocaleUtils.toLocale(locale), getNoFallbackControl(ResourceBundle.Control.FORMAT_DEFAULT));
+    String appNameExport = exportBundle.getString("app.name");
+    String appNamePermalinks = permalinksBundle.getString("app.name");
+    String appTitleExport = exportBundle.getString("api.doc.title");
+    String appTitlePermalinks = permalinksBundle.getString("api.doc.title");
     String appVersion = ResourceBundle.getBundle("application").getString("app.version");
     
     Pattern pattern = Pattern.compile(".*/(?:(" + EXPORT_API_NAME + "|" + PERMALINKS_API_NAME + "))(?:/.*)?", Pattern.CASE_INSENSITIVE);
@@ -32,15 +35,18 @@
     	String currentApi = matcher.group(1);
     	if (currentApi.equals(EXPORT_API_NAME)) {
   	  		appName =  appNameExport;
+  	  		appTitle = appTitleExport;
 	    } else if ((currentApi.equals(PERMALINKS_API_NAME))) {
 	        appName =  appNamePermalinks;
+	        appTitle = appTitlePermalinks;
 	    }
     }
+    pageContext.setAttribute("appTitle", appTitle);
  %>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>${msg['api.doc.swagger.headerTitle']}</title>
+  <title>${appTitle}</title>
   <link href="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/css/typography.css" media='screen' rel='stylesheet' type='text/css'/>
   <link href="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/css/reset.css" media='screen' rel='stylesheet' type='text/css'/>
   <link href="<%=org.siemac.metamac.core.common.util.swagger.SwaggerUtils.getResourceBaseURL(request)%>/swagger-ui/css/screen.css" media='screen' rel='stylesheet' type='text/css'/>
