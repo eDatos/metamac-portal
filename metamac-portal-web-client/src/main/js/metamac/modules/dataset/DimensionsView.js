@@ -316,7 +316,7 @@
             if (currentChartType) {
                 icon = this.configuration[currentChartType].zones[zone].icon;
             }
-            return _.isUndefined(icon) ? "" : "icon-" + icon;
+            return _.isUndefined(icon) ? "" : "fa fa-thin fa-" + icon;
         },
 
         _getZonesByChartType: function () {

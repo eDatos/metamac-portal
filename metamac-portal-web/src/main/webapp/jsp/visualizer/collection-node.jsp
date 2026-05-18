@@ -41,7 +41,7 @@
             <span class="resource-section-index"><%= chapterIndex %></span>
             <span class="resource-section-title-label"><%= Helpers.localizeText(chapter.getName()).trim() %></span>
             <c:if test="${nodeDepth == 2}">
-                <i class="icon-chevron-down"></i>
+                <i class="fa fa-chevron-down fa-solid"></i>
             </c:if>
         </span>
         <div class="resource-section-description">
@@ -74,10 +74,10 @@
         request.setAttribute("numerationFixed", String.format("%0"+ numberOfFixedDigitsInNumeration +"d", numeration));
 
         Resource resource = table.getResource();
-        String iconClass = "icon-table";
+        String iconClass = "fa fa-table fa-thin";
         List<String> resourcesWithIconLink = Arrays.asList("statisticalResources#url", "statisticalResources#collection");
         if (resource != null && resourcesWithIconLink.contains(resource.getKind())) {
-            iconClass = "icon-link";
+            iconClass = "fa fa-link fa-thin";
         }
         request.setAttribute("iconClass", iconClass);
     %>

@@ -119,8 +119,8 @@
             }
 
             this.visibleLabelTypeView = new App.components.ToggleableView({
-                inactiveValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL, title: "Código y etiqueta", icon: "icon-tags" },
-                activeValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.CODE_AND_LABEL, title: "Etiqueta", icon: "icon-tags" },
+                inactiveValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL, title: "Código y etiqueta", icon: "fa fa-tags" },
+                activeValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.CODE_AND_LABEL, title: "Etiqueta", icon: "fa fa-tags" },
                 selectionModel: this.filterDimension,
                 name: "visibleLabelType",
                 el: this.$(".filter-sidebar-dimension-visibleLabelType")

@@ -1,9 +1,13 @@
 @import "../variables";
 
 .ui-accordion-header .ui-accordion-header-icon {
-    .icon-minus-solid;
+    &:extend(.fa all);
+    .fa-solid;
+    .fa-minus;
 }
 
 .ui-accordion-header-collapsed .ui-accordion-header-icon {
-    .icon-plus-solid;
+    &:extend(.fa all);
+    .fa-solid;
+    .fa-plus;
 }

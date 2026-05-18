@@ -436,7 +436,7 @@
                 }
             });
             var title = I18n.t("filter.download.options.title");
-            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView, titleIconName: "icon-file-export" });
+            this.modal = new App.components.modal.ModalView({ title: title, contentView: modalContentView, titleIconName: "fa-file-export" });
             this.modal.show();
         },
 

@@ -196,7 +196,7 @@
                         modal.close();
 
                         modalContentView = new App.components.modal.ShareModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions});
-                        modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-share-nodes"});
+                        modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-share-nodes"});
                         modal.show();
                     },
                     customButtonText: I18n.t("modal.shareConfig.button.submit")
@@ -204,7 +204,7 @@
             } else {
                 modalContentView = new App.components.modal.ShareModalView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
             }
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-share-nodes"});
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-share-nodes"});
             modal.show();
         },
 
@@ -213,7 +213,7 @@
             if (this.isInternalPortal()) {
                 var modalContentView = new DisabledFeatureInternalPortalView();
                 var title = I18n.t("filter.button.save");
-                var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
+                var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                 modal.show();
             } else {
                 var self = this;
@@ -227,7 +227,7 @@
                                 modal.close();
 
                                 modalContentView = new App.components.modal.SaveModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val});
-                                modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
+                                modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                                 modal.show();
                             },
                             customButtonText: I18n.t("modal.saveConfig.button.submit")
@@ -239,7 +239,7 @@
                             user: val
                         });
                     }
-                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                     modal.show();
                 }).catch(function () {
                     var modal;
@@ -254,7 +254,7 @@
                         },
                     });
                     var title = I18n.t("modal.information.loginRequired.title");
-                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-floppy-disk"});
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                     modal.show();
                 });
             }
@@ -273,7 +273,7 @@
                             modal.close();
 
                             modalContentView = new App.components.modal.EmbedModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title});
-                            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-code"});
+                            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-code"});
                             modal.show();
                         },
                         customButtonText: I18n.t("modal.embedConfig.button.submit"),
@@ -281,7 +281,7 @@
                 } else {
                     modalContentView = new App.components.modal.EmbedModalView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
                 }
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "icon-code"});
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-code"});
             modal.show();
         },
 

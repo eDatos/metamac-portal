@@ -11,7 +11,6 @@
         template: App.templateManager.get('dataset/filter/sidebar/filter-sidebar-view'),
 
         id: "filterSidebar",
-        icon: "filter-sidebar-icon-filter",
         title: I18n.t("filter.sidebar.filter.title"),
 
         initialize: function (options) {

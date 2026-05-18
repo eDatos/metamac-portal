@@ -36,8 +36,13 @@
             height: auto;
 
             b {
-                .icon-chevron-down;
+                &:extend(.fa all);
+                .fa-regular;
+                .fa-chevron-down;
+
                 position: static;
+                width: min-content;
+                height: 100%;
                 margin: 0;
                 border: none;
             }

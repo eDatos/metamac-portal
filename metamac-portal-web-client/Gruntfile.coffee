@@ -42,7 +42,7 @@ module.exports = (grunt) ->
                 paths.lib + "/backbone.js"
                 paths.lib + "/backbone.marionette.js"
                 paths.lib + "/backbone.wreqr.js"
-                paths.lib + "/handlebars.runtime.js"
+                paths.nodeModules + "/handlebars/dist/handlebars.runtime.js"
                 paths.lib + "/jquery.dotdotdot-1.5.0-packed.js"
                 paths.lib + "/async.js"
                 paths.lib + "/cookies.js"
@@ -274,7 +274,7 @@ module.exports = (grunt) ->
                 src: paths.less + '/bootstrap.less'
                 dest: paths.assets + '/metamac.css'
                 options:
-                    yuicompress: true
+                    compress: true
 
         handlebars:
             compile:
@@ -312,6 +312,10 @@ module.exports = (grunt) ->
                 dest: 'target/',
                 flatten: true,
                 expand: true
+            }
+            fontAwesome: {
+                src: paths.nodeModules + '/@awesome.me/kit-f6e7c4d1c0/icons/css/all.css',
+                dest: paths.less + '/vendor/fontAwesome.less'
             }
 
         clean:

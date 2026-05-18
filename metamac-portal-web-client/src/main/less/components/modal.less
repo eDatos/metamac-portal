@@ -58,10 +58,6 @@
                 align-self: center;
                 font-size: var(--edatos-font-size-lg);
                 width: var(--edatos-font-size-lg);
-
-                &:before {
-                    font-weight: var(--edatos-font-weight-semibold);
-                }
             }
 
             h2 {
@@ -148,16 +144,6 @@
                 display: flex;
                 justify-content: flex-start;
                 margin-top: var(--edatos-spacing-y-xl);
-
-                .modal-form-view-icon {
-                    .dataset-options-type-icon;
-                    .icon-eye;
-
-                    .btn.active &,
-                    .btn:active & {
-                        .icon-eye-solid;
-                    }
-                }
             }
 
             .form-error, .form-info {
@@ -312,4 +298,10 @@
             }
         }
     }
+}
+
+.modal-form-view-icon {
+    .dataset-options-type-icon;
+    &:extend(.fa all);
+    .fa-eye;
 }

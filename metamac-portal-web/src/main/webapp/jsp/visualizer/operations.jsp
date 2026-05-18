@@ -88,7 +88,7 @@
         operations.forEach(operation => {
             var listItem = document.createElement('li');
             listItem.classList.add('resource-section','resource-section-depth-1', 'resource-section-collapsed');
-            listItem.innerHTML = '<span class="resource-section-title"><span class="resource-section-title-label">'+ getText(operation.statisticalOperation.name) + '</span><i class="icon-chevron-down"></i></span>';
+            listItem.innerHTML = '<span class="resource-section-title"><span class="resource-section-title-label">'+ getText(operation.statisticalOperation.name) + '</span><i class="fa fa-chevron-down fa-solid"></i></span>';
             listItem.append(buildCollectionsList(operation.collections));
             operationsList.append(listItem);
         });

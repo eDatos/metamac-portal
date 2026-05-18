@@ -189,24 +189,6 @@
 
 
 // Icons
-.filter-sidebar-icon {
-    height: 30px;
-
-    &:before {
-        color: var(--edatos-color-white-100);
-    }
-}
-
-.filter-sidebar-icon-filter {
-    .filter-sidebar-icon;
-    .icon-filter;
-}
-
-.filter-sidebar-icon-order {
-    .filter-sidebar-icon;
-    .icon-sort;
-}
-
 .filter-sidebar-category-icon {
     position: static;
     padding-left: 0;
@@ -228,44 +210,48 @@
     .icon-radio-unchecked;
 }
 
-.filter-sidebar-category-icon-check {
-    .filter-sidebar-category-icon;
-    .icon-square-check;
-}
-
-.filter-sidebar-category-icon-unchecked {
-    .filter-sidebar-category-icon;
-    .icon-square;
-}
-
+.filter-sidebar-category-icon-check,
 .filter-sidebar-category-any-children-icon-check {
     .filter-sidebar-category-icon;
-    .icon-square-check;
+    &:extend(.fa all);
+    .fa-solid;
+    .fa-square-check;
 }
 
+.filter-sidebar-category-icon-unchecked,
 .filter-sidebar-category-any-children-icon-unchecked {
     .filter-sidebar-category-icon;
-    .icon-square;
+    &:extend(.fa all);
+    .fa-regular;
+    .fa-square;
 }
 
 .filter-sidebar-category-icon-expand {
     .filter-sidebar-category-icon;
-    .icon-plus;
+    &:extend(.fa all);
+    .fa-regular;
+    .fa-square-plus;
 }
 
 .filter-sidebar-category-any-children-icon-expand {
     .filter-sidebar-category-icon;
-    .icon-square-plus;
+    &:extend(.fa all);
+    .fa-solid;
+    .fa-square-plus;
 }
 
 .filter-sidebar-category-icon-collapse {
     .filter-sidebar-category-icon;
-    .icon-minus;
+    &:extend(.fa all);
+    .fa-regular;
+    .fa-square-minus;
 }
 
 .filter-sidebar-category-any-children-icon-collapse {
     .filter-sidebar-category-icon;
-    .icon-square-minus;
+    &:extend(.fa all);
+    .fa-solid;
+    .fa-square-minus;
 }
 
 .order-sidebar-instructions {
