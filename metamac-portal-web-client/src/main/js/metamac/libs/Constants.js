@@ -3,28 +3,22 @@
 
     App.namespace("App.Constants");
 
+    var getCssVar = function (name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    };
+
     App.Constants = {
-        // See variables.less        
         colors: {
-            istacBlueWhite: "#B3D9FF",
-            istacBlueLight: "#56B5E6",
-            istacBlueMedium: "#1C547E",
-            istacBlueDark: "#003366",
-            istacYellow: '#EBCC5C',
-
-            istacWhite: "#FFFFFF",
-            istacGreyLight: "#EBEBEB",
-            istacGreyMedium: "#ACACAC",
-            istacGreyDark: "#808080",
-            istacBlack: "#222222",
-
-            hiddenText: "#FFFFFD"
+            white100: getCssVar("--edatos-color-white-100"),
+            gray5: getCssVar("--edatos-color-gray-5"),
+            gray40: getCssVar("--edatos-color-gray-40"),
+            gray60: getCssVar("--edatos-color-gray-60"),
+            gray80: getCssVar("--edatos-color-gray-80")
         },
 
         font: {
             family: {
-                sansSerif: "Helvetica,Arial,sans-serif",
-                serif: "serif"
+                sansSerif: getCssVar("--edatos-font-family")
             },
             body: {
                 size: "11px"
@@ -103,7 +97,7 @@
                     point: {
                         border: {
                             width: 7,
-                            color: "#ACACAC88"
+                            color: getCssVar("--edatos-color-gray-40") + "88"
                         }
                     }
                 }
@@ -133,7 +127,12 @@
                 borderWidth: 1
             },
             visualMap: {
-                widthPercentage: 0.65
+                widthPercentage: 0.65,
+                min: "#B3D9FF",
+                max: "#003366"
+            },
+            maps: {
+                accentColor: '#EBCC5C'
             },
             colors: [
                 "#5470c6",

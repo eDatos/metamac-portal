@@ -18,7 +18,7 @@
                 axisLine: {
                     lineStyle: {
                         width: Constants.charts.dataAxisWidth,
-                        color: Constants.colors.istacGreyMedium
+                        color: Constants.colors.gray40
                     }
                 },
                 axisLabel: {

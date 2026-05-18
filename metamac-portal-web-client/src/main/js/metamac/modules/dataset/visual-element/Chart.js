@@ -40,7 +40,7 @@
                     fontFamily: this.getRightsHolderStyle().fontFamily
                 },
                 animation: false,
-                backgroundColor: Constants.colors.istacWhite,
+                backgroundColor: Constants.colors.white100,
                 grid: {
                     left: Constants.charts.grid.horizontalMargin,
                     right: Constants.charts.grid.horizontalMargin,
@@ -53,18 +53,18 @@
                     type: 'scroll',
                     animationDurationUpdate: 100,
                     width: '90%',
-                    backgroundColor: Constants.colors.istacWhite,
+                    backgroundColor: Constants.colors.white100,
                     left: 'center',
                     top: null,
                     borderWidth: 1,
-                    borderColor: Constants.colors.istacGreyMedium,
-                    pageIconColor: Constants.colors.istacBlueMedium,
-                    pageIconInactiveColor: Constants.colors.istacGreyMedium,
+                    borderColor: Constants.colors.gray40,
+                    pageIconColor: Constants.colors.gray80,
+                    pageIconInactiveColor: Constants.colors.gray40,
                     pageIconSize: Constants.charts.legend.fontSize,
                     animation: true,
                     orient: 'horizontal',
                     pageTextStyle: {
-                        color: Constants.colors.istacBlack,
+                        color: Constants.colors.gray80,
                         fontSize: Constants.charts.legend.fontSize,
                         fontWeight: 'bold'
                     },
@@ -72,7 +72,7 @@
                     padding: Constants.charts.legend.padding,
                     textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
-                        color: Constants.colors.istacBlack
+                        color: Constants.colors.gray80
                     }
                 },
                 xAxis: {
@@ -81,7 +81,7 @@
                     },
                     axisLabel: {
                         fontSize: Constants.charts.axis.fontSize,
-                        color: Constants.colors.istacGreyDark,
+                        color: Constants.colors.gray60,
                         formatter: this.axisLabelFormatter,
                         hideOverlap: true
                     }
@@ -92,7 +92,7 @@
                     },
                     axisLabel: {
                         fontSize: Constants.charts.axis.fontSize,
-                        color: Constants.colors.istacGreyDark,
+                        color: Constants.colors.gray60,
                         formatter: this.axisLabelFormatter,
                         hideOverlap: true
                     }
@@ -114,7 +114,7 @@
                     padding: Constants.charts.tooltip.padding,
                     textStyle: {
                         fontSize: Constants.charts.tooltip.fontSize,
-                        color: Constants.colors.istacBlack
+                        color: Constants.colors.gray80
                     },
                     position: function (point, params, domEl, rect) {
                         self.coordsTooltipPointsTo = [

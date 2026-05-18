@@ -71,8 +71,8 @@
                     orient: 'horizontal',
                     inRange: {
                         color: [
-                            Constants.colors.istacBlueWhite,
-                            Constants.colors.istacBlueDark
+                            Constants.charts.visualMap.min,
+                            Constants.charts.visualMap.max
                         ]
                     },
                     outOfRange: {
@@ -80,7 +80,7 @@
                     },
                     controller: {
                         outOfRange: {
-                            color: [Constants.colors.istacGreyDark]
+                            color: [Constants.colors.gray60]
                         }
                     },
                     text: null,
@@ -108,7 +108,7 @@
                     roamTrigger: "global",
                     itemStyle: {
                         borderWidth: 0.1,
-                        borderColor: Constants.colors.istacWhite
+                        borderColor: Constants.colors.white100
                     },
                     scaleLimit: {
                         min: this.model.get("minScale"),
@@ -275,7 +275,7 @@
                         name: feature.id,
                         itemStyle: {
                             borderWidth: 0,
-                            areaColor: Constants.colors.istacGreyLight
+                            areaColor: Constants.colors.gray5
                         },
                         emphasis: {
                             disabled: true
@@ -290,7 +290,7 @@
                         name: feature.id,
                         itemStyle: {
                             borderWidth: 0,
-                            areaColor: Constants.colors.istacGreyMedium
+                            areaColor: Constants.colors.gray40
                         },
                         emphasis: {
                             disabled: true
@@ -316,7 +316,7 @@
                         selectedMode: false,
                         emphasis: {
                             itemStyle: {
-                                areaColor: Constants.colors.istacYellow
+                                areaColor: Constants.charts.maps.accentColor
                             },
                             label: {
                                 show: false
@@ -335,7 +335,7 @@
                         geoIndex: 0,
                         coordinateSystem: 'geo',
                         itemStyle: {
-                            color: Constants.colors.istacYellow
+                            color: Constants.charts.maps.accentColor
                         },
                         symbolSize: function (data) {
                             var maxSymbolSize = 0.3 * Math.min(self.el.clientWidth, self.el.clientHeight);
