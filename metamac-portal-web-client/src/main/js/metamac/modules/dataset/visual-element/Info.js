@@ -141,8 +141,15 @@
             this._updateMustApplyVisualizationRestrictions();
         },
 
+        _destroyWidgets: function () {
+            this.$el.find('.metadata-accordion').accordion('destroy');
+            this.$el.find('.metadata-group').perfectScrollbar('destroy');
+        },
+
         render: function () {
             if (!this.$el || this._destroyed) { return; }
+
+            this._destroyWidgets();
 
             var context = {
                 relatedResources: {
@@ -259,6 +266,7 @@
         },
 
         destroy: function () {
+            this._destroyWidgets();
             this._destroyed = true;
         }
     });

@@ -143,8 +143,6 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/components/sidebar/SidebarStateModel.js"
                 paths.js + "/metamac/components/sidebar/SidebarView.js"
                 paths.js + "/metamac/components/searchbar/SearchbarView.js"
-                paths.js + "/metamac/components/accordion/AccordionView.js"
-                paths.js + "/metamac/components/accordion/AccordionItemView.js"
                 paths.js + "/metamac/components/select/SelectView.js"
                 paths.js + "/metamac/components/toggleable/ToggleableView.js"
                 paths.js + "/metamac/components/input/NumericInputView.js"

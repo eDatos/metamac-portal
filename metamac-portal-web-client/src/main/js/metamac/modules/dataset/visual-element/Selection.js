@@ -53,7 +53,7 @@
         },
 
         _destroyDimensionViews: function () {
-            _.invoke(this._dimensionViews, 'close');
+            _.invoke(this._dimensionViews, 'destroy');
             this._dimensionViews = [];
         }
 

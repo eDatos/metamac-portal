@@ -26,7 +26,11 @@
                     }
                 }
 
-                $dropdown.find('.select2-results__options').perfectScrollbar();
+                const $results = $dropdown.find('.select2-results__options');
+                $results.perfectScrollbar();
+                $select.one('select2:closing', function () {
+                    $results.perfectScrollbar('destroy');
+                });
             });
         }
 

@@ -20,12 +20,13 @@
             if (this.subviews) {
                 _.invoke(this.subviews, 'destroy');
             }
+            this._destroyWidgets();
             this._unbindEvents();
             this.remove();
         },
 
-        close: function () {
-            this.remove();
+        _destroyWidgets: function () {
+            this.$(".filter-sidebar-categories").perfectScrollbar('destroy');
         },
 
         events: {
@@ -48,6 +49,8 @@
             this.delegateEvents();
             this._unbindEvents();
             this._bindEvents();
+
+            this._destroyWidgets();
 
             var context = {
                 dimension: this.filterDimension.toJSON(),
@@ -141,8 +144,9 @@
 
         updateScrollbar: function () {
             // Wait for DOM
+            var self = this;
             setTimeout(function () {
-                this.$(".filter-sidebar-categories").perfectScrollbar('update');
+                self.$(".filter-sidebar-categories").perfectScrollbar('update');
             }, 10);
         },
 

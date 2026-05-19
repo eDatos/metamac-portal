@@ -43,6 +43,10 @@
             }
         },
 
+        onBeforeClose: function () {
+            this.$('.modal-content').perfectScrollbar('destroy');
+        },
+
         onClickBackdrop: function () {
             this.close();
         },

@@ -30,12 +30,20 @@
 
         destroy: function () {
             this._unbindEvents();
+            this._destroyWidgets();
+        },
+
+        _destroyWidgets: function () {
+            this.$el.find('.metadata-accordion').accordion('destroy');
+            this.$el.find('.metadata-group').perfectScrollbar('destroy');
         },
 
         render: function () {
             if (!this.$el) {
                 return;
             }
+
+            this._destroyWidgets();
 
             const self = this;
             const formats = this._getApiEndpointsFormats();

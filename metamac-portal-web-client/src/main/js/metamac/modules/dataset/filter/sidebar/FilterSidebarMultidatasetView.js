@@ -3,9 +3,6 @@
 
     App.namespace("App.widget.filter.sidebar");
 
-    var FilterSidebarMultidatasetNodeView = App.widget.filter.sidebar.FilterSidebarMultidatasetNodeView;
-    var FilterRepresentation = App.modules.dataset.filter.models.FilterRepresentation;
-
     App.widget.filter.sidebar.FilterSidebarMultidatasetView = Backbone.View.extend({
 
         template: App.templateManager.get('dataset/filter/sidebar/filter-sidebar-multidataset'),
@@ -19,12 +16,13 @@
 
         destroy: function () {
             _.invoke(this.subviews, 'destroy');
+            this._destroyWidgets();
             this._unbindEvents();
             this.remove();
         },
 
-        close: function () {
-            this.remove();
+        _destroyWidgets: function () {
+            this.$(".filter-sidebar-multidataset-nodes").perfectScrollbar('destroy');
         },
 
         events: {
@@ -63,6 +61,8 @@
             this._unbindEvents();
             this._bindEvents();
             var self = this;
+
+            this._destroyWidgets();
 
             this.$el.html(this.template({
                 multidataset: self.multidataset.toJSON(),
@@ -103,8 +103,9 @@
 
         updateScrollbar: function () {
             // Wait for DOM
+            var self = this;
             setTimeout(function () {
-                this.$(".filter-sidebar-multidataset-nodes").perfectScrollbar('update');
+                self.$(".filter-sidebar-multidataset-nodes").perfectScrollbar('update');
             }, 10);
         },
 
