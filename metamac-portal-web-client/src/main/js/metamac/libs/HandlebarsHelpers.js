@@ -242,7 +242,7 @@
 
             for (i = 0; i < itemsLength; i++) {
                 item = items[i];
-                out = out + $.trim(options.fn(item));
+                out = out + options.fn(item).trim();
                 if (i !== (items.length - 1)) {
                     out += separator;
                 }

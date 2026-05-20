@@ -34,7 +34,6 @@ module.exports = (grunt) ->
 
                 # External libs
                 paths.lib + "/jquery-4.0.0.js"
-                paths.lib + "/jquery-migrate-4.0.2.js"
                 paths.lib + "/jquery-ui.js"
                 paths.lib + "/i18n.js"
                 paths.lib + "/underscore.js"
@@ -43,7 +42,6 @@ module.exports = (grunt) ->
                 paths.lib + "/backbone.marionette.js"
                 paths.lib + "/backbone.wreqr.js"
                 paths.nodeModules + "/handlebars/dist/handlebars.runtime.js"
-                paths.lib + "/jquery.dotdotdot-1.5.0-packed.js"
                 paths.lib + "/async.js"
                 paths.lib + "/cookies.js"
                 paths.nodeModules + "/shareon/dist/shareon.iife.js"
