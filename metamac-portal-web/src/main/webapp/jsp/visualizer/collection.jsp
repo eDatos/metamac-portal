@@ -63,6 +63,12 @@
 					e.preventDefault();
 					$(this).parent().toggleClass("resource-section-collapsed");
 				});
+				<c:if test="${collection != null && collection.metadata != null && collection.metadata.lastUpdate != null}">
+					App.Helpers.createUpdateDatesSection({
+						lastUpdate: ${collection.metadata.lastUpdate.time},
+						nextUpdate: null
+					});
+				</c:if>
             });
         });
     </script>

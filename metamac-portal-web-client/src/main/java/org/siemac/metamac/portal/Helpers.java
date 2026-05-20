@@ -83,6 +83,7 @@ public class Helpers {
 
     private static final String FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS = "-data,-metadata,+keywords";
     private static final String FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS          = "-metadata,+keywords";
+    private static final String FIELDS_INCLUDE_KEYWORDS                           = "+keywords";
     private static final String DEFAULT_KEY                                        = "__default__";
 
     private static String       language;
@@ -113,7 +114,7 @@ public class Helpers {
         try {
             // Ex: "http://HOST/statistical-resources/apis/statistical-resources";
             List<String> lang = new ArrayList<String>();
-            String fields = FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS;
+            String fields = FIELDS_INCLUDE_KEYWORDS;
 
             if (internalPortal) {
                 collection = collection2DtoMapper.collectionInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));

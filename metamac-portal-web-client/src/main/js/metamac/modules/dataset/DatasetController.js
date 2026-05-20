@@ -134,7 +134,10 @@
                     
                     self.metadata = self.metadataRequest.getMetadataResponse();
 
-                    self.createUpdateDatesSection(self.metadata);
+                    App.Helpers.createUpdateDatesSection({
+                        lastUpdate: self.metadata.getLastUpdate(),
+                        nextUpdate: self.metadata.getDateNextUpdate()
+                    });
 
                     self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                     self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
@@ -163,45 +166,6 @@
             return deferred.promise();
         },
 
-        createUpdateDatesSection: function(metadata) {
-            let updateDates = "";
-            if (metadata.getLastUpdate()) {
-                const lastUpdateDate = new Date(metadata.getLastUpdate());
-
-                if (!isNaN(lastUpdateDate.getTime())) {
-                    const lastUpdateOptions = {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        timeZone: 'UTC',
-                        timeZoneName: 'shortOffset'
-                    };
-                    updateDates += lastUpdateDate.toLocaleString(I18n.locale, lastUpdateOptions).replaceAll(',', '');
-                }
-            }
-
-            const NEXT_UPDATE_DATE_PATTERN = /^(\d{2})\/(\d{2})\/(\d{4})$/;
-            const matchNextUpdate = NEXT_UPDATE_DATE_PATTERN.exec(metadata.getDateNextUpdate());
-            if (matchNextUpdate) {
-                const dateNextUpdate = new Date(+matchNextUpdate[3], +matchNextUpdate[2] - 1, +matchNextUpdate[1]);
-                const nexUpdateOptions = {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                };
-
-                if (updateDates) {
-                    updateDates += " | ";
-                }
-                updateDates += I18n.t("entity.dataset.nextUpdate", {dateNextUpdate: dateNextUpdate.toLocaleString(I18n.locale, nexUpdateOptions).replaceAll(',', '')});
-            }
-
-            if (!!updateDates) {
-                $('.visualizer-header-info').append(`<div class="visualizer-update-dates">${updateDates}</div>`);
-            }
-        }
     });
 
 }());

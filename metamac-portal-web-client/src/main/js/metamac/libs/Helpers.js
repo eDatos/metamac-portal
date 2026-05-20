@@ -1,4 +1,4 @@
-(function (DOMPurify) {
+(function (DOMPurify, moment) {
 	"use strict";
 
 	App.namespace('App.Helpers');
@@ -31,7 +31,26 @@
 					// Reconnect the strings with word break opportunities after double slashes
 				}).join('//<wbr>');
 			return formatted;
+		},
+
+		createUpdateDatesSection: function (options) {
+			var updateDatesSectionParts = [];
+
+			var lastUpdate = options.lastUpdate ? moment.utc(options.lastUpdate) : null;
+			if (lastUpdate && lastUpdate.isValid()) {
+				updateDatesSectionParts.push(lastUpdate.locale(I18n.locale).format('D MMM YYYY HH:mm [GMT+0]'));
+			}
+
+			var nextUpdate = moment(options.nextUpdate, 'DD/MM/YYYY');
+			if (nextUpdate.isValid()) {
+				updateDatesSectionParts.push(I18n.t("entity.dataset.nextUpdate", {
+					dateNextUpdate: nextUpdate.locale(I18n.locale).format('D MMM YYYY')
+				}));
+			}
+
+			if (updateDatesSectionParts.length) {
+				$('.visualizer-header-info').append('<div class="visualizer-update-dates">' + updateDatesSectionParts.join(' | ') + '</div>');
+			}
 		}
 	};
-
-}(DOMPurify));
+}(DOMPurify, moment));
