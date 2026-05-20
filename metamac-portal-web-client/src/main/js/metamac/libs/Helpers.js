@@ -49,7 +49,14 @@
 			}
 
 			if (updateDatesSectionParts.length) {
-				$('.visualizer-header-info').append('<div class="visualizer-update-dates">' + updateDatesSectionParts.join(' | ') + '</div>');
+				var $headerInfo = $('.visualizer-header-info');
+				var $existingUpdateDates = $headerInfo.find('.visualizer-update-dates');
+				var updateDatesContent = '<div class="visualizer-update-dates">' + updateDatesSectionParts.join(' | ') + '</div>';
+				if ($existingUpdateDates.length) {
+					$existingUpdateDates.replaceWith(updateDatesContent);
+				} else {
+					$headerInfo.append(updateDatesContent);
+				}
 			}
 		}
 	};

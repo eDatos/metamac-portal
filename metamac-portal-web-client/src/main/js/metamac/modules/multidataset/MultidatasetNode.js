@@ -14,7 +14,6 @@
 
         parse: function (node, options) {
             var attributes = {};
-            var multidatasetIdentifier = options.multidatasetIdentifier;
             var resourceIdentifier = options.resourceIdentifier;
 
             attributes.nodeName = App.InternationalizationUtils.localizeLabel(node.name);
@@ -41,23 +40,25 @@
                 attributes.url = "?agencyId=" + attributes.agency + "&resourceId=" + attributes.identifier + "&version=" + attributes.version + "&resourceType=" + attributes.type;
             }
 
-            attributes.url += "&multidatasetId=" + multidatasetIdentifier + window.location.hash;
+            attributes.url += "&multidatasetId=" + options.resourceIdentifier.multidatasetId + window.location.hash;
 
             if (node.nodes) {
                 this.nodes = App.modules.multidataset.MultidatasetNode.parseNodes(node.nodes);
             }
 
-            attributes.selected = resourceIdentifier.urn === attributes.urn;
+            attributes.selected = resourceIdentifier.type === attributes.type &&
+                resourceIdentifier.agency === attributes.agency &&
+                resourceIdentifier.identifier === attributes.identifier &&
+                resourceIdentifier.version === attributes.version;
 
             return attributes;
         }
 
     }, {
-            parseNodes: function (nodes, multidatasetIdentifier, resourceIdentifier) {
+            parseNodes: function (nodes, resourceIdentifier) {
                 var models = _.map(nodes.node, function (node) {
                     return new App.modules.multidataset.MultidatasetNode(node, {
                         parse: true,
-                        multidatasetIdentifier: multidatasetIdentifier,
                         resourceIdentifier: resourceIdentifier
                     });
                 });

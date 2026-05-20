@@ -28,9 +28,10 @@
                 });
             }, this);
 
-            if (this.filterDimensions.hasMultidataset()) {
+            if (options.multidataset) {
                 this.multidataset = new FilterSidebarMultidatasetView({
-                    filterDimensions: this.filterDimensions
+                    filterDimensions: this.filterDimensions,
+                    multidataset: options.multidataset
                 });
             }
 

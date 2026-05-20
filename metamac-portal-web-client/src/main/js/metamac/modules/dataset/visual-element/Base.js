@@ -19,6 +19,7 @@
             this.filterOptions = options.filterOptions; //deprecated
             this.filterDimensions = options.filterDimensions;
             this.optionsModel = options.optionsModel;
+            this.multidataset = options.multidataset;
 
             this.el = options.el;
         },

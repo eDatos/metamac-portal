@@ -11,7 +11,8 @@
             this.filterDimensions = options.filterDimensions;
             this.multidatasetId = this.filterDimensions.getMultidatasetId();
             this.collapsable = _(options).has('collapsable') ? options.collapsable : true;
-            this.loadMultidataset(this.multidatasetId).then(_.bind(this.render, this));
+            this.multidataset = options.multidataset;
+            this.render();
         },
 
         destroy: function () {
@@ -39,21 +40,6 @@
 
         _unbindEvents: function () {
             this.stopListening();
-        },
-
-        loadMultidataset: function (multidatasetIdentifier) {
-            var multidataset = new App.modules.multidataset.Multidataset({
-                multidatasetIdentifier: multidatasetIdentifier,
-                filterDimensions: this.filterDimensions
-            });
-            if (multidataset.equals(this.multidataset)) {
-                var deferred = $.Deferred();
-                deferred.resolve();
-                return deferred.promise();
-            } else {
-                this.multidataset = multidataset;
-                return this.multidataset.fetch();
-            }
         },
 
         render: function () {

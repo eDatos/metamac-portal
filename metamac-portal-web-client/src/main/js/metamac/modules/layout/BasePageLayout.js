@@ -10,6 +10,7 @@
             this.filterDimensions = options.filterDimensions;
             this.metadata = options.metadata;
             this.data = options.data;
+            this.multidataset = options.multidataset;
             this.dataSource = new App.DataSourceDataset({
                 data: this.data,
                 filterDimensions: this.filterDimensions
@@ -51,7 +52,8 @@
                 veElements: this._getVeElements(),
                 optionsView: this.optionsView,
                 metadata: this.metadata,
-                dataSource: this.dataSource
+                dataSource: this.dataSource,
+                multidataset: this.multidataset
             });
         },
 

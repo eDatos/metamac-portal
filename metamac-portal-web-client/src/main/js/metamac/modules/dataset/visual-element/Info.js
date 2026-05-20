@@ -22,7 +22,6 @@
             this.getMeasureConcepts();
             this.getMetadataFromRelatedDataset();
             this.getDatasetAttributes();
-            this.getMultidataset();
             this.render();
         },
 
@@ -58,19 +57,6 @@
 
         getDatasetAttributes: function () {
             this.datasetAttributes = this.data.getDatasetAttributes();
-        },
-
-        getMultidataset: function() {
-            var multidatasetId = this.filterDimensions.getMultidatasetId();
-            if (!multidatasetId) { return; }
-            var self = this;
-            self.multidataset = new App.modules.multidataset.Multidataset({
-                multidatasetIdentifier: multidatasetId,
-                filterDimensions: self.filterDimensions
-            });
-            self.multidataset.fetch().then(function() {
-                self.render();
-            });
         },
 
         getDimensions: function () {

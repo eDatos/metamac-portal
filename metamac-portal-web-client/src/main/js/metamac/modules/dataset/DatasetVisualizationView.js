@@ -15,6 +15,7 @@
             this.data.colors = {};
 
             this.filterDimensions = options.filterDimensions;
+            this.multidataset = options.multidataset;
 
             this.optionsModel = options.optionsModel;
             this.veElements = options.veElements;
@@ -30,7 +31,8 @@
                 animation: this.options.animation,
                 optionsModel: this.optionsModel,
                 metadata: this.metadata,
-                dataSource: this.dataSource
+                dataSource: this.dataSource,
+                multidataset: this.multidataset
             };
 
             this.ve = {};

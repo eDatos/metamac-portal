@@ -119,8 +119,26 @@
                 data: _.bind(this.dataRequest.fetch, this.dataRequest)
             };
 
+            if (datasetIdentifier.multidatasetId) {
+                if (this.multidataset && this.multidataset.resourceIdentifier.multidatasetId === datasetIdentifier.multidatasetId) {
+                    this.multidataset.updateResourceIdentifier(datasetIdentifier);
+                } else {
+                    var multidatasetModel = new App.modules.multidataset.Multidataset({
+                        resourceIdentifier: datasetIdentifier
+                    });
+                    loads["multidataset"] = function (callback) {
+                        multidatasetModel.fetch()
+                            .done(function () {
+                                callback(null, multidatasetModel);
+                            }).fail(function () {
+                                callback(null, null);
+                            });
+                    };
+                }
+            }
+
             if (datasetIdentifier.permalinkId) {
-                loads["permalink"] = _.bind(DatasetPermalink.retrievePermalink, DatasetPermalink, datasetIdentifier.permalinkId)
+                loads["permalink"] = _.bind(DatasetPermalink.retrievePermalink, DatasetPermalink, datasetIdentifier.permalinkId);
             }
 
             var self = this;
@@ -134,17 +152,14 @@
                     
                     self.metadata = self.metadataRequest.getMetadataResponse();
 
-                    App.Helpers.createUpdateDatesSection({
-                        lastUpdate: self.metadata.getLastUpdate(),
-                        nextUpdate: self.metadata.getDateNextUpdate()
-                    });
-
                     self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                     self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
 
-                    self.selectionView = new App.modules.selection.SelectionView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
+                    self.multidataset = result.multidataset || self.multidataset;
 
-                    self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
+                    var layoutParams = { controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data, multidataset: self.multidataset };
+                    self.selectionView = new App.modules.selection.SelectionView(layoutParams);
+                    self.visualizationView = new App.modules.dataset.DatasetView(layoutParams);
 
                     if (result.permalink) {
                         self.filterDimensions.importJSONSelection(self.filterDimensions.preprocessSelectionWithDynamicSelection(result.permalink.selection, result.permalink.dynamicSelection));
@@ -155,6 +170,13 @@
                     } else if (datasetIdentifier.geo) {
                         self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
                     }
+
+                    var metadataForDates = self.multidataset ? self.multidataset.get('metadata') : self.metadata;
+                    App.Helpers.createUpdateDatesSection({
+                        lastUpdate: metadataForDates.getLastUpdate(),
+                        nextUpdate: metadataForDates.getDateNextUpdate()
+                    });
+
                     deferred.resolve();
                 } catch (error) {
                     console.log(error);
