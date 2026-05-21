@@ -1,7 +1,7 @@
 @import "../variables";
 
-@resourceListIconSize: 1.5rem;
-@resourceListLinkIconOffset: -20%;
+@resourceListIconFontSize: var(--edatos-font-size-lg);
+@resourceListIconSize: calc(@resourceListIconFontSize + var(--edatos-spacing-x-xs));
 
 .contenido ul.resource-list {
     color: var(--edatos-color-black-100);
@@ -13,7 +13,7 @@
         .resource-section-title,
         .resource-section-description,
         .resource-list li {
-            margin-top: var(--edatos-spacing-y-lg);
+            margin-top: var(--edatos-spacing-y-sm);
         }
 
         li.resource-link {
@@ -33,12 +33,8 @@
                 justify-content: center;
                 width: @resourceListIconSize;
                 height: @resourceListIconSize;
-                font-size: var(--edatos-font-size-lg);
+                font-size: @resourceListIconFontSize;
                 color: var(--edatos-color-primary-100);
-
-                &.fa-link:before {
-                    margin-left: @resourceListLinkIconOffset;
-                }
             }
 
             a {
