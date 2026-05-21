@@ -1,13 +1,9 @@
 @import "../variables";
 
 @dimensionPillWidth: 110px;
-@dimensionTitleWidth: 85px;
-@dimensionHeight: 23px;
-@h2LeftPadding: 4px;
 @dimensionSelectorBoxShadow: 0 0 3px 0 rgba(0, 0, 0, 0.15);
 @dimensionSelectorMaxWidth: 187px;
-@leftOrderSidebarDimensionMinHeight: 4.5rem;
-@dimensionsGap: 2px;
+@dimensionsGap: var(--edatos-spacing-x-xxs);
 
 .order-dimensions {
     .order-sidebar-zone {
@@ -61,7 +57,6 @@
             .select2-container .selection {
                 background: var(--edatos-color-white-100);
                 color: var(--edatos-color-gray-40);
-                margin: 2px 0 -2px -2px;
 
                 text-align: left;
                 text-overflow: ellipsis;
@@ -141,7 +136,7 @@
     .dataset-dimensions-left, .dataset-dimensions-right {
         display: grid;
         height: auto;
-        border-radius: 5px;
+        border-radius: var(--edatos-border-radius-sm);
         overflow: hidden;
         gap: @dimensionsGap;
 
@@ -164,7 +159,7 @@
             margin: 0;
 
             i {
-                margin-right: 10px;
+                margin-right: var(--edatos-spacing-x-sm);
             }
         }
 
@@ -227,11 +222,6 @@
 
                 &:has(> .order-sidebar-dimension-single-value) {
                     padding: 0;
-                }
-
-                .order-sidebar-dimension.dimension-pill {
-                    margin: 2px;
-                    width: @dimensionPillWidth - 2 * 4px;
                 }
             }
         }

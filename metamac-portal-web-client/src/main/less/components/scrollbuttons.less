@@ -3,9 +3,6 @@
     --scroll-button-content-wrapper-margin-inline-widget: 5;
 }
 
-@paddingScrollButton: 2px;
-@scrollButtonWidth: var(--edatos-spacing-x-lg);
-
 @scrollButtonContentWrapperMarginInline: ~"calc(var(--scroll-button-content-wrapper-margin-inline) * 1px)";
 @scrollButtonContentWrapperMarginInlineWidget: ~"calc(var(--scroll-button-content-wrapper-margin-inline-widget) * 1px)";
 
@@ -35,14 +32,14 @@
 
     .scroll-button {
         box-sizing: border-box;
-        width: @scrollButtonWidth;
+        width: var(--edatos-spacing-x-lg);
         height: 100%;
         line-height: 100%;
         font-size: var(--edatos-font-size-lg);
         border: none;
         color: var(--edatos-color-gray-60);
         background: var(--edatos-color-gray-20);
-        padding: @paddingScrollButton;
+        padding: 0;
         cursor: pointer;
     }
 

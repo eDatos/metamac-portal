@@ -90,7 +90,7 @@ textarea {
 }
 
 @numericInputIconFontSize: var(--edatos-font-size-xs);
-@horizontalSpaceForNumericInputIcons: ~"calc(@{numericInputIconFontSize} * 1.5)";
+@horizontalSpaceForNumericInputIcons: calc(@numericInputIconFontSize + var(--edatos-spacing-x-xs));
 
 .numeric-input {
     position: relative;

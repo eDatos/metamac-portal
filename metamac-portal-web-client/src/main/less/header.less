@@ -2,14 +2,13 @@
 
 @titleWidth: 942px;
 @descriptionWidth: 825px;
-@updateDatesHeight: 3.125rem;
 
 .visualizer-header {
     .clearfix();
-    margin-bottom: 20px;
+    margin-bottom: var(--edatos-spacing-y-lg);
 
     .visualizer-header-title, p {
-        margin-bottom: 5px;
+        margin-bottom: var(--edatos-spacing-y-xs);
     }
 
     .full-screen & { 
@@ -22,10 +21,6 @@
     flex-direction: column;
     gap: var(--edatos-spacing-x-lg);
     margin-bottom: var(--edatos-spacing-x-lg);
-
-    p {
-        margin: 0 0 10px 0;
-    }
 
     .visualizer-header-title {
         max-width: @titleWidth;
@@ -52,7 +47,7 @@
         color: var(--edatos-color-gray-80);
         font-size: var(--edatos-font-size-xs);
         max-width: @descriptionWidth;
-        height: @updateDatesHeight;
+        line-height: var(--edatos-spacing-y-xl);
         padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-lg);
         align-content: center;
         box-sizing: border-box;
@@ -68,8 +63,8 @@
     }
 
     a {
-        margin-bottom: 5px;
-        font-weight: bold;
-        font-size: 13px;
+        margin-bottom: var(--edatos-spacing-y-xs);
+        font-weight: var(--edatos-font-weight-bold);
+        font-size: var(--edatos-font-size-xs);
     }
 }
