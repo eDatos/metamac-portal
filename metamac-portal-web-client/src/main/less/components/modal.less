@@ -1,11 +1,8 @@
 @import "../variables";
 @import "../mixins";
 
-@modal-width: 90%;
 @modal-max-width: 595px;
 @modal-min-width: 260px;
-@modal-close-font-size: 1.25rem;
-@modal-button-height: 2.3125rem;
 @modal-button-max-width: 9.375rem;
 @modal-related-input-max-width: 230px;
 
@@ -23,7 +20,7 @@
 .modal {
     display: flex;
     flex-direction: column;
-    width: @modal-width;
+    width: 90%;
     border: none;
     box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.16);
     border-radius: var(--edatos-border-radius-sm);
@@ -72,7 +69,7 @@
         .modal-close {
             display: flex;
             color: inherit;
-            font-size: @modal-close-font-size;
+            font-size: var(--edatos-font-size-lg);
             border: 0;
             background: none;
 
@@ -184,7 +181,7 @@
                     margin-top: 0;
 
                     button {
-                        height: @modal-button-height;
+                        height: var(--edatos-spacing-y-xl);
                         width: 100%;
                         max-width: @modal-button-max-width;
                         border: none;
@@ -214,7 +211,7 @@
 
                     &:before {
                         color: var(--edatos-color-black-100);
-                        padding: 2px 3px;
+                        padding: var(--edatos-spacing-x-xxs);
                     }
 
                     &.twitter {
