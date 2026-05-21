@@ -5,8 +5,6 @@
 @zindexTooltip: 1030;
 @tooltipColor: var(--edatos-color-black-100);
 @tooltipBackground: var(--edatos-color-white-100);
-@tooltipArrowWidth: 5px;
-@tooltipArrowColor: @tooltipBackground;
 
 // Base class
 .tooltip {
@@ -60,44 +58,5 @@
 
     .tooltip-cell-chart {
         margin-top: 15px;
-    }
-}
-
-// Arrows
-.tooltip-arrow {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-}
-.tooltip {
-    &.top .tooltip-arrow {
-        bottom: 0;
-        left: 50%;
-        margin-left: -@tooltipArrowWidth;
-        border-width: @tooltipArrowWidth @tooltipArrowWidth 0;
-        border-top-color: @tooltipArrowColor;
-    }
-    &.right .tooltip-arrow {
-        top: 50%;
-        left: 0;
-        margin-top: -@tooltipArrowWidth;
-        border-width: @tooltipArrowWidth @tooltipArrowWidth @tooltipArrowWidth 0;
-        border-right-color: @tooltipArrowColor;
-    }
-    &.left .tooltip-arrow {
-        top: 50%;
-        right: 0;
-        margin-top: -@tooltipArrowWidth;
-        border-width: @tooltipArrowWidth 0 @tooltipArrowWidth @tooltipArrowWidth;
-        border-left-color: @tooltipArrowColor;
-    }
-    &.bottom .tooltip-arrow {
-        top: 0;
-        left: 50%;
-        margin-left: -@tooltipArrowWidth;
-        border-width: 0 @tooltipArrowWidth @tooltipArrowWidth;
-        border-bottom-color: @tooltipArrowColor;
     }
 }
