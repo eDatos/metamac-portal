@@ -15,12 +15,12 @@
 
     &.dataset-visualization-type-table {
         .dataset-visualization-visual-element {
-            padding-left: 2px;
+            padding-left: var(--edatos-spacing-x-xxs);
         }
 
         .rights-holder {
-            margin-top: -30px;
-            margin-right: 10px;
+            margin-top: calc(var(--edatos-spacing-y-xl) * -1);
+            margin-right: var(--edatos-spacing-x-sm);
         }
     }
 }
@@ -159,7 +159,6 @@
             background: none;
             color: var(--edatos-color-gray-40);
             font-weight: var(--edatos-font-weight-regular);
-            padding-left: 10px;
         }
 
         .chart-container, .svgContainer {
@@ -204,10 +203,6 @@
 
 .visual-element-options {
     float: right;
-
-    .visual-element-options-edit {
-        height: 41px;
-    }
 }
 
 .dataset-message {
@@ -224,11 +219,11 @@
         align-items: center;
 
         .dataset-message-text {
-            font-size: 20px;
+            font-size: var(--edatos-font-size-lg);
             color: var(--edatos-color-white-100);
             background-color: var(--edatos-color-gray-40);
-            padding: 18px;
-            border-radius: 5px;
+            padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg);
+            border-radius: var(--edatos-border-radius-sm);
             text-align: center;
         }
     }
@@ -333,9 +328,6 @@
     .dataset-options-type-icon;
     &:extend(.fa all);
     .fa-eye;
-
-    font-size: 0.9rem;
-    width: @defaultFontSize;
 }
 
 .chart-tooltip {

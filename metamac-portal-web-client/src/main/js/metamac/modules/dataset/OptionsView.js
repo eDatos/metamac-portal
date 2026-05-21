@@ -25,7 +25,6 @@
 
         events: {
             "click .dataset-options-filter": "clickFilter",
-            "click .visual-element-options-edit": "clickFilterLoader",
             "click .visual-element-options-fs": "clickFullScreen",
             "click .visual-element-options-share": "clickShare",
             "click .visual-element-options-save": "clickSave",
@@ -163,12 +162,6 @@
 
         clickFilter: function (e) {
             this.optionsModel.set('filter', !this.optionsModel.get('filter'));
-        },
-
-        clickFilterLoader: function (e) {
-            if (!this.isFilter()) {
-                this.trigger('launchFilter');
-            }
         },
 
         clickFullScreen: function (e) {
