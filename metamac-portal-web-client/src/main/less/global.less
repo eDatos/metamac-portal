@@ -1,9 +1,5 @@
 @import "variables";
 
-@contenidoWidth: 1280px;
-@contenidoTopPadding: 25px;
-@contenidoBottomPadding: 69px;
-
 html, body {
 	font-family: var(--edatos-font-family) !important;
 	font-size: var(--edatos-font-size-md) !important;
@@ -41,8 +37,8 @@ body.statistical-visualizer {
 	}
 
 	.contenido {
-		max-width: @contenidoWidth;
-		padding: @contenidoTopPadding @contenidoInlinePadding @contenidoBottomPadding;
+		max-width: var(--edatos-max-container-width);
+		padding: var(--edatos-spacing-y-lg) @contenidoInlinePadding var(--edatos-spacing-y-xl);
 		width: 100%;
 		box-sizing: border-box;
 		justify-self: center;
