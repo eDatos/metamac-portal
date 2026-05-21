@@ -44,7 +44,7 @@
         _updateSidebar: function () {
             var width = this.state.get('width');
             const GAP = 10;
-            if (this.state.get('visible')) {
+            if (this.sideView && this.state.get('visible')) {
                 this.$sidebar.css({ width: width, left: 0 });
                 this.$content.css('margin-left', width + GAP);
             } else {
