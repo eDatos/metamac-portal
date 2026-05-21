@@ -141,14 +141,14 @@
     position: relative;
     .user-select(none);
 
-    @leftActionsGap: 0.375rem; // There are errors when using var(--edatos-spacing-x-xs)
+    @leftActionsGap: var(--edatos-spacing-x-xs);
     @leftActionsFontSize: @defaultFontSize;
-    @leftActionsWidth: @leftActionsGap + 2 * @defaultFontSize;
+    @leftActionsWidth: calc(@leftActionsGap + 2 * @leftActionsFontSize);
 
     .filter-sidebar-category-label {
         color: var(--edatos-color-secondary-100);
         line-height: @lineHeightMedium;
-        padding-left: @leftActionsWidth + @leftActionsGap;
+        padding-left: calc(@leftActionsWidth + @leftActionsGap);
         padding-right: var(--edatos-spacing-x-lg);
 
         display: block;
