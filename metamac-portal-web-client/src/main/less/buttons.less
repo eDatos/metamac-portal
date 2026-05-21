@@ -1,7 +1,5 @@
 @import "variables";
 
-@magicNumberToAvoidRoundBottomBorder: 10px;
-
 .metamac-container {
 
     .btn-group > .btn, 
@@ -11,7 +9,6 @@
     .btn {
         display: flex;
         flex-direction: row;
-        height: 1.5em;
         gap: var(--edatos-spacing-x-xs);
         align-items: center;
         justify-content: center;
@@ -22,7 +19,7 @@
         color: var(--edatos-color-secondary-100);
         text-transform: uppercase;
         font-size: var(--edatos-font-size-sm);
-        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
+        padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
         margin-bottom: 0; // For input.btn
         cursor: pointer;
         white-space: nowrap;
@@ -93,9 +90,20 @@
 
         &:active,
         &.active {
-            box-shadow: inset 0 -(@magicNumberToAvoidRoundBottomBorder + @borderWidthMedium) 0 -@magicNumberToAvoidRoundBottomBorder var(--edatos-color-gray-80);
+            position: relative;
+            overflow: hidden;
             background: var(--edatos-color-gray-20);
             color: var(--edatos-color-gray-80);
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: @borderWidthMedium;
+                background: var(--edatos-color-gray-80);
+            }
         }
     }
 }
