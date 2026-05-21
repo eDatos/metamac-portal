@@ -10,15 +10,11 @@
         className: "sidebar-container",
 
         initialize: function (options) {
-            this.sideViews = options.sideViews;
+            this.sideView = options.sideView;
             this.contentView = options.contentView;
             this.optionsModel = options.optionsModel;
-            this.defaultCurrentSideView = options.defaultCurrentSideView;
 
-            var stateOptions = {
-                sideViewsIds: _.pluck(this.sideViews, "id")
-            };
-            this.state = new App.components.sidebar.SidebarStateModel(stateOptions);
+            this.state = new App.components.sidebar.SidebarStateModel();
 
             this._onToggleFilter();
 
@@ -30,9 +26,7 @@
         },
 
         _bindEvents: function () {
-            this.listenTo(this.state, "change:currentSideView", this._onChangeCurrentSideView);
-            this.listenTo(this.state, "change:width", this._updateSidebar);
-            this.listenTo(this.state, "change:visible", this._updateVisibility);
+            this.listenTo(this.state, "change:width change:visible", this._updateSidebar);
 
             this.listenTo(this.optionsModel, "change:filter", this._onToggleFilter);
 
@@ -45,17 +39,6 @@
 
         _onToggleFilter: function () {
             this.state.set('visible', this.optionsModel.get('filter'));
-        },
-
-        _updateVisibility: function () {
-            this._updateSidebar();
-            if (this.state.get("visible")) {
-                if (!this.state.get("currentSideView")) {
-                    this.state.set("currentSideView", this.defaultCurrentSideView);
-                }
-            } else {
-                this.state.set("currentSideView", undefined);
-            }
         },
 
         _updateSidebar: function () {
@@ -113,35 +96,6 @@
             }
         },
 
-        _getSideView: function (id) {
-            return _.find(this.sideViews, function (view) {
-                return view.id === id;
-            });
-        },
-
-        _onChangeCurrentSideView: function () {
-            var currentSideViewId = this.state.get('currentSideView');
-            var currentView = currentSideViewId ? this._getSideView(currentSideViewId) : undefined;
-            if (currentView) {
-                currentView.render();
-                this.$el.toggleClass("sidebar-slideRight", true);
-                this.state.set('visible', true);
-                this.$("li[data-view-id='" + currentSideViewId + "']").addClass("active");
-            } else {
-                this.state.set('visible', false);
-            }
-
-            var previousViewId = this.state.previous("currentSideView");
-            if (previousViewId) {
-                var previousView = this._getSideView(previousViewId);
-                if (previousView && previousView.destroy) {
-                    previousView.destroy();
-                }
-                this.$("li[data-view-id='" + previousViewId + "']").removeClass("active");
-            }
-
-        },
-
         render: function () {
             this._unbindEvents();
             this._bindEvents();
@@ -152,12 +106,10 @@
             this.$sidebar = this.$('.sidebar-sidebar');
             this.$sidebarContent = this.$('.sidebar-sidebar-content');
             this.$content = this.$('.sidebar-content');
-            _.each(this.sideViews, function (view) {
-                view.setElement(this.$sidebarContent);
-            }, this);
 
-            if (this.sideViews.length) {
-                this.sideViews[0].render();
+            if (this.sideView) {
+                this.sideView.setElement(this.$sidebarContent);
+                this.sideView.render();
             }
 
             if (this.contentView != null) {
@@ -165,7 +117,7 @@
                 this.contentView.render();
             }
 
-            this._updateVisibility();
+            this._updateSidebar();
 
             return this;
         },

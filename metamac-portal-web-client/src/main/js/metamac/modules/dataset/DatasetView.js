@@ -47,29 +47,18 @@
             });
 
             // sidebarView
-            var sideViews = [];
             if (!this.optionsModel.get('widget')) {
-                // sidebar - filter
                 this.filterSidebarView = new App.widget.filter.sidebar.FilterSidebarView({
                     filterDimensions: this.filterDimensions,
                     optionsModel: this.optionsModel,
                     multidataset: this.multidataset
                 });
-
-                this.orderSidebarView = new App.widget.filter.sidebar.OrderSidebarView({
-                    filterDimensions: this.filterDimensions,
-                    optionsModel: this.optionsModel
-                });
-
-                sideViews.push(this.filterSidebarView);
-                sideViews.push(this.orderSidebarView);
             }
 
             this.sidebarView = new App.components.sidebar.SidebarView({
-                sideViews: sideViews,
+                sideView: this.filterSidebarView,
                 contentView: this.visualizationView,
-                optionsModel: this.optionsModel,
-                defaultCurrentSideView: "filterSidebar"
+                optionsModel: this.optionsModel
             });
         },
 

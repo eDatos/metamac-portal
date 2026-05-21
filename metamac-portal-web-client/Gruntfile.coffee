@@ -174,7 +174,6 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarMultidatasetView.js"
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarMultidatasetNodeView.js"
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarView.js"
-                paths.js + "/metamac/modules/dataset/filter/sidebar/OrderSidebarView.js"
 
                 # visual elements
                 paths.js + "/metamac/modules/dataset/visual-element/Base.js"
