@@ -19,7 +19,8 @@
     "dompurify": "^3.4.1",
     "@awesome.me/kit-f6e7c4d1c0": "^1.0.6",
     "coffeescript": "^2.6.1",
-    "handlebars": "^4.7.9"
+    "handlebars": "^4.7.9",
+    "jquery-mousewheel": "^3.2.2"
   },
   "overrides": {
     "grunt-contrib-uglify": {
