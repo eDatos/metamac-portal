@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.siemac.metamac.metamac-portal</groupId>
         <artifactId>metamac-portal-parent</artifactId>
-        <version>9.23.1-SNAPSHOT</version>
+        <version>9.24.2-SNAPSHOT</version>
         <relativePath>../metamac-portal-parent/pom.xml</relativePath>
     </parent>
 
@@ -409,12 +409,6 @@
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
 		</dependency>
-        <!-- CXF -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-rs-extension-providers</artifactId>
-            <version>${cxf.version}</version>
-        </dependency>
         
         <dependency>
             <groupId>com.ibm.icu</groupId>

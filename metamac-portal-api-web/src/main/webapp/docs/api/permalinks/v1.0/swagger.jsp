@@ -66,89 +66,6 @@
          ],
          "description":""
       },
-      "ListBase":{
-         "type":"object",
-         "title":"ListBase",
-         "allOf":[
-            {
-               "properties":{
-                  "firstLink":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"string"
-                  },
-                  "kind":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"string"
-                  },
-                  "lastLink":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"string"
-                  },
-                  "limit":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"number"
-                  },
-                  "nextLink":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"string"
-                  },
-                  "offset":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"number"
-                  },
-                  "previousLink":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"string"
-                  },
-                  "selfLink":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"string"
-                  },
-                  "total":{
-                     "xml":{
-                        "attribute":true,
-                        "namespace":""
-                     },
-                     "description":"",
-                     "type":"number"
-                  }
-               }
-            }
-         ],
-         "description":""
-      },
       "ResourceLink":{
          "type":"object",
          "title":"ResourceLink",
@@ -236,9 +153,10 @@
             "tags":[
                "${msg['api.doc.swagger.tag.permalinks']}"
             ],
-            "description":"${msg['api.doc.swagger.paths.permalinks.id.get.toXml']}",
-            "operationId":"resource__v1.0_permalinks__id__retrievePermalinkByIdXml_GET",
+            "description":"${msg['api.doc.swagger.paths.permalinks.id.get']}",
+            "operationId":"resource__v1.0_permalinks__id__retrievePermalinkById_GET",
             "produces":[
+               "application/json",
                "application/xml"
             ],
             "parameters":[
@@ -256,45 +174,6 @@
                      "description":"",
                      "$ref":"#/definitions/Permalink"
                   },
-                  "headers":{
-
-                  },
-                  "description":"${msg['api.doc.swagger.paths.responses.200']}"
-               },
-               "404":{
-                  "description":"${msg['api.doc.swagger.paths.responses.404']}"
-               },
-               "406":{
-                  "description":"${msg['api.doc.swagger.paths.responses.406']}"
-               },
-               "500":{
-                  "description":"${msg['api.doc.swagger.paths.responses.500']}"
-               },
-               "503":{
-                  "description":"${msg['api.doc.swagger.paths.responses.503']}"
-               }
-            }
-         },
-         "get":{
-            "tags":[
-               "${msg['api.doc.swagger.tag.permalinks']}"
-            ],
-            "description":"${msg['api.doc.swagger.paths.permalinks.id.get.toJson']}",
-            "operationId":"resource__v1.0_permalinks__id__retrievePermalinkByIdJson_GET",
-            "produces":[
-               "application/json"
-            ],
-            "parameters":[
-               {
-                  "name":"id",
-                  "in":"path",
-                  "type":"string",
-                  "description":"${msg['api.doc.swagger.paths.permalinks.id.get.parameters.id']}",
-                  "required":true
-               }
-            ],
-            "responses":{
-               "200":{
                   "headers":{
 
                   },

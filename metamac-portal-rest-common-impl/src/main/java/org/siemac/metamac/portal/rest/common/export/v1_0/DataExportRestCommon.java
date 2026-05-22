@@ -537,7 +537,7 @@ public abstract class DataExportRestCommon {
             boolean excludeAttributes = PortalRestUtils.containsField(parsedFields, RestCommonConstants.FIELD_EXCLUDE_ATTRIBUTES);
             if (excludeAttributes) {
                 // Not zip
-                exportService.exportResourceToPlainTextWithoutAttributes(ctx, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, decimalSeparator);
+                exportService.exportResourceToPlainTextWithoutAttributes(ctx, plainTextTypeEnum, resourceAccess, outputStreamObservations, decimalSeparator);
 
                 String filename = ExportUtils.addExtensionToFilenameIfNeeded(plainTextTypeEnum.getExtension(), proposedFilename + "-observations");
                 return buildResponseOkWithFile(tmpFileObservations, filename, plainTextTypeEnum.getMimeType());
@@ -545,7 +545,7 @@ public abstract class DataExportRestCommon {
                 // Zip
                 tmpFileAttributes = File.createTempFile("metamac", plainTextTypeEnum.getExtension());
                 outputStreamAttributes = new FileOutputStream(tmpFileAttributes);
-                exportService.exportResourceToPlainText(ctx, PlainTextTypeEnum.TSV, resourceAccess, outputStreamObservations, outputStreamAttributes, decimalSeparator);
+                exportService.exportResourceToPlainText(ctx, plainTextTypeEnum, resourceAccess, outputStreamObservations, outputStreamAttributes, decimalSeparator);
 
                 String filename = ExportUtils.addExtensionToFilenameIfNeeded("zip", proposedFilename);
                 String filenamePrefix = FilenameUtils.getBaseName(filename);
