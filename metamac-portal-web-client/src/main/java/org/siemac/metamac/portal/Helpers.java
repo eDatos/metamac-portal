@@ -86,21 +86,31 @@ public class Helpers {
     private static final String FIELDS_INCLUDE_KEYWORDS                           = "+keywords";
     private static final String DEFAULT_KEY                                        = "__default__";
 
-    private static String       language;
-    private static String       defaultLanguage;
-    private static String       apiKey;
+    private String       language;
+    private String       defaultLanguage;
+    private String       apiKey;
 
-    private static RestTemplate restTemplate;
+    private static final RestTemplate restTemplate = buildRestTemplate();
 
-    public static void initialize(String language, String defaultLanguage, String apiKey) {
-        Helpers.language = language;
-        Helpers.defaultLanguage = defaultLanguage;
-        Helpers.apiKey = apiKey;
+    private static RestTemplate buildRestTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        for (HttpMessageConverter<?> messageConverter : restTemplate.getMessageConverters()) {
+            if (messageConverter instanceof MappingJacksonHttpMessageConverter) {
+                ((MappingJacksonHttpMessageConverter) messageConverter).getObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
+            }
+        }
+        return restTemplate;
     }
 
-    public static void initialize(String language, String defaultLanguage) {
-        Helpers.language = language;
-        Helpers.defaultLanguage = defaultLanguage;
+    public Helpers(String language, String defaultLanguage, String apiKey) {
+        this.language = language;
+        this.defaultLanguage = defaultLanguage;
+        this.apiKey = apiKey;
+    }
+
+    public Helpers(String language, String defaultLanguage) {
+        this.language = language;
+        this.defaultLanguage = defaultLanguage;
     }
 
     public static String getPackageVersion() {
@@ -108,7 +118,7 @@ public class Helpers {
         return packageInfo.getImplementationVersion();
     }
 
-    public static Collection getCollection(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
+    public Collection getCollection(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
         Collection collection = null;
         Collection2DtoMapper collection2DtoMapper = new Collection2DtoMapper();
         try {
@@ -117,9 +127,9 @@ public class Helpers {
             String fields = FIELDS_INCLUDE_KEYWORDS;
 
             if (internalPortal) {
-                collection = collection2DtoMapper.collectionInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));
+                collection = collection2DtoMapper.collectionInternalToDto(getInternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));
             } else {
-                collection = collection2DtoMapper.collectionExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));
+                collection = collection2DtoMapper.collectionExternalToDto(getExternalJAXRSClient(apiUrlStatisticalResources).retrieveCollection(agencyId, resourceId, lang, fields));
             }
 
         } catch (ServerWebApplicationException e) {
@@ -134,7 +144,7 @@ public class Helpers {
         return collection;
     }
 
-    public static Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) throws Throwable {
+    public Dataset getDataset(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId, String version) throws Throwable {
         Dataset dataset = null;
         Dataset2DtoMapper dataset2DtoMapper = new Dataset2DtoMapper();
         try {
@@ -146,9 +156,9 @@ public class Helpers {
 
             String fields = FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS;
             if (internalPortal) {
-                dataset = dataset2DtoMapper.datasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null, null));
+                dataset = dataset2DtoMapper.datasetInternalToDto(getInternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null, null));
             } else {
-                dataset = dataset2DtoMapper.datasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null, null));
+                dataset = dataset2DtoMapper.datasetExternalToDto(getExternalJAXRSClient(apiUrlStatisticalResources).retrieveDataset(agencyId, resourceId, version, lang, fields, null, null, null));
             }
 
         } catch (ServerWebApplicationException e) {
@@ -159,11 +169,11 @@ public class Helpers {
         return dataset;
     }
 
-    private static Throwable getExceptionDataset(ServerWebApplicationException e, String apiUrlStatisticalResources, String agencyId, String resourceId, String version) {
+    private Throwable getExceptionDataset(ServerWebApplicationException e, String apiUrlStatisticalResources, String agencyId, String resourceId, String version) {
         try {
             LOGGGER.error(e.getMessage(), e);
             Locale locale = LocaleUtils.toLocale(language);
-            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = e.toErrorObject(WebClient.client(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources)),
+            org.siemac.metamac.rest.common.v1_0.domain.Exception exception = e.toErrorObject(WebClient.client(getInternalJAXRSClient(apiUrlStatisticalResources)),
                     org.siemac.metamac.rest.common.v1_0.domain.Exception.class);
             CommonServiceExceptionType serviceExceptionType = ServiceExceptionType.lookup(exception.getCode());
             Throwable throwable = null;
@@ -181,7 +191,7 @@ public class Helpers {
         }
     }
 
-    public static Query getQuery(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
+    public Query getQuery(String apiUrlStatisticalResources, Boolean internalPortal, String agencyId, String resourceId) throws Throwable {
         Query query = null;
         Query2DtoMapper query2DtoMapper = new Query2DtoMapper();
         try {
@@ -191,11 +201,11 @@ public class Helpers {
             List<String> lang = new ArrayList<String>();
             String fieldsForQuery = FIELDS_EXCLUDE_DATA_AND_METADATA_INCLUDE_KEYWORDS;
             if (internalPortal) {
-                org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Query statisticalResourcesQuery = Helpers.getInternalJAXRSClient(statisticalResourcesEndpoint)
+                org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.Query statisticalResourcesQuery = getInternalJAXRSClient(statisticalResourcesEndpoint)
                         .retrieveQuery(agencyId, resourceId, lang, fieldsForQuery, null, null, null);
                 query = query2DtoMapper.queryInternalToDto(statisticalResourcesQuery);
             } else {
-                org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query statisticalResourcesQuery = Helpers.getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId,
+                org.siemac.metamac.rest.statistical_resources.v1_0.domain.Query statisticalResourcesQuery = getExternalJAXRSClient(statisticalResourcesEndpoint).retrieveQuery(agencyId,
                         resourceId, lang, fieldsForQuery, null, null, null);
                 query = query2DtoMapper.queryExternalToDto(statisticalResourcesQuery);
             }
@@ -208,7 +218,7 @@ public class Helpers {
         return query;
     }
 
-    public static Multidataset getMultidataset(String apiUrlStatisticalResources, Boolean internalPortal, String multidatasetId) throws Throwable {
+    public Multidataset getMultidataset(String apiUrlStatisticalResources, Boolean internalPortal, String multidatasetId) throws Throwable {
         Multidataset multidataset = null;
         Multidataset2DtoMapper multidataset2DtoMapper = new Multidataset2DtoMapper();
         String agencyId = PortalUtils.splitUrnWithoutPrefixItemScheme(multidatasetId)[0];
@@ -219,9 +229,9 @@ public class Helpers {
             String fields = FIELDS_EXCLUDE_METADATA_INCLUDE_KEYWORDS;
 
             if (internalPortal) {
-                multidataset = multidataset2DtoMapper.multidatasetInternalToDto(Helpers.getInternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
+                multidataset = multidataset2DtoMapper.multidatasetInternalToDto(getInternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             } else {
-                multidataset = multidataset2DtoMapper.multidatasetExternalToDto(Helpers.getExternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
+                multidataset = multidataset2DtoMapper.multidatasetExternalToDto(getExternalJAXRSClient(apiUrlStatisticalResources).retrieveMultidataset(agencyId, resourceId, lang, fields));
             }
 
         } catch (ServerWebApplicationException e) {
@@ -237,18 +247,10 @@ public class Helpers {
     }
 
     private static RestTemplate getRestTemplate() {
-        if (restTemplate == null) {
-            restTemplate = new RestTemplate();
-            for (HttpMessageConverter<?> messageConverter : restTemplate.getMessageConverters()) {
-                if (messageConverter instanceof MappingJacksonHttpMessageConverter) {
-                    ((MappingJacksonHttpMessageConverter) messageConverter).getObjectMapper().configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
-                }
-            }
-        }
         return restTemplate;
     }
 
-    public static Indicator getIndicator(String apiUrlIndicators, Boolean internalPortal, String resourceId) {
+    public Indicator getIndicator(String apiUrlIndicators, Boolean internalPortal, String resourceId) {
         String indicatorsEndpoint = apiUrlIndicators;
         try {
 
@@ -266,7 +268,7 @@ public class Helpers {
         return null;
     }
 
-    public static IndicatorInstance getIndicatorInstance(String apiUrlIndicators, Boolean internalPortal, String resourceId, String indicatorsSystems) {
+    public IndicatorInstance getIndicatorInstance(String apiUrlIndicators, Boolean internalPortal, String resourceId, String indicatorsSystems) {
         String indicatorsEndpoint = apiUrlIndicators;
         try {
 
@@ -286,7 +288,7 @@ public class Helpers {
         return null;
     }
 
-    public static Permalink getPermalink(String apiUrlPermalinks, String identifier, Boolean internalPortal) {
+    public Permalink getPermalink(String apiUrlPermalinks, String identifier, Boolean internalPortal) {
         Permalink permalink = new Permalink();
         try {
             permalink.setId(identifier);
@@ -294,9 +296,9 @@ public class Helpers {
             String permalinkContentString = null;
 
             if (internalPortal) {
-                permalinkContentString = IOUtils.toString((InputStream) Helpers.getPermalinksInternalJAXRSClient(apiUrlPermalinks).retrievePermalinkByIdJson(identifier).getEntity());
+                permalinkContentString = IOUtils.toString((InputStream) getPermalinksInternalJAXRSClient(apiUrlPermalinks).retrievePermalinkByIdJson(identifier).getEntity());
             } else {
-                permalinkContentString = IOUtils.toString((InputStream) Helpers.getPermalinksJAXRSClient(apiUrlPermalinks).retrievePermalinkByIdJson(identifier).getEntity());
+                permalinkContentString = IOUtils.toString((InputStream) getPermalinksJAXRSClient(apiUrlPermalinks).retrievePermalinkByIdJson(identifier).getEntity());
             }
 
             PermalinkContent permalinkContent = permalinkContentToDto(permalinkContentString);
@@ -372,7 +374,7 @@ public class Helpers {
         }
     }
 
-    private static org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0 getInternalJAXRSClient(String statisticalResourcesEndpoint) {
+    private org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0 getInternalJAXRSClient(String statisticalResourcesEndpoint) {
         org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0 statisticalResourcesV1_0 = JAXRSClientFactory.create(statisticalResourcesEndpoint,
                 org.siemac.metamac.statistical_resources.rest.internal.v1_0.service.StatisticalResourcesV1_0.class, null, true);
         WebClient.client(statisticalResourcesV1_0).reset();
@@ -380,7 +382,7 @@ public class Helpers {
         return statisticalResourcesV1_0;
     }
 
-    private static org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0 getExternalJAXRSClient(String statisticalResourcesEndpoint) {
+    private org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0 getExternalJAXRSClient(String statisticalResourcesEndpoint) {
         org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0 statisticalResourcesV1_0 = JAXRSClientFactory.create(statisticalResourcesEndpoint,
                 org.siemac.metamac.statistical_resources.rest.external.v1_0.service.StatisticalResourcesV1_0.class, null, true);
         WebClient.client(statisticalResourcesV1_0).reset();
@@ -388,7 +390,7 @@ public class Helpers {
         return statisticalResourcesV1_0;
     }
 
-    private static org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0 getPermalinksJAXRSClient(String permalinksEndpoint) {
+    private org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0 getPermalinksJAXRSClient(String permalinksEndpoint) {
         org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0 permalinksV1_0 = JAXRSClientFactory.create(permalinksEndpoint,
                 org.siemac.metamac.portal.rest.external.permalink.v1_0.service.PermalinksV1_0.class, null, true);
         WebClient.client(permalinksV1_0).reset();
@@ -396,7 +398,7 @@ public class Helpers {
         return permalinksV1_0;
     }
 
-    private static org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0 getPermalinksInternalJAXRSClient(String permalinksEndpoint) {
+    private org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0 getPermalinksInternalJAXRSClient(String permalinksEndpoint) {
         org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0 permalinksV1_0 = JAXRSClientFactory.create(permalinksEndpoint,
                 org.siemac.metamac.portal.rest.internal.permalink.v1_0.service.PermalinksV1_0.class, null, true);
         WebClient.client(permalinksV1_0).reset();
@@ -438,7 +440,7 @@ public class Helpers {
         return total;
     }
 
-    public static String localizeText(InternationalString internationalString) {
+    public String localizeText(InternationalString internationalString) {
         if (internationalString != null && internationalString.getTexts() != null && !internationalString.getTexts().isEmpty()) {
             String defaultText = internationalString.getTexts().get(0).getValue();
             for (LocalisedString text : internationalString.getTexts()) {
@@ -454,7 +456,7 @@ public class Helpers {
         }
     }
 
-    public static String localizeText(Map<String, String> stringMap) {
+    public String localizeText(Map<String, String> stringMap) {
         if (stringMap == null) {
             return StringUtils.EMPTY;
         }
