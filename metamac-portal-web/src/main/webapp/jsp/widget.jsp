@@ -83,7 +83,7 @@
         String apiKey = WebUtils.getWidgetApiKey();
         request.setAttribute("apiKey", apiKey);
 
-        Helpers.initialize(locale, defaultLocale, apiKey);
+        Helpers helpers = new Helpers(locale, defaultLocale, apiKey);
     %>
     <%
         String permalinkId = request.getParameter(Helpers.PARAMETER_PERMALINK);
@@ -92,7 +92,7 @@
         String theme = request.getParameter("theme");
         request.setAttribute("theme", theme);
         if (permalinkId != null && !permalinkId.isEmpty()) {
-            Permalink permalink = Helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
+            Permalink permalink = helpers.getPermalink(PERMALINKS_API_URL_BASE, permalinkId, internalPortal);
             response.sendRedirect(WebUtils.getPortalBaseUrl() + "/widget.html" + Helpers.buildUrlParams(permalink, sharedVisualizerUrl, locale, title));
         }
     %>
@@ -102,7 +102,7 @@
         String multidatasetId = request.getParameter(Helpers.PARAMETER_MULTIDATASET_ID);
         if (multidatasetId != null && !multidatasetId.isEmpty() && resourceType == null) {
             internalPortal = false; // Widgets sólo externos
-            Multidataset multidataset = Helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
+            Multidataset multidataset = helpers.getMultidataset(STATISTICAL_RESOURCES_API_URL_BASE, internalPortal, multidatasetId);
             response.sendRedirect(Helpers.buildUrl(multidataset, multidatasetId, sharedVisualizerUrl, locale, title, theme));
         }
     %>
