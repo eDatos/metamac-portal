@@ -90,7 +90,6 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 display: inline-block;
-                line-height: normal;
             }
         }
     }
@@ -139,6 +138,7 @@
     .clearfix;
     cursor: pointer;
     position: relative;
+    margin-bottom: var(--edatos-spacing-y-xs);
     .user-select(none);
 
     @leftActionsGap: var(--edatos-spacing-x-xs);
@@ -154,8 +154,6 @@
         display: block;
         .text-overflow();
 
-        margin-bottom: var(--edatos-spacing-y-xs);
-
         text-decoration: none;
     }
 
@@ -165,7 +163,7 @@
         gap: @leftActionsGap;
         align-items: center;
         width: @leftActionsWidth;
-        height: @lineHeightMedium;
+        height: 100%;
 
         i {
             width: auto;

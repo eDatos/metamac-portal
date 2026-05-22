@@ -1,3 +1,5 @@
+@import "../variables";
+
 #captcha-container {
     & .captcha-button, .captcha-img, .captcha-label, .captcha-input {
         box-sizing: border-box;
@@ -9,13 +11,12 @@
         text-align: left;
         color: var(--edatos-color-black-100);
         font-weight: var(--edatos-font-weight-light);
-        line-height: 1.5;
+        line-height: @lineHeightMedium;
         margin: var(--edatos-spacing-y-sm) 0 0 0;
     }
 
     &.captcha-recaptcha .captcha-label {
         font-size: var(--edatos-font-size-sm);
-        line-height: normal;
         margin: 0;
     }
 }

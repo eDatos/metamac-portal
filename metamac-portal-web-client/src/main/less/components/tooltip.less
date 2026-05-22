@@ -1,8 +1,8 @@
 //
 // Tooltips
 // --------------------------------------------------
+@import "../variables";
 
-@zindexTooltip: 1030;
 @tooltipColor: var(--edatos-color-black-100);
 @tooltipBackground: var(--edatos-color-white-100);
 
@@ -32,7 +32,7 @@
     background-color: @tooltipBackground;
     border-radius: 4px;
     box-shadow: 3px 3px 4px 0px rgba(0,0,0,0.50);
-    border: 1px solid @tooltipColor;
+    border: @borderWidthSmall solid @tooltipColor;
     font-size: 12px;
     max-width: 400px;
     overflow-x: auto;

@@ -29,8 +29,7 @@
         }
 
         .select2-selection__arrow {
-            top: 8px;
-            transition: transform @transitionTime linear;
+            transition: transform 0.2s linear;
             position: static;
             width: auto;
             height: auto;
@@ -110,7 +109,7 @@
 
         .select2-results__option {
             white-space: nowrap;
-            line-height: var(--edatos-font-size-md);
+            line-height: @lineHeightSmall;
             font-size: var(--edatos-font-size-sm);
             padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
             border-radius: var(--edatos-border-radius-xs);

@@ -159,6 +159,7 @@
             background: none;
             color: var(--edatos-color-gray-40);
             font-weight: var(--edatos-font-weight-regular);
+            margin-left: var(--edatos-spacing-x-sm);
         }
 
         .chart-container, .svgContainer {
@@ -354,7 +355,7 @@
             z-index: -1;
             background-color: inherit;
             border-color: inherit;
-            border-width: 1px;
+            border-width: @borderWidthSmall;
             border-style: solid;
             top: var(--top);
             left: var(--left);
@@ -397,7 +398,7 @@ body.widget {
             .dataset-visualization-title {
                 .text-overflow();
                 font-size: var(--edatos-font-size-sm);
-                line-height: 1;
+                line-height: @lineHeightSmall;
                 padding: var(--edatos-spacing-y-xs) 0 0 0;
             }
 
