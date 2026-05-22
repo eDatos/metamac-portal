@@ -40,7 +40,7 @@
 
             .order-sidebar-dimension-label {
                 padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
-                line-height: @lineHeightSmall;
+                line-height: var(--edatos-line-height-xs);
                 display: inline-block;
                 box-sizing: border-box;
                 align-content: center;
@@ -64,7 +64,7 @@
 
                 border: none;
                 display: block;
-                line-height: @lineHeightSmall;
+                line-height: var(--edatos-line-height-xs);
                 padding-top: var(--edatos-spacing-y-xs);
                 padding-bottom: var(--edatos-spacing-y-xs);
             }
@@ -266,7 +266,7 @@
             .order-sidebar-dimension.empty-space {
                 background-color: var(--edatos-color-white-100);
                 color: var(--edatos-color-white-100);
-                border: @borderWidthSmall dashed var(--edatos-color-gray-20);
+                border: var(--edatos-border-width-xs) dashed var(--edatos-color-gray-20);
 
                 > * {
                     visibility: hidden;
@@ -336,7 +336,7 @@
 
 .drag-over-dimension {
     opacity: 0.8;
-    border: @borderWidthSmall dashed var(--edatos-color-gray-20);
+    border: var(--edatos-border-width-xs) dashed var(--edatos-color-gray-20);
 }
 
 .select2-container--open .dimension-select.select2-dropdown {
@@ -354,7 +354,7 @@
         padding-inline: var(--edatos-spacing-x-sm);
 
         input {
-            border: @borderWidthSmall solid var(--edatos-color-gray-40);
+            border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-40);
         }
     }
 
@@ -391,7 +391,7 @@ body.widget .metamac-container:not(.full-screen) {
                     font-size: var(--edatos-font-size-xs);
 
                     .order-sidebar-dimension-label {
-                        line-height: @lineHeightSmall;
+                        line-height: var(--edatos-line-height-xs);
                     }
 
                     .dimension-select-geographic-granularity,

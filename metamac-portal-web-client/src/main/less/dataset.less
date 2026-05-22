@@ -39,7 +39,7 @@
     .info-section {
         font-size: var(--edatos-font-size-sm);
         color: var(--edatos-color-black-100);
-        border: @borderWidthSmall solid var(--edatos-color-gray-20);
+        border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-20);
         border-radius: var(--edatos-border-radius-sm);
         overflow: clip;
 
@@ -59,7 +59,7 @@
             font-weight: var(--edatos-font-weight-semibold);
             text-transform: uppercase;
             cursor: pointer;
-            border-bottom: @borderWidthSmall solid var(--edatos-color-gray-20);
+            border-bottom: var(--edatos-border-width-xs) solid var(--edatos-color-gray-20);
 
             &.ui-accordion-header-collapsed {
                 border-bottom: none;
@@ -88,7 +88,7 @@
                 }
 
                 &:not(:empty):has(~ li:not(:empty)) {
-                    border-bottom: @borderWidthSmall solid var(--edatos-color-gray-20);
+                    border-bottom: var(--edatos-border-width-xs) solid var(--edatos-color-gray-20);
                 }
 
                 .metadata-group-title {
@@ -108,7 +108,7 @@
 
                     .metadata-value {
                         color: var(--edatos-color-gray-80);
-                        line-height: @lineHeightMedium;
+                        line-height: var(--edatos-line-height-md);
                         font-weight: var(--edatos-font-weight-regular);
                     }
                 }
@@ -152,7 +152,7 @@
         box-sizing: border-box;
         background: var(--edatos-color-white-100);
         border-radius: var(--edatos-border-radius-sm);
-        border: @borderWidthSmall solid var(--edatos-color-gray-60);
+        border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-60);
 
         h3 {
             font-size: @defaultFontSize;
@@ -355,7 +355,7 @@
             z-index: -1;
             background-color: inherit;
             border-color: inherit;
-            border-width: @borderWidthSmall;
+            border-width: var(--edatos-border-width-xs);
             border-style: solid;
             top: var(--top);
             left: var(--left);
@@ -398,7 +398,7 @@ body.widget {
             .dataset-visualization-title {
                 .text-overflow();
                 font-size: var(--edatos-font-size-sm);
-                line-height: @lineHeightSmall;
+                line-height: var(--edatos-line-height-xs);
                 padding: var(--edatos-spacing-y-xs) 0 0 0;
             }
 
