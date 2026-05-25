@@ -30,7 +30,6 @@
 
         destroy: function () {
             this._unbindEvents();
-            this._destroyWidgets();
         },
 
         _destroyWidgets: function () {
@@ -42,8 +41,6 @@
             if (!this.$el) {
                 return;
             }
-
-            this._destroyWidgets();
 
             const self = this;
             const formats = this._getApiEndpointsFormats();
@@ -65,6 +62,7 @@
 
             const scrollGroup = this.$el.find('.metadata-group');
             scrollGroup.perfectScrollbar();
+            scrollGroup.on('remove', _.bind(this._destroyWidgets, this));
             this.$el.find('.metadata-accordion').accordion({
                 collapsible: true,
                 active: false,

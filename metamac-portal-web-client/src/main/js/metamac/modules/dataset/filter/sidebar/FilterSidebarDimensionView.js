@@ -20,7 +20,6 @@
             if (this.subviews) {
                 _.invoke(this.subviews, 'destroy');
             }
-            this._destroyWidgets();
             this._unbindEvents();
             this.remove();
         },
@@ -50,8 +49,6 @@
             this._unbindEvents();
             this._bindEvents();
 
-            this._destroyWidgets();
-
             var context = {
                 dimension: this.filterDimension.toJSON(),
                 isDimensionLevelsSectionNotEmpty: this._hasHierarchy()
@@ -75,6 +72,7 @@
             }, this);
             this.subviews = this.subviews.concat(this.representationsSubviews);
             $categories.perfectScrollbar();
+            $categories.on('remove', _.bind(this._destroyWidgets, this));
 
             this.searchbarView = new App.components.searchbar.SearchbarView({
                 model: this.filterDimension,

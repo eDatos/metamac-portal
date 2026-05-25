@@ -17,7 +17,6 @@
 
         destroy: function () {
             _.invoke(this.subviews, 'destroy');
-            this._destroyWidgets();
             this._unbindEvents();
             this.remove();
         },
@@ -48,8 +47,6 @@
             this._bindEvents();
             var self = this;
 
-            this._destroyWidgets();
-
             this.$el.html(this.template({
                 multidataset: self.multidataset.toJSON(),
                 // nodes: this.multidataset.nodes.toJSON()
@@ -71,6 +68,7 @@
                 this.subviews = this.subviews.concat(this.nodesSubviews);
             }
             $nodes.perfectScrollbar();
+            $nodes.on('remove', _.bind(this._destroyWidgets, this));
 
             this.searchbarView = new App.components.searchbar.SearchbarView({
                 model: this.multidataset,

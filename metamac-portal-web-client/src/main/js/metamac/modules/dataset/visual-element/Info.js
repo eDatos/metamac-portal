@@ -135,8 +135,6 @@
         render: function () {
             if (!this.$el || this._destroyed) { return; }
 
-            this._destroyWidgets();
-
             var context = {
                 relatedResources: {
                     hasAnyRelatedResources: this._getRelatedResources().length || this._getMultidatasetRelatedResources().length,
@@ -155,7 +153,9 @@
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
             scrollGroup.perfectScrollbar();
-            this.$el.find('.metadata-accordion').accordion({
+            scrollGroup.on('remove', _.bind(this._destroyWidgets, this));
+            var accordion = this.$el.find('.metadata-accordion');
+            accordion.accordion({
                 collapsible: true,
                 active: this._isIndicator() ? 0 : false,
                 heightStyle: "content",
@@ -252,7 +252,6 @@
         },
 
         destroy: function () {
-            this._destroyWidgets();
             this._destroyed = true;
         }
     });
