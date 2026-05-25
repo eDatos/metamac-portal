@@ -450,4 +450,8 @@ I18n.translations.pt = {
             text: "Escreva o valor da imagem mostrada acima"
         }
     },
+    operations: {
+        empty: "Não há operações disponíveis.",
+        error: "Não foi possível carregar a lista de operações."
+    }
 };

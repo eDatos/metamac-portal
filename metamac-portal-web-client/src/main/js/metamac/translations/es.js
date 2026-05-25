@@ -471,6 +471,10 @@ I18n.translations.es = {
         common: {
             unknown: "Error desconocido"
         }
+    },
+    operations: {
+        empty: "No hay operaciones disponibles.",
+        error: "No ha sido posible cargar el listado de operaciones."
     }
-    
+
 };

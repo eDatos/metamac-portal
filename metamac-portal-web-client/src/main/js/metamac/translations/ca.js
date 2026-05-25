@@ -471,5 +471,9 @@ I18n.translations.ca = {
         common: {
             unknown: "Error desconegut"
         }
+    },
+    operations: {
+        empty: "No hi ha operacions disponibles.",
+        error: "No ha estat possible carregar el llistat d'operacions."
     }
 };

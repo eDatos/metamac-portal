@@ -469,5 +469,9 @@ I18n.translations.en = {
         common: {
             unknown: "Unknown error"
         }
+    },
+    operations: {
+        empty: "There are no operations available.",
+        error: "Unable to load the list of operations."
     }
 };

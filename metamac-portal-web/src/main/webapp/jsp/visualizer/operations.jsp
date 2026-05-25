@@ -22,8 +22,18 @@
     var baseURL = "${baseURL}";
     var statisticalResourcesApi = "${ApiUrlStatisticalResources}/v1.0";
     var locale = "${currentLocale}";
+    var defaultLocale = "${defaultInternationalizationLanguage}";
+    I18n.locale = locale;
+    I18n.defaultLocale = defaultLocale;
 </script>
 <script>
+    function createAlertDanger(message) {
+        var errorDiv = document.createElement('div');
+        errorDiv.classList.add('alert-danger');
+        errorDiv.textContent = message;
+        return errorDiv;
+    }
+
     function parseCollectionsIntoOperationsTree(collections) {
         return _.chain(collections)
             .groupBy((collection) => collection.statisticalOperation.id)
@@ -82,7 +92,9 @@
     }
     
     function buildOperationsList(operations) {
-        if (!operations.length) { return null;}        
+        if (!operations.length) {
+            return createAlertDanger(I18n.t('operations.empty'));
+        }
         var operationsList = document.createElement('ul');
         operationsList.classList.add('resource-list');
         operations.forEach(operation => {
@@ -96,7 +108,6 @@
     }
     
     function buildCollectionsList(collections) {
-        if (!collections.length) { return null;}
         var collectionList = document.createElement('ul');
         collectionList.classList.add('resource-list');
         collections.forEach(collection => {
@@ -112,17 +123,27 @@
     }
     
     fetch(statisticalResourcesApi + '/collections.json?fields=+statisticalOperation&limit=10000', { headers: { "api-key": "${apiKey}" } })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            return response.json();
+        })
         .then(data => {
             var operations = parseCollectionsIntoOperationsTree(data.collection);
             var operationsElement = document.getElementById("operations");
-            operationsElement.innerHTML = null;
+            operationsElement.innerHTML = '';
             operationsElement.append(buildOperationsList(operations));
 
             $(".resource-list .resource-section-depth-1 .resource-section-title").click(function (e) {
                 e.preventDefault();
                 $(this).parent().toggleClass("resource-section-collapsed");
             });
+        })
+        .catch(function() {
+            var operationsElement = document.getElementById("operations");
+            operationsElement.innerHTML = '';
+            operationsElement.append(createAlertDanger(I18n.t('operations.error')));
         });
 </script>
 <div id="operations"><div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div></div>
