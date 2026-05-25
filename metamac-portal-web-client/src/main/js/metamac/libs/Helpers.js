@@ -36,9 +36,9 @@
 		createUpdateDatesSection: function (options) {
 			var updateDatesSectionParts = [];
 
-			var lastUpdate = options.lastUpdate ? moment.utc(options.lastUpdate) : null;
+			var lastUpdate = options.lastUpdate ? moment.parseZone(options.lastUpdate) : null;
 			if (lastUpdate && lastUpdate.isValid()) {
-				updateDatesSectionParts.push(lastUpdate.locale(I18n.locale).format('D MMM YYYY HH:mm [GMT+0]'));
+				updateDatesSectionParts.push(lastUpdate.locale(I18n.locale).format('D MMM YYYY HH:mm [GMT]Z'));
 			}
 
 			var nextUpdate = moment(options.nextUpdate, 'DD/MM/YYYY');

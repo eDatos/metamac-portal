@@ -20,7 +20,8 @@
     "@awesome.me/kit-f6e7c4d1c0": "^1.0.6",
     "coffeescript": "^2.6.1",
     "handlebars": "^4.7.9",
-    "jquery-mousewheel": "^3.2.2"
+    "jquery-mousewheel": "^3.2.2",
+    "moment": "^2.30.1"
   },
   "overrides": {
     "grunt-contrib-uglify": {
