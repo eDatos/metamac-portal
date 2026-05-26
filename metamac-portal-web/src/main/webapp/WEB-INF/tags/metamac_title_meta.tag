@@ -153,11 +153,14 @@
         if (servletPath != null) {
             organizationService = servletPath.split("/")[2];
         }
-        String theme = WebUtils.getThemeFromOrganisationService(organizationService);
-        if (StringUtils.isBlank(theme)) {
-            theme = request.getParameter(Helpers.PARAMETER_THEME); /* Must be something like organisation/service */
+        String theme = WebUtils.getThemeFromOrganisationService(organizationService); /* Must be something like organisation/service */
+        String parameterTheme = request.getParameter(Helpers.PARAMETER_THEME);
+        if (StringUtils.isBlank(theme) && parameterTheme != null && parameterTheme.contains("/")) {
+            theme = parameterTheme;
         }
+        String organisation = StringUtils.isNotBlank(theme) ? theme.split("/")[0] : StringUtils.defaultString(parameterTheme);
         request.setAttribute("theme", theme);
+        request.setAttribute("organisation", organisation);
     %>
     <%
         Cookie[] cookies = request.getCookies();
