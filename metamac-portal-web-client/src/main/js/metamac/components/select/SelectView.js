@@ -73,7 +73,7 @@
                 minimumResultsForSearch: Infinity,
                 width: '100%'
             }).on('select2:open', function () {
-                App.Select2Utils.onOpen($(this), self.dropdownCssClass, true);
+                App.Select2Utils.onOpen($(this), self.dropdownCssClass);
             });
         },
 

@@ -90,17 +90,6 @@
         clip-path: inset(-30px -30px 0 -30px);
     }
 
-    &.select2-dropdown--wider-than-trigger {
-        border-top-right-radius: var(--edatos-border-radius-xs);
-        width: auto !important;
-        max-width: 300px;
-
-        &.select2-dropdown--align-right {
-            border-top-right-radius: 0;
-            border-top-left-radius: var(--edatos-border-radius-xs);
-        }
-    }
-
     .select2-results__options {
         display: flex;
         flex-direction: column;
@@ -109,8 +98,8 @@
         margin-bottom: var(--edatos-spacing-y-sm);
 
         .select2-results__option {
-            white-space: nowrap;
-            line-height: var(--edatos-line-height-xs);
+            word-break: break-word;
+            line-height: var(--edatos-line-height-md);
             font-size: var(--edatos-font-size-sm);
             padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
             border-radius: var(--edatos-border-radius-xs);

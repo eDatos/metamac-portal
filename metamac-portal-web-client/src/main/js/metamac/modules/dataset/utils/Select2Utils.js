@@ -5,30 +5,25 @@
 
     App.Select2Utils = {
 
-        onOpen: function ($select, dropdownClass, alignRight) {
+        onOpen: function ($select, dropdownClass) {
             setTimeout(function () {
                 const $dropdown = $('.select2-dropdown');
                 if (dropdownClass) {
                     $dropdown.addClass(dropdownClass);
                 }
 
-                $dropdown.css('width', 'auto');
-                const dropdownWidth = $dropdown[0].getBoundingClientRect().width;
-                const selectionWidth = $select.data('select2').$container.find('.selection')[0].getBoundingClientRect().width;
+                const selectionEl = $select.data('select2').$container.find('.selection')[0];
+                $dropdown.css('width', selectionEl.getBoundingClientRect().width);
 
-                $dropdown.css('min-width', selectionWidth);
-                if (dropdownWidth > selectionWidth) {
-                    $dropdown.addClass('select2-dropdown--wider-than-trigger');
-
-                    if (alignRight) {
-                        $dropdown.addClass('select2-dropdown--align-right');
-                        $dropdown.css('transform', `translateX(-${dropdownWidth - selectionWidth}px)`);
-                    }
-                }
+                const observer = new ResizeObserver(function () {
+                    $dropdown.css('width', selectionEl.getBoundingClientRect().width);
+                });
+                observer.observe(selectionEl);
 
                 const $results = $dropdown.find('.select2-results__options');
                 $results.perfectScrollbar();
                 $select.one('select2:closing', function () {
+                    observer.disconnect();
                     $results.perfectScrollbar('destroy');
                 });
             });
