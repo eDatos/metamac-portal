@@ -64,6 +64,7 @@
                 justify-content: center;
                 align-items: center;
                 font-size: @defaultFontSize;
+                width: var(--edatos-spacing-x-lg);
             }
 
             &.disabled {
@@ -87,6 +88,19 @@
 
         &.download-menu-dropdown-header {
             font-weight: var(--edatos-font-weight-semibold);
+        }
+    }
+}
+
+// WIDGET-SPECIFIC STYLES
+
+body.widget .metamac-container:not(.full-screen) {
+    .download-menu-dropdown > li {
+        font-size: var(--edatos-font-size-xs);
+
+        &.download-menu-dropdown-header {
+            padding-top: 0;
+            padding-bottom: 0;
         }
     }
 }
