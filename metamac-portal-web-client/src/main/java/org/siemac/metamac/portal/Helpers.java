@@ -75,6 +75,7 @@ public class Helpers {
 
     // Mainly intended for debug
     public static final String  PARAMETER_THEME                                   = "theme";
+    public static final String  PARAMETER_PALETTE                                 = "palette";
 
     private static final String LATEST_VERSION                                    = "~latest";
     private static final int    MINIMAL_FIXED_DIGITS_IN_NUMERATION                = 2;
