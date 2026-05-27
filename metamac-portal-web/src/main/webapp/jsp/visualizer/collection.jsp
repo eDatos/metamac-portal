@@ -1,9 +1,5 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
-<%@ page import="org.siemac.metamac.portal.mapper.Collection2DtoMapper"%>
-<%@ page import="org.siemac.metamac.portal.dto.Collection" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -11,6 +7,7 @@
 <c:set var="requestURL">${pageContext.request.requestURL}</c:set>
 <c:set var="baseURL">${fn:replace(requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}</c:set>
 
+<link rel="stylesheet" type="text/css" href="${baseURL}/client/metamac.css">
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${currentLocale}" />
     <div class="visualizer-wrapper collection-wrapper"> 
@@ -57,19 +54,17 @@
     </script>
 
     <script>
-	    LazyLoad.css('${baseURL}/client/metamac.css', function () {
-	        LazyLoad.js('${baseURL}/client/metamac.js', function () {
-				$(".resource-list .resource-section-depth-2 .resource-section-title").click(function (e) {
-					e.preventDefault();
-					$(this).parent().toggleClass("resource-section-collapsed");
+	    LazyLoad.js('${baseURL}/client/metamac.js', function () {
+			$(".resource-list .resource-section-depth-2 .resource-section-title").click(function (e) {
+				e.preventDefault();
+				$(this).parent().toggleClass("resource-section-collapsed");
+			});
+			<c:if test="${collection != null && collection.metadata != null && collection.metadata.lastUpdate != null}">
+				App.Helpers.createUpdateDatesSection({
+					lastUpdate: ${collection.metadata.lastUpdate.time},
+					nextUpdate: null
 				});
-				<c:if test="${collection != null && collection.metadata != null && collection.metadata.lastUpdate != null}">
-					App.Helpers.createUpdateDatesSection({
-						lastUpdate: ${collection.metadata.lastUpdate.time},
-						nextUpdate: null
-					});
-				</c:if>
-            });
+			</c:if>
         });
     </script>
 </t:metamac_plantilla_1col>
