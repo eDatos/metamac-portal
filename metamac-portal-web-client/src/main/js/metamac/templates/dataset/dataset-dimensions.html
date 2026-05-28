@@ -1,7 +1,7 @@
 <div class="dataset-dimensions-left dataset-dimensions-left-{{leftColumns}}">
     {{#each zones}} {{#compare location "==" "left"}}
     {{#if showHeader}}
-    <h2 class="order-sidebar-zone-header"><i class="{{ icon }}"></i> {{ label }}</h2>
+    <h2 class="order-sidebar-zone-header"><i class="{{ icon }}"></i><span class="order-sidebar-zone-header-label"> {{ label }}</span></h2>
     {{/if}}
     <div class="order-sidebar-zone {{#if draggable}}draggable{{/if}} {{#unless showHeader}}no-header{{/unless}}" data-zone="{{ id }}">
 
@@ -53,7 +53,7 @@
 <div class="dataset-dimensions-right dataset-dimensions-left-{{leftColumns}} dataset-zones-right-{{rightZones}}">
     {{#each zones}} {{#compare location "==" "right"}}
     {{#if showHeader}}
-    <h2 class="order-sidebar-zone-header"><i class="{{ icon }}"></i> {{ label }}</h2>
+    <h2 class="order-sidebar-zone-header"><i class="{{ icon }}"></i><span class="order-sidebar-zone-header-label"> {{ label }}</span></h2>
     {{/if}}
     <div class="order-sidebar-zone {{#if draggable}}draggable{{/if}} {{#unless showHeader}}no-header{{/unless}}" data-zone="{{ id }}">
 
