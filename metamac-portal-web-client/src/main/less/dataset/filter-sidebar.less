@@ -141,6 +141,10 @@
     margin-bottom: var(--edatos-spacing-y-xs);
     .user-select(none);
 
+    &.hide {
+        margin-bottom: 0;
+    }
+
     @leftActionsGap: var(--edatos-spacing-x-xs);
     @leftActionsFontSize: @defaultFontSize;
     @leftActionsWidth: calc(@leftActionsGap + 2 * @leftActionsFontSize);
