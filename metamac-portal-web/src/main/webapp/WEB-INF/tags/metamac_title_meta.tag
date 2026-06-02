@@ -21,6 +21,8 @@
 <%@ tag import="org.slf4j.LoggerFactory" %>
 
 <%@ tag import="java.io.File" %>
+<%@ tag import="java.net.URI" %>
+<%@ tag import="java.net.URISyntaxException" %>
 <%@ tag import="java.util.Date" %>
 <%@ tag import="java.text.SimpleDateFormat" %>
 	<%
@@ -149,7 +151,7 @@
     <%    
 		String sharedVisualizerUrl = request.getParameter(Helpers.PARAMETER_SHARED_VISUALIZER_URL);
         String organizationService = "";
-        String servletPath = request.getServletPath();
+        String servletPath = (String) request.getAttribute("javax.servlet.forward.servlet_path");
         if (servletPath != null) {
             organizationService = servletPath.split("/")[2];
         }
@@ -288,7 +290,13 @@
         }
 	%>
 	<%
-       request.setAttribute("portalStyleHeaderUrl", WebUtils.getPortalStyleHeaderUrl(organizationService, locale, theme));
+       String portalStyleHeaderUrlRaw = WebUtils.getPortalStyleHeaderUrl(organizationService, locale, theme);
+       try {
+           portalStyleHeaderUrlRaw = new URI(portalStyleHeaderUrlRaw).normalize().toString();
+       } catch (URISyntaxException e) {
+           log.error(e.getMessage());
+       }
+       request.setAttribute("portalStyleHeaderUrl", portalStyleHeaderUrlRaw);
        request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService, theme));
        request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService, theme));
        request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService, theme));
@@ -301,9 +309,14 @@
        request.setAttribute("pageTitle", WebUtils.buildPageTitle(ORGANISATION, (String) request.getAttribute("resourceName"), locale));
        
        String faviconUrl = "";
-       String portalStyleHeaderUrl = (String) request.getAttribute("portalStyleHeaderUrl");       
+       String portalStyleHeaderUrl = (String) request.getAttribute("portalStyleHeaderUrl");
        if (portalStyleHeaderUrl != null) {
-           faviconUrl = portalStyleHeaderUrl.split("/header.html")[0] + "/../../" + "common/favicon.ico";
+           String rawFaviconUrl = portalStyleHeaderUrl.split("/header.html")[0] + "/../../" + "common/favicon.ico";
+           try {
+               faviconUrl = new URI(rawFaviconUrl).normalize().toString();
+           } catch (URISyntaxException e) {
+               faviconUrl = rawFaviconUrl;
+           }
        }
        request.setAttribute("faviconUrl", faviconUrl);
 
