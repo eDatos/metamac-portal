@@ -151,7 +151,7 @@
     <%    
 		String sharedVisualizerUrl = request.getParameter(Helpers.PARAMETER_SHARED_VISUALIZER_URL);
         String organizationService = "";
-        String servletPath = request.getServletPath();
+        String servletPath = (String) request.getAttribute("javax.servlet.forward.servlet_path");
         if (servletPath != null) {
             organizationService = servletPath.split("/")[2];
         }
