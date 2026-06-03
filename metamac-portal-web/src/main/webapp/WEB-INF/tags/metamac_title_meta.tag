@@ -298,7 +298,13 @@
        }
        request.setAttribute("portalStyleHeaderUrl", portalStyleHeaderUrlRaw);
        request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService, theme));
-       request.setAttribute("portalStyleFooterUrl", WebUtils.getPortalStyleFooterUrl(organizationService, theme));
+       String portalStyleFooterUrlRaw = WebUtils.getPortalStyleFooterUrl(organizationService, theme);
+       try {
+           portalStyleFooterUrlRaw = new URI(portalStyleFooterUrlRaw).normalize().toString();
+       } catch (URISyntaxException e) {
+           log.error(e.getMessage());
+       }
+       request.setAttribute("portalStyleFooterUrl", portalStyleFooterUrlRaw);
        request.setAttribute("showRightsHolder", WebUtils.getShowRightsHolder(organizationService, theme));
        request.setAttribute("socialTwitterVia", WebUtils.getSocialTwitterVia());
        request.setAttribute("enableGraphColors", WebUtils.getPortalGraphColorsEnabled());
