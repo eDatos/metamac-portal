@@ -22,13 +22,22 @@
         load: function () {
             this._unbindEvents();
             this._bindEvents();
-            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
-                return;
-            }
 
             this.showLoading();
             var self = this;
             this._loadShapes().then(function () {
+                var shapedNormCodes = _.compact(_.map(self._allGeoJson, function(s) { return s && s.normCode; }));
+                var representations = self._getGeographicDimension().get('representations');
+                representations.each(function(representation) {
+                    representation.set('hasShape', _.contains(shapedNormCodes, representation.get('normCode')), { silent: true });
+                });
+                representations.updateSelectedGeographicGranularityWithMostRepeatedValue();
+                representations.trigger('change:hasShape');
+
+                if (!self.assertAllDimensionsHaveSelections() || !self.assertGeographicDimensionsHaveTwoElements()) {
+                    return;
+                }
+
                 self._getBaseShapes();
                 self._getDrawableShapes();
                 self._getData();

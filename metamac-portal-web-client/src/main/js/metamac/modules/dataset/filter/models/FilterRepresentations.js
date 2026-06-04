@@ -168,12 +168,19 @@
             return this.filter(representation => representation.get("id") === id);
         },
 
+        hasGranularityWithMoreThanOneElement: function() {
+            var countByGranularity = _.countBy(this.models, function(rep) {
+                return rep.get('geographicGranularityId');
+            });
+            return _.any(countByGranularity, function(count) { return count > 1; });
+        },
+
         getGeographicRepresentationsWithMoreThanOneElementSelected : function() {
             return this.filter(item => {
                 // Filter selected elements
-                if (item.get('selected')) {
+                if (item.get('selected') && item.get('hasShape')) {
                   // check that there are more items selected in your level
-                  return this.filter(subItem => subItem.get('geographicGranularityId') === item.get('geographicGranularityId') && subItem.get('selected')).length > 1;
+                  return this.filter(subItem => subItem.get('geographicGranularityId') === item.get('geographicGranularityId') && subItem.get('selected') && subItem.get('hasShape')).length > 1;
                 }
                 return false;
               });

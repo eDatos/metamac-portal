@@ -167,8 +167,11 @@
         },
 
         canDrawMapVisualizations: function () {
+            var geoDimensionObject = this.findWhere({ type: "GEOGRAPHIC_DIMENSION" });
             return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
-                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE && this.checkGeographicDimensionsWithTwoElements();
+                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE
+                && !!geoDimensionObject
+                && geoDimensionObject.get("representations").hasGranularityWithMoreThanOneElement();
         },
 
         checkGeographicDimensionsWithTwoElements: function() {
