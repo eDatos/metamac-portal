@@ -168,29 +168,38 @@
             return this.filter(representation => representation.get("id") === id);
         },
 
-        hasGranularityWithMoreThanOneElement: function() {
+        hasGeographicGranularityWithMoreThanOneElement: function() {
             var countByGranularity = _.countBy(this.models, function(rep) {
                 return rep.get('geographicGranularityId');
             });
             return _.any(countByGranularity, function(count) { return count > 1; });
         },
 
-        getGeographicRepresentationsWithMoreThanOneElementSelected : function() {
+        getGeographicRepresentationsWithMoreThanOneSelectedElement : function() {
             return this.filter(item => {
                 // Filter selected elements
+                if (item.get('selected')) {
+                    // check that there are more items selected in your level
+                    return this.filter(subItem => subItem.get('geographicGranularityId') === item.get('geographicGranularityId') && subItem.get('selected')).length > 1;
+                }
+                return false;
+            });
+        },
+
+        getGeographicRepresentationsWithMoreThanOneShapedElementSelected : function() {
+            return this.filter(item => {
                 if (item.get('selected') && item.get('hasShape')) {
-                  // check that there are more items selected in your level
                   return this.filter(subItem => subItem.get('geographicGranularityId') === item.get('geographicGranularityId') && subItem.get('selected') && subItem.get('hasShape')).length > 1;
                 }
                 return false;
-              });
+            });
         },
 
         updateSelectedGeographicGranularityIfNoElementsInGranularity: function() {
             //take the actual SelectedGeographicalLevel
             var granularity = this.getSelectedGeographicGranularity();
             //take the representations of the current level that have more than one element selected
-            var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneElementSelected().filter(item => item.get('geographicGranularityId').toString() === granularity);
+            var filterRepresentations = this.getGeographicRepresentationsWithMoreThanOneShapedElementSelected().filter(item => item.get('geographicGranularityId').toString() === granularity);
             //If there are no elements selected, then we perform the update
             if (filterRepresentations.length == 0) {
                 this.updateSelectedGeographicGranularityWithMostRepeatedValue();
@@ -249,7 +258,7 @@
         },
 
         getSelectedGeographicGranularities: function () {
-            return _(this.getGeographicRepresentationsWithMoreThanOneElementSelected()).invoke("get", "geographicGranularityId");
+            return _(this.getGeographicRepresentationsWithMoreThanOneShapedElementSelected()).invoke("get", "geographicGranularityId");
         },
 
         setSelectedTemporalGranularity: function(temporalGranularity) {

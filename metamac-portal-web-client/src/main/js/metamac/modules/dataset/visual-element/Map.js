@@ -17,6 +17,7 @@
     _.extend(App.VisualElement.Map.prototype, {
 
         _granularitiesWithNoSelection: App.templateManager.get('dataset/granuralities-with-no-selection'),
+        _noShapesTemplate: App.templateManager.get('dataset/map/map-no-shapes'),
         _errorTemplate: App.templateManager.get('dataset/map/map-error'),
 
         load: function () {
@@ -34,7 +35,7 @@
                 representations.updateSelectedGeographicGranularityWithMostRepeatedValue();
                 representations.trigger('change:hasShape');
 
-                if (!self.assertAllDimensionsHaveSelections() || !self.assertGeographicDimensionsHaveTwoElements()) {
+                if (!self.assertAllDimensionsHaveSelections() || !self.assertGeographicDimensionsHaveTwoShapedElements()) {
                     return;
                 }
 
@@ -200,7 +201,7 @@
         },
 
         update: function () {
-            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
+            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoShapedElements()) {
                 return;
             }
 
@@ -218,10 +219,13 @@
             this._mapContainerView.update(this._dataJson, this._geoJson, this.getTitle());
         },
 
-        assertGeographicDimensionsHaveTwoElements: function () {
-            if (this.filterDimensions.checkGeographicDimensionsWithTwoElements()) {
+        assertGeographicDimensionsHaveTwoShapedElements: function () {
+            if (this.filterDimensions.checkGeographicDimensionsWithTwoShapedElements()) {
                 this.hideWrongSelectionView();
                 return true;
+            } else if (this.filterDimensions.checkGeographicDimensionsWithTwoSelectedElements()) {
+                this.renderWrongSelectionView(this._noShapesTemplate());
+                return false;
             } else {
                 this.renderWrongSelectionView(this._granularitiesWithNoSelection());
                 return false;
