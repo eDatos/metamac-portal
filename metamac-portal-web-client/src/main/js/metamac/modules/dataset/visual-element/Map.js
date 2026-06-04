@@ -27,13 +27,7 @@
             this.showLoading();
             var self = this;
             this._loadShapes().then(function () {
-                var shapedNormCodes = _.compact(_.map(self._allGeoJson, function(s) { return s && s.normCode; }));
-                var representations = self._getGeographicDimension().get('representations');
-                representations.each(function(representation) {
-                    representation.set('hasShape', _.contains(shapedNormCodes, representation.get('normCode')), { silent: true });
-                });
-                representations.updateSelectedGeographicGranularityWithMostRepeatedValue();
-                representations.trigger('change:hasShape');
+                self._updateShapeInfo();
 
                 if (!self.assertAllDimensionsHaveSelections() || !self.assertGeographicDimensionsHaveTwoShapedElements()) {
                     return;
@@ -71,6 +65,16 @@
                 this._mapModel.off('change', this._handleTransform);
                 this._mapModel.off('zoomExit', this._handleZoomExit);
             }
+        },
+
+        _updateShapeInfo: function () {
+            var shapedNormCodes = _.compact(_.map(this._allGeoJson, function(s) { return s && s.normCode; }));
+            var representations = this._getGeographicDimension().get('representations');
+            representations.each(function(representation) {
+                representation.set('hasShape', _.contains(shapedNormCodes, representation.get('normCode')), { silent: true });
+            });
+            representations.updateSelectedGeographicGranularityWithMostRepeatedValue();
+            representations.trigger('change:hasShape');
         },
 
         _loadShapes: function() {
