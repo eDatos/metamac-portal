@@ -73,7 +73,7 @@
             representations.each(function(representation) {
                 representation.set('hasShape', _.contains(shapedNormCodes, representation.get('normCode')), { silent: true });
             });
-            representations.updateSelectedGeographicGranularityWithMostRepeatedValue();
+            representations.updateSelectedGeographicGranularityIfNoElementsInGranularity();
             representations.trigger('change:hasShape');
         },
 
