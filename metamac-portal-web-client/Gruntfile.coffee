@@ -367,6 +367,11 @@ module.exports = (grunt) ->
                     stylesheet : "less"
                     hashes : false
                     syntax: "bootstrap",
+                    template: 'src/main/fonts/icons-template.less',
+                    templateOptions: {
+                        baseClass: '',
+                        classPrefix: 'icon-'
+                    },
                     htmlDemo : true,
                     autoHint : false,
                     types: 'eot,woff,ttf,svg',
@@ -379,8 +384,8 @@ module.exports = (grunt) ->
         grunt.task.run('mocha:spec')
 
     grunt.registerTask 'test', ['concat','mocha:all']
-    grunt.registerTask 'dev', ['clean', 'copy', 'less:dev', 'handlebars', 'concat']
-    grunt.registerTask 'build', ['clean', 'copy', 'less:pro', 'handlebars', 'uglify']
+    grunt.registerTask 'dev', ['clean', 'copy', 'webfont', 'less:dev', 'handlebars', 'concat']
+    grunt.registerTask 'build', ['clean', 'copy', 'webfont', 'less:pro', 'handlebars', 'uglify']
 
     grunt.registerTask 'bdd', ['connect', 'open:test', 'watch' ]
     grunt.registerTask 'serve', ['connect', 'open:preview', 'watch' ]
