@@ -168,14 +168,29 @@
 
         canDrawMapVisualizations: function () {
             return this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR
-                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE && this.checkGeographicDimensionsWithTwoElements();
+                && this.metadata.identifier().type != App.Constants.visualization.type.INDICATOR_INSTANCE
+                && this.checkGeographicDimensionsHaveGranularityWithMultipleElements();
         },
 
-        checkGeographicDimensionsWithTwoElements: function() {
+        checkGeographicDimensionsHaveGranularityWithMultipleElements: function() {
+            var geoDimensionObject = this.findWhere({ type: "GEOGRAPHIC_DIMENSION" });
+            return !!geoDimensionObject && geoDimensionObject.get("representations").hasGeographicGranularityWithMoreThanOneElement();
+        },
+
+        checkGeographicDimensionsWithTwoShapedElements: function() {
             var geoDimensionObject = this.findWhere( { type : "GEOGRAPHIC_DIMENSION" } );
             if (geoDimensionObject) {
                 var geographicDimensions = geoDimensionObject.get("representations");
-                return geographicDimensions.getGeographicRepresentationsWithMoreThanOneElementSelected().length > 0;
+                return geographicDimensions.getGeographicRepresentationsWithMoreThanOneShapedElementSelected().length > 0;
+            }
+            return false;
+        },
+
+        checkGeographicDimensionsWithTwoSelectedElements: function() {
+            var geoDimensionObject = this.findWhere( { type : "GEOGRAPHIC_DIMENSION" } );
+            if (geoDimensionObject) {
+                var geographicDimensions = geoDimensionObject.get("representations");
+                return geographicDimensions.getGeographicRepresentationsWithMoreThanOneSelectedElement().length > 0;
             }
             return false;
         },
