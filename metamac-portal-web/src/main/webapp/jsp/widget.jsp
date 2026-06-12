@@ -35,10 +35,6 @@
 
     <link rel="stylesheet" href="client/metamac.css?d=${cssDate}"/>
 
-    <c:import url="https://estadisticas.arte-consultores.com/apps/assets/css/styles.jsp"/>
-    <c:import url="https://estadisticas.arte-consultores.com/apps/organisations/istac/common/css/overrides.jsp"/>
-    <!-- TODO get from metadata property -->
-
     <style>
         html, body {
             margin: 0;
@@ -82,6 +78,7 @@
         request.setAttribute("analyticsUrl", analyticsUrl);
         String apiKey = WebUtils.getWidgetApiKey();
         request.setAttribute("apiKey", apiKey);
+        request.setAttribute("appStyleCssUrl", WebUtils.getAppStyleCssUrl());
 
         Helpers helpers = new Helpers(locale, defaultLocale, apiKey);
     %>
@@ -107,6 +104,7 @@
         }
     %>
     <script type="application/javascript" src="${analyticsUrl}" appId="statistical-visualizer-${installationType}-widget"></script>
+    <c:import url="${appStyleCssUrl}"/>
 </head>
 <body class="statistical-visualizer">
 
