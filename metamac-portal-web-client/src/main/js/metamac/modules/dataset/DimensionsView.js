@@ -289,6 +289,7 @@
                 
                 if (self._needsGeographicGranularitySelector(filterDimension)) {
                     self.listenTo(filterDimension.get('representations'), 'change:selected', _.debounce(_.bind(self._onChangeSelectedForGeographicRepresentations, self, filterDimension.get('id')), 300));
+                    self.listenTo(filterDimension.get('representations'), 'change:hasShape', _.debounce(_.bind(self.render, self), 300));
                 } else if (self._needsTemporalGranularitySelector(filterDimension)) {
                     self.listenTo(filterDimension.get('representations'), 'change:selected', _.debounce(_.bind(self._onChangeSelectedForTemporalRepresentations, self, filterDimension.get('id')), 300));
                 } else {
@@ -497,7 +498,7 @@
         },
 
         _getGeographicGranularityCollection: function (dimension) {
-            return _.chain(dimension.get("representations").getGeographicRepresentationsWithMoreThanOneElementSelected())
+            return _.chain(dimension.get("representations").getGeographicRepresentationsWithMoreThanOneShapedElementSelected())
                 .sortBy(representation => representation.get("level"))
                 .uniq(true, representation => representation.get("geographicGranularityId"))
                 .map(function (representation) {

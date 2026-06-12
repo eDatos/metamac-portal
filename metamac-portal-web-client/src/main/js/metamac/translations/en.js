@@ -188,6 +188,7 @@ I18n.translations.en = {
         },
         noSelection: "You must choose at least one category on each dimension",
         selectAtLeastTwoItems: "You must select at least two values of the same geographical granularity",
+        noShapesAvailable: "No map available for the selected values",
         loading: "Loading data..."
     },
 
