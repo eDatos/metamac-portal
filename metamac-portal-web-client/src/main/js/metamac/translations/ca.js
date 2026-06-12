@@ -193,6 +193,7 @@ I18n.translations.ca = {
         },
         noSelection: "Seleccioni almenys una categoria en cada dimensió.",
         selectAtLeastTwoItems: "Ha de seleccionar almenys dos valors de la mateixa granularitat geogràfica",
+        noShapesAvailable: "No hi ha mapa disponible per als valors seleccionats",
         loading: "Carregant dades..."
     },
 

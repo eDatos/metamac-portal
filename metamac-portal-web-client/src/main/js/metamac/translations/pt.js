@@ -191,6 +191,8 @@ I18n.translations.pt = {
             nomap: "Mapa indisponível"
         },
         noSelection: "Você deve escolher pelo menos uma categoria em cada dimensão.",
+        selectAtLeastTwoItems: "Você deve selecionar pelo menos dois valores da mesma granularidade geográfica",
+        noShapesAvailable: "Não há mapa disponível para os valores selecionados",
         loading: "Carregando dados..."
     },
 

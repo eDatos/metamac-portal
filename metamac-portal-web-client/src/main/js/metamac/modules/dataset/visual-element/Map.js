@@ -21,13 +21,16 @@
 
             this._unbindEvents();
             this._bindEvents();
-            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
-                return;
-            }
 
             this.showLoading();
             var self = this;
             this._loadShapes().then(function () {
+                self._updateShapeInfo();
+
+                if (!self.assertAllDimensionsHaveSelections() || !self.assertGeographicDimensionsHaveTwoShapedElements()) {
+                    return;
+                }
+
                 self._getBaseShapes();
                 self._getDrawableShapes();
                 self._getData();
@@ -61,6 +64,16 @@
                 this._mapModel.off('change', this._handleTransform);
                 this._mapModel.off('zoomExit', this._handleZoomExit);
             }
+        },
+
+        _updateShapeInfo: function () {
+            var shapedNormCodes = _.compact(_.map(this._allGeoJson, function(s) { return s && s.normCode; }));
+            var representations = this._getGeographicDimension().get('representations');
+            representations.each(function(representation) {
+                representation.set('hasShape', _.contains(shapedNormCodes, representation.get('normCode')), { silent: true });
+            });
+            representations.updateSelectedGeographicGranularityIfNoElementsInGranularity();
+            representations.trigger('change:hasShape');
         },
 
         _loadShapes: function() {
@@ -190,7 +203,7 @@
         },
 
         update: function () {
-            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoElements()) {
+            if (!this.assertAllDimensionsHaveSelections() || !this.assertGeographicDimensionsHaveTwoShapedElements()) {
                 return;
             }
 
@@ -208,10 +221,13 @@
             this._mapContainerView.update(this._dataJson, this._geoJson, this.getTitle());
         },
 
-        assertGeographicDimensionsHaveTwoElements: function () {
-            if (this.filterDimensions.checkGeographicDimensionsWithTwoElements()) {
+        assertGeographicDimensionsHaveTwoShapedElements: function () {
+            if (this.filterDimensions.checkGeographicDimensionsWithTwoShapedElements()) {
                 this.hideWrongSelectionView();
                 return true;
+            } else if (this.filterDimensions.checkGeographicDimensionsWithTwoSelectedElements()) {
+                this.renderWrongSelectionView(this._noShapesTemplate());
+                return false;
             } else {
                 this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.selectAtLeastTwoItems' }));
                 return false;

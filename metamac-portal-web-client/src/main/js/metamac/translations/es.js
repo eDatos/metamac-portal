@@ -194,6 +194,7 @@ I18n.translations.es = {
         noSelection: "Debe seleccionar al menos una categoría en cada dimensión.",
 
         selectAtLeastTwoItems: "Debe seleccionar al menos dos valores de la misma granularidad geográfica",
+        noShapesAvailable: "No hay mapa disponible para los valores seleccionados",
 
         loading: "Cargando datos..."
     },
