@@ -226,7 +226,7 @@
                 this.hideWrongSelectionView();
                 return true;
             } else if (this.filterDimensions.checkGeographicDimensionsWithTwoSelectedElements()) {
-                this.renderWrongSelectionView(this._noShapesTemplate());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.noShapesAvailable' }));
                 return false;
             } else {
                 this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.selectAtLeastTwoItems' }));
