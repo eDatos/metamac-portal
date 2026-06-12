@@ -38,7 +38,7 @@
 
     .modal-header {
         display: flex;
-        padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm) var(--edatos-spacing-y-sm) var(--edatos-spacing-x-lg);
+        padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-lg) var(--edatos-spacing-y-sm);
         justify-content: space-between;
         background: var(--edatos-color-secondary-100);
         color: var(--edatos-color-white-100);
@@ -59,7 +59,7 @@
             h2 {
                 margin: 0;
                 text-align: center;
-                font-size: @defaultFontSize;
+                font-size: inherit;
                 font-weight: var(--edatos-font-weight-semibold);
                 line-height: var(--edatos-line-height-md);
             }
@@ -71,6 +71,7 @@
             font-size: var(--edatos-font-size-lg);
             border: 0;
             background: none;
+            padding: 0;
 
             &:hover {
                 cursor: pointer;
@@ -88,7 +89,7 @@
             box-sizing: border-box;
             padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg);
 
-            > :where(:not(:empty) ~ :not(:empty)) {
+            > :where(:not(:empty) ~ :not(:empty)), input {
                 margin-top: var(--edatos-spacing-y-sm);
             }
 
@@ -164,7 +165,7 @@
                 place-self: center;
                 margin: 0;
                 color: var(--edatos-color-black-100);
-                font-size: @defaultFontSize;
+                font-size: inherit;
                 font-weight: var(--edatos-font-weight-regular);
                 line-height: var(--edatos-line-height-md);
                 text-align: center;
@@ -300,4 +301,15 @@
     .dataset-options-type-icon;
     &:extend(.fa all);
     .fa-eye;
+}
+
+// WIDGET-SPECIFIC STYLES
+
+body.widget & .modal {
+    font-size: var(--edatos-font-size-sm);
+
+    input,
+    textarea {
+        font-size: var(--edatos-font-size-sm);
+    }
 }
