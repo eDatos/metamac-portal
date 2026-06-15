@@ -1,4 +1,4 @@
-<%@ page import="org.siemac.metamac.portal.web.WebUtils" %>
+<%@ page import="org.siemac.metamac.portal.web.WebUtils, org.siemac.metamac.portal.Helpers" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -12,6 +12,7 @@
 
 <%
     request.setAttribute("apiKey", WebUtils.getApiKey());
+    request.setAttribute("parameterTheme", Helpers.PARAMETER_THEME);
 %>
 
 <t:metamac_plantilla_1col baseURL="${baseURL}">
@@ -23,6 +24,7 @@
     var statisticalResourcesApi = "${ApiUrlStatisticalResources}/v1.0";
     var locale = "${currentLocale}";
     var defaultLocale = "${defaultInternationalizationLanguage}";
+    var theme = '${theme}'.trim();
     I18n.locale = locale;
     I18n.defaultLocale = defaultLocale;
 </script>
@@ -66,7 +68,10 @@
     }
     
     function urnStructureToParams(urnStructure) {
-        return '&agencyId=' + urnStructure.agencyId + '&resourceId=' + urnStructure.resourceId + (urnStructure.version ? '&version=' + urnStructure.version : '');
+        return '&agencyId=' + urnStructure.agencyId +
+            '&resourceId=' + urnStructure.resourceId +
+            (urnStructure.version ? '&version=' + urnStructure.version : '') +
+            (theme ? '&${parameterTheme}=' + theme : '');
     }
     
     function splitUrnWithoutPrefixStructure(tripletIdentifier) {
