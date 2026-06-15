@@ -81,11 +81,13 @@
     }
 
     .modal-content {
-        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
 
         .modal-specific-content {
             display: flex;
             flex-direction: column;
+            min-height: 0;
             box-sizing: border-box;
             padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg);
 
@@ -290,7 +292,15 @@
 
             &.modal-save {
                 textarea {
+                    min-height: 0;
                     resize: none;
+                    field-sizing: unset;
+                }
+            }
+
+            &.modal-embed {
+                textarea {
+                    field-sizing: content;
                 }
             }
         }
