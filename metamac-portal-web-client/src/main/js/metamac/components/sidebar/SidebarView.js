@@ -70,7 +70,7 @@
             };
 
             var isFullScreen = this.optionsModel.get('fullScreen');
-            var $overlayContainer = isFullScreen ? this.$el : $('body');
+            var $overlayContainer = isFullScreen ? this.$el : $('.metamac-container');
 
             this.$overlay = $('<div>')
                 .addClass('sidebar-overlay')
