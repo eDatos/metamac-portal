@@ -77,10 +77,12 @@ input[type="checkbox"] {
 }
 
 input[type="radio"] {
-    .visualizer-wrapper .icon-radio-unchecked;
+    &:extend(.fa all);
+    .fa-regular;
+    .fa-circle;
 
     &:checked {
-        .visualizer-wrapper .icon-radio-checked;
+        .fa-circle-dot;
     }
 }
 
