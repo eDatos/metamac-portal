@@ -1,4 +1,5 @@
-.full-screen {
+.full-screen,
+&.full-screen {
     background-color: var(--edatos-color-white-100) !important;
     margin: 0 !important;
     padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-y-xl) var(--edatos-spacing-x-lg) !important;
@@ -16,8 +17,8 @@
             overflow: hidden;
         }
     }
-}
 
-.full-screen > div:first-child {
-    height: 100%;
+    > div:first-child {
+        height: 100%;
+    }
 }

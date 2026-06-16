@@ -139,9 +139,6 @@
             this.optionsBar.show(this.optionsView);
             this.dimensions.show(this.dimensionsView);
             this.fullScreen.setContainer($('.metamac-container'));
-            if (this.optionsModel.get('widget')) {
-                this._initializeWidget();
-            }
             this._unbindEvents();
             this._bindEvents();
 
@@ -158,10 +155,6 @@
 
         _onDidExitFullScreen: function () {
             App.modules.dataset.DatasetView.__super__._onDidExitFullScreen.call(this);
-        },
-
-        _initializeWidget: function () {
-            $('body').addClass('widget');
         },
 
         showLoading: function () {

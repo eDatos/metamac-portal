@@ -1,12 +1,5 @@
 @import "variables";
 
-:root {
-    --rights-holder-font-size: 12;
-    --rights-holder-font-weight: var(--edatos-font-weight-light);
-    --rights-holder-font-color: var(--edatos-color-gray-80);
-    --rights-holder-font-family: var(--edatos-font-family);
-}
-
 .dataset-view {
     height: 100%;
     display: flex;
@@ -25,6 +18,10 @@
     }
 }
 
+.dataset-visualization-visual-element .metadata-group {
+    overflow-y: scroll;
+}
+
 .metadata-group {
     height: 100%;
     position: relative;
@@ -32,10 +29,6 @@
     flex-direction: column;
     gap: var(--edatos-spacing-y-sm);
     padding-bottom: var(--edatos-spacing-y-xs);
-
-    .dataset-visualization-visual-element & {
-        overflow-y: scroll;
-    }
 
     .info-section {
         font-size: var(--edatos-font-size-sm);
@@ -380,7 +373,7 @@
 
 // WIDGET-SPECIFIC STYLES
 
-body.widget {
+&.widget-wrapper {
     .dataset-view {
         .dataset-visualization-title {
             box-sizing: border-box;
@@ -397,7 +390,7 @@ body.widget {
         }
     }
 
-    .metamac-container:not(.full-screen) {
+    &:not(.full-screen) {
         .dataset-view {
             gap: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-xs);
 

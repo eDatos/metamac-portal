@@ -362,11 +362,3 @@
             padding: 8px;
         }
     </style>
-    <script>
-        var theme ='${theme}';
-        if (theme) {
-            document.addEventListener('DOMContentLoaded', () => {
-                document.body.classList.add("thematic");
-            });
-        }
-    </script>

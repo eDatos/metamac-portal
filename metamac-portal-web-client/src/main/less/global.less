@@ -28,7 +28,7 @@ input, textarea, select, button {
 }
 
 body.statistical-visualizer {
-	&:not(.widget) {
+	&:not(:has(.widget-wrapper)) {
 		background: var(--edatos-color-gray-5);
 	}
 
@@ -51,10 +51,5 @@ body.statistical-visualizer {
 			flex-direction: column;
 			padding: 0;
 		}
-	}
-
-	&.thematic .contenido {
-		padding: 0;
-		box-shadow: none;
 	}
 }

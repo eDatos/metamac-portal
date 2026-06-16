@@ -1,43 +1,46 @@
+@import "variables";
+@import "global";
+@import "icons";
+
 // External
 @import "vendor/fontAwesome";
 
-// CSS Reset
-@import "variables";
-@import "mixins";
+.visualizer-wrapper {
 
-@import "global";
+    // CSS Reset
+    @import "mixins";
 
-@import "fullscreen";
-@import "cursors";
-@import "icons";
-@import "buttons";
-@import "inputs";
-@import "fieldset";
+    @import "fullscreen";
+    @import "cursors";
+    @import "buttons";
+    @import "inputs";
+    @import "fieldset";
 
-// components
-@import "components/download-menu";
-@import "components/sidebar";
-@import "components/searchbar";
-.metamac-container {
+    // components
+    @import "components/download-menu";
+    @import "components/sidebar";
+    @import "components/searchbar";
+
     @import "components/tooltip";
     @import "components/modal";
-}
-@import "components/alert";
-@import "components/optionsbar";
-@import "components/dimensions";
-@import "components/scrollbuttons";
-@import "components/captcha";
-@import "components/perfect-scrollbar/perfect-scrollbar";
-@import "components/select2/select2";
-@import "components/jquery-ui/jquery-ui";
-@import "components/accordion";
-@import "components/navigation-tabs";
-@import "components/visualization-types";
-@import "components/resource-list";
-@import "header";
 
-// pages
-@import "dataset";
-@import "dataset/maps";
-@import "dataset/filter-sidebar";
-@import "selection";
+    @import "components/alert";
+    @import "components/optionsbar";
+    @import "components/dimensions";
+    @import "components/scrollbuttons";
+    @import "components/captcha";
+    @import "components/perfect-scrollbar/perfect-scrollbar";
+    @import "components/select2/select2";
+    @import "components/jquery-ui/jquery-ui";
+    @import "components/accordion";
+    @import "components/navigation-tabs";
+    @import "components/visualization-types";
+    @import "components/resource-list";
+    @import "header";
+
+    // pages
+    @import "dataset";
+    @import "dataset/maps";
+    @import "dataset/filter-sidebar";
+    @import "selection";
+}

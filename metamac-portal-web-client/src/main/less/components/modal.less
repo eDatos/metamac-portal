@@ -32,6 +32,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: @zindexModal;
+    height: min-content;
     max-height: 90%;
     max-width: @modal-max-width;
     min-width: @modal-min-width;
@@ -43,6 +44,7 @@
         background: var(--edatos-color-secondary-100);
         color: var(--edatos-color-white-100);
         align-items: center;
+        border: none;
 
         .modal-title {
             display: flex;
@@ -83,6 +85,8 @@
     .modal-content {
         display: flex;
         flex-direction: column;
+        border: none;
+        border-radius: 0;
 
         .modal-specific-content {
             display: flex;
@@ -91,7 +95,7 @@
             box-sizing: border-box;
             padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-x-lg);
 
-            > :where(:not(:empty) ~ :not(:empty)), input {
+            > :where(:not(:empty) ~ :not(:empty)), > input[type="text"] {
                 margin-top: var(--edatos-spacing-y-sm);
             }
 
@@ -105,6 +109,8 @@
                     color: var(--edatos-color-black-100);
                     font-weight: var(--edatos-font-weight-semibold);
                     line-height: var(--edatos-line-height-md);
+                    font-size: @defaultFontSize;
+                    border: none;
 
                     &:is(legend) {
                         margin-bottom: var(--edatos-spacing-y-xs);
@@ -315,7 +321,7 @@
 
 // WIDGET-SPECIFIC STYLES
 
-body.widget & .modal {
+&.widget-wrapper .modal {
     font-size: var(--edatos-font-size-sm);
 
     input,

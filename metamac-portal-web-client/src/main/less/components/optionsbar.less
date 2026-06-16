@@ -31,13 +31,13 @@
         flex-direction: row;
         gap: var(--edatos-spacing-x-sm);
 
-        body:not(.widget) & {
+        body:not(:has(.widget-wrapper)) & {
             @media (max-width: @minWidthToShowButtonsText) {
                 .horizontal-buttons-group-compact();
             }
         }
 
-        body.widget & {
+        body:has(.widget-wrapper) & {
             @media (max-width: @minWidthToShowButtonsTextWidget) {
                 .horizontal-buttons-group-compact();
             }

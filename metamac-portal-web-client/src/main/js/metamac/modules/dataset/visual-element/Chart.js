@@ -25,7 +25,7 @@
             this.$exportChartContainer = $("#export-chart");
             if (this.$exportChartContainer.length === 0) {
                 this.$exportChartContainer = $('<div id="export-chart"></div>');
-                $("body").append(this.$exportChartContainer);
+                $(".visualizer-wrapper").append(this.$exportChartContainer);
             }
             this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
 
