@@ -5,6 +5,16 @@
 /target/www/**
 
 ######################
+# grunt-webfont generated
+######################
+/src/main/fonts/icons.eot
+/src/main/fonts/icons.svg
+/src/main/fonts/icons.ttf
+/src/main/fonts/icons.woff
+/src/main/fonts/icons.html
+/src/main/less/icons.less
+
+######################
 # Node
 ######################
 /node/**
