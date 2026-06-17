@@ -17,29 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.siemac.metamac.portal.core.exporters.PxExporter;
 import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisation;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentation;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentations;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ComponentType;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Data;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttribute;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataAttributes;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DataStructureDefinition;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetBase;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DatasetMetadataBase;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimension;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentation;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionRepresentations;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionType;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionValues;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Dimensions;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.DimensionsId;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValue;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.EnumeratedDimensionValues;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase;
-import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourcesStatisticalResourceBase;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.*;
 
 import es.gobcan.istac.indicators.rest.types.AttributeAttachmentLevelEnumType;
 import es.gobcan.istac.indicators.rest.types.AttributeType;
@@ -130,7 +108,7 @@ public class IndicatorsRestMapper {
         datasetAttribute.setId(attribute.getKey());
         datasetAttribute.setAttachmentLevel(ATTRIBUTE_ATTACHMENT_LEVEL_MAPPING.get(attribute.getValue().getAttachmentLevel()));
         datasetAttribute.setAttributeValues(null); // No values on indicators
-        datasetAttribute.setDimensions(null); // No dimensions for atributtes in indicators
+        datasetAttribute.setDimensions(new AttributeDimensions()); // No dimensions for atributtes in indicators
         datasetAttribute.setName(localisedStringsToInternationalString(attribute.getValue().getTitle()));
         datasetAttribute.setType(ComponentType.OTHER);
         return datasetAttribute;
