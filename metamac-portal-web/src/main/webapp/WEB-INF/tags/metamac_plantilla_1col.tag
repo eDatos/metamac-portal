@@ -19,6 +19,7 @@
 	</c:choose>
 </head>
 <body class="statistical-visualizer">
+<div class="statistical-visualizer-background">
 	<!-- begin: #cabecera -->
     <c:choose>
         <c:when test="${!empty portalStyleHeaderUrl}">
@@ -58,6 +59,7 @@
         </c:otherwise>
     </c:choose>
 	<!-- end: pie -->
+</div>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

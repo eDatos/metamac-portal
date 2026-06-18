@@ -9,8 +9,9 @@ html {
 }
 
 body.statistical-visualizer {
-	&:not(:has(.widget-wrapper)) {
+	.statistical-visualizer-background:not(:has(.widget-wrapper)) {
 		background: var(--edatos-color-gray-5);
+		min-height: 100vh;
 	}
 
 	#bloq_interior {
