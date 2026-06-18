@@ -151,5 +151,9 @@
             operationsElement.append(createAlertDanger(I18n.t('operations.error')));
         });
 </script>
-<div id="operations"><div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div></div>
+<div class="visualizer-wrapper operations-wrapper">
+    <div id="operations">
+        <div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div>
+    </div>
+</div>
 </t:metamac_plantilla_1col>
