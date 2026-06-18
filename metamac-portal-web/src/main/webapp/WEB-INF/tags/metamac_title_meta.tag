@@ -348,17 +348,3 @@
   	<meta name="robots" content="index, follow" />
   	<meta name="revisit-after" content="7 days" />
   	<link rel="icon" type="image/x-icon" href="${faviconUrl}" />
-
-    
-    <!-- Default styles with low precedece that can be easily overwritten by custom headers -->
-    <style>                
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-        }
-        
-        .visualizer-wrapper,
-        .contenido .loader {
-            padding: 8px;
-        }
-    </style>
