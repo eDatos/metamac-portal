@@ -384,8 +384,8 @@ module.exports = (grunt) ->
         grunt.task.run('mocha:spec')
 
     grunt.registerTask 'test', ['concat','mocha:all']
-    grunt.registerTask 'dev', ['clean', 'copy', 'webfont', 'less:dev', 'handlebars', 'concat']
-    grunt.registerTask 'build', ['clean', 'copy', 'webfont', 'less:pro', 'handlebars', 'uglify']
+    grunt.registerTask 'dev', ['clean', 'webfont', 'copy', 'less:dev', 'handlebars', 'concat']
+    grunt.registerTask 'build', ['clean', 'webfont', 'copy', 'less:pro', 'handlebars', 'uglify']
 
     grunt.registerTask 'bdd', ['connect', 'open:test', 'watch' ]
     grunt.registerTask 'serve', ['connect', 'open:preview', 'watch' ]
