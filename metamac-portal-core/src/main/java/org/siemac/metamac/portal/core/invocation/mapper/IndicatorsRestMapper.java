@@ -19,6 +19,7 @@ import org.siemac.metamac.rest.common.v1_0.domain.ResourceLink;
 import org.siemac.metamac.rest.structural_resources.v1_0.domain.Organisation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attribute;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeAttachmentLevelType;
+import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.AttributeDimensions;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Attributes;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentation;
 import org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CodeRepresentations;
@@ -130,7 +131,7 @@ public class IndicatorsRestMapper {
         datasetAttribute.setId(attribute.getKey());
         datasetAttribute.setAttachmentLevel(ATTRIBUTE_ATTACHMENT_LEVEL_MAPPING.get(attribute.getValue().getAttachmentLevel()));
         datasetAttribute.setAttributeValues(null); // No values on indicators
-        datasetAttribute.setDimensions(null); // No dimensions for atributtes in indicators
+        datasetAttribute.setDimensions(new AttributeDimensions()); // No dimensions for atributtes in indicators
         datasetAttribute.setName(localisedStringsToInternationalString(attribute.getValue().getTitle()));
         datasetAttribute.setType(ComponentType.OTHER);
         return datasetAttribute;
