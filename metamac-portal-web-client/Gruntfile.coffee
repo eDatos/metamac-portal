@@ -54,7 +54,7 @@ module.exports = (grunt) ->
                 paths.nodeModules + "/dompurify/dist/purify.min.js"
                 paths.nodeModules + "/jquery-mousewheel/jquery.mousewheel.js"
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
-                paths.js + "/libs/select2.full.min.js" # TODO EDATOS-3095: replace this pre-release with the next official release
+                paths.js + "/libs/select2.full.min.js"
                 paths.nodeModules + "/moment/min/moment-with-locales.min.js"
                 paths.js + "/libs/tinyqueue.min.js"
                 paths.js + "/libs/polylabel.js"
