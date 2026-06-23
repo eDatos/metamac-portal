@@ -54,7 +54,7 @@ module.exports = (grunt) ->
                 paths.nodeModules + "/dompurify/dist/purify.min.js"
                 paths.nodeModules + "/jquery-mousewheel/jquery.mousewheel.js"
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
-                paths.js + "/libs/select2.full.min.js"
+                paths.nodeModules + "/select2/dist/js/select2.full.min.js"
                 paths.nodeModules + "/moment/min/moment-with-locales.min.js"
                 paths.js + "/libs/tinyqueue.min.js"
                 paths.js + "/libs/polylabel.js"
