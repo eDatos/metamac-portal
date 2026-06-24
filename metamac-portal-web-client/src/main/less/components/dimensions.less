@@ -121,6 +121,7 @@
         .order-sidebar-dimension-single-value {
             height: 100%;
             border-radius: 0;
+            cursor: default;
 
             .order-sidebar-dimension-label {
                 height: 100%;
@@ -176,8 +177,9 @@
 
             .order-sidebar-dimensions {
                 border: none;
+                background: var(--edatos-color-gray-5);
 
-                .order-sidebar-dimension:hover .order-sidebar-dimension-label {
+                .order-sidebar-dimension:not(.order-sidebar-dimension-single-value):hover .order-sidebar-dimension-label {
                     background-color: var(--edatos-color-primary-50);
                 }
             }
@@ -195,10 +197,6 @@
 
         &.dataset-dimensions-left-1:not(:has(h2)) {
             border: none;
-
-            .order-sidebar-dimensions {
-                background: var(--edatos-color-gray-5);
-            }
         }
 
         .order-sidebar-zone {
@@ -257,7 +255,6 @@
             width: 100%;
             min-width: 0;
             margin-left: 0;
-            background: var(--edatos-color-gray-5);
             height: auto;
 
             .order-sidebar-dimension.empty-space {
