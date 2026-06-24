@@ -16,6 +16,8 @@
         }
 
         .order-sidebar-dimension {
+            --dimension-font-size: @defaultFontSize;
+
             /* IE9 bug changed divs with a, so this correct the new style */
             display: inline-block;
             width: @dimensionPillWidth;
@@ -41,6 +43,7 @@
 
             .order-sidebar-dimension-label {
                 padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
+                font-size: var(--dimension-font-size);
                 line-height: var(--edatos-line-height-xs);
                 display: inline-block;
                 box-sizing: border-box;
@@ -91,11 +94,11 @@
                     border: none;
                     border-radius: 0;
                     padding: 0;
-                    height: inherit;
-                    font-size: inherit;
-                    font-weight: inherit;
-                    line-height: inherit;
-                    color: inherit;
+                    height: 100%;
+                    font-size: var(--dimension-font-size);
+                    font-weight: var(--edatos-font-weight-semibold);
+                    line-height: var(--edatos-line-height-xs);
+                    color: var(--edatos-color-gray-40);
 
                     &:hover {
                         background: transparent;
@@ -113,7 +116,7 @@
                 .fixed-dimension-select-category,
                 .dimension-select-sortby,
                 .select2-container .selection {
-                    height: inherit;
+                    height: 100%;
                 }
             }
         }
@@ -431,7 +434,9 @@
                 }
 
                 .order-sidebar-zone  .order-sidebar-dimension {
-                    font-size: var(--edatos-font-size-xs);
+                    --dimension-font-size: var(--edatos-font-size-xs);
+
+                    font-size: var(--dimension-font-size);
 
                     .order-sidebar-dimension-label {
                         line-height: var(--edatos-line-height-xs);
