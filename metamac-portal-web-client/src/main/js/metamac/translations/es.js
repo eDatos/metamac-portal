@@ -65,13 +65,13 @@ I18n.translations.es = {
                 dot: "Punto"
             },
             menu: {
-                xlsx: "Formato xlsx",
-                tsv: "Formato tsv",
-                px: "Formato px",
-                jsonstat: "Formato jsonstat",
-                svg: "Formato svg",
-                png: "Formato png",
-                pdf: "Formato pdf"
+                xlsx: "Formato XLSX",
+                tsv: "Formato TSV",
+                px: "Formato PX",
+                jsonstat: "Formato JSONSTAT",
+                svg: "Formato SVG",
+                png: "Formato PNG",
+                pdf: "Formato PDF"
             }
         },
         share: {

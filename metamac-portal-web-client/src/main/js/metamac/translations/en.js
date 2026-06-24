@@ -65,13 +65,13 @@ I18n.translations.en = {
                 dot: "Dot"
             },
             menu: {
-                xlsx: "xlsx format",
-                tsv: "tsv format",
-                px: "px format",
-                jsonstat: "jsonstat format",
-                svg: "svg format",
-                png: "png format",
-                pdf: "pdf format"
+                xlsx: "XLSX format",
+                tsv: "TSV format",
+                px: "PX format",
+                jsonstat: "JSONSTAT format",
+                svg: "SVG format",
+                png: "PNG format",
+                pdf: "PDF format"
             }
         },
         share: {
