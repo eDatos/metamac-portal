@@ -64,13 +64,13 @@ I18n.translations.pt = {
                 dot: "Ponto"
             },
             menu: {
-                xlsx: "Baixar no formato xlsx",
-                tsv: "Baixar no formato tsv",
-                px: "Baixar no formato px",
-                jsonstat: "Baixar no formato jsonstat",
-                svg: "Baixar no formato svg",
-                png: "Baixar no formato png",
-                pdf: "Baixar no formato pdf"
+                xlsx: "Formato xlsx",
+                tsv: "Formato tsv",
+                px: "Formato px",
+                jsonstat: "Formato jsonstat",
+                svg: "Formato svg",
+                png: "Formato png",
+                pdf: "Formato pdf"
             }
         },
         share: {

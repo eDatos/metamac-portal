@@ -9,26 +9,22 @@
         {{#if buttonConfig.dataFormats}}
         <li class="selection">
             <a href="#" class="{{#if buttonConfig.disableFormat.selection.excel}}disabled{{/if}}" data-type="xlsx" title="{{buttonConfig.title.selection.excel}}">
-                <i class="fa fa-thin fa-file-spreadsheet"></i>
                 {{ message "filter.download.menu.xlsx" }}
             </a>
         </li>
         <li class="selection">
             <a href="#" class="{{#if buttonConfig.disableFormat.selection.tsv}}disabled{{/if}}" data-type="tsv" title="{{buttonConfig.title.selection.tsv}}">
-                <i class="fa fa-thin fa-table-pivot"></i>
                 {{ message "filter.download.menu.tsv" }}
             </a>
         </li>
         <li class="selection">
             <a href="#" class="{{#if buttonConfig.disableFormat.selection.csv}}disabled{{/if}}" data-type="px"  title="{{buttonConfig.title.selection.tsv}}">
-                <i class="icon-file-px"></i>
                 {{ message "filter.download.menu.px" }}
             </a>
         </li>
         {{#if hasJsonstatUrl}}
         <li class="selection">
             <a href="#" class="{{#if buttonConfig.disableFormat.selection.jsonstat}}disabled{{/if}}" data-type="jsonstat" title="{{buttonConfig.title.selection.jsonstat}}">
-                <i class="fa fa-thin fa-brackets-curly"></i>
                 {{ message "filter.download.menu.jsonstat" }}
             </a>
         </li>
@@ -37,19 +33,16 @@
         {{#if buttonConfig.imageFormats}}
         <li class="selection">
             <a href="#" class="{{#if buttonConfig.disableFormat.selection.png}}disabled{{/if}}" data-type="png" title="{{buttonConfig.title.selection.png}}">
-            <i class="fa fa-thin fa-file-png"></i>
             {{ message "filter.download.menu.png" }}
         </a>
         </li>
         <li class="selection">
             <a href="#" class="{{#if buttonConfig.disableFormat.selection.pdf}}disabled{{/if}}" data-type="pdf" title="{{buttonConfig.title.selection.pdf}}">
-            <i class="fa fa-thin fa-file-pdf"></i>
             {{ message "filter.download.menu.pdf" }}
         </a>
         </li>
         <li class="selection">
             <a href="#" class="{{#if buttonConfig.disableFormat.selection.svg}}disabled{{/if}}" data-type="svg" title="{{buttonConfig.title.selection.svg}}">
-            <i class="fa fa-thin fa-file-svg"></i>
             {{ message "filter.download.menu.svg" }}
         </a>
         </li>
@@ -59,25 +52,21 @@
         <li class="download-menu-dropdown-header">{{ message "filter.download.all" }}</li>
         <li>
             <a href="#" class="{{#if buttonConfig.disableFormat.all.excel}}disabled{{/if}}" data-type="xlsx" title="{{buttonConfig.title.all.excel}}">
-                <i class="fa fa-thin fa-file-spreadsheet"></i>
                 {{ message "filter.download.menu.xlsx" }}</a>
         </li>
         <li>
             <a href="#" class="{{#if buttonConfig.disableFormat.all.tsv}}disabled{{/if}}" data-type="tsv">
-                <i class="fa fa-thin fa-table-pivot"></i>
                 {{ message "filter.download.menu.tsv" }}
             </a>
         </li>
         <li>
             <a href="#" class="{{#if buttonConfig.disableFormat.all.csv}}disabled{{/if}}" data-type="px">
-                <i class="icon-file-px"></i>
                 {{ message "filter.download.menu.px" }}
             </a>
         </li>
         {{#if hasJsonstatUrl}}
         <li>
             <a href="#" class="{{#if buttonConfig.disableFormat.all.jsonstat}}disabled{{/if}}" data-type="jsonstat">
-                <i class="fa fa-thin fa-brackets-curly"></i>
                 {{ message "filter.download.menu.jsonstat" }}
             </a>
         </li>

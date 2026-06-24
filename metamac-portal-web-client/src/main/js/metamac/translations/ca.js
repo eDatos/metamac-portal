@@ -65,13 +65,13 @@ I18n.translations.ca = {
                 dot: "Punt"
             },
             menu: {
-                xlsx: "Descarregar en format xlsx",
-                tsv: "Descarregar en format tsv",
-                px: "Descarregar en format px",
-                jsonstat: "Descarregar en format jsonstat",
-                svg: "Descarregar en format svg",
-                png: "Descarregar en format png",
-                pdf: "Descarregar en format pdf"
+                xlsx: "Format xlsx",
+                tsv: "Format tsv",
+                px: "Format px",
+                jsonstat: "Format jsonstat",
+                svg: "Format svg",
+                png: "Format png",
+                pdf: "Format pdf"
             }
         },
         share: {
