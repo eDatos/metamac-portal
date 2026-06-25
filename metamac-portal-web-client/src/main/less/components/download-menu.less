@@ -18,12 +18,18 @@
         }
 
         .btn {
-            .btn.active;
+            box-shadow: none;
+            background: var(--edatos-color-secondary-100);
+            color: var(--edatos-color-white-100);
+
+            i {
+                .fa-solid;
+            }
         }
     }
 
     &.is-downloading .download-menu-dropdown > li:not(.download-menu-dropdown-header) {
-        color: var(--edatos-color-primary-50);
+        opacity: 0.3;
 
         a {
             cursor: default;
@@ -32,7 +38,7 @@
 
     &:not(.is-downloading) .download-menu-dropdown > li:not(.download-menu-dropdown-header):not(:has(> a.disabled)):hover {
         background: var(--edatos-color-primary-5);
-        color: var(--edatos-color-black-100);
+        color: var(--edatos-color-secondary-100);
     }
 }
 
@@ -46,7 +52,7 @@
     margin: 0;
     list-style: none;
     border-radius: var(--edatos-border-radius-sm) 0 var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
-    background: var(--edatos-color-primary-100);
+    background: var(--edatos-color-secondary-100);
     flex-direction: column;
     gap: var(--edatos-spacing-y-xs);
     box-shadow: @dropdownBoxShadow;
@@ -83,7 +89,7 @@
             }
 
             &.disabled {
-                color: var(--edatos-color-primary-50);
+                opacity: 0.3;
                 cursor: default;
             }
         }
