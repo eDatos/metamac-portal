@@ -245,7 +245,10 @@ I18n.translations.ca = {
             formatExtentObservations: "Grandària de la taula",
             lastUpdate: "Data de l'última actualització",
             dateNextUpdate: "Data de pròxima actualització",
-            nextUpdate: "Pròxima actualització: {{dateNextUpdate}}",
+            header: {
+                lastUpdate: "Última actualització: {{dateLastUpdate}}",
+                nextUpdate: "Pròxima actualització: {{dateNextUpdate}}",
+            },
             updateFrequency: "Freqüència d'actualització",
             statisticOfficiality: "Oficialitat estadística",
             bibliographicCitation: "Citació bibliogràfica",

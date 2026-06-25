@@ -245,7 +245,10 @@ I18n.translations.en = {
             formatExtentObservations: "Table size",
             lastUpdate: "Last update date",
             dateNextUpdate: "Next update date",
-            nextUpdate: "Next update: {{dateNextUpdate}}",
+            header: {
+                lastUpdate: "Last update: {{dateLastUpdate}}",
+                nextUpdate: "Next update: {{dateNextUpdate}}",
+            },
             updateFrequency: "Update frequency",
             statisticOfficiality: "Statistic officiality",
             bibliographicCitation: "Bibliographic citation",

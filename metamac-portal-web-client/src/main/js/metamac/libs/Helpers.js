@@ -38,12 +38,14 @@
 
 			var lastUpdate = options.lastUpdate ? moment.parseZone(options.lastUpdate) : null;
 			if (lastUpdate && lastUpdate.isValid()) {
-				updateDatesSectionParts.push(lastUpdate.locale(I18n.locale).format('D MMM YYYY HH:mm [GMT]Z'));
+				updateDatesSectionParts.push(I18n.t("entity.dataset.header.lastUpdate", {
+					dateLastUpdate: lastUpdate.locale(I18n.locale).format('D MMM YYYY HH:mm [GMT]Z')
+				}));
 			}
 
 			var nextUpdate = moment(options.nextUpdate, 'DD/MM/YYYY');
 			if (nextUpdate.isValid()) {
-				updateDatesSectionParts.push(I18n.t("entity.dataset.nextUpdate", {
+				updateDatesSectionParts.push(I18n.t("entity.dataset.header.nextUpdate", {
 					dateNextUpdate: nextUpdate.locale(I18n.locale).format('D MMM YYYY')
 				}));
 			}
