@@ -157,6 +157,11 @@
 
                     self.multidataset = result.multidataset || self.multidataset;
 
+                    if (self.multidataset && self.metadata.getVersion()) {
+                        var resolvedIdentifier = _.extend({}, datasetIdentifier, { version: self.metadata.getVersion() });
+                        self.multidataset.updateResourceIdentifier(resolvedIdentifier);
+                    }
+
                     var layoutParams = { controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data, multidataset: self.multidataset };
                     self.selectionView = new App.modules.selection.SelectionView(layoutParams);
                     self.visualizationView = new App.modules.dataset.DatasetView(layoutParams);
