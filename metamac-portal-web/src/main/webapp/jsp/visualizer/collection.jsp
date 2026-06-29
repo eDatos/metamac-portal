@@ -55,6 +55,8 @@
 
     <script>
 	    LazyLoad.js('${baseURL}/client/metamac.js', function () {
+			I18n.defaultLocale = "${defaultInternationalizationLanguage}";
+			I18n.locale = "${currentLocale}";
 			$(".resource-list .resource-section-depth-2 .resource-section-title").click(function (e) {
 				e.preventDefault();
 				$(this).parent().toggleClass("resource-section-collapsed");
