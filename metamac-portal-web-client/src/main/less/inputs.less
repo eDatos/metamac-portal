@@ -26,30 +26,32 @@ input[type="color"],
     font-weight: var(--edatos-font-weight-regular);
     padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
     background: var(--edatos-color-white-100);
-    color: var(--edatos-color-gray-40);
+    color: var(--edatos-color-black-100);
     border-radius: var(--edatos-border-radius-sm);
     border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-60);
     height: auto;
     outline: none;
     font-family: inherit;
 
+    &::placeholder {
+        color: var(--edatos-color-gray-40)
+    }
+
     &:hover {
         background: var(--edatos-color-gray-5);
-        color: var(--edatos-color-gray-60);
     }
 
     &:focus {
-        color: var(--edatos-color-gray-60);
         border-color: var(--edatos-color-accent-100);
     }
 
     &:active {
-        color: var(--edatos-color-black-100);
         border-color: var(--edatos-color-secondary-100);
     }
 
     &:disabled, &.disabled {
         background: var(--edatos-color-gray-5);
+        color: var(--edatos-color-gray-40);
         border-color: var(--edatos-color-gray-40);
     }
 
