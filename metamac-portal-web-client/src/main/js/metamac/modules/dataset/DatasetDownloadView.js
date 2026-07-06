@@ -25,16 +25,12 @@
             };
             window.addEventListener("pageshow", this.pageshowListener);
 
+            this.isOpen = false;
             this.filterDimensions = this.options.filterDimensions;
+            this.dataSource = this.options.dataSource;
             this.estimatedNumberOfCells = this.options.estimatedNumberOfCells;
+            this.estimatedNumberOfCellsForSelection = this.dataSource.getSelectionNonEmptyAttributesCount();
             this.numberOfObservations = this.options.numberOfObservations;
-
-            var datasetAllSelected = this.getDatasetSelection(false);
-            var datasetSelectionObject = this.getDatasetSelection();
-
-            this.datasetAllSelected = JSON.stringify(datasetAllSelected);
-            this.datasetSelection = JSON.stringify(datasetSelectionObject);
-            this.jsonstatSelection = this._getSelection(datasetSelectionObject);
 
             this.urls = {
                 xlsx: this._buildExportEndpoint('excel'),
@@ -50,11 +46,12 @@
 
         _bindEvents: function () {
             this.listenTo(this.optionsModel, "change:isDownloading", this._updateDownloadingState);
+            this.listenTo(this.filterDimensions, "change:drawable", _.debounce(this._updateEstimatedNumberOfCellsForSelection, 300));
 
             const self = this;
             this._closeDropdownOnOutsideClick = function (e) {
                 if (!self.$('.download-menu-dropdown').is(e.target) && self.$('.download-menu-dropdown').has(e.target).length === 0) {
-                    self.$('.download-menu').removeClass('open');
+                    self.closeMenu();
                 }
             };
             $(document).on('click', this._closeDropdownOnOutsideClick);
@@ -66,10 +63,16 @@
             this.currentVe = currentVe;
         },
 
+        _updateEstimatedNumberOfCellsForSelection: function () {
+            this.estimatedNumberOfCellsForSelection = this.dataSource.getSelectionNonEmptyAttributesCount();
+            this._refreshSelectionButtonStates();
+        },
+
         render: function () {
             var context = {
                 buttonConfig: this._getButtonConfiguration(),
-                hasJsonstatUrl: !!this.urls.jsonstat
+                hasJsonstatUrl: !!this.urls.jsonstat,
+                isOpen: this.isOpen
             };
 
             this.$el.html(this.template(context));
@@ -103,19 +106,15 @@
             return _.contains(['graph', 'map'], visualizationSupertype);
         },
 
-        _exportableImage: function () {
-            var visualizationSupertype = this._getVisualizationType();
-            return this._hasExportableImage(visualizationSupertype);
-        },
-
         _getButtonConfiguration: function () {
             var visualizationSupertype = this._getVisualizationType();
             var haveDataFormats = visualizationSupertype == 'data';
             var haveMapFormats = visualizationSupertype == 'map' && false; // TODO: METAMAC-2033
             var haveImageFormats = this._hasExportableImage(visualizationSupertype);
             const allDimensionsWithSelections = this.filterDimensions.getDimensionsWithoutSelections().length === 0;
-            const disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells.all, this.numberOfObservations.all.total, this.numberOfObservations.all.tableSize);
-            const disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCells.selection, this.numberOfObservations.selection.total, this.numberOfObservations.selection.tableSize);
+            const disableAllExcel = this.disableExcelDownload(this.estimatedNumberOfCells, this.numberOfObservations.total, this.numberOfObservations.tableSize);
+            var selectionTableSize = this.filterDimensions.getTableInfo().getTableSize();
+            const disableSelectionExcel = this.disableExcelDownload(this.estimatedNumberOfCellsForSelection, this.dataSource.getSelectionObservationsCount(), selectionTableSize);
             const param = this.toStatisticalResourcesApiRepresentationParameter(this.getDatasetSelection());
             const disableAllSelectionFormat = param && param.length > GLOBAL_CHAR_LENGTH_URL_LIMIT && visualizationSupertype === 'data';
 
@@ -251,9 +250,37 @@
             return { datasetSelection: null };
         },
 
+        openMenu: function () {
+            this.isOpen = true;
+            this.$('.download-menu').addClass('open');
+        },
+
+        closeMenu: function () {
+            this.isOpen = false;
+            this.$('.download-menu').removeClass('open');
+        },
+
         _toggleDropdown: function (e) {
             e.stopPropagation();
-            this.$('.download-menu').toggleClass('open');
+            if (this.isOpen) {
+                this.closeMenu();
+            } else {
+                this.openMenu();
+            }
+        },
+
+        _refreshSelectionButtonStates: function () {
+            var buttonConfig = this._getButtonConfiguration();
+            var disableFormat = buttonConfig.disableFormat.selection;
+            var title = buttonConfig.title.selection;
+
+            this.$('li.selection a[data-type="xlsx"]').toggleClass('disabled', disableFormat.excel).attr('title', title.excel || '');
+            this.$('li.selection a[data-type="tsv"]').toggleClass('disabled', disableFormat.tsv).attr('title', title.tsv || '');
+            this.$('li.selection a[data-type="px"]').toggleClass('disabled', disableFormat.csv).attr('title', title.csv || '');
+            this.$('li.selection a[data-type="jsonstat"]').toggleClass('disabled', disableFormat.jsonstat).attr('title', title.jsonstat || '');
+            this.$('li.selection a[data-type="png"]').toggleClass('disabled', disableFormat.png).attr('title', title.png || '');
+            this.$('li.selection a[data-type="pdf"]').toggleClass('disabled', disableFormat.pdf).attr('title', title.pdf || '');
+            this.$('li.selection a[data-type="svg"]').toggleClass('disabled', disableFormat.svg).attr('title', title.svg || '');
         },
 
         clickDownloadButton: function (e) {
@@ -267,7 +294,8 @@
             }
 
             const hasClassSelection = $li.hasClass("selection");
-            const jsonBody = hasClassSelection ? this.datasetSelection : this.datasetAllSelected;
+            const datasetSelectionObject = hasClassSelection ? this.getDatasetSelection() : this.getDatasetSelection(false);
+            const jsonBody = JSON.stringify(datasetSelectionObject);
             const xlsxCsvAndTsvFilenameSuffix = hasClassSelection ? "-selection" : "";
             const type = $currentTarget.data('type');
             switch (type) {
@@ -288,7 +316,8 @@
                     this.downloadFile('POST', this.urls[type], { svg: svg }, "." + type, "chart");
                     break;
                 case "jsonstat":
-                    this.redirectToFile(this.urls[type], hasClassSelection && this.jsonstatSelection != null ? { representation: this.jsonstatSelection } : null);
+                    const jsonstatSelection = hasClassSelection ? this._getSelection(datasetSelectionObject) : null;
+                    this.redirectToFile(this.urls[type], jsonstatSelection != null ? { representation: jsonstatSelection } : null);
                     break;
             }
         },

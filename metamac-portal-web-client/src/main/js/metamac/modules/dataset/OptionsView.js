@@ -292,19 +292,11 @@
                 this.downloadSelectView = new App.modules.dataset.DatasetDownloadView({
                     currentVe: this.currentVe,
                     filterDimensions: this.filterDimensions,
-                    estimatedNumberOfCells: {
-                        all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest
-                        selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
-                    },
+                    dataSource: this.dataSource,
+                    estimatedNumberOfCells: this.data.getDataNonEmptyAttributesCount(),
                     numberOfObservations: {
-                        all: {
-                            total: this.data.getDataObservationsCount(),
-                            tableSize: this.data.getDataTableSize()
-                        },
-                        selection: {
-                            total: this.dataSource.getSelectionObservationsCount(),
-                            tableSize: this.filterDimensions.getTableInfo().getTableSize()
-                        }
+                        total: this.data.getDataObservationsCount(),
+                        tableSize: this.data.getDataTableSize()
                     },
                     optionsModel: this.optionsModel,
                 });
