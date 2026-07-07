@@ -30,6 +30,11 @@
             this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
 
             this._extendChartOptions({ tooltip: { appendTo: this.$chartContainer[0] }});
+
+            var self = this;
+            requestAnimationFrame(function () {
+                self._updateSize();
+            });
         },
 
         _initializeChartOptions: function () {
