@@ -56,7 +56,7 @@
             {{#ulList measureConcepts }}
             {{ fieldOutput name description "text" false false true "field"}}
             {{#each annotations }}
-            <span class="metadata-value">{{ resourceOutput this ../../targetBlank }}</span>
+            <span class="metadata-value">{{ resourceOutput this true }}</span>
             {{/each}}
             <div class="metadata-resources">
                 <div class="metadata-resource-value">
@@ -110,11 +110,11 @@
                 <li>{{ fieldOutput "entity.dataset.version" metadata.version "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.versionRationale.title" metadata.versionRationale "text" }}</li>
                 {{#if metadata.keepAllData}}
-                <li>{{ fieldOutput "entity.dataset.replacesVersion" metadata.replacesVersion "resource" targetBlank }}</li>
-                <li>{{ fieldOutput "entity.dataset.replaces" metadata.replaces "resource" targetBlank }}</li>
+                <li>{{ fieldOutput "entity.dataset.replacesVersion" metadata.replacesVersion "resource" true }}</li>
+                <li>{{ fieldOutput "entity.dataset.replaces" metadata.replaces "resource" true }}</li>
                 {{/if}}
-                <li>{{ fieldOutput "entity.dataset.isReplacedByVersion" metadata.isReplacedByVersion "resource" targetBlank }}</li>
-                <li>{{ fieldOutput "entity.dataset.isReplacedBy" metadata.isReplacedBy "resource" targetBlank }}</li>
+                <li>{{ fieldOutput "entity.dataset.isReplacedByVersion" metadata.isReplacedByVersion "resource" true }}</li>
+                <li>{{ fieldOutput "entity.dataset.isReplacedBy" metadata.isReplacedBy "resource" true }}</li>
                 <li>{{ fieldOutput "entity.dataset.nextVersion.title" metadata.nextVersion "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dateNextUpdate" metadata.dateNextUpdate "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.updateFrequency" metadata.updateFrequency "text" }}</li>
@@ -133,7 +133,7 @@
                 <li>
                     <div class="field">
                         {{#if label}}<span class="metadata-title">{{label}}</span>{{/if}}
-                        {{#each group}}<div class="metadata-value">{{ resourceOutput this ../../targetBlank }}</div>{{/each}}
+                        {{#each group}}<div class="metadata-value">{{ resourceOutput this true }}</div>{{/each}}
                     </div>
                 </li>
                 {{/each}}
@@ -143,7 +143,7 @@
                     {{#each relatedResources.multidataset}}
                     <div class="field">
                         {{#if label}}<span class="metadata-title">{{label}}</span>{{/if}}
-                        {{#each group}}<div class="metadata-value">{{ resourceOutput this ../../targetBlank }}</div>{{/each}}
+                        {{#each group}}<div class="metadata-value">{{ resourceOutput this true }}</div>{{/each}}
                     </div>
                     {{/each}}
                 </li>

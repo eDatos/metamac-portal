@@ -147,8 +147,7 @@
                 hasAttributesOrLikeAttributes: (this.datasetAttributes && this.datasetAttributes.length > 0) || (this.dimensionLikeAttributes && this.dimensionLikeAttributes.length > 0),
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
-                rightsHolder: this._getContextRightsHolder(),
-                targetBlank: App.config["widget"]
+                rightsHolder: this._getContextRightsHolder()
             };
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
