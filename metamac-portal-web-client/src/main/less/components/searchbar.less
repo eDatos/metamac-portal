@@ -1,5 +1,7 @@
 @import "../variables";
 
+@clearIconFontSize: @defaultFontSize;
+
 .searchbar {
     position: relative;
 
@@ -10,7 +12,7 @@
         color: var(--edatos-color-gray-60);
         line-height: var(--edatos-spacing-y-xl);
         width: 100%;
-        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-lg);
+        padding: var(--edatos-spacing-y-xs) calc(var(--edatos-spacing-x-lg) + @clearIconFontSize + var(--edatos-spacing-x-xs)) var(--edatos-spacing-y-xs) var(--edatos-spacing-x-lg);
         font-weight: var(--edatos-font-weight-semibold);
         border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-40);
     }
@@ -23,7 +25,7 @@
         align-content: center;
         position: absolute;
         top: 0;
-        right: var(--edatos-spacing-x-xs);
+        right: var(--edatos-spacing-x-lg);
 
         &:before {
             color: var(--edatos-color-gray-40);
