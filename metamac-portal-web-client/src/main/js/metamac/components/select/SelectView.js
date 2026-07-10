@@ -16,11 +16,11 @@
 
         initialize : function () {
             _.defaults(this.options, this.defaults);
-            _.extend(this, _.pick(this.options, 'selectionModel', 'idAttribute', 'label', 'multiple', 'name'));
+            _.extend(this, _.pick(this.options, 'selectionModel', 'idAttribute', 'label', 'multiple', 'name', 'dropdownCssClass'));
         },
 
         destroy : function () {
-
+            this.$('select').select2('destroy');
         },
 
         events : {
@@ -66,6 +66,15 @@
             };
 
             this.$el.html(this.template(context));
+
+            const self = this;
+            this.$('select').select2({
+                dropdownParent: $('.metamac-container'),
+                minimumResultsForSearch: Infinity,
+                width: '100%'
+            }).on('select2:open', function () {
+                App.Select2Utils.onOpen($(this), self.dropdownCssClass);
+            });
         },
 
         onChangeSelect : function () {

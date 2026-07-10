@@ -31,7 +31,15 @@
 
         retrievePermalink: function (permalinkId, callback) {
             var url = this.baseUrl() + "/" + permalinkId;
-            $.getJSON(url).done(function (content) {
+            $.ajax({
+                url: url,
+                method: "GET",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                headers: {
+                    "api-key": App.config["apiKey"]
+                }
+            }).done(function (content) {
                 if(App.endpoints["external-users"] && App.endpoints["external-users-web"] && window.Edatos && Edatos.UserManagement) {
                     UserUtils.updateLastAccess(permalinkId);
                 }

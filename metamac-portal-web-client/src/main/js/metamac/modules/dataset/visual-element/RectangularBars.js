@@ -19,7 +19,7 @@
             this.tooltipPosition = (this._dataAxis === "xAxis") ? 'top' : 'right';
 
             var titleBottom = Constants.charts.gap;
-            var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
+            var legendBottom = titleBottom + (this.showRightsHolderText() ? Constants.charts.gap + this.getRightsHolderStyle().fontSize : 0);
             this._extendChartOptions({
                 title: {
                     text: this.getRightsHolderText(),
@@ -69,15 +69,15 @@
 
             var resize = _.debounce(_.bind(this._updateSize, this), 200);
             var self = this;
-            this.$el.on("resize", function (e) {
-                e.stopPropagation();
-                resize(self.$el, self.$title);
+            this._resizeObserver = new ResizeObserver(function () {
+                resize();
             });
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         _unbindEvents: function () {
             this.stopListening();
-            this.$el.off("resize");
+            this._resizeObserver.disconnect();
         },
 
         _onChartDestroy: function () {
@@ -119,12 +119,10 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._initializeChart(this.$el, this.$title);
+            this._initializeChart(this.$el);
             var data = this.getData();
             this._extendChartOptions(data);
             this._updateChartOptions();
-
-            this.$el.on("resize", function () { });
         },
 
         resizeFullScreen: function () { },
@@ -149,7 +147,7 @@
                 axisLine: {
                     lineStyle: {
                         width: Constants.charts.dataAxisWidth,
-                        color: Constants.colors.istacGreyMedium
+                        color: Constants.colors.gray40
                     }
                 },
                 axisLabel: {

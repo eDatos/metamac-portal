@@ -1,88 +1,24 @@
-.full-screen-no-support {
-}
-
-.full-screen-no-support #visual-element-container,
-.full-screen-no-support #visual-element-and-filter, {
-    //height: 90%;
-    padding-left: 5px;
-    position: fixed !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 51px !important;
-    left: 0 !important;
-    z-index: 1 !important;
-    background-color: @istacGreyLight;
-}
-
-.full-screen-no-support #options-bar {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 41px;
-    background-color: @istacGreyLight;
+.full-screen,
+&.full-screen {
+    background-color: var(--edatos-color-white-100) !important;
     margin: 0 !important;
-}
-
-.full-screen-no-support #filter-container {
-    position: fixed !important;
-    top: 5px !important;
-    right: 5px !important;
-    bottom: 5px !important;
-    left: 10px !important;
-    z-index: 1 !important;
-    margin-left: -5px;
-    height: auto;
-    width: auto;
-}
-
-.full-screen {
-    background-color: @istacGreyLight !important;
-    margin: 0 !important;
+    padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-lg) var(--edatos-spacing-y-xl) var(--edatos-spacing-x-lg) !important;
     width: 100% !important;
     height: 100% !important;
-    overflow-y: auto;    
-}
+    overflow-y: auto;
 
-.full-screen > div:first-child {
-    height: 100%;
-    overflow: hidden;
-}
+    .dataset-view, .selection-view {
+        &:not(.visualization-type-table) .dataset-visualization-visual-element {
+            border: none;
+        }
 
-.full-screen #visual-element {
-    height: 100%;
-}
+        .dataset-sidebar-visualization-container {
+            height: 100%;
+            overflow: hidden;
+        }
+    }
 
-.full-screen #visual-element-container,
-.full-screen #visual-element-and-filter {
-    position: absolute !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 51px !important;
-    left: 0 !important;
-    z-index: 1 !important;
-    //height: 90%;
-    padding-left: 5px;
-}
-
-.full-screen #options-bar {
-    position: absolute !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 2 !important;
-    height: 41px;
-    margin: 0 !important;
-}
-
-.full-screen #filter-container {
-    position: absolute !important;
-    top: 5px !important;
-    right: 5px !important;
-    bottom: 5px !important;
-    left: 10px !important;
-    z-index: 1 !important;
-    margin-left: -5px;
-    height: auto;
-    width: auto;
+    > div:first-child {
+        height: 100%;
+    }
 }

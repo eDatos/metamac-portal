@@ -11,11 +11,10 @@
         },
 
         initialize: function (attributes) {
-            this.multidatasetIdentifier = attributes.multidatasetIdentifier;
-            this.filterDimensions = attributes.filterDimensions;
-            var identifiers = this.multidatasetIdentifier.split(":");
-            if (identifiers.length != 2) {
-                throw new Error("Error parsing multidataset identifier: ", this.multidatasetIdentifier);
+            this.resourceIdentifier = attributes.resourceIdentifier;
+            var identifiers = this.resourceIdentifier.multidatasetId.split(":");
+            if (identifiers.length !== 2) {
+                throw new Error("Error parsing multidataset identifier: ", this.resourceIdentifier.multidatasetId);
             }
 
             this.agency = identifiers[0];
@@ -65,14 +64,20 @@
         },
 
         parse: function (response) {
+            this._rawResponse = response;
             var attributes = {};
             attributes.name = App.InternationalizationUtils.localizeLabel(response.metadata.filteringDimension);
             attributes.description = App.InternationalizationUtils.localizeLabel(response.description);
             var multidatasetIdentifier = App.datasource.DatasourceIdentifier.initializeWithUrn(response.urn);
             var helper = App.datasource.helper.DatasourceHelperFactory.getHelper(multidatasetIdentifier.getIdentifier().type);
             attributes.metadata = new App.datasource.model.MetadataResponse({ datasourceIdentifier: multidatasetIdentifier, datasourceHelper: helper, response: response });
-            attributes.nodes = App.modules.multidataset.MultidatasetNode.parseNodes(response.data.nodes, this.multidatasetIdentifier, this.filterDimensions.metadata.identifier());
+            attributes.nodes = App.modules.multidataset.MultidatasetNode.parseNodes(response.data.nodes, this.resourceIdentifier);
             return attributes;
+        },
+
+        updateResourceIdentifier: function (resourceIdentifier) {
+            this.resourceIdentifier = resourceIdentifier;
+            this.set(this.parse(this._rawResponse));
         },
 
         equals: function (multidataset) {

@@ -10,9 +10,6 @@
         this._initializeChartVisualElement(options);
         this._type = 'line';
 
-        var self = this;
-        var titleBottom = this._getHorizontalDataZoomHeight() + Constants.charts.gap + Constants.charts.lines.dataZoom.horizontal.bottom;
-        var legendBottom = titleBottom + (this._chartOptions.title.show ? Constants.charts.gap + Constants.charts.title.fontSize : 0);
         this._extendChartOptions({
             tooltip: {
                 triggerOn: "none"
@@ -21,7 +18,7 @@
                 axisLine: {
                     lineStyle: {
                         width: Constants.charts.dataAxisWidth,
-                        color: Constants.colors.istacGreyMedium
+                        color: Constants.colors.gray40
                     }
                 },
                 axisLabel: {
@@ -36,10 +33,10 @@
             title: {
                 text: this.getRightsHolderText(),
                 show: this.showRightsHolderText(),
-                bottom: titleBottom
+                bottom: Constants.charts.gap
             },
             legend: {
-                bottom: legendBottom
+                bottom: this._getHorizontalDataZoomBottom() + this._getHorizontalDataZoomHeight() + Constants.charts.gap
             },
             grid: {
                 right: this._getVerticalDataZoomWidth() + Constants.charts.gap
@@ -63,20 +60,20 @@
             this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", _.debounce(this.update, 100));
 
             var resize = _.debounce(_.bind(this._onResizeEvent, this), 200);
-            this.$el.on("resize", function (e) {
-                e.stopPropagation();
+            this._resizeObserver = new ResizeObserver(function () {
                 resize();
             });
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         _onResizeEvent: function () {
-            this._updateSize(this.$el, this.$title);
+            this._updateSize();
             this._updatePointsVisibility();
         },
 
         _unbindEvents: function () {
             this.stopListening();
-            this.$el.off("resize");
+            this._resizeObserver.disconnect();
         },
 
         _onChartDestroy: function () {
@@ -118,7 +115,7 @@
             this.updateTitle();
             this.$el.append(this.$title);
 
-            this._initializeChart(this.$el, this.$title);
+            this._initializeChart(this.$el);
             var self = this;
             this._getChart().on('datazoom', function (params) {
                 App.util.ChartsUtils._setTooltipTriggerOnClosestItem(self._getChart());
@@ -258,7 +255,7 @@
                     showDetail: false,
                     left: 'center',
                     height: this._getHorizontalDataZoomHeight(),
-                    bottom: Constants.charts.lines.dataZoom.horizontal.bottom,
+                    bottom: this._getHorizontalDataZoomBottom(),
                     start: this.xAxisDataZoomStart,
                     end: this.xAxisDataZoomEnd
                 },
@@ -276,6 +273,10 @@
                     end: this.yAxisDataZoomEnd
                 }
             ];
+        },
+
+        _getHorizontalDataZoomBottom: function () {
+            return (this.showRightsHolderText() ? Constants.charts.gap + this.getRightsHolderStyle().fontSize + Constants.charts.gap : 0) + Constants.charts.lines.dataZoom.horizontal.bottom;
         },
 
         _getHorizontalDataZoomHeight: function () {

@@ -26,6 +26,7 @@
 				<c:param name="${internationalizationCookie}" value="${currentLocale}" />
 				<c:param name="appId" value="statistical-visualizer-${installationType}" />
 				<c:param name="apiKey" value="${(empty includeApiKey or includeApiKey) ? apiKey : ''}" />
+				<c:param name="theme" value="${(empty palette) ? (empty cookie['theme'] ? '' : cookie['theme'].value) : palette}" />
 			</c:import>
         </c:when>
         <c:otherwise>

@@ -1,0 +1,85 @@
+@import "../variables";
+
+@tabBorderWidth: var(--edatos-border-width-sm);
+
+.navigation-tabs {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    margin-inline: calc(@contenidoInlinePadding * -1);
+    padding: 0 var(--edatos-spacing-x-lg);
+    box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    a {
+        position: relative;
+        box-sizing: content-box;
+        align-content: center;
+        text-align: center;
+        font-size: var(--edatos-font-size-sm);
+        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-lg);
+        cursor: pointer;
+        white-space: nowrap;
+        height: var(--edatos-spacing-y-xl);
+        border: @tabBorderWidth solid transparent;
+        color: var(--edatos-color-secondary-100);
+        outline: none;
+
+        &.active, &:hover {
+            text-decoration: none;
+
+            &:after {
+                content: "";
+                position: absolute;
+                bottom: calc(-1 * @tabBorderWidth);
+                left: calc(-1 * @tabBorderWidth);
+                right: calc(-1 * @tabBorderWidth);
+                height: var(--edatos-spacing-y-xs);
+            }
+        }
+
+        &.active {
+            font-weight: var(--edatos-font-weight-semibold);
+
+            &:after {
+                background-color: var(--edatos-color-accent-100);
+            }
+        }
+
+        &:hover:after {
+            background-color: var(--edatos-color-primary-50);
+        }
+
+        &:focus {
+            border-color: var(--edatos-color-accent-100);
+        }
+    }
+}
+
+.navigation-subtabs {
+    .navigation-tabs;
+
+    background-color: var(--edatos-color-primary-5);
+    padding-top: var(--edatos-spacing-y-sm);
+    box-shadow: none;
+    align-items: end;
+
+    a {
+        line-height: var(--edatos-line-height-md);
+        height: auto;
+        border-radius: var(--edatos-border-radius-sm) var(--edatos-border-radius-sm) 0 0;
+
+        &:after {
+            display: none;
+        }
+
+        &.active {
+            background-color: var(--edatos-color-white-100);
+        }
+
+        &:hover {
+            background-color: var(--edatos-color-primary-10);
+        }
+    }
+}

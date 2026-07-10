@@ -3,9 +3,6 @@
 
     App.namespace("App.widget.filter.sidebar");
 
-    var FilterSidebarMultidatasetNodeView = App.widget.filter.sidebar.FilterSidebarMultidatasetNodeView;
-    var FilterRepresentation = App.modules.dataset.filter.models.FilterRepresentation;
-
     App.widget.filter.sidebar.FilterSidebarMultidatasetView = Backbone.View.extend({
 
         template: App.templateManager.get('dataset/filter/sidebar/filter-sidebar-multidataset'),
@@ -14,7 +11,8 @@
             this.filterDimensions = options.filterDimensions;
             this.multidatasetId = this.filterDimensions.getMultidatasetId();
             this.collapsable = _(options).has('collapsable') ? options.collapsable : true;
-            this.loadMultidataset(this.multidatasetId).then(_.bind(this.render, this));
+            this.multidataset = options.multidataset;
+            this.render();
         },
 
         destroy: function () {
@@ -23,8 +21,8 @@
             this.remove();
         },
 
-        close: function () {
-            this.remove();
+        _destroyWidgets: function () {
+            this.$(".filter-sidebar-multidataset-nodes").perfectScrollbar('destroy');
         },
 
         events: {
@@ -41,21 +39,6 @@
 
         _unbindEvents: function () {
             this.stopListening();
-        },
-
-        loadMultidataset: function (multidatasetIdentifier) {
-            var multidataset = new App.modules.multidataset.Multidataset({
-                multidatasetIdentifier: multidatasetIdentifier,
-                filterDimensions: this.filterDimensions
-            });
-            if (multidataset.equals(this.multidataset)) {
-                var deferred = $.Deferred();
-                deferred.resolve();
-                return deferred.promise();
-            } else {
-                this.multidataset = multidataset;
-                return this.multidataset.fetch();
-            }
         },
 
         render: function () {
@@ -85,6 +68,7 @@
                 this.subviews = this.subviews.concat(this.nodesSubviews);
             }
             $nodes.perfectScrollbar();
+            $nodes.on('remove', _.bind(this._destroyWidgets, this));
 
             this.searchbarView = new App.components.searchbar.SearchbarView({
                 model: this.multidataset,
@@ -103,8 +87,9 @@
 
         updateScrollbar: function () {
             // Wait for DOM
+            var self = this;
             setTimeout(function () {
-                this.$(".filter-sidebar-multidataset-nodes").perfectScrollbar('update');
+                self.$(".filter-sidebar-multidataset-nodes").perfectScrollbar('update');
             }, 10);
         },
 

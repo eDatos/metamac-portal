@@ -1,177 +1,89 @@
-// Component sidebar
+@import "../variables";
 
-@sidebarMenuWidth: 50px;
+@filterIgnoreValuesChecksHeight: 5rem;
+
 @sidebarSidebarWidth: 240px; // See SidebarStateModel.js
-@sidebarRadius : 6px;
-
-@sidebarMenuColor: @istacBlueDark;
-@sidebarMenuBackground: @istacBlueMedium;
+@splitterWidth: var(--edatos-spacing-x-lg);
 
 .sidebar-container {
     width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden;
-}
 
-.sidebar-menu {
-    background-color: @sidebarMenuColor;
-    color: @istacWhite;
-    width: @sidebarMenuWidth;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 80;
-
-    ul {
-        list-style: none;
-        margin: 0;
-        color: @istacWhite;		
-        padding: 0;
-		
-        li {
-            text-align: center;
-            padding: 10px 3px 5px 3px;
-            border-bottom: 1px solid @sidebarMenuBackground;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-            font-size: 11px;
-            cursor: pointer;
-            margin: 0;
-            background:none;
-            
-            &:first-child {
-				.border-radius(@borderRadiusSmall 0 0 0);
-			}
-
-            &.active {
-                background-color: @sidebarMenuBackground;
-            }
-
-            i {
-                font-size: 25px;
-                display: block;
-                color: @istacWhite;
-                margin-bottom: 5px;
-            }
-
-            a {
-                line-height: 1.6;
-                list-style-type: none;
-                color: @istacWhite;
-                opacity: 0.8;
-                text-decoration: none;
-
-                &:link, &:active, &:visited, &:hover {
-                    color: @istacWhite;
-                }
-
-                &:hover {
-                    text-decoration: none;
-                    opacity: 1;
-                }
-            }
+    .collapse {
+        display: none;
+        &.in {
+            display: flex;
+            flex-direction: column;
         }
-
     }
 }
-
-@sidebarTransition : 0.2s ease-in-out;
-@splitterWidth: 6px;
 
 .sidebar-sidebar {
     position: absolute;
     width: @sidebarSidebarWidth;
+    max-width: 100%;
     height: 100%;
-    left: @sidebarMenuWidth - @sidebarSidebarWidth;
-
-    padding: 5px;
-    .box-sizing(border-box);
+    left: -@sidebarSidebarWidth;
+    border-radius: var(--edatos-border-radius-sm) 0 0 var(--edatos-border-radius-sm);
+    border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-60);
+    border-right: none;
+    padding: var(--edatos-spacing-y-sm) @splitterWidth var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
+    box-sizing: border-box;
     z-index: 1;
 
     .sidebar-sidebar-content {
         height: 100%;
-        margin-right: @splitterWidth + 2px;
-        padding-bottom: 40px;
+        margin-right: var(--edatos-spacing-x-xs);
+        padding-bottom: calc(@filterIgnoreValuesChecksHeight + var(--edatos-spacing-y-sm));
         box-sizing: border-box;
         position: relative;
+
+        .btn-mini {
+            padding-inline: var(--edatos-spacing-x-xs);
+        }
     }
 
     &.animation {
-        .transition(left @sidebarTransition);
-    }
-
-    &.without-menu {
-        left: -@sidebarSidebarWidth;
+        transition: left 0.2s ease-in-out;
     }
 }
 
 .sidebar-splitter {
+    box-sizing: border-box;
     width: @splitterWidth;
-    height: 100%;
     position: absolute;
     right: 0;
-    top: 0;
-    background-color: @istacGreyLight;
-
-    border-left: 1px solid @istacGreyMedium;
-    border-right: 1px solid @istacGreyMedium;
+    top: -1px;
+    bottom: -1px;
+    background-color: var(--edatos-color-gray-20);
+    border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-40);
     cursor: col-resize;
 
-
     i {
-        opacity: 0.5;
+        display: flex;
+        justify-content: center;
+        color: var(--edatos-color-gray-60);
         position: absolute;
         top: 50%;
-        left: -4px;
-        font-size: 14px;
-        
-        .icon-separator;
+        width: 100%;
+        font-size: var(--edatos-font-size-lg);
+        text-align: center;
+        &:extend(.fa all);
+        .fa-solid;
+        .fa-ellipsis-vertical;
     }
-}
-
-.sidebar-opener {
-    position: absolute;
-    top: 50%;
-    right: -23px;
-    z-index: -1;
-    button {
-        .border-radius(0 @borderRadiusMedium @borderRadiusMedium 0);   
-    }    
 }
 
 .sidebar-content {
     height: 100%;
-    padding-left: @sidebarMenuWidth;    
-    .box-sizing(border-box);
-
-    &.without-menu {
-        padding-left: 0;
-    }
+    box-sizing: border-box;
 }
 
 .sidebar-slideRight {
     .sidebar-sidebar {
-        left: @sidebarMenuWidth;
-
-        &.without-menu {
-            left: 0;
-        }
-    }
-
-    .sidebar-content {
-        padding-left: @sidebarMenuWidth + @sidebarSidebarWidth;
-
-        &.without-menu {
-            padding-left: @sidebarSidebarWidth;
-        }
-    }
-    
-}
-
-.sidebar-slideRightOver {
-    .sidebar-sidebar {
-        left: @sidebarMenuWidth;
+        left: 0;
     }
 }
 
@@ -179,7 +91,7 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    z-index: 9999;
+    z-index: @zindexOverlay;
     top: 0;
     left: 0;
     opacity: 0;
@@ -187,3 +99,37 @@
     cursor: col-resize;
 }
 
+.filter-ignore-values-checks {
+    position: absolute;
+    width: 100%;
+    height: @filterIgnoreValuesChecksHeight;
+    bottom: 0;
+    left: 0;
+    border-top: var(--edatos-border-width-xs) solid var(--edatos-color-gray-60);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--edatos-spacing-y-lg) var(--edatos-spacing-x-sm) var(--edatos-spacing-y-sm);
+    box-sizing: border-box;
+
+    label {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 0;
+        white-space: nowrap;
+        cursor: pointer;
+
+        span {
+            font-size: @defaultFontSize;
+            font-weight: var(--edatos-font-weight-semibold);
+            line-height: var(--edatos-line-height-md);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        input.control-ignore-value:checked {
+            .fa-solid;
+        }
+    }
+}

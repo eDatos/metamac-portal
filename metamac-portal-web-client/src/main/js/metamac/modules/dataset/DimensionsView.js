@@ -5,10 +5,10 @@
 
     var DRAGOVER_CLASS = "drag-over";
 
-    // IDEA: Can we have a common View for for this and OrderSidebarView?
-    App.modules.dataset.DimensionsView = Backbone.View.extend({
+App.modules.dataset.DimensionsView = Backbone.View.extend({
 
         template: App.templateManager.get('dataset/dataset-dimensions'),
+        className: 'dataset-dimensions',
 
         initialize: function (options) {
             this.filterDimensions = options.filterDimensions;
@@ -19,16 +19,22 @@
             info: {
                 zones: {},
             },
+            selection: {
+                zones: {},
+            },
+            apiEndpoints: {
+                zones: {},
+            },
             table: {
                 zones: {
                     top: {
-                        icon: "columns",
+                        icon: "table-columns",
                         draggable: true,
                         location: "right",
                         showHeader: true
                     },
                     left: {
-                        icon: "rows",
+                        icon: "table-rows",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -38,7 +44,7 @@
             column: {
                 zones: {
                     axisy: {
-                        icon: "axis-y",
+                        icon: "arrow-turn-left-up",
                         draggable: false,
                         location: "left",
                         showHeader: true,
@@ -46,23 +52,21 @@
                         assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
-                        icon: "axis-x",
+                        icon: "arrow-turn-down-right",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "225px",
                         sortable: true
                     },
                     top: {
-                        icon: "column",
+                        icon: "chart-simple",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "calc(100% - 225px)",
                         sortable: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -72,7 +76,7 @@
             bar: {
                 zones: {
                     axisy: {
-                        icon: "axis-x",
+                        icon: "arrow-turn-down-right",
                         draggable: false,
                         location: "left",
                         showHeader: true,
@@ -80,23 +84,21 @@
                         assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
-                        icon: "axis-y",
+                        icon: "arrow-turn-left-up",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "225px",
                         sortable: true
                     },
                     top: {
-                        icon: "bar",
+                        icon: "chart-simple",
                         draggable: true,
                         location: "right",
                         showHeader: true,
-                        width: "calc(100% - 225px)",
                         sortable: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -106,7 +108,7 @@
             line: {
                 zones: {
                     axisy: {
-                        icon: "axis-y",
+                        icon: "arrow-turn-left-up",
                         draggable: false,
                         location: "left",
                         showHeader: true,
@@ -114,19 +116,19 @@
                         assignedAttributeTypes: ["MEASURE"]
                     },
                     left: {
-                        icon: "axis-x",
+                        icon: "arrow-turn-down-right",
                         draggable: false,
                         location: "left",
                         showHeader: true
                     },
                     top: {
-                        icon: "line",
+                        icon: "chart-line",
                         draggable: true,
                         location: "right",
                         showHeader: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: true,
                         location: "right",
                         showHeader: true
@@ -136,7 +138,6 @@
             map: {
                 zones: {
                     left: {
-                        icon: "map",
                         draggable: false,
                         location: "left",
                         showHeader: false,
@@ -144,7 +145,7 @@
                         assignedAttributeTypes: ["SPATIAL"]
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: false,
                         location: "right",
                         showHeader: true
@@ -154,14 +155,13 @@
             mapbubble: {
                 zones: {
                     left: {
-                        icon: "map",
                         draggable: false,
                         location: "left",
                         showHeader: false,
                         showSingleValue: true
                     },
                     fixed: {
-                        icon: "lock",
+                        icon: "lock-keyhole",
                         draggable: false,
                         location: "right",
                         showHeader: true
@@ -184,7 +184,6 @@
             "drop .order-sidebar-zone.draggable": "_onDrop",
 
             "click a.order-sidebar-dimension": "_dontFollowLinks",
-            "click a.order-sidebar-measure-attribute": "_dontFollowLinks",
             "change .fixed-dimension-select-category": "_onChangeCategory",
             "change .dimension-select-geographic-granularity": "_onChangeGeographicGranularity",
             "change .dimension-select-granularity": "_onChangeGranularity",
@@ -199,11 +198,7 @@
         },
 
         toggleVisibility: function () {
-            if (this.optionsModel.get('filter')) {
-                this.$el.show();
-            } else {
-                this.$el.hide();
-            }
+            this.$el.toggleClass('hidden', !this.optionsModel.get('filter'));
         },
 
         getMeasureAttribute: function () {
@@ -321,7 +316,7 @@
             if (currentChartType) {
                 icon = this.configuration[currentChartType].zones[zone].icon;
             }
-            return _.isUndefined(icon) ? "" : "icon-" + icon;
+            return _.isUndefined(icon) ? "" : "fa fa-thin fa-" + icon;
         },
 
         _getZonesByChartType: function () {
@@ -337,10 +332,6 @@
             return isDraggable;
         },
 
-        _zoneWidthByChartType: function (zone) {
-            return this._getCurrentChartType() ? this.configuration[this._getCurrentChartType()].zones[zone].width : false;
-        },
-
         _renderContext: function () {
             var zonesIds = this._getZonesByChartType();
             var zones = _.map(zonesIds, function (zone) {
@@ -350,15 +341,14 @@
                     icon: this._getIconFromZone(zone),
                     draggable: this._zoneIsDraggableByChartType(zone),
                     dimensions: this._dimensionsForZone(zone),
-                    hasSelector: this._hasSelector(zone),
                     location: this._getLocationForZone(zone),
                     showHeader: this._getShowHeader(zone),
-                    width: this._zoneWidthByChartType(zone)
                 };
             }, this);
 
             return {
                 leftColumns: this._getLeftColumns(zones),
+                rightZones: this._getRightZones(zones),
                 sortByOptions: this._getSortByOptions(),
                 zones: zones
             };
@@ -380,6 +370,12 @@
             return currentChartType ? leftColumns : 0;
         },
 
+        _getRightZones: function (zones) {
+            return _.filter(zones, function (zone) {
+                return zone.location === 'right';
+            }).length;
+        },
+
         _getShowHeader: function (zone) {
             var currentChartType = this._getCurrentChartType();
             return currentChartType ? this.configuration[currentChartType].zones[zone].showHeader : true;
@@ -395,20 +391,8 @@
             return currentChartType ? this.configuration[currentChartType].zones[zone].location : "right";
         },
 
-        _hasSelector: function (zoneId) {
-            return this._isFixedZone(zoneId) || this._hasHierarchySelector(zoneId) || this._getSortable(zoneId);
-        },
-
         _isFixedZone: function (zoneId) {
             return this.filterDimensions.isFixedZone(zoneId);
-        },
-
-        _hasHierarchySelector: function (zone) {
-            var self = this;
-            return this.filterDimensions.dimensionsAtZone(zone)
-                .reduce(function (memo, dimension) {
-                    return memo || self._needsGeographicGranularitySelector(dimension) || self._needsTemporalGranularitySelector(dimension);
-                }, false);
         },
 
         _isMap: function () {
@@ -426,10 +410,13 @@
             this.scrollbuttons = [];
             var self = this;
             this.$el.find('.order-sidebar-dimensions.scrollable').each(function () {
-                self.scrollbuttons.push(new App.components.scrollbuttons.Scrollbuttons({ el: this }));
+                self.scrollbuttons.push(new App.components.scrollbuttons.Scrollbuttons({ el: this, isWidget: self.optionsModel.get('widget') }));
             });
             this.$el.find('select').select2({
-                dropdownParent: $('.metamac-container')
+                dropdownParent: $('.metamac-container'),
+                width: '100%'
+            }).on('select2:open', function () {
+                App.Select2Utils.onOpen($(this), 'dimension-select');
             });
         },
 
@@ -529,6 +516,10 @@
             var $elem = $(e.currentTarget);
             e.originalEvent.dataTransfer.effectAllowed = 'move';
             e.originalEvent.dataTransfer.setData('Text', $elem.data("dimension-id"));
+
+            setTimeout(function() {
+                $elem.addClass('empty-space');
+            }, 0);
         },
 
         _onDragover: function (e) {
@@ -570,6 +561,7 @@
 
         _onDragend: function () {
             this.$("." + DRAGOVER_CLASS).removeClass(DRAGOVER_CLASS);
+            this.$('.empty-space').removeClass('empty-space');
         }
 
     });

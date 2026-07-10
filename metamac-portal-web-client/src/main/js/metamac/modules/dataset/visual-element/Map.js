@@ -16,11 +16,9 @@
 
     _.extend(App.VisualElement.Map.prototype, {
 
-        _granularitiesWithNoSelection: App.templateManager.get('dataset/granuralities-with-no-selection'),
-        _noShapesTemplate: App.templateManager.get('dataset/map/map-no-shapes'),
-        _errorTemplate: App.templateManager.get('dataset/map/map-error'),
-
         load: function () {
+            this._destroyed = false;
+
             this._unbindEvents();
             this._bindEvents();
 
@@ -38,8 +36,8 @@
                 self._getData();
 
                 self._initModel();
-                self._initTitleView();
                 self._initContainerView();
+                self._initTitleView();
 
                 self.showTitle();
                 self.render();
@@ -47,6 +45,7 @@
         },
 
         destroy: function () {
+            this._destroyed = true;
             this._unbindEvents();
 
             if (this._mapContainerView) {
@@ -188,8 +187,7 @@
                 rightsHolder: this.getRightsHolderText(),
                 showRightsHolder: this.showRightsHolderText(),
                 callback: _.bind(this.hideLoading, this),
-                metadata: this.metadata,
-                $title: this.$title
+                metadata: this.metadata
             });
         },
 
@@ -199,7 +197,7 @@
         },
 
         render: function () {
-            if (this.assertMapAvailable()) {
+            if (this.assertMapAvailable() && !this._destroyed) {
                 this._mapContainerView.render();
             }
         },
@@ -228,10 +226,10 @@
                 this.hideWrongSelectionView();
                 return true;
             } else if (this.filterDimensions.checkGeographicDimensionsWithTwoSelectedElements()) {
-                this.renderWrongSelectionView(this._noShapesTemplate());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.noShapesAvailable' }));
                 return false;
             } else {
-                this.renderWrongSelectionView(this._granularitiesWithNoSelection());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.selectAtLeastTwoItems' }));
                 return false;
             }
         },
@@ -241,7 +239,7 @@
                 this.hideWrongSelectionView();
                 return true;
             } else {
-                this.renderWrongSelectionView(this._errorTemplate());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.map.nomap' }));
                 return false;
             }
         },

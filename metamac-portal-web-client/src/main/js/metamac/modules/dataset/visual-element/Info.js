@@ -16,13 +16,12 @@
         template: App.templateManager.get("dataset/dataset-info"),
 
         load: function () {
+            this._destroyed = false;
+
             this.getDimensions();
             this.getMeasureConcepts();
             this.getMetadataFromRelatedDataset();
             this.getDatasetAttributes();
-            this.getMultidataset();
-            this._getSelectionApiUrl();
-            this._bindEvents();
             this.render();
         },
 
@@ -58,34 +57,6 @@
 
         getDatasetAttributes: function () {
             this.datasetAttributes = this.data.getDatasetAttributes();
-        },
-
-        getMultidataset: function() {
-            var multidatasetId = this.filterDimensions.getMultidatasetId();
-            if (!multidatasetId) { return; }
-            var self = this;
-            self.multidataset = new App.modules.multidataset.Multidataset({
-                multidatasetIdentifier: multidatasetId,
-                filterDimensions: self.filterDimensions
-            });
-            self.multidataset.fetch().then(function() {
-                self.render();
-            })
-        },
-
-        _updateSelectionApiUrl: function () {
-            this._getSelectionApiUrl();
-            this.render();
-        },
-
-        _getSelectionApiUrl: function () {
-            var apiUrl = this.data.metadata.getApiUrl();
-            var dimensionParameter = App.DimensionsUtils.getDimensionsParameterForRequest(this._getDimensionsForApiUrl());
-            this.selectionApiUrl = {
-                name: apiUrl.name + '?' + dimensionParameter,
-                href: apiUrl.href + '?' + dimensionParameter,
-                isVisible: !!dimensionParameter
-            }
         },
 
         getDimensions: function () {
@@ -141,18 +112,6 @@
             });
         },
 
-        destroy: function () {
-            this._unbindEvents();
-        },
-
-        _bindEvents: function () {
-            this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", _.debounce(this._updateSelectionApiUrl, 20));
-        },
-
-        _unbindEvents: function () {
-            this.stopListening();
-        },
-
         updatingDimensionPositions: function () {
             this._applyVisualizationRestrictions();
             this.resetDimensionsLimits();
@@ -168,8 +127,13 @@
             this._updateMustApplyVisualizationRestrictions();
         },
 
+        _destroyWidgets: function () {
+            this.$el.find('.metadata-accordion').accordion('destroy');
+            this.$el.find('.metadata-group').perfectScrollbar('destroy');
+        },
+
         render: function () {
-            if (!this.$el) { return; }
+            if (!this.$el || this._destroyed) { return; }
 
             var context = {
                 relatedResources: {
@@ -183,16 +147,14 @@
                 hasAttributesOrLikeAttributes: (this.datasetAttributes && this.datasetAttributes.length > 0) || (this.dimensionLikeAttributes && this.dimensionLikeAttributes.length > 0),
                 measureConcepts: this.measureConcepts,
                 nonMeasureDimensions: this.nonMeasureDimensions,
-                urlParametersForDimensionSelection: this.selectionApiUrl,
-                rightsHolder: this._getContextRightsHolder(),
-                apiDownloadMessage: this._buildApiDownloadMessage(),
-                selectionApiDownloadMessage: this._buildApiDownloadMessage(true),
-                targetBlank: App.config["widget"]
+                rightsHolder: this._getContextRightsHolder()
             };
             this.$el.html(this.template(context));
             var scrollGroup = this.$el.find('.metadata-group');
             scrollGroup.perfectScrollbar();
-            this.$el.find('.metadata-accordion').accordion({
+            scrollGroup.on('remove', _.bind(this._destroyWidgets, this));
+            var accordion = this.$el.find('.metadata-accordion');
+            accordion.accordion({
                 collapsible: true,
                 active: this._isIndicator() ? 0 : false,
                 heightStyle: "content",
@@ -234,46 +196,6 @@
                 return (this._isQuery() && this.metadataFromRelatedDataset) ? this.metadataFromRelatedDataset.getRightsHolder() : this.getRightsHolderText();
             }
             return '';
-        },
-
-        _getDimensionsForApiUrl: function () {
-            return _.map(this.filterDimensions.getDimensionsWithSomeRepresentationNotSelected(), function (dimension) {
-                var representations = _.map(dimension.getSelectedRepresentations(), function(representation) {
-                    return representation.id;
-                });
-                return {
-                    id: dimension.id,
-                    representations: representations
-                };
-            });
-        },
-
-        _isIndicator: function () {
-            return App.Constants.visualization.type.INDICATOR === this.data.metadata.identifier().type || App.Constants.visualization.type.INDICATOR_INSTANCE === this.data.metadata.identifier().type;
-        },
-
-        _isQuery: function () {
-            return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
-        },
-
-        _isDataset: function () {
-            return App.Constants.visualization.type.DATASET === this.data.metadata.identifier().type;
-        },
-
-        _buildApiDownloadMessage: function(isSelection) {
-            var formats = this._getApiDownloadFormats();
-            var formatExample = formats[0];
-            return isSelection? 
-                I18n.t("entity.dataset.selectionApiUrl.apiDownload", { formats: formats, formatExampleLowercase: formatExample.toLowerCase() }) 
-                : I18n.t("entity.dataset.apiUrl.apiDownload", { formats: formats, formatExample: formatExample, formatExampleLowercase: formatExample.toLowerCase() });
-        },
-
-        _getApiDownloadFormats: function() {
-            var allApiDownloadFormats = ["CSV", "TSV", "XLSX", "XML", "JSON", "JSONSTAT"];
-            if (this._isIndicator()) {
-                return allApiDownloadFormats.filter(format => format !== "XML");
-            }
-            return allApiDownloadFormats;
         },
 
         _getRelatedResources: function() {
@@ -326,6 +248,10 @@
             var urlWithTheme = new URL(url);
             urlWithTheme.searchParams.append("theme", App.config.theme);
             return urlWithTheme.href;
+        },
+
+        destroy: function () {
+            this._destroyed = true;
         }
     });
 

@@ -1,0 +1,33 @@
+@import "../variables";
+
+.visualization-type-info,
+.visualization-type-apiEndpoints {
+    .dataset-visualization {
+        .dataset-visualization-visual-element {
+            border: none;
+        }
+
+        .dataset-visualization-dimensions {
+            display: none;
+        }
+    }
+}
+
+.visualization-type-apiEndpoints {
+    .metadata-group .info-section .info-section-content ul li .field .metadata-value.resource-format {
+        color: var(--edatos-color-primary-100);
+        font-weight: var(--edatos-font-weight-semibold);
+        line-height: var(--edatos-line-height-md);
+
+        a {
+            font-weight: var(--edatos-font-weight-regular);
+            word-break: break-all;
+        }
+    }
+}
+
+// WIDGET-SPECIFIC STYLES
+
+&.widget-wrapper:not(.full-screen) .dataset-view:not(.visualization-type-table) .dataset-visualization-visual-element {
+    border: none;
+}

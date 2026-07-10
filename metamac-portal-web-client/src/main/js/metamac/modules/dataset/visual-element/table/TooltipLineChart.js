@@ -29,7 +29,7 @@
                 appendTo: this.$el[0],
                 textStyle: {
                     fontSize: Constants.charts.tooltipLines.tooltip.fontSize,
-                    color: Constants.colors.istacBlack
+                    color: Constants.colors.gray80
                 },
                 formatter: _.bind(this.getTooltipFormatterFunction, this)
             },
@@ -44,7 +44,7 @@
                 axisLine: {
                     lineStyle: {
                         width: Constants.charts.dataAxisWidth,
-                        color: Constants.colors.istacGreyMedium
+                        color: Constants.colors.gray40
                     }
                 }
             },
@@ -171,7 +171,7 @@
                     },
                     select: {
                         itemStyle: {
-                            color: Constants.colors.istacGreyDark,
+                            color: Constants.colors.gray60,
                             borderWidth: Constants.charts.lines.highlight.point.border.width,
                             borderColor: Constants.charts.lines.highlight.point.border.color
                         }

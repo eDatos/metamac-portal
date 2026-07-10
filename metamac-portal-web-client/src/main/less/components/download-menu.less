@@ -1,0 +1,115 @@
+@import "../variables";
+
+@dropdownBoxShadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+
+.download-menu {
+    position: relative;
+
+    &.open {
+        .download-menu-toggle {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom: none;
+            box-shadow: @dropdownBoxShadow;
+        }
+
+        .download-menu-dropdown {
+            display: flex;
+        }
+
+        .btn {
+            box-shadow: none;
+            background: var(--edatos-color-secondary-100);
+            color: var(--edatos-color-white-100);
+
+            i {
+                .fa-solid;
+            }
+        }
+    }
+
+    &.is-downloading .download-menu-dropdown > li:not(.download-menu-dropdown-header) {
+        opacity: 0.3;
+
+        a {
+            cursor: default;
+        }
+    }
+
+    &:not(.is-downloading) .download-menu-dropdown > li:not(.download-menu-dropdown-header):not(:has(> a.disabled)):hover {
+        background: var(--edatos-color-primary-5);
+        color: var(--edatos-color-secondary-100);
+    }
+}
+
+.download-menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: @zindexDropdown;
+    padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
+    margin: 0;
+    list-style: none;
+    border-radius: var(--edatos-border-radius-sm) 0 var(--edatos-border-radius-sm) var(--edatos-border-radius-sm);
+    background: var(--edatos-color-secondary-100);
+    flex-direction: column;
+    gap: var(--edatos-spacing-y-xs);
+    box-shadow: @dropdownBoxShadow;
+
+    > li {
+        display: flex;
+        align-items: center;
+        color: var(--edatos-color-white-100);
+        font-size: var(--edatos-font-size-sm);
+        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
+        box-sizing: border-box;
+        border-radius: var(--edatos-border-radius-xs);
+        margin: 0;
+        white-space: nowrap;
+
+        > a {
+            display: flex;
+            flex-direction: row;
+            gap: var(--edatos-spacing-y-xs);
+            color: inherit;
+            white-space: nowrap;
+            text-decoration: none;
+            width: 100%;
+
+            &:hover {
+                text-decoration: none;
+            }
+
+            i {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: @defaultFontSize;
+                width: var(--edatos-spacing-x-lg);
+            }
+
+            &.disabled {
+                opacity: 0.3;
+                cursor: default;
+            }
+        }
+
+        &.download-menu-dropdown-header {
+            font-weight: var(--edatos-font-weight-semibold);
+        }
+    }
+}
+
+// WIDGET-SPECIFIC STYLES
+
+&.widget-wrapper:not(.full-screen) {
+    .download-menu-dropdown > li {
+        font-size: var(--edatos-font-size-xs);
+
+        &.download-menu-dropdown-header {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+}

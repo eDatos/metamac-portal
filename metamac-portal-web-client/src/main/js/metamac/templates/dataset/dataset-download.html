@@ -1,47 +1,76 @@
-<div class="dataset-download-group">
-    <h3>{{ message "filter.download.selection" }}</h3>
+<div class="download-menu{{#if isOpen}} open{{/if}}">
+    <button class="btn download-menu-toggle" data-toggle="dropdown">
+        <i class="dataset-options-download"></i>
+        <span>{{ message "filter.button.download" }}</span>
+        <i class="fa fa-solid fa-chevron-down"></i>
+    </button>
+    <ul class="download-menu-dropdown">
+        <li class="download-menu-dropdown-header">{{ message "filter.download.selection" }}</li>
+        {{#if buttonConfig.dataFormats}}
+        <li class="selection">
+            <a href="#" class="{{#if buttonConfig.disableFormat.selection.excel}}disabled{{/if}}" data-type="xlsx" title="{{buttonConfig.title.selection.excel}}">
+                {{ message "filter.download.menu.xlsx" }}
+            </a>
+        </li>
+        <li class="selection">
+            <a href="#" class="{{#if buttonConfig.disableFormat.selection.tsv}}disabled{{/if}}" data-type="tsv" title="{{buttonConfig.title.selection.tsv}}">
+                {{ message "filter.download.menu.tsv" }}
+            </a>
+        </li>
+        <li class="selection">
+            <a href="#" class="{{#if buttonConfig.disableFormat.selection.csv}}disabled{{/if}}" data-type="px"  title="{{buttonConfig.title.selection.tsv}}">
+                {{ message "filter.download.menu.px" }}
+            </a>
+        </li>
+        {{#if hasJsonstatUrl}}
+        <li class="selection">
+            <a href="#" class="{{#if buttonConfig.disableFormat.selection.jsonstat}}disabled{{/if}}" data-type="jsonstat" title="{{buttonConfig.title.selection.jsonstat}}">
+                {{ message "filter.download.menu.jsonstat" }}
+            </a>
+        </li>
+        {{/if}}
+        {{/if}}
+        {{#if buttonConfig.imageFormats}}
+        <li class="selection">
+            <a href="#" class="{{#if buttonConfig.disableFormat.selection.png}}disabled{{/if}}" data-type="png" title="{{buttonConfig.title.selection.png}}">
+            {{ message "filter.download.menu.png" }}
+        </a>
+        </li>
+        <li class="selection">
+            <a href="#" class="{{#if buttonConfig.disableFormat.selection.pdf}}disabled{{/if}}" data-type="pdf" title="{{buttonConfig.title.selection.pdf}}">
+            {{ message "filter.download.menu.pdf" }}
+        </a>
+        </li>
+        <li class="selection">
+            <a href="#" class="{{#if buttonConfig.disableFormat.selection.svg}}disabled{{/if}}" data-type="svg" title="{{buttonConfig.title.selection.svg}}">
+            {{ message "filter.download.menu.svg" }}
+        </a>
+        </li>
+        {{/if}}
 
-{{#if buttonConfig.allDimensionsWithSelections}}    
-
-    {{#if buttonConfig.dataFormats}}
-    <a href="#" class="download-xlsx selection {{#if buttonConfig.disableFormat.selection.excel}}disabled{{/if}}" ><i class="icon-data-xlsx"></i></a>
-    <a href="#" class="download-tsv selection {{#if buttonConfig.disableFormat.selection.tsv}}disabled{{/if}}"><i class="icon-data-tsv"></i></a>
-    <a href="#" class="download-csv selection {{#if buttonConfig.disableFormat.selection.csv}}disabled{{/if}}"><i class="icon-px"></i></a>
-    {{#if hasJsonstatUrl}}
-    <a href="#" class="download-jsonstat selection {{#if buttonConfig.disableFormat.selection.jsonstat}}disabled{{/if}}"><i class="icon-data-jsonstat"></i></a>
-    {{/if}}
-    {{/if}}
-
-    {{#if buttonConfig.imageFormats}}
-    <a href="#" class="download-png {{#if buttonConfig.disableFormat.selection.png}}disabled{{/if}}"><i class="icon-{{buttonConfig.iconPreffix}}-png"></i></a>
-    <a href="#" class="download-pdf {{#if buttonConfig.disableFormat.selection.pdf}}disabled{{/if}}"><i class="icon-{{buttonConfig.iconPreffix}}-pdf"></i></a>
-    <a href="#" class="download-svg {{#if buttonConfig.disableFormat.selection.svg}}disabled{{/if}}"><i class="icon-{{buttonConfig.iconPreffix}}-svg"></i></a>
-    {{/if}}
-
-    {{#if buttonConfig.disableFormat.selection.infoMessage}}<div class="modal-info">{{{ buttonConfig.disableFormat.selection.infoMessage }}}</div>{{/if}}
-{{/if}}
-
-{{#unless buttonConfig.allDimensionsWithSelections}}
-    <p>
-        {{message "ve.noSelection" }}
-    </p>
-{{/unless}}
-
+        {{#if buttonConfig.dataFormats}}
+        <li class="download-menu-dropdown-header">{{ message "filter.download.all" }}</li>
+        <li>
+            <a href="#" class="{{#if buttonConfig.disableFormat.all.excel}}disabled{{/if}}" data-type="xlsx" title="{{buttonConfig.title.all.excel}}">
+                {{ message "filter.download.menu.xlsx" }}</a>
+        </li>
+        <li>
+            <a href="#" class="{{#if buttonConfig.disableFormat.all.tsv}}disabled{{/if}}" data-type="tsv">
+                {{ message "filter.download.menu.tsv" }}
+            </a>
+        </li>
+        <li>
+            <a href="#" class="{{#if buttonConfig.disableFormat.all.csv}}disabled{{/if}}" data-type="px">
+                {{ message "filter.download.menu.px" }}
+            </a>
+        </li>
+        {{#if hasJsonstatUrl}}
+        <li>
+            <a href="#" class="{{#if buttonConfig.disableFormat.all.jsonstat}}disabled{{/if}}" data-type="jsonstat">
+                {{ message "filter.download.menu.jsonstat" }}
+            </a>
+        </li>
+        {{/if}}
+        {{/if}}
+    </ul>
 </div>
-
-{{#if buttonConfig.dataFormats}}
-<div class="dataset-download-group">
-    <h3>{{ message "filter.download.all" }}</h3>
-
-    <a href="#" class="download-xlsx {{#if buttonConfig.disableFormat.all.excel}}disabled{{/if}}"><i class="icon-data-xlsx"></i></a>
-    <a href="#" class="download-tsv {{#if buttonConfig.disableFormat.all.tsv}}disabled{{/if}}"><i class="icon-data-tsv"></i></a>
-    <a href="#" class="download-csv {{#if buttonConfig.disableFormat.all.csv}}disabled{{/if}}"><i class="icon-px"></i></a>
-
-    {{#if hasJsonstatUrl}}
-    <a href="#" class="download-jsonstat {{#if buttonConfig.disableFormat.all.jsonstat}}disabled{{/if}}"><i class="icon-data-jsonstat"></i></a>
-    {{/if}}
-    
-    {{#if buttonConfig.disableFormat.all.infoMessage}}<div class="modal-info">{{ buttonConfig.disableFormat.all.infoMessage }}</div>{{/if}}
-
-</div>
-{{/if}}

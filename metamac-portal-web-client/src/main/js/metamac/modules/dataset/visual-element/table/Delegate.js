@@ -15,24 +15,24 @@
         this.style = {
             bodyCell: {
                 font: Constants.font.body.size + " " + Constants.font.family.sansSerif,
-                color: Constants.colors.istacBlack,
+                color: Constants.colors.gray80,
                 background: function (cell, view) {
                     if (view.isCellClicked(cell)) {
-                        return Constants.colors.istacGreyMedium;
+                        return Constants.colors.gray40;
                     }
 
                     var isRowSelected = view.isSelectionActive({ rowsCells: [cell.y] });
                     var isColumnSelected = view.isSelectionActive({ columns: [cell.x] });
 
                     if (isRowSelected && isColumnSelected) {
-                        return Constants.colors.istacGreyLight;
+                        return Constants.colors.gray5;
                     } else if (isRowSelected || isColumnSelected) {
-                        return Constants.colors.istacGreyLight;
+                        return Constants.colors.gray5;
                     }
-                    return Constants.colors.istacWhite;
+                    return Constants.colors.white100;
                 },
                 border: {
-                    color: Constants.colors.istacGreyMedium,
+                    color: Constants.colors.gray40,
                     width: 0.5,
                     horizontal: true,
                     vertical: false
@@ -47,24 +47,23 @@
                     secondLevel: "Bold " + Constants.font.body.size + " " + Constants.font.family.sansSerif,
                     default: Constants.font.body.size + " " + Constants.font.family.sansSerif,
                 },
-                color: Constants.colors.istacBlack,
+                color: Constants.colors.gray80,
                 background: function (cell, view, isRow) {
                     if (view.isCellClicked(cell)) {
-                         return Constants.colors.istacGreyMedium;
+                         return Constants.colors.gray40;
                     }
 
                     var range = _.range(cell.index, cell.indexEnd);
                     var current = isRow ? { rows: range } : { columns: range };
                     if (view.isSelectionActive(current)) {
-                        return Constants.colors.istacGreyLight;
+                        return Constants.colors.gray5;
                     } else {
-                        return Constants.colors.istacWhite;
+                        return Constants.colors.white100;
                     }
                 },
                 border: {
                     color: {
-                        default: Constants.colors.istacGreyMedium,
-                        mainLevel: Constants.colors.istacBlueMedium
+                        default: Constants.colors.gray40
                     },
                     width: {
                         default: 1,
@@ -83,18 +82,18 @@
                 }
             },
             attributeCellMark: {
-                background: Constants.colors.istacGreyMedium,
+                background: Constants.colors.gray40,
                 margin: 2,
                 size: 5
             },
             scroll: {
                 color: function (scroll, view) {
                     if (view.mouseZone && view.mouseZone.indexOf(scroll) !== -1) {
-                        return Constants.colors.istacBlueMedium;
+                        return Constants.colors.gray60;
                     } else if (view.lastClickZone && view.lastClickZone.indexOf(scroll) !== -1) {
-                        return Constants.colors.istacBlueMedium;
+                        return Constants.colors.gray60;
                     } else {
-                        return Constants.colors.istacGreyMedium;
+                        return Constants.colors.gray40;
                     }
                 },
                 minSize: 30,

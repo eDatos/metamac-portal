@@ -18,21 +18,19 @@
             this.filterDimensions = options.filterDimensions;
             this.dataSource = options.dataSource;
             this.optionsModel = options.optionsModel;
-            this.buttons = options.buttons;
+            this.visualizationTabs = options.visualizationTabs;
 
             this._bindEvents();
         },
 
         events: {
             "click .dataset-options-filter": "clickFilter",
-            "click .change-visual-element button": "changeType",
-            "click .visual-element-options-edit": "clickFilterLoader",
             "click .visual-element-options-fs": "clickFullScreen",
             "click .visual-element-options-share": "clickShare",
             "click .visual-element-options-save": "clickSave",
-            "click .visual-element-options-download": "clickDownload",
-            "click .visual-element-options-api-download": "clickApiDownload",
             "click .visual-element-options-embed": "clickEmbed",
+            "click .selection-visualize-selection": "clickVisualize",
+            "click .visualization-button": "clickVisualizationButton"
         },
 
         destroy: function () {
@@ -40,10 +38,14 @@
         },
 
         _bindEvents: function () {
-            this.listenTo(this.optionsModel, "change:type", this.render);
             this.listenTo(this.optionsModel, "change:fullScreen", this.updateFullscreenButton);
             this.listenTo(this.optionsModel, "change:filter", this.updateFilterButton);
             this.listenTo(this.filterDimensions, "change:drawable", _.debounce(this.updateView, 400));
+
+            if (this.optionsModel.get('widget')) {
+                this.listenTo(this.optionsModel, "change:widgetInitialType", this.updateView);
+                this.listenTo(this.optionsModel, "change:type", this.updateWidgetActiveTab);
+            }
 
             this.delegateEvents();
         },
@@ -86,9 +88,6 @@
         render: function () {
             this._unbindEvents();
             this._bindEvents();
-            var self = this;
-
-            var activeType = this.optionsModel.get('type');
 
             var fullScreenVisible = this.fullScreenIsAllowed();
             var fullScreenActive = this.isFullScreen();
@@ -96,19 +95,7 @@
             var optionsEnabled = this.isOptions();
 
             if (optionsEnabled) {
-                var buttons = this.buttons;
-
-                var veTypeButtons = _.map(buttons, function (type) {
-                    return {
-                        title: I18n.t("filter.button." + type),
-                        type: type,
-                        btnClass: type === activeType ? 'active' : '',
-                        enabled: self._isVisualizationButtonEnabled(type)
-                    };
-                });
-
                 var context = {
-                    veTypeButton: veTypeButtons,
                     filter: {
                         active: filterActive,
                         btnClass: filterActive ? 'active' : ''
@@ -118,64 +105,63 @@
                         active: fullScreenActive,
                         btnClass: fullScreenActive ? 'active' : ''
                     },
-                    helpUrl: this._getHelpUrl(),
                     usersAreAvailable: !!(App.endpoints["external-users"] && App.endpoints["external-users-web"] && window.Edatos && Edatos.UserManagement),
                     visualize: this.optionsModel.get('visualize'),
-                    widget: this.optionsModel.get('widget'),
-                    widgetButton: this.optionsModel.get('widgetButton')
+                    filterDisabled: this._isFilterDisabled(),
+                    widgetButton: this.optionsModel.get('widgetButton'),
+                    widgetTabs: this._getWidgetTabs()
                 };
                 this.$el.html(this.template(context));
+
+                this.renderDownloadButton();
             }
             return this;
         },
 
-        _isVisualizationButtonEnabled: function (type) {
-
-            if (type == "line" && !this.filterDimensions.canDrawLineVisualizations()) {
-                return false;
-            }
-
-            if ((type == "map" || type == "mapbubble") && !this.filterDimensions.canDrawMapVisualizations()) {
-                return false;
-            }
-
-            if (this.optionsModel.get('widget')) {
-                return type == "info" || type == this.optionsModel.get('widgetInitialType');
-            }
-            return true;
+        _isFilterDisabled: function () {
+            return this.optionsModel.get('widget') && (this.optionsModel.get('type') === 'info' || this.optionsModel.get('type') === 'apiEndpoints');
         },
 
-        _getHelpUrl: function () {
-            try {
-                var helpUrl = JSON.parse(App.config["helpUrl"]);
-                return App.InternationalizationUtils.localizeLabel(helpUrl);
-            } catch (error) {
-                return App.config["helpUrl"];
+        _getWidgetTabs: function () {
+            if (!this.optionsModel.get('widget') || !this.visualizationTabs) {
+                return null;
             }
+            const currentType = this.optionsModel.get('type');
+            const widgetInitialType = this.optionsModel.get('widgetInitialType');
+            const widgetTabs = [];
+
+            const self = this;
+            _.each(this.visualizationTabs, function (tab) {
+                if (tab.subtabs && tab.subtabs.length > 0) {
+                    _.each(tab.subtabs, function (subtab) {
+                        if (self._isFixedVisualizationTypeForWidgets(subtab.type) || subtab.type === widgetInitialType) {
+                            widgetTabs.push(_.extend({}, subtab, { active: subtab.type === currentType }));
+                        }
+                    });
+                } else if (self._isFixedVisualizationTypeForWidgets(tab.type) || tab.type === widgetInitialType) {
+                    widgetTabs.push(_.extend({}, tab, { active: tab.type === currentType }));
+                }
+            });
+            return widgetTabs;
         },
 
-        _isExportableImage: function () {
-            return _.contains(['line', 'column', 'bar', 'map', 'mapbubble'], this.optionsModel.get('type'));
+        _isFixedVisualizationTypeForWidgets: function (visualizationType) {
+            return visualizationType === 'info' || visualizationType === 'apiEndpoints';
+        },
+
+        updateWidgetActiveTab: function () {
+            const type = this.optionsModel.get('type');
+            this.$('.visualization-button').removeClass('active');
+            this.$(`.visualization-button[data-type="${type}"]`).addClass('active');
+        },
+
+        clickVisualizationButton: function (e) {
+            const type = $(e.currentTarget).data('type');
+            this.optionsModel.set('type', type);
         },
 
         clickFilter: function (e) {
             this.optionsModel.set('filter', !this.optionsModel.get('filter'));
-        },
-
-        changeType: function (e) {
-            if (this.isFilter()) {
-                $(document).trigger('closeFilter');
-            }
-            var $target = $(e.currentTarget);
-            var type = $target.data('type');
-
-            this.optionsModel.set('type', type);
-        },
-
-        clickFilterLoader: function (e) {
-            if (!this.isFilter()) {
-                this.trigger('launchFilter');
-            }
         },
 
         clickFullScreen: function (e) {
@@ -183,7 +169,7 @@
                 this.trigger('exitFullScreen');
                 this.$el.find('.visual-element-options-fs').removeClass("active");
             } else {
-                if (this.fullScreenIsAllowed) {
+                if (this.fullScreenIsAllowed()) {
                     this.trigger('enterFullScreen');
                     this.$el.find('.visual-element-options-fs').addClass("active");
                 }
@@ -202,15 +188,16 @@
                     onSubmit: function (permalink) {
                         modal.close();
 
-                        modalContentView = new App.modules.dataset.DatasetShareView({permalinkId: permalink.id, filterDimensions: self.filterDimensions});
-                        modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                        modalContentView = new App.components.modal.ShareModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions});
+                        modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-share-nodes"});
                         modal.show();
                     },
+                    customButtonText: I18n.t("modal.shareConfig.button.submit")
                 });
             } else {
-                modalContentView = new App.modules.dataset.DatasetShareView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
+                modalContentView = new App.components.modal.ShareModalView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
             }
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-share-nodes"});
             modal.show();
         },
 
@@ -219,7 +206,7 @@
             if (this.isInternalPortal()) {
                 var modalContentView = new DisabledFeatureInternalPortalView();
                 var title = I18n.t("filter.button.save");
-                var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                 modal.show();
             } else {
                 var self = this;
@@ -232,19 +219,20 @@
                             onSubmit: function (permalink) {
                                 modal.close();
 
-                                modalContentView = new App.modules.dataset.DatasetSaveView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val});
-                                modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                                modalContentView = new App.components.modal.SaveModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, user: val});
+                                modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                                 modal.show();
                             },
+                            customButtonText: I18n.t("modal.saveConfig.button.submit")
                         });
                     } else {
-                        modalContentView = new App.modules.dataset.DatasetSaveView({
+                        modalContentView = new App.components.modal.SaveModalView({
                             permalinkId: DatasetPermalink.getExistingPermalinkId(self.filterDimensions),
                             filterDimensions: self.filterDimensions,
                             user: val
                         });
                     }
-                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                     modal.show();
                 }).catch(function () {
                     var modal;
@@ -259,7 +247,7 @@
                         },
                     });
                     var title = I18n.t("modal.information.loginRequired.title");
-                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                    modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                     modal.show();
                 });
             }
@@ -277,77 +265,56 @@
                         onSubmit: function (permalink, embedConfigExtraData) {
                             modal.close();
 
-                            modalContentView = new App.modules.dataset.DatasetEmbedView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title});
-                            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+                            modalContentView = new App.components.modal.EmbedModalView({permalinkId: permalink.id, filterDimensions: self.filterDimensions, title: embedConfigExtraData.title});
+                            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-code"});
                             modal.show();
                         },
+                        customButtonText: I18n.t("modal.embedConfig.button.submit"),
                     });
                 } else {
-                    modalContentView = new App.modules.dataset.DatasetEmbedView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
+                    modalContentView = new App.components.modal.EmbedModalView({permalinkId: DatasetPermalink.getExistingPermalinkId(this.filterDimensions), filterDimensions: this.filterDimensions});
                 }
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
+            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-code"});
             modal.show();
         },
 
         setCurrentVe: function (currentVe) {
             this.currentVe = currentVe;
+            this.renderDownloadButton();
         },
 
-        clickDownload: function (e) {
-            e.preventDefault();
-            var modalContentView = null;
-            modalContentView = new App.modules.dataset.DatasetDownloadView({
-                currentVe: this.currentVe,
-                filterDimensions: this.filterDimensions,
-                estimatedNumberOfCells: {
-                    all: this.data.getDataNonEmptyAttributesCount(), // Depends only on datarequest
-                    selection: this.dataSource.getSelectionNonEmptyAttributesCount() // Depends on datarequest and selected values
-                },
-                numberOfObservations: {
-                    all: {
+        renderDownloadButton: function () {
+            if (!this.currentVe) {
+                return;
+            }
+
+            if (!this.downloadSelectView) {
+                this.downloadSelectView = new App.modules.dataset.DatasetDownloadView({
+                    currentVe: this.currentVe,
+                    filterDimensions: this.filterDimensions,
+                    dataSource: this.dataSource,
+                    estimatedNumberOfCells: this.data.getDataNonEmptyAttributesCount(),
+                    numberOfObservations: {
                         total: this.data.getDataObservationsCount(),
                         tableSize: this.data.getDataTableSize()
                     },
-                    selection: {
-                        total: this.dataSource.getSelectionObservationsCount(),
-                        tableSize: this.filterDimensions.getTableInfo().getTableSize()
-                    }
-                },
-                optionsModel: this.optionsModel
-            });
-            var title = I18n.t("filter.download.modal.title");
-            var modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
-            modal.show();
+                    optionsModel: this.optionsModel,
+                });
+            } else {
+                this.downloadSelectView.setCurrentVe(this.currentVe);
+            }
+            this.downloadSelectView.setElement(this.$('.visual-element-options-download'));
+            this.downloadSelectView.render();
         },
 
-        clickApiDownload: function (e) {
+        clickVisualize: function (e) {
             e.preventDefault();
-            var modalContentView = null;
-            var modal = null;
-            var title = I18n.t("filter.apiDownload.modal.title");
-
-            var self = this;
-            modalContentView = new App.modules.dataset.DatasetApiDownloadView({
-                filterDimensions: this.filterDimensions,
-                optionsModel: this.optionsModel,
-                identifierType: this.filterDimensions.metadata.datasourceIdentifier.identifier.type,
-                onClickInfoLink: function () {
-                    if (self.isFilter()) {
-                        $(document).trigger('closeFilter');
-                    }
-                    modal.close();
-                },
-            });
-
-            modal = new App.components.modal.ModalView({title: title, contentView: modalContentView});
-            modal.show();
+            this.trigger('visualize');
         },
 
         isInternalPortal: function () {
             return App.config["installationType"] === "INTERNAL";
         }
-
-
     });
 
 

@@ -24,8 +24,8 @@
             this.remove();
         },
 
-        close: function () {
-            this.remove();
+        _destroyWidgets: function () {
+            this.$(".filter-sidebar-categories").perfectScrollbar('destroy');
         },
 
         events: {
@@ -50,7 +50,8 @@
             this._bindEvents();
 
             var context = {
-                dimension: this.filterDimension.toJSON()
+                dimension: this.filterDimension.toJSON(),
+                isDimensionLevelsSectionNotEmpty: this._hasHierarchy()
             };
 
             this.$el.html(this.template(context));
@@ -71,6 +72,7 @@
             }, this);
             this.subviews = this.subviews.concat(this.representationsSubviews);
             $categories.perfectScrollbar();
+            $categories.on('remove', _.bind(this._destroyWidgets, this));
 
             this.searchbarView = new App.components.searchbar.SearchbarView({
                 model: this.filterDimension,
@@ -87,7 +89,7 @@
             this.actionsView.render();
             this.subviews.push(this.actionsView);
 
-            if (this.filterDimension.get('hierarchy')) {
+            if (this._hasHierarchy()) {
                 let hierarchyLevel;
                 let levelsModels;
                 if (this.filterDimension.isTimeDimension()) {
@@ -108,6 +110,7 @@
                     collection: this.levelsCollection,
                     selectionModel: this.filterDimension,
                     name: 'filterLevel',
+                    dropdownCssClass: "filter-level",
                     el: this.$('.filter-sidebar-dimension-levels')
                 });
                 this.levelView.render();
@@ -117,8 +120,8 @@
             }
 
             this.visibleLabelTypeView = new App.components.ToggleableView({
-                inactiveValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL, title: "Código y etiqueta", icon: "icon-tags" },
-                activeValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.CODE_AND_LABEL, title: "Etiqueta", icon: "icon-tags" },
+                inactiveValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.LABEL, title: "Código y etiqueta", icon: "fa fa-tags" },
+                activeValue: { id: FilterRepresentation.VISIBLE_LABEL_TYPES.CODE_AND_LABEL, title: "Etiqueta", icon: "fa fa-tags" },
                 selectionModel: this.filterDimension,
                 name: "visibleLabelType",
                 el: this.$(".filter-sidebar-dimension-visibleLabelType")
@@ -133,10 +136,15 @@
             return this.el;
         },
 
+        _hasHierarchy: function () {
+            return !!this.filterDimension.get('hierarchy');
+        },
+
         updateScrollbar: function () {
             // Wait for DOM
+            var self = this;
             setTimeout(function () {
-                this.$(".filter-sidebar-categories").perfectScrollbar('update');
+                self.$(".filter-sidebar-categories").perfectScrollbar('update');
             }, 10);
         },
 
@@ -162,8 +170,8 @@
         setMaxHeight: function (maxHeight) {
             this.maxHeight = maxHeight;
             this.$('.collapse').css('max-height', maxHeight);
-            var SIDEBAR_DIMENSION_HEADER_HEIGHT = 65;
-            var height = maxHeight - SIDEBAR_DIMENSION_HEADER_HEIGHT;
+            const SIDEBAR_DIMENSION_HEADER_HEIGHT = 135;
+            const height = maxHeight - SIDEBAR_DIMENSION_HEADER_HEIGHT;
             this.$('.filter-sidebar-categories').css('height', height);
             this.updateScrollbar();
         },

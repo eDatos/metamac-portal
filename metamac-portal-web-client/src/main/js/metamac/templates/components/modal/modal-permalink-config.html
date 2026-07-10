@@ -1,83 +1,86 @@
-<form class="modal-permalink-config" novalidate>
-    <div id="permalink-config-additional-fields"></div>
-    <div {{#if thereIsTemporalDimension }} hidden {{/if}}>
-        <fieldset>
-            <label>{{ message "modal.permalinkConfig.label.version.group" }}</label>
-            <p class="form-info" {{#if thereAreVersions }} hidden {{/if}}>{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
-            <div class="vertical-radio-group" {{#unless thereAreVersions }} hidden {{/unless}}>
-                <div class="radio-field">
-                    <input type="radio" id="version-last" name="version" value="last" checked="checked">
-                    <label for="version-last">{{ message "modal.permalinkConfig.label.version.last" }}</label>
-                </div>
-                <div class="radio-field">
-                    <input type="radio" id="version-current" name="version" value="current">
-                    <label for="version-current">{{ message "modal.permalinkConfig.label.version.current" }}</label>
-                </div>
-            </div>
-        </fieldset>
-        <div>
-            <label>{{ message "modal.permalinkConfig.label.periods.group" }}</label>
-            <p class="form-info" >{{ message "modal.permalinkConfig.info.noTemporalDimension" }}</p>
+<div id="permalink-config-additional-fields"></div>
+
+{{#if thereIsTemporalDimension}}
+
+<fieldset class="modal-form-section">
+    <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.data.group" }}</legend>
+    <div class="modal-radio-button">
+        <input type="radio" id="update-periods" name="periods" value="update" checked="checked">
+        <label for="update-periods">{{ message "modal.permalinkConfig.label.data.update" }}</label>
+    </div>
+    <div class="modal-radio-button">
+        <input type="radio" id="selected-periods" name="periods" value="selected">
+        <label for="selected-periods">{{ message "modal.permalinkConfig.label.data.selected" }}</label>
+    </div>
+</fieldset>
+<fieldset id="update-periods-options" class="modal-form-section">
+    <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.periods.group" }}</legend>
+    <div class="modal-radio-button">
+        <div class="input-related-radio">
+            <input type="radio" id="periods-all" name="data" value="all">
+            <label for="periods-all">{{ message "modal.permalinkConfig.label.periods.all" }}</label>
         </div>
     </div>
-    <div {{#unless thereIsTemporalDimension }} hidden {{/unless}}>
-        <fieldset>
-            <label>{{ message "modal.permalinkConfig.label.data.group" }}</label>
-            <div class="vertical-radio-group">
-                <div class="radio-field">
-                    <input type="radio" id="update-periods" name="periods" value="update" checked="checked">
-                    <label for="update-periods">{{ message "modal.permalinkConfig.label.data.update" }}</label>
-                </div>
-                <div class="radio-field">
-                    <input type="radio" id="selected-periods" name="periods" value="selected">
-                    <label for="selected-periods">{{ message "modal.permalinkConfig.label.data.selected" }}</label>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset id="update-periods-options">
-            <label>{{ message "modal.permalinkConfig.label.periods.group" }}</label>
-            <div class="vertical-radio-group">
-            <div class="radio-field">
-                <div class="input-related-radio">
-                    <input type="radio" id="periods-all" name="data" value="all">
-                    <label for="periods-all">{{ message "modal.permalinkConfig.label.periods.all" }}</label>
-                </div>
-            </div>
-            <div class="radio-field">
-                <div class="input-related-radio">
-                    <input type="radio" id="periods-quantity" name="data" value="quantity">
-                    <label for="periods-quantity">{{ message "modal.permalinkConfig.label.periods.quantity" }}</label>
-                </div>
-                <input id="periods-quantity-related-input" class="radio-related-input" type="number" min="1" disabled>
-            </div>
-            <div class="radio-field">
-                <div class="input-related-radio">
-                    <input type="radio" id="periods-date" name="data" value="date">
-                    <label for="periods-date">{{ message "modal.permalinkConfig.label.periods.date" }}</label>
-                </div>
-                <select id="periods-date-related-input" class="radio-related-input" disabled>
-                    {{#each dimensionCategories}}
-                    <option value='{{this.id}}'>{{this.label}}</option>
-                    {{/each}}
-                </select>
-            </div>
+    <div class="modal-radio-button">
+        <div class="input-related-radio">
+            <input type="radio" id="periods-quantity" name="data" value="quantity">
+            <label for="periods-quantity">{{ message "modal.permalinkConfig.label.periods.quantity" }}</label>
         </div>
-        </fieldset>
-        <fieldset id="selected-periods-options" hidden>
-            <label>{{ message "modal.permalinkConfig.label.dataReview.group" }}</label>
-            <div class="checkbox-field">
-                <input type="checkbox" id="data-review-checkbox" {{#unless thereAreVersions }} hidden {{/unless}}>
-                <label for="data-review-checkbox" {{#unless thereAreVersions }} hidden {{/unless}}>{{ message "modal.permalinkConfig.label.dataReview.update" }}</label>
-            </div>
-            <p class="form-info" {{#if thereAreVersions }} hidden {{/if}}>{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
-        </fieldset>
+        <span id="periods-quantity-input"></span>
     </div>
-
-    <p id="permalink-config-error" class="form-error"></p>
-
-    <div id="modal-permalink-captcha"></div>
-
-    <div class="form-buttons">
-        <button type="submit">{{ message "modal.permalinkConfig.button.submit" }}</button>
+    <div class="modal-radio-button">
+        <div class="input-related-radio">
+            <input type="radio" id="periods-date" name="data" value="date">
+            <label for="periods-date">{{ message "modal.permalinkConfig.label.periods.date" }}</label>
+        </div>
+        <select id="periods-date-related-input" class="radio-related-input" disabled>
+            {{#each dimensionCategories}}
+            <option value='{{this.id}}'>{{this.label}}</option>
+            {{/each}}
+        </select>
     </div>
-</form>
+</fieldset>
+<fieldset id="selected-periods-options" class="modal-form-section" hidden>
+    <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.dataReview.group" }}</legend>
+    {{#if thereAreVersions}}
+    <div class="modal-checkbox">
+        <input type="checkbox" id="data-review-checkbox">
+        <label for="data-review-checkbox">{{ message "modal.permalinkConfig.label.dataReview.update" }}</label>
+    </div>
+    {{else}}
+    <p class="form-info">{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
+    {{/if}}
+</fieldset>
+
+{{else}}
+
+<fieldset class="modal-form-section">
+    <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.version.group" }}</legend>
+    {{#if thereAreVersions}}
+    <div class="modal-radio-button">
+        <input type="radio" id="version-last" name="version" value="last" checked="checked">
+        <label for="version-last">{{ message "modal.permalinkConfig.label.version.last" }}</label>
+    </div>
+    <div class="modal-radio-button">
+        <input type="radio" id="version-current" name="version" value="current">
+        <label for="version-current">{{ message "modal.permalinkConfig.label.version.current" }}</label>
+    </div>
+    {{else}}
+    <p class="form-info">{{ message "modal.permalinkConfig.info.noVersionUpdate" }}</p>
+    {{/if}}
+</fieldset>
+<fieldset class="modal-form-section">
+    <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.periods.group" }}</legend>
+    <p class="form-info">{{ message "modal.permalinkConfig.info.noTemporalDimension" }}</p>
+</fieldset>
+
+{{/if}}
+
+<div id="permalink-config-error" class="form-error"></div>
+<div id="modal-captcha"></div>
+<div class="form-buttons">
+    <button class="btn" type="submit">
+        <i class="modal-form-view-icon"></i>
+        {{ buttonText }}
+    </button>
+</div>

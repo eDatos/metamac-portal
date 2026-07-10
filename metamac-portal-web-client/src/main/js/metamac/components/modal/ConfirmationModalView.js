@@ -6,6 +6,7 @@
     App.components.modal.ConfirmationModalView = Backbone.View.extend({
 
         template: App.templateManager.get("components/modal/modal-confirmation"),
+        className: 'modal-confirmation',
 
         events: {
             "click .button-confirm": "confirm",
@@ -18,18 +19,20 @@
             this.onReject = this.options.onReject || (function() {});
         },
 
-        confirm: function() {
+        confirm: function(e) {
+            e.stopPropagation();
             this.onConfirm();
         },
 
-        reject: function() {
+        reject: function(e) {
+            e.stopPropagation();
             this.onReject();
         },
 
         render: function () {
             var context = {
                 question: this.question
-            }
+            };
             this.$el.html(this.template(context));
         },
     });

@@ -15,7 +15,7 @@
                     headers: {
                         "api-key": App.config["apiKey"]
                     }
-                }).success(function (response) {
+                }).done(function (response) {
                     callback(null, response);
                 });
             }

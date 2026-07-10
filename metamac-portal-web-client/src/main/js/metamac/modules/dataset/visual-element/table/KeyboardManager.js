@@ -26,20 +26,20 @@
         bindEvents : function () {
             var self = this;
             var $document = $(document);
-            $document.bind('keydown.up keydown.right keydown.down keydown.left', this.arrow);
-            $document.bind('keydown.home', this.home);
-            $document.bind('keydown.end', this.end);
-            $document.bind('keydown.pageup', this.pageup);
-            $document.bind('keydown.pagedown', this.pagedown);
+            $document.on('keydown.up keydown.right keydown.down keydown.left', this.arrow);
+            $document.on('keydown.home', this.home);
+            $document.on('keydown.end', this.end);
+            $document.on('keydown.pageup', this.pageup);
+            $document.on('keydown.pagedown', this.pagedown);
         },
 
         unbindEvents : function () {
             var $document = $(document);
-            $document.unbind('keydown.up keydown.right keydown.down keydown.left', this.arrow);
-            $document.unbind('keydown.home', this.home);
-            $document.unbind('keydown.end', this.end);
-            $document.unbind('keydown.pageup', this.pageup);
-            $document.unbind('keydown.pagedown', this.pagedown);
+            $document.off('keydown.up keydown.right keydown.down keydown.left', this.arrow);
+            $document.off('keydown.home', this.home);
+            $document.off('keydown.end', this.end);
+            $document.off('keydown.pageup', this.pageup);
+            $document.off('keydown.pagedown', this.pagedown);
         },
 
         isArrowKeyPressed : function () {

@@ -10,7 +10,7 @@
             var self = this;
             self.$infiniteScrollContainer = $container;
             self.hasMore = false;
-            self.$infiniteScrollContainer.bind('click', function () {
+            self.$infiniteScrollContainer.on('click', function () {
                 self.loadMore();
             });
 

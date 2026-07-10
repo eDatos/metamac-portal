@@ -1,9 +1,0 @@
-{{#each categories}}
-    {{#if state }}
-        <div id="div-category{{../number}}-{{number}}" class="div-category" draggable="true" title="{{label}}" data-number="{{number}}">
-    {{else}}
-        <div id="div-category{{../number}}-{{number}}" class="div-category-clicked" draggable="true" title="{{label}}" data-number="{{number}}">
-    {{/if}}
-            <span class="options_category">{{label}}</span>
-        </div>
-{{/each}}

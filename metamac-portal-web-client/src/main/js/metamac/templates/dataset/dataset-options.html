@@ -1,52 +1,45 @@
-<div class="visual-element-options">
-    <button class="btn visual-element-options-api-download" title='{{message "filter.button.apiDownload"}}'>
-        <i class="dataset-options-api-download"></i>
-    </button>
-    <button class="btn visual-element-options-download" title='{{message "filter.button.download"}}'>
-        <i class="dataset-options-download"></i>
-    </button>
-    <button class="btn visual-element-options-share" title='{{message "filter.button.share"}}'>
-        <i class="dataset-options-share"></i>
-    </button>
+<div class="visual-element-options horizontal-buttons-group">
     {{#if usersAreAvailable}}
     <button class="btn visual-element-options-save" title='{{message "filter.button.save"}}'>
         <i class="dataset-options-save"></i>
-    </button> {{/if}} {{#if widgetButton}}
+        <span>{{message "filter.button.save"}}</span>
+    </button> {{/if}}
+    <div class="visual-element-options-download">
+    </div>
+    <button class="btn visual-element-options-share" title='{{message "filter.button.share"}}'>
+        <i class="dataset-options-share"></i>
+        <span>{{message "filter.button.share"}}</span>
+    </button>
+    {{#if widgetButton}}
     <button class="btn visual-element-options-embed" title='{{message "filter.button.embed"}}'>
         <i class="dataset-options-embed"></i>
-    </button> {{/if}} {{#if helpUrl}}
-    <a href="{{ helpUrl }}" target="_blank" rel="noopener noreferrer" class="btn fs visual-element-options-help-url" title='{{message "filter.button.helpUrl"}}'>
-        <div class="dataset-options-help-url-container">
-            <i class="dataset-options-help-url"></i>
-        </div>
-    </a> {{/if}} {{#if fullScreen.visible}}
+        <span>{{message "filter.button.embed"}}</span>
+    </button> {{/if}}
+</div>
+
+<div class="horizontal-buttons-group">
+    {{#unless visualize}}
+    <div class="dataset-options">
+        <button class="btn accent dataset-options-filter {{filter.btnClass}} {{#if filterDisabled}}disabled{{/if}}" title='{{message "filter.sidebar.filter.title"}}'>
+            <i class="options-filter"></i>
+            <span>{{message "filter.sidebar.filter.title"}}</span>
+        </button>
+    </div>
+    {{/unless}}
+    {{#if visualize}}
+    <button class="btn selection-visualize-selection" title='{{message "filter.button.visualize"}}'>
+        <i class="dataset-options-visualize"></i>
+        <span>{{message "filter.button.visualize"}}</span>
+    </button> {{/if}}
+    {{#if fullScreen.visible}}
     <button class="btn fs {{fullScreen.btnClass}} visual-element-options-fs" title='{{message "filter.button.fullscreen"}}'>
         <i class="dataset-options-full-screen"></i>
+        <span>{{message "filter.button.fullscreen"}}</span>
+    </button> {{/if}}
+    {{#each widgetTabs}}
+    <button class="btn visualization-button{{#if active}} active{{/if}}" data-type="{{type}}" title="{{title}}">
+        <i class="{{iconClass}}"></i>
+        <span>{{title}}</span>
     </button>
-    {{/if}}
+    {{/each}}
 </div>
-
-{{#unless visualize}}
-<div class="dataset-options">
-    <button class="btn dataset-options-filter {{filter.btnClass}}" title='{{message "filter.sidebar.filter.title"}}'>
-        <i class="options-filter"></i>
-    </button>
-</div>
-{{/unless}}
-
-<div class="change-visual-element">
-    <div class="btn-group" data-toggle="buttons-radio">
-        {{#each veTypeButton}} {{#if enabled}}
-        <button class="btn {{btnClass}}" data-type="{{type}}" title="{{title}}">
-            <i class="dataset-options-type-{{type}}"></i>
-        </button>
-        {{/if}} {{/each}}
-    </div>
-</div>
-
-{{#if visualize}}
-<button class="btn btn-with-label selection-visualize-selection" title='{{message "filter.button.visualize"}}'>
-    <i class="dataset-options-visualize"></i>
-    <label>{{message "filter.button.visualize"}}</label>
-</button>
-{{/if}}

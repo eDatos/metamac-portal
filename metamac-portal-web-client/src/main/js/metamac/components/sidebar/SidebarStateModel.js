@@ -6,29 +6,12 @@
     App.components.sidebar.SidebarStateModel = Backbone.Model.extend({
 
         defaults : {
-            width : 240,
-            minWidth : 240,
-            visible : false,
-            currentSideView : undefined
+            width : 400,
+            minWidth : 400,
+            visible : false
         },
 
-        initialize : function (options) {
-            this.sideViewsIds = options.sideViewsIds;
-        },
-
-        toggleSideView : function (viewId) {
-            if (_.contains(this.sideViewsIds, viewId)) {
-                if (this.get("currentSideView") === viewId) {
-                    this.set("currentSideView", undefined);                    
-                } else {
-                    this.set("currentSideView", viewId);
-                }
-            } else {
-                this.set("currentSideView", undefined);
-            }
-        },        
-
-        validate : function (attrs, options) {
+        validate : function (attrs) {
             if (attrs.width < attrs.minWidth) {
                 return "width min size is "  + attrs.minWidth;
             }

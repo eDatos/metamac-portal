@@ -11,7 +11,6 @@
         template: App.templateManager.get('dataset/filter/sidebar/filter-sidebar-view'),
 
         id: "filterSidebar",
-        icon: "filter-sidebar-icon-filter",
         title: I18n.t("filter.sidebar.filter.title"),
 
         initialize: function (options) {
@@ -29,9 +28,10 @@
                 });
             }, this);
 
-            if (this.filterDimensions.hasMultidataset()) {
+            if (options.multidataset) {
                 this.multidataset = new FilterSidebarMultidatasetView({
-                    filterDimensions: this.filterDimensions
+                    filterDimensions: this.filterDimensions,
+                    multidataset: options.multidataset
                 });
             }
 
@@ -48,7 +48,6 @@
         },
 
         events: {
-            "resize": "_onResize",
             "change .control-ignore-value": "onIgnoreDimensionValue"
         },
 
@@ -61,10 +60,18 @@
 
         _bindEvents: function () {
             _.invoke(this.subviews, '_bindEvents');
+            if (!this._resizeObserver) {
+                this._resizeObserver = new ResizeObserver(_.bind(this._onResize, this));
+                this._resizeObserver.observe(this.$el[0]);
+            }
         },
 
         _unbindEvents: function () {
             _.invoke(this.subviews, '_unbindEvents');
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+                this._resizeObserver = null;
+            }
         },
 
         render: function () {

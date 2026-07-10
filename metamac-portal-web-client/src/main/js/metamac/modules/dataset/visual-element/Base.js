@@ -8,8 +8,7 @@
 
     App.VisualElement.Base.prototype = {
 
-        _noSelectionTemplate: App.templateManager.get('dataset/dataset-no-selection'),
-        _loadingTemplate: App.templateManager.get('dataset/dataset-loading'),
+        _messageTemplate: App.templateManager.get('dataset/dataset-message'),
 
         initialize: function (options) {
             options = options || {};
@@ -20,6 +19,7 @@
             this.filterOptions = options.filterOptions; //deprecated
             this.filterDimensions = options.filterDimensions;
             this.optionsModel = options.optionsModel;
+            this.multidataset = options.multidataset;
 
             this.el = options.el;
         },
@@ -222,14 +222,14 @@
                 this.hideWrongSelectionView();
                 return true;
             } else {
-                this.renderWrongSelectionView(this._noSelectionTemplate());
+                this.renderWrongSelectionView(this._messageTemplate({ messageKey: 've.noSelection' }));
                 return false;
             }
         },
 
         showLoading: function () {
             this.setupLoadingViewIfNeeded();
-            this.$loading.html(this._loadingTemplate());
+            this.$loading.html(this._messageTemplate({ messageKey: 've.loading' }));
             this.hideTitle();
             this.$loading.show();
         },
@@ -251,6 +251,18 @@
         // Patch until this issue is fixed: https://github.com/apache/echarts/issues/18242
         _createUniqueNameForData: function (name, uniqueIndex) {
             return name.replace(/\u200B/g, '') + '\u200B'.repeat(uniqueIndex);
+        },
+
+        _isIndicator: function () {
+            return App.Constants.visualization.type.INDICATOR === this.data.metadata.identifier().type || App.Constants.visualization.type.INDICATOR_INSTANCE === this.data.metadata.identifier().type;
+        },
+
+        _isDataset: function () {
+            return App.Constants.visualization.type.DATASET === this.data.metadata.identifier().type;
+        },
+
+        _isQuery: function () {
+            return App.Constants.visualization.type.QUERY === this.data.metadata.identifier().type;
         }
     };
 

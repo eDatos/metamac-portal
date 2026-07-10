@@ -10,13 +10,18 @@
 
     App.components.scrollbuttons.Scrollbuttons.prototype = {
     
-        STEP_LENGTH : 100,
+        STEP_LENGTH : 75,
         ANIMATION_LENGTH : 500,
-        OFFSET : 13, // Margin-left, see scrollbuttons.less @buttonWidth
 
         initialize : function (options) {
             this.setEl(options.el);
             this.delegate = options.delegate;
+
+            const rootStyle = getComputedStyle(document.documentElement);
+            this.OFFSET = parseInt(options.isWidget
+                ? rootStyle.getPropertyValue('--scroll-button-content-wrapper-margin-inline-widget')
+                : rootStyle.getPropertyValue('--scroll-button-content-wrapper-margin-inline')
+            , 10);
         },
 
         destroy : function () {
@@ -25,10 +30,10 @@
         },
 
         _attachButtons : function() {         
-            this.$wrapper.prepend('<button class="scroll-button-left" style="display:none">◀</button>');
+            this.$wrapper.prepend('<button class="scroll-button-left" style="display:none"><i class="fa fa-solid fa-caret-left"></i></button>');
             this.$leftButton = this.$wrapper.find('.scroll-button-left');
 
-            this.$wrapper.append('<button class="scroll-button-right" style="display:none">▶</button');
+            this.$wrapper.append('<button class="scroll-button-right" style="display:none"><i class="fa fa-solid fa-caret-right"></i></button');
             this.$rightButton = this.$wrapper.find('.scroll-button-right');
 
             this.updateButtonsVisibility();
@@ -93,10 +98,10 @@
             });
 
             var resize = _.debounce(_.bind(this.updateSize, this), 200);
-            this.$el.on("resize", function (e) {
-                e.stopPropagation();
+            this._resizeObserver = new ResizeObserver(function () {
                 resize();
             });
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         _setNewOffset : function(newOffset) {
@@ -112,6 +117,7 @@
         _detachEvents : function () {
             if (this.$leftButton)  { this.$leftButton.off('click'); }
             if (this.$rightButton) { this.$rightButton.off('click'); }
+            if (this._resizeObserver) { this._resizeObserver.disconnect(); }
         },        
 
         updateSize : function() {
