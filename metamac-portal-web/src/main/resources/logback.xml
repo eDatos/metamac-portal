@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration>
-<configuration>
+<configuration xmlns="http://ch.qos.logback/xml/ns/logback" scan="true" scanPeriod="60 seconds">
 
     <turboFilter class="org.siemac.edatos.core.common.util.ExpiringDuplicateMessageFilter">
         <allowedRepetitions>5</allowedRepetitions>
@@ -20,10 +20,6 @@
 
     <!-- Avoid logging warning Unable to proxy method ... -->
     <logger name="org.springframework.aop.framework.Cglib2AopProxy" level="ERROR"/>
-
-    <logger name="statistical-visualizer" level="INFO">
-        <appender-ref ref="STDOUT"/>
-    </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
