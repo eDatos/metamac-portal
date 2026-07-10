@@ -104,7 +104,7 @@
         }
     %>
     <script type="application/javascript" src="${analyticsUrl}" appId="statistical-visualizer-${installationType}-widget"></script>
-    <c:import url="${appStyleCssUrl}"/>
+    <link rel="stylesheet" href="${appStyleCssUrl}"/>
 </head>
 <body class="statistical-visualizer">
 
