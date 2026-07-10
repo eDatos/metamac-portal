@@ -312,7 +312,7 @@ module.exports = (grunt) ->
                 src: paths.nodeModules + '/@awesome.me/kit-f6e7c4d1c0/icons/css/all.css',
                 dest: paths.less + '/vendor/fontAwesome.less',
                 options: {
-                    process: (content) -> content.replace(/\.\.\/webfonts\//g, 'webfonts/')
+                    process: (content) -> content.replace(/url\((\s*["']?)\.\.\/webfonts\//g, 'url($1webfonts/')
                 }
             }
             fontAwesomeWebfonts: {
