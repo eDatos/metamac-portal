@@ -1,11 +1,11 @@
 <div class="metadata-group">
 
     {{#if metadata.hasDescriptors}}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{message "entity.dataset.section.descriptors"}}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{message "entity.dataset.section.descriptors"}}
         </div>
-        <div class="metadata-value">
+        <div class="info-section-content">
             <ul>
                 {{#if metadata.hasMultidataset }}<li>{{ fieldOutput "entity.dataset.title" metadata.title "text" }}</li> {{/if}}
                 <li>{{ fieldOutput "entity.dataset.subtitle" metadata.subtitle "text" }}</li>
@@ -18,15 +18,17 @@
         </div>
     </div>
     {{/if}} {{#if hasAttributesOrLikeAttributes }}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{message "entity.dataset.section.datasetAttributes"}}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{message "entity.dataset.section.datasetAttributes"}}
         </div>
-        <div class="metadata-value">
-            {{#ulList datasetAttributes }} {{ fieldOutput name value "resourceNoLink" false false false}}
+        <div class="info-section-content">
+            {{#ulList datasetAttributes }} {{ fieldOutput name value "resourceNoLink" false false false "field"}}
             {{#if relatedResource }}
-            <div class="metadata-resource-value">
-                {{ fieldOutput "entity.dataset.seeRelatedResource.button" relatedResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+            <div class="metadata-resources">
+                <div class="metadata-resource-value">
+                    {{ fieldOutput "entity.dataset.seeRelatedResource.button" relatedResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+                </div>
             </div>
             {{/if}}
             {{/ulList}}
@@ -34,11 +36,11 @@
         </div>
     </div>
     {{/if}} {{#if metadata.hasPeriods}}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{message "entity.dataset.section.periods"}}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{message "entity.dataset.section.periods"}}
         </div>
-        <div class="metadata-value">
+        <div class="info-section-content">
             <ul>
                 <li>{{ fieldOutput "entity.dataset.dateStart" metadata.dates.dateStart "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dateEnd" metadata.dates.dateEnd "text" }}</li>
@@ -46,15 +48,17 @@
         </div>
     </div>
     {{/if}} {{#if measureConcepts }}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{ message "entity.dataset.measureConcepts.title" }}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{ message "entity.dataset.measureConcepts.title" }}
         </div>
-        <div class="metadata-value">
+        <div class="info-section-content">
             {{#ulList measureConcepts }}
-            <div class="field">
-                {{ fieldOutput name description "text" false false true ''}} {{#each annotations }}
-                <span class="metadata-value">{{ resourceOutput this ../../targetBlank }}</span> {{/each}}
+            {{ fieldOutput name description "text" false false true "field"}}
+            {{#each annotations }}
+            <span class="metadata-value">{{ resourceOutput this true }}</span>
+            {{/each}}
+            <div class="metadata-resources">
                 <div class="metadata-resource-value">
                     {{ fieldOutput "entity.dataset.seeConcept.button" resource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
                 </div>
@@ -63,29 +67,32 @@
         </div>
     </div>
     {{/if}} {{#if nonMeasureDimensions }}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{ message "entity.dataset.section.dimensions" }}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{ message "entity.dataset.section.dimensions" }}
         </div>
-        <div class="metadata-value">
-            {{#ulList nonMeasureDimensions }} {{ fieldOutput conceptName conceptDescription "text" false false true}}
-            <div class="metadata-resource-value">
-                {{ fieldOutput "entity.dataset.seeConcept.button" conceptResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+        <div class="info-section-content">
+            {{#ulList nonMeasureDimensions }}
+            {{ fieldOutput conceptName conceptDescription "text" false false true "field"}}
+            <div class="metadata-resources">
+                <div class="metadata-resource-value">
+                    {{ fieldOutput "entity.dataset.seeConcept.button" conceptResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+                </div>
+                {{#if relatedResource }}
+                <div class="metadata-resource-value">
+                    {{ fieldOutput "entity.dataset.seeRelatedResource.button" relatedResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
+                </div>
+                {{/if}}
             </div>
-            {{#if relatedResource }}
-            <div class="metadata-resource-value">
-                {{ fieldOutput "entity.dataset.seeRelatedResource.button" relatedResource "resourceButton" true true false "btn button-link" "metadata-value-resource-url"}}
-            </div>
-            {{/if}}
             {{/ulList}}
         </div>
     </div>
     {{/if}} {{#if metadata.hasValidity}}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{message "entity.dataset.section.validity"}}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{message "entity.dataset.section.validity"}}
         </div>
-        <div class="metadata-value">
+        <div class="info-section-content">
             <ul>
                 <li>{{ fieldOutput "entity.dataset.statisticOfficiality" metadata.statisticOfficiality "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.validFrom" metadata.dates.validFrom "date" }}</li>
@@ -94,20 +101,20 @@
         </div>
     </div>
     {{/if}} {{#if metadata.hasVersionInfo}}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{message "entity.dataset.section.version"}}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{message "entity.dataset.section.version"}}
         </div>
-        <div class="metadata-value">
+        <div class="info-section-content">
             <ul>
                 <li>{{ fieldOutput "entity.dataset.version" metadata.version "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.versionRationale.title" metadata.versionRationale "text" }}</li>
                 {{#if metadata.keepAllData}}
-                <li>{{ fieldOutput "entity.dataset.replacesVersion" metadata.replacesVersion "resource" targetBlank }}</li>
-                <li>{{ fieldOutput "entity.dataset.replaces" metadata.replaces "resource" targetBlank }}</li>
+                <li>{{ fieldOutput "entity.dataset.replacesVersion" metadata.replacesVersion "resource" true }}</li>
+                <li>{{ fieldOutput "entity.dataset.replaces" metadata.replaces "resource" true }}</li>
                 {{/if}}
-                <li>{{ fieldOutput "entity.dataset.isReplacedByVersion" metadata.isReplacedByVersion "resource" targetBlank }}</li>
-                <li>{{ fieldOutput "entity.dataset.isReplacedBy" metadata.isReplacedBy "resource" targetBlank }}</li>
+                <li>{{ fieldOutput "entity.dataset.isReplacedByVersion" metadata.isReplacedByVersion "resource" true }}</li>
+                <li>{{ fieldOutput "entity.dataset.isReplacedBy" metadata.isReplacedBy "resource" true }}</li>
                 <li>{{ fieldOutput "entity.dataset.nextVersion.title" metadata.nextVersion "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dateNextUpdate" metadata.dateNextUpdate "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.updateFrequency" metadata.updateFrequency "text" }}</li>
@@ -115,47 +122,41 @@
         </div>
     </div>
     {{/if}}
-
-
     {{#if relatedResources.hasAnyRelatedResources}}
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{message "entity.dataset.relatedResources.title"}}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{message "entity.dataset.relatedResources.title"}}
         </div>
-        <div class="metadata-value">
-            {{#if relatedResources.dataset}}
-                {{#ulList relatedResources.dataset }} 
-                {{ fieldOutput label "" "text" false true ""}}
-                <div class="field">
-                        {{#ulList group }}<span class="metadata-value">{{ resourceOutput this ../../targetBlank }}</span>{{/ulList}}
-                </div>
-                {{/ulList}}
-            {{/if}}
-            {{#if relatedResources.multidataset}}
-                <ul>
-                    <li>
-                        <div class="metadata-title">
-                            <div>{{message "entity.dataset.relatedResources.multidataset"}}</div>
-                        </div>
-                    </li>                    
-                    {{#ulList relatedResources.multidataset }} 
-                    {{ fieldOutput label "" "text" false true ""}}
+        <div class="info-section-content">
+            <ul>
+                {{#each relatedResources.dataset}}
+                <li>
                     <div class="field">
-                            {{#ulList group }}<span class="metadata-value">{{ resourceOutput this ../../targetBlank }}</span>{{/ulList}}
+                        {{#if label}}<span class="metadata-title">{{label}}</span>{{/if}}
+                        {{#each group}}<div class="metadata-value">{{ resourceOutput this true }}</div>{{/each}}
                     </div>
-                    {{/ulList}}
-                </ul>
-            {{/if}}
+                </li>
+                {{/each}}
+                {{#if relatedResources.multidataset}}
+                <li>
+                    <div class="metadata-group-title">{{message "entity.dataset.relatedResources.multidataset"}}</div>
+                    {{#each relatedResources.multidataset}}
+                    <div class="field">
+                        {{#if label}}<span class="metadata-title">{{label}}</span>{{/if}}
+                        {{#each group}}<div class="metadata-value">{{ resourceOutput this true }}</div>{{/each}}
+                    </div>
+                    {{/each}}
+                </li>
+                {{/if}}
+            </ul>
         </div>
     </div>
     {{/if}}
-
-
-    <div class="field metadata-accordion">
-        <div class="metadata-title">
-            <div>{{message "entity.dataset.section.reuse"}}</div>
+    <div class="info-section metadata-accordion">
+        <div class="info-section-title">
+            {{message "entity.dataset.section.reuse"}}
         </div>
-        <div class="metadata-value">
+        <div class="info-section-content">
             <ul>
                 <li>{{ fieldOutput "entity.dataset.bibliographicCitation" metadata.bibliographicCitation "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.rightsHolder" metadata.rightsHolder "text" }}</li>
@@ -167,21 +168,8 @@
                 <li>{{ fieldOutput "entity.dataset.mediators" metadata.mediators "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dataProviders" metadata.dataProviders "text" }}</li>
                 <li>{{ fieldOutput "entity.dataset.dataProviderAnnotations" metadata.dataProviderAnnotations "text" }}</li>
-                <li>{{ fieldOutput "entity.dataset.apiDocumentationUrl" metadata.apiDocumentationUrl "resource" targetBlank }}</li>
-                <li>{{ fieldOutput "entity.dataset.apiUrl.title" "" "text" false true true "" }}</li>
-                <li>{{ apiDownloadMessage }}</li>
-                <li>{{ fieldOutput "" metadata.apiUrl "resource" targetBlank false }}</li>
-                {{#if urlParametersForDimensionSelection.isVisible}}
-                <li>{{ fieldOutput "entity.dataset.selectionApiUrl.title" "" "text" false true true "" }}</li>
-                <li>{{ selectionApiDownloadMessage }}</li>
-                <li>{{ fieldOutput "" urlParametersForDimensionSelection "resource" targetBlank false }}</li>
-                {{/if}}
             </ul>
         </div>
     </div>
-
-    <div class="spacer"></div>
-
-</div>
 </div>
 <div class="rights-holder">{{rightsHolder}}</div>

@@ -1,11 +1,6 @@
 package org.siemac.metamac.portal.mapper;
 
-import org.siemac.metamac.portal.dto.Chapter;
-import org.siemac.metamac.portal.dto.Collection;
-import org.siemac.metamac.portal.dto.CollectionData;
-import org.siemac.metamac.portal.dto.CollectionNode;
-import org.siemac.metamac.portal.dto.CollectionNodes;
-import org.siemac.metamac.portal.dto.Table;
+import org.siemac.metamac.portal.dto.*;
 
 public class Collection2DtoMapper {
 
@@ -20,6 +15,7 @@ public class Collection2DtoMapper {
         target.setDescription(source.getDescription());
         target.setKeywords(source.getKeywords());
         target.setData(collectionDataExternalToDto(source.getData()));
+        target.setMetadata(collectionMetadataExternalToDto(source.getMetadata()));
 
         return target;
     }
@@ -32,6 +28,12 @@ public class Collection2DtoMapper {
         CollectionData target = new CollectionData();
         target.setNodes(collectionNodesExternalToDto(source.getNodes()));
 
+        return target;
+    }
+
+    public CollectionMetadata collectionMetadataExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionMetadataBase source) {
+        CollectionMetadata target = new CollectionMetadata();
+        target.setLastUpdate(source.getLastUpdate());
         return target;
     }
 
@@ -90,7 +92,14 @@ public class Collection2DtoMapper {
         target.setDescription(source.getDescription());
         target.setKeywords(source.getKeywords());
         target.setData(collectionDataInternalToDto(source.getData()));
+        target.setMetadata(collectionMetadataInternalToDto(source.getMetadata()));
 
+        return target;
+    }
+
+    public CollectionMetadata collectionMetadataInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.CollectionMetadata source) {
+        CollectionMetadata target = new CollectionMetadata();
+        target.setLastUpdate(source.getLastUpdate());
         return target;
     }
 

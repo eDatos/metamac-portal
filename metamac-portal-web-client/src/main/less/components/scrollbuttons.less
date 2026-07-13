@@ -1,43 +1,57 @@
-@buttonWidth: 14px;
-@buttonPadding: 1px;
+@scrollButtonContentWrapperMarginInline: calc(var(--scroll-button-content-wrapper-margin-inline) * 1px);
+@scrollButtonContentWrapperMarginInlineWidget: calc(var(--scroll-button-content-wrapper-margin-inline-widget) * 1px);
+
 .scroll-buttons {
+    display: flex;
+    flex-direction: row;
     position: relative;
     height: 100%;
     overflow: hidden;
+
     .scroll-button-content-wrapper {
-        margin: 0 (@buttonWidth - @buttonPadding);
-        overflow: hidden;    
-        
+        overflow: hidden;
+        margin-inline: @scrollButtonContentWrapperMarginInline;
+        height: 100%;
+        width: 100%;
+        align-content: center;
+
         .scroll-button-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 100%;
+            margin-left: 0;
+            gap: var(--edatos-spacing-x-sm);
         }
     }
 
     .scroll-button {
-        width: @buttonWidth - @buttonPadding;
-        position: absolute;
-        top: 0;
+        box-sizing: border-box;
+        width: var(--edatos-spacing-x-lg);
         height: 100%;
-        line-height: 100%;
-
-        font-size: 9px;
-        padding: 0;
+        font-size: var(--edatos-font-size-lg);
         border: none;
-        background: @istacGreyLight;
-        color: @istacGreyMedium;
+        color: var(--edatos-color-gray-60);
+        background: var(--edatos-color-gray-20);
+        padding: 0;
+        cursor: pointer;
     }
 
-    .scroll-button-left {
+    .scroll-button-left, .scroll-button-right {
         .scroll-button;
-        padding-right: @buttonPadding;
-        left: 0;
-        .box-shadow(1px 0px 6px 0px rgba(0,0,0,0.75));
+    }
+}
+
+// WIDGET-SPECIFIC STYLES
+
+&.widget-wrapper:not(.full-screen) .scroll-buttons {
+    .scroll-button-content-wrapper {
+        margin-inline: @scrollButtonContentWrapperMarginInlineWidget;
     }
 
-    .scroll-button-right {
-        .scroll-button;
-        padding-left: @buttonPadding;
-        right: 0;
-        .box-shadow(-1px 0px 6px 0px rgba(0,0,0,0.75));
+    .scroll-button-left, .scroll-button-right {
+        width: var(--edatos-font-size-sm);
+        font-size: var(--edatos-font-size-sm);
     }
 }
 

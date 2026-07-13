@@ -10,6 +10,7 @@
         initialize: function () {
             this.title = this.options.title;
             this.contentView = this.options.contentView;
+            this.titleIconName = this.options.titleIconName;
         },
 
         regions: {
@@ -18,25 +19,33 @@
 
         events: {
             "click .modal-backdrop": "onClickBackdrop",
-            "click .modal-close": "onClickClose"
+            "click .modal-close": "onClickClose",
+            "click .modal": "onClickModal"
         },
 
         serializeData: function () {
             var context = {
-                title: this.title
+                title: this.title,
+                titleIconName: this.titleIconName
             };
             return context;
         },
 
         onRender: function () {
             this.content.show(this.contentView);
+            this.contentView.$el.addClass('modal-specific-content');
+            this.$('.modal-content').perfectScrollbar();
         },
 
         show: function () {
             this.render();
             if ($(".full-screen").append(this.$el).length == 0) {
-                $(".metamac-container").append(this.$el)
-            };
+                $(".metamac-container").append(this.$el);
+            }
+        },
+
+        onBeforeClose: function () {
+            this.$('.modal-content').perfectScrollbar('destroy');
         },
 
         onClickBackdrop: function () {
@@ -45,9 +54,11 @@
 
         onClickClose: function () {
             this.close();
+        },
+
+        onClickModal: function (e) {
+            e.stopPropagation();
         }
-
-
     });
 
 }());

@@ -33,12 +33,16 @@
         },
 
         showDatasetSelection: function (datasetIdentifier) {
+            datasetIdentifier = _.defaults(datasetIdentifier, {
+                visualizationType: "selection"
+            });
             var link = this._linkToDatasetSelection(datasetIdentifier);
             this.router.navigate(link, { replace: true });
 
             var self = this;
             this._loadMetadataAndData(datasetIdentifier).then(function () {
                 self.region.show(self.selectionView);
+                self.selectionView.showVisualizationType(datasetIdentifier);
             });
         },
 
@@ -59,14 +63,20 @@
                 if (self.region.currentView !== self.visualizationView) {
                     self.region.show(self.visualizationView);
                 }
-                self.visualizationView.showChart(options);
+                self.visualizationView.showVisualizationType(options);
             });
         },
 
         changeDatasetVisualization: function (options) {
             var link = this._linkToDatasetVisualization(options);
             this.router.navigate(link, { replace: true });
-            this.visualizationView.showChart(options);
+            this.visualizationView.showVisualizationType(options);
+        },
+
+        changeSelectionVisualization: function (options) {
+            const link = this._linkToDatasetSelection(options);
+            this.router.navigate(link, { replace: true });
+            this.selectionView.showVisualizationType(options);
         },
 
         _linkToDatasetVisualization: function (options) {
@@ -82,6 +92,9 @@
 
         _linkToDatasetSelection: function (options) {
             var routeName = "selection";
+            if (options.visualizationType && options.visualizationType !== "selection") {
+                routeName = routeName + "Type";
+            }
             if (options.permalinkId) {
                 routeName = routeName + "Permalink";
             }
@@ -106,8 +119,26 @@
                 data: _.bind(this.dataRequest.fetch, this.dataRequest)
             };
 
+            if (datasetIdentifier.multidatasetId) {
+                if (this.multidataset && this.multidataset.resourceIdentifier.multidatasetId === datasetIdentifier.multidatasetId) {
+                    this.multidataset.updateResourceIdentifier(datasetIdentifier);
+                } else {
+                    var multidatasetModel = new App.modules.multidataset.Multidataset({
+                        resourceIdentifier: datasetIdentifier
+                    });
+                    loads["multidataset"] = function (callback) {
+                        multidatasetModel.fetch()
+                            .done(function () {
+                                callback(null, multidatasetModel);
+                            }).fail(function () {
+                                callback(null, null);
+                            });
+                    };
+                }
+            }
+
             if (datasetIdentifier.permalinkId) {
-                loads["permalink"] = _.bind(DatasetPermalink.retrievePermalink, DatasetPermalink, datasetIdentifier.permalinkId)
+                loads["permalink"] = _.bind(DatasetPermalink.retrievePermalink, DatasetPermalink, datasetIdentifier.permalinkId);
             }
 
             var self = this;
@@ -124,9 +155,16 @@
                     self.filterDimensions = App.modules.dataset.filter.models.FilterDimensions.initializeWithMetadata(self.metadata);
                     self.data = self.dataRequest.getDataResponse(self.metadata, self.filterDimensions);
 
-                    self.selectionView = new App.modules.selection.SelectionView({ controller: self, collection: self.filterDimensions, metadata: self.metadata, data: self.data });
+                    self.multidataset = result.multidataset || self.multidataset;
 
-                    self.visualizationView = new App.modules.dataset.DatasetView({ controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data });
+                    if (self.multidataset && self.metadata.getVersion()) {
+                        var resolvedIdentifier = _.extend({}, datasetIdentifier, { version: self.metadata.getVersion() });
+                        self.multidataset.updateResourceIdentifier(resolvedIdentifier);
+                    }
+
+                    var layoutParams = { controller: self, filterDimensions: self.filterDimensions, metadata: self.metadata, data: self.data, multidataset: self.multidataset };
+                    self.selectionView = new App.modules.selection.SelectionView(layoutParams);
+                    self.visualizationView = new App.modules.dataset.DatasetView(layoutParams);
 
                     if (result.permalink) {
                         self.filterDimensions.importJSONSelection(self.filterDimensions.preprocessSelectionWithDynamicSelection(result.permalink.selection, result.permalink.dynamicSelection));
@@ -137,6 +175,13 @@
                     } else if (datasetIdentifier.geo) {
                         self.filterDimensions.importGeographicSelection(datasetIdentifier.geo);
                     }
+
+                    var metadataForDates = self.multidataset ? self.multidataset.get('metadata') : self.metadata;
+                    App.Helpers.createUpdateDatesSection({
+                        lastUpdate: metadataForDates.getLastUpdate(),
+                        nextUpdate: metadataForDates.getDateNextUpdate()
+                    });
+
                     deferred.resolve();
                 } catch (error) {
                     console.log(error);
@@ -146,7 +191,8 @@
                 }
             });
             return deferred.promise();
-        }
+        },
+
     });
 
 }());

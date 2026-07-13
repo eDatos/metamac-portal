@@ -191,8 +191,8 @@
         cfn();
     };
 
-    ScrollManager.prototype.mousewheel = function (event, delta, deltaX, deltaY) {
-        this.view.move(new App.Table.Point(deltaX * 60, deltaY * 60));
+    ScrollManager.prototype.mousewheel = function (event) {
+        this.view.move(new App.Table.Point(event.deltaX * 60, event.deltaY * 60));
         return false;
     };
 

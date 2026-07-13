@@ -54,10 +54,10 @@
             this.listenTo(this.filterDimensions, "change:valuesToIgnore", this._filterDimensionsByValues);
 
             var resize = _.debounce(_.bind(this._updateSize, this), 200);
-            this.$el.on("resize", function (e) {
-                e.stopPropagation();
+            this._resizeObserver = new ResizeObserver(function () {
                 resize();
             });
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         _filterDimensionsByValues: function(values) {
@@ -65,7 +65,7 @@
         },
         _unbindEvents: function () {
             this.stopListening();
-            this.$el.off("resize");
+            this._resizeObserver.disconnect();
         },
 
         updatingDimensionPositions: function () {

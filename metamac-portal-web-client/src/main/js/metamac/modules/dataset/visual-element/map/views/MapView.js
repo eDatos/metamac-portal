@@ -27,7 +27,6 @@
             this.mapType = options.mapType;
             this.title = options.title;
             this.metadata = options.metadata;
-            this.$title = options.$title;
             this.rightsHolder = options.rightsHolder;
             this.showRightsHolder = options.showRightsHolder;
 
@@ -36,11 +35,12 @@
             this.tooltipDelegate = new App.Map.TooltipDelegate(options);
 
             this._onResize = _.debounce(_.bind(this._onResize, this), 200);
+            this._resizeObserver = new ResizeObserver(this._onResize);
+            this._resizeObserver.observe(this.$el[0]);
         },
 
         events: {
             "dblclick": "_handleDblclick",
-            "resize": "_onResize"
         },
 
         _initializeMapOptions: function () {
@@ -67,12 +67,12 @@
                     calculable: true,
                     hoverLink: false,
                     left: 'center',
-                    bottom: Constants.charts.title.fontSize + (Constants.charts.gap * 2),
+                    bottom: this.getRightsHolderStyle().fontSize + (Constants.charts.gap * 2),
                     orient: 'horizontal',
                     inRange: {
                         color: [
-                            Constants.colors.istacBlueWhite,
-                            Constants.colors.istacBlueDark
+                            Constants.charts.visualMap.min,
+                            Constants.charts.visualMap.max
                         ]
                     },
                     outOfRange: {
@@ -80,7 +80,7 @@
                     },
                     controller: {
                         outOfRange: {
-                            color: [Constants.colors.istacGreyDark]
+                            color: [Constants.colors.gray60]
                         }
                     },
                     text: null,
@@ -108,7 +108,7 @@
                     roamTrigger: "global",
                     itemStyle: {
                         borderWidth: 0.1,
-                        borderColor: Constants.colors.istacWhite
+                        borderColor: Constants.colors.white100
                     },
                     scaleLimit: {
                         min: this.model.get("minScale"),
@@ -239,7 +239,7 @@
             }
 
             var self = this;
-            this._initializeChart(this.$el, this.$title);
+            this._initializeChart(this.$el);
             this._getChart().on('georoam', function (roamParams) {
                 if (roamParams.zoom) {
                     self.model.zoomTo(self._getChart().getOption().geo[0].zoom);
@@ -275,7 +275,7 @@
                         name: feature.id,
                         itemStyle: {
                             borderWidth: 0,
-                            areaColor: Constants.colors.istacGreyLight
+                            areaColor: Constants.colors.gray5
                         },
                         emphasis: {
                             disabled: true
@@ -290,7 +290,7 @@
                         name: feature.id,
                         itemStyle: {
                             borderWidth: 0,
-                            areaColor: Constants.colors.istacGreyMedium
+                            areaColor: Constants.colors.gray40
                         },
                         emphasis: {
                             disabled: true
@@ -316,7 +316,7 @@
                         selectedMode: false,
                         emphasis: {
                             itemStyle: {
-                                areaColor: Constants.colors.istacYellow
+                                areaColor: Constants.charts.maps.accentColor
                             },
                             label: {
                                 show: false
@@ -335,7 +335,7 @@
                         geoIndex: 0,
                         coordinateSystem: 'geo',
                         itemStyle: {
-                            color: Constants.colors.istacYellow
+                            color: Constants.charts.maps.accentColor
                         },
                         symbolSize: function (data) {
                             var maxSymbolSize = 0.3 * Math.min(self.el.clientWidth, self.el.clientHeight);
@@ -436,7 +436,7 @@
         },
 
         _onResize: function () {
-            this._updateSize(this.$el, this.$title);
+            this._updateSize();
             if (this.mapType === 'map') {
                 this._extendChartOptions({
                     visualMap: {
@@ -505,6 +505,12 @@
                     top: 'auto'
                 },
             };
+        },
+
+        destroy: function () {
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+            }
         }
     });
 

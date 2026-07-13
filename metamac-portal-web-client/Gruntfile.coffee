@@ -33,7 +33,7 @@ module.exports = (grunt) ->
                 paths.lib + "/polyfills/console-shim.js"
 
                 # External libs
-                paths.lib + "/jquery-1.9.0.js"
+                paths.lib + "/jquery-4.0.0.js"
                 paths.lib + "/jquery-ui.js"
                 paths.lib + "/i18n.js"
                 paths.lib + "/underscore.js"
@@ -41,8 +41,7 @@ module.exports = (grunt) ->
                 paths.lib + "/backbone.js"
                 paths.lib + "/backbone.marionette.js"
                 paths.lib + "/backbone.wreqr.js"
-                paths.lib + "/handlebars.runtime.js"
-                paths.lib + "/jquery.dotdotdot-1.5.0-packed.js"
+                paths.nodeModules + "/handlebars/dist/handlebars.runtime.js"
                 paths.lib + "/async.js"
                 paths.lib + "/cookies.js"
                 paths.nodeModules + "/shareon/dist/shareon.iife.js"
@@ -52,11 +51,11 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/templates/HandlebarsTemplates.js"
                 paths.js + "/metamac/modules/TemplateManager.js"
                 paths.nodeModules + "/echarts/dist/echarts.js"
-                paths.js + "/libs/jquery.mousewheel.js"
-                paths.js + "/libs/jquery.ba-resize.js"
+                paths.nodeModules + "/dompurify/dist/purify.min.js"
+                paths.nodeModules + "/jquery-mousewheel/jquery.mousewheel.js"
                 paths.js + "/libs/perfect-scrollbar.jquery.js"
-                paths.js + "/libs/select2.min.js"
-                paths.js + "/libs/moment.min.js"
+                paths.nodeModules + "/select2/dist/js/select2.full.min.js"
+                paths.nodeModules + "/moment/min/moment-with-locales.min.js"
                 paths.js + "/libs/tinyqueue.min.js"
                 paths.js + "/libs/polylabel.js"
 
@@ -87,6 +86,9 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/translations/pt.js"
                 paths.js + "/metamac/translations/ca.js"
 
+                # LAYOUT
+                paths.modules + "/layout/BasePageLayout.js"
+
                 # DATASET MODULE
                 paths.modules + "/dataset/DatasetPermalink.js"
                 paths.modules + "/dataset/PermalinkBuilder.js"
@@ -98,11 +100,7 @@ module.exports = (grunt) ->
                 paths.modules + "/dataset/OptionsView.js"
                 paths.modules + "/dataset/DimensionsView.js"
                 paths.modules + "/dataset/DatasetVisualizationView.js"
-                paths.modules + "/dataset/DatasetShareView.js"
-                paths.modules + "/dataset/DatasetSaveView.js"
                 paths.modules + "/dataset/DatasetDownloadView.js"
-                paths.modules + "/dataset/DatasetApiDownloadView.js"
-                paths.modules + "/dataset/DatasetEmbedView.js"
 
                 # Datasource
                 paths.js + "/metamac/modules/datasource/helper/ApiIndicatorResponseToApiResponse.js"
@@ -128,6 +126,7 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/utils/FullScreen.js"
                 paths.js + "/metamac/modules/dataset/utils/URNUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/InternationalizationUtils.js"
+                paths.js + "/metamac/modules/dataset/utils/Select2Utils.js"
                 paths.js + "/metamac/modules/dataset/utils/DimensionsUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/QueryParamsUtils.js"
                 paths.js + "/metamac/modules/dataset/utils/TemporalUtils.js"
@@ -142,16 +141,19 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/components/sidebar/SidebarStateModel.js"
                 paths.js + "/metamac/components/sidebar/SidebarView.js"
                 paths.js + "/metamac/components/searchbar/SearchbarView.js"
-                paths.js + "/metamac/components/accordion/AccordionView.js"
-                paths.js + "/metamac/components/accordion/AccordionItemView.js"
                 paths.js + "/metamac/components/select/SelectView.js"
                 paths.js + "/metamac/components/toggleable/ToggleableView.js"
+                paths.js + "/metamac/components/input/NumericInputView.js"
                 paths.js + "/metamac/components/modal/ModalView.js"
                 paths.js + "/metamac/components/modal/ConfirmationModalView.js"
                 paths.js + "/metamac/components/modal/ExportOptionsModalView.js"
                 paths.js + "/metamac/components/modal/PermalinkConfigModalView.js"
                 paths.js + "/metamac/components/modal/EmbedConfigModalView.js"
                 paths.js + "/metamac/components/modal/InformationModalView.js"
+                paths.js + "/metamac/components/modal/ShareModalView.js"
+                paths.js + "/metamac/components/modal/SaveModalView.js"
+                paths.js + "/metamac/components/modal/EmbedModalView.js"
+                paths.js + "/metamac/components/navigationTabs/NavigationTabsView.js"
 
                 # filters
                 paths.js + "/metamac/modules/dataset/filter/FilterOptionsDimensionRestriction.js"
@@ -166,16 +168,12 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/filter/models/FilterDimension.js",
                 paths.js + "/metamac/modules/dataset/filter/models/FilterDimensions.js"
 
-                paths.js + "/metamac/modules/dataset/filter/popup/Filter-dimension-view.js"
-                paths.js + "/metamac/modules/dataset/filter/popup/Filter-view.js"
-
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarCategoryView.js"
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarDimensionActionsView.js"
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarDimensionView.js"
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarMultidatasetView.js"
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarMultidatasetNodeView.js"
                 paths.js + "/metamac/modules/dataset/filter/sidebar/FilterSidebarView.js"
-                paths.js + "/metamac/modules/dataset/filter/sidebar/OrderSidebarView.js"
 
                 # visual elements
                 paths.js + "/metamac/modules/dataset/visual-element/Base.js"
@@ -187,12 +185,14 @@ module.exports = (grunt) ->
                 paths.js + "/metamac/modules/dataset/visual-element/Line.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Table.js"
                 paths.js + "/metamac/modules/dataset/visual-element/Map.js"
+                paths.js + "/metamac/modules/dataset/visual-element/Selection.js"
+                paths.js + "/metamac/modules/dataset/visual-element/ApiEndpoints.js"
                 paths.js + "/metamac/modules/dataset/ErrorView.js"
+
                 # canvas table
                 paths.js + "/libs/lru.js"
                 paths.js + "/libs/jquery.hotkeys.js"
                 paths.js + "/libs/key_status.js"
-                paths.js + "/libs/jquery.ajaxmanager.js"
                 paths.js + "/metamac/modules/dataset/visual-element/table/Utils.js"
                 paths.js + "/metamac/modules/dataset/visual-element/table/primitives/Point.js"
                 paths.js + "/metamac/modules/dataset/visual-element/table/primitives/Cell.js"
@@ -269,7 +269,7 @@ module.exports = (grunt) ->
                 src: paths.less + '/bootstrap.less'
                 dest: paths.assets + '/metamac.css'
                 options:
-                    yuicompress: true
+                    compress: true
 
         handlebars:
             compile:
@@ -305,6 +305,19 @@ module.exports = (grunt) ->
             main: {
                 src: 'src/main/fonts/*',
                 dest: 'target/',
+                flatten: true,
+                expand: true
+            }
+            fontAwesome: {
+                src: paths.nodeModules + '/@awesome.me/kit-f6e7c4d1c0/icons/css/all.css',
+                dest: paths.less + '/vendor/fontAwesome.less',
+                options: {
+                    process: (content) -> content.replace(/url\((\s*["']?)\.\.\/webfonts\//g, 'url($1webfonts/')
+                }
+            }
+            fontAwesomeWebfonts: {
+                src: paths.nodeModules + '/@awesome.me/kit-f6e7c4d1c0/icons/webfonts/*',
+                dest: 'target/webfonts/',
                 flatten: true,
                 expand: true
             }
@@ -363,6 +376,11 @@ module.exports = (grunt) ->
                     stylesheet : "less"
                     hashes : false
                     syntax: "bootstrap",
+                    template: 'src/main/fonts/icons-template.less',
+                    templateOptions: {
+                        baseClass: '',
+                        classPrefix: 'icon-'
+                    },
                     htmlDemo : true,
                     autoHint : false,
                     types: 'eot,woff,ttf,svg',
@@ -375,8 +393,8 @@ module.exports = (grunt) ->
         grunt.task.run('mocha:spec')
 
     grunt.registerTask 'test', ['concat','mocha:all']
-    grunt.registerTask 'dev', ['clean', 'copy', 'less:dev', 'handlebars', 'concat']
-    grunt.registerTask 'build', ['clean', 'copy', 'less:pro', 'handlebars', 'uglify']
+    grunt.registerTask 'dev', ['clean', 'webfont', 'copy', 'less:dev', 'handlebars', 'concat']
+    grunt.registerTask 'build', ['clean', 'webfont', 'copy', 'less:pro', 'handlebars', 'uglify']
 
     grunt.registerTask 'bdd', ['connect', 'open:test', 'watch' ]
     grunt.registerTask 'serve', ['connect', 'open:preview', 'watch' ]

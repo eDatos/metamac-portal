@@ -10,6 +10,10 @@
 
         template: App.templateManager.get("components/modal/modal-permalink-config"),
 
+        tagName: 'form',
+        className: 'modal-permalink-config',
+        attributes: { novalidate: '' },
+
         events: {
             "submit": "createPermalinkAndSubmit",
             "change #update-periods": "showUpdatePeriodsOptions",
@@ -23,6 +27,7 @@
         initialize: function () {
             this.filterDimensions = this.options.filterDimensions;
             this.onSubmit = this.options.onSubmit || (function() {});
+            this.customButtonText = this.options.customButtonText;
         },
 
         createPermalinkAndSubmit: function(e) {
@@ -43,12 +48,13 @@
             var dynamicSelectionBuilder = DynamicSelectionBuilder();
             if(this.areUpdatePeriodsOptionsNecessary()) {
                 if(this.$("#periods-quantity")[0].checked) {
-                    dynamicSelectionBuilder.selectNLastTemporalDimensionCategories(this.$("#periods-quantity-related-input")[0].valueAsNumber);
+                    dynamicSelectionBuilder.selectNLastTemporalDimensionCategories(this.periodsQuantityView.getValue());
                 } else if(this.$("#periods-all")[0].checked) {
                     dynamicSelectionBuilder.selectAllTemporalDimensionCategories();
                 } else {
+                    const self = this;
                     var chosenCategoryAttributes = this.getTemporalDimensionCategories().find(function(val) {
-                        return val.get("id") === self.$("#periods-date-related-input")[0].value
+                        return val.get("id") === self.$("#periods-date-related-input")[0].value;
                     }).attributes;
                     dynamicSelectionBuilder.selectTemporalDimensionCategoriesAfterDate(chosenCategoryAttributes);
                 }
@@ -57,7 +63,7 @@
                 this.filterDimensions,
                 dynamicSelectionBuilder.build(),
                 this.isLastVersionSelected());
-            return DatasetPermalink.savePermalink(permalinkContent, this.$el.find("#modal-permalink-captcha")[0], this._captchaOptions);
+            return DatasetPermalink.savePermalink(permalinkContent, this.$el.find("#modal-captcha")[0], this._captchaOptions);
         },
 
         isLastVersionSelected: function () {
@@ -76,8 +82,8 @@
             if(this.isThereTemporalDimension() && this.areUpdatePeriodsOptionsNecessary()) {
                 if (!this.$("#periods-all")[0].checked && !this.$("#periods-quantity")[0].checked && !this.$("#periods-date")[0].checked) {
                     return I18n.t("modal.permalinkConfig.error.periods");
-                } else if (!this.$("#periods-quantity-related-input")[0].disabled) {
-                    var value = this.$("#periods-quantity-related-input")[0].valueAsNumber;
+                } else if (!this.periodsQuantityView.isDisabled()) {
+                    const value = this.periodsQuantityView.getValue();
                     if (!Number.isInteger(value) || value < 1) {
                         return I18n.t("modal.permalinkConfig.error.quantity");
                     }
@@ -96,18 +102,18 @@
         },
 
         onDataQuantityChosen: function () {
-            this.$("#periods-quantity-related-input")[0].disabled = false;
-            this.$("#periods-date-related-input")[0].disabled = true;
+            this.periodsQuantityView.setDisabled(false);
+            this.$("#periods-date-related-input").prop("disabled", true).trigger("change");
         },
 
         onDataDateChosen: function () {
-            this.$("#periods-quantity-related-input")[0].disabled = true;
-            this.$("#periods-date-related-input")[0].disabled = false;
+            this.periodsQuantityView.setDisabled(true);
+            this.$("#periods-date-related-input").prop("disabled", false).trigger("change");
         },
 
         onDataAllChosen: function () {
-            this.$("#periods-date-related-input")[0].disabled = true;
-            this.$("#periods-quantity-related-input")[0].disabled = true;
+            this.periodsQuantityView.setDisabled(true);
+            this.$("#periods-date-related-input").prop("disabled", true).trigger("change");
         },
 
         hideError: function () {
@@ -145,19 +151,33 @@
                 thereAreVersions: this.areThereVersions(),
                 thereIsTemporalDimension: this.isThereTemporalDimension(),
                 defaultCustomQueryName: this.filterDimensions.metadata.getTitle(),
-                dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes })
+                dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes; }),
+                buttonText: this.customButtonText || I18n.t("modal.permalinkConfig.button.submit")
             }));
 
+            if (this.isThereTemporalDimension()) {
+                this.periodsQuantityView = new App.components.input.NumericInputView({ min: 1 });
+                this.$el.find('#periods-quantity-input').replaceWith(this.periodsQuantityView.render().$el);
+                this.periodsQuantityView.$el.addClass('radio-related-input');
+                this.periodsQuantityView.setDisabled(true);
+
+                this.$el.find("#periods-date-related-input").select2({
+                    dropdownParent: $('.metamac-container'),
+                    minimumResultsForSearch: Infinity,
+                    width: 'style'
+                }).on('select2:open', function () {
+                    App.Select2Utils.onOpen($(this), 'modal-form-select2-dropdown');
+                }).siblings(".select2").addClass("radio-related-input");
+            }
+
             this._captchaOptions = {
-                captchaEl: this.$el.find("#modal-permalink-captcha")[0],
+                captchaEl: this.$el.find("#modal-captcha")[0],
                 action: "portal_permalink",
                 buttonText: I18n.t("captcha.button.text"),
                 labelText: I18n.t("captcha.label.text"),
                 withButton: false,
                 apiKey: App.config["apiKey"]
             };
-
-            this.$el.find("#periods-quantity-related-input").mouseup(e => e.stopPropagation());
             if (typeof Edatos !== 'undefined' && Edatos.captcha) {
                 var self = this;
                 if (Edatos.UserManagement) {

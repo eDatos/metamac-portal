@@ -6,11 +6,11 @@ $(function() {
       String.fromCharCode(event.which).toLowerCase();
   }
   
-  $(document).bind("keydown", function(event) {
+  $(document).on("keydown", function(event) {
     keydown[keyName(event)] = true;
   });
   
-  $(document).bind("keyup", function(event) {
+  $(document).on("keyup", function(event) {
     keydown[keyName(event)] = false;
   });
 });

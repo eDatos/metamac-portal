@@ -116,6 +116,7 @@ public class ApplicationStartup extends ApplicationStartupListener {
             WebUtils.setGeographicalGranularityUrn(configurationService.retrieveDefaultCodelistGeographicalGranularityUrn());
             WebUtils.setAnalyticsGoogleTrackingId(configurationService.retrieveAnalyticsGoogleTrackingId());
             WebUtils.setCellThreshold(portalConfigurationService.retrieveExportExcelCellThreshold());
+            WebUtils.setAppStyleCssUrl(portalConfigurationService.retrieveAppStyleCssUrl());
         } catch (MetamacException e) {
             log.error("Error retrieving application configuration", e);
         }
@@ -287,6 +288,9 @@ public class ApplicationStartup extends ApplicationStartupListener {
 
         // Excel
         checkRequiredProperty(PortalConfigurationConstants.PORTAL_EXPORT_EXCEL_CELL_THRESHOLD);
+
+        // App style
+        checkRequiredProperty(PortalConfigurationConstants.APP_STYLE_CSS_URL);
 
         // Unit measure
         checkOptionalProperty(PortalConfigurationConstants.UNIT_MEASURE);

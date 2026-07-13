@@ -1,31 +1,65 @@
 @import "./select2-original";
+@import "../../variables";
 
 .select2-container {
     display: block;
- 
-    .select2-selection--single {
-        height: inherit;
+
+    .select2-selection[aria-expanded="true"] .select2-selection__arrow {
+        transform: rotateZ(180deg);
     }
 }
+
 .select2-container--default {
     .select2-selection--single {
-        .border-radius(0);
-        border: none;
-        height: 16px;
+        .native-input;
+        display: flex;
+        flex-direction: row;
+        gap: var(--edatos-spacing-x-xs);
+        align-items: center;
 
         .select2-selection__rendered {
             line-height: inherit;
             color: inherit;
-            padding-top: 2px;
+            padding: 0;
+            width: 100%;
         }
+
         .select2-selection__arrow {
-            height: 0;
-            top: 8px;
+            transition: transform 0.2s linear;
+            position: static;
+            width: auto;
+            height: auto;
+
+            b {
+                &:extend(.visualizer-wrapper .fa all);
+                .fa-regular;
+                .fa-chevron-down;
+
+                position: static;
+                width: min-content;
+                height: 100%;
+                margin: 0;
+                border: none;
+            }
+        }
+
+        &[aria-disabled="true"] {
+            .native-input.disabled;
         }
     }
+
+    &.select2-container--open.select2-container--below .select2-selection.select2-selection--single {
+        border-radius: var(--edatos-border-radius-xs) var(--edatos-border-radius-xs) 0 0;
+    }
+
+    &.select2-container--open.select2-container--above .select2-selection.select2-selection--single {
+        border-radius: 0 0 var(--edatos-border-radius-xs) var(--edatos-border-radius-xs);
+    }
+
     .select2-results__options {
         margin: 0;
         list-style: none;
+        position: relative;
 
         li {
             background: none;
@@ -39,7 +73,40 @@
 }
 
 .select2-container--open .select2-dropdown {
-    left: -3px;
-    top: -4px;
-    box-sizing: content-box;
+    border: none;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
+
+    &.select2-dropdown--below {
+        border-radius: 0 0 var(--edatos-border-radius-xs) var(--edatos-border-radius-xs);
+        clip-path: inset(0 -30px -30px -30px);
+    }
+
+    &.select2-dropdown--above {
+        border-radius: var(--edatos-border-radius-xs) var(--edatos-border-radius-xs) 0 0;
+        clip-path: inset(-30px -30px 0 -30px);
+    }
+
+    .select2-results__options {
+        display: flex;
+        flex-direction: column;
+        gap: var(--edatos-spacing-y-xs);
+        padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
+        margin-bottom: var(--edatos-spacing-y-sm);
+
+        .select2-results__option {
+            word-break: break-word;
+            line-height: var(--edatos-line-height-md);
+            font-size: var(--edatos-font-size-sm);
+            padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
+            border-radius: var(--edatos-border-radius-xs);
+            background-color: transparent;
+            color: var(--edatos-color-secondary-100);
+            font-weight: var(--edatos-font-weight-regular);
+            align-content: center;
+
+            &:hover {
+                background-color: var(--edatos-color-gray-5);
+            }
+        }
+    }
 }

@@ -118,17 +118,17 @@
 
         _addExitFullScreenListeners : function () {
             if (this.browserHasFullScreenSupport()) {
-                this.$document.bind(this.events.change, this._didExitFullScreen);
-                this.$document.bind(this.events.error, this._didExitFullScreen);
+                this.$document.on(this.events.change, this._didExitFullScreen);
+                this.$document.on(this.events.error, this._didExitFullScreen);
             } else {
-                this.$document.bind('keydown', this._keydown);
+                this.$document.on('keydown', this._keydown);
             }
         },
 
         _removeExitFullScreenListeners : function () {
-            this.$document.unbind(this.events.change, this._didExitFullScreen);
-            this.$document.unbind(this.events.error, this._didExitFullScreen);
-            this.$document.unbind('keydown', this._keydown);
+            this.$document.off(this.events.change, this._didExitFullScreen);
+            this.$document.off(this.events.error, this._didExitFullScreen);
+            this.$document.off('keydown', this._keydown);
         },
 
         _keydown : function (e) {

@@ -1,0 +1,16 @@
+<p>{{ message "filter.embed.instructions" }}</p>
+<textarea readonly="readonly">
+<div id="{{defaultId}}"></div>
+<script src="{{widgetUrl}}"></script>
+<script>datasetWidget({
+    id: "{{defaultId}}",
+    width: {{defaultWidth }},
+    height: {{defaultHeight }},
+    params: "{{params}}",
+    sharedVisualizerUrl: "{{sharedVisualizerUrl}}",
+    locale: "{{locale}}",
+    title: {
+        {{locale}}: "{{title}}"
+    }
+})</script>
+</textarea>

@@ -122,7 +122,7 @@
             fieldClass = _.isUndefined(fieldClass) ? "" : fieldClass;
             var target = targetBlank ? " target='_blank'" : "";
             var href = Handlebars.Utils.escapeExpression(value.href);
-            var name = value.name;
+            const name = value.name || href;
             result = href ? '<a href=' + href + target + ' class="' + fieldClass + '">' : '';
             if (!_.isUndefined(iconClass)) {
                 result += '<i class="' + iconClass + '"></i>';
@@ -146,13 +146,11 @@
         fieldClass = _.isUndefined(fieldClass) ? "field" : fieldClass;
         var result = '';
         if (type !== 'resourceButton' && (value || allowEmptyValue)) {
-            result +=
-                '<div class="' + fieldClass + '" >' +
-                '<span class="metadata-title">';
-            result += localizeLabel ? I18n.t(label) : label;
-            result += '</span>';
-            result +=
-                '<div class="metadata-value">';
+            result += `<div class="${fieldClass}" >`;
+            if (label) {
+                result += `<span class="metadata-title">${localizeLabel ? I18n.t(label) : label}</span>`;
+            }
+            result += '<div class="metadata-value">';
 
             if (type === "date") {
                 value = Handlebars.Utils.escapeExpression(value);
@@ -164,10 +162,9 @@
                 result += resourceOutput(value, targetBlank);
             } else {
                 value = _.isArray(value) ? value.join(", ") : value;
-                value = Handlebars.Utils.escapeExpression(value);
+                value = App.Helpers.cleanHtml(value);
                 value = resourceLink(value, 0);
-                //result += Handlebars.helpers.iString(value) +
-                result += htmlDecode(value);
+                result += value;
             }
 
             result += '</div>';
@@ -245,7 +242,7 @@
 
             for (i = 0; i < itemsLength; i++) {
                 item = items[i];
-                out = out + $.trim(options.fn(item));
+                out = out + options.fn(item).trim();
                 if (i !== (items.length - 1)) {
                     out += separator;
                 }

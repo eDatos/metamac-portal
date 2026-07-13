@@ -1,0 +1,16 @@
+<div class="navigation-tabs">
+    {{#each tabs}} {{#if enabled}}
+    <a data-type="{{type}}" title="{{title}}" {{#if link}} target="empty" href="{{link}}" {{/if}}>
+        {{ title }}
+    </a>
+    {{/if}} {{/each}}
+</div>
+<div class="navigation-subtabs">
+    {{#each tabs}}
+    {{#if subtabs}}
+    {{#each subtabs}}
+    <a data-type="{{type}}" data-parent-type="{{../type}}" title="{{title}}">{{ title }}</a>
+    {{/each}}
+    {{/if}}
+    {{/each}}
+</div>

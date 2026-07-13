@@ -1,52 +1,46 @@
-@btnPadding: 3px;
+@import "../variables";
+
+@minWidthToShowButtonsText: 64rem;
+@minWidthToShowButtonsTextWidget: 80rem;
+
+.horizontal-buttons-group-compact() {
+    gap: var(--edatos-spacing-x-xs);
+
+    button {
+        height: min-content;
+        width: var(--edatos-spacing-x-lg);
+        padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-xs);
+
+        > span, > i.fa-chevron-down {
+            display: none;
+        }
+    }
+}
+
 .options-bar  {
     .clearfix;
     width: 100%;
-    height: @datasetVisualizationOptionsBarHeight;
-    background: @optionsBarColor;
-    padding: @btnPadding;
-    .box-sizing(border-box);
+    box-sizing: border-box;
     border-left: 0;
-    
-    .options-bar-btn {
-    	display: inline-block;
-    	background-image:none;
-    	background-color: @optionsBarColor;
-        color: @istacBlack;
-    	box-shadow: none;
-    	border:none; 
-        line-height: inherit;
-        padding-left: 2px;
-        padding-right: 2px;   	
-    }
-    .options-bar-btn-side {
-        margin: -@btnPadding;
-        padding: 0 10px;
-        height: @datasetVisualizationOptionsBarHeight; 
-        i {
-            font-size: @lIconHeight;
-        }       
-    }
+    padding: 0;
+    height: auto;
+    background: transparent;
 
-    .options-bar-btn-side-left {
-        .options-bar-btn-side;
-        margin-right: 5px;
-        .border-radius(0 0 0 @borderRadiusSmall);
-        border-right: 1px solid @istacGreyMedium;
-    } 
+    .horizontal-buttons-group {
+        display: flex;
+        flex-direction: row;
+        gap: var(--edatos-spacing-x-sm);
 
-    .options-bar-btn-side-right {
-        .options-bar-btn-side;
-        margin-left: 5px;
-        .border-radius(0 0 @borderRadiusSmall 0);
-        border-left: 1px solid @istacGreyMedium;
-    }
+        body:not(:has(.widget-wrapper)) & {
+            @media (max-width: @minWidthToShowButtonsText) {
+                .horizontal-buttons-group-compact();
+            }
+        }
 
-    .options-bar-btn-side-active {
-        background-color: @istacBlueDark;
-        color: @istacWhite;
-        i:before {
-            color: @istacWhite;
+        body:has(.widget-wrapper) & {
+            @media (max-width: @minWidthToShowButtonsTextWidget) {
+                .horizontal-buttons-group-compact();
+            }
         }
     }
 }

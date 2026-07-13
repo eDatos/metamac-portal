@@ -1,73 +1,26 @@
 // Font sizes
-@defaultFontSize: 11px;
-@mapLegendFontSize: 11px;
-
-// Istac - See Constants.js
-@istacBlueWhite: #B3D9FF;
-@istacBlueLight: #56B5E6;
-@istacBlueMedium: #1C547E;
-@istacBlueDark: #003366;
-@istacYellow: #EBCC5C;
-
-@istacWhite: #FFFFFF;
-@istacGreyLight: #EBEBEB;
-@istacGreyMedium: #ACACAC;
-@istacGreyDark: #808080;
-@istacBlack: #222222;
-
-@istacFontSansSerifFamily: Helvetica, Arial, sans-serif;
-@istacFontSansSerif: @defaultFontSize @istacFontSansSerifFamily;
-@istacFontSerifFamily: Tahoma, geneva, arial, sans-serif;
-
-@imgCheckboxChecked: url("../../images/checkboxChecked.png");
-@imgCheckboxNoChecked: url("../../images/checkboxNoChecked.png");
-
-// Sprite icons path
-// -------------------------
-@iconSpritePath: "../../images/glyphicons-halflings.png";
-@iconWhiteSpritePath: "../../images/glyphicons-halflings-white.png";
-
-// Options Bar
-@lIconHeight: 28px;
-@mIconHeight: 18px;
-@mIconWidth: 20px;
-@datasetVisualizationOptionsBarHeight: 40px;
-@datasetVisualizationWidgetTitleHeight: 23px;
-@widgetModalMaxHeight: 95%;
-@optionsBarColor: @istacGreyLight;
-
-// Dimensions Bar
-@dimensionNonFixedHeight: 23px;
-@dimensionFixedHeight: 41px;
-
-@dimensionsBarTypeTable: 2 * @dimensionNonFixedHeight;
-@dimensionsBarTypeColumn: 2 * @dimensionFixedHeight;
-@dimensionsBarTypeDefault: 1 * @dimensionNonFixedHeight + @dimensionFixedHeight;
-
-// Navbar
-// -------------------------
-@navbarHeight: 40px;
-
-// Selectors
-@filterSidebarDimensionContentHeight: 300px;
+@defaultFontSize: 1rem;
 
 // Z-indexes
-@zIndex10: 1010;
-@zIndex30: 1030;
-@zIndex40: 1040;
+@zindexDropdown:      1000;
+@zindexTooltip:       1020;
+@zindexModalBackdrop: 1040;
+@zindexModal:         1050;
+@zindexOverlay:       9999;
 
-// Tooltip
-@zindexTooltip: @zIndex30;
-@tooltipColor: @istacBlack;
-@tooltipBackground: @istacWhite;
-@tooltipArrowWidth: 5px;
-@tooltipArrowColor: @tooltipBackground;
+// Cross-component
+@contenidoInlinePadding: var(--edatos-spacing-x-lg);
 
-@borderRadiusSmall: 0; // 6px;
-@borderRadiusMedium: 0; // 9px;
-@borderRadiusBig: 0; // 10px;
+// @media
+@mobileMaxWidthBreakpoint: 576px;
+@tabletMaxWidthBreakpoint: 768px;
 
-//alert
-@backgroundAlertColor: #f2dede;
-@borderAlertColor: #ebccd1;
-@alertColor: #843534;
+// Variables shared with JS
+:root {
+    --scroll-button-content-wrapper-margin-inline: 10;
+    --scroll-button-content-wrapper-margin-inline-widget: 5;
+    --rights-holder-font-size: 12;
+    --rights-holder-font-weight: var(--edatos-font-weight-light);
+    --rights-holder-font-color: var(--edatos-color-gray-80);
+    --rights-holder-font-family: var(--edatos-font-family);
+}

@@ -11,19 +11,21 @@ I18n.translations.en = {
     },
     filter: {
         button: {
-            edit: "Change selection",
+            selection: "Selection",
             info: "Info",
-            table: "Datatable",
-            column: "Columns chart",
-            bar: "Bars chart",
-            line: "Lines chart",
-            map: "Map",
+            table: "Table",
+            column: "Columns",
+            bar: "Bars",
+            line: "Lines",
+            charts: "Charts",
+            maps: "Maps",
+            map: "Choropleth map",
             mapbubble: "Bubble map",
-            fullscreen: "Fullscreen",
+            fullscreen: "Maximize",
             helpUrl: "Help",
             share: "Share",
             download: "Download",
-            apiDownload: "API",
+            apiEndpoints: "API queries",
             save: "Save",
             accept: "Accept",
             cancel: "Cancel",
@@ -49,7 +51,7 @@ I18n.translations.en = {
             },
             attributes: {
                 modal: {
-                    title: "Attributes inclusion",
+                    title: "DOWNLOAD - Options",
                     question: "Include attributes in the download"
                 }
             },
@@ -61,13 +63,16 @@ I18n.translations.en = {
                 title: "Decimal separator",
                 comma: "Comma",
                 dot: "Dot"
-            }
-        },
-        apiDownload: {
-            modal: {
-                title: "Download via API",
-                info: "For more information, see the {{hrefTag}} section, which explains how to construct the API call for the entire resource and for the current selection."
             },
+            menu: {
+                xlsx: "XLSX format",
+                tsv: "TSV format",
+                px: "PX format",
+                jsonstat: "JSONSTAT format",
+                svg: "SVG format",
+                png: "PNG format",
+                pdf: "PDF format"
+            }
         },
         share: {
             permanent: "Permanent link:"
@@ -186,7 +191,7 @@ I18n.translations.en = {
         mapbubble: {
             nomap: "No map available"
         },
-        noSelection: "You must choose at least one category on each dimension",
+        noSelection: "You must choose at least one category on each dimension.",
         selectAtLeastTwoItems: "You must select at least two values of the same geographical granularity",
         noShapesAvailable: "No map available for the selected values",
         loading: "Loading data..."
@@ -240,6 +245,10 @@ I18n.translations.en = {
             formatExtentObservations: "Table size",
             lastUpdate: "Last update date",
             dateNextUpdate: "Next update date",
+            header: {
+                lastUpdate: "Last update: {{dateLastUpdate}}",
+                nextUpdate: "Next update: {{dateNextUpdate}}",
+            },
             updateFrequency: "Update frequency",
             statisticOfficiality: "Statistic officiality",
             bibliographicCitation: "Bibliographic citation",
@@ -272,11 +281,11 @@ I18n.translations.en = {
             apiDocumentationUrl: "API documentation access",
             apiUrl: {
                 title: "API access to the resource",
-                apiDownload: "The resource can be obtained in the following formats: {{formats}}. To build the API call, just add the format to the end of the URL. For example, to build the call in {{formatExample}} format it would be done as follows: URL.{{formatExampleLowercase}}"
+                apiEndpoints: "The resource can be obtained in the following formats: {{formats}}. To build the API call, just add the format to the end of the URL. For example, to build the call in {{formatExample}} format it would be done as follows: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Access to the current selection in the API",
-                apiDownload: "The selection can also be obtained in different formats ({{formats}}). In this case, to build the API call it must be taken into account that the format must be indicated before passing the parameters, for example: URL.{{formatExampleLowercase}}?PARAMETERS"
+                apiEndpoints: "The selection can also be obtained in different formats ({{formats}}). In this case, to build the API call it must be taken into account that the format must be indicated before passing the parameters, for example: URL.{{formatExampleLowercase}}?PARAMETERS"
             },
             nextVersion: {
                 title: "Next update",
@@ -421,9 +430,22 @@ I18n.translations.en = {
             }
         },
         embedConfig: {
+            button: {
+                submit: "View code",
+            },
             label: {
                 title: "Title"
             }
+        },
+        shareConfig: {
+            button: {
+                submit: "View link",
+            },
+        },
+        saveConfig: {
+            button: {
+                submit: "View descriptors",
+            },
         }
     },
     captcha: {
@@ -451,5 +473,9 @@ I18n.translations.en = {
         common: {
             unknown: "Unknown error"
         }
+    },
+    operations: {
+        empty: "There are no operations available.",
+        error: "Unable to load the list of operations."
     }
 };

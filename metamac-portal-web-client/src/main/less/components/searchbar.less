@@ -1,42 +1,38 @@
+@import "../variables";
+
+@clearIconFontSize: @defaultFontSize;
+
 .searchbar {
     position: relative;
 
     input {
+        box-sizing: border-box;
         display: block;
+        background: var(--edatos-color-white-100);
+        color: var(--edatos-color-gray-60);
+        line-height: var(--edatos-spacing-y-xl);
         width: 100%;
-        .box-sizing(border-box);
-        padding: 0 6px;
-        height: 24px;
-        .border-radius(0);
-    }
-
-
-    .searchbar-icon {
-        position:absolute;
-        padding-left: 0;
-        width: 13px;
-        top: 5px;
-
-        &:before {
-            color: @istacGreyMedium;
-            font-size: 14px;
-        }
+        padding: var(--edatos-spacing-y-xs) calc(var(--edatos-spacing-x-lg) + @clearIconFontSize + var(--edatos-spacing-x-xs)) var(--edatos-spacing-y-xs) var(--edatos-spacing-x-lg);
+        font-weight: var(--edatos-font-weight-semibold);
+        border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-40);
     }
 
     .searchbar-icon-clear {
-        .searchbar-icon;
-        .icon-times;
-        right: 6px;
-    }
+        &:extend(.visualizer-wrapper .fa all);
+        .fa-thin;
+        .fa-xmark;
+        height: 100%;
+        align-content: center;
+        position: absolute;
+        top: 0;
+        right: var(--edatos-spacing-x-lg);
 
-    .searchbar-clear {
-        &:link, &:active, &:visited {
-            color: @istacGreyDark;
+        &:before {
+            color: var(--edatos-color-gray-40);
         }
 
-        &:hover {
-            color: @istacBlack;
+        &:hover:before {
+            color: var(--edatos-color-black-100);
         }
     }
-
 }

@@ -8,6 +8,7 @@ public class Collection {
     protected InternationalString description;
     protected InternationalString keywords;
     protected CollectionData      data;
+    protected CollectionMetadata  metadata;
 
     public InternationalString getName() {
         return name;
@@ -36,7 +37,16 @@ public class Collection {
     public CollectionData getData() {
         return data;
     }
+
     public void setData(CollectionData value) {
         data = value;
+    }
+
+    public CollectionMetadata getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(CollectionMetadata value) {
+        metadata = value;
     }
 }

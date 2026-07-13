@@ -13,6 +13,9 @@
             "selection": "selection",
             "selection/permalink/:permalinkId": "selectionPermalink",
 
+            "selection/:visualizationType": "selectionType",
+            "selection/:visualizationType/permalink/:permalinkId": "selectionTypePermalink",
+
             "visualization": "visualization",
             "visualization/permalink/:permalinkId": "visualizationPermalink",
 
@@ -42,6 +45,18 @@
 
         selectionPermalink: function () {
             var args = this._nameArguments(["permalinkId"], arguments);
+            args = _.defaults(args, App.queryParams);
+            this.datasetController.showDatasetSelection(args);
+        },
+
+        selectionType: function () {
+            var args = this._nameArguments(["visualizationType"], arguments);
+            args = _.defaults(args, App.queryParams);
+            this.datasetController.showDatasetSelection(args);
+        },
+
+        selectionTypePermalink: function () {
+            var args = this._nameArguments(["visualizationType", "permalinkId"], arguments);
             args = _.defaults(args, App.queryParams);
             this.datasetController.showDatasetSelection(args);
         },

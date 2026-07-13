@@ -1,4 +1,5 @@
 {{#if showHeader}}
+<!-- As of this comment this is not in use, it was used in the past by OPENCMS. Kept for potential future use. -->
 <div class="visualizer-header">
     <div>
 
@@ -18,14 +19,10 @@
     {{/if}}
 </div>
 {{/if}}
-<div class="dataset-visualization-container">
-    {{#if isWidget}}
-    <h2 class="dataset-visualization-title"><a target="_blank" href="{{ metadata.visualizerUrlForWidget }}" title="{{ metadata.title }}">{{ metadata.title }}</a></h2>
-    {{/if}}
-    <div class="dataset-sidebar-visualization-container {{#if noDimensions}}no-dimensions{{/if}}">">
-
-    </div>
-    <div class="dataset-visualization-options-bar">
-
-    </div>
-</div>
+{{#if isWidget}}
+<h2 class="dataset-visualization-title"><a target="_blank" href="{{ metadata.visualizerUrlForWidget }}" title="{{ metadata.title }}">{{ metadata.title }}</a></h2>
+{{ else }}
+<div class="navigation-tabs-region"></div>
+{{/if}}
+<div class="dataset-visualization-options-bar"></div>
+<div class="dataset-sidebar-visualization-container"></div>

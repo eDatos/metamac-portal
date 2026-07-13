@@ -1,0 +1,59 @@
+<div class="metadata-group">
+	<div class="info-section metadata-accordion">
+		<div class="info-section-title">
+			{{ message "entity.dataset.apiDocumentationUrl" }}
+		</div>
+		<div class="info-section-content">
+			<ul>
+				<li>{{ fieldOutput "" apiDocumentationUrl "resource" true }}</li>
+			</ul>
+		</div>
+	</div>
+	<div class="info-section metadata-accordion">
+		<div class="info-section-title">
+			{{ message "entity.dataset.apiUrl.title" }}
+		</div>
+		<div class="info-section-content">
+			<ul>
+				<li>
+					<div class="field">
+						<div class="metadata-value">
+							{{ apiEndpointsMessage }}
+						</div>
+						{{#each url}}
+						<div class="metadata-value resource-format">
+							<span>{{ format }}: </span>
+							{{ resourceOutput this true }}
+						</div>
+						{{/each}}
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{{#if selectionIsVisible}}
+	<div class="info-section metadata-accordion">
+		<div class="info-section-title">
+			{{ message "entity.dataset.selectionApiUrl.title" }}
+		</div>
+		<div class="info-section-content">
+			<ul>
+				<li>
+					<div class="field">
+						<div class="metadata-value">
+							{{ selectionApiEndpointsMessage }}
+						</div>
+						{{#each selectionUrl}}
+						<div class="metadata-value resource-format">
+							<span>{{ format }}: </span>
+							{{ resourceOutput this true }}
+						</div>
+						{{/each}}
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	{{/if}}
+</div>
+<div class="rights-holder">{{rightsHolder}}</div>

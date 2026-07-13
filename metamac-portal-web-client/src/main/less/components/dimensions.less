@@ -1,98 +1,66 @@
+@import "../variables";
+
 @dimensionPillWidth: 110px;
-@dimensionPillFrameWidth: 4px;
-@dimensionTitleWidth: 85px;
-@dimensionHeight: 23px;
-@zonesHorizontalPadding: 16px;
-@dimensionTitleWidthColumn: 72px;
-@h2LeftPadding: 4px;
+@dimensionSelectorBoxShadow: 0 0 3px 0 rgba(0, 0, 0, 0.15);
+@dimensionSelectorMaxWidth: 187px;
+@dimensionsGap: var(--edatos-spacing-x-2xs);
+
 .order-dimensions {
     .order-sidebar-zone {
-        &.drag-over {
-            .order-sidebar-dimensions,
-            h2 {
-                background: @istacGreyLight;
-                color: @istacBlack;
-            }
-        }
-
-        h2 {
-            margin: 0;
-            margin-bottom: -1px;
-            width: @dimensionTitleWidth - @h2LeftPadding;
-            float: left;
-
-            overflow: hidden;
-            white-space: nowrap;
-            font-size: 11px;
-
-            border: 1px solid @istacGreyMedium;        
-            color: @istacGreyMedium;
-            padding-left: @h2LeftPadding;
-            height: @dimensionHeight;
-            line-height: @dimensionHeight;
-
-            i:before {
-                margin-top: -2px;
-            }            
-        }
-
         .order-sidebar-dimensions {
-            white-space: nowrap;            
-            height: @dimensionHeight;
+            white-space: nowrap;
 
-            border: 1px solid @istacGreyMedium;
-            color: @istacGreyMedium;
-
-            &.has-header {
-                margin-left: @dimensionTitleWidth + 1px;
+            .scroll-button-content a:has(.select2-container--open) {
+                box-shadow: @dimensionSelectorBoxShadow;
             }
         }
 
-        &.has-selector {
-            h2,
-            .order-sidebar-dimensions {
-                height: @dimensionHeight + 16px;
-            }
-
-            .order-sidebar-dimension.dimension-pill {
-                .border-radius(@borderRadiusBig @borderRadiusBig 0 0);
-            }
-        }
-        
-        .order-sidebar-measure-attribute,
-        .order-sidebar-dimension {            
-            padding: 2px;
+        .order-sidebar-dimension {
+            --dimension-font-size: @defaultFontSize;
 
             /* IE9 bug changed divs with a, so this correct the new style */
             display: inline-block;
             width: @dimensionPillWidth;
-            text-overflow: ellipsis;
-            overflow: hidden;
-
+            overflow: clip;
             text-align: center;
+            color: var(--edatos-color-white-100);
+            border-radius: var(--edatos-border-radius-xs);
+            font-weight: var(--edatos-font-weight-semibold);
+            box-sizing: border-box;
+            border: none;
+            flex: 0 1 @dimensionSelectorMaxWidth;
+            outline: none;
 
-            border: 1px solid @istacGreyMedium;
-            border-bottom: 0;
-            &.drag-over {                
-                .drag-over-dimension;         
-            }                    
-
-            background-color: @istacGreyMedium;
-            color: @istacWhite;
-
-            &.active {
-                background-color: @istacBlueDark;
+            &.drag-over {
+                .drag-over-dimension;
             }
-                    
+
+
+            &:has(.select2-container--open) {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            .order-sidebar-dimension-label {
+                padding: var(--edatos-spacing-y-xs) var(--edatos-spacing-x-sm);
+                font-size: var(--dimension-font-size);
+                line-height: var(--edatos-line-height-xs);
+                display: inline-block;
+                box-sizing: border-box;
+                align-content: center;
+                background-color: var(--edatos-color-secondary-100);
+                width: 100%;
+                text-overflow: ellipsis;
+                overflow: clip;
+            }
+
             .dimension-select-geographic-granularity,
             .dimension-select-granularity,
             .fixed-dimension-select-category,
             .dimension-select-sortby,
             .select2-container .selection {
-                background: @istacWhite;
-                color: @istacGreyMedium;
-                margin: 2px 0 -2px -2px;
-                padding: 4px 0px 2px 0;
+                background: var(--edatos-color-white-100);
+                color: var(--edatos-color-gray-40);
 
                 text-align: left;
                 text-overflow: ellipsis;
@@ -100,189 +68,300 @@
 
                 border: none;
                 display: block;
-                width: @dimensionPillWidth + @dimensionPillFrameWidth;
-                font-size: 100%;
+                line-height: var(--edatos-line-height-xs);
+                padding-top: var(--edatos-spacing-y-xs);
+                padding-bottom: var(--edatos-spacing-y-xs);
+            }
+
+            .select2.select2-container {
+                .selection {
+                    box-sizing: border-box;
+                    width: 100%;
+                    margin: 0;
+                    padding-inline: var(--edatos-spacing-x-xs);
+
+                    .select2-selection, .select2-selection__rendered {
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+
+                .select2-selection__arrow b {
+                    .fa-thin;
+                }
+
+                .select2-selection--single {
+                    border: none;
+                    border-radius: 0;
+                    padding: 0;
+                    height: 100%;
+                    font-size: var(--dimension-font-size);
+                    font-weight: var(--edatos-font-weight-semibold);
+                    line-height: var(--edatos-line-height-xs);
+                    color: var(--edatos-color-gray-60);
+
+                    &:hover {
+                        background: transparent;
+                    }
+                }
             }
 
             &.dimension-pill {
-                .border-radius(@borderRadiusBig);
-                border-bottom: 1px solid @istacGreyMedium;
                 &.drag-over {
                     .drag-over-dimension;
                 }
-                margin: 3px 2px 2px 2px;
 
                 .dimension-select-geographic-granularity,
                 .dimension-select-granularity,
                 .fixed-dimension-select-category,
                 .dimension-select-sortby,
                 .select2-container .selection {
-                    padding: 0px 2px;
-                    height: inherit;
+                    height: 100%;
                 }
-            }    
+            }
         }
-        
+
         .order-sidebar-dimension-single-value {
-            display: flex;
-            box-sizing: border-box;
-            white-space: normal;
             height: 100%;
-
+            border-radius: 0;
             cursor: default;
-            text-decoration: none;
 
+            .order-sidebar-dimension-label {
+                height: 100%;
+            }
+        }
+    }
+
+    .dataset-dimensions {
+        display: flex;
+        flex-direction: row;
+        gap: var(--edatos-spacing-x-sm);
+    }
+
+    .dataset-dimensions-left, .dataset-dimensions-right {
+        display: grid;
+        height: auto;
+        border-radius: var(--edatos-border-radius-sm);
+        overflow: hidden;
+        gap: @dimensionsGap;
+
+        > .order-sidebar-zone-header,
+        > .order-sidebar-zone {
+            min-width: 0;
+        }
+
+        .order-sidebar-zone-header {
+            display: flex;
             align-items: center;
-            justify-content: center;            
-        }
-    }
-    
-    .dataset-dimensions-left {
-        padding-left: 1px;
-        
-        width: 100%;            
-        &.dataset-dimensions-left-0 {
-            width: 0;
-        }
-
-        &.dataset-dimensions-left-1 {
-            width: (@dimensionPillWidth + @dimensionPillFrameWidth) * 1 + 2px;
-        }
-        &.dataset-dimensions-left-2 {
-            width: (@dimensionPillWidth + @dimensionPillFrameWidth) * 2 + 2px;
-        }
-
-        &.dataset-dimensions-left-1,
-        &.dataset-dimensions-left-2 { 
-            .order-sidebar-zone {
-                .order-sidebar-dimensions {
-                    overflow: hidden;
-                }
-
-                &:last-child .order-sidebar-dimensions{
-                    .border-radius(0 0 @borderRadiusMedium 0); 
-                }
-            }
-        }
-                        
-        float: left;            
-        .order-sidebar-zone {
-            float: left;
-            margin-left: -1px;                              
-            h2 {
-                float: none;
-                width: initial;
-                margin-right: 0;
-            }
-            .order-sidebar-dimensions {
-                margin-left: 0;
-                margin-top: -1px;
-                margin-right: 0;
-            }
-
-            .order-sidebar-dimension {
-                margin: 0 -1px 0px -1px;
-                &.dimension-pill {
-                    margin: 2px;
-                    width: @dimensionPillWidth - 2 * 4px;
-                }
-            }
-
-            &.has-selector {
-                padding-top: 0;
-                h2 {
-                    height: @dimensionHeight;
-                }
-            }
-        }
-    }
-    .dataset-dimensions-right {            
-        padding-left: 0;            
-
-        &.dataset-dimensions-left-1 {
-            padding-left: (@dimensionPillWidth + @dimensionPillFrameWidth) * 1 + @zonesHorizontalPadding;                            
-        }            
-        &.dataset-dimensions-left-2 {
-            padding-left: (@dimensionPillWidth + @dimensionPillFrameWidth) * 2 + @zonesHorizontalPadding;            
-            
-        }
-        
-        &.dataset-dimensions-left-1,
-        &.dataset-dimensions-left-2 {
-            .order-sidebar-zone:last-child { 
-                .order-sidebar-dimensions.no-header, 
-                h2 {
-                    .border-radius(0 0 0 @borderRadiusMedium);
-                    overflow: hidden;
-                }
-            }
-        }
-
-        .order-sidebar-zone {             
-            width: 100%;
-            float: left;
+            border: none;
+            background: var(--edatos-color-gray-5);
+            color: var(--edatos-color-gray-60);
+            font-size: @defaultFontSize;
+            font-weight: var(--edatos-font-weight-semibold);
+            padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
             box-sizing: border-box;
+            white-space: nowrap;
+            margin: 0;
 
-            h2 {
-                width: @dimensionTitleWidthColumn;
+            i {
+                margin-right: var(--edatos-spacing-x-sm);
             }
+        }
+
+        .order-sidebar-zone {
+            flex: 1 1 100%;
+            display: flex;
+            flex-direction: row;
+            gap: @dimensionsGap;
+
+            &.no-header {
+                grid-row: 1 / -1;
+            }
+
             .order-sidebar-dimensions {
-                margin-left: @dimensionTitleWidthColumn + 1px + @h2LeftPadding;
-                border-right: none;
-                &.no-header {                
-                     margin-left: 0;
-                }                                  
+                border: none;
+                background: var(--edatos-color-gray-5);
+
+                .order-sidebar-dimension:not(.order-sidebar-dimension-single-value):hover .order-sidebar-dimension-label {
+                    background-color: var(--edatos-color-primary-50);
+                }
             }
-        }           
-    }    
-}
-
-.sidebar-sidebar-content {
-   .order-sidebar-zone {
-        background-color: @istacGreyDark;
-        h2 {
-            .sidebar-title;
-            margin: 0;
-            margin-bottom: 3px;
         }
-
-        .order-sidebar-dimension {
-            padding: 5px;
-            border: 1px solid @istacGreyMedium;
-            background-color: @istacGreyLight;
-
-            margin: 0;
-            margin-bottom: 3px;
-
-            /* IE9 bug changed divs with a, so this correct the new style */
-            display: block;
-        }
-
-        padding-bottom: 30px;
-        margin-bottom: 20px;
-   }
-}
-
-.order-sidebar-zone {    
-    margin-bottom: -1px;
-
-    &.has-selector {
-        padding-top: 0;
     }
 
-    ul {
-        margin: 0;
-        list-style: none;
+    .dataset-dimensions-left {
+        grid-auto-flow: column;
+        grid-template-rows: ~"1fr" ~"1fr";
+        grid-auto-columns: max-content;
+
+        &.dataset-dimensions-left-0 {
+            display: none;
+        }
+
+        &.dataset-dimensions-left-1:not(:has(h2)) {
+            border: none;
+        }
+
+        .order-sidebar-zone {
+            height: auto;
+            flex-direction: column;
+
+            .order-sidebar-dimensions {
+                flex-grow: 1;
+                flex-shrink: 0;
+                flex-basis: min-content;
+                padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-sm);
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 0;
+                width: auto;
+
+                &:has(> .order-sidebar-dimension-single-value) {
+                    padding: 0;
+                }
+            }
+        }
+
+        &:has(.order-sidebar-zone.no-header) {
+            grid-template-rows: unset;
+        }
     }
 
-    .order-sidebar-dimension {                        
-        margin-bottom: 3px;
+    .dataset-dimensions-right {
+        grid-template-columns: min-content ~"1fr";
+        flex: 1;
+
+        &:not(.dataset-zones-right-1) {
+            grid-template-rows: min-content;
+        }
+
+        &.dataset-zones-right-3 {
+            grid-template-columns: ~"minmax(min-content, auto)" ~"1fr" min-content ~"1fr";
+
+            > .order-sidebar-zone-header:nth-last-child(2),
+            > .order-sidebar-zone:last-of-type {
+                grid-row: 2;
+            }
+
+            > .order-sidebar-zone-header:nth-last-child(2) {
+                grid-column: 1;
+            }
+
+            > .order-sidebar-zone:last-of-type {
+                grid-column: ~"2 / -1";
+            }
+        }
+
+        .order-sidebar-zone .order-sidebar-dimensions {
+            width: 100%;
+            min-width: 0;
+            margin-left: 0;
+            height: auto;
+
+            .order-sidebar-dimension.empty-space {
+                background-color: var(--edatos-color-white-100);
+                color: var(--edatos-color-white-100);
+                border: var(--edatos-border-width-xs) dashed var(--edatos-color-gray-20);
+
+                > * {
+                    visibility: hidden;
+                }
+            }
+
+            .scroll-button-content-wrapper {
+                padding-top: var(--edatos-spacing-y-sm);
+                padding-bottom: var(--edatos-spacing-y-sm);
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    @media(max-width: @tabletMaxWidthBreakpoint) {
+        .dataset-dimensions {
+            gap: @dimensionsGap;
+
+            .dataset-dimensions-left, .dataset-dimensions-right {
+                .order-sidebar-zone-header {
+                    padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-xs);
+
+                    i {
+                        margin-right: var(--edatos-spacing-x-xs);
+                    }
+                }
+            }
+
+            body:not(:has(.widget-wrapper)) & .dataset-dimensions-right.dataset-zones-right-3 {
+                grid-template-columns: min-content ~"1fr";
+                grid-template-rows: auto;
+
+                > .order-sidebar-zone-header:nth-last-child(2),
+                > .order-sidebar-zone:last-of-type {
+                    grid-row: auto;
+                    grid-column: auto;
+                }
+            }
+        }
+
+        .dataset-dimensions-left .order-sidebar-zone .order-sidebar-dimensions {
+            padding-inline: var(--edatos-spacing-x-xs);
+        }
+    }
+
+    @media(max-width: @mobileMaxWidthBreakpoint) {
+        .dataset-dimensions {
+            .dataset-dimensions-left, .dataset-dimensions-right {
+                .order-sidebar-zone-header {
+                    i {
+                        transition: margin-right 0.2s ease;
+                    }
+
+                    .order-sidebar-zone-header-label {
+                        overflow: hidden;
+                        transition: max-width 0.2s ease;
+                    }
+                }
+
+                .order-sidebar-zone .order-sidebar-dimension {
+                    transition: max-width 0.2s ease;
+                }
+            }
+        }
+
+        .dataset-dimensions-right {
+            &:has(.select2-container--open) .order-sidebar-zone-header {
+                .order-sidebar-zone-header-label {
+                    max-width: 0;
+                    transition: none;
+                }
+                i {
+                    margin-right: 0;
+                    transition: none;
+                }
+            }
+
+            .order-sidebar-zone .order-sidebar-dimensions {
+                &:has(.select2-container--open) .order-sidebar-dimension {
+                    flex-basis: 100%;
+
+                    &:not(:has(.select2-container--open)) {
+                        display: none;
+                        transition: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.order-sidebar-zone {
+    .order-sidebar-dimension {
         .user-select(none);
 
         /* IE9 bug changed divs with a, so this correct the new style */
         display: block;
         text-decoration: none;
-        color: @istacBlack;
 
         &[draggable='true'] {
             cursor: move;
@@ -299,5 +378,107 @@
 
 .drag-over-dimension {
     opacity: 0.8;
-    border: 1px dashed @istacBlueDark;
+    border: var(--edatos-border-width-xs) dashed var(--edatos-color-gray-20);
+}
+
+.select2-container--open .dimension-select.select2-dropdown {
+    box-shadow: @dimensionSelectorBoxShadow;
+
+    &.select2-dropdown--below {
+        transform: translateY(-1px);
+    }
+
+    &.select2-dropdown--above {
+        transform: translateY(1px);
+    }
+
+    .select2-search {
+        padding-inline: var(--edatos-spacing-x-sm);
+
+        input {
+            border: var(--edatos-border-width-xs) solid var(--edatos-color-gray-40);
+        }
+    }
+
+    .select2-results__options {
+        padding-bottom: var(--edatos-spacing-y-sm);
+        padding-top: 0;
+
+        .select2-results__option {
+            color: var(--edatos-color-gray-80);
+            font-size: @defaultFontSize;
+            font-weight: var(--edatos-font-weight-regular);
+            padding-inline: var(--edatos-spacing-x-xs);
+            border-radius: var(--edatos-border-radius-xs);
+
+            &:not(.select2-results__message):hover {
+                background: var(--edatos-color-gray-5);
+                font-weight: var(--edatos-font-weight-semibold);
+            }
+        }
+    }
+}
+
+.dataset-visualization-type-line .dataset-dimensions-left {
+    grid-template-rows: min-content auto;
+}
+
+// WIDGET-SPECIFIC STYLES
+
+&.widget-wrapper:not(.full-screen) {
+    .dataset-sidebar-visualization-container .dataset-visualization-dimensions {
+        .dataset-dimensions {
+            .dataset-dimensions-left, .dataset-dimensions-right {
+                .order-sidebar-zone-header {
+                    font-size: var(--edatos-font-size-xs);
+                }
+
+                .order-sidebar-zone  .order-sidebar-dimension {
+                    --dimension-font-size: var(--edatos-font-size-xs);
+
+                    font-size: var(--dimension-font-size);
+
+                    .order-sidebar-dimension-label {
+                        line-height: var(--edatos-line-height-xs);
+                    }
+
+                    .dimension-select-geographic-granularity,
+                    .dimension-select-granularity,
+                    .fixed-dimension-select-category,
+                    .dimension-select-sortby,
+                    .select2-container .selection {
+                        padding-top: var(--edatos-spacing-y-xs);
+                        padding-bottom: var(--edatos-spacing-y-xs);
+                    }
+                }
+            }
+        }
+
+        .dataset-dimensions-left {
+            grid-template-rows: min-content auto;
+
+            .order-sidebar-zone .order-sidebar-dimensions {
+                padding-top: var(--edatos-spacing-y-xs);
+                padding-bottom: var(--edatos-spacing-y-xs);
+            }
+        }
+
+        .dataset-dimensions-right {
+            .order-sidebar-zone .order-sidebar-dimensions .scroll-button-content-wrapper {
+                padding-top: var(--edatos-spacing-y-xs);
+                padding-bottom: var(--edatos-spacing-y-xs);
+            }
+        }
+    }
+
+    .select2-container--open .dimension-select.select2-dropdown .select2-results__options {
+        max-height: 10rem;
+        gap: 0;
+
+        .select2-results__option {
+            font-size: var(--edatos-font-size-xs);
+            padding-top: var(--edatos-spacing-y-xs);
+            padding-bottom: var(--edatos-spacing-y-xs);
+        }
+    }
 }

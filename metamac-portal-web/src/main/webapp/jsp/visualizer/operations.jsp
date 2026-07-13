@@ -1,4 +1,4 @@
-<%@ page import="org.siemac.metamac.portal.web.WebUtils" %>
+<%@ page import="org.siemac.metamac.portal.web.WebUtils, org.siemac.metamac.portal.Helpers" %>
 <%@ page pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -12,6 +12,7 @@
 
 <%
     request.setAttribute("apiKey", WebUtils.getApiKey());
+    request.setAttribute("parameterTheme", Helpers.PARAMETER_THEME);
 %>
 
 <t:metamac_plantilla_1col baseURL="${baseURL}">
@@ -22,8 +23,19 @@
     var baseURL = "${baseURL}";
     var statisticalResourcesApi = "${ApiUrlStatisticalResources}/v1.0";
     var locale = "${currentLocale}";
+    var defaultLocale = "${defaultInternationalizationLanguage}";
+    var theme = '${theme}'.trim();
+    I18n.locale = locale;
+    I18n.defaultLocale = defaultLocale;
 </script>
 <script>
+    function createAlertDanger(message) {
+        var errorDiv = document.createElement('div');
+        errorDiv.classList.add('alert-danger');
+        errorDiv.textContent = message;
+        return errorDiv;
+    }
+
     function parseCollectionsIntoOperationsTree(collections) {
         return _.chain(collections)
             .groupBy((collection) => collection.statisticalOperation.id)
@@ -56,7 +68,10 @@
     }
     
     function urnStructureToParams(urnStructure) {
-        return '&agencyId=' + urnStructure.agencyId + '&resourceId=' + urnStructure.resourceId + (urnStructure.version ? '&version=' + urnStructure.version : '');
+        return '&agencyId=' + urnStructure.agencyId +
+            '&resourceId=' + urnStructure.resourceId +
+            (urnStructure.version ? '&version=' + urnStructure.version : '') +
+            (theme ? '&${parameterTheme}=' + theme : '');
     }
     
     function splitUrnWithoutPrefixStructure(tripletIdentifier) {
@@ -82,13 +97,15 @@
     }
     
     function buildOperationsList(operations) {
-        if (!operations.length) { return null;}        
+        if (!operations.length) {
+            return createAlertDanger(I18n.t('operations.empty'));
+        }
         var operationsList = document.createElement('ul');
-        operationsList.classList.add('capitulos', 'deep-tree');
+        operationsList.classList.add('resource-list');
         operations.forEach(operation => {
             var listItem = document.createElement('li');
-            listItem.classList.add('dimension','dimension-depth-1', 'dimension-close');
-            listItem.innerHTML = '<a href="#" class="tree-icon"></a><span class="dimension-title">'+ getText(operation.statisticalOperation.name) + '</span>';
+            listItem.classList.add('resource-section','resource-section-depth-2', 'resource-section-collapsed');
+            listItem.innerHTML = '<span class="resource-section-title"><span class="resource-section-title-label">'+ getText(operation.statisticalOperation.name) + '</span><i class="fa fa-chevron-down fa-solid"></i></span>';
             listItem.append(buildCollectionsList(operation.collections));
             operationsList.append(listItem);
         });
@@ -96,11 +113,11 @@
     }
     
     function buildCollectionsList(collections) {
-        if (!collections.length) { return null;}
         var collectionList = document.createElement('ul');
-        collectionList.classList.add('capitulos', 'simple-list');
+        collectionList.classList.add('resource-list');
         collections.forEach(collection => {
             var listItem = document.createElement('li');
+            listItem.classList.add('resource-link', 'compact');
             var link = document.createElement('a');
             link.append(getText(collection.name));
             link.setAttribute('href',buildCollectionUrl(collection.urn));
@@ -111,22 +128,32 @@
     }
     
     fetch(statisticalResourcesApi + '/collections.json?fields=+statisticalOperation&limit=10000', { headers: { "api-key": "${apiKey}" } })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            return response.json();
+        })
         .then(data => {
             var operations = parseCollectionsIntoOperationsTree(data.collection);
             var operationsElement = document.getElementById("operations");
-            operationsElement.innerHTML = null;
+            operationsElement.innerHTML = '';
             operationsElement.append(buildOperationsList(operations));
 
-            // Tree behaviour
-            $(".tree-icon").click(function (e) {
+            $(".resource-list .resource-section-depth-2 .resource-section-title").click(function (e) {
                 e.preventDefault();
-                var $icon = $(this);
-                var $parentDimension = $icon.closest(".dimension-depth-1");
-                $parentDimension.toggleClass("dimension-open");
-                $parentDimension.toggleClass("dimension-close");
+                $(this).parent().toggleClass("resource-section-collapsed");
             });
+        })
+        .catch(function() {
+            var operationsElement = document.getElementById("operations");
+            operationsElement.innerHTML = '';
+            operationsElement.append(createAlertDanger(I18n.t('operations.error')));
         });
 </script>
-<div id="operations" class="contenido"><div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div></div>
+<div class="visualizer-wrapper operations-wrapper">
+    <div id="operations">
+        <div class="loader"><fmt:message key="message.portal.loading" bundle="${i18n}"/></div>
+    </div>
+</div>
 </t:metamac_plantilla_1col>

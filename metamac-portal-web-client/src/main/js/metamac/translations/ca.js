@@ -11,19 +11,21 @@ I18n.translations.ca = {
     },
     filter: {
         button: {
-            edit: "Canviar selecció",
+            selection: "Selecció",
             info: "Informació",
-            table: "Taula de dades",
-            column: "Gràfic de columnes",
-            bar: "Gràfic de barres",
-            line: "Gràfic de línies",
-            map: "Mapa",
+            table: "Taula",
+            column: "Columnes",
+            bar: "Barres",
+            line: "Línies",
+            charts: "Gràfics",
+            maps: "Mapes",
+            map: "Mapa de coropletes",
             mapbubble: "Mapa de símbols",
-            fullscreen: "Pantalla completa",
+            fullscreen: "Maximitzar",
             helpUrl: "Ajuda",
             share: "Compartir",
-            download: "Descàrrega",
-            apiDownload: "API",
+            download: "Descarregar",
+            apiEndpoints: "Consultes a l'API",
             save: "Guardar",
             accept: "Acceptar",
             cancel: "Cancel·lar",
@@ -49,7 +51,7 @@ I18n.translations.ca = {
             },
             attributes: {
                 modal: {
-                    title: "Incloure atributs",
+                    title: "DESCARREGAR - Opcions",
                     question: "Incloure els atributs a la descàrrega"
                 }
             },
@@ -61,13 +63,16 @@ I18n.translations.ca = {
                 title: "Separador decimal",
                 comma: "Coma",
                 dot: "Punt"
-            }
-        },
-        apiDownload: {
-            modal: {
-                title: "Descarregar via API",
-                info: "Per a més informació consultar l'apartat de {{hrefTag}} on s'explica com construir la cridada a l'API per al recurs complet i per a la selecció actual."
             },
+            menu: {
+                xlsx: "Format XLSX",
+                tsv: "Format TSV",
+                px: "Format PX",
+                jsonstat: "Format JSONSTAT",
+                svg: "Format SVG",
+                png: "Format PNG",
+                pdf: "Format PDF"
+            }
         },
         share: {
             permanent: "Enllaç permanent:"
@@ -186,7 +191,7 @@ I18n.translations.ca = {
         mapbubble: {
             nomap: "Mapa no disponible"
         },
-        noSelection: "Seleccioni almenys una categoria en cada dimensió",
+        noSelection: "Seleccioni almenys una categoria en cada dimensió.",
         selectAtLeastTwoItems: "Ha de seleccionar almenys dos valors de la mateixa granularitat geogràfica",
         noShapesAvailable: "No hi ha mapa disponible per als valors seleccionats",
         loading: "Carregant dades..."
@@ -240,6 +245,10 @@ I18n.translations.ca = {
             formatExtentObservations: "Grandària de la taula",
             lastUpdate: "Data de l'última actualització",
             dateNextUpdate: "Data de pròxima actualització",
+            header: {
+                lastUpdate: "Última actualització: {{dateLastUpdate}}",
+                nextUpdate: "Pròxima actualització: {{dateNextUpdate}}",
+            },
             updateFrequency: "Freqüència d'actualització",
             statisticOfficiality: "Oficialitat estadística",
             bibliographicCitation: "Citació bibliogràfica",
@@ -272,11 +281,11 @@ I18n.translations.ca = {
             apiDocumentationUrl: "Accés a la documentació de l'API",
             apiUrl: {
                 title: "Accés al recurs en l'API",
-                apiDownload: "El recurs es pot obtenir en els formats següents: {{formats}}. Per a construir la cridad a l'API n'hi ha prou amb afegir el format al final de la URL, per exemple, per a construir la crida del format {{formatExample}} es faria de la manera següent: URL.{{formatExampleLowercase}}"
+                apiEndpoints: "El recurs es pot obtenir en els formats següents: {{formats}}. Per a construir la cridad a l'API n'hi ha prou amb afegir el format al final de la URL, per exemple, per a construir la crida del format {{formatExample}} es faria de la manera següent: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Accés a la selecció actual en l'API",
-                apiDownload: "La selecció també es pot obtenir en diferents formats ({{formats}}). En aquest cas, per a construir la cridad a l'API s'ha de tenir en compte que el format s'ha d'indicar abans de passar els paràmetres, per exemple: URL.{{formatExampleLowercase}}?PARAMETROS"
+                apiEndpoints: "La selecció també es pot obtenir en diferents formats ({{formats}}). En aquest cas, per a construir la cridad a l'API s'ha de tenir en compte que el format s'ha d'indicar abans de passar els paràmetres, per exemple: URL.{{formatExampleLowercase}}?PARAMETROS"
             },
             nextVersion: {
                 title: "Pròxima actualització",
@@ -384,7 +393,7 @@ I18n.translations.ca = {
         information: {
             loginRequired: {
                 title: "Operació no vàlida",
-                message: "L'operació que vol realitzar requereix que inicie sessió primer"
+                message: "L'operació que vol realitzar requereix que iniciï sessió primer. Desitja iniciar sessió?"
             }
         },
         permalinkConfig: {
@@ -423,9 +432,22 @@ I18n.translations.ca = {
             }
         },
         embedConfig: {
+            button: {
+                submit: "Veure codi",
+            },
             label: {
                 title: "Títol"
             }
+        },
+        shareConfig: {
+            button: {
+                submit: "Veure l'enllaç",
+            },
+        },
+        saveConfig: {
+            button: {
+                submit: "Veure descriptors",
+            },
         }
     },
     captcha: {
@@ -453,5 +475,9 @@ I18n.translations.ca = {
         common: {
             unknown: "Error desconegut"
         }
+    },
+    operations: {
+        empty: "No hi ha operacions disponibles.",
+        error: "No ha estat possible carregar el llistat d'operacions."
     }
 };

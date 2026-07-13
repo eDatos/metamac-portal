@@ -1,33 +1,55 @@
+@import "variables";
+
+@descriptionWidth: 825px;
 
 .visualizer-header {
     .clearfix();
-    margin-bottom: 20px;
+    margin-bottom: var(--edatos-spacing-y-lg);
 
     .visualizer-header-title, p {
-        margin-bottom: 5px;
+        margin-bottom: var(--edatos-spacing-y-xs);
     }
 
-    .full-screen & { 
-        display: none;
-    }
+}
+
+.full-screen .visualizer-header,
+&.full-screen .visualizer-header {
+    display: none;
 }
 
 .visualizer-header-info {
-    margin-bottom: 10px;
-
-    p {
-        margin: 0 0 10px 0;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: var(--edatos-spacing-x-lg);
+    margin-bottom: var(--edatos-spacing-x-lg);
 
     .visualizer-header-title {
-        font-size: 20px;
-        line-height: 25px;
-        color: @istacBlueDark;
-        margin-top: 0;
+        font-size: var(--edatos-font-size-xl);
+        font-weight: var(--edatos-font-weight-bold);
+        margin: 0;
     }
+
     .visualizer-header-categories {
         font-style: italic;
-        color: @istacBlueLight;
+    }
+
+    .visualizer-description {
+        max-width: @descriptionWidth;
+        line-height: var(--edatos-line-height-md);
+        list-style-type: none;
+        text-align: start;
+    }
+
+    .visualizer-update-dates {
+        border-radius: var(--edatos-border-radius-sm);
+        background: var(--edatos-color-gray-5);
+        color: var(--edatos-color-gray-80);
+        font-size: var(--edatos-font-size-xs);
+        max-width: @descriptionWidth;
+        line-height: var(--edatos-spacing-y-xl);
+        padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-lg);
+        align-content: center;
+        box-sizing: border-box;
     }
 }
 
@@ -40,14 +62,8 @@
     }
 
     a {
-        margin-bottom: 5px;
-        font-weight: bold;
-        font-size: 13px;
+        margin-bottom: var(--edatos-spacing-y-xs);
+        font-weight: var(--edatos-font-weight-bold);
+        font-size: var(--edatos-font-size-xs);
     }
-}
-
-.visualizer-description {
-	line-height: 1.6;
-	list-style-type: none;
-	text-align: justify;
 }

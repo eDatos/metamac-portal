@@ -11,19 +11,21 @@ I18n.translations.pt = {
     },
     filter: {
         button: {
-            edit: "Modificar seleção",
+            selection: "Seleção",
             info: "Informação",
-            table: "Tabela de dados",
-            column: "Gráfico de colunas",
-            bar: "Gráfico de bares",
-            line: "Gráfico de linhas",
-            map: "Mapa",
+            table: "Tabela",
+            column: "Colunas",
+            bar: "Bares",
+            line: "Linhas",
+            charts: "Gráficos",
+            maps: "Mapas",
+            map: "Mapa coroplético",
             mapbubble: "Mapa de símbolos",
-            fullscreen: "Ecrã inteiro",
+            fullscreen: "Maximizar",
             helpUrl: "Ajuda",
             share: "Partilhar",
-            download: "Download",
-            apiDownload: "API",
+            download: "Baixar",
+            apiEndpoints: "Consultas à API",
             save: "Salvar",
             accept: "Aceitar",
             cancel: "Cancelar",
@@ -48,7 +50,7 @@ I18n.translations.pt = {
             },
             attributes: {
                 modal: {
-                    title: "Opções",
+                    title: "BAIXAR - Opções",
                     question: "Incluir os atributos no download"
                 }
             },
@@ -60,13 +62,16 @@ I18n.translations.pt = {
                 title: "Separador decimal",
                 comma: "Vírgula",
                 dot: "Ponto"
-            }
-        },
-        apiDownload: {
-            modal: {
-                title: "Baixar via API",
-                info: "Para obter mais informações, consulte a seção {{hrefTag}}, que explica como construir a chamada de API para todo o recurso e para a seleção atual."
             },
+            menu: {
+                xlsx: "Formato XLSX",
+                tsv: "Formato TSV",
+                px: "Formato PX",
+                jsonstat: "Formato JSONSTAT",
+                svg: "Formato SVG",
+                png: "Formato PNG",
+                pdf: "Formato PDF"
+            }
         },
         share: {
             permanent: "Ligação permanente:"
@@ -185,7 +190,7 @@ I18n.translations.pt = {
         mapbubble: {
             nomap: "Mapa indisponível"
         },
-        noSelection: "Você deve escolher pelo menos uma categoria em cada dimensão",
+        noSelection: "Você deve escolher pelo menos uma categoria em cada dimensão.",
         selectAtLeastTwoItems: "Você deve selecionar pelo menos dois valores da mesma granularidade geográfica",
         noShapesAvailable: "Não há mapa disponível para os valores selecionados",
         loading: "Carregando dados..."
@@ -239,6 +244,10 @@ I18n.translations.pt = {
             formatExtentObservations: "Tamanho da tabela",
             lastUpdate: "Data da última atualização",
             dateNextUpdate: "Data da próxima atualização",
+            header: {
+                lastUpdate: "Última atualização: {{dateLastUpdate}}",
+                nextUpdate: "Próxima atualização: {{dateNextUpdate}}",
+            },
             updateFrequency: "Frequência de atualização",
             statisticOfficiality: "Estatísticas Oficiais",
             bibliographicCitation: "Citação bibliográfica",
@@ -271,11 +280,11 @@ I18n.translations.pt = {
             apiDocumentationUrl: "Acesso à documentação API",
             apiUrl: {
                 title: "Acesso à API para desenvolvedores",
-                apiDownload: "O recurso pode ser obtido nos seguintes formatos: {{formats}}. Para construir a chamada da API basta adicionar o formato ao final da URL, por exemplo, para construir a chamada no formato {{formatExample}} seria feito da seguinte forma: URL.{{formatExampleLowercase}}"
+                apiEndpoints: "O recurso pode ser obtido nos seguintes formatos: {{formats}}. Para construir a chamada da API basta adicionar o formato ao final da URL, por exemplo, para construir a chamada no formato {{formatExample}} seria feito da seguinte forma: URL.{{formatExampleLowercase}}"
             },
             selectionApiUrl: {
                 title: "Acessar a seleção atual na API",
-                apiDownload: "A seleção também pode ser obtida em diversos formatos ({{formats}}). Neste caso, para construir a chamada API deve-se levar em consideração que o formato deve ser indicado antes de passar os parâmetros, por exemplo: URL.{{formatExampleLowercase}}?PARAMETERS"
+                apiEndpoints: "A seleção também pode ser obtida em diversos formatos ({{formats}}). Neste caso, para construir a chamada API deve-se levar em consideração que o formato deve ser indicado antes de passar os parâmetros, por exemplo: URL.{{formatExampleLowercase}}?PARAMETERS"
             },
             nextVersion: {
                 title: "Próxima atualização",
@@ -420,9 +429,22 @@ I18n.translations.pt = {
             }
         },
         embedConfig: {
+            button: {
+                submit: "Ver código",
+            },
             label: {
                 title: "Título"
             }
+        },
+        shareConfig: {
+            button: {
+                submit: "Ver link",
+            },
+        },
+        saveConfig: {
+            button: {
+                submit: "Ver descritores",
+            },
         }
     },
     captcha: {
@@ -433,4 +455,8 @@ I18n.translations.pt = {
             text: "Escreva o valor da imagem mostrada acima"
         }
     },
+    operations: {
+        empty: "Não há operações disponíveis.",
+        error: "Não foi possível carregar a lista de operações."
+    }
 };

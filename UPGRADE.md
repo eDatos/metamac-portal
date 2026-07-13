@@ -8,6 +8,14 @@
 
 *Se deberá realizar primero la actualización de la versión 1.0.0 a la 2.0.0 y luego desde la 2.0.0 a la 3.0.0*
 
+## 9.24.7 a 9.24.8-SNAPSHOT
+
+- Esta versión tiene como dependencia complementos-apps en su versión 8.26.1-SNAPSHOT por el uso de las nuevas variables de css creadas en dicha versión además del renombrado de otras. También por el script de creación de la propiedad "metamac.apps.web.external.url" en common metadata.
+- Se han realizado cambios a la base de datos, por ello se proveen una serie de scripts SQL para adaptarse a la nueva versión.
+  Ejecutar los scripts de la siguiente ruta en el esquema correspondiente por orden de fecha: [etc/changes-from-release/9.24.7/db/common-metadata/postgresql/](etc/changes-from-release/9.24.7/db/common-metadata/postgresql)
+- Se añade un kit de fontAwesome Pro como dependencia y para ello hace falta añadir la siguiente linea en el fichero ".npmrc" en la que hay que sustituir <authToken>:
+  //npm.fontawesome.com/:_authToken=<authToken>
+
 ## 9.18.5 a 9.19.0
 - Esta versión depende de la versión 5.0.0 de metamac-sso.
 

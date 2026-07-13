@@ -21,11 +21,11 @@
                 headers: {
                     "api-key": App.config["apiKey"]
                 }
-            }).success(function (response) {
+            }).done(function (response) {
                 self.response = response;
                 var result = self.checkAllDimensionHaveRepresentations(self);
                 callback(result.error, result.success);
-            }). error(function(response) {
+            }).fail(function(response) {
                 self.response = response;
                 var errorsJson = JSON.parse(response.responseText);
                 var error = I18n.t(errorsJson.code);

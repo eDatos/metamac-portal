@@ -17,20 +17,24 @@
             this._initializeChartOptions();
         },
 
-        _initializeChart: function ($el, $title) {
-            this.$chartContainer = $('<div></div>');
-            this.$chartContainer.height($el.height() - $title.outerHeight(true));
+        _initializeChart: function ($el) {
+            this.$chartContainer = $('<div class="chart-container"></div>');
             $el.append(this.$chartContainer);
             this.chart = echarts.init(this.$chartContainer[0], null, { renderer: 'canvas' });
 
             this.$exportChartContainer = $("#export-chart");
             if (this.$exportChartContainer.length === 0) {
                 this.$exportChartContainer = $('<div id="export-chart"></div>');
-                $("body").append(this.$exportChartContainer);
+                $(".visualizer-wrapper").append(this.$exportChartContainer);
             }
             this.exportChart = echarts.init(this.$exportChartContainer[0], null, { renderer: 'svg', height: this.$chartContainer.height(), width: this.$chartContainer.width() });
 
             this._extendChartOptions({ tooltip: { appendTo: this.$chartContainer[0] }});
+
+            var self = this;
+            requestAnimationFrame(function () {
+                self._updateSize();
+            });
         },
 
         _initializeChartOptions: function () {
@@ -38,10 +42,10 @@
             self.tooltipPosition = "top";
             this._chartOptions = {
                 textStyle: {
-                    fontFamily: "Helvetica, Arial, sans-serif"
+                    fontFamily: this.getRightsHolderStyle().fontFamily
                 },
                 animation: false,
-                backgroundColor: Constants.colors.istacWhite,
+                backgroundColor: Constants.colors.white100,
                 grid: {
                     left: Constants.charts.grid.horizontalMargin,
                     right: Constants.charts.grid.horizontalMargin,
@@ -54,18 +58,18 @@
                     type: 'scroll',
                     animationDurationUpdate: 100,
                     width: '90%',
-                    backgroundColor: Constants.colors.istacWhite,
+                    backgroundColor: Constants.colors.white100,
                     left: 'center',
                     top: null,
                     borderWidth: 1,
-                    borderColor: Constants.colors.istacGreyMedium,
-                    pageIconColor: Constants.colors.istacBlueMedium,
-                    pageIconInactiveColor: Constants.colors.istacGreyMedium,
+                    borderColor: Constants.colors.gray40,
+                    pageIconColor: Constants.colors.gray80,
+                    pageIconInactiveColor: Constants.colors.gray40,
                     pageIconSize: Constants.charts.legend.fontSize,
                     animation: true,
                     orient: 'horizontal',
                     pageTextStyle: {
-                        color: Constants.colors.istacBlack,
+                        color: Constants.colors.gray80,
                         fontSize: Constants.charts.legend.fontSize,
                         fontWeight: 'bold'
                     },
@@ -73,7 +77,7 @@
                     padding: Constants.charts.legend.padding,
                     textStyle: {
                         fontSize: Constants.charts.legend.fontSize,
-                        color: Constants.colors.istacBlack
+                        color: Constants.colors.gray80
                     }
                 },
                 xAxis: {
@@ -82,7 +86,7 @@
                     },
                     axisLabel: {
                         fontSize: Constants.charts.axis.fontSize,
-                        color: Constants.colors.istacGreyDark,
+                        color: Constants.colors.gray60,
                         formatter: this.axisLabelFormatter,
                         hideOverlap: true
                     }
@@ -93,7 +97,7 @@
                     },
                     axisLabel: {
                         fontSize: Constants.charts.axis.fontSize,
-                        color: Constants.colors.istacGreyDark,
+                        color: Constants.colors.gray60,
                         formatter: this.axisLabelFormatter,
                         hideOverlap: true
                     }
@@ -102,9 +106,9 @@
                     right: Constants.charts.title.marginRight,
                     padding: 0,
                     textStyle: {
-                        fontSize: Constants.charts.title.fontSize,
-                        color: Constants.colors.istacBlack,
-                        fontWeight: 'normal'
+                        fontSize: this.getRightsHolderStyle().fontSize,
+                        color: this.getRightsHolderStyle().color,
+                        fontWeight: this.getRightsHolderStyle().fontWeight
                     }
                 },
                 tooltip: {
@@ -115,7 +119,7 @@
                     padding: Constants.charts.tooltip.padding,
                     textStyle: {
                         fontSize: Constants.charts.tooltip.fontSize,
-                        color: Constants.colors.istacBlack
+                        color: Constants.colors.gray80
                     },
                     position: function (point, params, domEl, rect) {
                         self.coordsTooltipPointsTo = [
@@ -127,6 +131,19 @@
                 },
                 color: Constants.charts.colors
             };
+        },
+
+        getRightsHolderStyle: function () {
+            if (!App.VisualElement.Chart._cachedRightsHolderStyle) {
+                var rootStyle = getComputedStyle(document.documentElement);
+                App.VisualElement.Chart._cachedRightsHolderStyle = {
+                    fontSize: parseInt(rootStyle.getPropertyValue('--rights-holder-font-size'), 10),
+                    fontWeight: parseInt(rootStyle.getPropertyValue('--rights-holder-font-weight'), 10),
+                    color: rootStyle.getPropertyValue('--rights-holder-font-color').trim(),
+                    fontFamily: rootStyle.getPropertyValue('--rights-holder-font-family').trim()
+                };
+            }
+            return App.VisualElement.Chart._cachedRightsHolderStyle;
         },
 
         getTooltipFormatterFunction: function (tooltipFormatterParams) {
@@ -171,10 +188,8 @@
         _onChartDestroy: function () {
         },
 
-        _updateSize: function ($el, $title) {
-            var newHeight = $el.height() - $title.outerHeight(true);
-            this.$chartContainer.height(newHeight);
-            if (newHeight !== this.chart.getHeight()) {
+        _updateSize: function () {
+            if (this.$chartContainer.height() !== this.chart.getHeight()) {
                 this._onHeightUpdated();
             }
             if (this.$chartContainer.width() !== this.chart.getWidth()) {

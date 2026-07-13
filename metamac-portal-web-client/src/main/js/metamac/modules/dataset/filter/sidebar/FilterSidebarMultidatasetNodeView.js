@@ -15,6 +15,10 @@
         },
 
         onMultidatasetClick: function (event) {
+            if (this.multidatasetNode.get('selected')) {
+                return false;
+            }
+
             var target = event.currentTarget;
             var newPath = target.pathname + target.search + target.hash;
             
