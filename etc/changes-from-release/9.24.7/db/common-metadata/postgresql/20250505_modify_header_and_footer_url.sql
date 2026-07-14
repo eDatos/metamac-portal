@@ -12,4 +12,8 @@ UPDATE tb_data_configurations
 SET conf_value = (SELECT conf_value FROM tb_data_configurations WHERE conf_key = 'metamac.app.style.footer.url')
 WHERE conf_key = 'metamac.portal.default.style.footer.url';
 
+UPDATE tb_data_configurations 
+SET conf_value = '' 
+WHERE conf_key = 'metamac.portal.default.style.css.url';
+
 commit;
