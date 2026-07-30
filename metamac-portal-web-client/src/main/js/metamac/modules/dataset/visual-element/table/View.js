@@ -201,12 +201,20 @@
     App.Table.View.prototype.move = function (distance) {
         var self = this;
 
+        var trackedZone = this.clickedZone;
+        var originBefore = trackedZone ? new Point(trackedZone.origin.x, trackedZone.origin.y) : null;
+
         // window.requestAnimationFrame(function () {
         _.each(self.zones, function (zone) {
             zone.move(distance);
         });
         self.repaint();
         // });
+
+        if (trackedZone && this.clickTooltip) {
+            var shift = new Point(originBefore.x - trackedZone.origin.x, originBefore.y - trackedZone.origin.y);
+            this.clickTooltip.onCanvasScroll(shift, trackedZone.viewPort);
+        }
     };
 
     App.Table.View.prototype.moveToBegin = function () {
@@ -399,12 +407,14 @@
             this.clearClickedCell();
         } else {
             this.clickedCell = zone.cellAtPoint(point);
+            this.clickedZone = zone;
             this.repaintZonesWithCells();
         }
     };
 
     App.Table.View.prototype.clearClickedCell = function () {
         this.clickedCell = null;
+        this.clickedZone = null;
         this.repaintZonesWithCells();
     };
 
