@@ -43,9 +43,3 @@ Para generar las fuentes se hace uso de la librería grunt-webfont.
 
 Dada la complejidad y errores que pueden surgir de intentar hacerla funcionar en windows, se añade en /etc/docker/metamac-portal-web-client/grunt-webfont, un docker que hace de wrapper a la instalación de la librería y dependencias dentro del contendor
 
-## FontAwesome
-Para poder cargar los iconos de FontAwesome hace falta añadir la siguiente linea con el corresponiente <authToken> al fichero .npmrc:
-```
-//npm.fontawesome.com/:_authToken=<authToken>
-```
-Ese authToken nunca puede subir al repositorio remoto. También se puede incluir en el .npmrc en la ruta del usuario, es decir, en "C:\Users\<usuario>\.npmrc".
