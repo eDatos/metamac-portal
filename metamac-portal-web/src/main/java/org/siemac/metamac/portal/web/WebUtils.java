@@ -494,7 +494,7 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
     }
 
     private static String buildAppUrlParam() {
-        return buildParam(PARAM_APP_URL, getPortalBaseUrl());
+        return buildParam(PARAM_APP_URL, "");
     }
 
     private static String buildAppNameParam(String lang) {
