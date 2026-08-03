@@ -22,6 +22,7 @@ I18n.translations.es = {
             map: "Mapa de coropletas",
             mapbubble: "Mapa de símbolos",
             fullscreen: "Maximizar",
+            minimizedScreen: "Minimizar",
             helpUrl: "Ayuda",
             share: "Compartir",
             download: "Descargar",

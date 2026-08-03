@@ -76,8 +76,13 @@
         },
 
         updateFullscreenButton: function () {
+            var isActive = this.fullScreenIsAllowed() && this.isFullScreen();
+            var label = I18n.t(isActive ? 'filter.button.minimizedScreen' : 'filter.button.fullscreen');
             var $fullScreenButton = this.$el.find('.visual-element-options-fs');
-            $fullScreenButton.toggleClass('active', this.fullScreenIsAllowed() && this.isFullScreen());
+            $fullScreenButton.toggleClass('active', isActive);
+            $fullScreenButton.attr('title', label);
+            $fullScreenButton.find('i').attr('class', isActive ? 'dataset-options-minimized-screen' : 'dataset-options-full-screen');
+            $fullScreenButton.find('span').text(label);
         },
 
         updateFilterButton: function () {
