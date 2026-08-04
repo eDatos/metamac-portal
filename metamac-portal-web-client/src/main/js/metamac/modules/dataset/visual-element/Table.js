@@ -73,7 +73,7 @@
             this.resetDimensionsLimits();
         },
 
-        // Changes on this method must be propagated to Info.js
+        // Changes on this method must be propagated to Info.js and ApiEndpoints.js
         _applyVisualizationRestrictions: function () {
             if (this._mustApplyVisualizationRestrictions()) {
                 this._forceDimensionsByMetadataInfo();                
