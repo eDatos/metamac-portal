@@ -138,15 +138,40 @@
 
             var type = this.optionsModel.get('type');
             if (type) {
+                var previousType = this.optionsModel.previous('type');
+                this._snapshotSelectionBeforeLeavingForInfoTab(type, previousType);
+
                 this._toggleClassByType(type);
 
                 this.visualizationView.activeVisualElement(type);
+                this._restoreSelectionWhenBackFromInfoTab(type, previousType);
                 this.visualizationView.load();
                 var controllerParams = this.metadata.identifier();
                 controllerParams.visualizationType = type;
                 this._afterTypeChange(controllerParams);
             }
             this.optionsView.setCurrentVe(this.visualizationView._getCurrentVe());
+        },
+
+        _isInfoLikeType: function (type) {
+            return type === 'info' || type === 'apiEndpoints';
+        },
+
+        _snapshotSelectionBeforeLeavingForInfoTab: function (type, previousType) {
+            if (this._isInfoLikeType(type) && previousType && !this._isInfoLikeType(previousType) ) {
+                this._tabSelectionSnapshot = {
+                    type: previousType,
+                    selection: this.filterDimensions.exportJSONSelection(),
+                    state: this.filterDimensions.exportJSONState()
+                };
+            }
+        },
+
+        _restoreSelectionWhenBackFromInfoTab: function (type, previousType) {
+            if (this._tabSelectionSnapshot && this._isInfoLikeType(previousType) && type === this._tabSelectionSnapshot.type) {
+                this.filterDimensions.importJSONSelection(this._tabSelectionSnapshot.selection);
+                this.filterDimensions.importJSONState(this._tabSelectionSnapshot.state);
+            }
         },
 
         _toggleClassByType: function (type) {
