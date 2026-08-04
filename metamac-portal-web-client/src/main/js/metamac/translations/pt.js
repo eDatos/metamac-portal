@@ -443,7 +443,7 @@ I18n.translations.pt = {
         },
         saveConfig: {
             button: {
-                submit: "Ver descritores",
+                submit: "Continuar",
             },
         }
     },
