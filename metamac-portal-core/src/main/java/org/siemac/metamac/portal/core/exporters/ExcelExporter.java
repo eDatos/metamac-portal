@@ -200,16 +200,13 @@ public class ExcelExporter {
         }
 
         // Units
-        int titleRowForUnitsIndex = headerRow++;
-        boolean hasAnyUnits = false;
+        List<String> unitTexts = new java.util.ArrayList<String>();
         if (resourceAccess.hasMeasureDimension()) { // Measure dimension
             // Indexed to ContVariable Values
             for (EnumeratedDimensionValue dimensionValue : resourceAccess.getSelectedValuesForMeasureDimension()) {
                 final String unit = buildUnitText(dimensionValue);
                 if (unit != null) {
-                    SXSSFRow row = sheet.createRow(headerRow++);
-                    addStringCell(row, 1, unit, null);
-                    hasAnyUnits = true;
+                    unitTexts.add(unit);
                 }
             }
         } else { // Measure attribute
@@ -229,9 +226,7 @@ public class ExcelExporter {
                         if (attributeValue.getId().equals(attributeValuesFromData[0])) {
                             final String unit = buildUnitText(attributeValue);
                             if (unit != null) {
-                                SXSSFRow row = sheet.createRow(headerRow++);
-                                addStringCell(row, 1, unit, null);
-                                hasAnyUnits = true;
+                                unitTexts.add(unit);
                             }
                         }
                     }
@@ -240,10 +235,14 @@ public class ExcelExporter {
                 throw new RuntimeException("No attribute of type Measure or Measure Dimension found in the dataset. This is a Metamac error.");
             }
         }
-        if (hasAnyUnits) {
-            SXSSFRow titleRowForUnits = sheet.createRow(titleRowForUnitsIndex);
+        if (!unitTexts.isEmpty()) {
+            SXSSFRow titleRowForUnits = sheet.createRow(headerRow++);
             String messageForCode = LocaleUtil.getMessageForCode(MessageKeyType.MESSAGE_UNITS, locale);
             addStringCell(titleRowForUnits, 0, messageForCode, listTitleCellStyle);
+            for (String unit : unitTexts) {
+                SXSSFRow row = sheet.createRow(headerRow++);
+                addStringCell(row, 1, unit, null);
+            }
         }
 
         headerRow++; // Blank row
