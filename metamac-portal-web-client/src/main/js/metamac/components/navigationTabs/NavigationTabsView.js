@@ -33,7 +33,8 @@
             const $subtabs = this.$(`.navigation-subtabs a[data-parent-type="${type}"]`);
             if ($subtabs.length > 0) {
                 const $activeSubtabs = $subtabs.filter('.active');
-                type = ($activeSubtabs.length > 0 ? $activeSubtabs : $subtabs.first()).data('type');
+                const $defaultSubtab = $subtabs.filter('[data-default]');
+                type = ($activeSubtabs.length > 0 ? $activeSubtabs : ($defaultSubtab.length > 0 ? $defaultSubtab : $subtabs.first())).data('type');
             }
 
             if (this.optionsModel.get('filter')) {

@@ -9,7 +9,7 @@
     {{#each tabs}}
     {{#if subtabs}}
     {{#each subtabs}}
-    <a data-type="{{type}}" data-parent-type="{{../type}}" title="{{title}}">{{ title }}</a>
+    <a data-type="{{type}}" data-parent-type="{{../type}}" title="{{title}}" {{#if default}}data-default="true"{{/if}}>{{ title }}</a>
     {{/each}}
     {{/if}}
     {{/each}}
