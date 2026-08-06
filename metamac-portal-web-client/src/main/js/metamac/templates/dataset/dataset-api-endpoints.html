@@ -1,4 +1,5 @@
 <div class="metadata-group">
+	{{#if isExternalInstallation}}
 	<div class="info-section metadata-accordion">
 		<div class="info-section-title">
 			{{ message "entity.dataset.apiDocumentationUrl" }}
@@ -9,6 +10,7 @@
 			</ul>
 		</div>
 	</div>
+	{{/if}}
 	<div class="info-section metadata-accordion">
 		<div class="info-section-title">
 			{{ message "entity.dataset.apiUrl.title" }}
