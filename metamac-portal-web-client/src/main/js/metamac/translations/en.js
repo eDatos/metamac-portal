@@ -445,7 +445,7 @@ I18n.translations.en = {
         },
         saveConfig: {
             button: {
-                submit: "View descriptors",
+                submit: "Continue",
             },
         }
     },

@@ -447,7 +447,7 @@ I18n.translations.ca = {
         },
         saveConfig: {
             button: {
-                submit: "Veure descriptors",
+                submit: "Continuar",
             },
         }
     },

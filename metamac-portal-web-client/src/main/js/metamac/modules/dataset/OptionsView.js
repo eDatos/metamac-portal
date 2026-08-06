@@ -228,7 +228,8 @@
                                 modal = new App.components.modal.ModalView({title: title, contentView: modalContentView, titleIconName: "fa-floppy-disk"});
                                 modal.show();
                             },
-                            customButtonText: I18n.t("modal.saveConfig.button.submit")
+                            customButtonText: I18n.t("modal.saveConfig.button.submit"),
+                            customButtonIconClass: "modal-form-continue-icon"
                         });
                     } else {
                         modalContentView = new App.components.modal.SaveModalView({
