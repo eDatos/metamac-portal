@@ -67,8 +67,8 @@
             const helpUrl = this._getHelpUrl();
 
             const graphSubtabs = [
+                { type: "bar", title: I18n.t("filter.button.bar"), iconClass: "dataset-options-bar" },
                 { type: "column", title: I18n.t("filter.button.column"), iconClass: "dataset-options-column" },
-                { type: "bar", title: I18n.t("filter.button.bar"), iconClass: "dataset-options-bar", default: true },
                 { type: "line", title: I18n.t("filter.button.line"), iconClass: "dataset-options-line" }
             ].filter(function (subtab) {
                 return self._isVisualizationButtonEnabled(subtab.type);
