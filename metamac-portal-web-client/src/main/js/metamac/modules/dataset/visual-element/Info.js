@@ -112,21 +112,6 @@
             });
         },
 
-        updatingDimensionPositions: function () {
-            this._applyVisualizationRestrictions();
-            this.resetDimensionsLimits();
-        },
-
-        // This method must be the same as the one from the table to be able to download the data info in a coherent way with the table visualization
-        _applyVisualizationRestrictions: function () {
-            if (this._mustApplyVisualizationRestrictions()) {
-                this._forceDimensionsByMetadataInfo();                
-                this._moveAllSingleValueDimensionsToZone('fixed');
-            }
-
-            this._updateMustApplyVisualizationRestrictions();
-        },
-
         _destroyWidgets: function () {
             this.$el.find('.metadata-accordion').accordion('destroy');
             this.$el.find('.metadata-group').perfectScrollbar('destroy');

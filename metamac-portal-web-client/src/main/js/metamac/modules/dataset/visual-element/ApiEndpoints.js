@@ -20,21 +20,6 @@
             this.render();
         },
 
-        updatingDimensionPositions: function () {
-            this._applyVisualizationRestrictions();
-            this.resetDimensionsLimits();
-        },
-
-        // This method must be the same as the one from the table to be able to download the data info in a coherent way with the table visualization
-        _applyVisualizationRestrictions: function () {
-            if (this._mustApplyVisualizationRestrictions()) {
-                this._forceDimensionsByMetadataInfo();
-                this._moveAllSingleValueDimensionsToZone('fixed');
-            }
-
-            this._updateMustApplyVisualizationRestrictions();
-        },
-
         _bindEvents: function () {
             this.listenTo(this.filterDimensions, "change:drawable change:zone change:visibleLabelType reverse", _.debounce(this._updateSelectionApiUrl, 20));
         },

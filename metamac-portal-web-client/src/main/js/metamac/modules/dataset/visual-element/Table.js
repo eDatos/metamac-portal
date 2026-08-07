@@ -68,21 +68,6 @@
             this._resizeObserver.disconnect();
         },
 
-        updatingDimensionPositions: function () {
-            this._applyVisualizationRestrictions();
-            this.resetDimensionsLimits();
-        },
-
-        // Changes on this method must be propagated to Info.js and ApiEndpoints.js
-        _applyVisualizationRestrictions: function () {
-            if (this._mustApplyVisualizationRestrictions()) {
-                this._forceDimensionsByMetadataInfo();                
-                this._moveAllSingleValueDimensionsToZone('fixed');
-            }
-
-            this._updateMustApplyVisualizationRestrictions();
-        },
-
         render: function () {
             this.delegate = new App.Table.Delegate();
 
