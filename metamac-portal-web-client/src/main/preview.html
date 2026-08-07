@@ -169,25 +169,12 @@
         var ENABLE_IBESTAT = true;
         if (ENABLE_IBESTAT) {
 
-            // http://estadisticas.arte-consultores.com/statistical-resources
-            App.endpoints["statistical-resources"] = "https://ibestat.edatos.io/statistical-resources-internal/apis/statistical-resources-internal/v1.0";
-            
-            // http://estadisticas.arte-consultores.com/structural-resources-internal/apis/structural-resources-internal
-            App.endpoints["structural-resources"] = "https://ibestat.edatos.io/structural-resources-internal/apis/structural-resources-internal/v1.0";
-            
-            // http://estadisticas.arte-consultores.com/statistical-visualizer
-            App.endpoints["statistical-visualizer"] = "https://ibestat.edatos.io/statistical-visualizer";
-            
-            // http://estadisticas.arte-consultores.com/permalinks
-            App.endpoints["permalinks"] = "https://ibestat.edatos.io/permalinks/v1.0";
-            
-            // http://estadisticas.arte-consultores.com/export
-            App.endpoints["export"] = "https://ibestat.edatos.io/export/v1.0";
-            
-            // http://estadisticas.arte-consultores.com/indicators
-            App.endpoints["indicators"] = "https://ibestat.edatos.io/indicators-internal/internal/api/indicators/v1.0";
-
-            // https://ibestat.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IBESTAT&resourceId=000274A_000001&version=1.0#visualization/table
+            App.endpoints["statistical-resources"] = "https://ibestat.es/edatos/apis/statistical-resources/v1.0";
+            App.endpoints["structural-resources"] = "https://ibestat.es/edatos/apis/structural-resources/v1.0";
+            App.endpoints["statistical-visualizer"] = "https://ibestat.es/edatos/apis/statistical-visualizer";
+            App.endpoints["permalinks"] = "https://ibestat.es/edatos/apis/permalinks/v1.0";
+            App.endpoints["export"] = "https://ibestat.es/edatos/apis/export/v1.0";
+            App.endpoints["indicators"] = "https://ibestat.es/edatos/apis/indicators/v1.0";
             App.queryParams = { "agency": "IBESTAT", "identifier": "000274A_000001", "version": "1.0", "type": "dataset" };
 
             // https://pre-ibestat.edatos.io/statistical-visualizer-internal/visualizer/data.html?resourceType=dataset&agencyId=IBESTAT&resourceId=000274A_000009&version=1.0#visualization/line

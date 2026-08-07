@@ -22,6 +22,7 @@ I18n.translations.ca = {
             map: "Mapa de coropletes",
             mapbubble: "Mapa de símbols",
             fullscreen: "Maximitzar",
+            minimizedScreen: "Minimitzar",
             helpUrl: "Ajuda",
             share: "Compartir",
             download: "Descarregar",
@@ -446,7 +447,7 @@ I18n.translations.ca = {
         },
         saveConfig: {
             button: {
-                submit: "Veure descriptors",
+                submit: "Continuar",
             },
         }
     },

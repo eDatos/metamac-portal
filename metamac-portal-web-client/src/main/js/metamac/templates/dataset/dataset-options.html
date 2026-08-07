@@ -20,7 +20,7 @@
 <div class="horizontal-buttons-group">
     {{#unless visualize}}
     <div class="dataset-options">
-        <button class="btn accent dataset-options-filter {{filter.btnClass}} {{#if filterDisabled}}disabled{{/if}}" title='{{message "filter.sidebar.filter.title"}}'>
+        <button class="btn accent call-to-action dataset-options-filter {{filter.btnClass}} {{#if filterDisabled}}disabled{{/if}}" title='{{message "filter.sidebar.filter.title"}}'>
             <i class="options-filter"></i>
             <span>{{message "filter.sidebar.filter.title"}}</span>
         </button>
@@ -32,9 +32,9 @@
         <span>{{message "filter.button.visualize"}}</span>
     </button> {{/if}}
     {{#if fullScreen.visible}}
-    <button class="btn fs {{fullScreen.btnClass}} visual-element-options-fs" title='{{message "filter.button.fullscreen"}}'>
-        <i class="dataset-options-full-screen"></i>
-        <span>{{message "filter.button.fullscreen"}}</span>
+    <button class="btn fs {{fullScreen.btnClass}} visual-element-options-fs" title='{{#if fullScreen.active}}{{message "filter.button.minimizedScreen"}}{{else}}{{message "filter.button.fullscreen"}}{{/if}}'>
+        <i class="{{#if fullScreen.active}}dataset-options-minimized-screen{{else}}dataset-options-full-screen{{/if}}"></i>
+        <span>{{#if fullScreen.active}}{{message "filter.button.minimizedScreen"}}{{else}}{{message "filter.button.fullscreen"}}{{/if}}</span>
     </button> {{/if}}
     {{#each widgetTabs}}
     <button class="btn visualization-button{{#if active}} active{{/if}}" data-type="{{type}}" title="{{title}}">

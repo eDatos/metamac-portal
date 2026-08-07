@@ -23,6 +23,8 @@
                 this._mouseMove = _.bind(this._mouseMove, this);
             }
 
+            this._reposition = _.bind(this._reposition, this);
+
             this._initializeHtml();
             this._hide();
             this.setEl(options.el);
@@ -67,6 +69,8 @@
             } else {
                 this.$container.on('mousemove.tooltip', this._mouseMove);
             }
+            window.addEventListener('scroll', this._reposition, true);
+            window.addEventListener('resize', this._reposition);
         },
 
         // IDEA: METAMAC-2276 This won´t scalate properly if for example you have more than one tooltip with the same trigger
@@ -80,6 +84,8 @@
                     this.$container.off('mousemove.tooltip');
                 }
             }
+            window.removeEventListener('scroll', this._reposition, true);
+            window.removeEventListener('resize', this._reposition);
         },
 
         /* $el upper left corner */
@@ -116,17 +122,19 @@
                 relativePosition.y = cursor.y - MARGIN - tooltipSize.height;
             }
 
-            /* Must return a absolute position because the tooltip is fixed */
+            // The tooltip is position:fixed (viewport-relative) but $el.offset() is
+            // document-relative, so subtract the page scroll to convert to viewport coordinates.
             var offset = this._getOffset();
             return {
-                x: offset.left + relativePosition.x,
-                y: offset.top + relativePosition.y
+                x: offset.left + relativePosition.x - $(window).scrollLeft(),
+                y: offset.top + relativePosition.y - $(window).scrollTop()
             };
         },
 
         _update: function (point) {
             var pointInsideEl = point.x > 0 && point.y > 0 && point.x < this.$el.width() && point.y < this.$el.height();
             if (pointInsideEl) {
+                this._lastPoint = point;
                 if (this.trigger === "click") {
                     this._updateByClick(point);
                 } else {
@@ -138,23 +146,25 @@
             }
         },
 
+        _positionTooltip: function (point) {
+            if (App.config["widget"]) {
+                this.$tooltip.css({ inset: "0 0 75px 0" });
+                return;
+            }
+            const position = this._getPosition(point);
+            this.$tooltip.css({
+                top: Math.max(position.y, 0),
+                left: Math.max(position.x, 0)
+            });
+        },
+
         _updateByClick: function (point) {
             var attribute = this.delegate.getCellInfoAtMousePosition(point);
             if (attribute) {
                 this.view.toggleClickedCellByRelativePoint(point);
                 this.$cellInfo.html(attribute);
                 this._drawChart(point);
-                if (App.config["widget"]) {
-                    this.$tooltip.css({
-                        inset: "0 0 75px 0"
-                    });
-                } else {
-                    var position = this._getPosition(point);
-                    this.$tooltip.css({
-                        top: Math.max(position.y, 0),
-                        left: Math.max(position.x, 0)
-                    });
-                }
+                this._positionTooltip(point);
                 this.$tooltip.toggle();
             } else {
                 this._hide();
@@ -188,17 +198,7 @@
             var title = this.delegate.getTitleAtMousePosition(point);
             if (title) {
                 this.$cellInfo.html(title);
-                if (App.config["widget"]) {
-                    this.$tooltip.css({
-                        inset: "0 0 75px 0"
-                    });
-                } else {
-                    var position = this._getPosition(point);
-                    this.$tooltip.css({
-                        top: Math.max(position.y, 0),
-                        left: Math.max(position.x, 0)
-                    });
-                }
+                this._positionTooltip(point);
             } else {
                 this._hide();
             }
@@ -206,7 +206,27 @@
 
         _hide: function () {
             this.$tooltip.css('display', 'none');
+            this._lastPoint = null;
             this.view.clearClickedCell();
+        },
+
+        onCanvasScroll: function (shift, zoneViewPort) {
+            if (!this._lastPoint || App.config["widget"]) {
+                return;
+            }
+            this._lastPoint = this._lastPoint.plus(shift);
+
+            var cellVisible = !zoneViewPort || zoneViewPort.containsPoint(this._lastPoint);
+            this.$tooltip.css('display', cellVisible ? 'block' : 'none');
+            if (cellVisible) {
+                this._positionTooltip(this._lastPoint);
+            }
+        },
+
+        _reposition: function () {
+            if (this._lastPoint && this.$tooltip.css('display') !== 'none') {
+                this._positionTooltip(this._lastPoint);
+            }
         },
 
         _mouseMove: function (e) {

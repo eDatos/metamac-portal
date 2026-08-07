@@ -28,6 +28,7 @@
             this.filterDimensions = this.options.filterDimensions;
             this.onSubmit = this.options.onSubmit || (function() {});
             this.customButtonText = this.options.customButtonText;
+            this.customButtonIconClass = this.options.customButtonIconClass;
         },
 
         createPermalinkAndSubmit: function(e) {
@@ -152,7 +153,8 @@
                 thereIsTemporalDimension: this.isThereTemporalDimension(),
                 defaultCustomQueryName: this.filterDimensions.metadata.getTitle(),
                 dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes; }),
-                buttonText: this.customButtonText || I18n.t("modal.permalinkConfig.button.submit")
+                buttonText: this.customButtonText || I18n.t("modal.permalinkConfig.button.submit"),
+                buttonIconClass: this.customButtonIconClass || "modal-form-view-icon"
             }));
 
             if (this.isThereTemporalDimension()) {

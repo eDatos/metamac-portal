@@ -56,6 +56,7 @@
                 selectionApiEndpointsMessage: this._buildApiEndpointsMessage(true),
                 apiDocumentationUrl: this.metadata.getApiDocumentationUrl(),
                 rightsHolder: this.showRightsHolderText() ? this.getRightsHolderText() : '',
+                isExternalInstallation: App.config["installationType"] === "EXTERNAL"
             };
             this.$el.html(this.template(context));
 
