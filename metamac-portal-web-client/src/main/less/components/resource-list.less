@@ -8,11 +8,15 @@ ul.resource-list {
     list-style: none;
     padding: 0;
     margin: 0;
+    li.resource-link {
+        padding-top: var(--edatos-spacing-y-xs);
+        padding-bottom: var(--edatos-spacing-y-xs);
+    }
 
     .resource-section {
         .resource-section-title,
         .resource-section-description,
-        .resource-list li {
+        .resource-list li:first-child {
             margin-top: var(--edatos-spacing-y-lg);
         }
 
