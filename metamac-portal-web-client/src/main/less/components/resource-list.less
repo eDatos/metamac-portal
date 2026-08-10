@@ -11,6 +11,10 @@ ul.resource-list {
     li.resource-link {
         padding-top: var(--edatos-spacing-y-xs);
         padding-bottom: var(--edatos-spacing-y-xs);
+
+        > i {
+            color: var(--edatos-links-color);
+        }
     }
 
     .resource-section {
@@ -38,7 +42,7 @@ ul.resource-list {
                 width: @resourceListIconSize;
                 height: @resourceListIconSize;
                 font-size: @resourceListIconFontSize;
-                color: var(--edatos-color-primary-100);
+                color: var(--edatos-color-links-color);
             }
 
             a {
