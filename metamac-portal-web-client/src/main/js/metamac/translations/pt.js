@@ -22,6 +22,7 @@ I18n.translations.pt = {
             map: "Mapa coroplético",
             mapbubble: "Mapa de símbolos",
             fullscreen: "Maximizar",
+            minimizedScreen: "Minimizar",
             helpUrl: "Ajuda",
             share: "Partilhar",
             download: "Baixar",
@@ -443,7 +444,7 @@ I18n.translations.pt = {
         },
         saveConfig: {
             button: {
-                submit: "Ver descritores",
+                submit: "Continuar",
             },
         }
     },

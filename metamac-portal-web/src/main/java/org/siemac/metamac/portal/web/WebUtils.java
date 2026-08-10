@@ -493,8 +493,9 @@ public class WebUtils extends org.siemac.metamac.core.common.util.WebUtils {
         return buildParam(PARAM_INSTALLATION_TYPE, installationType);
     }
 
+    // TODO EDATOS-5855 This behaviour is TEMPORAL until home page is finished
     private static String buildAppUrlParam() {
-        return buildParam(PARAM_APP_URL, getPortalBaseUrl());
+        return buildParam(PARAM_APP_URL, "");
     }
 
     private static String buildAppNameParam(String lang) {

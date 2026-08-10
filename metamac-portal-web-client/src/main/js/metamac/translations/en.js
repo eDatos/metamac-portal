@@ -22,6 +22,7 @@ I18n.translations.en = {
             map: "Choropleth map",
             mapbubble: "Bubble map",
             fullscreen: "Maximize",
+            minimizedScreen: "Minimize",
             helpUrl: "Help",
             share: "Share",
             download: "Download",
@@ -444,7 +445,7 @@ I18n.translations.en = {
         },
         saveConfig: {
             button: {
-                submit: "View descriptors",
+                submit: "Continue",
             },
         }
     },
