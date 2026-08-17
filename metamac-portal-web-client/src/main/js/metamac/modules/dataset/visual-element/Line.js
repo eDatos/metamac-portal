@@ -81,10 +81,9 @@
         },
 
         updatingDimensionPositions: function () {
-            this._applyVisualizationRestrictions();
-            this.resetDimensionsLimits();
+            App.VisualElement.Base.prototype.updatingDimensionPositions.apply(this, arguments);
 
-            this.filterDimensions.zones.get('top').set('maxSize', 1); // lines      
+            this.filterDimensions.zones.get('top').set('maxSize', 1); // lines
             this.filterDimensions.zones.get('left').set('fixedSize', 1); // AxisX
             this.filterDimensions.zones.get('axisy').set('maxSize', 1);
         },
