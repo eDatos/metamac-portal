@@ -8,6 +8,10 @@
 <%@ page import="org.siemac.metamac.portal.Helpers" %>
 <%@ page import="org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.ResourceStatisticalResourceBase" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${currentLocale}" />
+<fmt:setBundle basename="i18n.messages-portal" var="i18n"/>
 
 <ul class="resource-list">
     <%
@@ -97,10 +101,10 @@
         </a>
         <div class="tags-section">
             <c:if test="${featured}">
-                <i class="fa-solid fa-star" title=""></i>
+                <i class="fa-solid fa-star" title="<fmt:message key="message.portal.resource.featured" bundle="${i18n}"/>"></i>
             </c:if>
             <c:if test="${newness}">
-                <i class="fa-solid fa-calendar" title=""></i>
+                <i class="fa-solid fa-calendar" title="<fmt:message key="message.portal.resource.newness" bundle="${i18n}"/>"></i>
             </c:if>
         </div>
     </li>
