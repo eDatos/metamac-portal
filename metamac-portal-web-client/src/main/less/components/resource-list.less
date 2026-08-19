@@ -8,13 +8,15 @@ ul.resource-list {
     list-style: none;
     padding: 0;
     margin: 0;
+
     li.resource-link {
         display: flex;
         flex-direction: row;
         gap: var(--edatos-spacing-x-sm);
         align-items: flex-start;
-        padding-top: var(--edatos-spacing-y-xs);
-        padding-bottom: var(--edatos-spacing-y-xs);
+        padding-top: var(--edatos-spacing-y-2xs);
+        padding-bottom: var(--edatos-spacing-y-2xs);
+        margin: var(--edatos-spacing-y-2xs) 0;
 
         &.compact {
             padding: 0;
@@ -42,6 +44,7 @@ ul.resource-list {
             flex: 1;
             font-size: var(--edatos-font-size-sm);
             font-weight: var(--edatos-font-weight-regular);
+            align-self: center;
         }
 
         .tags-section {
