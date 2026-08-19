@@ -38,11 +38,9 @@
 
     <li class="resource-section resource-section-depth-${nodeDepth}">
         <span class="resource-section-title">
+            <i class="fa fa-chevron-down fa-solid"></i>
             <span class="resource-section-index"><%= chapterIndex %></span>
             <span class="resource-section-title-label"><%= helpers.localizeText(chapter.getName()).trim() %></span>
-            <c:if test="${nodeDepth == 2}">
-                <i class="fa fa-chevron-down fa-solid"></i>
-            </c:if>
         </span>
         <div class="resource-section-description">
 	        <c:if test="${nodeDepth <= 2}">
