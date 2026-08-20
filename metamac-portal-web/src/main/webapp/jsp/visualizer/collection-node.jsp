@@ -36,7 +36,7 @@
                 String chapterIndex = parentIndex + chapterCount;
     %>
 
-    <li class="resource-section resource-section-depth-${nodeDepth}">
+    <li class="resource-section resource-section-depth-${nodeDepth}<%= chapter.getOpening() ? "" : " resource-section-collapsed" %>">
         <span class="resource-section-title">
             <i class="fa fa-chevron-down fa-solid"></i>
             <span class="resource-section-index"><%= chapterIndex %></span>
