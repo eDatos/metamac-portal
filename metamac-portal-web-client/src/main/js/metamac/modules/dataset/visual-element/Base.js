@@ -62,6 +62,8 @@
         },
 
         updatingDimensionPositions: function () {
+            this._applyVisualizationRestrictions();
+            this.resetDimensionsLimits();
         },
 
         resizeFullScreen: function () {
@@ -99,6 +101,15 @@
             if (!this.optionsModel.get('mustApplyVisualizationRestrictions')) {
                 this.optionsModel.set('mustApplyVisualizationRestrictions', true);
             }
+        },
+
+        _applyVisualizationRestrictions: function () {
+            if (this._mustApplyVisualizationRestrictions()) {
+                this._forceDimensionsByMetadataInfo();
+                this._moveAllSingleValueDimensionsToZone('fixed');
+            }
+
+            this._updateMustApplyVisualizationRestrictions();
         },
 
         _forceDimensionTypeInZone: function (dimensionType, zone) {

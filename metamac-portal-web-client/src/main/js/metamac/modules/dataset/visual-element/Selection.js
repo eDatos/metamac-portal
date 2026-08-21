@@ -15,6 +15,9 @@
 
         template: App.templateManager.get("selection/selection-body"),
 
+        updatingDimensionPositions: function () {
+        },
+
         load: function () {
             this._destroyDimensionViews();
 

@@ -250,8 +250,7 @@
 
         updatingDimensionPositions: function (oldElement) {
             if (!oldElement || oldElement._type !== "map") {
-                this._applyVisualizationRestrictions();
-                this.resetDimensionsLimits();
+                App.VisualElement.Base.prototype.updatingDimensionPositions.apply(this, arguments);
 
                 this.filterDimensions.zones.get('left').set('fixedSize', 1);
                 this.filterDimensions.zones.get('top').set('fixedSize', 0);
