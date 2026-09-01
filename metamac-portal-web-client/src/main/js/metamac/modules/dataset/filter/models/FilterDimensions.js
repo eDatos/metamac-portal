@@ -214,17 +214,21 @@
                         var granularity = timeDynamicSelection.granularity;
                         _.each(this.get(temporalDimensionId).get("representations").models, function (category) {
                             var matchesGranularity = _.isUndefined(granularity) || _.isNull(granularity) || category.get("temporalGranularity") === granularity;
+
+                            var selected = false;
+                            if (matchesGranularity) {
+                                if (selectAll) {
+                                    selected = true;
+                                } else if (isNaN(selectedLeft)) {
+                                    selected = App.TemporalUtils.isAfter(afterDate, category.attributes);
+                                } else {
+                                    selected = Boolean(Math.max(0, selectedLeft--));
+                                }
+                            }
+
                             selectionCopy[temporalDimensionId].categories.push({
                                 id: category.id,
-                                selected: matchesGranularity
-                                    && (
-                                        selectAll
-                                        || (
-                                            isNaN(selectedLeft)
-                                                ? App.TemporalUtils.isAfter(afterDate, category.attributes)
-                                                : Boolean(Math.max(0, selectedLeft--))
-                                        )
-                                    )
+                                selected: selected
                             });
                         });
                         return selectionCopy;
