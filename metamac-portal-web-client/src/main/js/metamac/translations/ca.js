@@ -421,6 +421,11 @@ I18n.translations.ca = {
                     quantity: "Actualitzar amb els darrers n períodes:",
                     date: "Actualitzar a partir del període següent:",
                     all: "Actualitzar amb tots els períodes",
+                },
+                periodsFilter: {
+                    group: "Filtrar els períodes",
+                    none: "Sense filtrar",
+                    granularity: "Per granularitat:",
                 }
             },
             error: {

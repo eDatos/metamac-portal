@@ -21,6 +21,8 @@
             "change #periods-quantity": "onDataQuantityChosen",
             "change #periods-date": "onDataDateChosen",
             "change #periods-all": "onDataAllChosen",
+            "change #periods-filter-none": "onPeriodsFilterNoneChosen",
+            "change #periods-filter-granularity": "onPeriodsFilterGranularityChosen",
             "focus input, textarea, select": "hideError"
         },
 
@@ -59,6 +61,9 @@
                     }).attributes;
                     dynamicSelectionBuilder.selectTemporalDimensionCategoriesAfterDate(chosenCategoryAttributes);
                 }
+                if (this.$("#periods-filter-granularity")[0].checked) {
+                    dynamicSelectionBuilder.filterTemporalDimensionCategoriesByGranularity(this.$("#periods-filter-granularity-related-input")[0].value);
+                }
             }
             var permalinkContent = DatasetPermalink.buildPermalinkContent(
                 this.filterDimensions,
@@ -93,13 +98,15 @@
         },
 
         showUpdatePeriodsOptions: function () {
-            this.$("#update-periods-options")[0].hidden = false;
-            this.$("#selected-periods-options")[0].hidden = true;
+            this.$("#update-periods-options").removeClass("is-hidden");
+            this.$("#periods-filter-options").removeClass("is-hidden");
+            this.$("#selected-periods-options").addClass("is-hidden");
         },
 
         showSelectedPeriodsOptions: function () {
-            this.$("#update-periods-options")[0].hidden = true;
-            this.$("#selected-periods-options")[0].hidden = false;
+            this.$("#update-periods-options").addClass("is-hidden");
+            this.$("#periods-filter-options").addClass("is-hidden");
+            this.$("#selected-periods-options").removeClass("is-hidden");
         },
 
         onDataQuantityChosen: function () {
@@ -115,6 +122,14 @@
         onDataAllChosen: function () {
             this.periodsQuantityView.setDisabled(true);
             this.$("#periods-date-related-input").prop("disabled", true).trigger("change");
+        },
+
+        onPeriodsFilterNoneChosen: function () {
+            this.$("#periods-filter-granularity-related-input").prop("disabled", true).trigger("change");
+        },
+
+        onPeriodsFilterGranularityChosen: function () {
+            this.$("#periods-filter-granularity-related-input").prop("disabled", false).trigger("change");
         },
 
         hideError: function () {
@@ -147,12 +162,26 @@
             });
         },
 
+        getTemporalGranularityOptions: function () {
+            var temporalDimension = this.getTemporalDimension();
+            if (!temporalDimension) {
+                return [];
+            }
+
+            return _.map(temporalDimension.getGranularities(), function (granularity) {
+                return {
+                    id: granularity,
+                    label: I18n.t("entity.granularity.temporal.enum." + granularity, { defaults: [{ message: granularity }] }) };
+            });
+        },
+
         render: function () {
             this.$el.html(this.template({
                 thereAreVersions: this.areThereVersions(),
                 thereIsTemporalDimension: this.isThereTemporalDimension(),
                 defaultCustomQueryName: this.filterDimensions.metadata.getTitle(),
                 dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes; }),
+                temporalGranularities: this.getTemporalGranularityOptions(),
                 buttonText: this.customButtonText || I18n.t("modal.permalinkConfig.button.submit"),
                 buttonIconClass: this.customButtonIconClass || "modal-form-view-icon"
             }));
@@ -164,6 +193,14 @@
                 this.periodsQuantityView.setDisabled(true);
 
                 this.$el.find("#periods-date-related-input").select2({
+                    dropdownParent: $('.metamac-container'),
+                    minimumResultsForSearch: Infinity,
+                    width: 'style'
+                }).on('select2:open', function () {
+                    App.Select2Utils.onOpen($(this), 'modal-form-select2-dropdown');
+                }).siblings(".select2").addClass("radio-related-input");
+
+                this.$el.find("#periods-filter-granularity-related-input").select2({
                     dropdownParent: $('.metamac-container'),
                     minimumResultsForSearch: Infinity,
                     width: 'style'

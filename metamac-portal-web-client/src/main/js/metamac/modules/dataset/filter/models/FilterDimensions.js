@@ -207,13 +207,24 @@
                         var selectionCopy = JSON.parse(JSON.stringify(selection));
                         selectionCopy[temporalDimensionId].categories = [];
 
-                        var selectedLeft = dynamicSelection.dimension.type.TIME_DIMENSION.lastNValues;
-                        var afterDate = dynamicSelection.dimension.type.TIME_DIMENSION.afterDate;
-                        var selectAll = dynamicSelection.dimension.type.TIME_DIMENSION.all;
+                        var timeDynamicSelection = dynamicSelection.dimension.type.TIME_DIMENSION;
+                        var selectedLeft = timeDynamicSelection.lastNValues;
+                        var afterDate = timeDynamicSelection.afterDate;
+                        var selectAll = timeDynamicSelection.all;
+                        var granularity = timeDynamicSelection.granularity;
                         _.each(this.get(temporalDimensionId).get("representations").models, function (category) {
+                            var matchesGranularity = _.isUndefined(granularity) || _.isNull(granularity) || category.get("temporalGranularity") === granularity;
                             selectionCopy[temporalDimensionId].categories.push({
                                 id: category.id,
-                                selected: selectAll || (isNaN(selectedLeft) ? App.TemporalUtils.isAfter(afterDate, category.attributes) : Boolean(Math.max(0, selectedLeft--)))
+                                selected: matchesGranularity
+                                    && (
+                                        selectAll
+                                        || (
+                                            isNaN(selectedLeft)
+                                                ? App.TemporalUtils.isAfter(afterDate, category.attributes)
+                                                : Boolean(Math.max(0, selectedLeft--))
+                                        )
+                                    )
                             });
                         });
                         return selectionCopy;

@@ -419,6 +419,11 @@ I18n.translations.en = {
                     quantity: "Update with the last n periods:",
                     date: "Update from the following period:",
                     all: "Update with all periods",
+                },
+                periodsFilter: {
+                    group: "Filter the periods",
+                    none: "No filter",
+                    granularity: "By granularity:",
                 }
             },
             error: {
