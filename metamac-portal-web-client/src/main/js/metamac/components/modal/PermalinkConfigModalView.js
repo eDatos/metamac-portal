@@ -61,7 +61,9 @@
                     }).attributes;
                     dynamicSelectionBuilder.selectTemporalDimensionCategoriesAfterDate(chosenCategoryAttributes);
                 }
-                if (this.$("#periods-filter-granularity")[0].checked) {
+
+                var granularityRadio = this.$("#periods-filter-granularity")[0];
+                if (!!granularityRadio && granularityRadio.checked) {
                     dynamicSelectionBuilder.filterTemporalDimensionCategoriesByGranularity(this.$("#periods-filter-granularity-related-input")[0].value);
                 }
             }
@@ -171,10 +173,16 @@
             });
         },
 
+        areThereMultipleTemporalGranularities: function () {
+            var temporalDimension = this.getTemporalDimension();
+            return !!temporalDimension && temporalDimension.getGranularities().length > 1;
+        },
+
         render: function () {
             this.$el.html(this.template({
                 thereAreVersions: this.areThereVersions(),
                 thereIsTemporalDimension: this.isThereTemporalDimension(),
+                thereAreMultipleTemporalGranularities: this.areThereMultipleTemporalGranularities(),
                 defaultCustomQueryName: this.filterDimensions.metadata.getTitle(),
                 dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes; }),
                 temporalGranularities: this.getTemporalGranularityOptions(),

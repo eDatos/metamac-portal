@@ -40,6 +40,7 @@
         </select>
     </div>
 </fieldset>
+{{#if thereAreMultipleTemporalGranularities}}
 <fieldset id="periods-filter-options" class="modal-form-section">
     <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.periodsFilter.group" }}</legend>
     <div class="modal-radio-button">
@@ -60,6 +61,7 @@
         </select>
     </div>
 </fieldset>
+{{/if}}
 <fieldset id="selected-periods-options" class="modal-form-section is-hidden">
     <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.dataReview.group" }}</legend>
     {{#if thereAreVersions}}
