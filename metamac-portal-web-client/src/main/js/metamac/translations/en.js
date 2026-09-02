@@ -427,8 +427,7 @@ I18n.translations.en = {
                 }
             },
             error: {
-                quantity: "The numeric field in the 'Update with the last n periods' section must be a positive integer greater than or equal to one.",
-                periods: "You must select one of the options in the 'Periods' section."
+                quantity: "The numeric field in the 'Update with the last n periods' section must be a positive integer greater than or equal to one."
             },
             info: {
                 noTemporalDimension: "This resource does not allow choosing the period because it does not have a temporal dimension.",

@@ -85,14 +85,10 @@
         },
 
         validateFilter: function () {
-            if(this.isThereTemporalDimension() && this.areUpdatePeriodsOptionsNecessary()) {
-                if (!this.$("#periods-all")[0].checked && !this.$("#periods-quantity")[0].checked && !this.$("#periods-date")[0].checked) {
-                    return I18n.t("modal.permalinkConfig.error.periods");
-                } else if (!this.periodsQuantityView.isDisabled()) {
-                    const value = this.periodsQuantityView.getValue();
-                    if (!Number.isInteger(value) || value < 1) {
-                        return I18n.t("modal.permalinkConfig.error.quantity");
-                    }
+            if(this.isThereTemporalDimension() && this.areUpdatePeriodsOptionsNecessary() && !this.periodsQuantityView.isDisabled()) {
+                const value = this.periodsQuantityView.getValue();
+                if (!Number.isInteger(value) || value < 1) {
+                    return I18n.t("modal.permalinkConfig.error.quantity");
                 }
             }
         },

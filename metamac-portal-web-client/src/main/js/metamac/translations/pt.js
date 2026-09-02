@@ -426,8 +426,7 @@ I18n.translations.pt = {
                 }
             },
             error: {
-                quantity: "O campo numérico na seção 'Atualizar com os últimos n períodos' deve ser um número inteiro positivo maior ou igual a um.",
-                periods: "Você deve selecionar uma das opções na seção 'Períodos'."
+                quantity: "O campo numérico na seção 'Atualizar com os últimos n períodos' deve ser um número inteiro positivo maior ou igual a um."
             },
             info: {
                 noTemporalDimension: "Este recurso não permite a escolha do período porque não possui uma dimensão temporal.",
