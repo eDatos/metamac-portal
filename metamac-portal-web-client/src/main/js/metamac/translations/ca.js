@@ -422,10 +422,10 @@ I18n.translations.ca = {
                     date: "Actualitzar a partir del període següent:",
                     all: "Actualitzar amb tots els períodes",
                 },
-                periodsFilter: {
-                    group: "Filtrar els períodes",
-                    none: "Sense filtrar",
-                    granularity: "Per granularitat:",
+                temporalGranularities: {
+                    group: "Granularitat temporal",
+                    none: "Totes",
+                    granularity: "Només una granularitat:",
                 }
             },
             error: {

@@ -420,10 +420,10 @@ I18n.translations.en = {
                     date: "Update from the following period:",
                     all: "Update with all periods",
                 },
-                periodsFilter: {
-                    group: "Filter the periods",
-                    none: "No filter",
-                    granularity: "By granularity:",
+                temporalGranularities: {
+                    group: "Temporal granularity",
+                    none: "All",
+                    granularity: "Only one granularity:",
                 }
             },
             error: {

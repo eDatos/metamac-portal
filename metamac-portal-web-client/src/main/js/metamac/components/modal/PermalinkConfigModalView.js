@@ -21,8 +21,8 @@
             "change #periods-quantity": "onDataQuantityChosen",
             "change #periods-date": "onDataDateChosen",
             "change #periods-all": "onDataAllChosen",
-            "change #periods-filter-none": "onPeriodsFilterNoneChosen",
-            "change #periods-filter-granularity": "onPeriodsFilterGranularityChosen",
+            "change #temporal-granularity-all": "onTemporalGranularityAllChosen",
+            "change #temporal-granularity-single": "onTemporalGranularitySingleChosen",
             "focus input, textarea, select": "hideError"
         },
 
@@ -62,9 +62,9 @@
                     dynamicSelectionBuilder.selectTemporalDimensionCategoriesAfterDate(chosenCategoryAttributes);
                 }
 
-                var granularityRadio = this.$("#periods-filter-granularity")[0];
+                var granularityRadio = this.$("#temporal-granularity-single")[0];
                 if (!!granularityRadio && granularityRadio.checked) {
-                    dynamicSelectionBuilder.filterTemporalDimensionCategoriesByGranularity(this.$("#periods-filter-granularity-related-input")[0].value);
+                    dynamicSelectionBuilder.filterTemporalDimensionCategoriesByGranularity(this.$("#temporal-granularity-select")[0].value);
                 }
             }
             var permalinkContent = DatasetPermalink.buildPermalinkContent(
@@ -97,13 +97,13 @@
 
         showUpdatePeriodsOptions: function () {
             this.$("#update-periods-options").removeClass("is-hidden");
-            this.$("#periods-filter-options").removeClass("is-hidden");
+            this.$("#temporal-granularity-options").removeClass("is-hidden");
             this.$("#selected-periods-options").addClass("is-hidden");
         },
 
         showSelectedPeriodsOptions: function () {
             this.$("#update-periods-options").addClass("is-hidden");
-            this.$("#periods-filter-options").addClass("is-hidden");
+            this.$("#temporal-granularity-options").addClass("is-hidden");
             this.$("#selected-periods-options").removeClass("is-hidden");
         },
 
@@ -122,12 +122,12 @@
             this.$("#periods-date-related-input").prop("disabled", true).trigger("change");
         },
 
-        onPeriodsFilterNoneChosen: function () {
-            this.$("#periods-filter-granularity-related-input").prop("disabled", true).trigger("change");
+        onTemporalGranularityAllChosen: function () {
+            this.$("#temporal-granularity-select").prop("disabled", true).trigger("change");
         },
 
-        onPeriodsFilterGranularityChosen: function () {
-            this.$("#periods-filter-granularity-related-input").prop("disabled", false).trigger("change");
+        onTemporalGranularitySingleChosen: function () {
+            this.$("#temporal-granularity-select").prop("disabled", false).trigger("change");
         },
 
         hideError: function () {
@@ -204,7 +204,7 @@
                     App.Select2Utils.onOpen($(this), 'modal-form-select2-dropdown');
                 }).siblings(".select2").addClass("radio-related-input");
 
-                this.$el.find("#periods-filter-granularity-related-input").select2({
+                this.$el.find("#temporal-granularity-select").select2({
                     dropdownParent: $('.metamac-container'),
                     minimumResultsForSearch: Infinity,
                     width: 'style'

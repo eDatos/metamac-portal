@@ -419,10 +419,10 @@ I18n.translations.pt = {
                     date: "Atualização do seguinte período:",
                     all: "Atualizar com todos os períodos",
                 },
-                periodsFilter: {
-                    group: "Filtrar os períodos",
-                    none: "Sem filtrar",
-                    granularity: "Por granularidade:",
+                temporalGranularities: {
+                    group: "Granularidade temporal",
+                    none: "Todas",
+                    granularity: "Apenas uma granularidade:",
                 }
             },
             error: {

@@ -422,10 +422,10 @@ I18n.translations.es = {
                     date: "Actualizar a partir del siguiente periodo:",
                     all: "Actualizar con todos los periodos",
                 },
-                periodsFilter: {
-                    group: "Filtrar los periodos",
-                    none: "Sin filtrar",
-                    granularity: "Por granularidad:",
+                temporalGranularities: {
+                    group: "Granularidad temporal",
+                    none: "Todas",
+                    granularity: "Sólo una granularidad:",
                 }
             },
             error: {
