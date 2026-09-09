@@ -257,7 +257,7 @@
                 var attachmentLevel = this.indicatorAttachmentLevelToDatasetAttachmentLevel(attribute.attachmentLevel);
 
                 if (attachmentLevel === App.Constants.attributes.attachmentLevels.DIMENSION && !(attribute.dimensions && attribute.dimensions.dimension)) {
-                    console.warn('Indicator attribute "' + attribute.code + '" has DIMENSION attachmentLevel but no dimensions info; skipping it.');
+                    console.error('Indicator attribute "' + attribute.code + '" has DIMENSION attachmentLevel but no dimensions info; skipping it.');
                     return null;
                 }
 
