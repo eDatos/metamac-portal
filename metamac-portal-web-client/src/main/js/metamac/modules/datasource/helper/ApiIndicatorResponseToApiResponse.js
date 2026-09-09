@@ -290,6 +290,10 @@
         },
 
         localisedStringToInternationalString: function (localisedString) {
+            if (!localisedString) {
+                return [];
+            }
+
             var text = Object.entries(_.omit(localisedString, DEFAULT)).map(function ([key, value]) {
                 return {
                     lang: key,
