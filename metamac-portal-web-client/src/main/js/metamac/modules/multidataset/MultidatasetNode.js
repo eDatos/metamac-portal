@@ -49,7 +49,7 @@
             attributes.selected = resourceIdentifier.type === attributes.type &&
                 resourceIdentifier.agency === attributes.agency &&
                 resourceIdentifier.identifier === attributes.identifier &&
-                resourceIdentifier.version === attributes.version;
+                (attributes.type !== 'dataset' || resourceIdentifier.version === attributes.version);
 
             return attributes;
         }
