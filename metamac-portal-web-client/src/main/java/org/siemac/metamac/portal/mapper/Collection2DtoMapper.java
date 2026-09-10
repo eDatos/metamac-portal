@@ -73,6 +73,7 @@ public class Collection2DtoMapper {
             Chapter target = new Chapter();
             target.setName(source.getName());
             target.setDescription(source.getDescription());
+            target.setOpening(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) source).getOpening());
             target.setNodes(collectionNodesExternalToDto(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) source).getNodes()));
 
             return target;
@@ -150,6 +151,7 @@ public class Collection2DtoMapper {
             Chapter target = new Chapter();
             target.setName(source.getName());
             target.setDescription(source.getDescription());
+            target.setOpening(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) source).getOpening());
             target.setNodes(collectionNodesInternalToDto(((org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.Chapter) source).getNodes()));
 
             return target;

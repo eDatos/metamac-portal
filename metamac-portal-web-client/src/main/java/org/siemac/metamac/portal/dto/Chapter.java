@@ -3,8 +3,25 @@ package org.siemac.metamac.portal.dto;
 public class Chapter
     extends CollectionNode
 {
-    
+
+    protected boolean opening;
     protected CollectionNodes nodes;
+
+    /**
+     * Gets the value of the opening property.
+     *
+     */
+    public boolean getOpening() {
+        return opening;
+    }
+
+    /**
+     * Sets the value of the opening property.
+     *
+     */
+    public void setOpening(boolean value) {
+        this.opening = value;
+    }
 
     /**
      * Gets the value of the nodes property.
