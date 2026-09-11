@@ -25,7 +25,7 @@
 
         <metamac-statistical-resources-rest-api-common.version>2.15.1-SNAPSHOT</metamac-statistical-resources-rest-api-common.version>
 
-        <indicators.version>11.10.0</indicators.version>
+        <indicators.version>12.7.2-SNAPSHOT</indicators.version>
 
         <!-- TODO: Revisar si es necesario que estas dependencias esten aqui o se pueden pasar al proyecto metamac-parent -->
         <google-guava.version>15.0</google-guava.version>

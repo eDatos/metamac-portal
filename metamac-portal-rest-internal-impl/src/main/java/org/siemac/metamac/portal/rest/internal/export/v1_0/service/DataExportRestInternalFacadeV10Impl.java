@@ -209,20 +209,20 @@ public class DataExportRestInternalFacadeV10Impl extends DataExportRestCommon im
     }
 
     @Override
-    public DatasetBase retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection) {
+    public DatasetBase retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection) throws MetamacException {
         DataType indicatorInstanceData = indicatorsSystemsRestInternalFacade.retrieveIndicatorInstanceDataByCode(indicatorSystemCode, resourceID, dimensionSelection);
         IndicatorInstanceType indicatorInstance = indicatorsSystemsRestInternalFacade.retrieveIndicatorInstanceByCode(indicatorSystemCode, resourceID);
         IndicatorsSystemType indicatorSystem = indicatorsSystemsRestInternalFacade.retrieveIndicatorsSystem(indicatorSystemCode);
         Organisation organisation = IndicatorsRestMapper.organisationSrmInternalToResource(srmRestInternalFacade.retrieveOrganization());
-        return IndicatorsRestMapper.indicatorInstanceToDatasetMapper(indicatorInstance, indicatorInstanceData, organisation, indicatorSystem);
+        return IndicatorsRestMapper.indicatorInstanceToDatasetMapper(indicatorInstance, indicatorInstanceData, organisation, indicatorSystem, portalConfiguration.retrieveLanguageDefault());
     }
 
     @Override
-    public DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) {
+    public DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) throws MetamacException {
         DataType indicatorData = indicatorsRestInternalFacade.retrieveIndicatorData(resourceID, dimensionSelection);
         IndicatorType indicator = indicatorsRestInternalFacade.retrieveIndicator(resourceID);
         Organisation organisation = IndicatorsRestMapper.organisationSrmInternalToResource(srmRestInternalFacade.retrieveOrganization());
-        return IndicatorsRestMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation);
+        return IndicatorsRestMapper.indicatorToDatasetMapper(indicator, indicatorData, organisation, portalConfiguration.retrieveLanguageDefault());
     }
 
     @Override
