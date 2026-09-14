@@ -17,6 +17,8 @@
 			<!-- portalStyleCssUrl is empty -->
 		</c:otherwise>
 	</c:choose>
+
+	<link rel="stylesheet" type="text/css" href="${baseURL}/client/metamac.css?d=${cssDate}" />
 </head>
 <body class="statistical-visualizer">
 	<!-- begin: #cabecera -->
