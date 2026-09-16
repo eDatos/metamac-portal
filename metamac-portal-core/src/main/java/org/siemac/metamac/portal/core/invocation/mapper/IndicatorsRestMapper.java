@@ -184,6 +184,9 @@ public class IndicatorsRestMapper {
     }
 
     private static ResourceLink linkTypeToResourceLink(LinkType linkType) {
+        if (linkType == null) {
+            return null;
+        }
         ResourceLink resourceLink = new ResourceLink();
         resourceLink.setHref(linkType.getHref());
         resourceLink.setKind(linkType.getKind());
