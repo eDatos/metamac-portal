@@ -41,7 +41,7 @@
             });
 
             nodes.each(function (model) {
-                var matchIndex = this._cleanFilterQuery(model.get('name')).indexOf(filterQuery);
+                var matchIndex = this._cleanFilterQuery(model.get('nodeName')).indexOf(filterQuery);
                 var match = matchIndex !== -1;
                 if (match) {
                     model.set({ visible: true, matchIndexBegin: matchIndex, matchIndexEnd: matchIndex + filterQueryLength });
