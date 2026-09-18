@@ -1,6 +1,13 @@
 (function () {
     "use strict";
 
+    // Enable HTML5 drag & drop on touch devices (mobile/tablet). https://github.com/timruffles/mobile-drag-drop
+    if (typeof MobileDragDrop !== "undefined") {
+        MobileDragDrop.polyfill();
+
+        window.addEventListener("touchmove", function () {}, { passive: false });
+    }
+
     I18n.fallbacks = true;
 
     var App = new Backbone.Marionette.Application();

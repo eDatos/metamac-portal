@@ -21,6 +21,7 @@
     "coffeescript": "^2.6.1",
     "handlebars": "^4.7.9",
     "jquery-mousewheel": "^3.2.2",
+    "mobile-drag-drop": "2.2.0",
     "moment": "^2.30.1",
     "select2": "^4.1.0"
   },
