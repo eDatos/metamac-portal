@@ -106,6 +106,10 @@
                     map: 'map',
                     roam: true,
                     roamTrigger: "global",
+                    // INFO
+                    // aspectScale: 1 plots the GeoJSON coordinates 1:1 instead of applying eCharts' default
+                    // aspectScale (0.75), which horizontally squashes the shapes and deforms them.
+                    aspectScale: 1,
                     itemStyle: {
                         borderWidth: 0.1,
                         borderColor: Constants.colors.white100
