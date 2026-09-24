@@ -200,6 +200,7 @@
 
             response.metadata = {
                 version: response.version,
+                lastUpdate: response.lastUpdate,
                 relatedDsd: {
                     heading: {
                         dimensionId: ["GEOGRAPHICAL", "MEASURE"] // Always this ones
