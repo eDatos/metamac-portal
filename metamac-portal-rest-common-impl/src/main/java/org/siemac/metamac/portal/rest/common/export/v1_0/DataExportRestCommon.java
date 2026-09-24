@@ -59,8 +59,8 @@ public abstract class DataExportRestCommon {
 
 
     protected abstract DatasetBase retrieveDataset(String agencyID, String resourceID, String version, String lang, String dimensionSelection) throws MetamacException;
-    protected abstract DatasetBase retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection);
-    protected abstract DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection);
+    protected abstract DatasetBase retrieveDatasetFromIndicatorInstance(String indicatorSystemCode, String resourceID, String dimensionSelection) throws MetamacException;
+    protected abstract DatasetBase retrieveDatasetFromIndicator(String resourceID, String dimensionSelection) throws MetamacException;
     protected abstract QueryBase retrieveQuery(String agencyID, String resourceID, String lang, String dimensionSelection) throws MetamacException;
 
 
