@@ -18,7 +18,7 @@
                 color: Constants.colors.gray80,
                 background: function (cell, view) {
                     if (view.isCellClicked(cell)) {
-                        return Constants.colors.gray40;
+                        return Constants.colors.gray20;
                     }
 
                     var isRowSelected = view.isSelectionActive({ rowsCells: [cell.y] });
@@ -50,7 +50,7 @@
                 color: Constants.colors.gray80,
                 background: function (cell, view, isRow) {
                     if (view.isCellClicked(cell)) {
-                         return Constants.colors.gray40;
+                         return Constants.colors.gray20;
                     }
 
                     var range = _.range(cell.index, cell.indexEnd);
