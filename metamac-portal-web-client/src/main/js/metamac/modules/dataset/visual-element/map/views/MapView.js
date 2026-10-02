@@ -106,6 +106,7 @@
                     map: 'map',
                     roam: true,
                     roamTrigger: "global",
+                    aspectScale: 1,
                     itemStyle: {
                         borderWidth: 0.1,
                         borderColor: Constants.colors.white100

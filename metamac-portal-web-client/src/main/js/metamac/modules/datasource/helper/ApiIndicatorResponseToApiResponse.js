@@ -3,22 +3,54 @@
 
     App.namespace("App.datasource.helper.ApiIndicatorResponseToApiResponse");
 
-    var ATTRIBUTE_OBS_CONF = "OBS_CONF";
     var DEFAULT = "__default__";
 
     App.datasource.helper.ApiIndicatorResponseToApiResponse = {
 
         indicatorResponseToResponse: function (response) {
-            var parsedResponse = {
+            return {
                 data: {
                     observations: response.observation,
-                    attributes: this.indicatorDataAttributesToDataAttributes(response.attribute),
+                    attributes: this.indicatorAttributesToDataAttributes(response.attributes, response.attribute),
                     dimensions: {
                         dimension: this.indicatorDimensionsToDimensions(response.dimension)
                     }
                 }
+            };
+        },
+
+        indicatorAttributesToDataAttributes: function (attributes, attribute) {
+            var observationAttributes = this.indicatorObservationAttributesToDataAttributes(attribute);
+            var datasetAndDimensionAttributes = this.indicatorDatasetAndDimensionAttributesToDataAttributes(attributes);
+            var internationalAttribute = datasetAndDimensionAttributes.concat(observationAttributes);
+
+            return {
+                attribute: [],
+                internationalAttribute: internationalAttribute,
+                total: internationalAttribute.length
+            };
+        },
+
+        indicatorObservationAttributesToDataAttributes: function (observationAttribute) {
+            if (!observationAttribute) {
+                return [];
             }
-            return parsedResponse;
+
+            var self = this;
+            var valuesById = {};
+
+            _.each(observationAttribute, function (attributesAtObservation, observationIndex) {
+                _.each(attributesAtObservation, function (attributeValue, attributeCode) {
+                    if (!valuesById[attributeCode]) {
+                        valuesById[attributeCode] = new Array(observationAttribute.length).fill(null);
+                    }
+                    valuesById[attributeCode][observationIndex] = self.indicatorAttributeValueToInternationalText(attributeValue.value);
+                });
+            });
+
+            return _.map(valuesById, function (values, id) {
+                return { id: id, values: values };
+            });
         },
 
         indicatorDimensionsToDimensions: function (dimensions) {
@@ -136,39 +168,28 @@
         /**
          * @param attributes {Array} Array of attributes, each value in the array corresponds to the attributes of a value
          * of the indicator
-         * @return {{total: number, attribute: {}}}
+         * @return {Array}
          */
-        indicatorDataAttributesToDataAttributes: function (attributes) {
-            if (!attributes) { return; }
+        indicatorDatasetAndDimensionAttributesToDataAttributes: function (attributes) {
             var self = this;
 
-            const attributesObj = {};
-            for (const attribute of attributes) {
-                if (attribute) {
-                    _.map(attribute, (a) => a.code).forEach((code) => {
-                        attributesObj[code] = [];
-                    });
-                }
-            }
-
-            for (const attribute of attributes) {
-                for (const code of Object.keys(attributesObj)) {
-                    const translatedValue = attribute && attribute[code] ? self.getTranslatedString(attribute[code].value) : "";
-                    attributesObj[code].push(translatedValue);
-                }
-            }
-
-            const mappedAttributes = _.mapObject(attributesObj, (value, key) => {
+            return _.map(attributes, function (attribute) {
                 return {
-                    id: key,
-                    value: value.join(" | ")
+                    id: attribute.id,
+                    values: _.map(attribute.value, function (value) {
+                        return self.indicatorAttributeValueToInternationalText(value);
+                    })
                 };
             });
+        },
 
-            return {
-                attribute: mappedAttributes,
-                total: Object.keys(mappedAttributes).length,
-            };
+        indicatorAttributeValueToInternationalText: function (value) {
+            if (!value) {
+                return null;
+            }
+
+            var text = this.localisedStringToInternationalString(value);
+            return text.length ? { text: text } : null;
         },
 
         indicatorDimensionTypeToDimensionType: function (dimensionType) {
@@ -200,6 +221,7 @@
 
             response.metadata = {
                 version: response.version,
+                lastUpdate: response.lastUpdate,
                 relatedDsd: {
                     heading: {
                         dimensionId: ["GEOGRAPHICAL", "MEASURE"] // Always this ones
@@ -232,19 +254,27 @@
 
         indicatorMetadataAttributesToMetadataAttributes: function (attributes) {
             if (!attributes) { return null; }
-            const attributesList = Object.values(_.mapObject(attributes, (attribute, _) => {
+            const attributesList = _.compact(Object.values(_.mapObject(attributes, (attribute, _) => {
+                var attachmentLevel = this.indicatorAttachmentLevelToDatasetAttachmentLevel(attribute.attachmentLevel);
+
+                if (attachmentLevel === App.Constants.attributes.attachmentLevels.DIMENSION && !(attribute.dimensions && attribute.dimensions.dimension)) {
+                    console.error('Indicator attribute "' + attribute.code + '" has DIMENSION attachmentLevel but no dimensions info; skipping it.');
+                    return null;
+                }
+
                 return {
                     id: attribute.code,
                     name: {
                         text: this.localisedStringToInternationalString(attribute.title),
                     },
-                    attachmentLevel: this.indicatorAttachmentLevelToDatasetAttachmentLevel(attribute.attachmentLevel)
-                }
-            }));
+                    attachmentLevel: attachmentLevel,
+                    dimensions: attribute.dimensions
+                };
+            })));
             return {
                 attribute: attributesList,
                 total: attributesList.length
-            }
+            };
         },
 
         indicatorAttachmentLevelToDatasetAttachmentLevel: function (indicatorAttachmentLevel) {
@@ -261,12 +291,22 @@
         },
 
         localisedStringToInternationalString: function (localisedString) {
-            return Object.entries(_.omit(localisedString, "__default__")).map(function([key, value]) {
+            if (!localisedString) {
+                return [];
+            }
+
+            var text = Object.entries(_.omit(localisedString, DEFAULT)).map(function ([key, value]) {
                 return {
                     lang: key,
                     value: value
-                }
+                };
             });
+
+            if (!text.length && !_.isUndefined(localisedString[DEFAULT])) {
+                text.push({ lang: I18n.defaultLocale, value: localisedString[DEFAULT] });
+            }
+
+            return text;
         },
 
         getRightsHolder: function (metadata) {
