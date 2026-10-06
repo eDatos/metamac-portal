@@ -1,16 +1,7 @@
 @import "variables";
 
-button {
-    font-size: var(--edatos-font-size-md);
-    font-family: inherit;
-}
-
-.btn-group > .btn,
-.btn-group-vertical > .btn {
-    float: none;
-}
-
-.btn {
+// MIXINS
+.btn-base() {
     display: flex;
     flex-direction: row;
     gap: var(--edatos-spacing-x-xs);
@@ -33,6 +24,31 @@ button {
     i {
         .fa-light;
     }
+}
+
+.btn-hover() {
+    background: var(--edatos-color-primary-5);
+}
+
+.btn-disabled() {
+    cursor: not-allowed;
+    pointer-events: none; // Future-proof disabling of clicks
+    opacity: 0.3;
+}
+
+// BUTTONS STYLES
+button {
+    font-size: var(--edatos-font-size-md);
+    font-family: inherit;
+}
+
+.btn-group > .btn,
+.btn-group-vertical > .btn {
+    float: none;
+}
+
+.btn {
+    .btn-base();
 
     &:link, &:visited {
         text-decoration: none;
@@ -44,7 +60,7 @@ button {
     }
 
     &:hover {
-        background: var(--edatos-color-primary-5);
+        .btn-hover();
     }
 
     &:active,
@@ -59,12 +75,10 @@ button {
     }
 
     &.disabled {
-        cursor: not-allowed;
-        pointer-events: none; // Future-proof disabling of clicks
-        opacity: 0.3;
+        .btn-disabled();
     }
 
-    &.accent.call-to-action {
+    &.accent {
         box-shadow: none;
         background: var(--edatos-color-accent-100);
         color: var(--edatos-color-white-100);

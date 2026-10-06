@@ -61,11 +61,34 @@
 				e.preventDefault();
 				$(this).parent().toggleClass("resource-section-collapsed");
 			});
-			<c:if test="${collection != null && collection.metadata != null && collection.metadata.lastUpdate != null}">
-				App.Helpers.createUpdateDatesSection({
-					lastUpdate: ${collection.metadata.lastUpdate.time},
-					nextUpdate: null
-				});
+			<c:if test="${collection != null && collection.metadata != null}">
+				<c:if test="${collection.metadata.lastUpdate != null}">
+					App.Helpers.createUpdateDatesSection({
+						lastUpdate: ${collection.metadata.lastUpdate.time},
+						nextUpdate: null
+					});
+				</c:if>
+				<c:if test="${collection.metadata.statisticalOperation != null && ApiUrlExternalUsers != 'error' && apiKey != null}">
+					if (window.Edatos && Edatos.UserManagement) {
+						App.config["apiKey"] = '${apiKey}';
+						App.endpoints["external-users"] = "${ApiUrlExternalUsers}";
+						var operationCode = "${collection.metadata.statisticalOperation.id}";
+
+						App.modules.user.UserUtils.isOperationSubscribable(operationCode).then(function (subscribable) {
+							if (!subscribable) {
+								return;
+							}
+
+							var $section = App.Helpers.getResourceExtraInfoSection();
+							$section.addClass('ui-front'); // Sets the location of the tooltip
+
+							new App.modules.collection.subscription.SubscribeButtonView({
+								el: $('<div class="visualizer-subscribe"></div>').appendTo($section),
+								operationCode: operationCode
+							}).render();
+						});
+					}
+				</c:if>
 			</c:if>
         });
     </script>

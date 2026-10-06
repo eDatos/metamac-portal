@@ -21,12 +21,16 @@
 
         confirm: function(e) {
             e.stopPropagation();
-            this.onConfirm();
+            this.onConfirm(this);
         },
 
         reject: function(e) {
             e.stopPropagation();
-            this.onReject();
+            this.onReject(this);
+        },
+
+        disableButtons: function () {
+            this.$(".button-confirm, .button-reject").prop("disabled", true);
         },
 
         render: function () {

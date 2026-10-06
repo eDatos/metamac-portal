@@ -381,6 +381,29 @@ I18n.translations.pt = {
             server: "Ocorreu um problema ao fazer login. Tente novamente mais tarde."
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Subscrever",
+                subscribed: "Subscrito"
+            },
+            tooltip: {
+                title: "Subscrever",
+                text: "Subscreva para receber notificações quando forem publicadas atualizações da operação desta coleção."
+            }
+        },
+        modal: {
+            confirmation: {
+                title: "Subscrição",
+                message: "Deseja subscrever as notificações da operação desta coleção?"
+            },
+            result: {
+                title: "Subscrição",
+                success: "A subscrição foi efetuada com sucesso.",
+                error: "Não foi possível concluir a subscrição. Tente novamente mais tarde."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {

@@ -384,6 +384,29 @@ I18n.translations.ca = {
             server: "Hi ha hagut un problema iniciant sessió. Intente-ho de nou més tard"
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Subscriu-te",
+                subscribed: "Subscrit"
+            },
+            tooltip: {
+                title: "Subscriu-te",
+                text: "Subscriviu-vos per rebre notificacions quan es publiquin actualitzacions de l'operació d'aquesta col·lecció."
+            }
+        },
+        modal: {
+            confirmation: {
+                title: "Subscripció",
+                message: "Voleu subscriure-us a les notificacions de l'operació d'aquesta col·lecció?"
+            },
+            result: {
+                title: "Subscripció",
+                success: "Us heu subscrit correctament.",
+                error: "No s'ha pogut completar la subscripció. Intenteu-ho de nou més tard."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {

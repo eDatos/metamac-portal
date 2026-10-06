@@ -384,6 +384,29 @@ I18n.translations.es = {
             server: "Ha habido un problema iniciando sesión. Inténtelo de nuevo más tarde."
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Suscríbete",
+                subscribed: "Suscrito"
+            },
+            tooltip: {
+                title: "Suscríbete",
+                text: "Suscríbase para recibir notificaciones cuando se publiquen actualizaciones de la operación de esta colección."
+            }
+        },
+        modal: {
+            confirmation: {
+                title: "Suscripción",
+                message: "¿Desea suscribirse a las notificaciones de la operación de esta colección?"
+            },
+            result: {
+                title: "Suscripción",
+                success: "Se ha suscrito correctamente.",
+                error: "No se ha podido completar la suscripción. Inténtelo de nuevo más tarde."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {

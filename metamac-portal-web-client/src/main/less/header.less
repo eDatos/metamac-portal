@@ -40,16 +40,80 @@
         text-align: start;
     }
 
-    .visualizer-update-dates {
+    .visualizer-resource-extra-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--edatos-spacing-x-lg);
         border-radius: var(--edatos-border-radius-sm);
         background: var(--edatos-color-gray-5);
         color: var(--edatos-color-gray-80);
         font-size: var(--edatos-font-size-xs);
         max-width: @descriptionWidth;
-        line-height: var(--edatos-spacing-y-xl);
         padding: var(--edatos-spacing-y-sm) var(--edatos-spacing-x-lg);
-        align-content: center;
         box-sizing: border-box;
+    }
+
+    .visualizer-resource-dates {
+        min-height: var(--edatos-spacing-y-xl);
+        align-content: center;
+    }
+
+    .visualizer-subscribe-tooltip {
+        position: absolute;
+        width: 230px;
+        pointer-events: none;
+        z-index: @zindexTooltip;
+        padding: var(--edatos-spacing-y-lg);
+        border-radius: var(--edatos-border-radius-sm);
+        background: var(--edatos-color-primary-50);
+        color: var(--edatos-color-white-100);
+        box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.12);
+        text-align: start;
+        font-size: var(--edatos-font-size-xs);
+
+        .ui-tooltip-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--edatos-spacing-y-sm);
+        }
+
+        .visualizer-subscribe-tooltip-title {
+            font-weight: var(--edatos-font-weight-semibold);
+            line-height: var(--edatos-line-height-xs);
+        }
+
+        .visualizer-subscribe-tooltip-text {
+            font-weight: var(--edatos-font-weight-light);
+            line-height: var(--edatos-line-height-md);
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: var(--edatos-spacing-x-sm) solid transparent;
+        }
+
+        &[data-placement="right"]::before {
+            right: 100%;
+            border-right-color: var(--edatos-color-primary-50);
+        }
+
+        &[data-placement="left"]::before {
+            left: 100%;
+            border-left-color: var(--edatos-color-primary-50);
+        }
+    }
+
+    .visualizer-subscribed-label {
+        .btn-base();
+        cursor: default;
+
+        &:hover {
+            .btn-hover();
+        }
     }
 }
 
