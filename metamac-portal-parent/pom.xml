@@ -10,7 +10,7 @@
 
     <groupId>org.siemac.metamac.metamac-portal</groupId>
     <artifactId>metamac-portal-parent</artifactId>
-    <version>9.28.2-SNAPSHOT</version>
+    <version>9.29.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>METAMAC :: PORTAL :: PARENT</name>
     <description>METAMAC :: PORTAL :: PARENT</description>
@@ -25,7 +25,7 @@
 
         <metamac-statistical-resources-rest-api-common.version>2.16.0</metamac-statistical-resources-rest-api-common.version>
 
-        <indicators.version>12.7.3-SNAPSHOT</indicators.version>
+        <indicators.version>12.8.0</indicators.version>
 
         <!-- TODO: Revisar si es necesario que estas dependencias esten aqui o se pueden pasar al proyecto metamac-parent -->
         <google-guava.version>15.0</google-guava.version>
