@@ -30,6 +30,16 @@
     background: var(--edatos-color-primary-5);
 }
 
+.btn-filled(@color) {
+    box-shadow: none;
+    background: @color;
+    color: var(--edatos-color-white-100);
+
+    i {
+        .fa-solid;
+    }
+}
+
 .btn-disabled() {
     cursor: not-allowed;
     pointer-events: none; // Future-proof disabling of clicks
@@ -65,13 +75,7 @@ button {
 
     &:active,
     &.active {
-        box-shadow: none;
-        background: var(--edatos-color-primary-100);
-        color: var(--edatos-color-white-100);
-
-        i {
-            .fa-solid;
-        }
+        .btn-filled(var(--edatos-color-primary-100));
     }
 
     &.disabled {
@@ -79,13 +83,7 @@ button {
     }
 
     &.accent {
-        box-shadow: none;
-        background: var(--edatos-color-accent-100);
-        color: var(--edatos-color-white-100);
-
-        i {
-            .fa-solid;
-        }
+        .btn-filled(var(--edatos-color-accent-100));
 
         &:focus {
             box-shadow: inset 0 0 0 var(--edatos-border-width-sm) var(--edatos-color-primary-100);
@@ -101,6 +99,19 @@ button {
             i {
                 .fa-light;
             }
+        }
+    }
+
+    &.inverted {
+        .btn-filled(var(--edatos-color-primary-100));
+
+        &:hover,
+        &:active,
+        &.active {
+            box-shadow: inset 0 0 0 var(--edatos-border-width-xs) var(--edatos-color-primary-100);
+            color: var(--edatos-color-primary-100);
+            background: var(--edatos-color-primary-10);
+            font-weight: var(--edatos-font-weight-semibold);
         }
     }
 }
