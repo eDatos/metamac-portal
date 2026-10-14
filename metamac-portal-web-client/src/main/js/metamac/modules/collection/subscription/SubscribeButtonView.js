@@ -62,7 +62,7 @@
                 position: {
                     my: 'left center',
                     at: 'right+12 center',
-                    collision: 'flip fit',
+                    collision: 'flipfit fit',
                     using: function (position, feedback) {
                         $(this).css(position).attr('data-placement', feedback.horizontal === 'left' ? 'right' : 'left');
                     }
