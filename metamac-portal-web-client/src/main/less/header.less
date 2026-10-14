@@ -1,6 +1,7 @@
 @import "variables";
 
 @descriptionWidth: 825px;
+@subscribeTooltipBackground: var(--edatos-color-secondary-100);
 
 .visualizer-header {
     .clearfix();
@@ -66,7 +67,7 @@
         z-index: @zindexTooltip;
         padding: var(--edatos-spacing-y-lg);
         border-radius: var(--edatos-border-radius-sm);
-        background: var(--edatos-color-primary-50);
+        background: @subscribeTooltipBackground;
         color: var(--edatos-color-white-100);
         box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.12);
         text-align: start;
@@ -98,12 +99,12 @@
 
         &[data-placement="right"]::before {
             right: 100%;
-            border-right-color: var(--edatos-color-primary-50);
+            border-right-color: @subscribeTooltipBackground;
         }
 
         &[data-placement="left"]::before {
             left: 100%;
-            border-left-color: var(--edatos-color-primary-50);
+            border-left-color: @subscribeTooltipBackground;
         }
     }
 
