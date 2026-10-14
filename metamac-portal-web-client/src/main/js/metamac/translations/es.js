@@ -392,13 +392,13 @@ I18n.translations.es = {
             },
             tooltip: {
                 title: "Suscríbete",
-                text: "Suscríbase para recibir notificaciones cuando se publiquen actualizaciones de la operación de esta colección."
+                text: "Suscríbete para recibir notificaciones cuando se publiquen actualizaciones de la actividad estadística a la que pertenece esta colección."
             }
         },
         modal: {
             confirmation: {
                 title: "Suscripción",
-                message: "¿Desea suscribirse a las notificaciones de la operación de esta colección?"
+                message: "¿Desea suscribirse a las notificaciones de la actividad estadística a la que pertenece esta colección?"
             },
             result: {
                 title: "Suscripción",

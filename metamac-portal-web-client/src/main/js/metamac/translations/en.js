@@ -390,13 +390,13 @@ I18n.translations.en = {
             },
             tooltip: {
                 title: "Subscribe",
-                text: "Subscribe to receive notifications when updates to this collection's operation are published."
+                text: "Subscribe to receive notifications when updates are published for the statistical activity this collection belongs to."
             }
         },
         modal: {
             confirmation: {
                 title: "Subscription",
-                message: "Do you want to subscribe to notifications for this collection's operation?"
+                message: "Do you want to subscribe to notifications for the statistical activity this collection belongs to?"
             },
             result: {
                 title: "Subscription",

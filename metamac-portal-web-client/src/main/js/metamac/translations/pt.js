@@ -389,13 +389,13 @@ I18n.translations.pt = {
             },
             tooltip: {
                 title: "Subscrever",
-                text: "Subscreva para receber notificações quando forem publicadas atualizações da operação desta coleção."
+                text: "Subscreva para receber notificações quando forem publicadas atualizações da atividade estatística a que pertence esta coleção."
             }
         },
         modal: {
             confirmation: {
                 title: "Subscrição",
-                message: "Deseja subscrever as notificações da operação desta coleção?"
+                message: "Deseja subscrever as notificações da atividade estatística a que pertence esta coleção?"
             },
             result: {
                 title: "Subscrição",

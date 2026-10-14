@@ -392,13 +392,13 @@ I18n.translations.ca = {
             },
             tooltip: {
                 title: "Subscriu-te",
-                text: "Subscriviu-vos per rebre notificacions quan es publiquin actualitzacions de l'operació d'aquesta col·lecció."
+                text: "Subscriviu-vos per rebre notificacions quan es publiquin actualitzacions de l'activitat estadística a què pertany aquesta col·lecció."
             }
         },
         modal: {
             confirmation: {
                 title: "Subscripció",
-                message: "Voleu subscriure-us a les notificacions de l'operació d'aquesta col·lecció?"
+                message: "Voleu subscriure-us a les notificacions de l'activitat estadística a què pertany aquesta col·lecció?"
             },
             result: {
                 title: "Subscripció",
