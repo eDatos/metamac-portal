@@ -17,7 +17,7 @@
     <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.periods.group" }}</legend>
     <div class="modal-radio-button">
         <div class="input-related-radio">
-            <input type="radio" id="periods-all" name="data" value="all">
+            <input type="radio" id="periods-all" name="data" value="all" checked="checked">
             <label for="periods-all">{{ message "modal.permalinkConfig.label.periods.all" }}</label>
         </div>
     </div>
@@ -40,7 +40,29 @@
         </select>
     </div>
 </fieldset>
-<fieldset id="selected-periods-options" class="modal-form-section" hidden>
+{{#if thereAreMultipleTemporalGranularities}}
+<fieldset id="temporal-granularity-options" class="modal-form-section">
+    <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.temporalGranularities.group" }}</legend>
+    <div class="modal-radio-button">
+        <div class="input-related-radio">
+            <input type="radio" id="temporal-granularity-all" name="temporalGranularity" value="all" checked="checked">
+            <label for="temporal-granularity-all">{{ message "modal.permalinkConfig.label.temporalGranularities.none" }}</label>
+        </div>
+    </div>
+    <div class="modal-radio-button">
+        <div class="input-related-radio">
+            <input type="radio" id="temporal-granularity-single" name="temporalGranularity" value="single">
+            <label for="temporal-granularity-single">{{ message "modal.permalinkConfig.label.temporalGranularities.granularity" }}</label>
+        </div>
+        <select id="temporal-granularity-select" class="radio-related-input" disabled>
+            {{#each temporalGranularities}}
+            <option value='{{this.id}}'>{{this.label}}</option>
+            {{/each}}
+        </select>
+    </div>
+</fieldset>
+{{/if}}
+<fieldset id="selected-periods-options" class="modal-form-section is-hidden">
     <legend class="modal-section-title">{{ message "modal.permalinkConfig.label.dataReview.group" }}</legend>
     {{#if thereAreVersions}}
     <div class="modal-checkbox">
