@@ -11,6 +11,7 @@
         colors: {
             white100: getCssVar("--edatos-color-white-100"),
             gray5: getCssVar("--edatos-color-gray-5"),
+            gray20: getCssVar("--edatos-color-gray-20"),
             gray40: getCssVar("--edatos-color-gray-40"),
             gray60: getCssVar("--edatos-color-gray-60"),
             gray80: getCssVar("--edatos-color-gray-80")
