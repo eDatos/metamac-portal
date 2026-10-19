@@ -8,7 +8,6 @@
 <c:set var="baseURL">${fn:replace(requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}</c:set>
 
 <script src="${baseURL}/client/metamac.js?d=${jsDate}"></script>
-<link rel="stylesheet" type="text/css" href="${baseURL}/client/metamac.css?d=${cssDate}">
 
 <%
     request.setAttribute("apiKey", WebUtils.getApiKey());

@@ -21,6 +21,8 @@
             "change #periods-quantity": "onDataQuantityChosen",
             "change #periods-date": "onDataDateChosen",
             "change #periods-all": "onDataAllChosen",
+            "change #temporal-granularity-all": "onTemporalGranularityAllChosen",
+            "change #temporal-granularity-single": "onTemporalGranularitySingleChosen",
             "focus input, textarea, select": "hideError"
         },
 
@@ -59,6 +61,11 @@
                     }).attributes;
                     dynamicSelectionBuilder.selectTemporalDimensionCategoriesAfterDate(chosenCategoryAttributes);
                 }
+
+                var granularityRadio = this.$("#temporal-granularity-single")[0];
+                if (!!granularityRadio && granularityRadio.checked) {
+                    dynamicSelectionBuilder.filterTemporalDimensionCategoriesByGranularity(this.$("#temporal-granularity-select")[0].value);
+                }
             }
             var permalinkContent = DatasetPermalink.buildPermalinkContent(
                 this.filterDimensions,
@@ -80,26 +87,24 @@
         },
 
         validateFilter: function () {
-            if(this.isThereTemporalDimension() && this.areUpdatePeriodsOptionsNecessary()) {
-                if (!this.$("#periods-all")[0].checked && !this.$("#periods-quantity")[0].checked && !this.$("#periods-date")[0].checked) {
-                    return I18n.t("modal.permalinkConfig.error.periods");
-                } else if (!this.periodsQuantityView.isDisabled()) {
-                    const value = this.periodsQuantityView.getValue();
-                    if (!Number.isInteger(value) || value < 1) {
-                        return I18n.t("modal.permalinkConfig.error.quantity");
-                    }
+            if(this.isThereTemporalDimension() && this.areUpdatePeriodsOptionsNecessary() && !this.periodsQuantityView.isDisabled()) {
+                const value = this.periodsQuantityView.getValue();
+                if (!Number.isInteger(value) || value < 1) {
+                    return I18n.t("modal.permalinkConfig.error.quantity");
                 }
             }
         },
 
         showUpdatePeriodsOptions: function () {
-            this.$("#update-periods-options")[0].hidden = false;
-            this.$("#selected-periods-options")[0].hidden = true;
+            this.$("#update-periods-options").removeClass("is-hidden");
+            this.$("#temporal-granularity-options").removeClass("is-hidden");
+            this.$("#selected-periods-options").addClass("is-hidden");
         },
 
         showSelectedPeriodsOptions: function () {
-            this.$("#update-periods-options")[0].hidden = true;
-            this.$("#selected-periods-options")[0].hidden = false;
+            this.$("#update-periods-options").addClass("is-hidden");
+            this.$("#temporal-granularity-options").addClass("is-hidden");
+            this.$("#selected-periods-options").removeClass("is-hidden");
         },
 
         onDataQuantityChosen: function () {
@@ -115,6 +120,14 @@
         onDataAllChosen: function () {
             this.periodsQuantityView.setDisabled(true);
             this.$("#periods-date-related-input").prop("disabled", true).trigger("change");
+        },
+
+        onTemporalGranularityAllChosen: function () {
+            this.$("#temporal-granularity-select").prop("disabled", true).trigger("change");
+        },
+
+        onTemporalGranularitySingleChosen: function () {
+            this.$("#temporal-granularity-select").prop("disabled", false).trigger("change");
         },
 
         hideError: function () {
@@ -147,12 +160,32 @@
             });
         },
 
+        getTemporalGranularityOptions: function () {
+            var temporalDimension = this.getTemporalDimension();
+            if (!temporalDimension) {
+                return [];
+            }
+
+            return _.map(temporalDimension.getGranularities(), function (granularity) {
+                return {
+                    id: granularity,
+                    label: I18n.t("entity.granularity.temporal.enum." + granularity, { defaults: [{ message: granularity }] }) };
+            });
+        },
+
+        areThereMultipleTemporalGranularities: function () {
+            var temporalDimension = this.getTemporalDimension();
+            return !!temporalDimension && temporalDimension.getGranularities().length > 1;
+        },
+
         render: function () {
             this.$el.html(this.template({
                 thereAreVersions: this.areThereVersions(),
                 thereIsTemporalDimension: this.isThereTemporalDimension(),
+                thereAreMultipleTemporalGranularities: this.areThereMultipleTemporalGranularities(),
                 defaultCustomQueryName: this.filterDimensions.metadata.getTitle(),
                 dimensionCategories: this.getTemporalDimensionCategories().map(function(category) { return category.attributes; }),
+                temporalGranularities: this.getTemporalGranularityOptions(),
                 buttonText: this.customButtonText || I18n.t("modal.permalinkConfig.button.submit"),
                 buttonIconClass: this.customButtonIconClass || "modal-form-view-icon"
             }));
@@ -164,6 +197,14 @@
                 this.periodsQuantityView.setDisabled(true);
 
                 this.$el.find("#periods-date-related-input").select2({
+                    dropdownParent: $('.metamac-container'),
+                    minimumResultsForSearch: Infinity,
+                    width: 'style'
+                }).on('select2:open', function () {
+                    App.Select2Utils.onOpen($(this), 'modal-form-select2-dropdown');
+                }).siblings(".select2").addClass("radio-related-input");
+
+                this.$el.find("#temporal-granularity-select").select2({
                     dropdownParent: $('.metamac-container'),
                     minimumResultsForSearch: Infinity,
                     width: 'style'
