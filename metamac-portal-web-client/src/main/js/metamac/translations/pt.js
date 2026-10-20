@@ -386,11 +386,11 @@ I18n.translations.pt = {
             state: {
                 unsubscribed: "Subscrever",
                 subscribed: "Subscrito"
-            },
-            tooltip: {
-                title: "Subscrever",
-                text: "Subscreva para receber notificações quando forem publicadas atualizações da atividade estatística a que pertence esta coleção."
             }
+        },
+        tooltip: {
+            unsubscribed: "Subscreva para receber notificações quando forem publicadas atualizações da atividade estatística a que pertence esta coleção.",
+            subscribed: "Está subscrito às notificações da atividade estatística a que pertence esta coleção."
         },
         modal: {
             confirmation: {

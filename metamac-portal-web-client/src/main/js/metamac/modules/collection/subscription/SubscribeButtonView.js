@@ -38,8 +38,8 @@
         _renderState: function (subscribed) {
             this._destroyTooltip();
             this.$el.html(this.template({ subscribed: subscribed }));
-            if (!subscribed && this._supportsHover()) {
-                this._initTooltip();
+            if (this._supportsHover()) {
+                this._initTooltip(subscribed);
             }
         },
 
@@ -47,12 +47,14 @@
             return !!(window.matchMedia && window.matchMedia('(hover: hover)').matches);
         },
 
-        _initTooltip: function () {
+        _initTooltip: function (subscribed) {
             var self = this;
+            var itemSelector = subscribed ? '.visualizer-subscribed-label' : '.visualizer-subscribe-button';
+            var textKey = subscribed ? 'subscribe.tooltip.subscribed' : 'subscribe.tooltip.unsubscribed';
             var tooltipOptions = {
-                items: '.visualizer-subscribe-button',
+                items: itemSelector,
                 content: function () {
-                    return self.tooltipTemplate();
+                    return self.tooltipTemplate({ text: I18n.t(textKey) });
                 },
                 classes: {
                     'ui-tooltip': 'visualizer-subscribe-tooltip'
@@ -68,13 +70,13 @@
                     }
                 }
             };
-            this.$('.visualizer-subscribe-button').tooltip(tooltipOptions);
+            this.$(itemSelector).tooltip(tooltipOptions);
         },
 
         _destroyTooltip: function () {
-            var $button = this.$('.visualizer-subscribe-button');
-            if ($button.length && $button.tooltip('instance')) {
-                $button.tooltip('destroy');
+            var $item = this.$('.visualizer-subscribe-button, .visualizer-subscribed-label');
+            if ($item.length && $item.tooltip('instance')) {
+                $item.tooltip('destroy');
             }
         },
 

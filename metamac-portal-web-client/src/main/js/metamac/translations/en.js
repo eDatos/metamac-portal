@@ -387,11 +387,11 @@ I18n.translations.en = {
             state: {
                 unsubscribed: "Subscribe",
                 subscribed: "Subscribed"
-            },
-            tooltip: {
-                title: "Subscribe",
-                text: "Subscribe to receive notifications when updates are published for the statistical activity this collection belongs to."
             }
+        },
+        tooltip: {
+            unsubscribed: "Subscribe to receive notifications when updates are published for the statistical activity this collection belongs to.",
+            subscribed: "You are subscribed to notifications for the statistical activity this collection belongs to."
         },
         modal: {
             confirmation: {

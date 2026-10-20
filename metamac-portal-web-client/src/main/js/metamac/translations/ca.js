@@ -389,11 +389,11 @@ I18n.translations.ca = {
             state: {
                 unsubscribed: "Subscriu-te",
                 subscribed: "Subscrit"
-            },
-            tooltip: {
-                title: "Subscriu-te",
-                text: "Subscriviu-vos per rebre notificacions quan es publiquin actualitzacions de l'activitat estadística a què pertany aquesta col·lecció."
             }
+        },
+        tooltip: {
+            unsubscribed: "Subscriviu-vos per rebre notificacions quan es publiquin actualitzacions de l'activitat estadística a què pertany aquesta col·lecció.",
+            subscribed: "Esteu subscrits a les notificacions de l'activitat estadística a què pertany aquesta col·lecció."
         },
         modal: {
             confirmation: {
