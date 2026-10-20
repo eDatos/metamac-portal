@@ -46,6 +46,17 @@
     opacity: 0.3;
 }
 
+.btn-inverted() {
+    .btn-filled(var(--edatos-color-primary-100));
+}
+
+.btn-inverted-hover() {
+    box-shadow: inset 0 0 0 var(--edatos-border-width-xs) var(--edatos-color-primary-100);
+    color: var(--edatos-color-primary-100);
+    background: var(--edatos-color-primary-5);
+    font-weight: var(--edatos-font-weight-semibold);
+}
+
 // BUTTONS STYLES
 button {
     font-size: var(--edatos-font-size-md);
@@ -103,15 +114,12 @@ button {
     }
 
     &.inverted {
-        .btn-filled(var(--edatos-color-primary-100));
+        .btn-inverted();
 
         &:hover,
         &:active,
         &.active {
-            box-shadow: inset 0 0 0 var(--edatos-border-width-xs) var(--edatos-color-primary-100);
-            color: var(--edatos-color-primary-100);
-            background: var(--edatos-color-primary-5);
-            font-weight: var(--edatos-font-weight-semibold);
+            .btn-inverted-hover();
         }
     }
 }

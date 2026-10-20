@@ -110,10 +110,16 @@
 
     .visualizer-subscribed-label {
         .btn-base();
+        .btn-inverted();
+        .user-select(text);
         cursor: default;
 
+        span {
+            cursor: text;
+        }
+
         &:hover {
-            .btn-hover();
+            .btn-inverted-hover();
         }
     }
 }
