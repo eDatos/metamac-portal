@@ -7,7 +7,6 @@
 <c:set var="requestURL">${pageContext.request.requestURL}</c:set>
 <c:set var="baseURL">${fn:replace(requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}</c:set>
 
-<link rel="stylesheet" type="text/css" href="${baseURL}/client/metamac.css">
 <t:metamac_plantilla_1col baseURL="${baseURL}">
 <fmt:setLocale value="${currentLocale}" />
     <div class="visualizer-wrapper collection-wrapper"> 

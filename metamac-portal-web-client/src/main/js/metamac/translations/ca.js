@@ -421,11 +421,15 @@ I18n.translations.ca = {
                     quantity: "Actualitzar amb els darrers n períodes:",
                     date: "Actualitzar a partir del període següent:",
                     all: "Actualitzar amb tots els períodes",
+                },
+                temporalGranularities: {
+                    group: "Granularitat temporal",
+                    none: "Totes",
+                    granularity: "Només una granularitat:",
                 }
             },
             error: {
-                quantity: "El camp númeric de l'apartat 'Actualitzar amb els darrers n períodes' ha de ser un nombre enter positiu més gran o igual a un.",
-                periods: "Heu de seleccionar una de les opcions de l'apartat 'Períodes'."
+                quantity: "El camp númeric de l'apartat 'Actualitzar amb els darrers n períodes' ha de ser un nombre enter positiu més gran o igual a un."
             },
             info: {
                 noTemporalDimension: "Aquest recurs no permet triar el període perquè no té una dimensió temporal.",

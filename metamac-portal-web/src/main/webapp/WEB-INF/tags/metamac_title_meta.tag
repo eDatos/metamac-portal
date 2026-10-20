@@ -301,6 +301,7 @@
        }
        request.setAttribute("portalStyleHeaderUrl", portalStyleHeaderUrlRaw);
        request.setAttribute("portalStyleCssUrl", WebUtils.getPortalStyleCssUrl(organizationService, theme));
+       request.setAttribute("appStyleCssUrl", WebUtils.getAppStyleCssUrl());
        String portalStyleFooterUrlRaw = WebUtils.getPortalStyleFooterUrl(organizationService, theme);
        try {
            portalStyleFooterUrlRaw = new URI(portalStyleFooterUrlRaw).normalize().toString();
