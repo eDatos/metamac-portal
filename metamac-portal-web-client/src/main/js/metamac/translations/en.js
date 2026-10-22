@@ -382,6 +382,29 @@ I18n.translations.en = {
             server: "There was a problem logging in. Try again later."
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Subscribe",
+                subscribed: "Subscribed"
+            }
+        },
+        tooltip: {
+            unsubscribed: "Subscribe to receive notifications when updates are published for the statistical activity this collection belongs to.",
+            subscribed: "You are subscribed to notifications for the statistical activity this collection belongs to."
+        },
+        modal: {
+            confirmation: {
+                title: "Subscription",
+                message: "Do you want to subscribe to notifications for the statistical activity this collection belongs to?"
+            },
+            result: {
+                title: "Subscription",
+                success: "You have subscribed successfully.",
+                error: "The subscription could not be completed. Please try again later."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {

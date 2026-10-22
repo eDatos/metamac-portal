@@ -34,6 +34,7 @@ public class Collection2DtoMapper {
     public CollectionMetadata collectionMetadataExternalToDto(org.siemac.metamac.statistical_resources.rest.common.v1_0.domain.CollectionMetadataBase source) {
         CollectionMetadata target = new CollectionMetadata();
         target.setLastUpdate(source.getLastUpdate());
+        target.setStatisticalOperation(source.getStatisticalOperation());
         return target;
     }
 
@@ -101,6 +102,7 @@ public class Collection2DtoMapper {
     public CollectionMetadata collectionMetadataInternalToDto(org.siemac.metamac.rest.statistical_resources_internal.v1_0.domain.CollectionMetadata source) {
         CollectionMetadata target = new CollectionMetadata();
         target.setLastUpdate(source.getLastUpdate());
+        target.setStatisticalOperation(source.getStatisticalOperation());
         return target;
     }
 

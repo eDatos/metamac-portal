@@ -1,16 +1,7 @@
 @import "variables";
 
-button {
-    font-size: var(--edatos-font-size-md);
-    font-family: inherit;
-}
-
-.btn-group > .btn,
-.btn-group-vertical > .btn {
-    float: none;
-}
-
-.btn {
+// MIXINS
+.btn-base() {
     display: flex;
     flex-direction: row;
     gap: var(--edatos-spacing-x-xs);
@@ -33,6 +24,52 @@ button {
     i {
         .fa-light;
     }
+}
+
+.btn-hover() {
+    background: var(--edatos-color-primary-5);
+}
+
+.btn-filled(@color) {
+    box-shadow: none;
+    background: @color;
+    color: var(--edatos-color-white-100);
+
+    i {
+        .fa-solid;
+    }
+}
+
+.btn-disabled() {
+    cursor: not-allowed;
+    pointer-events: none; // Future-proof disabling of clicks
+    opacity: 0.3;
+}
+
+.btn-inverted() {
+    .btn-filled(var(--edatos-color-primary-100));
+}
+
+.btn-inverted-hover() {
+    box-shadow: inset 0 0 0 var(--edatos-border-width-xs) var(--edatos-color-primary-100);
+    color: var(--edatos-color-primary-100);
+    background: var(--edatos-color-primary-5);
+    font-weight: var(--edatos-font-weight-semibold);
+}
+
+// BUTTONS STYLES
+button {
+    font-size: var(--edatos-font-size-md);
+    font-family: inherit;
+}
+
+.btn-group > .btn,
+.btn-group-vertical > .btn {
+    float: none;
+}
+
+.btn {
+    .btn-base();
 
     &:link, &:visited {
         text-decoration: none;
@@ -44,34 +81,20 @@ button {
     }
 
     &:hover {
-        background: var(--edatos-color-primary-5);
+        .btn-hover();
     }
 
     &:active,
     &.active {
-        box-shadow: none;
-        background: var(--edatos-color-primary-100);
-        color: var(--edatos-color-white-100);
-
-        i {
-            .fa-solid;
-        }
+        .btn-filled(var(--edatos-color-primary-100));
     }
 
     &.disabled {
-        cursor: not-allowed;
-        pointer-events: none; // Future-proof disabling of clicks
-        opacity: 0.3;
+        .btn-disabled();
     }
 
-    &.accent.call-to-action {
-        box-shadow: none;
-        background: var(--edatos-color-accent-100);
-        color: var(--edatos-color-white-100);
-
-        i {
-            .fa-solid;
-        }
+    &.accent {
+        .btn-filled(var(--edatos-color-accent-100));
 
         &:focus {
             box-shadow: inset 0 0 0 var(--edatos-border-width-sm) var(--edatos-color-primary-100);
@@ -87,6 +110,16 @@ button {
             i {
                 .fa-light;
             }
+        }
+    }
+
+    &.inverted {
+        .btn-inverted();
+
+        &:hover,
+        &:active,
+        &.active {
+            .btn-inverted-hover();
         }
     }
 }

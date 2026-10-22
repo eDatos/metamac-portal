@@ -103,6 +103,9 @@ module.exports = (grunt) ->
                 paths.modules + "/dataset/DatasetVisualizationView.js"
                 paths.modules + "/dataset/DatasetDownloadView.js"
 
+                # COLLECTION MODULE
+                paths.modules + "/collection/subscription/SubscribeButtonView.js"
+
                 # Datasource
                 paths.js + "/metamac/modules/datasource/helper/ApiIndicatorResponseToApiResponse.js"
                 paths.js + "/metamac/modules/datasource/helper/DatasetHelper.js"
