@@ -52,6 +52,11 @@
                 width: 100%;
                 text-overflow: ellipsis;
                 overflow: clip;
+                border-radius: var(--edatos-border-radius-xs) var(--edatos-border-radius-xs) 0 0;
+
+                &:last-child {
+                    border-radius: inherit;
+                }
             }
 
             .dimension-select-geographic-granularity,
@@ -183,7 +188,9 @@
                 background: var(--edatos-color-gray-5);
 
                 .order-sidebar-dimension:not(.order-sidebar-dimension-single-value):hover .order-sidebar-dimension-label {
-                    background-color: var(--edatos-color-primary-50);
+                    box-shadow: inset 0 0 0 var(--edatos-border-width-xs) var(--edatos-color-primary-100);
+                    color: var(--edatos-color-primary-100);
+                    background-color: var(--edatos-color-white-100);
                 }
             }
         }
@@ -371,6 +378,8 @@
             -webkit-user-drag: element;
             -khtml-user-select: none;
             -webkit-user-select: none;
+
+            touch-action: none;
         }
 
     }

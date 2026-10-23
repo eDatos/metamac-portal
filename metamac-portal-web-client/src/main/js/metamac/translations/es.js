@@ -384,6 +384,29 @@ I18n.translations.es = {
             server: "Ha habido un problema iniciando sesión. Inténtelo de nuevo más tarde."
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Suscríbete",
+                subscribed: "Suscrito"
+            }
+        },
+        tooltip: {
+            unsubscribed: "Suscríbete para recibir notificaciones cuando se publiquen actualizaciones de la actividad estadística a la que pertenece esta colección.",
+            subscribed: "Estás suscrito a las notificaciones de la actividad estadística a la que pertenece esta colección."
+        },
+        modal: {
+            confirmation: {
+                title: "Suscripción",
+                message: "¿Desea suscribirse a las notificaciones de la actividad estadística a la que pertenece esta colección?"
+            },
+            result: {
+                title: "Suscripción",
+                success: "Se ha suscrito correctamente.",
+                error: "No se ha podido completar la suscripción. Inténtelo de nuevo más tarde."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {
@@ -421,11 +444,15 @@ I18n.translations.es = {
                     quantity: "Actualizar con los últimos n periodos:",
                     date: "Actualizar a partir del siguiente periodo:",
                     all: "Actualizar con todos los periodos",
+                },
+                temporalGranularities: {
+                    group: "Granularidad temporal",
+                    none: "Todas",
+                    granularity: "Sólo una granularidad:",
                 }
             },
             error: {
-                quantity: "El campo númerico del apartado 'Actualizar con los últimos n periodos' debe ser un número entero positivo mayor o igual a uno.",
-                periods: "Debe seleccionar una de las opciones del apartado 'Periodos'."
+                quantity: "El campo númerico del apartado 'Actualizar con los últimos n periodos' debe ser un número entero positivo mayor o igual a uno."
             },
             info: {
                 noTemporalDimension: "Este recurso no permite elegir el periodo porque no tiene una dimensión temporal.",

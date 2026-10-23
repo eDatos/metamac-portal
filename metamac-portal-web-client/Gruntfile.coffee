@@ -46,6 +46,7 @@ module.exports = (grunt) ->
                 paths.lib + "/cookies.js"
                 paths.nodeModules + "/shareon/dist/shareon.iife.js"
                 paths.nodeModules + "/mathjax/es5/tex-chtml.js"
+                paths.nodeModules + "/mobile-drag-drop/index.min.js"
                 paths.js + "/metamac/App.js"
                 paths.js + "/metamac/libs/HandlebarsHelpers.js"
                 paths.js + "/metamac/templates/HandlebarsTemplates.js"
@@ -101,6 +102,9 @@ module.exports = (grunt) ->
                 paths.modules + "/dataset/DimensionsView.js"
                 paths.modules + "/dataset/DatasetVisualizationView.js"
                 paths.modules + "/dataset/DatasetDownloadView.js"
+
+                # COLLECTION MODULE
+                paths.modules + "/collection/subscription/SubscribeButtonView.js"
 
                 # Datasource
                 paths.js + "/metamac/modules/datasource/helper/ApiIndicatorResponseToApiResponse.js"

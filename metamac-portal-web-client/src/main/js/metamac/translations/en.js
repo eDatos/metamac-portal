@@ -382,6 +382,29 @@ I18n.translations.en = {
             server: "There was a problem logging in. Try again later."
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Subscribe",
+                subscribed: "Subscribed"
+            }
+        },
+        tooltip: {
+            unsubscribed: "Subscribe to receive notifications when updates are published for the statistical activity this collection belongs to.",
+            subscribed: "You are subscribed to notifications for the statistical activity this collection belongs to."
+        },
+        modal: {
+            confirmation: {
+                title: "Subscription",
+                message: "Do you want to subscribe to notifications for the statistical activity this collection belongs to?"
+            },
+            result: {
+                title: "Subscription",
+                success: "You have subscribed successfully.",
+                error: "The subscription could not be completed. Please try again later."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {
@@ -419,11 +442,15 @@ I18n.translations.en = {
                     quantity: "Update with the last n periods:",
                     date: "Update from the following period:",
                     all: "Update with all periods",
+                },
+                temporalGranularities: {
+                    group: "Temporal granularity",
+                    none: "All",
+                    granularity: "Only one granularity:",
                 }
             },
             error: {
-                quantity: "The numeric field in the 'Update with the last n periods' section must be a positive integer greater than or equal to one.",
-                periods: "You must select one of the options in the 'Periods' section."
+                quantity: "The numeric field in the 'Update with the last n periods' section must be a positive integer greater than or equal to one."
             },
             info: {
                 noTemporalDimension: "This resource does not allow choosing the period because it does not have a temporal dimension.",

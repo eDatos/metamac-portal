@@ -1,0 +1,11 @@
+{{#if subscribed}}
+<span class="visualizer-subscribed-label">
+    <i class="fa-solid fa-check"></i>
+    <span>{{message "subscribe.button.state.subscribed"}}</span>
+</span>
+{{else}}
+<button type="button" class="btn inverted visualizer-subscribe-button">
+    <i class="fa-solid fa-bell-on"></i>
+    <span>{{message "subscribe.button.state.unsubscribed"}}</span>
+</button>
+{{/if}}

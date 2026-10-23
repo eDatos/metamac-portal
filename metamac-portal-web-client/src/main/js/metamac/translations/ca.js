@@ -384,6 +384,29 @@ I18n.translations.ca = {
             server: "Hi ha hagut un problema iniciant sessió. Intente-ho de nou més tard"
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Subscriu-te",
+                subscribed: "Subscrit"
+            }
+        },
+        tooltip: {
+            unsubscribed: "Subscriviu-vos per rebre notificacions quan es publiquin actualitzacions de l'activitat estadística a què pertany aquesta col·lecció.",
+            subscribed: "Esteu subscrits a les notificacions de l'activitat estadística a què pertany aquesta col·lecció."
+        },
+        modal: {
+            confirmation: {
+                title: "Subscripció",
+                message: "Voleu subscriure-us a les notificacions de l'activitat estadística a què pertany aquesta col·lecció?"
+            },
+            result: {
+                title: "Subscripció",
+                success: "Us heu subscrit correctament.",
+                error: "No s'ha pogut completar la subscripció. Intenteu-ho de nou més tard."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {
@@ -421,11 +444,15 @@ I18n.translations.ca = {
                     quantity: "Actualitzar amb els darrers n períodes:",
                     date: "Actualitzar a partir del període següent:",
                     all: "Actualitzar amb tots els períodes",
+                },
+                temporalGranularities: {
+                    group: "Granularitat temporal",
+                    none: "Totes",
+                    granularity: "Només una granularitat:",
                 }
             },
             error: {
-                quantity: "El camp númeric de l'apartat 'Actualitzar amb els darrers n períodes' ha de ser un nombre enter positiu més gran o igual a un.",
-                periods: "Heu de seleccionar una de les opcions de l'apartat 'Períodes'."
+                quantity: "El camp númeric de l'apartat 'Actualitzar amb els darrers n períodes' ha de ser un nombre enter positiu més gran o igual a un."
             },
             info: {
                 noTemporalDimension: "Aquest recurs no permet triar el període perquè no té una dimensió temporal.",

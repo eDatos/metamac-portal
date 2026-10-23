@@ -40,7 +40,7 @@
         show: function () {
             this.render();
             if ($(".full-screen").append(this.$el).length == 0) {
-                $(".metamac-container").append(this.$el);
+                $(".visualizer-wrapper").append(this.$el);
             }
         },
 

@@ -8,6 +8,18 @@ html {
 	box-sizing: content-box;
 }
 
+// Copied from jQuery-ui to prevent the tooltip from showing texts at the bottom of the page
+.ui-helper-hidden-accessible {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
 body.statistical-visualizer {
 	&:not(:has(.widget-wrapper)) {
 		background: var(--edatos-color-gray-5);

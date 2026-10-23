@@ -17,6 +17,12 @@
 			<!-- portalStyleCssUrl is empty -->
 		</c:otherwise>
 	</c:choose>
+
+	<c:url var="appStyleCssBaseThemeUrl" value="${appStyleCssUrl}">
+		<c:param name="theme" value="base" />
+	</c:url>
+	<link rel="stylesheet" type="text/css" href="${appStyleCssBaseThemeUrl}" />
+	<link rel="stylesheet" type="text/css" href="${baseURL}/client/metamac.css?d=${cssDate}" />
 </head>
 <body class="statistical-visualizer">
 	<!-- begin: #cabecera -->

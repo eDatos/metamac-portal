@@ -381,6 +381,29 @@ I18n.translations.pt = {
             server: "Ocorreu um problema ao fazer login. Tente novamente mais tarde."
         }
     },
+    subscribe: {
+        button: {
+            state: {
+                unsubscribed: "Subscrever",
+                subscribed: "Subscrito"
+            }
+        },
+        tooltip: {
+            unsubscribed: "Subscreva para receber notificações quando forem publicadas atualizações da atividade estatística a que pertence esta coleção.",
+            subscribed: "Está subscrito às notificações da atividade estatística a que pertence esta coleção."
+        },
+        modal: {
+            confirmation: {
+                title: "Subscrição",
+                message: "Deseja subscrever as notificações da atividade estatística a que pertence esta coleção?"
+            },
+            result: {
+                title: "Subscrição",
+                success: "A subscrição foi efetuada com sucesso.",
+                error: "Não foi possível concluir a subscrição. Tente novamente mais tarde."
+            }
+        }
+    },
     modal: {
         confirmation: {
             button: {
@@ -418,11 +441,15 @@ I18n.translations.pt = {
                     quantity: "Atualizar com os últimos n períodos:",
                     date: "Atualização do seguinte período:",
                     all: "Atualizar com todos os períodos",
+                },
+                temporalGranularities: {
+                    group: "Granularidade temporal",
+                    none: "Todas",
+                    granularity: "Apenas uma granularidade:",
                 }
             },
             error: {
-                quantity: "O campo numérico na seção 'Atualizar com os últimos n períodos' deve ser um número inteiro positivo maior ou igual a um.",
-                periods: "Você deve selecionar uma das opções na seção 'Períodos'."
+                quantity: "O campo numérico na seção 'Atualizar com os últimos n períodos' deve ser um número inteiro positivo maior ou igual a um."
             },
             info: {
                 noTemporalDimension: "Este recurso não permite a escolha do período porque não possui uma dimensão temporal.",

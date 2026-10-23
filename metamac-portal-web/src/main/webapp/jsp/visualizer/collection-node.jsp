@@ -99,10 +99,10 @@
         </a>
         <div class="tags-section">
             <c:if test="${featured}">
-                <i class="fa-solid fa-star" title="<fmt:message key="message.portal.resource.featured" bundle="${i18n}"/>"></i>
+                <i class="icon-star" title="<fmt:message key="message.portal.resource.featured" bundle="${i18n}"/>"></i>
             </c:if>
             <c:if test="${newness}">
-                <i class="fa-solid fa-calendar" title="<fmt:message key="message.portal.resource.newness" bundle="${i18n}"/>"></i>
+                <i class="icon-bell" title="<fmt:message key="message.portal.resource.newness" bundle="${i18n}"/>"></i>
             </c:if>
         </div>
     </li>

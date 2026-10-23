@@ -51,15 +51,27 @@
 			}
 
 			if (updateDatesSectionParts.length) {
-				var $headerInfo = $('.visualizer-header-info');
-				var $existingUpdateDates = $headerInfo.find('.visualizer-update-dates');
-				var updateDatesContent = '<div class="visualizer-update-dates">' + updateDatesSectionParts.join(' | ') + '</div>';
-				if ($existingUpdateDates.length) {
-					$existingUpdateDates.replaceWith(updateDatesContent);
-				} else {
-					$headerInfo.append(updateDatesContent);
+				var $extraInfo = App.Helpers.getResourceExtraInfoSection();
+				if ($extraInfo.length) {
+					var $dates = $extraInfo.children('.visualizer-resource-dates');
+					if (!$dates.length) {
+						$dates = $('<span class="visualizer-resource-dates"></span>').appendTo($extraInfo);
+					}
+					$dates.html(updateDatesSectionParts.join(' | '));
 				}
 			}
+		},
+
+		getResourceExtraInfoSection: function () {
+			var $headerInfo = $('.visualizer-header-info');
+			if (!$headerInfo.length) {
+				return $();
+			}
+			var $extraInfo = $headerInfo.find('.visualizer-resource-extra-info');
+			if (!$extraInfo.length) {
+				$extraInfo = $('<div class="visualizer-resource-extra-info"></div>').appendTo($headerInfo);
+			}
+			return $extraInfo;
 		}
 	};
 }(DOMPurify, moment));
